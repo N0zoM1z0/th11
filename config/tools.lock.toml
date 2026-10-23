@@ -1,0 +1,152 @@
+[msvc90]
+family = "Microsoft Visual C++ 2008 RTM"
+repository = "https://github.com/archaic-msvc/msvc900.git"
+commit = "c9d710cef9a3dec08d7d2dca78a3b494335a5baa"
+repository_license_state = "not-declared"
+compiler_banner = "Microsoft (R) 32-bit C/C++ Optimizing Compiler Version 15.00.21022.08 for 80x86"
+linker_banner = "Microsoft (R) Incremental Linker Version 9.00.21022.08"
+identity_state = "observed-candidate"
+selection = ".tools/msvc900"
+ltcg_object_header = "0000ffff01004c01"
+linked_smoke_extent_size = 10
+resource_compiler_banner = "Microsoft (R) Windows (R) Resource Compiler Version 6.0.5724.0"
+note = "TH11-local PE linker 9.0 and Rich build 21022 independently select a VC9 RTM candidate. The pinned payload reports compiler 15.00.21022.08 and linker 9.00.21022.08. Exact profiles and per-unit normal COFF versus LTCG ownership remain unknown."
+
+[msvc90.components.compiler]
+path = "VC/bin/cl.exe"
+sha256 = "a8fb826379837492f19b249a3553acc3f904afe4c93e643054d0e48340ae717a"
+
+[msvc90.components.c_frontend]
+path = "VC/bin/c1.dll"
+sha256 = "2b461633d791d431413163a18bdb72954eb702bdad2d94e969f4da81f7dc5973"
+
+[msvc90.components.cpp_frontend]
+path = "VC/bin/c1xx.dll"
+sha256 = "c3fead41f9013e5c1bd530d454a717c46480d76ca911e7a291e801165091d886"
+
+[msvc90.components.optimizer]
+path = "VC/bin/c2.dll"
+sha256 = "215c21b66b7769e65fff3ca6a9af498c5a896695abdf69e2412f3c2cacd73c5b"
+
+[msvc90.components.linker]
+path = "VC/bin/link.exe"
+sha256 = "836eb85b874a9b9cf9aa9fd489a94ec77558ab5697b40ba2653c62caf8c6f840"
+
+[msvc90.components.pdb_backend]
+path = "VC/bin/mspdb80.dll"
+sha256 = "4df8c3cacee00a48d528ce58deaff404b8e25b2c31eaf0a3a22871308ca44363"
+
+[msvc90.components.pdb_core]
+path = "VC/bin/mspdbcore.dll"
+sha256 = "3d6f185d291a3007f443f7ac2d6eb7b43216659eab8f204ab16c9692df7f54f6"
+
+[msvc90.components.pdb_server]
+path = "VC/bin/mspdbsrv.exe"
+sha256 = "0477c3eee35889436da8f5ff955fc19f5c53696fffc566caf5313310f5b492d3"
+
+[msvc90.components.resource_compiler]
+path = "Microsoft SDKs/Windows/v6.0A/Bin/RC.Exe"
+sha256 = "83be17ad26522c9e0e6b28c8638c6548908baeb1e945db77b747ff85e74fea3c"
+
+[msvc90.components.resource_runtime]
+path = "Microsoft SDKs/Windows/v6.0A/Bin/RcDll.Dll"
+sha256 = "791fe6ea996d167e984654dd4579e8a1781a1e0ec6bb01b4901da5c37cf66c31"
+
+[msvc90.components.resource_converter]
+path = "VC/bin/cvtres.exe"
+sha256 = "4c7f0b8869d98e27da28daad71a070c1eb7c9d63adb16d184728352706b4f092"
+
+[msvc90.components.crt_runtime]
+path = "VC/redist/x86/Microsoft.VC90.CRT/msvcr90.dll"
+sha256 = "ed0170d3de86da33e02bfa1605eec8ff6010583481b1c530843867c1939d2185"
+
+[msvc90.components.compiler_messages]
+path = "VC/bin/1033/clui.dll"
+sha256 = "192b3c1a0ca6bec711d0c67c63b105da5b1606c6cc255906aef9a01aa24a6878"
+
+[msvc90.components.linker_messages]
+path = "VC/bin/1033/linkui.dll"
+sha256 = "c0f548c34a22bd91647e5acd11366d006e5dd6b4fec0c0a02fb91c14841eb466"
+
+[msvc90.components.object_runtime]
+path = "VC/bin/msobj80.dll"
+sha256 = "a346ecaeb5a64d92eb1c4969eacedc3b9ee8e944c6395d98d144c58c24b84137"
+
+[wine]
+architecture = "win32"
+runtime = "system-wine"
+display_mode = "xvfb-headless"
+prefix = ".tools/wineprefix-msvc900"
+prefix_ownership = "game-bound-ignored-state"
+
+[capstone]
+version = "5.0.6"
+python_wrapper_sha256 = "de6aa463d9008ce52827d5b6074780bc141f5422ccc07e4163851d0fee7c1719"
+x86_wrapper_sha256 = "7c3a2f434e20df6f69ced3bed07217c996379d647aeb62de9bf5d6e8b195f525"
+x86_constants_sha256 = "00dcf65aad410f95a61dacd1dadacfe11b0f19b2afbeb07d19a484d35c692c38"
+native_library_sha256 = "fb3e851989440c51fa026fa5be0441a5d5f09d3c4018f6521138762bfbf473b8"
+authority = "linked-image-field-decoder"
+
+[ghidra]
+version = "12.1.3"
+release_tag = "Ghidra_12.1.3_build"
+application_properties_sha256 = "fb9b6292c801e4a18b7c20829437d3b18b2241b273aea9b1cbdebdf3e5d0dc15"
+analyze_headless_sha256 = "302880328a0024ee24cfe0326d4d9a61c2237116d95f2e0e0df090f747f95e30"
+authority = "provisional-semantic-analysis"
+
+[temurin_jdk]
+version = "21.0.12.1+1"
+java_sha256 = "2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d"
+modules_sha256 = "70c5465dabf8e1bec2860631ea3ffd342f0ec23a5e2efd3a389d2abe32448f98"
+release_sha256 = "ebbd70bf00bab6d39addf51969c5ff244030b86b29de400b9fb10612ebd3ceec"
+banner_substring = "openjdk version \"21.0.12.1\" 2026-08-18 LTS"
+
+[ntlm_auth]
+selection = ".tools/winbind"
+platform = "ubuntu-24.04-amd64"
+version_banner = "Version 4.19.5-Ubuntu"
+binary_sha256 = "49c9215b0e64832945fc56585b1fa19b5358419adbffb7c4cae3892ff60f2600"
+tree_sha256 = "1fd79a0827c89ac9798f656b15a1be8a5e3a07ca4ec303ab7a1e67e6149bba5f"
+note = "Private distro package extraction supplies Wine RPC NTLM authentication for VC9 PDB generation. No system package or host daemon is installed. Other ordinary Ubuntu 24.04 shared libraries remain system prerequisites."
+
+[[ntlm_auth.packages]]
+name = "winbind"
+version = "2:4.19.5+dfsg-4ubuntu9.8"
+url = "https://archive.ubuntu.com/ubuntu/pool/main/s/samba/winbind_4.19.5+dfsg-4ubuntu9.8_amd64.deb"
+sha256 = "e686660f22d46f718d004e84e740eb15447f2373e7b8e7a16f0c9ea477199fbf"
+
+[[ntlm_auth.packages]]
+name = "samba-libs"
+version = "2:4.19.5+dfsg-4ubuntu9.8"
+url = "https://archive.ubuntu.com/ubuntu/pool/main/s/samba/samba-libs_4.19.5+dfsg-4ubuntu9.8_amd64.deb"
+sha256 = "2fe84917f55d0f2cbcbe6f67a8ee68ada08e3e6cfb31580c486a30f34e46f2aa"
+
+[[ntlm_auth.packages]]
+name = "libwbclient0"
+version = "2:4.19.5+dfsg-4ubuntu9.8"
+url = "https://archive.ubuntu.com/ubuntu/pool/main/s/samba/libwbclient0_4.19.5+dfsg-4ubuntu9.8_amd64.deb"
+sha256 = "3dd1634973ae87c38cf4989572042cec0f8cdbd5aab5b995aaf051079b9d1508"
+
+[[ntlm_auth.packages]]
+name = "libtalloc2"
+version = "2.4.2-1build2"
+url = "https://archive.ubuntu.com/ubuntu/pool/main/t/talloc/libtalloc2_2.4.2-1build2_amd64.deb"
+sha256 = "c9728388084bdccdbcfb3e97358535431855f4ce57992c2a775534dc1bd4935f"
+
+[[ntlm_auth.packages]]
+name = "libtevent0t64"
+version = "0.16.1-2build1"
+url = "https://archive.ubuntu.com/ubuntu/pool/main/t/tevent/libtevent0t64_0.16.1-2build1_amd64.deb"
+sha256 = "42be6d518cb261943109e62065fd17437e13bffdaeb061d1985916456efce97a"
+
+[[ntlm_auth.packages]]
+name = "libtdb1"
+version = "1.4.10-1build1"
+url = "https://archive.ubuntu.com/ubuntu/pool/main/t/tdb/libtdb1_1.4.10-1build1_amd64.deb"
+sha256 = "5b647b74d61b8bfe32f7bc03ffd22bac146a557df0724bd8e361b09f55237860"
+
+[[ntlm_auth.packages]]
+name = "libldb2"
+version = "2:2.8.0+samba4.19.5+dfsg-4ubuntu9.8"
+url = "https://archive.ubuntu.com/ubuntu/pool/main/s/samba/libldb2_2.8.0+samba4.19.5+dfsg-4ubuntu9.8_amd64.deb"
+sha256 = "c43d3114298de29b0cbc92e12ed5c700f1349f795618f9b9241338bb0ae9f514"

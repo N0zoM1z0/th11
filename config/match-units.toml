@@ -1,0 +1,19 @@
+schema_version = 1
+target_sha256 = "2978b17f6184d100d249d4311348dd30c5c32ec75c014b667a525b797d3d8813"
+
+# VC9 normal-COFF codegen context; original production TU and /GL ownership
+# remain separate unknowns. The expiry callee is maintained but non-exact.
+
+[units.ascii-manager-on-update]
+artifact_kind = "coff"
+source = "src/AsciiUpdate.cpp"
+inputs = ["src/AsciiManager.hpp"]
+object = "build/match/AsciiUpdate.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["AsciiManagerOnUpdate"]
+symbol = "?AsciiManagerOnUpdate@@YIHPAUAsciiManagerView@@@Z"
+target_address = 0x004014A0
+size = 22
+relocations = [
+  { offset = 5, type = "REL32", symbol = "?AsciiManagerExpireStrings@@YGXPAUAsciiManagerView@@@Z", target = 0x00401D50 },
+]

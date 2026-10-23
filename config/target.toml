@@ -1,0 +1,151 @@
+[target]
+title = "東方地霊殿 ～ Subterranean Animism"
+version = "1.00a"
+region = "original-japanese"
+filename = "th11.exe"
+size = 688128
+sha256 = "2978b17f6184d100d249d4311348dd30c5c32ec75c014b667a525b797d3d8813"
+sha1 = "2b1ce5fbfd2d4480b709fcfc5e75c280f518a951"
+md5 = "6af1e3b37f28293f4fc127ee01d2632c"
+
+[provenance]
+classification = "original"
+version_database_url = "https://github.com/thpatch/thcrap-tsa/blob/f08b582ce57bce800955dd371fc9a68dbad5b324/base_tsa/versions.js"
+version_database_commit = "f08b582ce57bce800955dd371fc9a68dbad5b324"
+version_database_file_sha256 = "9ac6c0247b9c53129429f9522f66e035a7880d15082f8d519990ac7ed82c14e1"
+evidence = "The pinned thcrap database identifies this exact SHA-256 as th11 v1.00a (original). Extracted from the operator-supplied archive Japanese th11.exe member; th11c.exe is not selected."
+
+[pe]
+machine = "i386"
+machine_id = 332
+image_base = "0x00400000"
+entry_point = "0x00461B1D"
+entry_rva = "0x00061B1D"
+timestamp_unix = 1217734394
+linker_version = "9.0"
+section_count = 4
+size_of_image = 839680
+headers_raw_size = 1024
+relocations_stripped = true
+timestamp_utc = "2008-08-03T03:33:14Z"
+text_start = "0x00401000"
+text_end = "0x0048AE14"
+text_virtual_size = 564757
+text_raw_offset = "0x00000400"
+text_raw_size = 565248
+text_sha256 = "6e5cb58c1434ef85c1022c1e4629160d0e942910660fa4adbc179c4ea9077f99"
+
+[[pe.sections]]
+name = ".text"
+rva = "0x00001000"
+virtual_size = 564757
+raw_offset = "0x00000400"
+raw_size = 565248
+
+[[pe.sections]]
+name = ".rdata"
+rva = "0x0008B000"
+virtual_size = 90154
+raw_offset = "0x0008A400"
+raw_size = 90624
+
+[[pe.sections]]
+name = ".data"
+rva = "0x000A2000"
+virtual_size = 167488
+raw_offset = "0x000A0600"
+raw_size = 25600
+
+[[pe.sections]]
+name = ".rsrc"
+rva = "0x000CB000"
+virtual_size = 5440
+raw_offset = "0x000A6A00"
+raw_size = 5632
+
+[rich_header]
+checksum = "0x48B34BF0"
+clear_data_size = 128
+dominant_build = 21022
+evidence = "Directly decoded Rich record stream; product semantics and production TU partition require separate review."
+
+[[rich_header.records]]
+product_id = 150
+build = 20413
+count = 1
+
+[[rich_header.records]]
+product_id = 132
+build = 21022
+count = 50
+
+[[rich_header.records]]
+product_id = 149
+build = 21022
+count = 45
+
+[[rich_header.records]]
+product_id = 131
+build = 21022
+count = 137
+
+[[rich_header.records]]
+product_id = 109
+build = 50727
+count = 4
+
+[[rich_header.records]]
+product_id = 110
+build = 50727
+count = 1
+
+[[rich_header.records]]
+product_id = 147
+build = 21022
+count = 2
+
+[[rich_header.records]]
+product_id = 123
+build = 50727
+count = 12
+
+[[rich_header.records]]
+product_id = 1
+build = 0
+count = 183
+
+[[rich_header.records]]
+product_id = 93
+build = 4035
+count = 5
+
+[[rich_header.records]]
+product_id = 95
+build = 4035
+count = 2
+
+[[rich_header.records]]
+product_id = 138
+build = 21022
+count = 59
+
+[[rich_header.records]]
+product_id = 148
+build = 21022
+count = 1
+
+[[rich_header.records]]
+product_id = 145
+build = 21022
+count = 1
+
+[toolchain]
+family = "Microsoft Visual C++ 2008 RTM (VC9)"
+compiler_version_candidate = "15.00.21022.08"
+compiler_version_state = "observed-rich-build-and-local-banner"
+linker_version = "9.0"
+rich_build = 21022
+profile_state = "unknown"
+translation_unit_partition_state = "unknown"
+link_order_state = "unknown"
+evidence = "PE linker 9.0 and dominant Rich build 21022 require a VC9 candidate; TH10 VC7.1 profiles are hypothesis only."

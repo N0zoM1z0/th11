@@ -1,0 +1,3 @@
+name,address,type
+AsciiManagerOnUpdate,0x004014A0,function
+AsciiManagerExpireStrings,0x00401D50,function
