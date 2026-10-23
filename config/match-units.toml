@@ -61,3 +61,56 @@ symbol = "?UpdateInputRepeatState@@YIXPAUInputStateView@@@Z"
 target_address = 0x00459B50
 size = 105
 relocations = []
+
+[units.poll-keyboard-input]
+artifact_kind = "coff"
+source = "src/KeyboardInput.cpp"
+inputs = ["src/InputBackend.hpp", "src/InputState.hpp"]
+object = "build/match/KeyboardInput.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["PollKeyboardInput"]
+symbol = "?PollKeyboardInput@@YAIXZ"
+target_address = 0x004576B0
+size = 888
+relocations = [
+  { offset = 7, type = "DIR32", symbol = "___security_cookie", target = 0x4a2088 },
+  { offset = 25, type = "DIR32", symbol = "?g_KeyboardPollingEnabled@@3HA", target = 0x4c3d94 },
+  { offset = 37, type = "DIR32", symbol = "?g_InputRuntimeFlags@@3IA", target = 0x4c3810 },
+  { offset = 58, type = "DIR32", symbol = "__imp__GetKeyboardState@4", target = 0x48b244 },
+  { offset = 414, type = "DIR32", symbol = "?g_KeyboardDevice@@3PAUDirectInputDeviceView@@A", target = 0x4c32a0 },
+  { offset = 450, type = "DIR32", symbol = "?g_KeyboardDevice@@3PAUDirectInputDeviceView@@A", target = 0x4c32a0 },
+  { offset = 830, type = "REL32", symbol = "?MergeJoystickInput@@YIII@Z", target = 0x457270 },
+  { offset = 836, type = "DIR32", symbol = "?g_InputState@@3UInputStateView@@A", target = 0x4c92a8 },
+  { offset = 844, type = "DIR32", symbol = "?g_InputState@@3UInputStateView@@A", target = 0x4c92a8 },
+  { offset = 849, type = "DIR32", symbol = "?g_InputState@@3UInputStateView@@A", target = 0x4c92a8 },
+  { offset = 855, type = "DIR32", symbol = "?g_InputState@@3UInputStateView@@A", target = 0x4c92a8 },
+  { offset = 860, type = "REL32", symbol = "?UpdateInputRepeatState@@YIXPAUInputStateView@@@Z", target = 0x459b50 },
+  { offset = 877, type = "REL32", symbol = "@__security_check_cookie@4", target = 0x45fc2c },
+]
+
+[units.file-exists]
+artifact_kind = "coff"
+source = "src/FileSystem.cpp"
+inputs = ["src/FileSystem.hpp"]
+object = "build/match/FileSystem.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["FileExists"]
+symbol = "?FileExists@@YGHPBD@Z"
+target_address = 0x004585E0
+size = 141
+relocations = [
+  { offset = 2, type = "DIR32", symbol = "?g_InputRuntimeFlags@@3IA", target = 0x4c3810 },
+  { offset = 13, type = "DIR32", symbol = "?g_FileCriticalSection@@3U_RTL_CRITICAL_SECTION@@A", target = 0x4c3ac0 },
+  { offset = 19, type = "DIR32", symbol = "__imp__EnterCriticalSection@4", target = 0x48b084 },
+  { offset = 25, type = "DIR32", symbol = "?g_FileCriticalDepth@@3EA", target = 0x4c3bb2 },
+  { offset = 54, type = "DIR32", symbol = "__imp__CreateFileA@28", target = 0x48b098 },
+  { offset = 66, type = "DIR32", symbol = "__imp__CloseHandle@4", target = 0x48b0a0 },
+  { offset = 72, type = "DIR32", symbol = "?g_InputRuntimeFlags@@3IA", target = 0x4c3810 },
+  { offset = 83, type = "DIR32", symbol = "?g_FileCriticalSection@@3U_RTL_CRITICAL_SECTION@@A", target = 0x4c3ac0 },
+  { offset = 89, type = "DIR32", symbol = "__imp__LeaveCriticalSection@4", target = 0x48b088 },
+  { offset = 95, type = "DIR32", symbol = "?g_FileCriticalDepth@@3EA", target = 0x4c3bb2 },
+  { offset = 109, type = "DIR32", symbol = "?g_InputRuntimeFlags@@3IA", target = 0x4c3810 },
+  { offset = 120, type = "DIR32", symbol = "?g_FileCriticalSection@@3U_RTL_CRITICAL_SECTION@@A", target = 0x4c3ac0 },
+  { offset = 126, type = "DIR32", symbol = "__imp__LeaveCriticalSection@4", target = 0x48b088 },
+  { offset = 132, type = "DIR32", symbol = "?g_FileCriticalDepth@@3EA", target = 0x4c3bb2 },
+]

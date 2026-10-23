@@ -852,10 +852,10 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x004576B0,authored_game,InputState,authored,high,input-backend-target-review-2026-10-23
 0x00458100,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00458170,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x004581C0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x004582E0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x004581C0,unknown,ByteCipher,review,unknown,byte-cipher-origin-open-2026-10-23
+0x004582E0,unknown,ByteCipher,review,unknown,byte-cipher-origin-open-2026-10-23
 0x00458400,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x004585E0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x004585E0,authored_game,FileSystem,authored,high,file-io-global-lock-wrapper-2026-10-23
 0x00458670,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004587A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00458860,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

@@ -1,11 +1,11 @@
-# Keyboard and joystick polling candidates
+# Keyboard and joystick polling
 
-Maintained source now covers two larger input functions:
+Maintained source covers two medium input functions:
 
 | Function | Complete target extent | Source/codegen state |
 | --- | --- | --- |
-| MergeJoystickInput | `0x00457270..0x0045759B`, 812 bytes | maintained source; normal VC9 candidate 743 bytes; non-exact |
-| PollKeyboardInput | `0x004576B0..0x00457A27`, 888 bytes | maintained source; normal and simple LTCG candidates 891 bytes; non-exact |
+| MergeJoystickInput | `0x00457270..0x0045759B`, 812 bytes | maintained source; normal VC9 candidate 815 bytes; non-exact |
+| PollKeyboardInput | `0x004576B0..0x00457A27`, 888 bytes | canonical normal-COFF exact; cold replay covers all 888 bytes |
 
 Direct Ghidra review found contiguous bodies, no external interior references,
 complete RET tails, and following CC padding. Cookie-aware temporary type
@@ -46,17 +46,37 @@ up to 400 additional Acquire calls, each followed by the observed hook at
 0x00459BC0. The merge preserves the existing keyboard mask on this path,
 including successful reacquisition; a device-state read happens on a later
 poll. The hook's target body is RET and preserves the Acquire HRESULT in EAX;
-its source remains an external declaration and its production owner is open.
+the call pushes the retry counter and the format at 0x00497750,
+`"error : DIERR_INPUTLOST %d\r\n"`. The declaration now carries these observed
+arguments. Its production owner and register-preservation context remain open.
+The target uses an 8-byte-aligned 0x110-byte DirectInput buffer, separate from
+JOYINFOEX; the source models both buffers and their observed order.
+
+## Keyboard exact proof
+
+Separate `if (result == DIERR_INPUTLOST)` and `else if (result != 0)` error
+branches reproduce the complete VC9 target layout. Combining those conditions
+produces a different 891-byte body even though the high-level decisions agree.
+The canonical `poll-keyboard-input` unit cold-builds the source with pinned
+VC9 RTM `/TP /O2 /Gy /MT /Isrc`, recovers its complete 888-byte COMDAT extent,
+and replays all thirteen declared relocations with zero byte differences.
+
+Bindings were reviewed independently: the cookie at 0x004A2088, keyboard gate
+at 0x004C3D94, backend flags at 0x004C3810, keyboard device at 0x004C32A0,
+InputState base at 0x004C92A8, joystick merge at 0x00457270, repeat update at
+0x00459B50, and cookie check at 0x0045FC2C. The USER32/GetKeyboardState import
+was independently parsed at IAT slot 0x0048B244. The previous-mask store uses
+the InputState relocation plus its original COFF addend 4. The receipt binds
+source, both local headers, profile, target, tool lock, and object.
 
 ## Remaining exact work
 
-The keyboard candidate's virtual-key mapping region now aligns with the target,
-but its DirectInput error block layout and result-publication scheduling differ.
-The size delta alone is not an exactness claim: current raw byte differences
-remain substantial after shifted blocks. A standalone /GL entry context retains
-the same 891-byte extent and grants no acceptance credit. Preserve the natural
-source and investigate real caller/TU/compiler context instead of padding it.
+The joystick candidate is 815 versus 812 target bytes, with substantial
+instruction/register differences. Early returns reproduce the observed WinMM
+failure layout; the retained trace call still needs its actual optimizer and
+callee context. A private same-TU empty-sink experiment removed that call and
+was discarded. No joystick exact credit is claimed.
 
-The partial COM and global views do not close production data ownership,
-platform initialization, or native runtime behavior. These two functions have
-source mappings but no canonical units or exact ledger rows.
+Partial COM/global views do not close production data ownership, platform
+initialization, or native runtime behavior. Original TU partition and /GL
+ownership remain open even for the keyboard normal-COFF proof.

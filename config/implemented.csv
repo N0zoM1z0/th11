@@ -5,3 +5,6 @@ NormalizeAngle
 UpdateInputRepeatState
 MergeJoystickInput
 PollKeyboardInput
+ScatterXorBlocks
+GatherXorBlocks
+FileExists

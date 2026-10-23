@@ -3,6 +3,9 @@ AsciiManagerOnUpdate,0x004014A0,function
 AsciiManagerExpireStrings,0x00401D50,function
 MergeJoystickInput,0x00457270,function
 PollKeyboardInput,0x004576B0,function
+ScatterXorBlocks,0x004581C0,function
+GatherXorBlocks,0x004582E0,function
+FileExists,0x004585E0,function
 AddAngles,0x00458E30,function
 NormalizeAngle,0x00458ED0,function
 UpdateInputRepeatState,0x00459B50,function

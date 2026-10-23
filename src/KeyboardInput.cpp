@@ -69,10 +69,10 @@ unsigned int PollKeyboardInput()
         {
             HRESULT result = g_KeyboardDevice->vtable->GetDeviceState(g_KeyboardDevice, 256, keys);
             buttons = 0;
-            if (result == static_cast<HRESULT>(0x8007001e) || result != 0)
-            {
+            if (result == static_cast<HRESULT>(0x8007001e))
                 g_KeyboardDevice->vtable->Acquire(g_KeyboardDevice);
-            }
+            else if (result != 0)
+                g_KeyboardDevice->vtable->Acquire(g_KeyboardDevice);
             else
                 buttons = ScanCodeButtons(keys);
         }

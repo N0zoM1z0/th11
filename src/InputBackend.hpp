@@ -41,4 +41,4 @@ extern JoystickAxisLimitsView g_JoystickAxisLimits;
 extern JoystickBindingsView g_JoystickBindings;
 extern short g_JoystickThresholdX;
 extern short g_JoystickThresholdY;
-void InputAcquireHook();
+void InputAcquireHook(const char *format, ...);

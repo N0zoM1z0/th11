@@ -66,3 +66,36 @@ of only changed units/dependencies. This batch rebuilt the new AngleMath object
 once for its two units and the new InputState object once; the earlier ASCII
 unit was not replayed. Ghidra and Wine commands share one CPU affinity and the
 same serialization lock.
+
+## Keyboard polling exactness and joystick corrections (2026-10-23)
+
+PollKeyboardInput at 0x004576B0 now has a complete 888-byte canonical VC9
+normal-COFF cold proof, including thirteen independently reviewed relocations.
+Separate input-lost and other-error branches are necessary for the target
+layout. Both key maps, keyboard gate, joystick merge, mask publication and
+repeat-state update are covered. See `INPUT_POLLING.md` for binding evidence.
+Only this changed unit was cold-replayed in this batch.
+
+The 812-byte joystick target uses separate JOYINFOEX and 8-byte-aligned
+DirectInput buffers. Its input-lost retry call pushes the counter and
+`"error : DIERR_INPUTLOST %d\r\n"`; these arguments were missing from the earlier
+source view. The improved candidate is 815 bytes but remains non-exact. A
+same-TU empty trace sink removes the observed call and was discarded; the
+callee's production context remains open.
+
+## File check and paired byte transforms (2026-10-23)
+
+FileExists at 0x004585E0 has a complete 141-byte canonical normal-COFF cold
+proof. All fourteen DIR32 fields, including four independently parsed KERNEL32
+import slots, replay exactly. Its conditional critical section at 0x004C3AC0
+and byte counter at 0x004C3BB2 are retained on both exit paths. This batch
+cold-built this new unit and the changed keyboard unit only.
+
+ScatterXorBlocks at 0x004581C0 and GatherXorBlocks at 0x004582E0 each have a
+reviewed 284-byte span and maintained conventional source. The first span
+includes a four-byte internal LEA ESP alignment instruction excluded from its
+280-address Ghidra body. Each normal VC9 candidate is 276 bytes and remains
+non-exact; target key-in-AL/five-stack-argument ABI and origin are unresolved.
+Each candidate passed 692 bounded target-vs-VC9 Unicorn execution cases using
+shared deterministic library shims. This is focused diagnostic evidence, not
+native product or semantic phase acceptance. See `BYTE_CIPHER.md`.

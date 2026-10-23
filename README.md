@@ -42,8 +42,9 @@ The initial direct-Ghidra inventory contains 1,988 provisional function
 candidates. See generated [`docs/PROGRESS.md`](docs/PROGRESS.md) for current
 review, source, and exact counts; unresolved gaps can change the inventory.
 Canonical units include bounded angle arithmetic, 32-key repeat/edge state,
-and the ASCII update callback. Keyboard and joystick polling sources are
-maintained candidates; their complete target bodies remain non-exact.
+the complete keyboard polling path, file existence checking, and the ASCII
+update callback. Joystick polling and paired byte transforms remain maintained
+non-exact candidates.
 The Windows i386 production build is open. Semantic reconstruction and
 portability have not started.
 
@@ -56,7 +57,7 @@ tracked in [`config/tools.lock.toml`](config/tools.lock.toml).
 ```bash
 scripts/repo-python scripts/verify-toolchain.py --execute
 scripts/repo-python scripts/build-match-unit.py --check
-scripts/repo-python scripts/replay-exact-units.py
+scripts/repo-python scripts/replay-exact-units.py --unit poll-keyboard-input
 scripts/repo-python scripts/progress.py
 scripts/repo-python scripts/ci.py
 ```
