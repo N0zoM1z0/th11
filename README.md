@@ -41,8 +41,9 @@ payloads, and generated build artifacts are private and never committed.
 The initial direct-Ghidra inventory contains 1,988 provisional function
 candidates. See generated [`docs/PROGRESS.md`](docs/PROGRESS.md) for current
 review, source, and exact counts; unresolved gaps can change the inventory.
-The first canonical unit is the complete 22-byte ASCII update callback; its
-124-byte expiry callee is maintained but remains non-exact.
+Canonical units include bounded angle arithmetic, 32-key repeat/edge state,
+and the ASCII update callback. Keyboard and joystick polling sources are
+maintained candidates; their complete target bodies remain non-exact.
 The Windows i386 production build is open. Semantic reconstruction and
 portability have not started.
 

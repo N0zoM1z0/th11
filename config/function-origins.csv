@@ -847,9 +847,9 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00456F30,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00457080,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004571A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00457270,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00457270,authored_game,InputState,authored,high,input-backend-target-review-2026-10-23
 0x004575A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x004576B0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x004576B0,authored_game,InputState,authored,high,input-backend-target-review-2026-10-23
 0x00458100,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00458170,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004581C0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
@@ -869,8 +869,8 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00458D70,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00458DA0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00458DD0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00458E30,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00458ED0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00458E30,authored_game,AngleMath,authored,high,angle-math-target-review-2026-10-23
+0x00458ED0,authored_game,AngleMath,authored,high,angle-math-target-review-2026-10-23
 0x00458F70,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004590F0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00459130,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
@@ -887,7 +887,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00459730,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00459A30,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00459AA0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00459B50,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00459B50,authored_game,InputState,authored,high,input-repeat-target-review-2026-10-23
 0x00459BC0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00459DA0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00459EB0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

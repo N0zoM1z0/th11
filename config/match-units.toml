@@ -17,3 +17,47 @@ size = 22
 relocations = [
   { offset = 5, type = "REL32", symbol = "?AsciiManagerExpireStrings@@YGXPAUAsciiManagerView@@@Z", target = 0x00401D50 },
 ]
+
+[units.add-angles]
+artifact_kind = "coff"
+source = "src/AngleMath.cpp"
+inputs = ["src/AngleMath.hpp"]
+object = "build/match/AngleMath.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["AddAngles"]
+symbol = "?AddAngles@@YGMMM@Z"
+target_address = 0x458e30
+size = 157
+relocations = [
+  { offset = 20, type = "DIR32", symbol = "_kPi", target = 0x497e80 },
+  { offset = 30, type = "DIR32", symbol = "_kTwoPi", target = 0x497e78 },
+  { offset = 80, type = "DIR32", symbol = "__real@c00921fb60000000", target = 0x497e70 },
+]
+
+[units.normalize-angle]
+artifact_kind = "coff"
+source = "src/AngleMath.cpp"
+inputs = ["src/AngleMath.hpp"]
+object = "build/match/AngleMath.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["NormalizeAngle"]
+symbol = "?NormalizeAngle@@YGMM@Z"
+target_address = 0x458ed0
+size = 145
+relocations = [
+  { offset = 8, type = "DIR32", symbol = "_kPi", target = 0x497e80 },
+  { offset = 18, type = "DIR32", symbol = "_kTwoPi", target = 0x497e78 },
+  { offset = 68, type = "DIR32", symbol = "__real@c00921fb60000000", target = 0x497e70 },
+]
+
+[units.input-repeat-state]
+artifact_kind = "coff"
+source = "src/InputState.cpp"
+inputs = ["src/InputState.hpp"]
+object = "build/match/InputState.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["UpdateInputRepeatState"]
+symbol = "?UpdateInputRepeatState@@YIXPAUInputStateView@@@Z"
+target_address = 0x00459B50
+size = 105
+relocations = []

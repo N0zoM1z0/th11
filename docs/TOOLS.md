@@ -57,7 +57,7 @@ queries use read-only/noanalysis mode and verify the entire loaded `.text`.
 `inventory` is guarded against overwriting maintained source or exact rows.
 
 Ghidra has one CPU affinity, one analysis worker, 768 MiB maximum heap, and
-nice 10. Native/JVM overhead is separate from heap. Serialize analysis jobs
+nice 10. Wine commands also inherit one CPU affinity and nice 10. Native/JVM overhead is separate from heap. Serialize analysis jobs
 and compiler jobs. Wine uses Xvfb, disables Mono/Gecko prompts, and stores
 prefix/tmp state under `.tools/`. Explicit tool overrides use `TH11_MSVC90_ROOT`
 and `TH11_WINEPREFIX`; target override is `TH11_TARGET_PATH`. Canonical tools
@@ -66,3 +66,10 @@ must retain their locked hashes.
 The compiler repository's license is undeclared. It is a private compatibility
 input. Codegen claims remain bounded to their declared profiles and full
 function extents; smoke success does not close the production build graph.
+
+
+For explicit ABI review, decompiler selectors `u32@ADDRESS`,
+`u32-fast1@ADDRESS`, and `cookie@ADDRESS` temporarily set a u32 return, a u32
+fastcall receiver argument, or the installed security-cookie callfixup. These
+are caller-supported analysis hypotheses. All changes occur in a transaction
+rolled back before the read-only project session ends. See `INPUT_POLLING.md`.

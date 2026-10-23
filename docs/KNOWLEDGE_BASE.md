@@ -40,3 +40,29 @@ The RNG core `0x00458BC0` has conditional critical-section calls controlled by
 `0x004C3810 & 0x8000`, in addition to the familiar 16-bit state recurrence.
 TH10's lock-free RNG source cannot be imported as TH11 evidence. RNG source and
 exactness remain open.
+
+
+## Medium angle and input functions (2026-10-23)
+
+AddAngles at 0x00458E30 is 157 bytes and NormalizeAngle at 0x00458ED0 is 145 bytes.
+Both complete normal-COFF VC9 bodies are exact, including three independently
+reviewed DIR32 bindings to float-rounded pi/two-pi constants. The shared
+post-increment correction guard and float-rounding points are part of the
+original behavior; see `ANGLE_MATH.md`.
+
+UpdateInputRepeatState at 0x00459B50 is 105 bytes and raw-equal after cold VC9
+compilation. It handles 32 hold counters, held-at8, repeat-at26/every8, and
+pressed/released masks without publishing previous. See `INPUT_REPEAT.md`.
+
+The input caller passes its keyboard mask in ECX to 0x00457270 and consumes its
+EAX return. The actual successful cookie-check body at 0x0045FC2C preserves EAX.
+Default Ghidra cookie return inference was removing live mask-building code;
+temporary u32/fastcall and builtin cookie-fixup hypotheses recover it without
+saving metadata or patching bytes. `INPUT_POLLING.md` records the two larger
+source candidates and their remaining codegen differences.
+
+The operator now prioritizes useful medium-size functions and focused replay
+of only changed units/dependencies. This batch rebuilt the new AngleMath object
+once for its two units and the new InputState object once; the earlier ASCII
+unit was not replayed. Ghidra and Wine commands share one CPU affinity and the
+same serialization lock.

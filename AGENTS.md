@@ -50,5 +50,7 @@ Ghidra databases, credentials, or local private endpoints.
 Use commits prefixed `gpt-6.1-sol: `. The operator authorized a public GitHub
 repository and pushes for this project. Run focused cold exact replays,
 tracking validation, generated progress checks, public CI, and `git diff --check`
-before each checkpoint. Record durable facts in `docs/KNOWLEDGE_BASE.md` and
+before each checkpoint. Prioritize useful medium-size functions; only replay
+changed units and directly affected dependencies, never the full cohort by
+default. Record durable facts in `docs/KNOWLEDGE_BASE.md` and
 resume state in `docs/RE_HANDOFF.md`.

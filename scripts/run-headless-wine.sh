@@ -15,7 +15,8 @@ fi
 
 wine_tmpdir="$repo_root/.tools/tmp"
 mkdir -p "$wine_prefix" "$wine_tmpdir"
-exec flock --close "$repo_root/.tools/heavy-tool.lock" nice -n 10 env \
+wine_cpu=$(python3 -c 'import os; print(min(os.sched_getaffinity(0)))')
+exec flock --close "$repo_root/.tools/heavy-tool.lock" nice -n 10 taskset --cpu-list "$wine_cpu" env \
   PATH="$repo_root/scripts:$PATH" \
   TMPDIR="$wine_tmpdir" \
   WINEARCH=win32 \

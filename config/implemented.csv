@@ -1,2 +1,7 @@
 AsciiManagerOnUpdate
 AsciiManagerExpireStrings
+AddAngles
+NormalizeAngle
+UpdateInputRepeatState
+MergeJoystickInput
+PollKeyboardInput
