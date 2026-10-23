@@ -11,6 +11,10 @@ following CC padding, no embedded tables and no outside interior references.
 
 These are maintained source mappings and receive no exact credit.
 
+The separate229-byte `ScreenshotWriteThread` at0x00429BB0 now has a reviewed
+complete entry and cold linked-PE exact proof, along with its shared-file
+dependencies. See `SHARED_FILE.md`.
+
 ## Capture flow and storage
 
 The capture entry receives a filename in EAX and moves it to ESI. It sleeps
@@ -76,9 +80,11 @@ and ESI is saved inside the pressed-key branch rather than before the flush.
 An independent repeated caller produces the same differences. Equal length
 does not establish exactness.
 
-The worker at0x00429BB0 has a direct data reference from capture but is missing
-from the provisional function inventory. Worker reconstruction and native
-thread/file/resource closure remain open. Current diagnostic families use the
+The worker at0x00429BB0 was recovered from the initial inventory gap using
+read-only Ghidra span decoding, then independently reviewed and added to the
+ledgers. It now writes the observed header/info/pixel sequence, closes and
+frees buffers through maintained exact source. Full native thread/file/resource
+runtime closure remains open. Current capture/hotkey diagnostic families use the
 actual `LogBuffer.cpp` as /GL support and `FileSystem.cpp` as normal-COFF
 support; unchanged canonical FileExists was not replayed.
 

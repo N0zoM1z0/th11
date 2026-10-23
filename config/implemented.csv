@@ -21,3 +21,7 @@ RandomNext32
 AppendLog
 CaptureScreenshot
 HandleScreenshotHotkey
+ScreenshotWriteThread
+OpenSharedFileForWrite
+OpenSharedFileForRead
+WriteSharedFile

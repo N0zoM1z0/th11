@@ -230,3 +230,26 @@ differences. Screenshot views reuse MainRuntime's opaque storage at+0xF4
 headers/proofs are unchanged. Preserve observed default-format early return,
 allocation paths, bottom-up BGR conversion and async writer launch. See
 `SCREENSHOT.md` for exact offsets, limits and bounded failed contexts.
+
+## Shared file protocol and recovered worker (2026-10-23)
+
+The229-byte `_beginthread` callback at0x00429BB0 was missing from initial
+Ghidra function inventory. A bounded read-only PseudoDisassembler span query
+reviewed complete flow, callback DATA reference, one RET, padding and absence
+of existing owners/interior references. The curated inventory now has1989
+candidates; the Ghidra database itself is unchanged. `review_span` labels the
+requested range as a hypothesis, not automatic extent acceptance.
+
+`ScreenshotWriteThread` writes14/40/0xE1000 bytes, closes, frees and nulls
+info/pixel buffers and clears thread state. It preserves all later writes
+after a header short-write cleanup. It and `OpenSharedFileForWrite`180,
+`OpenSharedFileForRead`180 and `WriteSharedFile`88 pass complete primary-TU
+cold linked proofs. Four new units/two families replay68 fields and677 bytes
+with zero differences; previous sixteen canonical proofs were not replayed.
+
+Handle0x004A34E0 starts invalid. Section/depth index2 is retained across
+successful opens and released on close/failure. Read mode uses sequential
+scan and still emits the observed write-error message. Write checks byte
+count rather than BOOL, returns-1/-2/0 and does not reset the stored handle.
+Source `size != written` preserves target operand order. The ordinary source
+naturally generates ESI filenames and EDX buffer/ESI size. See `SHARED_FILE.md`.

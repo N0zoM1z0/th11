@@ -5,33 +5,41 @@ Use direct Ghidra only. Read `AGENTS.md` and inspect dirty work before changes.
 
 ## Current checkpoint
 
-Inventory:1,988 provisional candidates; twenty-three reviewed/source-present.
-Sixteen canonical exact functions total3,328 owned bytes:
+Inventory:1,989 provisional candidates; twenty-seven reviewed/source-present.
+Twenty canonical exact functions total4,005 owned bytes:
 
 - Eight normal-COFF units: ASCII update22; AddAngles157; NormalizeAngle145;
   repeat state105; keyboard polling888; file check141; draw chain284 including
   table; callback removal114.
-- Eight linked-PE units: joystick button capture267, ordered update/draw
+- Twelve linked-PE units: joystick button capture267, ordered update/draw
   registration147 each, ASCII string appender182, frame clock260, random
-  generation105/153 and log append211.
+  generation105/153, log append211, screenshot writer229, shared file open
+  modes180 each and write helper88.
 
-This checkpoint adds three exact functions,469 bytes. Only `random-next16`,
-`random-next32` and `append-log` were cold-replayed. The random pair shares
-one cold family build; unchanged thirteen canonical proofs were not replayed.
-Screenshot diagnostics compile FileSystem as directly needed normal support,
-without replaying or replacing its existing canonical proof.
+This checkpoint adds four exact functions,677 bytes. Only
+`screenshot-write-thread`, `open-shared-file-for-write`,
+`open-shared-file-for-read` and `write-shared-file` were cold-replayed. Two
+cold families put each accepted contribution in its own primary TU; three
+shared-file units deduplicate one family. Prior sixteen proofs were not
+replayed. All68 independently reviewed fields and all owned bytes match.
 
-RandomNext32 returns two pre-rotation intermediates, not two RandomNext16
-results. Preserve its first seed read before the count increment: reversing
-that source order caused twelve scheduling differences. Ordinary stdcall
-source plus independent callers naturally gives ESI receivers. Both functions
-use lock index10 and pass eight DIR32 bindings each. See `RANDOM_AND_LOG.md`.
+The229-byte worker at0x00429BB0 was missing from initial auto-analysis despite
+capture's DATA reference passing it to `_beginthread`. New read-only Ghidra
+`review_span START END` uses PseudoDisassembler, bounded to4096 bytes in one
+executable block, and makes no database/listing/function changes. Manual
+review confirmed complete flow, one RET, preceding/following padding, no
+existing owner or outside interior references. The curated ledger adds this
+one entry; no inventory refresh overwrote existing mappings.
 
-AppendLog's ordinary cdecl variadic source naturally yields receiver-in-ECX
-with format/varargs on the stack. It returns the format pointer, formats into
-an8192-byte stack buffer, and appends only before owner+0x1FFF. Its complete
-211-byte PDB contribution passes twelve fields, including stack probe,
-vsprintf and GS machinery. Runtime lock index3; see `RANDOM_AND_LOG.md`.
+Shared file handle0x004A34E0 is initially invalid. Both open functions use
+section/depth index2 and hold the lock on success. Read mode has sequential
+scan flag0x08000000 and retains the same observed write-error string. Write
+compares requested size with the returned DWORD, closes/unlocks on a short
+write, and leaves the stored handle unchanged. Preserve `size != written`
+source operand order; reversing it caused one opcode difference. Ordinary
+stdcall source naturally yields ESI filenames and EDX buffer/ESI size.
+See `SHARED_FILE.md` for exact bindings and the worker's14/40/0xE1000-byte
+write sequence, cleanup and thread-state reset.
 
 CaptureScreenshot524 and HandleScreenshotHotkey156 now have maintained,
 compiled source and reviewed authored-game mappings, but no exact credit.
@@ -113,12 +121,13 @@ remain pinned. Do not replay full cohorts for a local change.
   diagnostic families and source dependencies are in `SCREENSHOT.md`;
   private `.analysis/screenshot-*-linked.json` preserves results. Do not
   repeat those same context probes.
-- Worker0x00429BB0 is referenced by capture's `_beginthread` argument but is
-  missing from provisional Ghidra function inventory. RNG entry0x00458CD0 is
-  also missing; raw decoding reveals a153-byte duplicate of Next32 before
-  CC padding. Function-aware Ghidra queries reject both missing entries.
-  Their complete Ghidra boundary/origin review is still open; neither is
-  silently added to inventory or credited exact.
+- Worker/file helpers now have maintained exact source, but old capture and
+  hotkey diagnostic contexts have not yet been rerun with this new worker
+  visibility; do not confuse their previous540/156 candidates with new proof.
+- RNG entry0x00458CD0 is still missing from the provisional function table;
+  raw decoding reveals a153-byte duplicate of Next32 before CC padding.
+  The new `review_span` mode can inspect it without mutating Ghidra. Full
+  boundary/origin/usefulness review remains open; it has no source or credit.
 
 Full production TU/data/resource/library/link-order closure and native
 runtime validation are open. Semantic reconstruction and portability remain

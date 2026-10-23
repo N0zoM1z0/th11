@@ -3,6 +3,7 @@
 //@category TH11
 
 import ghidra.app.script.GhidraScript;
+import ghidra.app.util.PseudoDisassembler;
 import ghidra.program.model.address.Address;
 import ghidra.program.model.address.AddressRangeIterator;
 import ghidra.program.model.address.AddressRange;
@@ -127,6 +128,67 @@ public class QueryProgram extends GhidraScript
         List<Function> result = new ArrayList<>(functions);
         result.sort(Comparator.comparing(Function::getEntryPoint));
         return result;
+    }
+
+    // Decode an explicit review hypothesis without creating a database function
+    // or changing the listing. This also covers entries missed by auto-analysis.
+    private void writeSpanReview(PrintWriter output, Address start, Address end)
+        throws Exception
+    {
+        long length = end.subtract(start) + 1;
+        if (length <= 0 || length > 4096)
+            throw new IllegalArgumentException("review_span requires 1..4096 bytes");
+        var block = currentProgram.getMemory().getBlock(start);
+        if (block == null || !block.contains(end) || !block.isExecute())
+            throw new IllegalArgumentException("review_span must stay in one executable block");
+        output.printf("explicit_span_hypothesis: %s..%s (%d bytes)%n",
+            formattedAddress(start), formattedAddress(end), length);
+        output.println("database_mutation: none; extent acceptance: independent review required");
+        PseudoDisassembler decoder = new PseudoDisassembler(currentProgram);
+        long decoded = 0;
+        for (Address at = start; at.compareTo(end) <= 0; )
+        {
+            monitor.checkCancelled();
+            Instruction instruction = decoder.disassemble(at);
+            if (instruction == null || instruction.getLength() <= 0 ||
+                instruction.getMaxAddress().compareTo(end) > 0)
+                throw new IllegalArgumentException("incomplete instruction at " + at);
+            output.printf("%s  %-20s  %s%n", formattedAddress(at),
+                java.util.HexFormat.of().withUpperCase().formatHex(instruction.getBytes()),
+                instruction.toString());
+            Function owner = getFunctionContaining(at);
+            if (owner != null)
+                output.printf("existing_owner: %s @ %s%n", owner.getName(true),
+                    formattedAddress(owner.getEntryPoint()));
+            for (Address destination : instruction.getFlows())
+                output.printf("flow: %s -> %s %s %s%n", formattedAddress(at),
+                    formattedAddress(destination), instruction.getFlowType(), symbolName(destination));
+            decoded += instruction.getLength();
+            at = instruction.getMaxAddress().add(1);
+        }
+        output.println("decoded_bytes: " + decoded);
+        int interiorCount = 0;
+        for (Address at = start.add(1); at.compareTo(end) <= 0; at = at.add(1))
+        {
+            ReferenceIterator refs = currentProgram.getReferenceManager().getReferencesTo(at);
+            while (refs.hasNext())
+            {
+                Reference ref = refs.next();
+                if (ref.getFromAddress().compareTo(start) < 0 || ref.getFromAddress().compareTo(end) > 0)
+                {
+                    output.print("external_interior_reference: ");
+                    writeReference(output, ref);
+                    interiorCount++;
+                }
+            }
+        }
+        output.println("external_interior_references: " + interiorCount);
+        byte[] adjacent = new byte[16];
+        currentProgram.getMemory().getBytes(start.subtract(16), adjacent);
+        output.println("preceding_bytes: " + java.util.HexFormat.of().formatHex(adjacent));
+        currentProgram.getMemory().getBytes(end.add(1), adjacent);
+        output.println("following_bytes: " + java.util.HexFormat.of().formatHex(adjacent));
+        writeReferencesTo(output, start, 80);
     }
 
     private void writeCalls(PrintWriter output, Address address, boolean callers)
@@ -319,6 +381,12 @@ public class QueryProgram extends GhidraScript
                     writeCalls(output, address, true);
                     writeCalls(output, address, false);
                 }
+            }
+            else if (operation.equals("review_span"))
+            {
+                if (args.length != 4)
+                    throw new IllegalArgumentException("review_span requires START END");
+                writeSpanReview(output, toAddr(args[2]), toAddr(args[3]));
             }
             else if (operation.equals("function"))
             {
