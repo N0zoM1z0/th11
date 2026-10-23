@@ -99,3 +99,29 @@ non-exact; target key-in-AL/five-stack-argument ABI and origin are unresolved.
 Each candidate passed 692 bounded target-vs-VC9 Unicorn execution cases using
 shared deterministic library shims. This is focused diagnostic evidence, not
 native product or semantic phase acceptance. See `BYTE_CIPHER.md`.
+
+## Callback chains and complete table ownership (2026-10-23)
+
+ExecuteDrawChain at0x00456E10 is now exact across its complete284-byte owned
+normal-COFF extent, including one alignment byte and the six-entry switch
+table omitted by the initial259-byte Ghidra body. All24 relocations have
+independently reviewed bindings. UnregisterChainElement at0x00457080 is exact
+across114 bytes including its sole operator-delete call. Only these two new
+units were cold-replayed; earlier exact units were not rebuilt.
+
+ExecuteUpdateChain's reviewed owner is352 bytes, including its nine-entry
+switch table and twelve alignment bytes. The ordinary member candidate is348
+bytes and remains non-exact; target manager is an internal EBX argument.
+New ordered update/draw registration source covers two147-byte target bodies;
+conventional source159 remains non-exact because ESI/EBX arguments need real
+linked context. Each registration passed560 focused target-vs-VC9 diagnostic
+cases; dispatch diagnostics passed220 draw and440 update cases. See
+`CALLBACK_CHAIN.md` for enabled/null counts, return codes, pause semantics,
+callback context and lock behavior.
+
+A private `/GL /Ob1` caller probe naturally transformed ByteCipher's standard
+six-argument declarations into the observed key-in-AL/five-stack-argument
+convention. No manual ABI was imposed. Both linked bodies remain293 versus
+target284 bytes; this is compiler evidence only, not exact acceptance. Probe
+source/results remain under `.analysis/cipher-caller/` and
+`build/probe-ltcg/cipher-caller/`.

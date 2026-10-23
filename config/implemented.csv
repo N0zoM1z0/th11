@@ -8,3 +8,8 @@ PollKeyboardInput
 ScatterXorBlocks
 GatherXorBlocks
 FileExists
+AddToUpdateChain
+AddToDrawChain
+ExecuteUpdateChain
+ExecuteDrawChain
+UnregisterChainElement
