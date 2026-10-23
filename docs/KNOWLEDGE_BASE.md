@@ -1,5 +1,40 @@
 # TH11-local knowledge
 
+## Outlined texture/surface text and placement (2026-10-24)
+
+Complete direct-Ghidra spans0x00444610(631),0x00443E00(525) and0x00454BB0(172)
+now have maintained non-exact source. Native texture inputs are ECX text/EDX x/
+EAX font and six stack inputs; source637 instead has a two-register private
+convention/RET28. Surface530 and dispatcher173 are also non-exact; see
+OUTLINED_TEXT.md for520/466/130 diagnostic differences. No old canonical
+source/header was changed or replayed; old plain/filter sources compile only
+as actual directly needed support. Origin remains indeterminate for all three.
+
+Surface text skips only null strings, captures dimensions/DC before GDI calls,
+and retains six independent outline RECTs with duplicate second/fourth positions.
+CLR_INVALID skips those passes, then independent foreground still draws. The
+texture function has no CLR_INVALID sentinel. Zero spacing draws the entire
+byte string five times; nonzero spacing advances fixed two-byte groups by
+twice the signed spacing, including a NUL in the final odd-length group.
+An empty string makes five count0 calls in whole-string mode but none in chunk
+mode. Keep both alpha passes, actual transparent-fill source and selected-object
+restoration/D3DX/release order.
+
+Placement's nonpositive font height defaults17, positive1..8 returns before
+any placement reads, and9..16 reaches downstream clamp17. Four float fields
+at+0C/+10/+14/+18 convert in order; zero selector chooses outline, nonzero plain.
+Native FTOL receives x87 values, not ordinary stack float arguments. Its
+exceptional behavior remains unvalidated. Real callers0x00454C60/0x00454D00/
+0x00454DE0 still need their own semantics/source recovery.
+
+Private full-body diagnostic123 cases agree, including finite FP conversion
+inputs, byte strings, font/height gates, signed spacing, RECT writes, images,
+calls, cleanup and stack/register preservation. Models stand in for GDI/D3DX/
+FTOL, not the full native product. One CPU/nice10, max RSS117,400 KiB. Rectangle
+addition-order and placement declaration-order probes failed; primary-only Os
+with O2 supports yields425 bytes/485 differences and is not an accepted extent.
+Do not repeat those configurations without new evidence.
+
 ## Text drawing and CPU composition (2026-10-24)
 
 Direct Ghidra full spans establish compositor0x004441C0(657), drawing

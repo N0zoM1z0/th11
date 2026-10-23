@@ -650,12 +650,12 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00443860,unknown,TextProcessing,indeterminate,unknown,text-drawing-composite-origin-20261024
 0x00443BD0,unknown,TextProcessing,indeterminate,unknown,text-drawing-composite-origin-20261024
 0x00443D20,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00443E00,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00443E00,unknown,OutlinedText,indeterminate,unknown,outlined-text-origin-20261024
 0x00444010,unknown,SurfaceBuffer,indeterminate,unknown,window-surface-target-20261023
 0x004440E0,unknown,SurfaceBuffer,indeterminate,unknown,window-surface-target-20261023
 0x004441C0,unknown,SurfaceComposite,indeterminate,unknown,text-drawing-composite-origin-20261024
 0x00444480,authored_game,TextResources,authored,high,text-resources-checksum-origin-20261023
-0x00444610,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00444610,unknown,OutlinedText,indeterminate,unknown,outlined-text-origin-20261024
 0x00444890,unknown,TextDrawing,indeterminate,unknown,text-drawing-composite-origin-20261024
 0x00444A30,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00444AA0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
@@ -800,7 +800,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x004549A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004549E0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00454B10,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00454BB0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00454BB0,unknown,TextTextureDispatch,indeterminate,unknown,outlined-text-origin-20261024
 0x00454C60,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00454D00,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00454DE0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

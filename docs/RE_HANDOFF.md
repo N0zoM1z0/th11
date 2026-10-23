@@ -5,7 +5,7 @@ Use direct Ghidra only. Read `AGENTS.md` and inspect dirty work before changes.
 
 ## Current checkpoint
 
-Inventory:1,989 provisional candidates; sixty-five reviewed/source-present.
+Inventory:1,989 provisional candidates; sixty-eight reviewed/source-present.
 Thirty-eight canonical exact functions total8,514 owned bytes:
 
 - Eight normal-COFF units: ASCII update22; AddAngles157; NormalizeAngle145;
@@ -21,7 +21,37 @@ Thirty-eight canonical exact functions total8,514 owned bytes:
   creation396, text/font initialization346, error log207, main viewport99
   and back-buffer priming157.
 
-This checkpoint adds complete compositor657, text drawing392, neighbor-color
+This checkpoint adds outlined texture text631, DIB outlined text525 and the
+real placement dispatcher172:1,328 native bytes of new maintained source.
+They remain non-exact637/530/173, with520/466/130 unequal diagnostic positions.
+Read `OUTLINED_TEXT.md`. Exact totals remain38/8,514; no previous exact source
+or header changed, and none of the previous38 units was replayed.
+
+The cold family includes actual directly needed plain text and pixel-filter
+bodies. Its123 bounded machine-code cases agree on pixels, views, API calls,
+rectangles, cleanup, AL, registers and stack; an independent rectangle reference
+checks all surface outline passes. GDI/D3DX and finite FTOL conversion are
+modeled; no native/full semantic or exact authority. One CPU/nice10, max RSS
+117,400 KiB (about115 MiB). No further rerun is needed for unchanged inputs.
+
+Surface outline has six calls including duplicate second/fourth rectangles,
+then independent foreground; CLR_INVALID skips only the six outline calls.
+Texture outline has no such sentinel: zero spacing draws the whole byte string
+five times, otherwise fixed two-byte chunks including a trailing NUL for odd
+length. Empty/nonzero-spacing text draws no chunks; negative spacing remains.
+Keep both alpha passes and actual filter bodies, right-only clipping, ignored
+HRESULTs and uninitialized output behavior.
+
+Placement floats are+0C/+10/+14/+18. Nonpositive height becomes17; positive1..8
+skips all conversion/drawing;9..16 reaches the path's separate minimum17 clamp.
+Selector zero means outline, nonzero plain. Three real callers remain unmapped.
+Surface foreground addition-order changes and swapped text/font declaration
+order did not close codegen; Os primary gives425/485 and is also non-exact.
+Do not repeat those contexts without new evidence. Native631 uses three input
+registers/RET24, source637 only two/RET28; original frame/type/TU context is open.
+All three origins remain independently indeterminate.
+
+The preceding checkpoint added complete compositor657, text drawing392, neighbor-color
 fill872 and required alpha inversion165 sources:2,086 native bytes across four
 functions. They remain non-exact686/403/801/182 respectively; exact totals stay
 at38/8,514. Read `TEXT_DRAWING_COMPOSITE.md`. No existing canonical source or
@@ -218,8 +248,11 @@ remain pinned. Do not replay full cohorts for a local change.
   bounded cases. Read STARTUP_WINDOW.md before repeating failed contexts.
 - Compositor657 and text drawing392 now have full non-exact source, together
   with fill872/inversion165. Read TEXT_DRAWING_COMPOSITE.md before repeating
-  their compiler contexts. Sibling text path0x00444610(631) and related pixel
-  routine0x00443E00(525) are useful next medium targets; they remain unmapped.
+  their compiler contexts. Sibling outline631, surface text525 and real
+  dispatcher172 now also have full non-exact source; read OUTLINED_TEXT.md.
+  The font-owning wrapper0x00443D20(222) was reviewed but remains unmapped;
+  its constructor/string cleanup need independent recovery. Real placement
+  callers0x00454D00(224) and0x00454DE0(176) are further useful bounded targets.
 - Surface read/write201/217 now have maintained202/205-byte member source;
   review `WINDOW_SURFACE_BUFFER.md` before revisiting the failed contexts.
 - `ReadArchivedFile` target300 uses an out-of-line53-byte lookup, stream

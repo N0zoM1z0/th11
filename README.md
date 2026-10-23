@@ -68,6 +68,8 @@ error logging have exact proofs in
 CPU pixel composition, text drawing and its alpha/neighbor-color processing
 now have complete non-exact source in
 [`docs/TEXT_DRAWING_COMPOSITE.md`](docs/TEXT_DRAWING_COMPOSITE.md).
+Outlined DIB/texture drawing and the actual placement dispatcher have complete
+non-exact source in [`docs/OUTLINED_TEXT.md`](docs/OUTLINED_TEXT.md).
 The Windows i386 production build is open. Semantic reconstruction and
 portability have not started.
 

@@ -63,3 +63,6 @@ BlendToSurface
 DrawTextToTexture
 FillTransparentTextPixels
 InvertTextAlpha
+DrawOutlinedSurfaceText
+DrawOutlinedTextToTexture
+DrawPlacedTextureText
