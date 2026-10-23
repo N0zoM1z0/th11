@@ -26,6 +26,13 @@ and starts storage at manager `+0x87C`. Count is at `+0x1847C` and per-record
 lifetime at `+0x12C`. Appender stores identify 256-byte text, three-float
 position, color, and two-float scale. Other fields remain unnamed.
 
+The complete182-byte appender now passes the pinned cold linked-PE Oracle
+without linkages or byte normalization. Ordinary stdcall source plus two
+independent calls under `/O2 /Ob1 /GL` naturally yields manager-in-ESI,
+position-in-EBX and text-in-ECX. It leaves record+0x118 untouched; the style
+copy order reads manager+0x1848C,+0x18498,+0x18494,+0x1849C. See
+`ASCII_LIFETIME.md` and canonical unit `ascii-manager-append-string`.
+
 `0x00401D50..0x00401DCB` decrements each lifetime and retains values >= 0,
 compacting surviving records in order with complete 0x130-byte copies.
 `0x004014A0..0x004014B5` invokes it, increments manager `+0x184A8`, and returns
@@ -177,3 +184,22 @@ actual358-byte frame caller at0x00446080 loads the chain manager into EBX
 immediately before update dispatch and clears EBX immediately afterwards.
 Its complete direct-Ghidra review/decompile remain private under
 `.analysis/frame-dispatch-review.txt` and `.analysis/frame-dispatch-caller.c`.
+
+## Frame clock exactness (2026-10-23)
+
+`GetFrameClockSeconds` at0x00446920..0x00446A23 is a reviewed260-byte game
+clock with QPC and unsigned timeGetTime paths. Runtime lock/depth index5
+corresponds to0x004C3B08/0x004C3BB5. Frequency is signed64-bit storage at
+0x004C3DA0, counter base at0x004C3DA8 and origin double at0x004C3DE0; complete
+state ownership remains open. The fallback arithmetic is exactly
+`(milliseconds - origin * 1000.0) / 1000.0` and must not be simplified by
+assuming a different origin unit. The high-resolution path unlocks before
+reading/subtracting the origin.
+
+A shared double local declared before LARGE_INTEGER and the comparison
+`origin > seconds` naturally produce the observed floating-point flow.
+Normal COFF then differs only in three stack allocation immediates16/20;
+ordinary independent calls under VC9 `/O2 /Ob1 /GL` generate the target's20.
+Canonical linked unit `get-frame-clock-seconds` passes a cold complete PDB
+owner proof and all26 DIR32 bindings with zero differences. The appender and
+clock additions replayed only their own new units. See `FRAME_CLOCK.md`.

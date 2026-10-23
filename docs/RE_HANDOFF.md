@@ -5,20 +5,30 @@ Use direct Ghidra only. Read `AGENTS.md` and inspect dirty work before changes.
 
 ## Current checkpoint
 
-Inventory:1,988 provisional candidates; sixteen reviewed/source-present.
-Eleven canonical exact functions total2,417 owned bytes:
+Inventory:1,988 provisional candidates; eighteen reviewed/source-present.
+Thirteen canonical exact functions total2,859 owned bytes:
 
 - Eight normal-COFF units: ASCII update22; AddAngles157; NormalizeAngle145;
   repeat state105; keyboard polling888; file check141; draw chain284 including
   table; callback removal114.
-- Three linked-PE units: joystick button capture267 and newly exact ordered
-  update/draw registration147 each.
+- Five linked-PE units: joystick button capture267, ordered update/draw
+  registration147 each, ASCII string appender182 and frame clock260.
 
-Both registration proofs share one cold primary-source/caller context. All
-nine DIR32 fields per function bind and replay with zero differences. VC9
-naturally uses element-in-ESI and priority-in-EBX from ordinary stdcall source;
-no custom register ABI was imposed. Only these two changed units were
-cold-replayed; the previous nine exact units were not rebuilt.
+This checkpoint adds two useful medium functions,442 bytes. Only
+`ascii-manager-append-string` and `get-frame-clock-seconds` were cold-replayed,
+once each; the previous eleven exact units were not rebuilt.
+
+The appender has no linkage fields: all182 bytes match directly. Ordinary
+stdcall source and independent calls naturally yield manager-in-ESI,
+position-in-EBX and text-in-ECX. See `ASCII_LIFETIME.md`.
+
+The clock's complete260-byte public primary-TU contribution passes26 DIR32
+bindings and full replay. Its shared double local precedes LARGE_INTEGER;
+the high-resolution comparison is `origin > seconds`. Normal COFF then
+differs only in three stack-allocation immediates16 versus20. The ordinary
+two-call linked context naturally generates20. Do not add padding or force
+alignment. See `FRAME_CLOCK.md`, `src/FrameClock.cpp` and
+`probes/frame-clock-context.cpp`.
 
 ## Shared runtime data was decisive
 
@@ -71,12 +81,20 @@ remain pinned. Do not replay full cohorts for a local change.
   physical view rather than treating the four limits as a standalone owner.
 - The real trace sink is RET, and the gameplay caller preserves Acquire EAX
   across it. Same-TU empty source removes the call; separate normal COFF keeps
-  it but still815. Natural varargs setup/teardown outside release logging and
-  mixed /GL support profiles have not yet been tested; do not embed a RET or
-  introduce fake return values to force preservation.
+  it but still815. This checkpoint tested natural varargs setup/teardown and
+  mixed /GL support profiles: release varargs setup yields a one-byte trace
+  but removes the call; /Od support preserves a five-byte trace, still non-exact.
+  JOYCAPSA and MainRuntime grouping, separately and together, leave normal
+  gameplay polling815 bytes. Private `.analysis/joystick-owners/` records these
+  failed probes. Do not repeat that batch or embed RET/fake returns.
 - ByteCipher normal276/target284 each remains non-exact; its /GL caller
   naturally produces key-in-AL plus five stack arguments but body293 differs.
   ASCII expiry100/124 remains open. Prioritize useful medium functions.
+- Direct-Ghidra review/decompilation also covered frame dispatch0x00446650
+  (307 bytes), presentation0x00446790 (226) and screenshot hotkey0x00446880
+  (156). Private `.analysis/frame-timing-review.txt` and `frame-timing.c`
+  contain complete flows. The latter scans snapshot/th%.3d.bmp up to999;
+  these three functions have no maintained source yet.
 
 Full production TU/data/resource/library/link-order closure and native
 runtime validation are open. Semantic reconstruction and portability remain

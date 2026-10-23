@@ -3,7 +3,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00401080,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00401210,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004014A0,authored_game,AsciiManager,authored,high,ascii-lifetime-target-2026-10-23
-0x004014E0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x004014E0,authored_game,AsciiManager,authored,high,ascii-append-ghidra-review-20261023
 0x004015A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00401600,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00401670,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
@@ -684,7 +684,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00446650,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00446790,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00446880,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00446920,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00446920,authored_game,FrameClock,authored,high,frame-clock-ghidra-review-20261023
 0x00446AE0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00446D30,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00447270,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

@@ -1,6 +1,8 @@
 name,address,type
 AsciiManagerOnUpdate,0x004014A0,function
+AsciiManagerAppendString,0x004014E0,function
 AsciiManagerExpireStrings,0x00401D50,function
+GetFrameClockSeconds,0x00446920,function
 AddToUpdateChain,0x00456B70,function
 AddToDrawChain,0x00456C10,function
 ExecuteUpdateChain,0x00456CB0,function

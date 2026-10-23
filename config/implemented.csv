@@ -14,3 +14,5 @@ ExecuteUpdateChain
 ExecuteDrawChain
 UnregisterChainElement
 PollJoystickButtons
+AsciiManagerAppendString
+GetFrameClockSeconds

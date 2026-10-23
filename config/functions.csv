@@ -3,7 +3,7 @@ address,size,span_end,current_name,proposed_name,module,status,match_percent,cal
 0x00401080,391,0x00401206,FUN_00401080,,,unclassified,0.00,,,false,,Ghidra 12.1.3 auto-analysis candidate; boundary unreviewed,,
 0x00401210,475,0x004013EA,FUN_00401210,,,unclassified,0.00,,,false,,Ghidra 12.1.3 auto-analysis candidate; boundary unreviewed,,
 0x004014A0,22,0x004014B5,FUN_004014a0,AsciiManagerOnUpdate,AsciiManager,exact,100.00,__fastcall ECX AsciiManagerView* / RET,int (AsciiManagerView *),false,src/AsciiUpdate.cpp,Complete direct-Ghidra boundary and callback/relocation review plus cold hash-pinned VC9 RTM normal-COFF replay; all 22 bytes and the sole REL32 to AsciiManagerExpireStrings match exactly.,authored,Canonical unit ascii-manager-on-update. Production TU partition and original normal-COFF/LTCG ownership remain unknown; callee expiry body remains non-exact.
-0x004014E0,182,0x00401595,FUN_004014e0,,,unclassified,0.00,,,false,,Ghidra 12.1.3 auto-analysis candidate; boundary unreviewed,,
+0x004014E0,182,0x00401595,FUN_004014e0,AsciiManagerAppendString,AsciiManager,exact,100.00,LTCG private (ESI self; EBX position; ECX text),"void __stdcall AsciiManagerAppendString(AsciiManagerView *self, const float *position, const char *text)",false,src/AsciiAppend.cpp,Direct Ghidra reviewed complete182-byte body; docs/ASCII_LIFETIME.md; cold receipt-bound linked-PE exact proof,AsciiManager,Authored ASCII queue appender; signed320-record cap; inline strcpy; position/color/scale/style/lifetime stores. Ordinary stdcall source; VC9 /GL naturally chooses target registers. No linkages or masked bytes.
 0x004015A0,83,0x004015F2,FUN_004015a0,,,unclassified,0.00,,,false,,Ghidra 12.1.3 auto-analysis candidate; boundary unreviewed,,
 0x00401600,106,0x00401669,FUN_00401600,,,unclassified,0.00,,,false,,Ghidra 12.1.3 auto-analysis candidate; boundary unreviewed,,
 0x00401670,1618,0x00401CC1,FUN_00401670,,,unclassified,0.00,,,false,,Ghidra 12.1.3 auto-analysis candidate; boundary unreviewed,,
@@ -684,7 +684,7 @@ address,size,span_end,current_name,proposed_name,module,status,match_percent,cal
 0x00446650,307,0x00446782,FUN_00446650,,,unclassified,0.00,,,false,,Ghidra 12.1.3 auto-analysis candidate; boundary unreviewed,,
 0x00446790,226,0x00446871,FUN_00446790,,,unclassified,0.00,,,false,,Ghidra 12.1.3 auto-analysis candidate; boundary unreviewed,,
 0x00446880,156,0x0044691B,FUN_00446880,,,unclassified,0.00,,,false,,Ghidra 12.1.3 auto-analysis candidate; boundary unreviewed,,
-0x00446920,260,0x00446A23,FUN_00446920,,,unclassified,0.00,,,false,,Ghidra 12.1.3 auto-analysis candidate; boundary unreviewed,,
+0x00446920,260,0x00446A23,FUN_00446920,GetFrameClockSeconds,FrameClock,exact,100.00,__cdecl; x87 ST0 double result,double __cdecl GetFrameClockSeconds(),false,src/FrameClock.cpp,Direct Ghidra reviewed complete260-byte body; docs/FRAME_CLOCK.md; cold receipt-bound linked-PE proof,FrameClock,Authored game clock called by frame dispatch/presentation; QPC and unsigned timeGetTime paths; conditional lock index5. Ordinary C++ under VC9 /GL generates observed20-byte stack allocation;26 independently reviewed DIR32 fields.
 0x00446AE0,577,0x00446D20,FUN_00446ae0,,,unclassified,0.00,,,false,,Ghidra 12.1.3 auto-analysis candidate; boundary unreviewed,,
 0x00446D30,1338,0x00447269,FUN_00446d30,,,unclassified,0.00,,,false,,Ghidra 12.1.3 auto-analysis candidate; boundary unreviewed,,
 0x00447270,778,0x00447579,FUN_00447270,,,unclassified,0.00,,,false,,Ghidra 12.1.3 auto-analysis candidate; boundary unreviewed,,

@@ -15,6 +15,7 @@ scripts/repo-python scripts/ghidra.py query .analysis/ascii-review.txt review \
 | Source name | Target extent | Boundary/ABI observations |
 | --- | --- | --- |
 | `AsciiManagerOnUpdate` | `0x004014A0..0x004014B5`, 22 bytes | One contiguous body; receiver ECX, return EAX=1, RET; following CC padding |
+| `AsciiManagerAppendString` | `0x004014E0..0x00401595`, 182 bytes | ESI manager, EBX position, ECX text; RET; following CC padding; no external interior references |
 | `AsciiManagerExpireStrings` | `0x00401D50..0x00401DCB`, 124 bytes | One contiguous body; one stack receiver, RET 4; following CC padding |
 
 Ghidra's reference manager reports no outside references to either body's
@@ -39,6 +40,14 @@ increments the manager frame counter at +0x184A8 and returns 1.
 it does not identify all data owners. `src/AsciiStrings.cpp` maintains the
 expiry behavior, and `src/AsciiUpdate.cpp` maintains the callback.
 
+`src/AsciiAppend.cpp` maintains the queue appender. Its signed count check
+rejects counts at or above320; accepted records receive the null-terminated
+text,12-byte position, color, two scalar float scales, four observed style
+fields and lifetime. Record+0x118 is untouched. The style stores deliberately
+copy manager+0x18498 before+0x18494, as observed. The two callers at0x004015A0
+and0x00401600 format text before calling it; the appender itself has no calls.
+This preserves the original copy behavior and does not add bounds checks.
+
 ## Code generation
 
 Initial normal VC9 RTM `/TP /O2 /Gy /MT /Isrc` callback probing reproduces all
@@ -46,6 +55,16 @@ Initial normal VC9 RTM `/TP /O2 /Gy /MT /Isrc` callback probing reproduces all
 REL32. Two independent canonical receipt-bound cold replays pass all 22 bytes after replaying
 the independently reviewed REL32, with zero differences. The exact context is
 recorded in `config/match-units.toml` and `config/matches.csv`.
+
+The appender passes a cold receipt-bound VC9 RTM linked-PE proof over its
+complete182-byte public primary-TU PDB contribution. All182 bytes equal the
+target directly, with no relocation/linkage fields. Ordinary stdcall source
+and the independent two-call context in `probes/ascii-append-context.cpp`
+naturally produce the observed private registers under
+`/TP /O2 /Ob1 /Gy /MT /Isrc /GL`. The original production TU remains unknown.
+Only `ascii-manager-append-string` was cold-replayed for this addition; the
+unchanged callback and previous exact units were not rebuilt. Boundary review
+is reproducible with `ghidra.py query ... review 0x004014E0`.
 
 The expiry candidate is **non-exact**: its normal COFF extent is 100 bytes,
 compared with the target's 124 bytes. A natural explicit pointer-compaction
@@ -55,4 +74,4 @@ TU partition, optimizer visibility, and LTCG ownership remain unknown; the
 next codegen investigation should compare declared compiler contexts and a
 VC9 linked-image probe rather than claim byte equality from behavior alone.
 
-Neither function establishes a complete Windows product or runtime validation.
+These function proofs do not establish a complete Windows product or runtime validation.
