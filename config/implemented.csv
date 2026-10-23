@@ -31,3 +31,6 @@ FindArchiveEntry
 ReadArchivedFile
 LeaveRuntimeCriticalSection
 DecompressArchiveData
+ApplyCamera
+FlushRenderBatch
+ApplyPerspectiveCamera

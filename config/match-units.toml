@@ -607,3 +607,52 @@ size = 53
 linkages = [
   { offset = 24, type = "REL32", symbol = "__stricmp", target = 0x4616f8, addend = 0x0 },
 ]
+
+[units.apply-camera]
+artifact_kind = "linked-pe"
+source = "src/Camera.cpp"
+inputs = ["src/Camera.hpp", "src/RenderBatch.hpp", "src/MainRuntime.hpp"]
+support_sources = ["src/RenderBatch.cpp", "probes/render-camera-context.cpp"]
+output_dir = "build/match-linked/Camera"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "RenderCameraProbe@12"
+functions = ["ApplyCamera"]
+symbol = "?ApplyCamera@@YGXPAUCameraView@@@Z"
+target_address = 0x0042a810
+size = 344
+linkages = [
+  { offset = 7, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x4c3268, addend = 0x0 },
+  { offset = 16, type = "REL32", symbol = "?FlushRenderBatch@@YGXPAURenderBatchView@@@Z", target = 0x44fd10, addend = 0x0 },
+  { offset = 38, type = "DIR32", symbol = "__real@4f800000", target = 0x497f98, addend = 0x0 },
+  { offset = 60, type = "DIR32", symbol = "__real@3fe0000000000000", target = 0x497e60, addend = 0x0 },
+  { offset = 84, type = "DIR32", symbol = "__real@4f800000", target = 0x497f98, addend = 0x0 },
+  { offset = 135, type = "DIR32", symbol = "__real@3e20d97c", target = 0x497fac, addend = 0x0 },
+  { offset = 143, type = "REL32", symbol = "?CameraTangent@@YGMM@Z", target = 0x42b6d0, addend = 0x0 },
+  { offset = 202, type = "DIR32", symbol = "__real@bf800000", target = 0x497f20, addend = 0x0 },
+  { offset = 215, type = "REL32", symbol = "_D3DXMatrixLookAtLH@16", target = 0x45f9d4, addend = 0x0 },
+  { offset = 221, type = "DIR32", symbol = "__real@461c4000", target = 0x497fa8, addend = 0x0 },
+  { offset = 254, type = "DIR32", symbol = "__real@3ea0d97c", target = 0x497fa4, addend = 0x0 },
+  { offset = 263, type = "REL32", symbol = "_D3DXMatrixPerspectiveFovLH@20", target = 0x45f9da, addend = 0x0 },
+  { offset = 268, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 287, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 306, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x4c3268, addend = 0x0 },
+]
+
+[units.flush-render-batch]
+artifact_kind = "linked-pe"
+source = "src/RenderBatch.cpp"
+inputs = ["src/Camera.hpp", "src/RenderBatch.hpp", "src/MainRuntime.hpp"]
+support_sources = ["src/Camera.cpp", "probes/render-camera-context.cpp"]
+output_dir = "build/match-linked/RenderBatch"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "RenderCameraProbe@12"
+functions = ["FlushRenderBatch"]
+symbol = "?FlushRenderBatch@@YGXPAURenderBatchView@@@Z"
+target_address = 0x0044fd10
+size = 143
+linkages = [
+  { offset = 14, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 36, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 58, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 85, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+]

@@ -5,61 +5,49 @@ Use direct Ghidra only. Read `AGENTS.md` and inspect dirty work before changes.
 
 ## Current checkpoint
 
-Inventory:1,989 provisional candidates; thirty-three reviewed/source-present.
-Twenty-three canonical exact functions total4,821 owned bytes:
+Inventory:1,989 provisional candidates; thirty-six reviewed/source-present.
+Twenty-five canonical exact functions total5,308 owned bytes:
 
 - Eight normal-COFF units: ASCII update22; AddAngles157; NormalizeAngle145;
   repeat state105; keyboard polling888; file check141; draw chain284 including
   table; callback removal114.
-- Fifteen linked-PE units: joystick button capture267, ordered update/draw
+- Seventeen linked-PE units: joystick button capture267, ordered update/draw
   registration147 each, ASCII string appender182, frame clock260, random
   generation105/153, log append211, screenshot writer229, shared file open
-  modes180 each, write helper88, resource load466, complete-file write297
-  and the required archive lookup53.
+  modes180 each, write helper88, resource load466, complete-file write297,
+  archive lookup53, camera setup344 and batch submission143.
 
-The preceding checkpoint added three exact functions,816 bytes. Only
-`load-resource-file`, `write-whole-file` and `find-archive-entry` were
-cold-replayed. Three families keep each accepted contribution in its own
-primary TU. Prior twenty proofs were not replayed. All66 independently
-reviewed fields and all owned bytes match.
+This checkpoint adds two exact functions,487 bytes, and maintained361-byte
+perspective-camera source. Only `apply-camera` and `flush-render-batch` were
+cold-replayed, each in its own primary TU. All19 independently reviewed fields
+and all owned bytes match. No previous23 canonical unit was replayed; their
+source/header dependencies were untouched. See `RENDER_CAMERA.md`.
 
-Resource loading now has the complete archive/disk branch source. Preserve
-the observed two-delimiter behavior, archive-miss size zero versus untouched
-disk-failure size, ignored extraction/ReadFile status, and all cleanup paths.
-Explicit null branches, assigning zero only after failed lookup, and shared
-failure labels before disk-read success reproduce the466-byte body. Initial
-variants475/407/469 differed; do not simplify the final failure joins.
+The344-byte screen camera uses unsigned viewport conversions, half-size eye/
+target centers, a float-return angle helper and D3DX view/projection thunks.
+Separate long-lived width/height locals produced342 bytes; direct conversion
+expressions preserve the target's x87 reuse and0x38 frame. Renderer submission
+sets stage alpha/color arg2, FVF0x144 and triangle-list UP drawing, then updates
+its draw counter/cursors. Ordinary stdcall source naturally yields EDI camera
+and ESI renderer. Original camera stride0x118 and complete renderer owners
+remain open; partial views are not instantiated as native owner objects.
 
-The297-byte complete-file writer uses a local handle, status-1/-2/0 and
-section/depth2. Ordinary stdcall source naturally yields EDI filename, EBX
-size and buffer on the stack; the compiler reuses the dead incoming buffer
-home for the error-message pointer. The53-byte archive lookup is the needed
-case-insensitive16-byte-record scan. See `RESOURCE_FILES.md` for full bindings.
+Perspective setup0x0042A970 now has complete361-byte source. Its target offset
+is+0x0C, eye offset+0x3C, and normalized right vector+0x30. Twelve independent
+bindings replay over the full primary contribution; four byte differences
+remain at288,289,291,292 in a commuted x87 multiplication. Scalar helper353,
+aggregate/field-copy361 with4 differences and value-return361 with16 were
+bounded experiments; do not repeat them or give commutativity exact credit.
 
-Archive extraction300 and generic unlock37 have maintained source and
-reviewed authored-game mappings, but no exact credit. Current candidates are
-312 and37 respectively, with one commuted SIB-byte difference in the latter.
-Source views include archive state/entries/virtual stream slots and eight
-cipher rules. Original owners, stream closure and native archive integration remain open.
+Archive extraction300 remains non-exact312 with the real decoder visible;
+generic unlock37 differs by one SIB byte. Decoder472 has maintained source,
+473-byte candidate and177 differences;62 bounded target/candidate machine-code
+cases agree. Its real fourth allocation-size input is in EAX, plus three stack
+arguments. Keep that argument and persistent8KiB history. Origin remains
+indeterminate. See `ARCHIVE_DECOMPRESSION.md` and `RESOURCE_FILES.md`.
 
-CaptureScreenshot524 and HandleScreenshotHotkey156 now have maintained,
-compiled source and reviewed authored-game mappings, but no exact credit.
-Candidate sizes are540/156; the hotkey has23 unrelocated differences. See
-`SCREENSHOT.md` and the bounded probe evidence below.
-
-This checkpoint adds the complete472-byte archive decompressor source and
-corrects extraction's missing output-allocation-size argument. Four reviewed
-callers confirm output size in EAX plus three stack arguments. The natural
-stdcall candidate is473 bytes with177 unrelocated differences; no new exact
-credit.62 bounded target/candidate machine-code cases agree on allocation,
-returns, output/canaries, history and preserved ABI state. Origin remains
-indeterminate. See `ARCHIVE_DECOMPRESSION.md`.
-
-Only `load-resource-file` and `find-archive-entry` were cold-replayed after
-adding the real decoder to their support families. Both remain exact; the
-other21 canonical units were not replayed. Decoder history remains shared
-and is not cleared per call. Do not omit its hidden fourth argument or
-repeat the documented class/scalar/output-reference/history-owner probes.
+CaptureScreenshot524 and HandleScreenshotHotkey156 have source540/156 with
+no exact credit; the hotkey has23 unrelocated differences. See `SCREENSHOT.md`.
 
 ## Shared runtime data was decisive
 
@@ -140,6 +128,9 @@ remain pinned. Do not replay full cohorts for a local change.
 - Frame dispatch0x00446650 (307 bytes) and presentation0x00446790 (226) still
   have no maintained source. Private `.analysis/frame-timing-review.txt`
   and `frame-timing.c` contain complete flows.
+  Their camera344 and batch143 dependencies are now exact. New private
+  `frame-loop-dependencies-review.txt`/`.c` covers fog-disable54 at0x0042A300
+  and thread-stop101 at0x00459430 as well; both still lack maintained source.
 - Screenshot capture0x00429CA0 is524 bytes. Its new source uses established
   MainRuntime opaque storage for presentation/screenshot views, preserving
   the existing header and unrelated receipts. /GL initial nested allocation

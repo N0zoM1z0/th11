@@ -303,3 +303,32 @@ cases agree on return/allocation/output/history/ABI observables. Only the two
 affected old exact units, resource load and archive lookup, were cold-replayed
 and remain exact; all other21 proofs were left alone. See
 `ARCHIVE_DECOMPRESSION.md` for bounded failed contexts and diagnostic limits.
+
+
+## Exact camera setup and renderer submission
+
+`ApplyCamera`0x0042A810 (344 bytes) and `FlushRenderBatch`0x0044FD10 (143)
+now pass complete cold public primary-TU linked proofs. Two independent
+families replay all19 reviewed fields and487 bytes with zero differences;
+no previous canonical source/header changed and no prior23 proof was replayed.
+
+Camera setup converts unsigned viewport dimensions, centers eye/target,
+constructs D3DX LH view/perspective matrices, sets D3D transforms and propagates
+two renderer offsets. Direct conversion expressions let VC9 retain/reuse the
+x87 intermediates and compute aspect before the angle call; separate width/
+height locals delayed division and produced342 bytes. Natural stdcall yields
+EDI camera; no ABI or padding tricks were used.
+
+The renderer's28-byte FVF0x144 vertices feed TRIANGLELIST UP drawing with twice
+its quad count. It resets two stage states, updates draw-call count and moves
+batch start to next vertex. Its shared pointer cell is0x004C3268; count is
++0x435620, vertex storage+0x435624, next/batch-start pointers+0x7B5624/+0x7B5628.
+The physical view retains unknown preceding storage and does not prove a
+complete renderer class. Camera selection independently reveals0x118 stride.
+
+The361-byte perspective-camera source at0x0042A970 uses target direction+0x0C,
+eye offset+0x3C, up+0x18, right+0x30 and field of view+0x48; projection planes
+are30/1800. Full primary-body replay of12 independent bindings leaves only
+four operand bytes different in an x87 multiply. It remains non-exact; source
+helper variants and private evidence are recorded in `RENDER_CAMERA.md`.
+Frame dispatch307 and presentation226 remain next useful integration work.

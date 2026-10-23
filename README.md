@@ -46,6 +46,8 @@ the complete keyboard polling path, individual joystick-button capture, draw
 callback dispatch/removal, ordered callback registration, file existence
 checking, and the ASCII update callback. Update dispatch, gameplay joystick
 merging, and paired byte transforms remain maintained non-exact candidates.
+Camera setup and renderer batch submission now have exact linked proofs;
+the related perspective-camera routine has maintained non-exact source.
 The Windows i386 production build is open. Semantic reconstruction and
 portability have not started.
 
@@ -103,6 +105,7 @@ are in [`docs/TOOLS.md`](docs/TOOLS.md).
 - [`docs/ORACLES.md`](docs/ORACLES.md) — bounded acceptance rules.
 - [`docs/RE_HANDOFF.md`](docs/RE_HANDOFF.md) — resume state and next work.
 - [`docs/KNOWLEDGE_BASE.md`](docs/KNOWLEDGE_BASE.md) — durable TH11-local facts.
+- [`docs/RENDER_CAMERA.md`](docs/RENDER_CAMERA.md) — camera and batch submission evidence.
 
 ## License
 
