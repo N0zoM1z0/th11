@@ -55,6 +55,8 @@ initialization/script-binding source is tracked in
 [`docs/RUNTIME_SURFACES.md`](docs/RUNTIME_SURFACES.md).
 Device-state reset and renderer texture recreation have exact proofs;
 [`docs/RENDER_STATE_RESET.md`](docs/RENDER_STATE_RESET.md) records those paths.
+The main window callback has an exact proof; CPU surface transfer source is
+tracked in [`docs/WINDOW_SURFACE_BUFFER.md`](docs/WINDOW_SURFACE_BUFFER.md).
 The Windows i386 production build is open. Semantic reconstruction and
 portability have not started.
 

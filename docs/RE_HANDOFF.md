@@ -5,27 +5,41 @@ Use direct Ghidra only. Read `AGENTS.md` and inspect dirty work before changes.
 
 ## Current checkpoint
 
-Inventory:1,989 provisional candidates; forty-seven reviewed/source-present.
-Thirty-one canonical exact functions total6,786 owned bytes:
+Inventory:1,989 provisional candidates; fifty reviewed/source-present.
+Thirty-two canonical exact functions total7,204 owned bytes:
 
 - Eight normal-COFF units: ASCII update22; AddAngles157; NormalizeAngle145;
   repeat state105; keyboard polling888; file check141; draw chain284 including
   table; callback removal114.
-- Twenty-three linked-PE units: joystick button capture267, ordered update/draw
+- Twenty-four linked-PE units: joystick button capture267, ordered update/draw
   registration147 each, ASCII string appender182, frame clock260, random
   generation105/153, log append211, screenshot writer229, shared file open
   modes180 each, write helper88, resource load466, complete-file write297,
   archive lookup53, camera344, batch143, fog54, runtime thread stop101,
-  animation VM reset303, surface release80, renderer texture restore162
-  and device-state reset778.
+  animation VM reset303, surface release80, renderer texture restore162,
+  device-state reset778 and main window callback418.
 
-This checkpoint adds renderer/device state reset778 and texture recreation162
-as strict cold public primary-TU exact functions:940 owned bytes,42 independent
-bindings. Texture preparation135 also has maintained source but two commuted
-SIB bytes at76/79 remain different. Only `reset-device-render-states` and
-`restore-renderer-after-reset` were cold-replayed, in separate families;
-previous29 source/header inputs and canonical proofs were untouched. See
-`RENDER_STATE_RESET.md`.
+This checkpoint adds complete surface read201/write217 source and exact main
+window callback418. The callback's strict cold public primary-TU proof covers
+all418 bytes and21 independently reviewed runtime/IAT bindings. Only the new
+`main-window-proc` unit was cold-built; previous31 inputs/proofs are unchanged.
+Read/write remain non-exact202/205. Full scopes, message behavior, COM failure
+asymmetry and bounded probes are in `WINDOW_SURFACE_BUFFER.md`.
+
+The callback is installed as WNDCLASSA.lpfnWndProc at0x00446B36. Activation
+runtime+0xB14 aliases the existing keyboard polling gate; inactivity is+0xB18,
+resize flags+0xB40 and Windowed+0x114. Shared default handling, nested size/
+system-command switches and do/while ShowCursor(TRUE) reproduce all418 bytes.
+Explicit default returns gave400 bytes; equality/while form418 still differed.
+Surface buffers use format100,width104,height108,rowBytes110,presence11C,
+pixels120. Read ignores LockRect status; write requires exact zero and does
+not unlock on failure. Original owner/origin is indeterminate. Free stdcall,
+/EHsc, direct-pitch and nested-success variants did not close either routine;
+do not repeat those contexts without new evidence.
+
+The preceding checkpoint added renderer/device reset778 and texture recreation162
+as strict exact functions. Texture preparation135 still has two commuted SIB
+bytes at76/79 different. See `RENDER_STATE_RESET.md`.
 
 State reset has33 D3D calls, real float-to-DWORD marshalling through a4-byte
 slot, and renderer cache reset at+0x4355BC. No incoming ECX parameter exists;
@@ -96,6 +110,14 @@ remain pinned. Do not replay full cohorts for a local change.
 
 ## Remaining useful work and recent evidence
 
+- New medium candidates have bounded decompiler hypotheses in the private
+  `render-medium-candidates.c`: font setup0x00444480(346), startup title/link
+  handling0x00447580(344) and executable checksum0x004476F0(246). These still
+  need complete boundary/ABI/origin review before source or exact credit.
+- Surface read/write201/217 now have maintained202/205-byte member source;
+  review `WINDOW_SURFACE_BUFFER.md` before revisiting the failed contexts.
+  The adjacent657-byte compositor has complete instruction review but no
+  source mapping or credit; its pixel-format cases are another useful target.
 - `ReadArchivedFile` target300 uses an out-of-line53-byte lookup, stream
   Seek/Read, stored-name8-bit checksum, eight cipher rules, ScatterXorBlocks
   and optional stdcall decompression at0x004426C0. Observed free conditions

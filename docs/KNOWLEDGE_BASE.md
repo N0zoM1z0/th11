@@ -411,3 +411,33 @@ leaves two differences. Full reset/surface/VM/clock visibility gives frame
 315/presentation233; a private float/fast primary still233, rather than closing
 307/226. Public frame source remains intact. See `RENDER_STATE_RESET.md`
 before retrying those configurations; full native data/runtime closure is open.
+
+
+## Window callback and CPU surface transfers
+
+- MainWindowProc0x00445E00 is installed in WNDCLASSA.lpfnWndProc at0x00446B36
+  before RegisterClassA. Complete418-byte callback is now strict cold VC9 /GL
+  exact with21 independent runtime/IAT fields. All seven special message
+  paths, return values, repeated cursor-count operations and default handling
+  are retained. Window/root integration supports authored classification.
+- Shared default handling after the message switch, nested size/system-command
+  switches and do/while ShowCursor(TRUE) are decisive. Explicit per-case
+  default returns give400 bytes; an equality/while form418 has192 differences.
+  Do not repeat those failed shapes or patch branch/alignment bytes.
+- Runtime Windowed+0x114 agrees with D3DPRESENT_PARAMETERS+0xF4. Activation
+  +0xB14(0x004C3D94) is also the keyboard polling gate; inactivity+0xB18,
+  resize flags+0xB40. Full runtime ownership and flag semantics remain open.
+- Complete surface transfer bodies0x00444010(201) and0x004440E0(217) now have
+  maintained source. ESI carries the owner, stack carries surface, AL returns
+  boolean and RET4 cleans stack. No incoming references are known; origin
+  remains indeterminate rather than inferred from source presence.
+- Shared fields: format+100,width+104,signed height+108,row bytes+110,
+  presence+11C,pixels+120. Read ignores LockRect HRESULT and unlocks after a
+  format mismatch; write requires exact D3D_OK and does not unlock on nonzero.
+  Both copy row bytes with independent surface pitch, then return true even
+  when format/height skips all rows. SDK surface slots30/34/38 were checked.
+- Natural early-guard members yield202/205 with186/199 differences. Free
+  stdcall inputs and /EHsc do not change them; direct pitch yields201/201,
+  nested-success212/212, all non-exact. See WINDOW_SURFACE_BUFFER.md before
+  revisiting. Only the new window canonical unit was cold-built; prior31
+  source/header contexts were unchanged and not replayed.

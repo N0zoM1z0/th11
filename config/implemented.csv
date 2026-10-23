@@ -45,3 +45,6 @@ BindAnimationScript
 PrepareRendererForReset
 RestoreRendererAfterReset
 ResetDeviceRenderStates
+ReadFromSurface
+WriteToSurface
+MainWindowProc

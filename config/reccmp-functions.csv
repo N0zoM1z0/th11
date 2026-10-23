@@ -14,8 +14,11 @@ LeaveRuntimeCriticalSection,0x0042B700,function
 ReadArchivedFile,0x00441760,function
 FindArchiveEntry,0x004418D0,function
 DecompressArchiveData,0x004426C0,function
+ReadFromSurface,0x00444010,function
+WriteToSurface,0x004440E0,function
 PrepareRendererForReset,0x00445320,function
 RestoreRendererAfterReset,0x004453B0,function
+MainWindowProc,0x00445E00,function
 RunFrame,0x00446650,function
 PresentFrame,0x00446790,function
 HandleScreenshotHotkey,0x00446880,function
