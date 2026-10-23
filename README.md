@@ -70,6 +70,8 @@ now have complete non-exact source in
 [`docs/TEXT_DRAWING_COMPOSITE.md`](docs/TEXT_DRAWING_COMPOSITE.md).
 Outlined DIB/texture drawing and the actual placement dispatcher have complete
 non-exact source in [`docs/OUTLINED_TEXT.md`](docs/OUTLINED_TEXT.md).
+Direct/right-aligned formatting have exact proofs; centered formatting remains
+non-exact in [`docs/FORMATTED_TEXTURE_TEXT.md`](docs/FORMATTED_TEXTURE_TEXT.md).
 The Windows i386 production build is open. Semantic reconstruction and
 portability have not started.
 

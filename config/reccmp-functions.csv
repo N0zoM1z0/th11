@@ -43,6 +43,9 @@ ResetMainViewport,0x00447EA0,function
 BindAnimationScript,0x0044ACD0,function
 FlushRenderBatch,0x0044FD10,function
 DrawPlacedTextureText,0x00454BB0,function
+FormatTextureText,0x00454C60,function
+FormatRightAlignedTextureText,0x00454D00,function
+FormatCenteredTextureText,0x00454DE0,function
 AddToUpdateChain,0x00456B70,function
 AddToDrawChain,0x00456C10,function
 ExecuteUpdateChain,0x00456CB0,function

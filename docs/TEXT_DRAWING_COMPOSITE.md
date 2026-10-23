@@ -134,4 +134,5 @@ Original type/TU/frame context remains open. Drawing currently turns its
 background word loop into REP stores, while native reloads the byte limit.
 Do not force volatility, artificial padding or altered return/ABI declarations
 to fit the Oracle. The sibling text path at `0x00444610` (631 bytes) and the
-related pixel routine at `0x00443E00` (525 bytes) are useful next targets.
+surface text routine at `0x00443E00` (525 bytes) now have maintained source in
+`OUTLINED_TEXT.md`; formatting callers are tracked in `FORMATTED_TEXTURE_TEXT.md`.

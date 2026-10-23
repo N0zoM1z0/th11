@@ -1,5 +1,36 @@
 # TH11-local knowledge
 
+## Formatted texture text and repaired centered span (2026-10-24)
+
+Direct0x00454C60(156) and right-aligned0x00454D00(224) now pass strict cold
+complete public primary-TU linked proofs with4/6 independently reviewed fields.
+Exact totals40/8,894 bytes. The centered0x00454DE0 candidate was truncated at176;
+full flow extends through0x00454EB3(212), including36 bytes of dispatch/dirty/GS/
+RET tail. Source212 still differs in13 stack offsets from native frame0x8C
+versus0x88. No padding or fake local is used. See FORMATTED_TEXTURE_TEXT.md.
+
+The character region is132 bytes before the native cookie. An initial128-byte
+hypothesis had the correct instruction lengths but wrong offsets. Explicit
+default17 before the unsigned-byte height test reproduces the aligned branch;
+the direct function forwards raw height0. The physical view has attachment
++3AC, dirty flags+404, text flags+408 and height byte+41C. Attachment+8 points
+to a binding whose first cell is the texture; width float+38 accompanies the
+existing placement floats. Full original owners/origins remain indeterminate.
+
+Right x truncates `width - (((h-1)*byte_length)>>1)` after floating subtraction.
+Center x first truncates width, divides signed by2 toward zero and subtracts
+unsigned `((h-1)*byte_length)>>2`. Native x87 FTOL entry0x004864E0 has an SSE2
+feature gate and x87 fallback; it does not consume ordinary stack float args.
+The unsigned correction at0x00497F98 is independently checked float2^32.
+Dirty OR1 occurs after dispatch even if rendering skips height1..8.
+
+Focused private123-case helper-model diagnostic agrees on formatted bytes,
+varargs, x87 values, dispatch parameters, GS cookies, flags and stack/registers,
+including131 output bytes and signed fractional widths. One CPU/nice10,
+max RSS106,712 KiB; no full native/runtime authority. Previous38 exact source/
+header inputs and proofs are unchanged. The three functions share one source;
+future centered edits require revalidating the two exact siblings only.
+
 ## Outlined texture/surface text and placement (2026-10-24)
 
 Complete direct-Ghidra spans0x00444610(631),0x00443E00(525) and0x00454BB0(172)

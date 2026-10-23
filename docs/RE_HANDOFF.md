@@ -5,13 +5,13 @@ Use direct Ghidra only. Read `AGENTS.md` and inspect dirty work before changes.
 
 ## Current checkpoint
 
-Inventory:1,989 provisional candidates; sixty-eight reviewed/source-present.
-Thirty-eight canonical exact functions total8,514 owned bytes:
+Inventory:1,989 provisional candidates; seventy-one reviewed/source-present.
+Forty canonical exact functions total8,894 owned bytes:
 
 - Eight normal-COFF units: ASCII update22; AddAngles157; NormalizeAngle145;
   repeat state105; keyboard polling888; file check141; draw chain284 including
   table; callback removal114.
-- Thirty linked-PE units: joystick button capture267, ordered update/draw
+- Thirty-two linked-PE units: joystick button capture267, ordered update/draw
   registration147 each, ASCII string appender182, frame clock260, random
   generation105/153, log append211, screenshot writer229, shared file open
   modes180 each, write helper88, resource load466, complete-file write297,
@@ -19,9 +19,36 @@ Thirty-eight canonical exact functions total8,514 owned bytes:
   animation VM reset303, surface release80, renderer texture restore162,
   device-state reset778, main window callback418, text surface release105/
   creation396, text/font initialization346, error log207, main viewport99
-  and back-buffer priming157.
+  back-buffer priming157 and formatted text156/right alignment224.
 
-This checkpoint adds outlined texture text631, DIB outlined text525 and the
+This checkpoint adds direct formatted text156 and right alignment224 as strict
+cold primary-TU exact proofs:380 owned bytes and10 independently reviewed fields.
+Centered formatting now has full212-byte source, including the36-byte tail
+missing from its176-byte initial candidate; it remains non-exact with13 stack
+offset differences from a4-byte frame discrepancy. Read FORMATTED_TEXTURE_TEXT.md.
+Only the two new exact units were cold-built/compared; previous38 inputs and
+canonical proofs are unchanged. The source file is shared by all three: future
+centered edits require focused revalidation of these two units, not the cohort.
+
+The observed132-byte character region and default17-then-byte-height conditional
+close direct/right codegen. Initial128-byte and conditional-expression forms
+failed; do not repeat them. Centered native frame0x8C/source0x88 stays open;
+do not add dummy locals or padding. Raw zero height forwards0; aligned routines
+default17 before computing x. Right x truncates after floating subtraction;
+centered x truncates width then uses signed /2 before unsigned span subtraction.
+All three keep plain bit+408 and post-dispatch OR1 at+404.
+
+Private123-case formatted-wrapper diagnostic agrees on varargs, output through
+131 bytes, physical dispatch parameters, finite x87 values, VM state, GS cookie,
+registers and stack. It models printf/FTOL/dispatch and grants no full native/
+runtime authority. One CPU/nice10, max RSS106,712 KiB. Raw/right proof logs are
+`.analysis/formatted-text-proof-raw.log` and `formatted-text-proof-right.log`;
+the initial cold runner reached comparison before source-owner rows were
+registered, then both comparisons passed against that same current cold family
+after owner reconciliation. No source recompilation or old proof replay was
+needed for that tracking correction. All three origins remain indeterminate.
+
+The preceding checkpoint added outlined texture text631, DIB outlined text525 and the
 real placement dispatcher172:1,328 native bytes of new maintained source.
 They remain non-exact637/530/173, with520/466/130 unequal diagnostic positions.
 Read `OUTLINED_TEXT.md`. Exact totals remain38/8,514; no previous exact source
@@ -44,7 +71,8 @@ HRESULTs and uninitialized output behavior.
 
 Placement floats are+0C/+10/+14/+18. Nonpositive height becomes17; positive1..8
 skips all conversion/drawing;9..16 reaches the path's separate minimum17 clamp.
-Selector zero means outline, nonzero plain. Three real callers remain unmapped.
+Selector zero means outline, nonzero plain. Its three formatting callers now
+have source as described above.
 Surface foreground addition-order changes and swapped text/font declaration
 order did not close codegen; Os primary gives425/485 and is also non-exact.
 Do not repeat those contexts without new evidence. Native631 uses three input
@@ -251,8 +279,9 @@ remain pinned. Do not replay full cohorts for a local change.
   their compiler contexts. Sibling outline631, surface text525 and real
   dispatcher172 now also have full non-exact source; read OUTLINED_TEXT.md.
   The font-owning wrapper0x00443D20(222) was reviewed but remains unmapped;
-  its constructor/string cleanup need independent recovery. Real placement
-  callers0x00454D00(224) and0x00454DE0(176) are further useful bounded targets.
+  its constructor/string cleanup need independent recovery. Formatting callers
+  now have exact156/224 and non-exact212 source; read FORMATTED_TEXTURE_TEXT.md
+  before modifying the shared source or repeating known failed contexts.
 - Surface read/write201/217 now have maintained202/205-byte member source;
   review `WINDOW_SURFACE_BUFFER.md` before revisiting the failed contexts.
 - `ReadArchivedFile` target300 uses an out-of-line53-byte lookup, stream

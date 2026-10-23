@@ -1014,3 +1014,43 @@ linkages = [
   { offset = 139, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
   { offset = 149, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0xf4 },
 ]
+
+[units.format-texture-text]
+artifact_kind = "linked-pe"
+source = "src/FormattedTextureText.cpp"
+inputs = ["src/FormattedTextureText.hpp", "src/OutlinedText.hpp", "src/TextDrawing.hpp", "src/TextSurface.hpp", "src/Random.hpp"]
+support_sources = ["src/OutlinedTextureText.cpp", "src/TextTextureDispatch.cpp", "src/TextDrawing.cpp", "src/TextProcessing.cpp", "probes/formatted-text-context.cpp"]
+output_dir = "build/match-linked/FormattedTextureText"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "FormattedTextProbe@40"
+functions = ["FormatTextureText"]
+symbol = "?FormatTextureText@@YAXPAUFormattedTextVmView@@KKHHHPBDZZ"
+target_address = 0x454c60
+size = 156
+linkages = [
+  { offset = 7, type = "DIR32", symbol = "___security_cookie", target = 0x4a2088, addend = 0x0 },
+  { offset = 51, type = "REL32", symbol = "_vsprintf", target = 0x45fdd2, addend = 0x0 },
+  { offset = 122, type = "REL32", symbol = "?DrawPlacedTextureText@@YGXPAUIDirect3DTexture9@@PBUTextTexturePlacementView@@HKKHHHPBDH@Z", target = 0x454bb0, addend = 0x0 },
+  { offset = 145, type = "REL32", symbol = "@__security_check_cookie@4", target = 0x45fc2c, addend = 0x0 },
+]
+
+[units.format-right-aligned-texture-text]
+artifact_kind = "linked-pe"
+source = "src/FormattedTextureText.cpp"
+inputs = ["src/FormattedTextureText.hpp", "src/OutlinedText.hpp", "src/TextDrawing.hpp", "src/TextSurface.hpp", "src/Random.hpp"]
+support_sources = ["src/OutlinedTextureText.cpp", "src/TextTextureDispatch.cpp", "src/TextDrawing.cpp", "src/TextProcessing.cpp", "probes/formatted-text-context.cpp"]
+output_dir = "build/match-linked/FormattedTextureText"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "FormattedTextProbe@40"
+functions = ["FormatRightAlignedTextureText"]
+symbol = "?FormatRightAlignedTextureText@@YAXPAUFormattedTextVmView@@KKHHPBDZZ"
+target_address = 0x454d00
+size = 224
+linkages = [
+  { offset = 7, type = "DIR32", symbol = "___security_cookie", target = 0x4a2088, addend = 0x0 },
+  { offset = 63, type = "REL32", symbol = "_vsprintf", target = 0x45fdd2, addend = 0x0 },
+  { offset = 156, type = "DIR32", symbol = "__real@4f800000", target = 0x497f98, addend = 0x0 },
+  { offset = 163, type = "REL32", symbol = "__ftol2_sse", target = 0x4864e0, addend = 0x0 },
+  { offset = 189, type = "REL32", symbol = "?DrawPlacedTextureText@@YGXPAUIDirect3DTexture9@@PBUTextTexturePlacementView@@HKKHHHPBDH@Z", target = 0x454bb0, addend = 0x0 },
+  { offset = 213, type = "REL32", symbol = "@__security_check_cookie@4", target = 0x45fc2c, addend = 0x0 },
+]

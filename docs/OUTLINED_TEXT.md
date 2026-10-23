@@ -92,8 +92,9 @@ Four observed floats at placement+0C/+10/+14/+18 are converted in order into a
 local RECT using the native FTOL helper. Selector zero invokes the outlined
 path; any nonzero value invokes the existing plain path. The 28-byte partial
 view is not a recovered complete original class. Three real callers at
-`0x00454C60`, `0x00454D00` and `0x00454DE0` reach this function. Their full
-semantics and original data owner remain unclassified.
+`0x00454C60`, `0x00454D00` and `0x00454DE0` reach this function. They now have
+source, with direct/right-aligned exact proofs in `FORMATTED_TEXTURE_TEXT.md`;
+their original data owner remains indeterminate.
 
 ## Focused evidence and remaining gaps
 

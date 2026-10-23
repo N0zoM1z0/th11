@@ -66,3 +66,6 @@ InvertTextAlpha
 DrawOutlinedSurfaceText
 DrawOutlinedTextToTexture
 DrawPlacedTextureText
+FormatTextureText
+FormatRightAlignedTextureText
+FormatCenteredTextureText
