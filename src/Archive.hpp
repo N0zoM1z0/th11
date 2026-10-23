@@ -48,6 +48,9 @@ extern ArchiveCipherRule g_ArchiveCipherRules[8];
 ArchiveEntryView *__stdcall FindArchiveEntry(ArchiveStateView *self, const char *name);
 unsigned char *__stdcall ReadArchivedFile(ArchiveStateView *self, const char *name,
                                           unsigned char *destination);
-unsigned char *__stdcall DecompressArchiveData(unsigned char *data, int size,
+// The observed private convention puts outputSize in EAX and leaves the
+// other three arguments on the stack. The public source uses ordinary stdcall.
+unsigned char *__stdcall DecompressArchiveData(unsigned int outputSize,
+                                               unsigned char *data, int size,
                                                unsigned char *destination);
 void __cdecl ArchiveTrace(const char *format, ...);

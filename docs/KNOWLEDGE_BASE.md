@@ -275,7 +275,31 @@ has archive-in-EAX and name-in-EBX; no custom register ABI was imposed.
 
 Maintained archive extraction uses16-byte records, adjacent-entry packed
 length, a partial virtual stream with Read+8/Seek+0x18 and eight12-byte cipher
-rules at0x004A3480. Its source310/target300 remains non-exact; generic runtime
+rules at0x004A3480. Its source312/target300 with the real decoder visible remains non-exact; generic runtime
 unlock37 differs in one SIB byte. Observed buffer ownership/free conditions
 are preserved. See `RESOURCE_FILES.md` for complete paths and bounded failed
 contexts, including the need to retain non-global archive caller visibility.
+
+
+## Archive decoder and the fourth input
+
+The complete472-byte decoder at0x004426C0 includes eight internal alignment
+bytes omitted by the sparse Ghidra body. All four callers and both RET12
+paths establish output size in EAX plus input, signed packed length and
+destination on the stack. The old three-input prototype was incomplete;
+extraction now passes entry unpacked size independently of packed length.
+
+The maintained LZSS-style decoder uses a shared8KiB history at0x004C0EE8,
+resets its write cursor to1, retains bytes across calls, and reads MSB first.
+Token1 carries an8-bit literal; token0 carries a13-bit absolute ring index,
+then four length bits plus3 unless the index is zero (end). Overlapping copy
+is sequential. EOF fetch precedes the signed bounds check and supplies zero
+without advancing. Output size bounds allocation only. Generic algorithm
+similarity leaves origin indeterminate.
+
+Natural VC9 /GL source currently produces473 bytes with177 unrelocated
+differences; no exact credit.62 private target-versus-candidate machine-code
+cases agree on return/allocation/output/history/ABI observables. Only the two
+affected old exact units, resource load and archive lookup, were cold-replayed
+and remain exact; all other21 proofs were left alone. See
+`ARCHIVE_DECOMPRESSION.md` for bounded failed contexts and diagnostic limits.

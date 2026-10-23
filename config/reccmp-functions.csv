@@ -7,6 +7,7 @@ CaptureScreenshot,0x00429CA0,function
 LeaveRuntimeCriticalSection,0x0042B700,function
 ReadArchivedFile,0x00441760,function
 FindArchiveEntry,0x004418D0,function
+DecompressArchiveData,0x004426C0,function
 HandleScreenshotHotkey,0x00446880,function
 GetFrameClockSeconds,0x00446920,function
 AddToUpdateChain,0x00456B70,function

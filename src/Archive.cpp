@@ -41,7 +41,7 @@ unsigned char *__stdcall ReadArchivedFile(ArchiveStateView *self, const char *na
 
             unsigned char *result;
             if (packedSize != unpackedSize)
-                result = DecompressArchiveData(packed, packedSize, destination);
+                result = DecompressArchiveData(unpackedSize, packed, packedSize, destination);
             else
                 result = packed;
             if (packed != destination && packed)

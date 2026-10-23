@@ -10,7 +10,7 @@ references to its interior.
 | `FindArchiveEntry` | 0x004418D0..0x00441904 | 53 | Exact |
 | `LoadResourceFile` | 0x00458400..0x004585D1 | 466 | Exact |
 | `WriteWholeFile` | 0x00458670..0x00458798 | 297 | Exact |
-| `ReadArchivedFile` | 0x00441760..0x0044188B | 300 | Source present; non-exact310-byte candidate |
+| `ReadArchivedFile` | 0x00441760..0x0044188B | 300 | Source present; non-exact312-byte candidate |
 | `LeaveRuntimeCriticalSection` | 0x0042B700..0x0042B724 | 37 | Source present; one SIB-byte difference |
 
 The loader's16 reviewed callers include animation, gameplay, UI and replay
@@ -87,8 +87,8 @@ storage, seeks and reads. It computes an8-bit checksum of the stored entry
 name, selects one of eight cipher rules, calls ScatterXorBlocks and optionally
 decompresses. Its observed failure/success free conditions are preserved,
 including freeing a non-null reused destination on failure. It remains
-non-exact: current310-byte code differs from the300-byte target in branch
-placement, alignment and register allocation. Size-favoring and default Ob2
+non-exact: with the real decoder visible, current312-byte code differs from
+the300-byte target in branch placement, alignment and register allocation. Size-favoring and default Ob2
 probes did not close it; no cropped or masked comparison is credited.
 
 The generic unlock source uses the runtime/index private convention generated
@@ -119,8 +119,10 @@ and changes their convention; source therefore includes the observed second
 caller role with unknown owners. At0x00442229, the caller supplies the receiver
 returned by0x004420E0 and a null destination, rather than loading the game-global
 address directly. That full218-byte caller was reviewed for this context;
-its EH body is not accepted or credited here. Actual production TU partition and complete
-native archive/stream/decompression closure remain open.
+its EH body is not accepted or credited here. The decoder now has maintained
+source and a corrected four-input call; see
+[Archive decompression](ARCHIVE_DECOMPRESSION.md). Actual production TU
+partition and complete native archive/stream closure remain open.
 
 Private evidence and reproduction:
 

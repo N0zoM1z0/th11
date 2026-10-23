@@ -5,7 +5,7 @@ Use direct Ghidra only. Read `AGENTS.md` and inspect dirty work before changes.
 
 ## Current checkpoint
 
-Inventory:1,989 provisional candidates; thirty-two reviewed/source-present.
+Inventory:1,989 provisional candidates; thirty-three reviewed/source-present.
 Twenty-three canonical exact functions total4,821 owned bytes:
 
 - Eight normal-COFF units: ASCII update22; AddAngles157; NormalizeAngle145;
@@ -17,7 +17,7 @@ Twenty-three canonical exact functions total4,821 owned bytes:
   modes180 each, write helper88, resource load466, complete-file write297
   and the required archive lookup53.
 
-This checkpoint adds three exact functions,816 bytes. Only
+The preceding checkpoint added three exact functions,816 bytes. Only
 `load-resource-file`, `write-whole-file` and `find-archive-entry` were
 cold-replayed. Three families keep each accepted contribution in its own
 primary TU. Prior twenty proofs were not replayed. All66 independently
@@ -36,16 +36,30 @@ size and buffer on the stack; the compiler reuses the dead incoming buffer
 home for the error-message pointer. The53-byte archive lookup is the needed
 case-insensitive16-byte-record scan. See `RESOURCE_FILES.md` for full bindings.
 
-Archive extraction300 and generic unlock37 now have maintained source and
+Archive extraction300 and generic unlock37 have maintained source and
 reviewed authored-game mappings, but no exact credit. Current candidates are
-310 and37 respectively, with one commuted SIB-byte difference in the latter.
+312 and37 respectively, with one commuted SIB-byte difference in the latter.
 Source views include archive state/entries/virtual stream slots and eight
-cipher rules. Original owners and stream/decompression closure remain open.
+cipher rules. Original owners, stream closure and native archive integration remain open.
 
 CaptureScreenshot524 and HandleScreenshotHotkey156 now have maintained,
 compiled source and reviewed authored-game mappings, but no exact credit.
 Candidate sizes are540/156; the hotkey has23 unrelocated differences. See
 `SCREENSHOT.md` and the bounded probe evidence below.
+
+This checkpoint adds the complete472-byte archive decompressor source and
+corrects extraction's missing output-allocation-size argument. Four reviewed
+callers confirm output size in EAX plus three stack arguments. The natural
+stdcall candidate is473 bytes with177 unrelocated differences; no new exact
+credit.62 bounded target/candidate machine-code cases agree on allocation,
+returns, output/canaries, history and preserved ABI state. Origin remains
+indeterminate. See `ARCHIVE_DECOMPRESSION.md`.
+
+Only `load-resource-file` and `find-archive-entry` were cold-replayed after
+adding the real decoder to their support families. Both remain exact; the
+other21 canonical units were not replayed. Decoder history remains shared
+and is not cleared per call. Do not omit its hidden fourth argument or
+repeat the documented class/scalar/output-reference/history-owner probes.
 
 ## Shared runtime data was decisive
 
@@ -84,7 +98,7 @@ remain pinned. Do not replay full cohorts for a local change.
 - `ReadArchivedFile` target300 uses an out-of-line53-byte lookup, stream
   Seek/Read, stored-name8-bit checksum, eight cipher rules, ScatterXorBlocks
   and optional stdcall decompression at0x004426C0. Observed free conditions
-  include freeing a reused destination on failure. Source310 remains
+  include freeing a reused destination on failure. Source312 remains
   non-exact: error-block layout, alignment and registers differ. Nested and
   goto error flows, size-favoring286 and default Ob2 variants did not close it.
   Private `.analysis/archive-read-*` records bounded experiments; do not

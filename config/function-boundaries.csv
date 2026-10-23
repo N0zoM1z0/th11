@@ -618,7 +618,7 @@ address,span_end,state,confidence,evidence_id,notes
 0x004421E0,0x004422B9,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
 0x004422C0,0x00442389,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
 0x004423A0,0x004426BA,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
-0x004426C0,0x00442897,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
+0x004426C0,0x00442897,reviewed,high,archive-decompress-ghidra-review-20261023,"Complete472-byte span including eight internal alignment bytes omitted by sparse Ghidra body; both RET12 paths, four incoming callers, no external interior references/tables, preceding return/CC and following CC padding. docs/ARCHIVE_DECOMPRESSION.md."
 0x004428D0,0x00442903,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
 0x00442910,0x00442AAF,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
 0x00442AB0,0x00442AFE,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."

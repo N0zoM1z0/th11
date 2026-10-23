@@ -618,7 +618,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x004421E0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004422C0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004423A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x004426C0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x004426C0,unknown,Archive,indeterminate,unknown,archive-decompress-origin-review-20261023
 0x004428D0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00442910,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00442AB0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
