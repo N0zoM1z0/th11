@@ -13,3 +13,4 @@ AddToDrawChain
 ExecuteUpdateChain
 ExecuteDrawChain
 UnregisterChainElement
+PollJoystickButtons

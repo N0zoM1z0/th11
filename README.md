@@ -42,10 +42,10 @@ The initial direct-Ghidra inventory contains 1,988 provisional function
 candidates. See generated [`docs/PROGRESS.md`](docs/PROGRESS.md) for current
 review, source, and exact counts; unresolved gaps can change the inventory.
 Canonical units include bounded angle arithmetic, 32-key repeat/edge state,
-the complete keyboard polling path, draw callback dispatch/removal, file
-existence checking, and the ASCII update callback. Update dispatch, ordered
-callback registration, joystick polling, and paired byte transforms remain
-maintained non-exact candidates.
+the complete keyboard polling path, individual joystick-button capture, draw
+callback dispatch/removal, file existence checking, and the ASCII update
+callback. Update dispatch, ordered callback registration, gameplay joystick
+merging, and paired byte transforms remain maintained non-exact candidates.
 The Windows i386 production build is open. Semantic reconstruction and
 portability have not started.
 
@@ -58,7 +58,7 @@ tracked in [`config/tools.lock.toml`](config/tools.lock.toml).
 ```bash
 scripts/repo-python scripts/verify-toolchain.py --execute
 scripts/repo-python scripts/build-match-unit.py --check
-scripts/repo-python scripts/replay-exact-units.py --unit poll-keyboard-input
+scripts/repo-python scripts/replay-exact-units.py --unit poll-joystick-buttons
 scripts/repo-python scripts/progress.py
 scripts/repo-python scripts/ci.py
 ```
@@ -67,8 +67,10 @@ Canonical normal-COFF units cold-compile maintained C/C++ with the locked VC9
 compiler. The Oracle requires a complete compiler-owned function extent and
 exhaustive declared relocations, replays their target bindings, and compares
 every byte. Artifact receipts bind source inputs, profile, target, tools, and
-object hashes. Masked probes do not grant exact credit. Linked/LTCG acceptance
-needs its own VC9 complete-extent Oracle and remains open.
+object hashes. Masked probes do not grant exact credit. Public primary-TU
+linked contributions use a separate [VC9 linked Oracle](docs/LINKED_ORACLE.md),
+with complete PE/MAP/PDB identity, ownership, artifact receipts and exhaustive
+field replay. Specialized static/EH/split-owner contexts remain open.
 
 ## Tools and resource limits
 

@@ -1,10 +1,11 @@
 # Keyboard and joystick polling
 
-Maintained source covers two medium input functions:
+Maintained source covers these medium input functions:
 
 | Function | Complete target extent | Source/codegen state |
 | --- | --- | --- |
 | MergeJoystickInput | `0x00457270..0x0045759B`, 812 bytes | maintained source; normal VC9 candidate 815 bytes; non-exact |
+| PollJoystickButtons | `0x004575A0..0x004576AA`, 267 bytes | canonical linked-PE exact; cold receipt and complete PDB-owned extent |
 | PollKeyboardInput | `0x004576B0..0x00457A27`, 888 bytes | canonical normal-COFF exact; cold replay covers all 888 bytes |
 
 Direct Ghidra review found contiguous bodies, no external interior references,
@@ -80,3 +81,20 @@ was discarded. No joystick exact credit is claimed.
 Partial COM/global views do not close production data ownership, platform
 initialization, or native runtime behavior. Original TU partition and /GL
 ownership remain open even for the keyboard normal-COFF proof.
+
+## Input-configuration joystick buttons
+
+PollJoystickButtons clears the128-byte array at0x004C98A0, then selects the
+same joystick backend flag0x800. WinMM expands each bit of the32-bit button
+mask into byte0x80. DirectInput Poll failure attempts Acquire, then up to400
+additional input-lost retries; this routine does not call the trace sink.
+Poll success reads0x110 bytes and copies its128 buttons from+0x30. It neither
+clears the state buffer nor checks GetDeviceState's HRESULT before copying.
+
+The function returns the array pointer in EAX. Default Ghidra inferred void,
+but caller0x0043BB39 immediately indexes button bytes through EAX. Complete
+raw flow and that caller were reviewed independently. Both normal COFF and
+/GL probes reproduce267 bytes; canonical acceptance uses the new receipt-bound
+linked-PE lane, not masked diagnostics. Its complete cold PDB contribution,
+PE/MAP/PDB identity and thirteen separately reviewed fields replay exactly.
+The source/header, profile, tools, producers and artifact family are bound.

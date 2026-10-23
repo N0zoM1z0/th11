@@ -8,7 +8,7 @@
 | Compiler candidate | TH11 PE/Rich evidence plus hash/banner checks and executed artifact-family smoke |
 | Source presence | Maintained source mapping; grants no byte credit |
 | Normal-COFF exactness | Cold VC9 object, source/tool/object receipt, full owned extent, exhaustive relocation replay, zero byte differences |
-| LTCG exactness | Open: requires a VC9 linked PE/PDB complete-extent and exhaustive linked-field Oracle |
+| LTCG exactness | Cold VC9 linked family receipt, matching PE/MAP/PDB identity, complete public primary-TU contribution, exhaustive linked-field replay, zero differences; specialized static/EH/split ownership remains open |
 | Native product | Full build/link/data/resource/library/initialization closure |
 | Runtime behavior | Original and reconstructed native products agree on declared deterministic observables |
 | Portability | Native baseline and port agree independently |
@@ -35,3 +35,8 @@ Synthetic public negative controls reject wrong final bytes, truncated bodies,
 escaping auxiliary extents, undeclared relocations, wrong relocation values,
 and stale receipts. Private target-bound cold replays provide the actual
 exactness evidence; public CI checks cannot replace them.
+
+`compare-linked-function.py --unit NAME` is a separate acceptance lane for
+public primary-TU code contributions. See `LINKED_ORACLE.md` for its full
+owner, receipt, field-binding and negative-control requirements. It never
+accepts a caller-selected slice or borrows bytes from a following function.

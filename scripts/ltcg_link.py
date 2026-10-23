@@ -1,0 +1,422 @@
+"""Cold, non-runnable VC9 LTCG context builder; exactness needs the linked Oracle."""
+
+from __future__ import annotations
+
+import hashlib
+import os
+from pathlib import Path
+import re
+import subprocess
+import struct
+import tempfile
+import tomllib
+
+
+ROOT = Path(__file__).resolve().parents[1]
+BUILD = ROOT / "build" / "probe-ltcg"
+TOOLS_LOCK = ROOT / "config" / "tools.lock.toml"
+NORMAL_PROFILE = ["/TP", "/MT", "/O2", "/Gy", "/GF", "/Oi", "/DNDEBUG", "/Isrc"]
+LTCG_PROFILE = [*NORMAL_PROFILE, "/GL"]
+LINK_PROFILE = [
+    "/ltcg",
+    "/nodefaultlib",
+    "/subsystem:console",
+    "/incremental:no",
+    "/fixed:no",
+    "/base:0x00400000",
+    "/debug",
+    "/debugtype:cv",
+    "/opt:noref",
+    "/opt:noicf",
+    "/safeseh:no",
+]
+ANCHOR_PREFIX = "_th11_ltcg_probe_anchor_"
+HARNESS_KIND = "unresolved-symbol-data-anchors-v2"
+ANCHOR_SIZE = 0x1000
+UNRESOLVED_MARKER = "unresolved external symbol "
+
+
+def run(
+    command: list[str],
+    *,
+    environment: dict[str, str] | None = None,
+) -> subprocess.CompletedProcess[str]:
+    scratch = ROOT / ".tools" / "tmp"
+    scratch.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryFile(mode="w+", encoding="utf-8", errors="replace", dir=scratch) as output:
+        completed = subprocess.run(command, cwd=ROOT, env=environment, stdout=output, stderr=subprocess.STDOUT)
+        output.seek(0)
+        return subprocess.CompletedProcess(command, completed.returncode, stdout=output.read())
+
+
+
+def sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as stream:
+        for block in iter(lambda: stream.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def tool_environment() -> tuple[Path, dict[str, str]]:
+    with TOOLS_LOCK.open("rb") as stream:
+        lock = tomllib.load(stream)["msvc90"]
+    msvc_root = Path(
+        os.environ.get("TH11_MSVC90_ROOT", ROOT / str(lock["selection"]))
+    ).resolve()
+    linker = msvc_root / "VC" / "bin" / "link.exe"
+    if not linker.is_file() or sha256(linker) != str(lock["components"]["linker"]["sha256"]).lower():
+        raise ValueError("pinned VC9 RTM linker identity mismatch")
+    prefix = Path(
+        os.environ.get(
+            "TH11_WINEPREFIX",
+            os.environ.get("WINEPREFIX", ROOT / ".tools" / "wineprefix-msvc900"),
+        )
+    ).resolve()
+    environment = os.environ.copy()
+    environment.update(
+        {
+            "WINEARCH": "win32",
+            "WINEPREFIX": str(prefix),
+            "TH11_WINEPREFIX": str(prefix),
+            "WINEDEBUG": "-all",
+            "WINEDLLOVERRIDES": "mscoree,mshtml=",
+        }
+    )
+    environment["WINEPATH"] = windows_path(msvc_root / "VC/bin", environment)
+    return linker, environment
+
+
+def windows_path(path: Path, environment: dict[str, str]) -> str:
+    converted = run(["winepath", "-w", str(path.resolve())], environment=environment)
+    if converted.returncode != 0:
+        raise ValueError(f"winepath failed for {path}: {converted.stdout.strip()}")
+    return converted.stdout.strip().replace("\r", "")
+
+
+def remove_files(paths: list[Path]) -> list[str]:
+    removed = []
+    for path in paths:
+        if not path.exists():
+            continue
+        if not path.is_file():
+            raise ValueError(f"cold-build output is not a file: {path}")
+        path.unlink()
+        removed.append(str(path.relative_to(ROOT)))
+    return removed
+
+
+def compile_source(source: Path, output: Path, profile: list[str]) -> None:
+    remove_files([output, output.with_suffix(".pdb"), output.with_suffix(".idb")])
+    completed = run(
+        [
+            str(ROOT / "scripts" / "compile-probe.sh"),
+            str(source),
+            str(output),
+            *profile,
+        ]
+    )
+    if completed.returncode != 0 or not output.is_file():
+        try:
+            source_label = source.relative_to(ROOT)
+        except ValueError:
+            source_label = source
+        raise ValueError(f"compile failed for {source_label}: {completed.stdout.strip()}")
+
+
+def unresolved_symbols(output: str) -> list[str]:
+    result = []
+    for line in output.splitlines():
+        if UNRESOLVED_MARKER not in line:
+            continue
+        tail = line.split(UNRESOLVED_MARKER, 1)[1]
+        decorated = re.search(r"\((\S+)\)(?:\s+referenced.*)?$", tail)
+        symbol = decorated.group(1) if decorated else tail.split()[0]
+        if symbol not in result:
+            result.append(symbol)
+    return sorted(result)
+
+
+def link_command(
+    linker: Path,
+    environment: dict[str, str],
+    source_objects: list[Path],
+    entry: str,
+    image: Path,
+    map_path: Path,
+    pdb: Path,
+    anchor_object: Path | None,
+    aliases: Path | None,
+) -> list[str]:
+    command = [
+        str(ROOT / "scripts" / "run-headless-wine.sh"),
+        os.environ.get("WINE", "wine"),
+        str(linker),
+        "/nologo",
+        *LINK_PROFILE,
+        f"/entry:{entry}",
+        f"/map:{windows_path(map_path, environment)}",
+        f"/pdb:{windows_path(pdb, environment)}",
+        f"/out:{windows_path(image, environment)}",
+        *(windows_path(source_object, environment) for source_object in source_objects),
+    ]
+    if anchor_object is not None:
+        command.append(windows_path(anchor_object, environment))
+    if aliases is not None:
+        command.append("@" + windows_path(aliases, environment))
+    return command
+
+
+def write_anchors(
+    directory: Path, symbols: list[str]
+) -> tuple[Path, Path, dict[str, str]]:
+    source = directory / "link-anchors.c"
+    output = directory / "link-anchors.obj"
+    aliases = directory / "link-aliases.rsp"
+    bindings = {
+        symbol: f"{ANCHOR_PREFIX}{index:04d}"
+        for index, symbol in enumerate(symbols)
+    }
+    source.write_text(
+        "/* Diagnostic-only, non-runnable unresolved-symbol address anchors. */\n"
+        + "".join(
+            f"unsigned char {anchor[1:]}[{ANCHOR_SIZE}] = {{0}};\n"
+            for anchor in bindings.values()
+        ),
+        encoding="ascii",
+    )
+    aliases.write_text(
+        "".join(
+            f"/alternatename:{symbol}={anchor}\n"
+            for symbol, anchor in bindings.items()
+        ),
+        encoding="ascii",
+    )
+    compile_source(source, output, ["/TC", "/O2", "/Gy", "/GS-", "/DNDEBUG"])
+    return output, aliases, bindings
+
+
+def reject_unresolved_entry(entry: str, unresolved: list[str]) -> None:
+    # VC9 may prefix a C entry spelling with an underscore. Neither spelling
+    # may be satisfied by the data-anchor harness.
+    forbidden = {entry, "_" + entry}
+    if forbidden.intersection(unresolved):
+        raise ValueError("requested LTCG entry is unresolved; refusing data anchor: " + entry)
+
+
+def validate_link_entry(
+    image_path: Path, map_path: Path, pdb_path: Path,
+    entry: str, source_objects: list[Path],
+) -> dict[str, object]:
+    from linked_image import PEImage, linked_functions, map_publics
+
+    image = PEImage(image_path)
+    pe_offset = struct.unpack_from("<I", image.data, 0x3C)[0]
+    entry_rva = struct.unpack_from("<I", image.data, pe_offset + 24 + 16)[0]
+    address = image.image_base + entry_rva
+    allowed_objects = {path.name.lower() for path in source_objects}
+    publics = [item for item in map_publics(map_path)
+               if item["symbol"] in {entry, "_" + entry}]
+    if len(publics) != 1:
+        raise ValueError("requested LTCG entry has no unique linker-map identity: " + entry)
+    public = publics[0]
+    owner = str(public["object"]).replace("\\", "/").rsplit("/", 1)[-1].lower()
+    if public["address"] != address or "f" not in public["flags"] or owner not in allowed_objects:
+        raise ValueError("PE entry does not identify requested maintained code: " + entry)
+    section = image.section(int(public["section_number"]))
+    if not section.characteristics & 0x20000000:
+        raise ValueError("requested LTCG entry is not in an executable section")
+    functions = [item for item in linked_functions(image_path, map_path, pdb_path)["functions"]
+                 if item["symbol"] == public["symbol"] and int(str(item["address"]), 0) == address]
+    if len(functions) != 1 or int(functions[0]["size"]) <= 0:
+        raise ValueError("requested LTCG entry has no unique complete PDB contribution")
+    pdb_owner = str(functions[0]["pdb_object"]).replace("\\", "/").rsplit("/", 1)[-1].lower()
+    if pdb_owner != owner:
+        raise ValueError("requested LTCG entry map/PDB owners disagree")
+    return {"requested": entry, "symbol": public["symbol"],
+            "address": f"0x{address:08X}", "rva": entry_rva,
+            "object": owner, "size": int(functions[0]["size"])}
+
+
+def support_profile_overrides(
+    supports: list[Path] | tuple[Path, ...],
+    normals: set[Path] | tuple[Path, ...],
+    raw: object,
+) -> dict[Path, list[str]]:
+    """Validate explicit per-TU LTCG profiles; normal COFF keeps its own lane."""
+    if not isinstance(raw, dict):
+        raise ValueError("support_profiles must be a source-to-profile table")
+    selected = {path.resolve() for path in supports}
+    normal = {path.resolve() for path in normals}
+    result = {}
+    for source, flags in raw.items():
+        if not isinstance(source, (str, Path)) or not str(source):
+            raise ValueError("support_profiles requires source paths")
+        path = (ROOT / source).resolve()
+        if path not in selected or path in normal:
+            raise ValueError("profile override must name a selected LTCG support source")
+        if path in result:
+            raise ValueError("support_profiles repeats a resolved source")
+        if (not isinstance(flags, list) or not flags
+                or any(not isinstance(flag, str) or not flag or flag != flag.strip()
+                       for flag in flags)):
+            raise ValueError("support profile must be a nonempty switch array")
+        lowered = [flag.lower() for flag in flags]
+        if lowered.count("/gl") != 1 or any(flag.startswith(("/gl", "-gl")) and flag != "/gl" for flag in lowered):
+            raise ValueError("support profile override must preserve /GL")
+        result[path] = list(flags)
+    return result
+
+
+def cold_link(
+    source: Path,
+    directory: Path,
+    entry: str,
+    linker: Path,
+    environment: dict[str, str],
+    profile: list[str] | None = None,
+    support_sources: list[Path] | None = None,
+    normal_support_sources: list[Path] | None = None,
+    support_profiles: dict[Path | str, list[str]] | None = None,
+) -> dict[str, object]:
+    if profile is None:
+        profile = LTCG_PROFILE
+    if not any(flag.lower() == "/gl" for flag in profile):
+        raise ValueError("LTCG link source profile must contain /GL")
+    directory = directory.resolve()
+    try:
+        directory.relative_to((ROOT / "build").resolve())
+    except ValueError as exc:
+        raise ValueError("LTCG link directory must stay below build/") from exc
+    directory.mkdir(parents=True, exist_ok=True)
+    ltcg_object = directory / "source.ltcg.obj"
+    if support_sources is None:
+        support_sources = []
+    resolved_support_sources = [support.resolve() for support in support_sources]
+    if len(set(resolved_support_sources)) != len(resolved_support_sources):
+        raise ValueError("LTCG support sources must be unique")
+    if source.resolve() in resolved_support_sources:
+        raise ValueError("LTCG primary source cannot also be a support source")
+    if normal_support_sources is None:
+        normal_support_sources = []
+    resolved_normal_support_sources = {
+        support.resolve() for support in normal_support_sources
+    }
+    unknown_normal_supports = (
+        resolved_normal_support_sources - set(resolved_support_sources)
+    )
+    if unknown_normal_supports:
+        raise ValueError(
+            "normal support source is not present in support_sources: "
+            + ", ".join(str(path) for path in sorted(unknown_normal_supports))
+        )
+    resolved_profiles = support_profile_overrides(
+        resolved_support_sources, resolved_normal_support_sources,
+        support_profiles if support_profiles is not None else {},
+    )
+    support_objects = [
+        directory / (
+            f"support-{index:02d}-{support.stem}.normal.obj"
+            if support in resolved_normal_support_sources
+            else f"support-{index:02d}-{support.stem}.ltcg.obj"
+        )
+        for index, support in enumerate(resolved_support_sources)
+    ]
+    image = directory / "source.exe"
+    map_path = directory / "source.map"
+    pdb = directory / "source.pdb"
+    anchor_source = directory / "link-anchors.c"
+    anchor_object_path = directory / "link-anchors.obj"
+    alias_path = directory / "link-aliases.rsp"
+    old_logs = sorted(directory.glob("link-attempt-*.log"))
+    removed = remove_files(
+        [
+            image,
+            map_path,
+            pdb,
+            image.with_suffix(".ilk"),
+            anchor_source,
+            anchor_object_path,
+            anchor_object_path.with_suffix(".pdb"),
+            anchor_object_path.with_suffix(".idb"),
+            alias_path,
+            *old_logs,
+        ]
+    )
+    compile_source(source, ltcg_object, list(profile))
+    normal_support_profile = [
+        flag for flag in profile if flag.lower() != "/gl"
+    ]
+    for support_source, support_object in zip(
+        resolved_support_sources, support_objects
+    ):
+        support_profile = (
+            normal_support_profile
+            if support_source in resolved_normal_support_sources
+            else list(profile)
+        )
+        support_profile = resolved_profiles.get(support_source, support_profile)
+        compile_source(support_source, support_object, list(support_profile))
+    source_objects = [ltcg_object, *support_objects]
+    symbols: list[str] = []
+    bindings: dict[str, str] = {}
+    logs = []
+    anchor_object = None
+    aliases = None
+    for attempt in range(1, 9):
+        remove_files([image, map_path, pdb, image.with_suffix(".ilk")])
+        if symbols:
+            anchor_object, aliases, bindings = write_anchors(directory, symbols)
+        linked = run(
+            link_command(
+                linker,
+                environment,
+                source_objects,
+                entry,
+                image,
+                map_path,
+                pdb,
+                anchor_object,
+                aliases,
+            ),
+            environment=environment,
+        )
+        log = directory / f"link-attempt-{attempt}.log"
+        log.write_text(linked.stdout, encoding="utf-8", errors="replace")
+        logs.append(log)
+        if linked.returncode == 0:
+            break
+        observed = unresolved_symbols(linked.stdout)
+        reject_unresolved_entry(entry, observed)
+        new_symbols = sorted(set(observed) - set(symbols))
+        if not observed:
+            raise ValueError(
+                "LTCG link failed without parseable unresolved symbols: "
+                f"{linked.stdout.strip()}"
+            )
+        if not new_symbols:
+            raise ValueError(
+                "anchored LTCG link repeated the same unresolved symbols: "
+                + ", ".join(observed)
+            )
+        symbols = sorted(set(symbols) | set(new_symbols))
+    else:
+        raise ValueError("anchored LTCG link exceeded eight resolution attempts")
+    if not all(path.is_file() for path in (image, map_path, pdb)):
+        raise ValueError("LTCG link did not produce image, map, and PDB")
+    entry_identity = validate_link_entry(image, map_path, pdb, entry, source_objects)
+    return {
+        "entry_identity": entry_identity,
+        "object": ltcg_object,
+        "objects": source_objects,
+        "support_sources": resolved_support_sources,
+        "normal_support_sources": sorted(resolved_normal_support_sources),
+        "support_profiles": resolved_profiles,
+        "image": image,
+        "map": map_path,
+        "pdb": pdb,
+        "cold_removed": removed,
+        "unresolved_symbols": symbols,
+        "anchor_bindings": bindings,
+        "link_logs": logs,
+    }

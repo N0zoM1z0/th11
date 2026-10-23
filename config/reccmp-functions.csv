@@ -7,6 +7,7 @@ ExecuteUpdateChain,0x00456CB0,function
 ExecuteDrawChain,0x00456E10,function
 UnregisterChainElement,0x00457080,function
 MergeJoystickInput,0x00457270,function
+PollJoystickButtons,0x004575A0,function
 PollKeyboardInput,0x004576B0,function
 ScatterXorBlocks,0x004581C0,function
 GatherXorBlocks,0x004582E0,function

@@ -33,8 +33,11 @@ verified historical tools, and reproducible cold compilation with zero byte
 differences. Masked diagnostic matches grant no exact credit. A normal-COFF
 match does not establish the target's original TU partition or /GL ownership.
 Do not remove /GL from an established LTCG owner to fit a normal-COFF Oracle.
-Linked/LTCG acceptance remains open until a dedicated complete-extent Oracle
-is implemented and validated for VC9.
+Linked/LTCG acceptance is limited to complete public primary-TU PDB code
+contributions through `compare-linked-function.py`: require cold family
+receipts, PE/MAP/PDB identity and owner agreement, exhaustive field replay,
+and full byte equality. Specialized static-owner, EH and split-owner contexts
+remain open. Never crop an extent to fit this lane.
 
 Required order: exact reconstruction; faithful Windows i386 build and runtime
 closure; semantic reconstruction with target plus native product Oracles;

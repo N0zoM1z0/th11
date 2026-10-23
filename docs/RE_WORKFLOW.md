@@ -26,6 +26,7 @@ Do not refresh the initial inventory over maintained mappings or exact rows.
 Export later candidates to a separate private location and reconcile changes.
 
 Whole native product closure, target/native runtime comparisons, semantic
-reconstruction, and portability are separate later gates. The current normal
-COFF Oracle has no authority over established LTCG-owned units. Implement a
-VC9 linked/PDB complete-extent Oracle before accepting those units.
+reconstruction, and portability are separate later gates. The normal-COFF
+Oracle has no authority over established LTCG-owned units. Public primary-TU
+linked contributions use the separate VC9 Oracle described in
+`LINKED_ORACLE.md`; specialized static/EH/split-owner contexts remain open.

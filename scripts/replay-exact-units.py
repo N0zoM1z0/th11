@@ -27,7 +27,12 @@ def main() -> int:
         return 0
     subprocess.run(command, cwd=ROOT, check=True)
     for name in selected:
-        subprocess.run([sys.executable, str(ROOT / 'scripts/compare-coff-function.py'), '--unit', name, '--json'], cwd=ROOT, check=True)
+        kind = units[name]['artifact_kind']
+        comparator = 'compare-linked-function.py' if kind == 'linked-pe' else 'compare-coff-function.py'
+        command = [sys.executable, str(ROOT / 'scripts' / comparator), '--unit', name]
+        if kind == 'coff':
+            command.append('--json')
+        subprocess.run(command, cwd=ROOT, check=True)
     print(f'cold replay passed: {len(selected)} units')
     return 0
 

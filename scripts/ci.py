@@ -10,7 +10,7 @@ for source in (ROOT / 'scripts').glob('*.py'):
 for command in [
     ['validate-tracking.py'], ['build-match-unit.py', '--check'],
     ['build.py', '--check'], ['verify-toolchain.py', '--check-declarations'],
-    ['progress.py', '--check'], ['test-exact-oracle.py'],
+    ['progress.py', '--check'], ['test-exact-oracle.py'], ['test-linked-oracle.py'],
 ]:
     subprocess.run([sys.executable, str(ROOT / 'scripts' / command[0]), *command[1:]], cwd=ROOT, check=True)
 subprocess.run(['git', 'diff', '--check'], cwd=ROOT, check=True)

@@ -125,3 +125,27 @@ convention. No manual ABI was imposed. Both linked bodies remain293 versus
 target284 bytes; this is compiler evidence only, not exact acceptance. Probe
 source/results remain under `.analysis/cipher-caller/` and
 `build/probe-ltcg/cipher-caller/`.
+
+## Joystick button capture and VC9 linked acceptance (2026-10-23)
+
+PollJoystickButtons at0x004575A0 is exact across267 bytes using a cold /GL
+linked-PE context. Its returned array at0x004C98A0 is directly consumed by the
+input-configuration caller0x0043BB39; default Ghidra void inference was wrong.
+WinMM expands32 bits; DirectInput copies128 bytes after GetDeviceState even
+on error and does not initialize that source buffer. Failure Poll performs
+up to400 extra input-lost acquisitions without the gameplay trace call.
+
+The new public linked Oracle requires source/tool/producer/artifact receipts,
+matching complete PE/MAP/PDB identity and primary-TU owner, exhaustive fields
+and zero differences. Thirteen fields bind this function. Twenty-four synthetic
+controls exercise its acceptance boundary. Specialized static/EH/split contexts
+remain open; original TU ownership and native product closure are not proved.
+Only the new267-byte unit was cold-built/replayed. Earlier eight exact units
+were not rebuilt. Details are in `LINKED_ORACLE.md` and `INPUT_POLLING.md`.
+
+Bounded new compiler probes found that an empty trace sink in a separate
+normal-COFF support TU retains its call but leaves MergeJoystickInput at815
+bytes; it does not reproduce the target's preservation/scheduling context.
+Natural byte-cipher loop/source-style probes also remain non-exact. Private
+results stay under `.analysis/joystick-native-trace/` and
+`.analysis/cipher-shapes/`; no exact credit was added for those experiments.

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Cold-build declared VC9 normal-COFF units; linked/LTCG contexts remain open."""
+"""Cold-build selected VC9 normal-COFF or public linked-PE contexts."""
 from __future__ import annotations
 import argparse
 import json
@@ -8,6 +8,8 @@ import subprocess
 import sys
 import tomllib
 from artifact_receipt import ROOT, contract, receipt, receipt_path
+import linked_receipt
+from ltcg_link import cold_link, tool_environment
 from target_identity import resolve_target, verify_target
 
 
@@ -19,10 +21,23 @@ def units() -> dict:
     if document.get('schema_version') != 1 or document.get('target_sha256') != target['sha256']:
         raise ValueError('unit manifest is not bound to the current target')
     result = document.get('units', {})
+    outputs = {}
     for name, unit in result.items():
-        contract(unit)
+        context = unit_context(unit)
+        output = context.get('object', context.get('output_dir'))
+        key = json.dumps(context, sort_keys=True)
+        if output in outputs and outputs[output] != key:
+            raise ValueError('different compilation contexts share an output')
+        outputs[output] = key
         if not unit.get('functions') or not unit.get('symbol') or int(unit['size']) <= 0:
             raise ValueError(f'incomplete unit: {name}')
+        if unit['artifact_kind'] == 'linked-pe':
+            from importlib.util import spec_from_file_location, module_from_spec
+            spec = spec_from_file_location('linked_oracle_graph', ROOT / 'scripts/compare-linked-function.py')
+            oracle = module_from_spec(spec)
+            spec.loader.exec_module(oracle)
+            oracle.fields(unit)
+            continue
         relocations = unit.get('relocations', [])
         occupied = set()
         for row in relocations:
@@ -34,7 +49,29 @@ def units() -> dict:
     return result
 
 
+def unit_context(unit: dict) -> dict:
+    return linked_receipt.contract(unit) if unit.get('artifact_kind') == 'linked-pe' else contract(unit)
+
+
 def build(unit: dict) -> None:
+    if unit.get('artifact_kind') == 'linked-pe':
+        context = linked_receipt.contract(unit)
+        directory = ROOT / context['output_dir']
+        directory.mkdir(parents=True, exist_ok=True)
+        path = directory / 'linked.receipt.json'
+        path.unlink(missing_ok=True)
+        before = linked_receipt.provenance(unit)
+        linker, environment = tool_environment()
+        cold_link(ROOT / context['source'], directory, context['entry'], linker, environment,
+                  profile=context['profile'],
+                  support_sources=[ROOT / p for p in context['support_sources']],
+                  normal_support_sources=[ROOT / p for p in context['normal_support_sources']],
+                  support_profiles=context['support_profiles'])
+        observed = linked_receipt.receipt(unit)
+        if {k: v for k, v in observed.items() if k != 'artifacts_sha256'} != before:
+            raise ValueError('linked inputs or tools changed during cold compilation')
+        path.write_text(json.dumps(observed, indent=2) + '\n')
+        return
     context = contract(unit)
     output = ROOT / context['object']
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -57,7 +94,8 @@ def main() -> int:
         if set(selected) - set(configured):
             raise ValueError('unknown unit selector')
         if args.check:
-            print(f'match graph OK: {len(configured)} declared VC9 normal-COFF units; LTCG acceptance not configured')
+            counts = {kind: sum(u['artifact_kind'] == kind for u in configured.values()) for kind in ('coff', 'linked-pe')}
+            print(f'match graph OK: {counts["coff"]} VC9 normal-COFF, {counts["linked-pe"]} public linked-PE units')
             return 0
         _, problems = verify_target(resolve_target())
         if problems:
@@ -66,7 +104,7 @@ def main() -> int:
         built = set()
         for name in selected:
             unit = configured[name]
-            key = json.dumps(contract(unit), sort_keys=True)
+            key = json.dumps(unit_context(unit), sort_keys=True)
             if key not in built:
                 build(unit)
                 built.add(key)
