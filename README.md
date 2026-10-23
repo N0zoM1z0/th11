@@ -59,6 +59,9 @@ The main window callback has an exact proof; CPU surface transfer source is
 tracked in [`docs/WINDOW_SURFACE_BUFFER.md`](docs/WINDOW_SURFACE_BUFFER.md).
 Text bitmap creation/release and font initialization have exact proofs;
 [`docs/TEXT_RESOURCES.md`](docs/TEXT_RESOURCES.md) also records checksum source.
+Startup path, shortcut and window-creation source is maintained in
+[`docs/STARTUP_WINDOW.md`](docs/STARTUP_WINDOW.md), with bounded diagnostics and
+explicitly unresolved exactness.
 The Windows i386 production build is open. Semantic reconstruction and
 portability have not started.
 

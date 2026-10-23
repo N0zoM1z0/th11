@@ -475,7 +475,44 @@ before retrying those configurations; full native data/runtime closure is open.
   independently observed. Initial void decompiler signature was wrong.
   Current251/179 differences remains non-exact; indexed224, early pointer247
   and nested251 contexts do not close it. Avoid repeating those configurations.
-- Startup title/link handling344 and shortcut helper274 have complete private
-  instruction/reference dumps but no source or byte credit. Shortcut uses
-  EDI destination and stack filename, EAX boolean/RET4; default decompiler
-  signature omits that destination. They are useful new medium candidates.
+- Startup title/link handling344 and shortcut helper274 now have complete
+  non-exact source. Shortcut uses native EDI destination and stack filename,
+  EAX boolean/RET4; the default decompiler signature omits that destination.
+  Current evidence and failed contexts are in STARTUP_WINDOW.md.
+
+
+## Startup paths and window initialization
+
+- Three full medium sources cover1,195 target bytes: InitializeMainWindow577,
+  CheckStartupPath344 and ReadShortcutTarget274. No exact credit: current
+  candidates569/353/243 have383/265/207 unequal unrelocated positions. Previous35
+  exact inputs/units were unchanged and not replayed.
+- Startup caller0x004455CC explicitly tests EAX==-1, correcting the void
+  decompiler hypothesis. Return0/-1 is determined by opaque integer0x004C9898,
+  independently from missing-title flags0x40 and byte mismatch root+B30.
+  Existence is queried even when no dot exists; shortcut loops keep loading
+  the original input filename, not the previous output. Preserve these flows.
+- Shortcut null destination returns0 without COM calls. CoInitialize and
+  conversion results are ignored; SUCCEEDED accepts nonnegative HRESULTs.
+  Query/load/GetPath use real ShellLinkA/PersistFile identities. Every explicit
+  delete/release path and CoUninitialize behavior is retained; no Resolve call
+  occurs. Generic helper origin remains indeterminate. Current EDI/EBX/RET
+  convention differs from native EDI/stack/RET4; checked new-array sizing also
+  differs. Early-return264, shared-return243, input-order,<new>,/EHsc contexts
+  did not close it; do not repeat them without new evidence.
+- Window setup caller0x00445733 supplies HINSTANCE in EBX. Explicit memset
+  rather than aggregate WNDCLASSA initialization restores EBX and48-byte frame;
+  full body still differs. Retain BLACK_BRUSH4, BASE class, actual title,
+  callback, activation1/0, mode bits2:3 and timing/frame-skip mask0x10. Opaque
+  root+B84 records become(15,15,0),(12,12,0),(12,12,0),(8,8,0), then root+B80=0.
+- Window styles are0x90000000 fullscreen and0x100B0000 windowed. Windowed bases
+  are1280x960/960x720/640x480 plus the actual fixed-frame/caption metrics.
+  GetWindowRect and root+B08/+58 publication precede the null-handle test.
+  Success minimizes, sleeps16 ms and restores. The+58 consumer remains open;
+  the timing byte at+1EB equals2 in this test and is not a proved boolean.
+- Fifty-one bounded native/candidate machine-code cases agree with modeled
+  Win32/COM/CRT calls, including API ordering, arguments, failures, cleanup,
+  outputs, runtime fields, saved registers and each actual stack convention.
+  Native GUID/class/title data are retained; instructions are not patched.
+  One CPU/nice10, about88 MiB peak RSS. This supplies no exact/native/full
+  semantic authority. See STARTUP_WINDOW.md and the private differential reports.

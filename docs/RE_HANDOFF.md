@@ -5,7 +5,7 @@ Use direct Ghidra only. Read `AGENTS.md` and inspect dirty work before changes.
 
 ## Current checkpoint
 
-Inventory:1,989 provisional candidates; fifty-four reviewed/source-present.
+Inventory:1,989 provisional candidates; fifty-seven reviewed/source-present.
 Thirty-five canonical exact functions total8,051 owned bytes:
 
 - Eight normal-COFF units: ASCII update22; AddAngles157; NormalizeAngle145;
@@ -20,12 +20,41 @@ Thirty-five canonical exact functions total8,051 owned bytes:
   device-state reset778, main window callback418, text surface release105/
   creation396 and text/font initialization346.
 
-This checkpoint adds exact text surface creation396, release105 and font/
-sample initialization346:847 owned bytes and56 independently reviewed fields.
-Three new canonical units share two cold families, each accepting only its
-public primary-TU contribution. Previous32 source/header inputs and proofs
-remain untouched. Executable checksum246 also has complete maintained source,
-non-exact251/179 differences. See `TEXT_RESOURCES.md`.
+This checkpoint adds three complete medium-function sources: window creation577,
+startup path344 and shortcut target274 (1,195 target bytes). All are non-exact:
+current569/353/243 candidates differ at383/265/207 unrelocated positions.
+No new canonical unit or exact credit is declared; previous35 source/header
+inputs and canonical proofs are unchanged and were not replayed. See
+`STARTUP_WINDOW.md`.
+
+Fifty-one bounded target/candidate machine-code cases agree under explicit
+Win32/COM/CRT models; the24 window cases were refreshed after final cleanup.
+This is diagnostic evidence only, not exact/native/semantic acceptance.
+The full run uses one CPU, nice10, about88 MiB peak RSS. Actual GUID/class/title
+constants are independently supplied; no target code is patched.
+
+CheckStartupPath returns0/-1 from opaque gate0x004C9898; the native caller tests
+-1. Missing title flag0x40, byte mismatch at root+B30 and the return gate are
+independent. Shortcut loops reload the original filename each iteration.
+ReadShortcutTarget receives native EDI destination/stack filename, EAX boolean/
+RET4. Source currently uses EDI/EBX and RET, so ABI remains unresolved. Preserve
+ignored CoInitialize/conversion status, all COM releases and unconditional
+CoUninitialize for non-null destination. The native checked array sizing and
+source243 body remain different; generic helper origin stays indeterminate.
+
+Window creation's actual HINSTANCE input is EBX, confirmed by caller. Explicit
+memset rather than WNDCLASSA aggregate initialization restores that private
+boundary and48-byte frame, but not full equality. Keep BLACK_BRUSH(4), exact
+window styles, metric calls, fullscreen-first flow, opaque record resets and
+GetWindowRect/handle publication even on null CreateWindowEx result. Root+58
+is a second HWND with unknown consumer. Mode/timing byte meanings remain partial.
+Free/member/fastcall aggregate contexts did not close it; input order,<new>,
+/EHsc and early/shared-return shortcut contexts also failed. Do not repeat
+these configurations without new evidence.
+
+The preceding checkpoint added exact text creation396, release105 and font/
+sample initialization346, plus non-exact executable checksum246. See
+`TEXT_RESOURCES.md` for their56 exact bindings and checksum251/179 differences.
 
 The text workspace at0x004A57C0 has256 sample bytes, followed by the earlier
 surface-copy layout. Presence+11C is the DIB handle; DC+114, previous selection
@@ -131,13 +160,13 @@ remain pinned. Do not replay full cohorts for a local change.
 
 ## Remaining useful work and recent evidence
 
-- Startup title/link handling0x00447580(344) and shortcut resolution0x004477F0
-  (274) have full instruction/reference review in `.analysis/font-startup-review.txt`
-  and bounded hypotheses in `render-medium-candidates.c`, but no source/credit.
-  Native shortcut inputs are destination in EDI and filename on stack; it
-  returns an EAX boolean and RET4. Review those actual operations before
-  choosing natural source ABI; do not keep the decompiler's missing receiver.
-  Font setup and executable checksum are now maintained; see current checkpoint.
+- Window creation577 and startup/shortcut344/274 now have complete non-exact
+  source and51 bounded machine-code cases; see `STARTUP_WINDOW.md` before
+  revisiting known failed contexts. New device initialization0x00446D30(1,338
+  provisional bytes) follows window creation and remains without source; its
+  complete boundary/ABI/origin must be reviewed. Do not count entry/call-boundary
+  observations as implementation. The657-byte compositor is another useful
+  medium/large candidate with prior instruction review but no source.
 - Surface read/write201/217 now have maintained202/205-byte member source;
   review `WINDOW_SURFACE_BUFFER.md` before revisiting the failed contexts.
   The adjacent657-byte compositor has complete instruction review but no

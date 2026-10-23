@@ -52,3 +52,6 @@ ReleaseTextSurface
 CreateTextSurface
 InitializeTextResources
 ComputeExecutableChecksum
+InitializeMainWindow
+CheckStartupPath
+ReadShortcutTarget

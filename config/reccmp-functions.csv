@@ -26,8 +26,11 @@ RunFrame,0x00446650,function
 PresentFrame,0x00446790,function
 HandleScreenshotHotkey,0x00446880,function
 GetFrameClockSeconds,0x00446920,function
+InitializeMainWindow,0x00446AE0,function
 ResetDeviceRenderStates,0x00447270,function
+CheckStartupPath,0x00447580,function
 ComputeExecutableChecksum,0x004476F0,function
+ReadShortcutTarget,0x004477F0,function
 BindAnimationScript,0x0044ACD0,function
 FlushRenderBatch,0x0044FD10,function
 AddToUpdateChain,0x00456B70,function
