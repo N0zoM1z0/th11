@@ -25,3 +25,8 @@ ScreenshotWriteThread
 OpenSharedFileForWrite
 OpenSharedFileForRead
 WriteSharedFile
+LoadResourceFile
+WriteWholeFile
+FindArchiveEntry
+ReadArchivedFile
+LeaveRuntimeCriticalSection

@@ -253,3 +253,29 @@ scan and still emits the observed write-error message. Write checks byte
 count rather than BOOL, returns-1/-2/0 and does not reset the stored handle.
 Source `size != written` preserves target operand order. The ordinary source
 naturally generates ESI filenames and EDX buffer/ESI size. See `SHARED_FILE.md`.
+
+## Resource load and complete-file write exactness (2026-10-23)
+
+`LoadResourceFile`0x00458400 (466 bytes), `WriteWholeFile`0x00458670 (297)
+and required `FindArchiveEntry`0x004418D0 (53) pass complete cold public
+primary-TU linked proofs. Three new units replay66 independent fields and816
+bytes with zero differences; preceding twenty proofs were not replayed.
+
+Zero load mode uses archive0x004C9680; nonzero mode uses disk. Archive miss
+sets a supplied size to zero, disk-open failure leaves it unchanged. The
+second delimiter search restores the original path on failure rather than
+retaining the first basename. Extraction and ReadFile status are ignored as
+observed. Assigning lookup zero only after failure and placing the common
+failure joins before disk success recover the target's register/block layout.
+
+Complete-file writing uses a local handle and three status paths. Ordinary
+stdcall source produces filename-in-EDI, size-in-EBX and buffer on stack.
+The loader naturally has filename-in-EAX and two stack arguments. The lookup
+has archive-in-EAX and name-in-EBX; no custom register ABI was imposed.
+
+Maintained archive extraction uses16-byte records, adjacent-entry packed
+length, a partial virtual stream with Read+8/Seek+0x18 and eight12-byte cipher
+rules at0x004A3480. Its source310/target300 remains non-exact; generic runtime
+unlock37 differs in one SIB byte. Observed buffer ownership/free conditions
+are preserved. See `RESOURCE_FILES.md` for complete paths and bounded failed
+contexts, including the need to retain non-global archive caller visibility.

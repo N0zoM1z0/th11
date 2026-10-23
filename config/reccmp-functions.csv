@@ -4,6 +4,9 @@ AsciiManagerAppendString,0x004014E0,function
 AsciiManagerExpireStrings,0x00401D50,function
 ScreenshotWriteThread,0x00429BB0,function
 CaptureScreenshot,0x00429CA0,function
+LeaveRuntimeCriticalSection,0x0042B700,function
+ReadArchivedFile,0x00441760,function
+FindArchiveEntry,0x004418D0,function
 HandleScreenshotHotkey,0x00446880,function
 GetFrameClockSeconds,0x00446920,function
 AddToUpdateChain,0x00456B70,function
@@ -16,7 +19,9 @@ PollJoystickButtons,0x004575A0,function
 PollKeyboardInput,0x004576B0,function
 ScatterXorBlocks,0x004581C0,function
 GatherXorBlocks,0x004582E0,function
+LoadResourceFile,0x00458400,function
 FileExists,0x004585E0,function
+WriteWholeFile,0x00458670,function
 OpenSharedFileForWrite,0x004587A0,function
 OpenSharedFileForRead,0x00458860,function
 WriteSharedFile,0x00458920,function

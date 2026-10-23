@@ -436,7 +436,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0042B600,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042B680,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042B6D0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0042B700,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0042B700,authored_game,MainRuntime,authored,high,resource-files-ghidra-review-20261023
 0x0042B7F0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042B8D0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042B8E0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
@@ -594,9 +594,9 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x004415C0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00441650,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004416C0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00441760,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00441760,authored_game,Archive,authored,high,resource-files-ghidra-review-20261023
 0x00441890,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x004418D0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x004418D0,authored_game,Archive,authored,high,resource-files-ghidra-review-20261023
 0x00441910,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00441A60,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00441BD0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
@@ -855,9 +855,9 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00458170,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004581C0,unknown,ByteCipher,review,unknown,byte-cipher-origin-open-2026-10-23
 0x004582E0,unknown,ByteCipher,review,unknown,byte-cipher-origin-open-2026-10-23
-0x00458400,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00458400,authored_game,ResourceFile,authored,high,resource-files-ghidra-review-20261023
 0x004585E0,authored_game,FileSystem,authored,high,file-io-global-lock-wrapper-2026-10-23
-0x00458670,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00458670,authored_game,WholeFile,authored,high,resource-files-ghidra-review-20261023
 0x004587A0,authored_game,SharedFile,authored,high,shared-file-ghidra-review-20261023
 0x00458860,authored_game,SharedFile,authored,high,shared-file-ghidra-review-20261023
 0x00458920,authored_game,SharedFile,authored,high,shared-file-ghidra-review-20261023

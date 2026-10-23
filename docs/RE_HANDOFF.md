@@ -5,41 +5,42 @@ Use direct Ghidra only. Read `AGENTS.md` and inspect dirty work before changes.
 
 ## Current checkpoint
 
-Inventory:1,989 provisional candidates; twenty-seven reviewed/source-present.
-Twenty canonical exact functions total4,005 owned bytes:
+Inventory:1,989 provisional candidates; thirty-two reviewed/source-present.
+Twenty-three canonical exact functions total4,821 owned bytes:
 
 - Eight normal-COFF units: ASCII update22; AddAngles157; NormalizeAngle145;
   repeat state105; keyboard polling888; file check141; draw chain284 including
   table; callback removal114.
-- Twelve linked-PE units: joystick button capture267, ordered update/draw
+- Fifteen linked-PE units: joystick button capture267, ordered update/draw
   registration147 each, ASCII string appender182, frame clock260, random
   generation105/153, log append211, screenshot writer229, shared file open
-  modes180 each and write helper88.
+  modes180 each, write helper88, resource load466, complete-file write297
+  and the required archive lookup53.
 
-This checkpoint adds four exact functions,677 bytes. Only
-`screenshot-write-thread`, `open-shared-file-for-write`,
-`open-shared-file-for-read` and `write-shared-file` were cold-replayed. Two
-cold families put each accepted contribution in its own primary TU; three
-shared-file units deduplicate one family. Prior sixteen proofs were not
-replayed. All68 independently reviewed fields and all owned bytes match.
+This checkpoint adds three exact functions,816 bytes. Only
+`load-resource-file`, `write-whole-file` and `find-archive-entry` were
+cold-replayed. Three families keep each accepted contribution in its own
+primary TU. Prior twenty proofs were not replayed. All66 independently
+reviewed fields and all owned bytes match.
 
-The229-byte worker at0x00429BB0 was missing from initial auto-analysis despite
-capture's DATA reference passing it to `_beginthread`. New read-only Ghidra
-`review_span START END` uses PseudoDisassembler, bounded to4096 bytes in one
-executable block, and makes no database/listing/function changes. Manual
-review confirmed complete flow, one RET, preceding/following padding, no
-existing owner or outside interior references. The curated ledger adds this
-one entry; no inventory refresh overwrote existing mappings.
+Resource loading now has the complete archive/disk branch source. Preserve
+the observed two-delimiter behavior, archive-miss size zero versus untouched
+disk-failure size, ignored extraction/ReadFile status, and all cleanup paths.
+Explicit null branches, assigning zero only after failed lookup, and shared
+failure labels before disk-read success reproduce the466-byte body. Initial
+variants475/407/469 differed; do not simplify the final failure joins.
 
-Shared file handle0x004A34E0 is initially invalid. Both open functions use
-section/depth index2 and hold the lock on success. Read mode has sequential
-scan flag0x08000000 and retains the same observed write-error string. Write
-compares requested size with the returned DWORD, closes/unlocks on a short
-write, and leaves the stored handle unchanged. Preserve `size != written`
-source operand order; reversing it caused one opcode difference. Ordinary
-stdcall source naturally yields ESI filenames and EDX buffer/ESI size.
-See `SHARED_FILE.md` for exact bindings and the worker's14/40/0xE1000-byte
-write sequence, cleanup and thread-state reset.
+The297-byte complete-file writer uses a local handle, status-1/-2/0 and
+section/depth2. Ordinary stdcall source naturally yields EDI filename, EBX
+size and buffer on the stack; the compiler reuses the dead incoming buffer
+home for the error-message pointer. The53-byte archive lookup is the needed
+case-insensitive16-byte-record scan. See `RESOURCE_FILES.md` for full bindings.
+
+Archive extraction300 and generic unlock37 now have maintained source and
+reviewed authored-game mappings, but no exact credit. Current candidates are
+310 and37 respectively, with one commuted SIB-byte difference in the latter.
+Source views include archive state/entries/virtual stream slots and eight
+cipher rules. Original owners and stream/decompression closure remain open.
 
 CaptureScreenshot524 and HandleScreenshotHotkey156 now have maintained,
 compiled source and reviewed authored-game mappings, but no exact credit.
@@ -80,6 +81,22 @@ remain pinned. Do not replay full cohorts for a local change.
 
 ## Remaining useful work and recent evidence
 
+- `ReadArchivedFile` target300 uses an out-of-line53-byte lookup, stream
+  Seek/Read, stored-name8-bit checksum, eight cipher rules, ScatterXorBlocks
+  and optional stdcall decompression at0x004426C0. Observed free conditions
+  include freeing a reused destination on failure. Source310 remains
+  non-exact: error-block layout, alignment and registers differ. Nested and
+  goto error flows, size-favoring286 and default Ob2 variants did not close it.
+  Private `.analysis/archive-read-*` records bounded experiments; do not
+  repeat those same probes. Both independent archive callers are retained
+  in new compiler contexts to avoid global-only specialization.
+- `LeaveRuntimeCriticalSection` target37 receives runtime in EDI and index
+  in ESI under the natural linked convention. Its offset31 SIB commutes the
+  same two registers; source stays readable and receives no exact credit.
+- Current resource loader and lookup families compile existing ByteCipher
+  source as directly needed /GL support. That does not grant cipher exactness
+  or replay any previous canonical proof. Primary TU ownership is enforced
+  separately for the three accepted functions.
 - Update dispatch target352 includes its nine-entry table; maintained ordinary
   member source348 remains non-exact. New two-call/loop contexts produced312
   bytes; free-pointer/cdecl/stdlib/global variants did not solve it. Do not
