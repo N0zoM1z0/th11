@@ -1054,3 +1054,24 @@ linkages = [
   { offset = 189, type = "REL32", symbol = "?DrawPlacedTextureText@@YGXPAUIDirect3DTexture9@@PBUTextTexturePlacementView@@HKKHHHPBDH@Z", target = 0x454bb0, addend = 0x0 },
   { offset = 213, type = "REL32", symbol = "@__security_check_cookie@4", target = 0x45fc2c, addend = 0x0 },
 ]
+
+[units.release-vm-binding-block]
+artifact_kind = "linked-pe"
+source = "src/VmBindings.cpp"
+inputs = ["src/VmBindings.hpp", "src/RenderBatch.hpp"]
+support_sources = ["probes/vm-bindings-context.cpp"]
+output_dir = "build/match-linked/VmBindings"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "VmBindingsProbe@8"
+functions = ["ReleaseVmBindingBlock"]
+symbol = "?ReleaseVmBindingBlock@@YGXPAUVmBindingBlockView@@@Z"
+target_address = 0x402300
+size = 231
+linkages = [
+  { offset = 12, type = "REL32", symbol = "_free", target = 0x45fc3b, addend = 0x0 },
+  { offset = 31, type = "REL32", symbol = "_free", target = 0x45fc3b, addend = 0x0 },
+  { offset = 69, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x4c3268, addend = 0x0 },
+  { offset = 98, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x4c3268, addend = 0x0 },
+  { offset = 200, type = "REL32", symbol = "_free", target = 0x45fc3b, addend = 0x0 },
+  { offset = 219, type = "REL32", symbol = "_free", target = 0x45fc3b, addend = 0x0 },
+]

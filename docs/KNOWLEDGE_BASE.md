@@ -1,5 +1,38 @@
 # TH11-local knowledge
 
+## Stage VM cleanup and resource loading (2026-10-24)
+
+ReleaseVmBindingBlock0x00402300(231) now has a complete strict cold primary-TU
+exact proof with6 independent bindings:four free calls and two renderer-cell
+loads. Totals41 exact /9,125 bytes. Its signed loop visits count-1 slots; ordered
+renderer lists+7B562C/+7B5634 follow earlier batch pointers+7B5624/+7B5628. First
+match wins. Flag0x04000000 propagates one level through+14 only if marker+18 is
+zero. Free order is+10,+14,+8,+0C; count is preserved. See VM_BINDINGS.md.
+
+Stage loader0x00403FC0(297), document creation0x00454190(454) and acquisition
+0x00454360(124) now have full non-exact source. Current candidates297/434/131
+have17/337/80 diagnostic differences. The creation span includes3 omitted
+alignment bytes; acquisition includes6. Signed stage counts, relative pointer
+relocation, VM stride0x434, ANM chunk sums and20/72/4-byte allocations are
+preserved. The0x134-byte document is published before validating loaded data;
+failure can leave a cached incomplete object. Cached acquisition ignores busy.
+Fresh acquisition writes busy1, sleeps before polling and can exit on flags180
+while busy remains1. No timeout is introduced. See STAGE_RESOURCE.md.
+
+The stage/file path is game-authored renderer/VM lifecycle integration; physical
+views still do not prove complete original data classes. Existing texture-file
+views' field+124 now has independently observed busy/wait use; old headers are
+unchanged. Native trace RET preserves EAX/ECX where an opaque source call spills
+them. Retain that known context gap. Opaque-helper297/24 and direct-resource/log
+body297/17 families remain non-exact; do not repeat them without new evidence.
+
+Private diagnostics agree on83 cleanup cases (67 returns,16 matching null-table
+faults) and34 loader cases (33 returns,one8-Sleep persistent prefix). Models
+stand in for heap/resource/decoder/thread helpers; no complete native/runtime
+authority. One CPU/nice10, maximum RSS104,376/77,624 KiB. Previous40 canonical
+inputs and proofs were unchanged. Current receipt-bound artifacts and active
+diagnostic contexts were preserved during handoff cleanup; see ARTIFACTS.md.
+
 ## Formatted texture text and repaired centered span (2026-10-24)
 
 Direct0x00454C60(156) and right-aligned0x00454D00(224) now pass strict cold

@@ -69,3 +69,7 @@ DrawPlacedTextureText
 FormatTextureText
 FormatRightAlignedTextureText
 FormatCenteredTextureText
+ReleaseVmBindingBlock
+LoadStageResource
+BeginLoadAnimationDocument
+AcquireAnimationDocument

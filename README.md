@@ -72,6 +72,9 @@ Outlined DIB/texture drawing and the actual placement dispatcher have complete
 non-exact source in [`docs/OUTLINED_TEXT.md`](docs/OUTLINED_TEXT.md).
 Direct/right-aligned formatting have exact proofs; centered formatting remains
 non-exact in [`docs/FORMATTED_TEXTURE_TEXT.md`](docs/FORMATTED_TEXTURE_TEXT.md).
+Stage VM binding cleanup has an exact proof in
+[`docs/VM_BINDINGS.md`](docs/VM_BINDINGS.md). Stage/animation document loading has
+maintained non-exact source in [`docs/STAGE_RESOURCE.md`](docs/STAGE_RESOURCE.md).
 The Windows i386 production build is open. Semantic reconstruction and
 portability have not started.
 
@@ -128,6 +131,7 @@ are in [`docs/TOOLS.md`](docs/TOOLS.md).
 - [`docs/RE_WORKFLOW.md`](docs/RE_WORKFLOW.md) — reconstruction loop and gates.
 - [`docs/ORACLES.md`](docs/ORACLES.md) — bounded acceptance rules.
 - [`docs/RE_HANDOFF.md`](docs/RE_HANDOFF.md) — resume state and next work.
+- [`docs/ARTIFACTS.md`](docs/ARTIFACTS.md) — retained private artifacts and cleanup policy.
 - [`docs/KNOWLEDGE_BASE.md`](docs/KNOWLEDGE_BASE.md) — durable TH11-local facts.
 - [`docs/RENDER_CAMERA.md`](docs/RENDER_CAMERA.md) — camera and batch submission evidence.
 

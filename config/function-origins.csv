@@ -16,7 +16,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00402170,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004021A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00402270,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00402300,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00402300,authored_game,VmBindings,authored,high,stage-resource-origin-20261024
 0x004023F0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004024C0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00402740,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
@@ -26,7 +26,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00403130,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004035A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00403950,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00403FC0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00403FC0,authored_game,StageResource,authored,high,stage-resource-origin-20261024
 0x004040F0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00404190,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00404470,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
@@ -791,8 +791,8 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00453F80,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004540A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004540F0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00454190,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00454360,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00454190,authored_game,AnimationDocument,authored,high,stage-resource-origin-20261024
+0x00454360,authored_game,AnimationDocument,authored,high,stage-resource-origin-20261024
 0x004543E0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004544C0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004545A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

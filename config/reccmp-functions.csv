@@ -3,6 +3,8 @@ AsciiManagerOnUpdate,0x004014A0,function
 AsciiManagerAppendString,0x004014E0,function
 AsciiManagerExpireStrings,0x00401D50,function
 ResetAnimationVm,0x00401FD0,function
+ReleaseVmBindingBlock,0x00402300,function
+LoadStageResource,0x00403FC0,function
 ScreenshotWriteThread,0x00429BB0,function
 CaptureScreenshot,0x00429CA0,function
 DisableRuntimeFog,0x0042A300,function
@@ -42,6 +44,8 @@ PrimeDeviceBackBuffers,0x00447E00,function
 ResetMainViewport,0x00447EA0,function
 BindAnimationScript,0x0044ACD0,function
 FlushRenderBatch,0x0044FD10,function
+BeginLoadAnimationDocument,0x00454190,function
+AcquireAnimationDocument,0x00454360,function
 DrawPlacedTextureText,0x00454BB0,function
 FormatTextureText,0x00454C60,function
 FormatRightAlignedTextureText,0x00454D00,function
