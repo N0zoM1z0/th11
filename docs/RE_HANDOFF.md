@@ -5,33 +5,55 @@ Use direct Ghidra only. Read `AGENTS.md` and inspect dirty work before changes.
 
 ## Current checkpoint
 
-Inventory:1,989 provisional candidates; fifty-seven reviewed/source-present.
-Thirty-five canonical exact functions total8,051 owned bytes:
+Inventory:1,989 provisional candidates; sixty-one reviewed/source-present.
+Thirty-eight canonical exact functions total8,514 owned bytes:
 
 - Eight normal-COFF units: ASCII update22; AddAngles157; NormalizeAngle145;
   repeat state105; keyboard polling888; file check141; draw chain284 including
   table; callback removal114.
-- Twenty-seven linked-PE units: joystick button capture267, ordered update/draw
+- Thirty linked-PE units: joystick button capture267, ordered update/draw
   registration147 each, ASCII string appender182, frame clock260, random
   generation105/153, log append211, screenshot writer229, shared file open
   modes180 each, write helper88, resource load466, complete-file write297,
   archive lookup53, camera344, batch143, fog54, runtime thread stop101,
   animation VM reset303, surface release80, renderer texture restore162,
   device-state reset778, main window callback418, text surface release105/
-  creation396 and text/font initialization346.
+  creation396, text/font initialization346, error log207, main viewport99
+  and back-buffer priming157.
 
-This checkpoint adds three complete medium-function sources: window creation577,
-startup path344 and shortcut target274 (1,195 target bytes). All are non-exact:
-current569/353/243 candidates differ at383/265/207 unrelocated positions.
-No new canonical unit or exact credit is declared; previous35 source/header
-inputs and canonical proofs are unchanged and were not replayed. See
-`STARTUP_WINDOW.md`.
+This checkpoint adds complete device creation1,338 plus exact error logging207,
+main viewport99 and back-buffer priming157. Three strict cold public primary-TU
+proofs cover463 owned bytes and30 independent fields. Only these new units
+were replayed; previous35 source/header inputs and canonical proofs remain
+unchanged. See `DEVICE_INITIALIZATION.md`.
 
-Fifty-one bounded target/candidate machine-code cases agree under explicit
-Win32/COM/CRT models; the24 window cases were refreshed after final cleanup.
-This is diagnostic evidence only, not exact/native/semantic acceptance.
-The full run uses one CPU, nice10, about88 MiB peak RSS. Actual GUID/class/title
-constants are independently supplied; no target code is patched.
+Device creation source is1,350 versus1,338,845 unequal unrelocated positions,
+no exact credit. Thirty-six modeled machine-code cases agree, including two
+bounded prefixes of persistent retries: full0xB44 runtime state, presentation,
+GPU call order/arguments, logs, matrices/viewport, cleanup, registers and stack.
+Models use controlled tangent0.25 and D3DX matrices, not real GPU/math behavior;
+no native/full semantic authority. One CPU/nice10, about64 MiB peak RSS.
+
+Creation retains HW HAL -> SW HAL -> SW REF, option-controlled skips, signed
+HRESULT tests, refresh/interval retries, capability warnings and exact-zero
+format support. Refresh retry clears requested Hz/active status but not the
+separate disable flag, so persistent failure can keep retrying. Disabled refresh
+changes do not enable Windowed. Named float distance retains observed rounding/
+negation; aggregate-eye1,302 and named-scalar1,350 remain non-exact. Original
+vector/TU/frame context is open; do not repeat those two shapes without evidence.
+
+Error logging sets+2004 even if append fails; lock/depth index3 and format return
+are exact. Viewport context needs an independent unknown batch receiver to retain
+native ESI: global-only context96, corrected complete99 exact. Priming is two
+clear/present/reset-on-negative cycles,157 exact; counted loop91 is non-exact.
+Do not normalize away real byte/owner differences. The initializer's1,335-address
+Ghidra body omits3-byte LEA alignment; full-span review covers all1,338 bytes.
+D3DX matrix thunks independently resolve to d3dx9_37.dll. Tangent31-byte boundary
+was reviewed but has no new source mapping or credit.
+
+The preceding checkpoint added startup/window577/344/274 sources, still
+non-exact569/353/243. Its51 bounded machine-code scenarios agree; no old unit
+was replayed. See `STARTUP_WINDOW.md` before revisiting those contexts.
 
 CheckStartupPath returns0/-1 from opaque gate0x004C9898; the native caller tests
 -1. Missing title flag0x40, byte mismatch at root+B30 and the return gate are
@@ -160,13 +182,15 @@ remain pinned. Do not replay full cohorts for a local change.
 
 ## Remaining useful work and recent evidence
 
-- Window creation577 and startup/shortcut344/274 now have complete non-exact
-  source and51 bounded machine-code cases; see `STARTUP_WINDOW.md` before
-  revisiting known failed contexts. New device initialization0x00446D30(1,338
-  provisional bytes) follows window creation and remains without source; its
-  complete boundary/ABI/origin must be reviewed. Do not count entry/call-boundary
-  observations as implementation. The657-byte compositor is another useful
-  medium/large candidate with prior instruction review but no source.
+- Device initialization1,338 now has full non-exact source; viewport99 and
+  priming157 are exact. Before revisiting codegen, read DEVICE_INITIALIZATION.md
+  for original vector/frame context gaps and the actual retry behavior.
+- Window creation577 and startup/shortcut344/274 have non-exact source and51
+  bounded cases. Read STARTUP_WINDOW.md before repeating failed contexts.
+- The657-byte compositor0x004441C0 has prior complete instruction review but
+  no source; its format-specific blending is a useful next medium/large target.
+  Text drawing0x00444890(392) also has a bounded decompiler hypothesis in
+  `.analysis/render-medium-candidates.c` but needs complete ABI/boundary review.
 - Surface read/write201/217 now have maintained202/205-byte member source;
   review `WINDOW_SURFACE_BUFFER.md` before revisiting the failed contexts.
   The adjacent657-byte compositor has complete instruction review but no

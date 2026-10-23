@@ -687,14 +687,14 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00446880,authored_game,Screenshot,authored,high,screenshot-ghidra-review-20261023
 0x00446920,authored_game,FrameClock,authored,high,frame-clock-ghidra-review-20261023
 0x00446AE0,authored_game,WindowInitialization,authored,high,startup-window-origin-20261023
-0x00446D30,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00446D30,authored_game,DeviceInitialization,authored,high,device-init-runtime-origin-20261024
 0x00447270,authored_game,RenderState,authored,high,render-state-texture-reset-origin-review-20261023
 0x00447580,authored_game,StartupPath,authored,high,startup-window-origin-20261023
 0x004476F0,authored_game,ExecutableChecksum,authored,high,text-resources-checksum-origin-20261023
 0x004477F0,unknown,StartupPath,indeterminate,unknown,startup-window-origin-20261023
 0x00447AB0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00447E00,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00447EA0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00447E00,authored_game,DeviceInitialization,authored,high,device-init-runtime-origin-20261024
+0x00447EA0,authored_game,DeviceInitialization,authored,high,device-init-runtime-origin-20261024
 0x00447F70,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00448180,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00448390,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
@@ -864,7 +864,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00458980,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004589D0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00458A10,authored_game,LogBuffer,authored,high,random-log-ghidra-review-20261023
-0x00458AF0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00458AF0,authored_game,LogBuffer,authored,high,device-init-runtime-origin-20261024
 0x00458BC0,authored_game,Random,authored,high,random-log-ghidra-review-20261023
 0x00458C30,authored_game,Random,authored,high,random-log-ghidra-review-20261023
 0x00458D70,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

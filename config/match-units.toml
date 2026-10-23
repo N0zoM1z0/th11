@@ -939,3 +939,78 @@ linkages = [
   { offset = 330, type = "DIR32", symbol = "?g_SmallGothicFont@@3PAUHFONT__@@A", target = 0x4c0ee4, addend = 0x0 },
   { offset = 340, type = "DIR32", symbol = "?g_SmallMinchoFont@@3PAUHFONT__@@A", target = 0x4a8ed4, addend = 0x0 },
 ]
+
+[units.append-error-log]
+artifact_kind = "linked-pe"
+source = "src/ErrorLog.cpp"
+inputs = ["src/DeviceInitialization.hpp", "src/ErrorLog.hpp", "src/LogBuffer.hpp", "src/MainRuntime.hpp", "src/Camera.hpp", "src/RenderBatch.hpp", "src/RenderState.hpp"]
+support_sources = ["src/DeviceInitialization.cpp", "src/MainViewport.cpp", "src/LogBuffer.cpp", "src/RenderBatch.cpp", "src/RenderState.cpp", "src/DeviceBackBuffers.cpp", "probes/device-initialization-context.cpp"]
+output_dir = "build/match-linked/ErrorLog"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "DeviceInitializationProbe@20"
+functions = ["AppendErrorLog"]
+symbol = "?AppendErrorLog@@YAPBDPAUErrorLogBufferView@@PBDZZ"
+target_address = 0x458af0
+size = 207
+linkages = [
+  { offset = 7, type = "DIR32", symbol = "___security_cookie", target = 0x4a2088, addend = 0x0 },
+  { offset = 22, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x590 },
+  { offset = 33, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x858 },
+  { offset = 39, type = "DIR32", symbol = "__imp__EnterCriticalSection@4", target = 0x48b084, addend = 0x0 },
+  { offset = 45, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x933 },
+  { offset = 71, type = "REL32", symbol = "_vsprintf", target = 0x45fdd2, addend = 0x0 },
+  { offset = 151, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x590 },
+  { offset = 163, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x858 },
+  { offset = 169, type = "DIR32", symbol = "__imp__LeaveCriticalSection@4", target = 0x48b088, addend = 0x0 },
+  { offset = 175, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x933 },
+  { offset = 196, type = "REL32", symbol = "@__security_check_cookie@4", target = 0x45fc2c, addend = 0x0 },
+]
+
+[units.reset-main-viewport]
+artifact_kind = "linked-pe"
+source = "src/MainViewport.cpp"
+inputs = ["src/DeviceInitialization.hpp", "src/ErrorLog.hpp", "src/LogBuffer.hpp", "src/MainRuntime.hpp", "src/Camera.hpp", "src/RenderBatch.hpp", "src/RenderState.hpp"]
+support_sources = ["src/DeviceInitialization.cpp", "src/ErrorLog.cpp", "src/LogBuffer.cpp", "src/RenderBatch.cpp", "src/RenderState.cpp", "src/DeviceBackBuffers.cpp", "probes/device-initialization-context.cpp"]
+output_dir = "build/match-linked/MainViewport"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "DeviceInitializationProbe@20"
+functions = ["ResetMainViewport"]
+symbol = "?ResetMainViewport@@YAXXZ"
+target_address = 0x447ea0
+size = 99
+linkages = [
+  { offset = 3, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x4c3268, addend = 0x0 },
+  { offset = 12, type = "REL32", symbol = "?FlushRenderBatch@@YGXPAURenderBatchView@@@Z", target = 0x44fd10, addend = 0x0 },
+  { offset = 19, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 25, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0xec },
+  { offset = 31, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0xdc },
+  { offset = 43, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0xe0 },
+  { offset = 53, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0xf0 },
+  { offset = 59, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0xe4 },
+  { offset = 69, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0xe8 },
+  { offset = 86, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0xdc },
+  { offset = 95, type = "REL32", symbol = "?PrimeDeviceBackBuffers@@YAXXZ", target = 0x447e00, addend = 0x0 },
+]
+
+[units.prime-device-back-buffers]
+artifact_kind = "linked-pe"
+source = "src/DeviceBackBuffers.cpp"
+inputs = ["src/DeviceInitialization.hpp", "src/ErrorLog.hpp", "src/LogBuffer.hpp", "src/MainRuntime.hpp", "src/Camera.hpp", "src/RenderBatch.hpp", "src/RenderState.hpp"]
+support_sources = ["src/DeviceInitialization.cpp", "src/ErrorLog.cpp", "src/MainViewport.cpp", "src/LogBuffer.cpp", "src/RenderBatch.cpp", "src/RenderState.cpp", "probes/device-initialization-context.cpp"]
+output_dir = "build/match-linked/DeviceBackBuffers"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "DeviceInitializationProbe@20"
+functions = ["PrimeDeviceBackBuffers"]
+symbol = "?PrimeDeviceBackBuffers@@YAXXZ"
+target_address = 0x447e00
+size = 157
+linkages = [
+  { offset = 1, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 36, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 61, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 71, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0xf4 },
+  { offset = 79, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 114, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 139, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 149, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0xf4 },
+]

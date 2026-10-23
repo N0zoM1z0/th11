@@ -55,3 +55,7 @@ ComputeExecutableChecksum
 InitializeMainWindow
 CheckStartupPath
 ReadShortcutTarget
+InitializeD3DDevice
+PrimeDeviceBackBuffers
+ResetMainViewport
+AppendErrorLog

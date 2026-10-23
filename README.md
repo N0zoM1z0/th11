@@ -62,6 +62,9 @@ Text bitmap creation/release and font initialization have exact proofs;
 Startup path, shortcut and window-creation source is maintained in
 [`docs/STARTUP_WINDOW.md`](docs/STARTUP_WINDOW.md), with bounded diagnostics and
 explicitly unresolved exactness.
+Device creation now has full source; viewport reset, double-buffer priming and
+error logging have exact proofs in
+[`docs/DEVICE_INITIALIZATION.md`](docs/DEVICE_INITIALIZATION.md).
 The Windows i386 production build is open. Semantic reconstruction and
 portability have not started.
 

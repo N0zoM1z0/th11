@@ -27,10 +27,13 @@ PresentFrame,0x00446790,function
 HandleScreenshotHotkey,0x00446880,function
 GetFrameClockSeconds,0x00446920,function
 InitializeMainWindow,0x00446AE0,function
+InitializeD3DDevice,0x00446D30,function
 ResetDeviceRenderStates,0x00447270,function
 CheckStartupPath,0x00447580,function
 ComputeExecutableChecksum,0x004476F0,function
 ReadShortcutTarget,0x004477F0,function
+PrimeDeviceBackBuffers,0x00447E00,function
+ResetMainViewport,0x00447EA0,function
 BindAnimationScript,0x0044ACD0,function
 FlushRenderBatch,0x0044FD10,function
 AddToUpdateChain,0x00456B70,function
@@ -50,6 +53,7 @@ OpenSharedFileForWrite,0x004587A0,function
 OpenSharedFileForRead,0x00458860,function
 WriteSharedFile,0x00458920,function
 AppendLog,0x00458A10,function
+AppendErrorLog,0x00458AF0,function
 RandomNext16,0x00458BC0,function
 RandomNext32,0x00458C30,function
 AddAngles,0x00458E30,function

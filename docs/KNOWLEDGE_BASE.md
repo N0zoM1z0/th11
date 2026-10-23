@@ -516,3 +516,52 @@ before retrying those configurations; full native data/runtime closure is open.
   Native GUID/class/title data are retained; instructions are not patched.
   One CPU/nice10, about88 MiB peak RSS. This supplies no exact/native/full
   semantic authority. See STARTUP_WINDOW.md and the private differential reports.
+
+
+## Device creation, viewport and back buffers (2026-10-24)
+
+- InitializeD3DDevice0x00446D30 has complete1,338-byte target review and maintained
+  source. Ghidra reports1,335 addresses; full-span decoding includes3-byte LEA
+  alignment at0x00446F2D. Complete candidate1,350/845 unequal positions remains
+  non-exact. Aggregate-eye1,302 and named-float1,350 are recorded; the latter
+  retains native float store/reload/negation. Original vector/TU/frame context
+  remains open; do not repeat those same forms without new evidence.
+- Creation order is HW HAL40, SW HAL20, SW REF20. Compatibility mask2 skips
+  HALs; mask1 forces16-bit/omits alpha-format test. Nonnegative Create succeeds,
+  but CheckDeviceFormat requires exact0. Runtime flags1 records HW VP,2 is set
+  before creation and4 tracks the optional format test. REF skips that test
+  without clearing its previous state. Preserve ignored query HRESULTs.
+- Fullscreen colorFF initializes X8R8G8B8/setting0; other nonzero uses R5G6B5.
+  Windowed uses adapter format; back buffer is always640x480. Path mismatch
+  disables refresh changes only in the fullscreen path. Disabled refresh
+  changes do not set Windowed. Refresh retry clears Hz/status but not the
+  disable flag, so persistent failures can keep retrying; interval-one can
+  instead retry at immediate before fatal log/release/return1.
+- New runtime observations: desktop19C,color1E2,options200,disable refresh57C,
+  active refresh580,reset584,caps59C,windowB08,resetB0C,path mismatchB30 and
+  presentation optionsB40. View/projection/viewport/presentation remain5C/9C/
+  DC/F4. Full original owner size and several field meanings remain open.
+- D3DX thunks45F9D4/45F9DA independently bind LookAtLH/PerspectiveFovLH in
+  d3dx9_37.dll. Eye uses(320,-240,-float(240.0/tangent(0.2617994f))), target
+  (320,-240,0),up(0,1,0); projection0.5235988f,4/3,100,10000. Tangent31-byte
+  wrapper has stack float/RET4 and float-rounded ST0; no new source/credit.
+- AppendErrorLog0x00458AF0 is strict cold207-byte primary-TU exact,11 fields.
+  It uses512-byte temp/8192-byte log, strict end+len<text+8191 and unconditional
+  hasError at+2004, runtime lock/depth3 and format-pointer return.
+- ResetMainViewport0x00447EA0 is strict cold99-byte primary-TU exact,11 fields.
+  It flushes queued batches, sets(0,0,640,480,0,1), submits viewport and tail
+  jumps to priming. Independent unknown batch input retains ESI; global-only
+  context96 specialized it away and must not receive exact credit.
+- PrimeDeviceBackBuffers0x00447E00 is strict cold157-byte primary-TU exact,
+  eight fields: two Clear(target|depth,opaque black,1,0)/Present cycles, Reset
+  on negative Present, ignored Clear/Reset status. Two inline operations match;
+  counted loop91 does not. Source helpers add no separate function credit.
+- Three new exact units cover463 bytes/30 bindings. Only these new units were
+  cold-replayed; previous35 canonical source/header contexts were unchanged.
+  Required older bodies are new family supports, not re-proved exact units.
+- Thirty-six modeled machine-code cases agree,34 returns plus two retry-prefix
+  observations. The full runtime span, parameter mutations, call order/args,
+  logs, matrices/viewport, cleanup, registers and stack agree under controlled
+  COM/log/math models. Tangent return0.25 and D3DX matrices are fixtures; this
+  supplies no exact/native/full-semantic authority. One CPU/nice10,~64 MiB RSS.
+  See DEVICE_INITIALIZATION.md and private strict/differential logs.
