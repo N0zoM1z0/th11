@@ -34,3 +34,7 @@ DecompressArchiveData
 ApplyCamera
 FlushRenderBatch
 ApplyPerspectiveCamera
+RunFrame
+PresentFrame
+DisableRuntimeFog
+StopRuntimeThread

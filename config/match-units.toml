@@ -656,3 +656,38 @@ linkages = [
   { offset = 58, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
   { offset = 85, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
 ]
+
+[units.disable-runtime-fog]
+artifact_kind = "linked-pe"
+source = "src/FrameRuntime.cpp"
+inputs = ["src/FrameLoop.hpp", "src/FrameClock.hpp", "src/MainRuntime.hpp", "src/Camera.hpp", "src/RenderBatch.hpp", "src/Chain.hpp", "src/Screenshot.hpp", "src/LogBuffer.hpp"]
+support_sources = ["src/FrameLoop.cpp", "src/Camera.cpp", "src/RenderBatch.cpp", "src/ChainDispatch.cpp", "src/ChainRemove.cpp", "probes/frame-loop-context.cpp", "probes/render-camera-context.cpp"]
+output_dir = "build/match-linked/FrameRuntime"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "FrameLoopProbe@20"
+functions = ["DisableRuntimeFog"]
+symbol = "?DisableRuntimeFog@@YGJPAUMainRuntimeView@@@Z"
+target_address = 0x0042a300
+size = 54
+linkages = [
+  { offset = 12, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x4c3268, addend = 0x0 },
+  { offset = 17, type = "REL32", symbol = "?FlushRenderBatch@@YGXPAURenderBatchView@@@Z", target = 0x44fd10, addend = 0x0 },
+]
+
+[units.stop-runtime-thread]
+artifact_kind = "linked-pe"
+source = "src/FrameRuntime.cpp"
+inputs = ["src/FrameLoop.hpp", "src/FrameClock.hpp", "src/MainRuntime.hpp", "src/Camera.hpp", "src/RenderBatch.hpp", "src/Chain.hpp", "src/Screenshot.hpp", "src/LogBuffer.hpp"]
+support_sources = ["src/FrameLoop.cpp", "src/Camera.cpp", "src/RenderBatch.cpp", "src/ChainDispatch.cpp", "src/ChainRemove.cpp", "probes/frame-loop-context.cpp", "probes/render-camera-context.cpp"]
+output_dir = "build/match-linked/FrameRuntime"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "FrameLoopProbe@20"
+functions = ["StopRuntimeThread"]
+symbol = "?StopRuntimeThread@@YGXPAURuntimeThreadView@@@Z"
+target_address = 0x00459430
+size = 101
+linkages = [
+  { offset = 13, type = "DIR32", symbol = "__imp__WaitForSingleObject@8", target = 0x48b0f0, addend = 0x0 },
+  { offset = 45, type = "DIR32", symbol = "__imp__Sleep@4", target = 0x48b080, addend = 0x0 },
+  { offset = 88, type = "DIR32", symbol = "__imp__CloseHandle@4", target = 0x48b0a0, addend = 0x0 },
+]

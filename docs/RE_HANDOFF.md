@@ -5,49 +5,57 @@ Use direct Ghidra only. Read `AGENTS.md` and inspect dirty work before changes.
 
 ## Current checkpoint
 
-Inventory:1,989 provisional candidates; thirty-six reviewed/source-present.
-Twenty-five canonical exact functions total5,308 owned bytes:
+Inventory:1,989 provisional candidates; forty reviewed/source-present.
+Twenty-seven canonical exact functions total5,463 owned bytes:
 
 - Eight normal-COFF units: ASCII update22; AddAngles157; NormalizeAngle145;
   repeat state105; keyboard polling888; file check141; draw chain284 including
   table; callback removal114.
-- Seventeen linked-PE units: joystick button capture267, ordered update/draw
+- Nineteen linked-PE units: joystick button capture267, ordered update/draw
   registration147 each, ASCII string appender182, frame clock260, random
   generation105/153, log append211, screenshot writer229, shared file open
   modes180 each, write helper88, resource load466, complete-file write297,
-  archive lookup53, camera setup344 and batch submission143.
+  archive lookup53, camera setup344, batch submission143, fog disable54
+  and runtime thread stop101.
 
-This checkpoint adds two exact functions,487 bytes, and maintained361-byte
-perspective-camera source. Only `apply-camera` and `flush-render-batch` were
-cold-replayed, each in its own primary TU. All19 independently reviewed fields
-and all owned bytes match. No previous23 canonical unit was replayed; their
-source/header dependencies were untouched. See `RENDER_CAMERA.md`.
+This checkpoint adds complete source for frame dispatch307 and presentation226,
+plus their two required exact runtime helpers (155 owned bytes). Only
+`disable-runtime-fog` and `stop-runtime-thread` were cold-replayed, sharing
+one family with both complete public contributions in primary FrameRuntime.cpp.
+All five independent bindings and all bytes match. Prior25 canonical inputs
+were unchanged and none of those units was replayed. Thread-stop origin remains
+indeterminate despite exact codegen. See `FRAME_LOOP.md`.
 
-The344-byte screen camera uses unsigned viewport conversions, half-size eye/
-target centers, a float-return angle helper and D3DX view/projection thunks.
-Separate long-lived width/height locals produced342 bytes; direct conversion
-expressions preserve the target's x87 reuse and0x38 frame. Renderer submission
-sets stage alpha/color arg2, FVF0x144 and triangle-list UP drawing, then updates
-its draw counter/cursors. Ordinary stdcall source naturally yields EDI camera
-and ESI renderer. Original camera stride0x118 and complete renderer owners
-remain open; partial views are not instantiated as native owner objects.
+RunFrame currently gives315 bytes versus307, with179 unrelocated differences.
+Its source update callee takes the manager on the stack; the target uses EBX,
+which changes the frame's saved registers and zero reuse. A global-only family
+specializes the receiver and gives308; generic receiver context gives315 and
+312-byte update dispatch. Do not repeat those known caller-only contexts or
+force a private register ABI.
 
-Perspective setup0x0042A970 now has complete361-byte source. Its target offset
-is+0x0C, eye offset+0x3C, and normalized right vector+0x30. Twelve independent
-bindings replay over the full primary contribution; four byte differences
-remain at288,289,291,292 in a commuted x87 multiplication. Scalar helper353,
-aggregate/field-copy361 with4 differences and value-return361 with16 were
-bounded experiments; do not repeat them or give commutativity exact credit.
+Field-based PresentFrame is224 versus226, with126 unrelocated differences
+following the missing PUSH/POP ECX frame. Double locals gave233 with8-byte
+realignment; float elapsed gave235 with explicit rounding; /fp:fast and a
+member declaration both gave224. Final source is an ordinary member with
+precise double-state expressions, no dummy local or inert stack reservation.
+All meaningful update/draw/wait/screenshot/reset/post-hook paths are present;
+complete native product/runtime closure remains open.
 
-Archive extraction300 remains non-exact312 with the real decoder visible;
-generic unlock37 differs by one SIB byte. Decoder472 has maintained source,
-473-byte candidate and177 differences;62 bounded target/candidate machine-code
-cases agree. Its real fourth allocation-size input is in EAX, plus three stack
-arguments. Keep that argument and persistent8KiB history. Origin remains
-indeterminate. See `ARCHIVE_DECOMPRESSION.md` and `RESOURCE_FILES.md`.
+Camera344 and batch143 retain strict exact proofs; `RENDER_CAMERA.md` records
+physical views and the original camera stride0x118. Perspective setup361
+remains non-exact with four operand differences at288,289,291,292;12 independent
+bindings replay. Keep target offset+0x0C, eye+0x3C and right+0x30. Scalar353,
+aggregate/field361 with4 differences and value-return361 with16 were bounded
+experiments; do not repeat them or grant commutativity exact credit.
 
-CaptureScreenshot524 and HandleScreenshotHotkey156 have source540/156 with
-no exact credit; the hotkey has23 unrelocated differences. See `SCREENSHOT.md`.
+Archive extraction300 remains non-exact312; generic unlock37 differs by one
+SIB byte. Decoder472 has source473/177 differences and62 matching bounded
+machine-code cases. Preserve allocation size in EAX plus three stack inputs
+and persistent8KiB history. Origin remains indeterminate. See
+`ARCHIVE_DECOMPRESSION.md` and `RESOURCE_FILES.md`.
+
+CaptureScreenshot524 and hotkey156 have source540/156 with no exact credit;
+the hotkey has23 unrelocated differences. See `SCREENSHOT.md`.
 
 ## Shared runtime data was decisive
 
@@ -125,12 +133,16 @@ remain pinned. Do not replay full cohorts for a local change.
 - ByteCipher normal276/target284 each remains non-exact; its /GL caller
   naturally produces key-in-AL plus five stack arguments but body293 differs.
   ASCII expiry100/124 remains open. Prioritize useful medium functions.
-- Frame dispatch0x00446650 (307 bytes) and presentation0x00446790 (226) still
-  have no maintained source. Private `.analysis/frame-timing-review.txt`
-  and `frame-timing.c` contain complete flows.
-  Their camera344 and batch143 dependencies are now exact. New private
-  `frame-loop-dependencies-review.txt`/`.c` covers fog-disable54 at0x0042A300
-  and thread-stop101 at0x00459430 as well; both still lack maintained source.
+- Frame dispatch307 and presentation226 now have maintained source in
+  `FrameLoop.cpp`, with current315/224 candidates. Their fog54 and worker-stop101
+  dependencies are exact in `FrameRuntime.cpp`; camera344/batch143 were already
+  exact. `FRAME_LOOP.md` records all flows, physical views and bounded probes.
+  Reset surfaces0x0042B530 (206), release0x0042B600 (80), renderer pre/post reset
+  0x00445320/0x004453B0 (135/162) and render-state reset0x00447270 (778) still
+  have no bodies. Their input boundaries were reviewed in
+  `.analysis/frame-presentation-callee-entries.txt`; the surface helper takes
+  a stack receiver, others no explicit inputs. Medium reset/resource helpers
+  are useful next work; do not repeat the frame's local-type/profile probes.
 - Screenshot capture0x00429CA0 is524 bytes. Its new source uses established
   MainRuntime opaque storage for presentation/screenshot views, preserving
   the existing header and unrelated receipts. /GL initial nested allocation

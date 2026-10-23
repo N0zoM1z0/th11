@@ -332,3 +332,29 @@ are30/1800. Full primary-body replay of12 independent bindings leaves only
 four operand bytes different in an x87 multiply. It remains non-exact; source
 helper variants and private evidence are recorded in `RENDER_CAMERA.md`.
 Frame dispatch307 and presentation226 remain next useful integration work.
+
+
+## Frame dispatch and presentation source
+
+The complete307/226-byte update-draw/presentation functions now have source in
+`FrameLoop.cpp`. Native return0/-1 update exits stop the runtime worker and
+return1/2; the signed-byte skip count controls drawing. The renderer scene,
+texture0 unbind, timing, screenshot, negative-Present reset and post-hook flows
+are preserved. Wait is enabled only for flag1 and subtracts3.5ms, not1ms.
+
+New partial views expose skip/wait at MainRuntime+0x1E6/+0x1EB, default camera
++0x31C, active pointer/index+0x54C/+0x550, reset state+0x574, worker+0x7F0,
+fog cache+0x990 and elapsed double+0x9B8. The old MainRuntime header is intact;
+these overlapping observations do not close full native data ownership.
+
+Fog disable54 and thread stop101 pass strict cold public primary-TU proofs,
+all five independent bindings and155 bytes. Only these new units were replayed,
+sharing one family; previous25 proofs were untouched. Thread origin remains
+indeterminate: generic Win32 wait/stop mechanics do not establish provenance.
+
+Frame dispatch315/target307 still differs because maintained update dispatch
+passes its manager on the stack while native uses EBX. Presentation224/226
+lacks the native PUSH/POP ECX frame; double/float/member/fp-fast probes did not
+close it. No padding, false ABI or cropped comparison is accepted. See
+`FRAME_LOOP.md` before revisiting those bounded experiments. The206-byte
+runtime surface helper and medium reset paths remain useful direct dependencies.

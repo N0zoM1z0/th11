@@ -48,6 +48,8 @@ checking, and the ASCII update callback. Update dispatch, gameplay joystick
 merging, and paired byte transforms remain maintained non-exact candidates.
 Camera setup and renderer batch submission now have exact linked proofs;
 the related perspective-camera routine has maintained non-exact source.
+Frame dispatch/presentation source and their exact fog/thread helpers are
+tracked in [`docs/FRAME_LOOP.md`](docs/FRAME_LOOP.md).
 The Windows i386 production build is open. Semantic reconstruction and
 portability have not started.
 
