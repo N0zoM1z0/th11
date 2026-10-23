@@ -48,3 +48,7 @@ ResetDeviceRenderStates
 ReadFromSurface
 WriteToSurface
 MainWindowProc
+ReleaseTextSurface
+CreateTextSurface
+InitializeTextResources
+ComputeExecutableChecksum

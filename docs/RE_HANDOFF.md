@@ -5,26 +5,47 @@ Use direct Ghidra only. Read `AGENTS.md` and inspect dirty work before changes.
 
 ## Current checkpoint
 
-Inventory:1,989 provisional candidates; fifty reviewed/source-present.
-Thirty-two canonical exact functions total7,204 owned bytes:
+Inventory:1,989 provisional candidates; fifty-four reviewed/source-present.
+Thirty-five canonical exact functions total8,051 owned bytes:
 
 - Eight normal-COFF units: ASCII update22; AddAngles157; NormalizeAngle145;
   repeat state105; keyboard polling888; file check141; draw chain284 including
   table; callback removal114.
-- Twenty-four linked-PE units: joystick button capture267, ordered update/draw
+- Twenty-seven linked-PE units: joystick button capture267, ordered update/draw
   registration147 each, ASCII string appender182, frame clock260, random
   generation105/153, log append211, screenshot writer229, shared file open
   modes180 each, write helper88, resource load466, complete-file write297,
   archive lookup53, camera344, batch143, fog54, runtime thread stop101,
   animation VM reset303, surface release80, renderer texture restore162,
-  device-state reset778 and main window callback418.
+  device-state reset778, main window callback418, text surface release105/
+  creation396 and text/font initialization346.
 
-This checkpoint adds complete surface read201/write217 source and exact main
-window callback418. The callback's strict cold public primary-TU proof covers
-all418 bytes and21 independently reviewed runtime/IAT bindings. Only the new
-`main-window-proc` unit was cold-built; previous31 inputs/proofs are unchanged.
-Read/write remain non-exact202/205. Full scopes, message behavior, COM failure
-asymmetry and bounded probes are in `WINDOW_SURFACE_BUFFER.md`.
+This checkpoint adds exact text surface creation396, release105 and font/
+sample initialization346:847 owned bytes and56 independently reviewed fields.
+Three new canonical units share two cold families, each accepting only its
+public primary-TU contribution. Previous32 source/header inputs and proofs
+remain untouched. Executable checksum246 also has complete maintained source,
+non-exact251/179 differences. See `TEXT_RESOURCES.md`.
+
+The text workspace at0x004A57C0 has256 sample bytes, followed by the earlier
+surface-copy layout. Presence+11C is the DIB handle; DC+114, previous selection
++118 and pixels+120 are now identified. Release preserves imageBytes/pitch.
+Create retains the -65 DIB height but64 cleared/logical rows and signed pitch
+arithmetic. Its396-byte proof includes3-byte internal LEA alignment omitted
+from Ghidra's393-address sparse body. Later publication of selection/format
+keeps both output locals live and reproduces native stores. Earlier392/44 and
+396/3 variants remain private failed diagnostics, not alternate proofs.
+
+Initialization keeps both format attempts,256 locked RNG samples shifted9
+and all four Japanese font calls. Creation/release origins stay indeterminate;
+font initialization has independent game RNG/runtime integration evidence.
+Checksum source retains signed size/4-1, final-word omission, failure-1 and
+root+998/+99C publication. Indexed224, pointer247 and nested251 contexts remain
+non-exact; do not repeat them without new evidence.
+
+The preceding checkpoint added exact window callback418 and surface read201/
+write217 source. Read/write remain non-exact202/205. See
+`WINDOW_SURFACE_BUFFER.md` for their COM failure asymmetry and bounded probes.
 
 The callback is installed as WNDCLASSA.lpfnWndProc at0x00446B36. Activation
 runtime+0xB14 aliases the existing keyboard polling gate; inactivity is+0xB18,
@@ -110,10 +131,13 @@ remain pinned. Do not replay full cohorts for a local change.
 
 ## Remaining useful work and recent evidence
 
-- New medium candidates have bounded decompiler hypotheses in the private
-  `render-medium-candidates.c`: font setup0x00444480(346), startup title/link
-  handling0x00447580(344) and executable checksum0x004476F0(246). These still
-  need complete boundary/ABI/origin review before source or exact credit.
+- Startup title/link handling0x00447580(344) and shortcut resolution0x004477F0
+  (274) have full instruction/reference review in `.analysis/font-startup-review.txt`
+  and bounded hypotheses in `render-medium-candidates.c`, but no source/credit.
+  Native shortcut inputs are destination in EDI and filename on stack; it
+  returns an EAX boolean and RET4. Review those actual operations before
+  choosing natural source ABI; do not keep the decompiler's missing receiver.
+  Font setup and executable checksum are now maintained; see current checkpoint.
 - Surface read/write201/217 now have maintained202/205-byte member source;
   review `WINDOW_SURFACE_BUFFER.md` before revisiting the failed contexts.
   The adjacent657-byte compositor has complete instruction review but no

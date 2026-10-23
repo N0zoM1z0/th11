@@ -441,3 +441,41 @@ before retrying those configurations; full native data/runtime closure is open.
   nested-success212/212, all non-exact. See WINDOW_SURFACE_BUFFER.md before
   revisiting. Only the new window canonical unit was cold-built; prior31
   source/header contexts were unchanged and not replayed.
+
+
+## Text resources and executable checksum
+
+- Text workspace at0x004A57C0 starts with256 RNG sample bytes. Its subsequent
+  format100,width104,height108,imageBytes10C,pitch110,DC114,previous bitmap118,
+  bitmap11C and pixels120 agree with the earlier surface-copy layout. Bitmap
+  is the presence field. Existing transfer sources and their non-exact state
+  remain unchanged; full original class/owner is still open.
+- CreateTextSurface0x004435F0 now has full396-byte strict cold exact proof.
+  Ghidra's two ranges omit the3-byte internal LEA at0x0044361D; a read-only
+  full-span query reviews all396 bytes. Keep signed pitch arithmetic, -65 DIB
+  height versus64 logical/cleared rows,24-byte format records and sentinel
+  fallback for unsupported arguments. Only argument-1 is explicitly rejected.
+- Release0x00443560 is105-byte exact; it returns false for null DC, otherwise
+  reselects/deletes and clears dimensions/handles/pixels/format while preserving
+  pitch/imageBytes. Generic create/release origins remain individually
+  indeterminate despite exactness. Their source publication order was decisive:
+  early selection-result storage392/44 differences, intermediate396/3 and
+  final396/0. No padding or operand normalization was used.
+- Text/font initialization0x00444480 has346-byte strict exact proof. It tries
+  A4R4G4B4 then A8R8G8B8, fills256 samples with locked Next16>>9, and creates
+  CP932 MS Gothic/Mincho fonts: height32 weights400/600 and height15 weight700.
+  SHIFTJIS_CHARSET, ANTIALIASED_QUALITY and FIXED_PITCH|FF_ROMAN are retained.
+  Game RNG/runtime integration independently supports authored classification.
+- Three canonical units cover847 bytes and56 fields through two cold primary
+  families. Only these new units were replayed; previous32 source/header
+  contexts were untouched. `TEXT_RESOURCES.md` records all bindings and flow.
+- Executable checksum0x004476F0(246) now has full source. Path buffer261,
+  LoadResourceFile disk mode, failure0xFFFFFFFF, signed size/4-1 bound, omitted
+  last DWORD/trailing bytes, buffer free and root+998/+99C publication are
+  independently observed. Initial void decompiler signature was wrong.
+  Current251/179 differences remains non-exact; indexed224, early pointer247
+  and nested251 contexts do not close it. Avoid repeating those configurations.
+- Startup title/link handling344 and shortcut helper274 have complete private
+  instruction/reference dumps but no source or byte credit. Shortcut uses
+  EDI destination and stack filename, EAX boolean/RET4; default decompiler
+  signature omits that destination. They are useful new medium candidates.

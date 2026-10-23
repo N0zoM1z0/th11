@@ -14,8 +14,11 @@ LeaveRuntimeCriticalSection,0x0042B700,function
 ReadArchivedFile,0x00441760,function
 FindArchiveEntry,0x004418D0,function
 DecompressArchiveData,0x004426C0,function
+ReleaseTextSurface,0x00443560,function
+CreateTextSurface,0x004435F0,function
 ReadFromSurface,0x00444010,function
 WriteToSurface,0x004440E0,function
+InitializeTextResources,0x00444480,function
 PrepareRendererForReset,0x00445320,function
 RestoreRendererAfterReset,0x004453B0,function
 MainWindowProc,0x00445E00,function
@@ -24,6 +27,7 @@ PresentFrame,0x00446790,function
 HandleScreenshotHotkey,0x00446880,function
 GetFrameClockSeconds,0x00446920,function
 ResetDeviceRenderStates,0x00447270,function
+ComputeExecutableChecksum,0x004476F0,function
 BindAnimationScript,0x0044ACD0,function
 FlushRenderBatch,0x0044FD10,function
 AddToUpdateChain,0x00456B70,function

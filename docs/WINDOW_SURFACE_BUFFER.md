@@ -92,6 +92,12 @@ The adjacent657-byte compositor independently reads the same layout and
 surface methods; it is reviewed evidence, not maintained source or credit.
 Unknown storage and fields between these observations remain intact.
 
+Later text creation/release review identifies the matching global workspace
+at0x004A57C0: field+0x11C is its DIB bitmap handle, +0x114 its DC and+0x118 the
+previous selection. Its preceding256 bytes receive RNG samples during text
+initialization. See `TEXT_RESOURCES.md`; this supplies shared-layout evidence
+without changing the earlier transfer source or its non-exact status.
+
 Both reject a zero presence field, call GetDesc, then construct a full-image
 RECT from the current width/height and lock it. SDK IDirect3DSurface9 slots
 0x30/0x34/0x38 identify GetDesc/LockRect/UnlockRect independently.

@@ -57,6 +57,8 @@ Device-state reset and renderer texture recreation have exact proofs;
 [`docs/RENDER_STATE_RESET.md`](docs/RENDER_STATE_RESET.md) records those paths.
 The main window callback has an exact proof; CPU surface transfer source is
 tracked in [`docs/WINDOW_SURFACE_BUFFER.md`](docs/WINDOW_SURFACE_BUFFER.md).
+Text bitmap creation/release and font initialization have exact proofs;
+[`docs/TEXT_RESOURCES.md`](docs/TEXT_RESOURCES.md) also records checksum source.
 The Windows i386 production build is open. Semantic reconstruction and
 portability have not started.
 
