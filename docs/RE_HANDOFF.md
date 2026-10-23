@@ -5,7 +5,7 @@ Use direct Ghidra only. Read `AGENTS.md` and inspect dirty work before changes.
 
 ## Current checkpoint
 
-Inventory:1,989 provisional candidates; sixty-one reviewed/source-present.
+Inventory:1,989 provisional candidates; sixty-five reviewed/source-present.
 Thirty-eight canonical exact functions total8,514 owned bytes:
 
 - Eight normal-COFF units: ASCII update22; AddAngles157; NormalizeAngle145;
@@ -21,7 +21,36 @@ Thirty-eight canonical exact functions total8,514 owned bytes:
   creation396, text/font initialization346, error log207, main viewport99
   and back-buffer priming157.
 
-This checkpoint adds complete device creation1,338 plus exact error logging207,
+This checkpoint adds complete compositor657, text drawing392, neighbor-color
+fill872 and required alpha inversion165 sources:2,086 native bytes across four
+functions. They remain non-exact686/403/801/182 respectively; exact totals stay
+at38/8,514. Read `TEXT_DRAWING_COMPOSITE.md`. No existing canonical source or
+header was changed, and none of the previous38 units was replayed.
+
+Private complete-body machine-code diagnostics agree on74 compositor cases
+and162 text cases (including actual new filter bodies), with independent pixel
+references for composition and standalone processing. Integrated drawing models
+GDI raster bytes and D3DX transfer, not real fonts/GPU behavior; no exact/native/
+full semantic authority. Each runs on one CPU/nice10; peak RSS about94/106 MiB.
+
+Compositor format mismatch unlocks/succeeds; matching unsupported format fails
+without unlocking. A4 byte0 low-nibble blending reads the newly overwritten
+high-nibble byte; output alpha uses `(old_byte1>>2)&0x3C`, not standard alpha
+accumulation. Preserve these with overlapping buffers. Native ECX owner/EAX y
+differs from current compiled member ABI/frame. Aggregate and individually
+assigned RECT shapes both produced686; do not repeat them without new evidence.
+
+Text fill walks contiguous logical rows, while vertical neighbors use signed
+pitch/2 or /4 truncated toward zero. A4 halves averaged colors. Inversion uses
+signed pitch*rows and A1 clears RGB when toggled alpha becomes zero. Drawing
+keeps both alpha passes, three selections, minimum height17, byte-counted
+strings and right-only1024 clipping. HRESULTs do not gate D3DX load/release.
+Its uninitialized surface output remains native-indeterminate if COM fails
+without writing it. The current REP seed loop and A1 bitfield code remain
+different; avoid forcing volatility, padding or false ABI. All four origins
+remain indeterminate despite their identified use.
+
+The preceding checkpoint added complete device creation1,338 plus exact error logging207,
 main viewport99 and back-buffer priming157. Three strict cold public primary-TU
 proofs cover463 owned bytes and30 independent fields. Only these new units
 were replayed; previous35 source/header inputs and canonical proofs remain
@@ -187,14 +216,12 @@ remain pinned. Do not replay full cohorts for a local change.
   for original vector/frame context gaps and the actual retry behavior.
 - Window creation577 and startup/shortcut344/274 have non-exact source and51
   bounded cases. Read STARTUP_WINDOW.md before repeating failed contexts.
-- The657-byte compositor0x004441C0 has prior complete instruction review but
-  no source; its format-specific blending is a useful next medium/large target.
-  Text drawing0x00444890(392) also has a bounded decompiler hypothesis in
-  `.analysis/render-medium-candidates.c` but needs complete ABI/boundary review.
+- Compositor657 and text drawing392 now have full non-exact source, together
+  with fill872/inversion165. Read TEXT_DRAWING_COMPOSITE.md before repeating
+  their compiler contexts. Sibling text path0x00444610(631) and related pixel
+  routine0x00443E00(525) are useful next medium targets; they remain unmapped.
 - Surface read/write201/217 now have maintained202/205-byte member source;
   review `WINDOW_SURFACE_BUFFER.md` before revisiting the failed contexts.
-  The adjacent657-byte compositor has complete instruction review but no
-  source mapping or credit; its pixel-format cases are another useful target.
 - `ReadArchivedFile` target300 uses an out-of-line53-byte lookup, stream
   Seek/Read, stored-name8-bit checksum, eight cipher rules, ScatterXorBlocks
   and optional stdcall decompression at0x004426C0. Observed free conditions

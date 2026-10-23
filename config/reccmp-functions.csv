@@ -16,9 +16,13 @@ FindArchiveEntry,0x004418D0,function
 DecompressArchiveData,0x004426C0,function
 ReleaseTextSurface,0x00443560,function
 CreateTextSurface,0x004435F0,function
+FillTransparentTextPixels,0x00443860,function
+InvertTextAlpha,0x00443BD0,function
 ReadFromSurface,0x00444010,function
 WriteToSurface,0x004440E0,function
+BlendToSurface,0x004441C0,function
 InitializeTextResources,0x00444480,function
+DrawTextToTexture,0x00444890,function
 PrepareRendererForReset,0x00445320,function
 RestoreRendererAfterReset,0x004453B0,function
 MainWindowProc,0x00445E00,function

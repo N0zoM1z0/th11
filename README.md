@@ -65,6 +65,9 @@ explicitly unresolved exactness.
 Device creation now has full source; viewport reset, double-buffer priming and
 error logging have exact proofs in
 [`docs/DEVICE_INITIALIZATION.md`](docs/DEVICE_INITIALIZATION.md).
+CPU pixel composition, text drawing and its alpha/neighbor-color processing
+now have complete non-exact source in
+[`docs/TEXT_DRAWING_COMPOSITE.md`](docs/TEXT_DRAWING_COMPOSITE.md).
 The Windows i386 production build is open. Semantic reconstruction and
 portability have not started.
 

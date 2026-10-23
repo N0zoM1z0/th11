@@ -1,5 +1,45 @@
 # TH11-local knowledge
 
+## Text drawing and CPU composition (2026-10-24)
+
+Direct Ghidra full spans establish compositor0x004441C0(657), drawing
+0x00444890(392), transparent-neighbor fill0x00443860(872) and alpha inversion
+0x00443BD0(165). All four now have complete non-exact source; sparse inversion
+omits the3-byte LEA at0x00443C5D, retained in the reviewed165-byte span. Native
+drawing caller0x00454BB0 supplies EAX font choice and six stack inputs. All
+four origins remain independently indeterminate. See TEXT_DRAWING_COMPOSITE.md.
+
+Compositor's LockRect requires exact zero; mismatch unlocks/succeeds while
+matching unsupported format fails without unlock. A4 writes high byte0 nibble
+before reading its now-zero low nibble, then derives alpha from the unusual
+`(old_byte1>>2)&0x3C` expression. A8 leaves destination alpha unchanged and uses
+denominator256. Preserve source/destination aliasing and empty signed loops.
+
+Text alpha inversion uses signed pitch*rows; A1 toggles alpha and clears RGB
+when alpha becomes zero. Neighbor filling uses unsigned logical width/row
+counts and contiguous pixel traversal, but separate signed pitch/2 or pitch/4
+for vertical neighbors. A4 averages then halves colors; nonzero-alpha pixels
+are untouched. Drawing retains four font choices, minimum height17, 16-bit
+RGB background even in A8 format, both alpha passes, three SelectObject calls,
+ignored HRESULTs and right-only1024 source clipping. COM failure without an
+output write leaves the surface indeterminate; do not initialize it to hide
+this behavior.
+
+Cold new families yield compositor686/563 diagnostic differences, drawing
+403/316, fill801/784 and inversion182/163: no exact credit. Compositor's
+aggregate/individual RECT forms agree with each other but not target; the
+compiled member also selects a different EAX input/frame. Drawing emits REP
+background stores rather than native byte-limit reloads. The A1 bitfield
+representation also differs; these are real codegen gaps, not normalization
+opportunities. No old canonical source/header inputs or proofs changed.
+
+Private full-body diagnostics agree on74 composition and162 text cases, with
+independent integer references for composition/standalone filters. Drawing
+executes actual new filter bodies under modeled GDI raster bytes and D3DX.
+Observations include pixels, workspace, calls, rectangles, cleanup, registers
+and stack. One CPU/nice10, max RSS95,504/107,536 KiB. This is bounded diagnostic
+evidence only; full native product/runtime and all four exact gates stay open.
+
 ## Target and tools (2026-10-23)
 
 The operator archive's Japanese `th11.exe` is 688,128 bytes, SHA-256
