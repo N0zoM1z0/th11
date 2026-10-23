@@ -42,3 +42,6 @@ ResetAnimationVm
 EnsureRuntimeSurfaces
 ReleaseRuntimeSurfaces
 BindAnimationScript
+PrepareRendererForReset
+RestoreRendererAfterReset
+ResetDeviceRenderStates

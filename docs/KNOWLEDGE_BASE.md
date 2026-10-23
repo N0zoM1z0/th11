@@ -386,3 +386,28 @@ preservation. Valid binding publishes file/script/timer state, invokes VM
 execution and increments renderer+0xA0. File script/texture/guard fields are
 +0x11C/+0x120/+0x124. Interpreter0x0044B4B0 still has no source; its stack VM
 input was reviewed. See `RUNTIME_SURFACES.md` for views and bounded experiments.
+
+
+## Exact device state and texture recreation
+
+Device-state reset0x00447270 (778 bytes) and renderer texture recreation
+0x004453B0 (162) pass strict cold primary-TU linked proofs:940 owned bytes,
+42 independent fields and two new families. Previous29 canonical inputs/
+proofs were untouched. Float-to-DWORD marshalling has a real4-byte stack slot;
+the initial ECX push is allocation, not a native input. All33 D3D state calls,
+1000/5000 float literals and cache+0x4355BC stores match; byte+7 stays untouched.
+
+Texture loops retain the initial32-slot array at renderer+0x4350C0, reread
+mutable file/count/table state, and use signed count+0x10C, entry table+0x120,
+20-byte records and flag+0x10. Reconstruction must not freeze the entry/table
+across Release. Recreation uses current presentation dimensions/format, one
+level and render-target/default-pool parameters; pixel metadata follows the
+call even on failure. Separate condition/inline recreation accesses reproduce
+162 bytes; a cached entry reference produced166.
+
+Preparation0x00445320 has full135-byte source but two commuted SIB differences
+at76/79, no exact credit. An inline release helper gave123; pointer-addition
+leaves two differences. Full reset/surface/VM/clock visibility gives frame
+315/presentation233; a private float/fast primary still233, rather than closing
+307/226. Public frame source remains intact. See `RENDER_STATE_RESET.md`
+before retrying those configurations; full native data/runtime closure is open.

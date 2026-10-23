@@ -672,8 +672,8 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00445130,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004451B0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00445270,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00445320,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x004453B0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00445320,authored_game,RendererTextures,authored,high,render-state-texture-reset-origin-review-20261023
+0x004453B0,authored_game,RendererTextures,authored,high,render-state-texture-reset-origin-review-20261023
 0x00445460,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00445510,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00445E00,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
@@ -688,7 +688,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00446920,authored_game,FrameClock,authored,high,frame-clock-ghidra-review-20261023
 0x00446AE0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00446D30,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00447270,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00447270,authored_game,RenderState,authored,high,render-state-texture-reset-origin-review-20261023
 0x00447580,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004476F0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004477F0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

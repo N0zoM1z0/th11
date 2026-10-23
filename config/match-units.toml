@@ -729,3 +729,76 @@ linkages = [
   { offset = 68, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x1b4 },
   { offset = 74, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x1ac },
 ]
+
+
+[units.reset-device-render-states]
+artifact_kind = "linked-pe"
+source = "src/RenderState.cpp"
+inputs = ["src/RenderState.hpp", "src/MainRuntime.hpp", "src/RenderBatch.hpp"]
+support_sources = ["probes/render-state-context.cpp"]
+output_dir = "build/match-linked/RenderState"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "RenderStateProbe@0"
+functions = ["ResetDeviceRenderStates"]
+symbol = "?ResetDeviceRenderStates@@YAXXZ"
+target_address = 0x00447270
+size = 778
+linkages = [
+  { offset = 2, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 22, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 45, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 65, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 85, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 105, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 125, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 145, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 165, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 185, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 205, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 225, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 247, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 272, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 292, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 315, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 339, type = "DIR32", symbol = "__real@447a0000", target = 0x497f64, addend = 0x0 },
+  { offset = 344, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 370, type = "DIR32", symbol = "__real@459c4000", target = 0x497f60, addend = 0x0 },
+  { offset = 375, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 400, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 423, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 445, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 467, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 489, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 511, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 533, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 555, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 577, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 599, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 621, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 643, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 665, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 687, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 709, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 731, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x4c3268, addend = 0x0 },
+]
+
+[units.restore-renderer-after-reset]
+artifact_kind = "linked-pe"
+source = "src/RendererTextures.cpp"
+inputs = ["src/RendererTextures.hpp", "src/MainRuntime.hpp", "src/RenderBatch.hpp"]
+support_sources = ["probes/renderer-textures-context.cpp"]
+output_dir = "build/match-linked/RendererTextures"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "RendererTexturesProbe@0"
+functions = ["RestoreRendererAfterReset"]
+symbol = "?RestoreRendererAfterReset@@YAXXZ"
+target_address = 0x004453b0
+size = 162
+linkages = [
+  { offset = 4, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x4c3268, addend = 0x0 },
+  { offset = 72, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0xfc },
+  { offset = 77, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 91, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0xf8 },
+  { offset = 102, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0xf4 },
+  { offset = 117, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0xfc },
+]
