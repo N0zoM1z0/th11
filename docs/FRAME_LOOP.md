@@ -122,6 +122,10 @@ Only these two new units are replayed, sharing one cold family. Previous25
 canonical units' inputs remain unchanged. Their sources used as direct
 support do not receive new credit or replay those canonical proofs.
 
+The surface initializer/release and animation reset/binder now have maintained
+source; reset303 and release80 have exact proofs. See
+[`RUNTIME_SURFACES.md`](RUNTIME_SURFACES.md) for their current state.
+
 Private evidence: `.analysis/frame-timing-review.txt`, `frame-timing.c`,
 `frame-loop-dependencies-review.txt`, `frame-presentation-callee-entries.txt`,
 `frame-real-caller-entry.txt`, `frame-loop-*-linked.json` and

@@ -12,7 +12,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00401DD0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00401E40,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00401EA0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00401FD0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00401FD0,authored_game,AnimationVm,authored,high,runtime-surfaces-animation-origin-review-20261023
 0x00402170,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004021A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00402270,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
@@ -432,8 +432,8 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0042B0E0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042B3D0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042B480,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0042B530,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0042B600,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0042B530,authored_game,RuntimeSurfaces,authored,high,runtime-surfaces-animation-origin-review-20261023
+0x0042B600,authored_game,RuntimeSurfaces,authored,high,runtime-surfaces-animation-origin-review-20261023
 0x0042B680,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042B6D0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042B700,authored_game,MainRuntime,authored,high,resource-files-ghidra-review-20261023
@@ -728,7 +728,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0044A9C0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0044AB00,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0044AB40,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0044ACD0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0044ACD0,authored_game,AnimationVm,authored,high,runtime-surfaces-animation-origin-review-20261023
 0x0044ADA0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0044AE60,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0044B080,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

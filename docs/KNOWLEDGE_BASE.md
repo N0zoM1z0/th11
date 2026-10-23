@@ -358,3 +358,31 @@ lacks the native PUSH/POP ECX frame; double/float/member/fp-fast probes did not
 close it. No padding, false ABI or cropped comparison is accepted. See
 `FRAME_LOOP.md` before revisiting those bounded experiments. The206-byte
 runtime surface helper and medium reset paths remain useful direct dependencies.
+
+
+## Runtime surfaces and animation VM foundation
+
+VM reset0x00401FD0 (303 bytes) and surface release0x0042B600 (80) now pass
+strict cold public primary-TU linked proofs:383 owned bytes, eight independent
+bindings, two new families. Prior27 canonical inputs/proofs were untouched.
+
+Reset preserves a12-byte opaque block+0x3E8 and DWORD+0x20 across0x434-byte
+clear, rebuilds matrix/scale/defaults/timer and two self-owned list nodes.
+Aggregate preservation and inline timer/node operations reproduce all bytes;
+scalar or64-bit-head representations do not. This proves the observed reset
+span and codegen, not the block's original type or complete VM class size.
+
+The new206-byte runtime surface source obtains file texture slots2/3, binds
+scripts81/82/81 and gets the back buffer. Null primary surface after binding
+copies full280-byte camera0 to2, rather than only its known matrix/viewport
+view. Current206-byte candidate has43 register-save differences. Release80
+has the final unconditional primary clear; its RET directly borders an
+unmapped13-byte texture getter at0x0042B650. That getter corroborates20-byte
+texture records but has no credit and is absent from the provisional inventory.
+
+Script binder0x0044ACD0 has complete source191/target204,165 differences.
+Invalid script or disabled binding zeroes all0x434 bytes without normal reset
+preservation. Valid binding publishes file/script/timer state, invokes VM
+execution and increments renderer+0xA0. File script/texture/guard fields are
++0x11C/+0x120/+0x124. Interpreter0x0044B4B0 still has no source; its stack VM
+input was reviewed. See `RUNTIME_SURFACES.md` for views and bounded experiments.

@@ -38,3 +38,7 @@ RunFrame
 PresentFrame
 DisableRuntimeFog
 StopRuntimeThread
+ResetAnimationVm
+EnsureRuntimeSurfaces
+ReleaseRuntimeSurfaces
+BindAnimationScript

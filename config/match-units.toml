@@ -691,3 +691,41 @@ linkages = [
   { offset = 45, type = "DIR32", symbol = "__imp__Sleep@4", target = 0x48b080, addend = 0x0 },
   { offset = 88, type = "DIR32", symbol = "__imp__CloseHandle@4", target = 0x48b0a0, addend = 0x0 },
 ]
+
+[units.reset-animation-vm]
+artifact_kind = "linked-pe"
+source = "src/AnimationVm.cpp"
+inputs = ["src/AnimationVm.hpp", "src/RuntimeSurfaces.hpp", "src/MainRuntime.hpp", "src/RenderBatch.hpp"]
+support_sources = ["src/RuntimeSurfaces.cpp", "probes/runtime-surfaces-context.cpp"]
+output_dir = "build/match-linked/AnimationVm"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "RuntimeSurfacesProbe@20"
+functions = ["ResetAnimationVm"]
+symbol = "?ResetAnimationVm@@YGXPAUAnimationVmView@@@Z"
+target_address = 0x00401fd0
+size = 303
+linkages = [
+  { offset = 45, type = "REL32", symbol = "_memset", target = 0x46a720, addend = 0x0 },
+]
+
+[units.release-runtime-surfaces]
+artifact_kind = "linked-pe"
+source = "src/RuntimeSurfaces.cpp"
+inputs = ["src/AnimationVm.hpp", "src/RuntimeSurfaces.hpp", "src/MainRuntime.hpp", "src/RenderBatch.hpp"]
+support_sources = ["src/AnimationVm.cpp", "probes/runtime-surfaces-context.cpp"]
+output_dir = "build/match-linked/RuntimeSurfaces"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "RuntimeSurfacesProbe@20"
+functions = ["ReleaseRuntimeSurfaces"]
+symbol = "?ReleaseRuntimeSurfaces@@YAXXZ"
+target_address = 0x0042b600
+size = 80
+linkages = [
+  { offset = 1, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x1ac },
+  { offset = 22, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x1ac },
+  { offset = 27, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x1b0 },
+  { offset = 45, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x1b0 },
+  { offset = 50, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x1b4 },
+  { offset = 68, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x1b4 },
+  { offset = 74, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x1ac },
+]

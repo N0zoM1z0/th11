@@ -2,11 +2,14 @@ name,address,type
 AsciiManagerOnUpdate,0x004014A0,function
 AsciiManagerAppendString,0x004014E0,function
 AsciiManagerExpireStrings,0x00401D50,function
+ResetAnimationVm,0x00401FD0,function
 ScreenshotWriteThread,0x00429BB0,function
 CaptureScreenshot,0x00429CA0,function
 DisableRuntimeFog,0x0042A300,function
 ApplyCamera,0x0042A810,function
 ApplyPerspectiveCamera,0x0042A970,function
+EnsureRuntimeSurfaces,0x0042B530,function
+ReleaseRuntimeSurfaces,0x0042B600,function
 LeaveRuntimeCriticalSection,0x0042B700,function
 ReadArchivedFile,0x00441760,function
 FindArchiveEntry,0x004418D0,function
@@ -15,6 +18,7 @@ RunFrame,0x00446650,function
 PresentFrame,0x00446790,function
 HandleScreenshotHotkey,0x00446880,function
 GetFrameClockSeconds,0x00446920,function
+BindAnimationScript,0x0044ACD0,function
 FlushRenderBatch,0x0044FD10,function
 AddToUpdateChain,0x00456B70,function
 AddToDrawChain,0x00456C10,function
