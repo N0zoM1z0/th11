@@ -16,3 +16,8 @@ UnregisterChainElement
 PollJoystickButtons
 AsciiManagerAppendString
 GetFrameClockSeconds
+RandomNext16
+RandomNext32
+AppendLog
+CaptureScreenshot
+HandleScreenshotHotkey

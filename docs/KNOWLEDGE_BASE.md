@@ -203,3 +203,30 @@ ordinary independent calls under VC9 `/O2 /Ob1 /GL` generate the target's20.
 Canonical linked unit `get-frame-clock-seconds` passes a cold complete PDB
 owner proof and all26 DIR32 bindings with zero differences. The appender and
 clock additions replayed only their own new units. See `FRAME_CLOCK.md`.
+
+## Random and log exactness; screenshot source (2026-10-23)
+
+`RandomNext16`0x00458BC0 (105 bytes) and `RandomNext32`0x00458C30 (153)
+pass cold complete linked-PE proofs. A16-bit seed is at receiver+0, count at+4;
+locking uses MainRuntime section/depth index10. The32-bit result concatenates
+two intermediate values before their two-bit rotations; stored state is the
+second rotated value. It is not equivalent to two16-bit calls. Reading the
+first seed before incrementing count reproduces the target's scheduling.
+Each function has eight exhaustive DIR32 bindings.
+
+`AppendLog`0x00458A10 (211 bytes) passes twelve bindings including stack probe,
+vsprintf and security cookie handling. Ordinary cdecl variadic source under
+VC9 /GL naturally moves the receiver to ECX while retaining stack format and
+varargs. It returns the original format pointer. It uses an8192-byte temporary,
+owner end pointer+0x2000 and strict capacity comparison against owner+0x1FFF;
+locking uses index3. See `RANDOM_AND_LOG.md`. Only these three new canonical
+units were cold-replayed for this checkpoint.
+
+Screenshot capture0x00429CA0 (524 target bytes) and hotkey0x00446880 (156) now
+have maintained source and independently reviewed authored-game boundaries.
+They remain non-exact: linked candidates540/156, with23 unrelocated hotkey
+differences. Screenshot views reuse MainRuntime's opaque storage at+0xF4
+(presentation parameters) and+0x6D0 (thread/header/buffers/filename); unrelated
+headers/proofs are unchanged. Preserve observed default-format early return,
+allocation paths, bottom-up BGR conversion and async writer launch. See
+`SCREENSHOT.md` for exact offsets, limits and bounded failed contexts.

@@ -2,6 +2,8 @@ name,address,type
 AsciiManagerOnUpdate,0x004014A0,function
 AsciiManagerAppendString,0x004014E0,function
 AsciiManagerExpireStrings,0x00401D50,function
+CaptureScreenshot,0x00429CA0,function
+HandleScreenshotHotkey,0x00446880,function
 GetFrameClockSeconds,0x00446920,function
 AddToUpdateChain,0x00456B70,function
 AddToDrawChain,0x00456C10,function
@@ -14,6 +16,9 @@ PollKeyboardInput,0x004576B0,function
 ScatterXorBlocks,0x004581C0,function
 GatherXorBlocks,0x004582E0,function
 FileExists,0x004585E0,function
+AppendLog,0x00458A10,function
+RandomNext16,0x00458BC0,function
+RandomNext32,0x00458C30,function
 AddAngles,0x00458E30,function
 NormalizeAngle,0x00458ED0,function
 UpdateInputRepeatState,0x00459B50,function
