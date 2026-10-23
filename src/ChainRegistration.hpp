@@ -1,7 +1,7 @@
 #pragma once
 #include "Chain.hpp"
 
-// Conventional source views; target entries receive element in ESI and
-// priority in EBX. Their linked calling context remains unresolved.
+// The canonical /GL context naturally assigns element to ESI and priority to
+// EBX. These declarations retain the ordinary source-level convention.
 int __stdcall AddToUpdateChain(ChainElement *element, int priority);
 int __stdcall AddToDrawChain(ChainElement *element, int priority);

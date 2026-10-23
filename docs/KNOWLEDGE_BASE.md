@@ -149,3 +149,31 @@ bytes; it does not reproduce the target's preservation/scheduling context.
 Natural byte-cipher loop/source-style probes also remain non-exact. Private
 results stay under `.analysis/joystick-native-trace/` and
 `.analysis/cipher-shapes/`; no exact credit was added for those experiments.
+
+## Exact ordered callback registration (2026-10-23)
+
+AddToUpdateChain0x00456B70 and AddToDrawChain0x00456C10 now each have complete
+147-byte /GL linked proofs. One shared cold context builds the primary source
+and a separate ordinary caller with independent unknown arguments. VC9
+naturally chooses element-in-ESI and priority-in-EBX; all nine DIR32 bindings
+per function replay exactly. No prior exact unit was rebuilt.
+
+Startup evidence identifies physical runtime base0x004C3280: instance storage
+and window-setup argument, D3D cells+4/+8, flags+0x590, twelve24-byte critical
+sections+0x810, and depth bytes+0x930. `MainRuntime.hpp` is a partial0x93C view,
+not a claim about the complete original class. Expressing the shared fields
+through that view preserves the target's flag-read ordering after the final
+list-link writes. Independent scalar views, volatility and profile variants
+were insufficient. Source remains ordinary C/C++ without imposed registers.
+
+The linked Oracle now has25 synthetic controls, including member-addend
+binding that cannot be bypassed by compensating the target base. Details and
+reproduction commands are in `CALLBACK_CHAIN.md`. Legacy standalone runtime
+views in other units remain pending data-owner integration.
+
+Bounded update-dispatch member/free-pointer/global and loop-caller probes
+remain non-exact; no count volatility or artificial ABI was introduced. The
+actual358-byte frame caller at0x00446080 loads the chain manager into EBX
+immediately before update dispatch and clears EBX immediately afterwards.
+Its complete direct-Ghidra review/decompile remain private under
+`.analysis/frame-dispatch-review.txt` and `.analysis/frame-dispatch-caller.c`.

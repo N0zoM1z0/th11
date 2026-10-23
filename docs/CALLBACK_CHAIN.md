@@ -6,8 +6,8 @@ instruction ranges initially reported by Ghidra.
 
 | Function | Complete target owner span | Source/codegen state |
 | --- | --- | --- |
-| AddToUpdateChain | 0x00456B70..0x00456C02, 147 bytes | conventional source159; non-exact |
-| AddToDrawChain | 0x00456C10..0x00456CA2, 147 bytes | conventional source159; non-exact |
+| AddToUpdateChain | 0x00456B70..0x00456C02, 147 bytes | canonical linked-PE exact |
+| AddToDrawChain | 0x00456C10..0x00456CA2, 147 bytes | canonical linked-PE exact |
 | ExecuteUpdateChain | 0x00456CB0..0x00456E0F, 352 bytes | conventional member source348; non-exact |
 | ExecuteDrawChain | 0x00456E10..0x00456F2B, 284 bytes | canonical normal-COFF exact |
 | UnregisterChainElement | 0x00457080..0x004570F1, 114 bytes | canonical normal-COFF exact |
@@ -86,8 +86,9 @@ Update's352-byte reviewed span contains304 Ghidra instruction addresses,
 twelve alignment bytes and a36-byte nine-entry table. Its normal member
 candidate is348 bytes. The actual target manager arrives in EBX; source uses
 an ordinary member declaration. Registration targets receive element in ESI
-and priority in EBX; their sources use conventional two-argument stdcall
-views. These three calling/codegen contexts remain open.
+and priority in EBX. Their ordinary two-argument stdcall declarations now
+reproduce that private convention naturally in the canonical /GL caller
+context. Only update dispatch remains non-exact among these five functions.
 
 ## Focused verification
 
@@ -111,3 +112,47 @@ Reproduction and results remain in private `.analysis/check-chain.py`,
 `.analysis/check-chain-registration.py`, `.analysis/chain-behavior.json` and
 `.analysis/chain-registration-behavior.json`. These bounded diagnostics do
 not establish the complete native product or close the later semantic phase.
+
+## Registration exactness and shared runtime storage
+
+Both registration functions now cold-replay exactly across147 bytes each.
+Their common /GL context uses ordinary calls with independent unknown
+arguments, provided by `probes/chain-registration-context.cpp`. VC9 assigns
+ESI/EBX itself; no register ABI is manually imposed. The primary source object
+owns both complete PDB contributions, and the context is cold-built once for
+its two canonical units. Each has nine independently reviewed DIR32 fields.
+
+The decisive source correction is the partial physical `MainRuntimeView`
+rooted at0x004C3280. Startup stores the application instance there and passes
+that base to window setup. D3D interface/device cells are at+4/+8. Startup
+initializes twelve critical sections at0x004C3A90 with stride0x18. Flags,
+critical sections and depth counters use these reviewed offsets:
+
+| Member | Offset from0x004C3280 | Observed address |
+| --- | --- | --- |
+| flags | +0x590 | 0x004C3810 |
+| criticalSections[0] | +0x810 | 0x004C3A90 |
+| criticalDepth[0] | +0x930 | 0x004C3BB0 |
+
+The last depth byte at0x004C3BBB also has five reviewed read/write references.
+The view retains opaque storage between known fields; its0x93C extent is a
+partial view, not a recovered complete class size. It preserves the target's
+flag read after publishing both list links. Earlier independent-scalar views
+let VC9 move that read ahead of the stores. Volatile and small-wrapper probes
+also differed and were discarded. The common physical view reproduces every
+byte using ordinary accesses.
+
+Canonical fields bind `g_MainRuntime` to its base with the original member
+addends, alongside the chain-manager pointer and the two KERNEL32 imports.
+A public negative control also rejects a wrong member addend even when a
+compensating target-base change would make the rewritten bytes agree.
+Original TU partition and full runtime data ownership remain open. Existing
+standalone views in other units have not been migrated in this checkpoint.
+
+```bash
+scripts/repo-python scripts/replay-exact-units.py \
+  --unit add-to-update-chain --unit add-to-draw-chain
+```
+
+Only these changed registration units were rebuilt; the prior nine exact
+units were not replayed.

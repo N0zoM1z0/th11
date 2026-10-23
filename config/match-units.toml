@@ -192,3 +192,51 @@ linkages = [
   { offset = 254, type = "DIR32", symbol = "?g_JoystickButtonState@@3PAEA", target = 0x4c98a0 },
   { offset = 259, type = "REL32", symbol = "@__security_check_cookie@4", target = 0x45fc2c },
 ]
+
+[units.add-to-update-chain]
+artifact_kind = "linked-pe"
+source = "src/ChainRegistration.cpp"
+inputs = ["src/ChainRegistration.hpp", "src/Chain.hpp", "src/MainRuntime.hpp"]
+support_sources = ["probes/chain-registration-context.cpp"]
+output_dir = "build/match-linked/ChainRegistration"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "ChainRegistrationProbe@20"
+functions = ["AddToUpdateChain"]
+symbol = "?AddToUpdateChain@@YGHPAUChainElement@@H@Z"
+target_address = 0x456b70
+size = 147
+linkages = [
+  { offset = 9, type = "DIR32", symbol = "?g_ChainManager@@3PAUChainManagerView@@A", target = 0x4c3234, addend = 0x0 },
+  { offset = 33, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x590 },
+  { offset = 44, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x810 },
+  { offset = 50, type = "DIR32", symbol = "__imp__EnterCriticalSection@4", target = 0x48b084, addend = 0x0 },
+  { offset = 56, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x930 },
+  { offset = 115, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x590 },
+  { offset = 126, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x810 },
+  { offset = 132, type = "DIR32", symbol = "__imp__LeaveCriticalSection@4", target = 0x48b088, addend = 0x0 },
+  { offset = 138, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x930 },
+]
+
+[units.add-to-draw-chain]
+artifact_kind = "linked-pe"
+source = "src/ChainRegistration.cpp"
+inputs = ["src/ChainRegistration.hpp", "src/Chain.hpp", "src/MainRuntime.hpp"]
+support_sources = ["probes/chain-registration-context.cpp"]
+output_dir = "build/match-linked/ChainRegistration"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "ChainRegistrationProbe@20"
+functions = ["AddToDrawChain"]
+symbol = "?AddToDrawChain@@YGHPAUChainElement@@H@Z"
+target_address = 0x456c10
+size = 147
+linkages = [
+  { offset = 9, type = "DIR32", symbol = "?g_ChainManager@@3PAUChainManagerView@@A", target = 0x4c3234, addend = 0x0 },
+  { offset = 33, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x590 },
+  { offset = 44, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x810 },
+  { offset = 50, type = "DIR32", symbol = "__imp__EnterCriticalSection@4", target = 0x48b084, addend = 0x0 },
+  { offset = 56, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x930 },
+  { offset = 115, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x590 },
+  { offset = 126, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x810 },
+  { offset = 132, type = "DIR32", symbol = "__imp__LeaveCriticalSection@4", target = 0x48b088, addend = 0x0 },
+  { offset = 138, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x930 },
+]

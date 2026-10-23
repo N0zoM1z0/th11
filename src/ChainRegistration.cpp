@@ -1,27 +1,23 @@
 #include "ChainRegistration.hpp"
-#include <windows.h>
-
-extern unsigned int g_InputRuntimeFlags;
-extern CRITICAL_SECTION g_ChainCriticalSection;
-extern unsigned char g_ChainCriticalDepth;
+#include "MainRuntime.hpp"
 
 namespace
 {
 __forceinline void EnterChain()
 {
-    if (g_InputRuntimeFlags & 0x8000)
+    if (g_MainRuntime.flags & 0x8000)
     {
-        EnterCriticalSection(&g_ChainCriticalSection);
-        ++g_ChainCriticalDepth;
+        EnterCriticalSection(&g_MainRuntime.criticalSections[0]);
+        ++g_MainRuntime.criticalDepth[0];
     }
 }
 
 __forceinline void LeaveChain()
 {
-    if (g_InputRuntimeFlags & 0x8000)
+    if (g_MainRuntime.flags & 0x8000)
     {
-        LeaveCriticalSection(&g_ChainCriticalSection);
-        --g_ChainCriticalDepth;
+        LeaveCriticalSection(&g_MainRuntime.criticalSections[0]);
+        --g_MainRuntime.criticalDepth[0];
     }
 }
 }

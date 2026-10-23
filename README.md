@@ -43,8 +43,8 @@ candidates. See generated [`docs/PROGRESS.md`](docs/PROGRESS.md) for current
 review, source, and exact counts; unresolved gaps can change the inventory.
 Canonical units include bounded angle arithmetic, 32-key repeat/edge state,
 the complete keyboard polling path, individual joystick-button capture, draw
-callback dispatch/removal, file existence checking, and the ASCII update
-callback. Update dispatch, ordered callback registration, gameplay joystick
+callback dispatch/removal, ordered callback registration, file existence
+checking, and the ASCII update callback. Update dispatch, gameplay joystick
 merging, and paired byte transforms remain maintained non-exact candidates.
 The Windows i386 production build is open. Semantic reconstruction and
 portability have not started.

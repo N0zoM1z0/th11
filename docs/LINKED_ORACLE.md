@@ -64,7 +64,7 @@ relocations, never a masked exactness score.
 
 ## Verification and use
 
-Twenty-four public synthetic tests use generated PE32/MSF7/PDB fixtures,
+Twenty-five public synthetic tests use generated PE32/MSF7/PDB fixtures,
 without game bytes or the historical compiler. They cover complete positive
 replay, final-byte corruption, cropped/overlapping contributions, wrong
 owners, interior entries, MAP/PDB identity conflicts, undeclared fields, wrong
@@ -80,3 +80,10 @@ scripts/repo-python scripts/replay-exact-units.py --unit poll-joystick-buttons
 
 Public CI installs pinned Capstone5.0.6 and runs both synthetic suites. Only
 private target-bound cold builds provide actual game exactness evidence.
+
+The registration pair now also validates nonzero member addends: fields name
+one runtime object base plus reviewed offsets. The comparator first binds the
+candidate's real base symbol before replaying the target base/addend. A
+synthetic control rejects a wrong addend despite a compensating target-base
+change that would otherwise fit the final bytes. Both registrations share one
+cold source/caller context and retain their complete147-byte PDB extents.

@@ -5,75 +5,84 @@ Use direct Ghidra only. Read `AGENTS.md` and inspect dirty work before changes.
 
 ## Current checkpoint
 
-Inventory:1,988 provisional candidates. Sixteen have reviewed boundaries and
-maintained source. Nine are canonical exact, totaling2,123 owned bytes:
+Inventory:1,988 provisional candidates; sixteen reviewed/source-present.
+Eleven canonical exact functions total2,417 owned bytes:
 
 - Eight normal-COFF units: ASCII update22; AddAngles157; NormalizeAngle145;
-  input repeat105; keyboard polling888; file check141; draw chain284 including
+  repeat state105; keyboard polling888; file check141; draw chain284 including
   table; callback removal114.
-- PollJoystickButtons267: first canonical linked-PE unit. Full source /GL cold
-  build, complete primary-TU PDB contribution, PE/MAP/PDB identities, receipt,
-  and all thirteen reviewed field bindings pass with zero differences.
+- Three linked-PE units: joystick button capture267 and newly exact ordered
+  update/draw registration147 each.
 
-PollJoystickButtons returns the128-byte array at0x004C98A0; the config caller
-at0x0043BB39 indexes EAX immediately. Default Ghidra void inference was wrong.
-WinMM expands32 bits; successful DirectInput Poll copies128 buttons even if
-GetDeviceState returns an error, and does not clear the source state first.
-Failure Poll performs up to400 extra Acquire retries without the trace call.
-See `INPUT_POLLING.md`.
+Both registration proofs share one cold primary-source/caller context. All
+nine DIR32 fields per function bind and replay with zero differences. VC9
+naturally uses element-in-ESI and priority-in-EBX from ordinary stdcall source;
+no custom register ABI was imposed. Only these two changed units were
+cold-replayed; the previous nine exact units were not rebuilt.
 
-## Linked acceptance is now implemented for public primary owners
+## Shared runtime data was decisive
 
-`scripts/ltcg_link.py`, `linked_receipt.py` and `compare-linked-function.py`
-provide cold non-runnable contexts and strict complete public primary-TU
-acceptance. Build/replay scripts dispatch explicit artifact kinds. All local
-quoted headers, profiles, sources, tool/producer hashes, objects, PE, MAP, PDB
-and anchor artifacts are bound. Output collisions and contradictory /GL-
-profiles are rejected. Entry code cannot resolve to an anchor. Full PDB
-contribution size and unique MAP/PDB ownership must agree; every linked field
-is declared, symbol-bound and replayed before full byte comparison.
+`src/MainRuntime.hpp` is a partial physical view rooted at0x004C3280. Startup
+writes instance storage there and passes that base to window setup; D3D cells
+are+4/+8. Flags are+0x590 (0x004C3810), twelve24-byte critical sections start
+at+0x810 (0x004C3A90), and depth bytes at+0x930 (0x004C3BB0). The last depth
+byte0x004C3BBB has five direct-Ghidra read/write references. The0x93C view is
+not a recovered complete class size.
 
-Twenty-four public synthetic controls cover positive replay, wrong final
-bytes, cropped/overlapping/wrong owners, metadata identity, interior entries,
-field and symbol errors, aliases, stale receipts and control-plane gates.
-CI installs pinned Capstone5.0.6. Specialized static-owner/EH/split-owner
-contexts remain open. See `LINKED_ORACLE.md`; do not broaden claims from this
-single-function lane to a native game or original TU/GL ownership.
+This common view preserves the target's flag read after publishing both list
+links. Separate scalar views let VC9 hoist that test ahead of the stores;
+volatility and tiny-wrapper/profile probes also differed. Root/member binding
+uses actual base plus addends; a new negative control rejects a wrong member
+addend even when the target base is compensated to fit the final bytes.
 
-Only poll-joystick-buttons was cold-built/replayed in this checkpoint. The
-previous eight exact units were not rebuilt. All producer edits were finished
-before its final focused cold replay; the receipt is current.
+Legacy standalone field views in other units remain pending native data-owner
+integration. Do not migrate unrelated units gratuitously: source dependencies
+would require focused revalidation. See `CALLBACK_CHAIN.md`.
 
-## Existing candidates and useful next work
+## Oracle and resource rules
 
-- Chain update owner352 includes nine-entry table; conventional member source
-  is348 and passed440 target diagnostic cases. Two ordered registrations each
-  target147; source159 and560 cases each. Actual EBX / ESI+EBX contexts remain
-  non-exact. Draw284 includes259-byte code, one NOP and24-byte table; do not
-  restore its shorter initial Ghidra bound. See `CALLBACK_CHAIN.md`.
-- Joystick gameplay merge815 versus target812 remains non-exact. Empty trace
-  body visible to /GL removes the call; a separate normal-COFF empty sink keeps
-  the call but still815. Private `.analysis/joystick-native-trace/` records it.
-- ByteCipher normal276 / target284 each. A /GL caller naturally produces the
-  observed key-in-AL/five-stack-argument convention but linked bodies293 are
-  non-exact. New natural source/loop/convention probes remain non-exact:
-  `.analysis/cipher-shapes/`; no new exact credit. Original driver evidence:
-  `.analysis/cipher-caller/`, `build/probe-ltcg/cipher-caller/`.
-- ASCII expiry100 versus124 remains open. Prioritize medium useful functions;
-  avoid batches of tiny leaves. Preserve actual ABI and complete extents.
+The linked lane accepts complete public primary-TU PDB code contributions,
+requiring current source/tool/producer/artifact receipts, PE/MAP/PDB identity,
+unique owner/extents, exhaustive fields and full byte equality. It now has25
+synthetic controls. Specialized static/EH/split-owner acceptance remains open.
+The new registration caller lives in `probes/chain-registration-context.cpp`.
 
-Use new linked contexts when appropriate; keep unsupported static/EH cases
-pending rather than forcing them through a normal-COFF or shortened owner.
-Production TU/data/resource/library/link-order closure, native runtime,
-semantic reconstruction and portability remain open later gates.
-
-## Resources and recovery
-
-Ghidra and Wine share a serialization lock, one CPU affinity and nice10.
+Ghidra and Wine share one serialization lock, one CPU affinity and nice10.
 Ghidra heap768MiB; JVM/native overhead is additional. Private Ghidra12.1.3
-project: `ghidra-project/TH11`. VC9 RTM compiler15.00.21022.08 and
-linker9.00.21022.08 are pinned; all compiler artifact-family smoke has passed.
-Do not rerun full cohorts when changing one unit.
+project: `ghidra-project/TH11`. VC9 RTM compiler15.00.21022.08/linker9.00.21022.08
+remain pinned. Do not replay full cohorts for a local change.
+
+## Remaining useful work and recent evidence
+
+- Update dispatch target352 includes its nine-entry table; maintained ordinary
+  member source348 remains non-exact. New two-call/loop contexts produced312
+  bytes; free-pointer/cdecl/stdlib/global variants did not solve it. Do not
+  force count volatility or a fake ABI. Probe logs are private under
+  `.analysis/chain-update-*`; these are diagnostic evidence only.
+- The complete358-byte real frame caller at0x00446080 was reviewed/decompiled.
+  It loads g_ChainManager into EBX immediately before calling update dispatch
+  and clears EBX immediately afterwards. Thus the real manager value is not
+  kept live after that call. Private evidence:
+  `.analysis/frame-dispatch-review.txt`, `.analysis/frame-dispatch-caller.c`.
+- MainRuntime grouping may help other source contexts. The gameplay joystick
+  candidate815/target812 is still open. Its WinMM axis limits are fields of
+  JOYCAPSA at0x004C2F08: current scalar view starts at+0x24 (0x004C2F2C).
+  The existing joyGetDevCapsA call reads0x194 bytes. Review and test that
+  physical view rather than treating the four limits as a standalone owner.
+- The real trace sink is RET, and the gameplay caller preserves Acquire EAX
+  across it. Same-TU empty source removes the call; separate normal COFF keeps
+  it but still815. Natural varargs setup/teardown outside release logging and
+  mixed /GL support profiles have not yet been tested; do not embed a RET or
+  introduce fake return values to force preservation.
+- ByteCipher normal276/target284 each remains non-exact; its /GL caller
+  naturally produces key-in-AL plus five stack arguments but body293 differs.
+  ASCII expiry100/124 remains open. Prioritize useful medium functions.
+
+Full production TU/data/resource/library/link-order closure and native
+runtime validation are open. Semantic reconstruction and portability remain
+later gates; no complete native game build has been achieved.
+
+## Recovery
 
 ```bash
 git status --short --branch

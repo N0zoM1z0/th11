@@ -120,6 +120,17 @@ class LinkedControls(unittest.TestCase):
         self.unit['linkages'][0]['target'] += 1
         self.assertEqual(self.replay()['result'], 'mismatch')
 
+    def test_member_addend_must_bind_the_real_base(self):
+        self.code = b'\xa1' + struct.pack('<I', 0x401084) + self.code[5:]
+        self.write()
+        self.unit['linkages'][0].update(target=0x404ffc, addend=4)
+        self.assertEqual(self.replay()['result'], 'exact')
+        # The encoded target bytes would still agree, but the candidate no
+        # longer names _data plus its actual member displacement.
+        self.unit['linkages'][0].update(target=0x404ff8, addend=8)
+        with self.assertRaisesRegex(ValueError, 'resolve uniquely'):
+            self.replay()
+
     def test_local_binding_cannot_change_offset(self):
         self.code = b'\xa1' + struct.pack('<I', 0x401005) + self.code[5:]
         self.write()
