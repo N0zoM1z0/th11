@@ -114,3 +114,7 @@ PublishStageMesh
 CreateStageMeshRow
 CreateAlternateStageMeshRow
 FindAnimationVmById
+BindAnimationFileScript
+PublishSceneAnimationVm
+CreateAnimationVmId
+InitializeSceneAnimationVm

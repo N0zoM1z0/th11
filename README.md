@@ -60,8 +60,7 @@ tracked in [`docs/WINDOW_SURFACE_BUFFER.md`](docs/WINDOW_SURFACE_BUFFER.md).
 Text bitmap creation/release and font initialization have exact proofs;
 [`docs/TEXT_RESOURCES.md`](docs/TEXT_RESOURCES.md) also records checksum source.
 Startup path, shortcut and window-creation source is maintained in
-[`docs/STARTUP_WINDOW.md`](docs/STARTUP_WINDOW.md), with bounded diagnostics and
-explicitly unresolved exactness.
+[`docs/STARTUP_WINDOW.md`](docs/STARTUP_WINDOW.md), with unresolved codegen differences.
 Device creation now has full source; viewport reset, double-buffer priming and
 error logging have exact proofs in
 [`docs/DEVICE_INITIALIZATION.md`](docs/DEVICE_INITIALIZATION.md).
@@ -107,6 +106,9 @@ and both factor getters now have exact proofs;
 Mesh construction/reset and row-VM helpers now have complete source; vertex
 publication and its callback add139 exact bytes. See
 [`docs/STAGE_MESH.md`](docs/STAGE_MESH.md).
+Animation VM creation, initialization and file-script binding now have complete
+source and add474 exact bytes; typed-ID lookup adds79 more. See
+[`docs/ANIMATION_VM_FACTORY.md`](docs/ANIMATION_VM_FACTORY.md).
 The Windows i386 production build is open. Semantic reconstruction and
 portability have not started.
 

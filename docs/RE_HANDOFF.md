@@ -1,104 +1,70 @@
 # Agent handoff
 
-Current source, ledgers and canonical receipts are authoritative. See
-[AGENTS.md](../AGENTS.md), [RE_WORKFLOW.md](RE_WORKFLOW.md) and
-[ORACLES.md](ORACLES.md). Historical notes are not current requirements.
+Use current source, ledgers and canonical receipts with [AGENTS.md](../AGENTS.md),
+[RE_WORKFLOW.md](RE_WORKFLOW.md) and [ORACLES.md](ORACLES.md). Historical notes
+are not current requirements. All dirty work belongs to this effort.
 
-## Current state and priority
+## Current state
 
-- Original Japanese TH11 v1.00a only; target identity is in `config/target.toml`.
-- 1,993 provisional candidates;116 complete/source-present mappings.
-- 57 exact functions /11,693 bytes:8 normal COFF and49 linked PE.
-- Focus on full-function byte equality, including useful medium/large functions.
-- Direct local Ghidra/compiler tools; no Factory MCP or REA. VC9 RTM remains pinned.
+- Original Japanese TH11 v1.00a only; identity is in `config/target.toml`.
+- 1,993 candidates;120 complete/source-present mappings.
+- 61 exact functions /12,246 bytes:8 normal COFF and53 linked PE.
+- Direct local Ghidra/compiler tools; no Factory MCP or REA. VC9 RTM is pinned.
 - Commit meaningful progress with `gpt-6.1-sol: ...`.
 
-The operator explicitly removed broad behavior/failure/random/multiframe suites
-and caller regressions from the default workflow. Do not recreate them or treat
-historical test counts as obligations. Use execution only for a specific unresolved
-codegen/ABI question. Public Oracle tests are for changes to those tools; full
-CI is not a routine source/documentation checkpoint requirement.
+The operator prioritizes exact reconstruction. Broad behavior/failure/null/
+random/multiframe suites, caller regressions and per-function full CI are not
+checkpoint requirements. Sixteen private stage behavior drivers/models were
+removed; active topic documents were trimmed. Do not recreate those suites.
+Use execution only for a concrete unresolved codegen/ABI question.
 
-## Resume and checkpoint
+## Current codegen
 
-Work in `/home/pentester/coding/codex_ida/th11-reconstruction/th11`. Inspect the
-worktree and current diff; all existing dirty work belongs to this effort.
-Verify target/toolchain once on resume, then inspect the relevant source and
-ledger entries. For a checkpoint, cold-replay only changed exact units and
-actual declared dependencies, update tracking/progress, and check the diff.
-Never replay the entire cohort by default.
-
-```bash
-git status --short --branch
-scripts/repo-python scripts/verify-target.py
-scripts/repo-python scripts/verify-toolchain.py --check
-scripts/repo-python scripts/validate-tracking.py --require-target
-scripts/repo-python scripts/progress.py --check
-```
-
-## Latest exact and source work
-
-| Function | Target bytes | Current codegen |
+| Function | Target bytes | Current source |
 | --- | ---: | --- |
-| StageScriptMeshConstructor,40E530 | 389 | source362; non-exact |
-| ResetStageMesh,40E6C0 | 325 | source325;75 address-normalized diagnostic differences |
-| PublishStageMesh,40E890 | 123 | exact; no fields |
-| StageMeshVmCallback,40E520 | 16 | exact; one REL32 |
-| CreateStageMeshRow/CreateAlternateStageMeshRow,42B3D0/42B480 | 168/170 | source162/164; non-exact |
-| FindAnimationVmById,4561E0 | 79 | source73; private ABI differs |
-| EvaluateStageEasing,459730 | 764 including table | exact;35 fields |
-| StageVectorTweenFactor/StageFogTweenFactor,405960/405990 | 39/45 | exact; one REL32 each |
-| SetStageTimer,406100 | 59 | exact; one DIR32 |
-| AdvanceStageTimer,459270 | 83 | source83;8 diagnostic differences |
-| StepStageVectorTween/StepStageFogTween,405240/4055D0 | 883/737 | source785/534; non-exact |
-| ExecuteStageScript,404470 | 2,736 including tables | source2,728; non-exact; EH open |
-| PackStageFog,405B70 | 171 | exact; no fields |
-| UpdateStage/UpdateStageObjects,402AA0/4040F0 | 1,677/153 | source1,705/151; non-exact |
-| DrawStage/DrawStageOverlay,403130/4035A0 | 1,128/854 | source1,106/852; non-exact |
+| FindAnimationVmById,4561E0 | 79 | 79; exact |
+| CreateAnimationVmId,455A00 | 112 | 112; exact |
+| InitializeSceneAnimationVm,456910 | 171 | 171; exact |
+| BindAnimationFileScript,44ADA0 | 191 | 191; exact |
+| PublishSceneAnimationVm,4556E0 | 123 | 116;47 diagnostic differences |
+| StageScriptMeshConstructor,40E530 | 389 | 369; non-exact |
+| ResetStageMesh,40E6C0 | 325 | 325;11 diagnostic differences |
+| CreateStageMeshRow/CreateAlternateStageMeshRow | 168/170 | 167/169; non-exact |
+| PublishStageMesh/StageMeshVmCallback | 123/16 | exact |
+| EvaluateStageEasing/StageVectorTweenFactor/StageFogTweenFactor | 764/39/45 | exact |
+| ExecuteStageScript,404470 | 2,736 | 2,728; non-exact; EH open |
+| StepStageVectorTween/StepStageFogTween | 883/737 | 785/534; non-exact |
 
-The mesh checkpoint adds seven complete mappings covering1,270 target bytes.
-Callback40E520 was missing from the initial inventory; its full16-byte owner was
-explicitly reviewed. Publisher123 includes3 internal alignment bytes;
-constructor389 includes7. See [STAGE_MESH.md](STAGE_MESH.md).
-
-Only these seven units were cold-replayed: new `publish-stage-mesh` and
-`stage-mesh-vm-callback`, plus affected `pack-stage-fog`, `set-stage-timer`,
-`stage-vector-tween-factor`, `stage-fog-tween-factor`, `evaluate-stage-easing`.
-All pass. Existing source/header changes affect those four canonical families;
-the older lifecycle/callback exact families have unchanged inputs.
-
-Current canonical artifacts are `build/match-linked/StageMesh`, `StageScript`,
-`StageTween` and `StageEasing`. Useful compiler probes remain private
-`.analysis/probe-stage-mesh.py` and the subsystem probe scripts. Broad stage
-behavior drivers/models were deleted; their historical paths are retired.
+The four-byte AnimationVmId value object recovers stack-by-value lookup and
+hidden-result factory returns naturally. Three separately returned zero vectors
+recover171-byte initialization; one reused zero local produced133. Binding44ADA0
+has no ResetAnimationVm call; fileId-before-flags ordering recovers its schedule.
+Allocator4569C0 and execution member405D60 remain external declarations.
+See [ANIMATION_VM_FACTORY.md](ANIMATION_VM_FACTORY.md) and [STAGE_MESH.md](STAGE_MESH.md).
 
 ## Next exact work
 
-1. Resolve ResetStageMesh's same-size codegen gap: tuple copies now match native
-   integer copies, but temporary-slot reuse and scheduling differ. Scalar vertex
-   assignments produced358 bytes; aggregate prefix copy restores325. Aggregate
-   position/originY gives75 diagnostic differences, versus79 when assigning the
-   rounded origin back to parameter y. Do not repeat these unchanged variants.
-2. Recover constructor/row-helper/lookup caller context. Native constructor takes
-   rows in EAX, while this probe selects columns; row helpers take columns in
-   native EBX versus candidate EAX, and lookup ID is native stack versus candidate
-   ECX. Preserve honest declarations; do not force private ABI with fake parameters.
-3. Pursue the interpreter's complete2,736-byte owner and EH/codegen gaps, or the
-   existing update/drawing/pixel functions using fresh evidence. The animation VM
-   interpreter44B4B0 still has no source; its declaration is not implementation.
+1. Reset's remaining11 differences are at+243..248 and+279..283: native loads
+   position then adds cached step; candidate duplicates step then adds memory.
+   Casts/reversed additions/helpers/loop forms keep11; arrays41; double locals
+   are worse. `/fp:except`329 bytes and `/fp:fast`352 are rejected. Keep default
+   profile and the current separate originY/axis-step source.
+2. Row factories still anchor their induction pointer at Z rather than native
+   rhw, leaving a one-byte extent gap. Constructor still needs register/loop
+   context recovery. Scene publication116 versus123 has counter/return gaps.
+3. Continue substantial non-exact owners too: script2,736, update/drawing and
+   tween bodies. The VM interpreter44B4B0 still has no source. Do not count its
+   execution declaration as implementation or crop EH/table extents.
 
-## Durable cautions
+## Checkpoint and recovery
 
-- Full extents include owned switch tables/alignment. Easing's old seven-byte
-  inventory was only its JMP; its complete owner is764 bytes. Script is2,736,
-  not the old code-only2,633.
-- Getter conditional-expression returns preserve the final float rounding point.
-  Double locals add unwanted frames; assignment-only returns skip a native store.
-- Vector mode7 uses old Z+delta Z. The old-Y hypothesis missed a POP and is wrong.
-- Mesh+0C contains row VM pointers, not indices; row-array sizes are4*rows-1 bytes.
-- D3DSURFACE_DESC is32 bytes, including MultiSampleQuality before Width/Height.
-- Existing non-exact diagnostic matches and specialized EH owners get no exact
-  credit. Native product/runtime/portability remain later work.
+The completed cold run passed11 units across five families: four new exact units,
+plus `publish-stage-mesh`, `stage-mesh-vm-callback`, `pack-stage-fog`,
+`set-stage-timer`, both tween factors and `evaluate-stage-easing`. This follows
+the ID/header/context changes; older lifecycle/callback inputs are unchanged.
+Current log is private `.analysis/scene-factory-cold.log`.
 
-Topic documents and [KNOWLEDGE_BASE.md](KNOWLEDGE_BASE.md) retain target/compiler
-findings. Old experiment/test histories do not add checkpoint requirements.
+Verify target/toolchain once on resume. Cold-replay only changed exact units and
+actual affected dependencies; refresh tracking/progress and check the diff.
+Oracle/infrastructure tests are for changes to those tools, not routine source
+or documentation edits. Native product/runtime and portability remain later work.

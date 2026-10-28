@@ -1,6 +1,7 @@
 #pragma once
 
 #include "StageScript.hpp"
+#include "AnimationVmFactory.hpp"
 
 struct StageMeshVmView
 {
@@ -20,9 +21,6 @@ typedef char StageMeshVmOwnerOffset[(offsetof(StageMeshVmView, mesh) == 0x418) ?
 
 void __stdcall PublishStageMesh(StageMeshView *self);
 int __fastcall StageMeshVmCallback(AnimationVmView *vm);
-AnimationVmView *__stdcall FindAnimationVmById(RenderBatchView *renderer, unsigned int id);
-unsigned int *__stdcall CreateStageMeshRow(unsigned int *id, int columns);
-unsigned int *__stdcall CreateAlternateStageMeshRow(unsigned int *id, int columns);
-
-// Reviewed external scene-VM factory; its body is not implemented here.
-unsigned int *__stdcall CreateAnimationVmId(unsigned int *id, unsigned int file, int script, int layer);
+AnimationVmView *__stdcall FindAnimationVmById(RenderBatchView *renderer, AnimationVmId id);
+AnimationVmId __stdcall CreateStageMeshRow(int columns);
+AnimationVmId __stdcall CreateAlternateStageMeshRow(int columns);

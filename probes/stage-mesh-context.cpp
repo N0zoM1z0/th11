@@ -12,8 +12,8 @@ extern "C" __declspec(dllexport) int __stdcall StageMeshProbe(int kind, void *se
     case 2: PublishStageMesh(mesh); break;
     case 3: return StageMeshVmCallback(static_cast<AnimationVmView *>(self));
     case 4: return reinterpret_cast<int>(FindAnimationVmById(reinterpret_cast<RenderBatchView *>(self), flags));
-    case 5: CreateStageMeshRow(id, columns); break;
-    case 6: CreateAlternateStageMeshRow(id, columns); break;
+    case 5: *id = CreateStageMeshRow(columns).value; break;
+    case 6: *id = CreateAlternateStageMeshRow(columns).value; break;
     }
     return 0;
 }

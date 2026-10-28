@@ -1209,3 +1209,33 @@ references to them are records, not recovery instructions. Keep complete extent,
 pinned compiler, receipt/owner/field verification and affected cold byte proofs.
 Use execution only for a concrete codegen/ABI question; do not rebuild behavioral
 cohorts by default. Future handoffs should stay focused on exact differences.
+
+
+## Typed VM IDs and factory exactness (2026-10-28)
+
+The four-byte AnimationVmId value object with an unsigned-value constructor
+recovers the native lookup stack argument and hidden factory return convention
+under VC9 /GL. Raw unsigned IDs and explicit output-pointer declarations had
+missed this context. These are reconstructed type names, not recovered names.
+FindAnimationVmById now has a complete79-byte exact primary-TU proof.
+
+Four factory owners add source: publication4556E0/123, creation455A00/112,
+initialization456910/171 and binding44ADA0/191. The latter three have strict
+primary-TU cold proofs with11/1/5 reviewed fields and zero differences. Fresh
+zero-vector values per assignment recover171 bytes versus133 for a reused
+local. Binding has no ResetAnimationVm call; assigning fileId before the flags
+expression recovers the native load/store schedule. Allocator4569C0 and member
+execution405D60 remain external; no source/exact credit. Publication116/47
+diagnostic differences remains open. See ANIMATION_VM_FACTORY.md.
+
+Reset's same325-byte source improved75 to11 diagnostic differences by separating
+originY and axis steps. The remaining x87 load/add scheduling differs at
++243..248 and+279..283. Cast/helper/loop/parameter variants retain11; arrays41;
+double locals worse; /fp:except329 and /fp:fast352 rejected. Natural typed-ID
+context gives constructor369 versus389 and row factories167/169 versus168/170.
+Their induction pointer still anchors at Z rather than rhw. No exact credit.
+
+Only four new plus seven affected exact units were cold-replayed, all passing
+across five families. Counts:1,993 candidates,120 mappings,61 exact/12,246 bytes
+(8 COFF,53 linked). Older lifecycle/callback inputs are unchanged. Active topic
+documents shed broad behavior-case histories; no such suites were recreated.

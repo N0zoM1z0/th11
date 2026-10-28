@@ -2,13 +2,14 @@
 
 #include "StageResource.hpp"
 #include "AnimationVm.hpp"
+#include "AnimationVmId.hpp"
 #include "Random.hpp"
 
 // The draw grid shares the binding block's six observed words.
 struct StageMeshView
 {
     int rows, columns;
-    unsigned int *ids;
+    AnimationVmId *ids;
     AnimationVmView **rowVms;
     RenderVertex *vertices;
     CameraVector *positions;

@@ -115,3 +115,7 @@ PublishStageMesh,0x0040E890,function
 CreateStageMeshRow,0x0042B3D0,function
 CreateAlternateStageMeshRow,0x0042B480,function
 FindAnimationVmById,0x004561E0,function
+BindAnimationFileScript,0x0044ADA0,function
+PublishSceneAnimationVm,0x004556E0,function
+CreateAnimationVmId,0x00455A00,function
+InitializeSceneAnimationVm,0x00456910,function

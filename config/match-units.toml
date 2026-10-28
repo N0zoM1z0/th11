@@ -1259,7 +1259,7 @@ linkages = [
 artifact_kind = "linked-pe"
 source = "src/StageScript.cpp"
 inputs = ["src/StageScript.hpp"]
-support_sources = ["probes/stage-script-context.cpp", "src/StageTween.cpp", "probes/stage-tween-context.cpp", "src/StageEasing.cpp", "src/StageMesh.cpp", "src/AngleMath.cpp"]
+support_sources = ["probes/stage-script-context.cpp", "src/StageTween.cpp", "probes/stage-tween-context.cpp", "src/StageEasing.cpp", "src/StageMesh.cpp", "src/AnimationVmFactory.cpp", "src/AngleMath.cpp"]
 normal_support_sources = ["src/AngleMath.cpp"]
 output_dir = "build/match-linked/StageScript"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -1274,7 +1274,7 @@ linkages = []
 artifact_kind = "linked-pe"
 source = "src/StageTween.cpp"
 inputs = ["src/StageTween.hpp", "src/StageScript.hpp"]
-support_sources = ["probes/stage-tween-context.cpp", "src/StageScript.cpp", "src/StageEasing.cpp", "src/StageMesh.cpp", "src/AngleMath.cpp"]
+support_sources = ["probes/stage-tween-context.cpp", "src/StageScript.cpp", "src/StageEasing.cpp", "src/StageMesh.cpp", "src/AnimationVmFactory.cpp", "src/AngleMath.cpp"]
 normal_support_sources = ["src/AngleMath.cpp"]
 output_dir = "build/match-linked/StageTween"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -1341,7 +1341,7 @@ linkages = [
 artifact_kind = "linked-pe"
 source = "src/StageTween.cpp"
 inputs = ["src/StageTween.hpp", "src/StageScript.hpp"]
-support_sources = ["probes/stage-tween-context.cpp", "src/StageScript.cpp", "src/StageEasing.cpp", "src/StageMesh.cpp", "src/AngleMath.cpp"]
+support_sources = ["probes/stage-tween-context.cpp", "src/StageScript.cpp", "src/StageEasing.cpp", "src/StageMesh.cpp", "src/AnimationVmFactory.cpp", "src/AngleMath.cpp"]
 normal_support_sources = ["src/AngleMath.cpp"]
 output_dir = "build/match-linked/StageTween"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -1358,7 +1358,7 @@ linkages = [
 artifact_kind = "linked-pe"
 source = "src/StageTween.cpp"
 inputs = ["src/StageTween.hpp", "src/StageScript.hpp"]
-support_sources = ["probes/stage-tween-context.cpp", "src/StageScript.cpp", "src/StageEasing.cpp", "src/StageMesh.cpp", "src/AngleMath.cpp"]
+support_sources = ["probes/stage-tween-context.cpp", "src/StageScript.cpp", "src/StageEasing.cpp", "src/StageMesh.cpp", "src/AnimationVmFactory.cpp", "src/AngleMath.cpp"]
 normal_support_sources = ["src/AngleMath.cpp"]
 output_dir = "build/match-linked/StageTween"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -1375,7 +1375,7 @@ linkages = [
 artifact_kind = "linked-pe"
 source = "src/StageMesh.cpp"
 inputs = ["src/StageMesh.hpp"]
-support_sources = ["probes/stage-mesh-context.cpp"]
+support_sources = ["probes/stage-mesh-context.cpp", "src/AnimationVmFactory.cpp"]
 output_dir = "build/match-linked/StageMesh"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "StageMeshProbe@40"
@@ -1389,7 +1389,7 @@ linkages = []
 artifact_kind = "linked-pe"
 source = "src/StageMesh.cpp"
 inputs = ["src/StageMesh.hpp"]
-support_sources = ["probes/stage-mesh-context.cpp"]
+support_sources = ["probes/stage-mesh-context.cpp", "src/AnimationVmFactory.cpp"]
 output_dir = "build/match-linked/StageMesh"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "StageMeshProbe@40"
@@ -1400,3 +1400,79 @@ size = 16
 linkages = [
   { offset = 8, type = "REL32", symbol = "?PublishStageMesh@@YGXPAUStageMeshView@@@Z", target = 0x40e890, addend = 0x0 },
 ]
+
+[units.initialize-scene-animation-vm]
+artifact_kind = "linked-pe"
+source = "src/AnimationVmFactory.cpp"
+inputs = ["src/AnimationVmFactory.hpp", "src/AnimationVmId.hpp"]
+support_sources = ["probes/stage-mesh-context.cpp", "src/StageMesh.cpp"]
+output_dir = "build/match-linked/AnimationVmFactory"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageMeshProbe@40"
+functions = ["InitializeSceneAnimationVm"]
+symbol = "?InitializeSceneAnimationVm@@YGXPAUAnimationVmView@@PAUAnimationFileView@@H@Z"
+target_address = 0x456910
+size = 171
+linkages = [
+  { offset = 161, type = "REL32", symbol = "?BindAnimationFileScript@@YGXPAUAnimationFileView@@HPAUAnimationVmView@@@Z", target = 0x44ada0, addend = 0x0 },
+]
+
+[units.bind-animation-file-script]
+artifact_kind = "linked-pe"
+source = "src/AnimationVmFactory.cpp"
+inputs = ["src/AnimationVmFactory.hpp", "src/AnimationVmId.hpp"]
+support_sources = ["probes/stage-mesh-context.cpp", "src/StageMesh.cpp"]
+output_dir = "build/match-linked/AnimationVmFactory"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageMeshProbe@40"
+functions = ["BindAnimationFileScript"]
+symbol = "?BindAnimationFileScript@@YGXPAUAnimationFileView@@HPAUAnimationVmView@@@Z"
+target_address = 0x44ada0
+size = 191
+linkages = [
+  { offset = 117, type = "DIR32", symbol = "?g_AnimationTimeScale@@3MA", target = 0x4a7948, addend = 0x0 },
+  { offset = 126, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x4c3268, addend = 0x0 },
+  { offset = 156, type = "REL32", symbol = "?Execute@SceneVmRegistryView@@QAEHPAUAnimationVmView@@@Z", target = 0x405d60, addend = 0x0 },
+  { offset = 161, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x4c3268, addend = 0x0 },
+  { offset = 182, type = "REL32", symbol = "_memset", target = 0x46a720, addend = 0x0 },
+]
+
+[units.create-animation-vm-id]
+artifact_kind = "linked-pe"
+source = "src/AnimationVmFactory.cpp"
+inputs = ["src/AnimationVmFactory.hpp", "src/AnimationVmId.hpp"]
+support_sources = ["probes/stage-mesh-context.cpp", "src/StageMesh.cpp"]
+output_dir = "build/match-linked/AnimationVmFactory"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageMeshProbe@40"
+functions = ["CreateAnimationVmId"]
+symbol = "?CreateAnimationVmId@@YG?AUAnimationVmId@@PAUAnimationFileView@@HH@Z"
+target_address = 0x455a00
+size = 112
+linkages = [
+  { offset = 2, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x590 },
+  { offset = 13, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8e8 },
+  { offset = 19, type = "DIR32", symbol = "__imp__EnterCriticalSection@4", target = 0x48b084, addend = 0x0 },
+  { offset = 25, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x939 },
+  { offset = 31, type = "REL32", symbol = "?AllocateSceneAnimationVm@@YGPAUAnimationVmView@@XZ", target = 0x4569c0, addend = 0x0 },
+  { offset = 66, type = "REL32", symbol = "?InitializeSceneAnimationVm@@YGXPAUAnimationVmView@@PAUAnimationFileView@@H@Z", target = 0x456910, addend = 0x0 },
+  { offset = 73, type = "REL32", symbol = "?PublishSceneAnimationVm@@YG?AUAnimationVmId@@PAUAnimationVmView@@@Z", target = 0x4556e0, addend = 0x0 },
+  { offset = 79, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x590 },
+  { offset = 91, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8e8 },
+  { offset = 97, type = "DIR32", symbol = "__imp__LeaveCriticalSection@4", target = 0x48b088, addend = 0x0 },
+  { offset = 103, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x939 },
+]
+
+[units.find-animation-vm-by-id]
+artifact_kind = "linked-pe"
+source = "src/StageMesh.cpp"
+inputs = ["src/StageMesh.hpp", "src/AnimationVmId.hpp"]
+support_sources = ["probes/stage-mesh-context.cpp", "src/AnimationVmFactory.cpp"]
+output_dir = "build/match-linked/StageMesh"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageMeshProbe@40"
+functions = ["FindAnimationVmById"]
+symbol = "?FindAnimationVmById@@YGPAUAnimationVmView@@PAURenderBatchView@@UAnimationVmId@@@Z"
+target_address = 0x4561e0
+size = 79
+linkages = []

@@ -5,12 +5,12 @@ Seven complete functions now have source in `src/StageMesh.cpp`.
 | Function | Address | Target | Source | State |
 | --- | --- | ---: | ---: | --- |
 | StageMeshVmCallback | 40E520 | 16 | 16 | Exact |
-| StageScriptMeshConstructor | 40E530 | 389 | 362 | Non-exact |
+| StageScriptMeshConstructor | 40E530 | 389 | 369 | Non-exact |
 | ResetStageMesh | 40E6C0 | 325 | 325 | Non-exact |
 | PublishStageMesh | 40E890 | 123 | 123 | Exact |
-| CreateStageMeshRow | 42B3D0 | 168 | 162 | Non-exact |
-| CreateAlternateStageMeshRow | 42B480 | 170 | 164 | Non-exact |
-| FindAnimationVmById | 4561E0 | 79 | 73 | Non-exact |
+| CreateStageMeshRow | 42B3D0 | 168 | 167 | Non-exact |
+| CreateAlternateStageMeshRow | 42B480 | 170 | 169 | Non-exact |
+| FindAnimationVmById | 4561E0 | 79 | 79 | Exact |
 
 Direct local, hash-attested Ghidra reviews cover full bodies, references,
 neighbors and external call contracts. Constructor389 includes7 internal
@@ -34,8 +34,8 @@ runtime file+588 with script/layer51/1B and52/1C respectively. Row helpers alloc
 2*columns vertices; normal small-column handling retains the previous point
 count, while alternate handling records columns. Their flag/store ordering is
 distinct. Lookup returns null for zero ID and searches both renderer lists in
-order. Allocation and scene creation remain external; do not add validation
-or change original control flow merely to simplify source.
+order. Scene creation now has source in [ANIMATION_VM_FACTORY.md](ANIMATION_VM_FACTORY.md).
+Allocation remains external.
 
 Reset uses X+192+32 and Y+16 origins. Width divides by rows-1 and height by
 columns-1, with float stores at the observed boundaries. Outer rows advance X;
@@ -54,20 +54,31 @@ full extents, exhaustive field replay and all bytes agree.
 
 ```bash
 scripts/repo-python scripts/replay-exact-units.py \
-  --unit publish-stage-mesh --unit stage-mesh-vm-callback
+  --unit publish-stage-mesh --unit stage-mesh-vm-callback \
+  --unit find-animation-vm-by-id
 ```
 
-Both use primary `src/StageMesh.cpp`, support `probes/stage-mesh-context.cpp`,
-entry `StageMeshProbe@40`, output `build/match-linked/StageMesh`, and
-`/TP /O2 /Ob1 /Gy /MT /Isrc /EHsc /GL`. The five existing units whose declared
-header/context changed also pass focused cold replay. No unrelated exact unit
-was replayed. Totals are116 source mappings and57 exact/11,693 bytes.
+The mesh family uses primary `src/StageMesh.cpp`, support
+`probes/stage-mesh-context.cpp` and `src/AnimationVmFactory.cpp`, entry
+`StageMeshProbe@40`, output `build/match-linked/StageMesh`, and
+`/TP /O2 /Ob1 /Gy /MT /Isrc /EHsc /GL`. The complete79-byte lookup now has
+a strict primary-TU cold proof with no address fields. The two existing mesh
+units and five affected exact units also pass cold replay. No unrelated unit
+was replayed. Totals are120 mappings and61 exact functions /12,246 bytes.
 
-Reset's scalar coordinate writes produced358 bytes. Copying the12-byte tuple
-as an aggregate restores325 bytes; temporary-slot scheduling still leaves75
-address-normalized diagnostic differences. Assigning the rounded Y origin back
-to the input parameter gave79 and was superseded. Constructor and row helpers
-retain private parameter/register gaps; lookup uses candidate ECX ID versus
-native stack ID. These functions receive no masked-match credit. Continue with
-those concrete compiler/caller-context questions rather than broad behavioral
-or failure matrices.
+The four-byte AnimationVmId value object recovers the native stack ID argument
+and genuine hidden-result factory returns. Raw unsigned IDs and explicit
+output-pointer declarations did not recover that context. Constructor369 and
+row factories167/169 remain non-exact against389 and168/170. Row initialization
+uses a guarded countdown; its induction pointer still anchors at Z rather than
+native rhw, leaving a one-byte extent gap.
+
+Reset's scalar coordinate writes produced358 bytes; tuple-prefix copying
+restores325. Separating rounded originY and the two axis-step values reduces
+address-normalized diagnostic differences from75 to11 at+243..248 and+279..283.
+Native loads the position then adds a cached step; the candidate duplicates
+the step and adds the memory position. Both complete owners remain325 bytes.
+Casts, reversed additions, inline helpers, parameter forms and loop rewrites
+retain11 differences. Step arrays/pairs give41; double locals and accumulator
+variants are worse. `/fp:except` gives329 bytes and `/fp:fast`352; neither is
+retained. Continue from the default profile and current11-difference source.
