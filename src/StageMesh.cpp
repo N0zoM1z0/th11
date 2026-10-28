@@ -61,9 +61,10 @@ AnimationVmId __stdcall CreateStageMeshRow(int columns)
         {
             do
             {
-                vertex->color = 0xffffffff;
                 vertex->z = 0.0f;
-                vertex++->rhw = 1.0f;
+                vertex->rhw = 1.0f;
+                vertex->color = 0xffffffff;
+                ++vertex;
             } while (--count);
         }
     }
@@ -90,9 +91,10 @@ AnimationVmId __stdcall CreateAlternateStageMeshRow(int columns)
         {
             do
             {
-                vertices->color = 0xffffffff;
                 vertices->z = 0.0f;
-                vertices++->rhw = 1.0f;
+                vertices->rhw = 1.0f;
+                vertices->color = 0xffffffff;
+                ++vertices;
             } while (--count);
         }
     }

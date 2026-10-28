@@ -1239,3 +1239,40 @@ Only four new plus seven affected exact units were cold-replayed, all passing
 across five families. Counts:1,993 candidates,120 mappings,61 exact/12,246 bytes
 (8 COFF,53 linked). Older lifecycle/callback inputs are unchanged. Active topic
 documents shed broad behavior-case histories; no such suites were recreated.
+
+
+## Exact row loops and complete mesh effects (2026-10-28)
+
+Assigning vertex Z, rhw, then color, followed by an independent increment, gives
+the native rhw-based induction pointer and complete168/170-byte zero-difference
+row creators. The previous color/Z/postincrement-rhw form gave167/169. Both new
+strict primary-TU cold proofs have five independently reviewed bindings. An
+rhw-first source order gives correct lengths but13 diagnostic differences.
+
+Six full MeshEffects.cpp owners cover2,125 reviewed target bytes: status91,
+column initializer998, square initializer342, deformation callback398, sound
+queue125 and positioned VM factory171. Column initialization creates four rows,
+perturbs all four X positions per column, colors the inner rows, updates status
+and assigns timer119/120/120. Square initialization builds13 by13 and installs
+the398-byte callback at VM+428. It is distinct from mesh publication+414. Old
+mesh pointers are captured across release/delete, matching actual callers.
+
+Status91 has a complete cold primary-TU exact proof with four absolute bindings.
+Other complete codegen stays non-exact:1022/498,343/240,398/12,126/73,169/101
+(source bytes/diagnostic differences), respectively. The two initializers bear
+real C++ EH. Callback differences are Y load/add scheduling at+183..188 and
++318..323. Float conversion chooses the native2^32 correction width; constant
+template scales remove an unwanted8-byte-aligned frame. A coordinate updater
+reduces22 to12 differences; Y postincrement retains12. Native helpers are
+compiled as real support, and independent RNG/position/layer/sound probe inputs
+avoid constant specialization. No behavior suite was added.
+
+A file-member model retained the positioned factory's169/101 gap and was not
+kept. Constructor reference/resolver forms produce389 bytes but RET12 and232
+differences; member-column access381/277. The retained constructor remains
+369/276; adding real effect callers alone does not close it.
+
+Only the three new and ten affected exact units were cold-replayed, all13
+passing across five families. Easing's declared inputs are unchanged and were
+not replayed. Counts:1,993 candidates,126 source mappings,64 exact functions
+covering12,675 bytes (8 COFF,56 linked PE). See MESH_EFFECTS.md and STAGE_MESH.md.

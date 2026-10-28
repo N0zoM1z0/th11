@@ -118,3 +118,9 @@ BindAnimationFileScript
 PublishSceneAnimationVm
 CreateAnimationVmId
 InitializeSceneAnimationVm
+UpdateMeshEffectSpellState
+InitializeColumnMeshEffect
+InitializeSquareMeshEffect
+SquareMeshVmCallback
+QueueMeshEffectSound
+CreatePositionedAnimationVmId

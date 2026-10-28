@@ -109,6 +109,9 @@ publication and its callback add139 exact bytes. See
 Animation VM creation, initialization and file-script binding now have complete
 source and add474 exact bytes; typed-ID lookup adds79 more. See
 [`docs/ANIMATION_VM_FACTORY.md`](docs/ANIMATION_VM_FACTORY.md).
+The full998/342-byte mesh-effect initializers,398-byte deformation callback,
+positioned VM creation, sound queue and status update now have source. See
+[`docs/MESH_EFFECTS.md`](docs/MESH_EFFECTS.md) for exactness and codegen gaps.
 The Windows i386 production build is open. Semantic reconstruction and
 portability have not started.
 

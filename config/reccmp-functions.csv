@@ -119,3 +119,9 @@ BindAnimationFileScript,0x0044ADA0,function
 PublishSceneAnimationVm,0x004556E0,function
 CreateAnimationVmId,0x00455A00,function
 InitializeSceneAnimationVm,0x00456910,function
+UpdateMeshEffectSpellState,0x004068C0,function
+InitializeColumnMeshEffect,0x00406920,function
+InitializeSquareMeshEffect,0x00407BB0,function
+SquareMeshVmCallback,0x00408070,function
+QueueMeshEffectSound,0x0044A1E0,function
+CreatePositionedAnimationVmId,0x00455B10,function

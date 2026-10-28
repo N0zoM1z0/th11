@@ -8,8 +8,8 @@ Seven complete functions now have source in `src/StageMesh.cpp`.
 | StageScriptMeshConstructor | 40E530 | 389 | 369 | Non-exact |
 | ResetStageMesh | 40E6C0 | 325 | 325 | Non-exact |
 | PublishStageMesh | 40E890 | 123 | 123 | Exact |
-| CreateStageMeshRow | 42B3D0 | 168 | 167 | Non-exact |
-| CreateAlternateStageMeshRow | 42B480 | 170 | 169 | Non-exact |
+| CreateStageMeshRow | 42B3D0 | 168 | 168 | Exact |
+| CreateAlternateStageMeshRow | 42B480 | 170 | 170 | Exact |
 | FindAnimationVmById | 4561E0 | 79 | 79 | Exact |
 
 Direct local, hash-attested Ghidra reviews cover full bodies, references,
@@ -55,23 +55,36 @@ full extents, exhaustive field replay and all bytes agree.
 ```bash
 scripts/repo-python scripts/replay-exact-units.py \
   --unit publish-stage-mesh --unit stage-mesh-vm-callback \
-  --unit find-animation-vm-by-id
+  --unit find-animation-vm-by-id --unit create-stage-mesh-row \
+  --unit create-alternate-stage-mesh-row
 ```
 
 The mesh family uses primary `src/StageMesh.cpp`, support
 `probes/stage-mesh-context.cpp` and `src/AnimationVmFactory.cpp`, entry
 `StageMeshProbe@40`, output `build/match-linked/StageMesh`, and
 `/TP /O2 /Ob1 /Gy /MT /Isrc /EHsc /GL`. The complete79-byte lookup now has
-a strict primary-TU cold proof with no address fields. The two existing mesh
-units and five affected exact units also pass cold replay. No unrelated unit
-was replayed. Totals are120 mappings and61 exact functions /12,246 bytes.
+a strict primary-TU cold proof with no address fields. Both row helpers now
+also have full168/170-byte primary-TU cold proofs with five fields each. All
+five mesh exact units total556 bytes. The current checkpoint cold-replays
+only three new and ten affected exact units across five families; all pass.
+Totals are126 mappings and64 exact functions /12,675 bytes.
 
 The four-byte AnimationVmId value object recovers the native stack ID argument
 and genuine hidden-result factory returns. Raw unsigned IDs and explicit
-output-pointer declarations did not recover that context. Constructor369 and
-row factories167/169 remain non-exact against389 and168/170. Row initialization
-uses a guarded countdown; its induction pointer still anchors at Z rather than
-native rhw, leaving a one-byte extent gap.
+output-pointer declarations did not recover that context. The current
+constructor remains non-exact against389. Row initialization now assigns Z,
+rhw and color, then increments the vertex pointer. VC9 schedules color/Z/rhw
+and anchors the induction pointer at rhw, exactly as native. This gives full
+168/170-byte exact rows; five fields each bind runtime+588, ID creation,
+renderer, ID lookup and malloc.
+
+A reference to the row ID, or an inline resolver taking that reference, gives
+a389-byte constructor but changes its private ABI to RET12 and retains232
+diagnostic differences. Using the columns member gives381 bytes/277. Those
+variants were not kept; the current constructor is369 bytes/276. Two complete
+real callers now have source in [MESH_EFFECTS.md](MESH_EFFECTS.md), including the
+998-byte column initializer. Adding their real call graph alone retains369.
+No register ABI or padding is imposed.
 
 Reset's scalar coordinate writes produced358 bytes; tuple-prefix copying
 restores325. Separating rounded originY and the two axis-step values reduces
