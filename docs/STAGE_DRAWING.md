@@ -101,5 +101,5 @@ matching null-pointer faults; the fixture peak RSS was84,952 KiB.
 406100,4489E0,459210,455660,451EF0 and404190. They are not source coverage.
 Timer operations, animation groups and stage layers remain modeled dependencies;
 these results do not establish whole-game native runtime equivalence. Update
-402AA0 is still unimplemented. Full update disassembly was retained privately
-with this review; it remains a useful1,677-byte next target.
+402AA0 and object traversal4040F0 now have complete non-exact source; see
+[STAGE_UPDATE.md](STAGE_UPDATE.md) for their own evidence and limits.

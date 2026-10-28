@@ -68,7 +68,7 @@ struct StageEmbeddedVm
 struct StageCameraView
 {
     PerspectiveCameraView view;
-    unsigned char unknown0f0[0xfc - 0xf0];
+    CameraVector updateOffset;
     float fogStart, fogEnd;
     unsigned char unknown104[0x114 - 0x104];
     unsigned int fogColor;
@@ -116,7 +116,11 @@ struct StageResourceView
     unsigned int variant;
     int reset300c;
     VmBindingBlockView *bindings;
-    unsigned char unknown3014[0x3034 - 0x3014];
+    float minimumRadius, radius;
+    unsigned int unknown301c;
+    float phaseX, phaseY;
+    int distortionMode;
+    unsigned char unknown302c[0x3034 - 0x302c];
     ChainElement *overlayChain;
     unsigned char *source;
     unsigned int sourceSize;
@@ -135,6 +139,8 @@ typedef char StageEmbeddedVmSize[(sizeof(StageEmbeddedVm) == 0x434) ? 1 : -1];
 typedef char StageEmbeddedVmStorageOffset[(offsetof(StageEmbeddedVm, storage400) == 0x400) ? 1 : -1];
 typedef char StageCameraSize[(sizeof(StageCameraView) == 0x118) ? 1 : -1];
 typedef char StageCameraFogOffset[(offsetof(StageCameraView, fogColor) == 0x114) ? 1 : -1];
+typedef char StageCameraUpdateOffset[(offsetof(StageCameraView, updateOffset) == 0xf0) ? 1 : -1];
+typedef char StageResourceDistortionOffset[(offsetof(StageResourceView, distortionMode) == 0x3028) ? 1 : -1];
 typedef char StageResourceTintOffset[(offsetof(StageResourceView, tint) == 0x2328) ? 1 : -1];
 typedef char StageResourceDrawOffset[(offsetof(StageResourceView, drawOffset) == 0x2fe4) ? 1 : -1];
 typedef char StageResourceSize[(sizeof(StageResourceView) == 0x3158) ? 1 : -1];

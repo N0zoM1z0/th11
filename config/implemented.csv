@@ -93,3 +93,5 @@ StageDrawCallback
 StageOverlayCallback
 DrawStage
 DrawStageOverlay
+UpdateStage
+UpdateStageObjects

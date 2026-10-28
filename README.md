@@ -93,6 +93,9 @@ The complete stage main/overlay drawing functions now have non-exact source
 covering1,982 reviewed target bytes. See
 [`docs/STAGE_DRAWING.md`](docs/STAGE_DRAWING.md) for behavior and952 modeled
 full-body comparisons, including persistent three-frame sequences.
+Stage update and object traversal add1,830 reviewed target bytes of non-exact
+source;853 modeled cases agree, with real angle/RNG bodies executed. See
+[`docs/STAGE_UPDATE.md`](docs/STAGE_UPDATE.md).
 The Windows i386 production build is open. Semantic reconstruction and
 portability have not started.
 

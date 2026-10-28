@@ -8,7 +8,7 @@ its counts and next-target suggestions are historical.
 
 - Target: original Japanese TH11 v1.00a, private `resources/th11.exe`;
   identity in [config/target.toml](../config/target.toml).
-- Inventory:1,992 provisional candidates;95 reviewed/source-present mappings.
+- Inventory:1,992 provisional candidates;97 reviewed/source-present mappings.
 - Exact:50 functions /10,476 owned bytes:8 normal-COFF and42 linked-PE units.
   [PROGRESS.md](PROGRESS.md) is generated from maintained ledgers.
 - Full Windows i386 game build/runtime closure is open. Diagnostic executables
@@ -47,6 +47,8 @@ scripts/repo-python scripts/replay-exact-units.py \
 
 | Function | Native bytes | State | Details |
 | --- | ---: | --- | --- |
+| UpdateStage,0x00402AA0 | 1,677 | source1,705; non-exact | [STAGE_UPDATE.md](STAGE_UPDATE.md) |
+| UpdateStageObjects,0x004040F0 | 153 | source151; non-exact | [STAGE_UPDATE.md](STAGE_UPDATE.md) |
 | DrawStage,0x00403130 | 1,128 | source1,106; non-exact | [STAGE_DRAWING.md](STAGE_DRAWING.md) |
 | DrawStageOverlay,0x004035A0 | 854 | source852; non-exact | [STAGE_DRAWING.md](STAGE_DRAWING.md) |
 | InitializeStageResource,0x004024C0 | 630 | exact,21 fields | [STAGE_LIFECYCLE.md](STAGE_LIFECYCLE.md) |
@@ -55,7 +57,7 @@ scripts/repo-python scripts/replay-exact-units.py \
 | StageResourceConstructor,0x004023F0 | 180 | diagnostic match; EH ownership open, no exact credit | [STAGE_LIFECYCLE.md](STAGE_LIFECYCLE.md) |
 | StageResourceDestructor,0x00402740 | 603 | source597/143 differences; EH ownership open | [STAGE_LIFECYCLE.md](STAGE_LIFECYCLE.md) |
 | CreateStageResource,0x004029C0 | 159 | diagnostic match; EH ownership open, no exact credit | [STAGE_LIFECYCLE.md](STAGE_LIFECYCLE.md) |
-| StageUpdateCallback,0x00403900 | 7 | source7/3 differences; callee private ABI open | [STAGE_LIFECYCLE.md](STAGE_LIFECYCLE.md) |
+| StageUpdateCallback,0x00403900 | 7 | integrated source10 bytes; callee private ABI open | [STAGE_LIFECYCLE.md](STAGE_LIFECYCLE.md) |
 | StageDrawCallback/StageOverlayCallback,0x00403910/0x00403920 | 7 each | exact,1 field each | [STAGE_LIFECYCLE.md](STAGE_LIFECYCLE.md) |
 | FixAnimationTextureTransparentPixels,0x004534C0 | 1,427 including tables | source1383, non-exact | [ANIMATION_TRANSPARENT_PIXELS.md](ANIMATION_TRANSPARENT_PIXELS.md) |
 | CreateAnimationFileTexture,0x00453D90 | 484 | source484,40 diagnostic differences | [ANIMATION_TEXTURES.md](ANIMATION_TEXTURES.md) |
@@ -121,15 +123,31 @@ some codegen differences; do not substitute invented calling conventions.
 The48 lifecycle and34 rebuilt loader cases still agree; public CI passed8+25
 tests. Current stage-drawing logs and reports are private `.analysis/` files.
 
+Latest update checkpoint adds UpdateStage1,677 and UpdateStageObjects153
+reviewed target bytes, with source1,705/151. No new exact unit. All853 modeled
+cases agree, including nine matching faults under explicit dependencies; angle
+normalization and RNG bodies execute directly, with additional full object-body
+cases. New views refine camera+F0 and stage+3014..3028 without moving fields.
+The same five affected canonical units passed cold replay. Drawing/loader
+families were rebuilt with unchanged diagnostics;48 lifecycle cases also pass.
+Private `.analysis/probe-stage-update.py`, `.analysis/stage_update_fixture.py`
+and `.analysis/check-stage-update.py` use `build/probe-ltcg/stage-update`.
+Its callback address is genuinely published by the probe to keep the fastcall
+contract. Update compiles with private EBX instead of native EAX and the escaped
+callback is10 bytes; the direct-only five-byte variant is not an exact proof.
+See `STAGE_UPDATE.md` for floating-point and dependency-model limits.
+The rebuilt drawing952 and loader34 regressions passed, along with public
+CI8+25 checks. Exact/source ledgers remain the authority for separate claims.
+
 ## Useful next work
 
-1. Stage update0x00402AA0 (1,677 bytes) still has no source. Complete private
-   disassembly is now in `.analysis/stage-main-full-review.txt`, with decompiler
-   hypotheses in `.analysis/stage-main.c`. Reconcile all math dependencies and
-   ownership before source credit. Update receives private EAX, explaining the
-   remaining seven-byte update adapter mismatch. Draw/overlay now have complete
-   source and952 full-body modeled comparisons; see `STAGE_DRAWING.md`. Their
-   unresolved external helpers remain prototypes, not source coverage.
+1. ExecuteStageScript0x00404470 is a useful next large target. Its Ghidra
+   code body is2,633 bytes, with additional trailing switch tables/alignment;
+   review the complete owner and EH context before source credit. Fresh private
+   ABI/entry/table-reference evidence is `.analysis/stage-update-contracts.txt`.
+   ResetStageMesh0x0040E6C0 (325 bytes) is another reviewed dependency with no
+   source. UpdateStage and UpdateStageObjects now have complete non-exact source,
+   so do not treat their prototypes as the remaining work.
 2. Improve the pixel helper's source0x3C/target0x44 frame and the file
    constructor's source0x44/target0x4C frame with new evidence. The ordinary
    source pixel call now naturally uses native EAX. Byte versus typed32-bit

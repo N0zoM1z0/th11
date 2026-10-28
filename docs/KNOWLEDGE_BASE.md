@@ -948,3 +948,59 @@ lifecycle cases still agree with five matching allocation faults. The affected
 loader family was rebuilt with unchanged297/434/131 sizes and17/337/80
 diagnostic differences; its34 modeled cases still agree. Public CI passed8+25
 tests. See `STAGE_DRAWING.md`.
+
+## Complete stage update and object traversal (2026-10-28)
+
+Direct local Ghidra full-span review now accepts UpdateStage402AA0..40312C
+(1,677 bytes) and UpdateStageObjects4040F0..404188 (153 bytes), including all
+internal alignment with no tables/external interior references. Both now have
+complete non-exact source in `StageUpdate.cpp`, with public primary-TU source
+contributions1,705/151 bytes. Source mappings rise to97; exact remains50
+functions/10,476 bytes. Native update receives EAX stage, object traversal EBX.
+The current integrated source uses EBX and stack respectively. Escaping the
+fastcall callback address in the maintained probe preserves its actual indirect
+contract but emits10 bytes; the earlier direct-only probe allowed a specialized
+five-byte wrapper. Neither resolves original codegen or grants exact credit.
+
+Update resets camera offsets E8/EC and vector F0, normalizes targetOffset0C
+into the observed vector24, not eyeOffset3C, and writes tint00808080. Flags08
+or04 with signed timer>=60 return before writes. Flags04/timer>=30 skip only
+objects/script/VM dispatch; camera publication, accent clearing, grid effects
+and wrapping age increment still run. It executes eight VMs unconditionally,
+then optional three VMs with saved time scale/temporary1/restoration. The saved
+scale is loaded after the first eight VMs; changes within the extra group are
+visible to subsequent calls. It copies the full0x118-byte camera to runtime+434.
+
+Stage fields3014/3018 are minimum/current radius,3020/3024 phases,3028 mode.
+Binding block's physical six words also describe signed rows/columns, IDs,
+index storage,28-byte vertices and12-byte source positions. Mode1 sets alphaC0
+on all vertices but moves only interior points, clearing their vertex/source Z.
+Mode2 uses the old radius after conditionally decrementing stored radius by2;
+its reset rectangle is(-r,224-r,2r,2r), radial center224/240. Scratch Z carries
+sourceZ-previousZ across every vertex and row. Remaining distance>=0 is the
+inside test, including unordered handling; do not copy the decompiler's inverse
+comparison. Preserve float rounding before subtraction/division, NaN color
+conversion behavior and the distinct RNG phase-jitter rounding points.
+
+The486CF0 CRT boundary is x87 sine, not a fastcall ECX function: its486D48
+implementation contains FSIN. Ordinary C++ sin(double) plus float conversion
+emits the corresponding VC9 intrinsic call. Float-rounded angular constants
+were independently read from the verified PE. No CRT source mapping was added.
+
+Object traversal tests byte+3 mask01, starts primitives at+1C, terminates on
+negative signed16 kind, executes signed16 VM indices+6 and advances by signed16
+byte size+2. It clears only active01 when no post-execution VM instruction+3A8
+is live. Negative indices/strides and initially empty streams are preserved.
+
+All853 modeled cases agree, with nine matching faults under the declared
+dependency models. Actual angle/RNG machine bodies execute in both runs;
+additional cases execute actual object traversal within the full update.
+Whole stage/runtime/mesh state, calls/float bits, live flags, scale/RNG state,
+registers, stack and x87 control/tag state are checked, with independent branch
+assertions. Script/VM/reset/D3DX/sine remain explicit models, not full native
+runtime acceptance. Only the five affected lifecycle/callback exact units were
+cold-replayed, all passing. The affected drawing and loader diagnostics rebuilt
+with unchanged sizes/differences;48 lifecycle cases still agree. See
+`STAGE_UPDATE.md` for exact scope and reproduction artifacts.
+Drawing952 and loader34 modeled regressions passed after those rebuilds;
+public CI passed8+25 checks. Earlier unrelated exact contexts were not replayed.
