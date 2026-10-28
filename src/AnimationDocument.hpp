@@ -25,6 +25,17 @@ struct AnimationDocumentTextureView
     unsigned int sourceSize, bytesPerPixel, flags;
 };
 
+struct AnimationChunkSpriteView
+{
+    unsigned int id;
+    float x, y, width, height;
+};
+
+struct AnimationChunkScriptView
+{
+    unsigned int id, offset;
+};
+
 struct AnimationSpriteView
 {
     int fileIndex, textureIndex;
@@ -87,7 +98,7 @@ int __stdcall CreateAnimationFileTexture(AnimationDocumentTextureView *texture,
 int __stdcall CreateAnimationEmbeddedTexture(AnimationDocumentTextureView *texture,
     const unsigned char *data, unsigned int format, int width, int height);
 int __stdcall CreateAnimationEmptyTexture(AnimationDocumentTextureView *texture,
-    unsigned int format, int width, int height);
+    int width, int height, unsigned int format);
 int __stdcall CreateAnimationRenderTarget(AnimationDocumentTextureView *texture);
 AnimationDocumentView *__stdcall BeginLoadAnimationDocument(RenderBatchView *renderer,
     const char *filename, int index);

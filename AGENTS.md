@@ -13,6 +13,7 @@ before changes. Use `scripts/repo-python` for repository Python commands.
 Verify target, toolchain, tracking, and progress before target-dependent work.
 
 The operator requests **direct Ghidra**, without REA. Use `scripts/ghidra.py`.
+Invoke local tools/scripts directly; do not route work through Factory MCP.
 Ghidra defaults to one CPU affinity, one analysis worker, 768 MiB maximum Java
 heap, and nice 10. Java/native overhead is additional to heap. Serialize Ghidra
 jobs and Wine/compiler jobs; do not raise resource defaults without a measured

@@ -82,21 +82,20 @@ int __stdcall DecodeAnimationChunk(AnimationDocumentView *file, int textureIndex
         return -1;
     }
     unsigned char *base = reinterpret_cast<unsigned char *>(chunk);
-    AnimationDocumentTextureView *texture = file->textures + textureIndex;
     if (!chunk->hasData)
     {
         const char *name = reinterpret_cast<const char *>(base + chunk->nameOffset);
         if (*name == '@')
         {
             if (name[1] == 'R')
-                CreateAnimationRenderTarget(texture);
+                CreateAnimationRenderTarget(file->textures + textureIndex);
             else
-                file->textureBytes += CreateAnimationEmptyTexture(texture,
-                    chunk->format, chunk->width, chunk->height);
+                file->textureBytes += CreateAnimationEmptyTexture(file->textures + textureIndex,
+                    chunk->width, chunk->height, chunk->format);
         }
         else
         {
-            int bytes = CreateAnimationFileTexture(texture, chunk->format,
+            int bytes = CreateAnimationFileTexture(file->textures + textureIndex, chunk->format,
                 chunk->width, chunk->height, chunk->offsetX, chunk->offsetY);
             if (bytes < 0)
             {
@@ -108,7 +107,7 @@ int __stdcall DecodeAnimationChunk(AnimationDocumentView *file, int textureIndex
     }
     else
     {
-        int bytes = CreateAnimationEmbeddedTexture(texture, base + chunk->textureOffset,
+        int bytes = CreateAnimationEmbeddedTexture(file->textures + textureIndex, base + chunk->textureOffset,
             chunk->format, chunk->width, chunk->height);
         if (bytes < 0)
         {
@@ -118,26 +117,29 @@ int __stdcall DecodeAnimationChunk(AnimationDocumentView *file, int textureIndex
         file->textureBytes += bytes;
     }
     D3DSURFACE_DESC description;
-    texture->texture->GetLevelDesc(0, &description);
+    file->textures[textureIndex].texture->GetLevelDesc(0, &description);
     unsigned int *offset = reinterpret_cast<unsigned int *>(base + 0x40);
     for (int i = 0; i < chunk->spriteCount; ++i, ++offset, ++spriteIndex)
     {
-        const float *rectangle = reinterpret_cast<const float *>(base + *offset + 4);
+        const AnimationChunkSpriteView *rectangle =
+            reinterpret_cast<const AnimationChunkSpriteView *>(base + *offset);
         AnimationSpriteView sprite;
+        sprite.texture = file->textures + textureIndex;
         sprite.fileIndex = file->index;
         sprite.textureIndex = textureIndex;
-        sprite.texture = file->textures + textureIndex;
         sprite.scaleX = static_cast<float>(description.Width) / chunk->width;
         sprite.scaleY = static_cast<float>(description.Height) / chunk->height;
-        sprite.left = rectangle[0] * sprite.scaleX;
-        sprite.top = rectangle[1] * sprite.scaleY;
-        sprite.right = (rectangle[2] + rectangle[0]) * sprite.scaleX;
-        sprite.bottom = (rectangle[3] + rectangle[1]) * sprite.scaleY;
+        sprite.left = rectangle->x * sprite.scaleX;
+        sprite.top = rectangle->y * sprite.scaleY;
+        sprite.right = (rectangle->width + rectangle->x) * sprite.scaleX;
+        sprite.bottom = (rectangle->height + rectangle->y) * sprite.scaleY;
         sprite.textureWidth = static_cast<float>(description.Width);
         sprite.textureHeight = static_cast<float>(description.Height);
         StoreAnimationSprite(file, spriteIndex, &sprite);
     }
-    for (int i = 0; i < chunk->scriptCount; ++i, offset += 2)
-        file->scripts[scriptIndex + i] = base + offset[1];
+    const AnimationChunkScriptView *script =
+        reinterpret_cast<const AnimationChunkScriptView *>(offset);
+    for (int i = 0; i < chunk->scriptCount; ++i, ++script)
+        file->scripts[scriptIndex + i] = base + script->offset;
     return 1;
 }

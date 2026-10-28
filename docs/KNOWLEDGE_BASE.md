@@ -746,3 +746,53 @@ review artifacts, exact evidence and remaining lower texture constructors.
 The worker dispatcher0x004548D0 remains unmapped despite private review; its
 native destruction branch clears the slot and then dereferences that null slot.
 Do not turn that observation into a repaired source path without evidence.
+
+## Texture constructors and near-exact chunk decoder (2026-10-28)
+
+All four ANM texture constructors now have maintained source: file484 bytes,
+embedded287, empty67 and render-target69. Direct Ghidra instruction review
+supersedes default decompilation's incorrect D3DX prototypes/dead-block removal.
+Embedded, empty and render-target are strict cold public primary-TU linked-PE
+exact, adding423 bytes with20 independently reviewed address bindings. The
+affected sprite149-byte unit was cold-replayed; earlier41 exact contexts were
+unchanged and not replayed. New totals are83 source mappings/45 exact/9,697 bytes.
+
+File and embedded paths honor runtime+200 bit0 by remapping destination format
+indices; empty does not. File creation rejects any nonzero HRESULT, then ignores
+surface/description/crop creation/copy results. Matching dimensions bypass
+cropping and ignore offsets; mismatches use signed crop comparisons without a
+lower clamp. Releases are source surface, destination surface, temporary texture.
+File success calls transparent-pixel processing before metadata publication.
+Embedded source header fields are signed16-bit, and destination fallback does
+not change the source format/pitch. It ignores upload failure and publishes
+metadata before surface release. Empty/render creation results are ignored.
+Details and exact commands are in `ANIMATION_TEXTURES.md`.
+
+The real texture/error/resource source family exposes the decoder's original
+calling relationship: only AdvanceAnimationDocument directly calls it. Removing
+an extra diagnostic direct caller restores its unaligned112-byte frame.
+Per-branch texture-entry evaluation and later table reload, typed20-byte sprite
+and eight-byte script definitions, ordinary width/height/format empty-creation
+parameters and texture-first sprite setup bring DecodeAnimationChunk to the
+full811 bytes with10 diagnostic differences. These are five sprite setup
+register/store positions and five script-entry instruction positions; no exact
+credit is granted. A pointer-temporary sprite variant gave39 differences and
+was discarded. Do not repeat these contexts without new evidence.
+
+The current family gives file construction483/70, source loading209/147 and
+postload advance211/118 byte counts/unequal diagnostic positions. Private ABI
+specialization differs between families: the source resource loader now takes
+EBX filename and only a stack size output, with disk-mode1 implicit. Test adapters
+were changed from observed artifact instructions, not false C++ declarations.
+The file constructor still calls an opaque transparent-pixel helper via a stack
+argument versus native EAX; frame/one-byte context gaps remain open. Its
+0x004534C0 provisional1,381-byte owner requires complete boundary/table review;
+preliminary decompilation is not source coverage.
+
+Complete-body fixture diagnostics agree in92 constructor cases, including four
+matching faults, and58 chunk/sprite cases in the new family, including five
+integrated cursor/decoder cases. The affected stage/document family was rebuilt
+and its34 cases still agree. D3DX/COM/pixel-processing/I/O models do not establish
+actual pixel output, full native game/runtime closure or semantic acceptance.
+The user's current tool preference is direct local commands, without Factory
+MCP; this is now recorded in AGENTS.md as well.

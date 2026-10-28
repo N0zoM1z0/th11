@@ -44,6 +44,10 @@ PrimeDeviceBackBuffers,0x00447E00,function
 ResetMainViewport,0x00447EA0,function
 BindAnimationScript,0x0044ACD0,function
 FlushRenderBatch,0x0044FD10,function
+CreateAnimationFileTexture,0x00453D90,function
+CreateAnimationEmbeddedTexture,0x00453F80,function
+CreateAnimationEmptyTexture,0x004540A0,function
+CreateAnimationRenderTarget,0x004540F0,function
 BeginLoadAnimationDocument,0x00454190,function
 AcquireAnimationDocument,0x00454360,function
 LoadAnimationChunkSource,0x004543E0,function

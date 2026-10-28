@@ -1089,3 +1089,68 @@ symbol = "?StoreAnimationSprite@@YGXPAUAnimationDocumentView@@HPBUAnimationSprit
 target_address = 0x454b10
 size = 149
 linkages = []
+
+[units.create-animation-embedded-texture]
+artifact_kind = "linked-pe"
+source = "src/AnimationTexture.cpp"
+inputs = ["src/AnimationTexture.hpp", "src/AnimationDocument.hpp", "src/MainRuntime.hpp"]
+support_sources = ["src/AnimationChunk.cpp", "src/AnimationSprite.cpp", "probes/animation-texture-context.cpp", "src/ErrorLog.cpp", "src/ResourceFile.cpp"]
+output_dir = "build/match-linked/AnimationTexture"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "AnimationTextureProbe@20"
+functions = ["CreateAnimationEmbeddedTexture"]
+symbol = "?CreateAnimationEmbeddedTexture@@YGHPAUAnimationDocumentTextureView@@PBEIHH@Z"
+target_address = 0x00453f80
+size = 287
+linkages = [
+  { offset = 5, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x200 },
+  { offset = 29, type = "DIR32", symbol = "?g_AnimationTextureFormats@@3QBW4_D3DFORMAT@@B", target = 0x496548, addend = 0x0 },
+  { offset = 64, type = "DIR32", symbol = "?g_AnimationTextureFormats@@3QBW4_D3DFORMAT@@B", target = 0x496548, addend = 0x0 },
+  { offset = 82, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 126, type = "REL32", symbol = "_D3DXCreateTexture@32", target = 0x45f9e0, addend = 0x0 },
+  { offset = 192, type = "DIR32", symbol = "?g_AnimationTextureBytesPerPixel@@3QBIB", target = 0x496560, addend = 0x0 },
+  { offset = 202, type = "DIR32", symbol = "?g_AnimationTextureFormats@@3QBW4_D3DFORMAT@@B", target = 0x496548, addend = 0x0 },
+  { offset = 230, type = "REL32", symbol = "_D3DXLoadSurfaceFromMemory@40", target = 0x45f9e6, addend = 0x0 },
+  { offset = 237, type = "DIR32", symbol = "?g_AnimationTextureBytesPerPixel@@3QBIB", target = 0x496560, addend = 0x0 },
+  { offset = 244, type = "DIR32", symbol = "?g_AnimationTextureBytesPerPixel@@3QBIB", target = 0x496560, addend = 0x0 },
+]
+
+[units.create-animation-empty-texture]
+artifact_kind = "linked-pe"
+source = "src/AnimationTexture.cpp"
+inputs = ["src/AnimationTexture.hpp", "src/AnimationDocument.hpp", "src/MainRuntime.hpp"]
+support_sources = ["src/AnimationChunk.cpp", "src/AnimationSprite.cpp", "probes/animation-texture-context.cpp", "src/ErrorLog.cpp", "src/ResourceFile.cpp"]
+output_dir = "build/match-linked/AnimationTexture"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "AnimationTextureProbe@20"
+functions = ["CreateAnimationEmptyTexture"]
+symbol = "?CreateAnimationEmptyTexture@@YGHPAUAnimationDocumentTextureView@@HHI@Z"
+target_address = 0x004540a0
+size = 67
+linkages = [
+  { offset = 7, type = "DIR32", symbol = "?g_AnimationTextureFormats@@3QBW4_D3DFORMAT@@B", target = 0x496548, addend = 0x0 },
+  { offset = 13, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 34, type = "REL32", symbol = "_D3DXCreateTexture@32", target = 0x45f9e0, addend = 0x0 },
+  { offset = 41, type = "DIR32", symbol = "?g_AnimationTextureBytesPerPixel@@3QBIB", target = 0x496560, addend = 0x0 },
+  { offset = 53, type = "DIR32", symbol = "?g_AnimationTextureBytesPerPixel@@3QBIB", target = 0x496560, addend = 0x0 },
+]
+
+[units.create-animation-render-target]
+artifact_kind = "linked-pe"
+source = "src/AnimationTexture.cpp"
+inputs = ["src/AnimationTexture.hpp", "src/AnimationDocument.hpp", "src/MainRuntime.hpp"]
+support_sources = ["src/AnimationChunk.cpp", "src/AnimationSprite.cpp", "probes/animation-texture-context.cpp", "src/ErrorLog.cpp", "src/ResourceFile.cpp"]
+output_dir = "build/match-linked/AnimationTexture"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "AnimationTextureProbe@20"
+functions = ["CreateAnimationRenderTarget"]
+symbol = "?CreateAnimationRenderTarget@@YGHPAUAnimationDocumentTextureView@@@Z"
+target_address = 0x004540f0
+size = 69
+linkages = [
+  { offset = 6, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0xfc },
+  { offset = 11, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 25, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0xf8 },
+  { offset = 36, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0xf4 },
+  { offset = 51, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0xfc },
+]

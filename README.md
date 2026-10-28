@@ -78,6 +78,9 @@ maintained non-exact source in [`docs/STAGE_RESOURCE.md`](docs/STAGE_RESOURCE.md
 The chunk decoder and postload cursor now have maintained source, and sprite
 registration is exact across149 bytes; see
 [`docs/ANIMATION_CHUNKS.md`](docs/ANIMATION_CHUNKS.md).
+All four texture constructors have source; three add423 exact bytes, and the
+811-byte decoder now has10 diagnostic differences. Details are in
+[`docs/ANIMATION_TEXTURES.md`](docs/ANIMATION_TEXTURES.md).
 The Windows i386 production build is open. Semantic reconstruction and
 portability have not started.
 

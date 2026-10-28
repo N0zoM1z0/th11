@@ -7,9 +7,9 @@ postloading. The actual texture/sprite/script decoder is 0x004545A0.
 
 | Function | Complete native extent | Candidate bytes | State |
 | --- | --- | ---: | --- |
-| LoadAnimationChunkSource | 0x004543E0..0x004544BC, 221 bytes | 239 | source, non-exact |
-| AdvanceAnimationDocument | 0x004544C0..0x00454593, 212 bytes | 212 | source, non-exact |
-| DecodeAnimationChunk | 0x004545A0..0x004548CA, 811 bytes | 629 | source, non-exact |
+| LoadAnimationChunkSource | 0x004543E0..0x004544BC, 221 bytes | 209 | source, non-exact |
+| AdvanceAnimationDocument | 0x004544C0..0x00454593, 212 bytes | 211 | source, non-exact |
+| DecodeAnimationChunk | 0x004545A0..0x004548CA, 811 bytes | 811 | source, non-exact, 10 diagnostic differences |
 | StoreAnimationSprite | 0x00454B10..0x00454BA4, 149 bytes | 149 | canonical linked-PE exact |
 
 All four entries, branches, return tails, incoming/interior references and
@@ -64,8 +64,9 @@ Its four creation paths are:
 | external, other '@' name | 0x004540A0, CreateAnimationEmptyTexture | add result without checking failure |
 | embedded data | 0x00453F80, CreateAnimationEmbeddedTexture | pass chunk+textureOffset; negative result logs and returns-1; otherwise add result |
 
-These lower texture helpers were inspected for argument/return contracts but
-remain external source dependencies. The GetLevelDesc COM call uses slot+44,
+These four lower texture helpers now have full source, three exact; see
+`ANIMATION_TEXTURES.md`. The file path still calls an external transparent-pixel
+helper. The GetLevelDesc COM call uses slot+44,
 level0 and a D3DSURFACE_DESC. Its HRESULT is ignored. There is no synthesized
 fallback for texture allocation/description failure.
 
@@ -99,13 +100,16 @@ differences. Exhaustive linkage discovery finds no address fields. The proof
 checks source/header/tool/producer/PE/MAP/PDB receipts and primary-TU ownership.
 Original TU partition and whole-product ownership remain separate unknowns.
 
-The first diagnostic family, with AnimationChunk.cpp primary, produces239,
+The original diagnostic family, with AnimationChunk.cpp primary, produced239,
 212 and629 bytes for the three non-exact functions, respectively. Masked
 address-field diagnostics find156,161 and735 unequal positions, including
 length differences; these are not exactness claims. The opaque lower helper
 and error logger contracts leave private-register/frame context unresolved.
-StoreAnimationSprite independently produces the same149 raw bytes in that
-family. No artificial ABI, padding or executable patch was used.
+StoreAnimationSprite independently produced the same149 raw bytes in that
+family. The current constructor family produces209/147,211/118 and811/10
+byte counts/unequal diagnostic positions; its known lower helper contracts,
+typed records and observed field/table evaluation order restore most of the
+decoder's native context. No artificial ABI, padding or executable patch was used.
 
 Private `.analysis/check-animation-chunk.py` executes full original and
 candidate bodies independently under Unicorn. Its58 cases agree, including
@@ -121,13 +125,17 @@ model I/O, texture constructors, logging and COM description behavior. They do
 not establish real D3D behavior, full-game runtime or semantic-phase acceptance.
 Maximum diagnostic RSS is41,080 KiB after timely Unicorn fixture collection.
 
-Only the affected new family and the existing stage/document-loader diagnostic
-family were cold-built. The latter retains its previous297/434/131-byte sizes
-and17/337/80 differences; all34 modeled cases still agree. No previous exact
-unit's source/header context changed, so none was replayed.
+The current pass adds a second58-case run in the real constructor family,
+recorded in `.analysis/animation-postload-differential.json`. Its actual private
+ABIs were re-read from that artifact: the specialized resource loader receives
+EBX filename/stack size with disk-mode1 implicit. The full original and candidate
+function bodies remain independently executed. The stage/document family
+retains297/434/131-byte sizes and17/337/80 differences, with all34 cases agreeing.
+The sprite exact context was cold-replayed after its source/header dependencies
+changed; unrelated exact contexts were not replayed.
 
-Next useful work is full recovery of the484-byte file-texture constructor and
-287-byte embedded constructor, followed by the medium stage initializer and
-EH destruction. The background dispatcher at0x004548D0 also needs its own
+Next useful work is full recovery of the file-texture path's transparent-pixel
+helper, followed by the medium stage initializer and EH destruction. The
+background dispatcher at0x004548D0 also needs its own
 source and review: its destruction path writes through a slot after clearing
 it, an observed failure path that must not be silently repaired.

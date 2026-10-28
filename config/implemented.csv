@@ -77,3 +77,7 @@ LoadAnimationChunkSource
 AdvanceAnimationDocument
 DecodeAnimationChunk
 StoreAnimationSprite
+CreateAnimationFileTexture
+CreateAnimationEmbeddedTexture
+CreateAnimationEmptyTexture
+CreateAnimationRenderTarget
