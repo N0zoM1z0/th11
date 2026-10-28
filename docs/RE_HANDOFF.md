@@ -8,8 +8,8 @@ its counts and next-target suggestions are historical.
 
 - Target: original Japanese TH11 v1.00a, private `resources/th11.exe`;
   identity in [config/target.toml](../config/target.toml).
-- Inventory:1,989 provisional candidates;84 reviewed/source-present mappings.
-- Exact:45 functions /9,697 owned bytes:8 normal-COFF and37 linked-PE units.
+- Inventory:1,992 provisional candidates;93 reviewed/source-present mappings.
+- Exact:50 functions /10,476 owned bytes:8 normal-COFF and42 linked-PE units.
   [PROGRESS.md](PROGRESS.md) is generated from maintained ledgers.
 - Full Windows i386 game build/runtime closure is open. Diagnostic executables
   are non-runnable link contexts; modeled cases are not full runtime acceptance.
@@ -31,21 +31,30 @@ scripts/repo-python scripts/progress.py --check
 ```
 
 Do not replay all exact units on resume. Revalidate only the units whose source,
-headers or declared context changed. AnimationChunk.cpp and AnimationDocument.hpp
-now belong to the new sprite exact context:
+headers or declared context changed. The new StageResource.hpp/lifecycle context
+affects these five units; it does not require replaying the older cohort:
 
 ```bash
 scripts/repo-python scripts/replay-exact-units.py \
-  --unit create-animation-embedded-texture \
-  --unit create-animation-empty-texture \
-  --unit create-animation-render-target \
-  --unit store-animation-sprite
+  --unit initialize-stage-resource \
+  --unit stage-embedded-vm-constructor \
+  --unit stage-embedded-vm-destructor \
+  --unit stage-draw-callback \
+  --unit stage-overlay-callback
 ```
 
 ## Latest completed code
 
 | Function | Native bytes | State | Details |
 | --- | ---: | --- | --- |
+| InitializeStageResource,0x004024C0 | 630 | exact,21 fields | [STAGE_LIFECYCLE.md](STAGE_LIFECYCLE.md) |
+| StageEmbeddedVmConstructor,0x00402270 | 101 | exact,1 field | [STAGE_LIFECYCLE.md](STAGE_LIFECYCLE.md) |
+| StageEmbeddedVmDestructor,0x00402170 | 34 | exact,1 field | [STAGE_LIFECYCLE.md](STAGE_LIFECYCLE.md) |
+| StageResourceConstructor,0x004023F0 | 180 | diagnostic match; EH ownership open, no exact credit | [STAGE_LIFECYCLE.md](STAGE_LIFECYCLE.md) |
+| StageResourceDestructor,0x00402740 | 603 | source597/143 differences; EH ownership open | [STAGE_LIFECYCLE.md](STAGE_LIFECYCLE.md) |
+| CreateStageResource,0x004029C0 | 159 | diagnostic match; EH ownership open, no exact credit | [STAGE_LIFECYCLE.md](STAGE_LIFECYCLE.md) |
+| StageUpdateCallback,0x00403900 | 7 | source7/3 differences; callee private ABI open | [STAGE_LIFECYCLE.md](STAGE_LIFECYCLE.md) |
+| StageDrawCallback/StageOverlayCallback,0x00403910/0x00403920 | 7 each | exact,1 field each | [STAGE_LIFECYCLE.md](STAGE_LIFECYCLE.md) |
 | FixAnimationTextureTransparentPixels,0x004534C0 | 1,427 including tables | source1383, non-exact | [ANIMATION_TRANSPARENT_PIXELS.md](ANIMATION_TRANSPARENT_PIXELS.md) |
 | CreateAnimationFileTexture,0x00453D90 | 484 | source484,40 diagnostic differences | [ANIMATION_TEXTURES.md](ANIMATION_TEXTURES.md) |
 | CreateAnimationEmbeddedTexture,0x00453F80 | 287 | exact,10 fields | [ANIMATION_TEXTURES.md](ANIMATION_TEXTURES.md) |
@@ -60,16 +69,14 @@ scripts/repo-python scripts/replay-exact-units.py \
 | BeginLoadAnimationDocument,0x00454190 | 454 | source434,337 differences | [STAGE_RESOURCE.md](STAGE_RESOURCE.md) |
 | AcquireAnimationDocument,0x00454360 | 124 | source131,80 differences | [STAGE_RESOURCE.md](STAGE_RESOURCE.md) |
 
-The three exact texture units were cold-replayed after adding the real pixel
-helper to their family; all423 bytes/20 fields still agree. Other42 exact
-contexts were unchanged and not replayed. New diagnostics agree on242 pixel
-cases (two matching faults) and116 constructor cases (four matching faults,
-including24 integrated file/pixel cases), plus58 chunk/sprite cases. The former
-seven-DWORD surface descriptor fixtures were wrong: corrected eight-DWORD
-fixtures and explicit crop/adoption assertions now replace those earlier
-coverage claims. Strict byte proofs were independent of the fixture mistake.
-These models grant no full native/runtime authority; see
-`ANIMATION_TRANSPARENT_PIXELS.md`.
+The five new non-EH units have strict cold primary-TU proofs, adding779 bytes
+and25 reviewed fields. Earlier45 exact contexts were not modified or replayed.
+New complete-body diagnostics agree on48 lifecycle cases, including five
+matching null-allocation faults; actual VM bodies run inside modeled CRT vector
+iteration. The directly affected old loader family was cold-rebuilt and its34
+cases still agree. EH exception injection/full unwind and the native product
+remain unvalidated; constructor180/factory159 diagnostic matches do not grant
+exact credit. See `STAGE_LIFECYCLE.md`.
 
 Preserve these behavior details:
 
@@ -91,12 +98,21 @@ Preserve these behavior details:
 - Pixel processing uses signed per-row pitch and signed pitch/2 or pitch/4
   vertical neighbor offsets. Alpha stays unchanged. Unsupported formats still
   lock/unlock/release, and HRESULTs remain ignored.
+- Stage construction initializes eight+three embedded VMs and then clears the
+  entire0x3158-byte object, overwriting their just-set-1 markers. Preserve that
+  whole-object clear. Init publishes variant/current-stage before load; null
+  chain allocations and null factory allocation retain native faults.
+- Lifecycle tests need a separate FS TEB segment and real32-bit SS/CS/data GDT
+  descriptors. Mapping the null page to fake FS hides null-chain faults; writing
+  Unicorn FS_BASE alone does not work for this32-bit fixture.
 
 ## Useful next work
 
-1. Stage initialization0x004024C0 (630) and EH destruction0x00402740 (603) have
-   private complete instruction/decompiler review but no source. Original EH/
-   specialized ownership is outside the current public linked acceptance lane.
+1. Stage update0x00402AA0 (1,677 bytes), draw0x00403130 and overlay0x004035A0
+   still have no source. Fresh private entry/contract review is in
+   `.analysis/stage-update-entry.txt`; its larger disassemblies can be truncated,
+   so review full extents/tables before credit. Update receives private EAX,
+   explaining the remaining seven-byte update adapter mismatch.
 2. Improve the pixel helper's source0x3C/target0x44 frame and the file
    constructor's source0x44/target0x4C frame with new evidence. The ordinary
    source pixel call now naturally uses native EAX. Byte versus typed32-bit
@@ -110,6 +126,12 @@ Preserve these behavior details:
 Neighbor code at0x00453A60 is absent from the provisional inventory and has no
 mapping/source credit. Its existence was checked after the pixel owner's13-byte
 CC padding, but its full extent/ABI/origin require review before recovery.
+
+The three callback entries0x00403900/10/20 were absent from initial inventory;
+they were explicitly reviewed and added, raising the candidate count by3.
+Their source attribution remains indeterminate. Stage constructor/factory/EH
+destructor now have natural C++ source, but specialized EH handler/funclet
+ownership acceptance remains open.
 
 Decoder0x004545A0 now has811 source bytes/10 diagnostic differences. Remaining
 positions are five sprite setup register/store positions and five script-loop

@@ -19,7 +19,9 @@ embedded tables or external interior references. No extent is cropped.
 
 The stage view contains copied data+10, relocated pointer table+14, two section
 pointers+18/+1C, animation file+178, VM array+17C, variant+3008 and cached source/
-size+3038/+303C. Complete original class size remains open.
+size+3038/+303C. Factory/constructor review now independently establishes the
+0x3158-byte storage span and embedded-member layout in `STAGE_LIFECYCLE.md`;
+the original source class declaration and TU partition remain open.
 
 If source is absent, the routine clears the shared name buffer at0x004C9928,
 concatenates the supplied filename and calls LoadResourceFile with size output
@@ -101,12 +103,13 @@ large unsigned malloc request; the bounded allocator fixture returns null
 without allocating that amount. Real I/O, decompression, texture decode,
 background threads and the complete native game are not validated here.
 
-The current focused rerun uses one CPU/nice10, maximum RSS42,148 KiB, with
+The standalone focused fixture recorded one CPU/nice10 and maximum RSS42,148 KiB, with
 timely fixture collection. Ghidra/compiler jobs retain
-the shared serialization lock and limits. Remaining useful targets are the
-484-byte file-texture constructor0x00453D90,287-byte embedded constructor
-0x00453F80,630-byte stage initializer0x004024C0 and its603-byte EH destructor
-0x00402740. The former role guesses for0x004543E0/0x004544C0 were incorrect;
+the shared serialization lock and limits. Remaining useful targets include
+texture codegen gaps and stage update/draw bodies. The texture
+constructors and stage lifecycle now have full source; initialization0x004024C0
+is strict630-byte exact, while the603-byte EH destructor remains non-exact.
+The former role guesses for0x004543E0/0x004544C0 were incorrect;
 their source-loader/cursor behavior is now documented in `ANIMATION_CHUNKS.md`.
 The mode-transition routine0x00406510 is unrelated to VM lookup and owns a
 six-entry trailing jump table; do not treat its241-byte code-only candidate

@@ -3,7 +3,16 @@ AsciiManagerOnUpdate,0x004014A0,function
 AsciiManagerAppendString,0x004014E0,function
 AsciiManagerExpireStrings,0x00401D50,function
 ResetAnimationVm,0x00401FD0,function
+StageEmbeddedVmDestructor,0x00402170,function
+StageEmbeddedVmConstructor,0x00402270,function
 ReleaseVmBindingBlock,0x00402300,function
+StageResourceConstructor,0x004023F0,function
+InitializeStageResource,0x004024C0,function
+StageResourceDestructor,0x00402740,function
+CreateStageResource,0x004029C0,function
+StageUpdateCallback,0x00403900,function
+StageDrawCallback,0x00403910,function
+StageOverlayCallback,0x00403920,function
 LoadStageResource,0x00403FC0,function
 ScreenshotWriteThread,0x00429BB0,function
 CaptureScreenshot,0x00429CA0,function

@@ -846,3 +846,62 @@ comparisons. The116 constructor cases include24 actual file/pixel integrations
 and four matching faults. COM and D3DX loading/copying remain fixtures; these
 results do not establish native game/runtime or semantic-phase acceptance.
 Current mappings84, exact45/9,697 bytes; full Windows i386 product remains open.
+
+## Stage lifecycle, exact initializer and real C++ cleanup (2026-10-28)
+
+Maintained source now covers StageResourceView construction, initialization,
+destruction and factory, its embedded VM constructor/destructor and three
+callbacks. Factory allocation plus constructor clear independently establish
+0x3158 bytes. Eight0x434-byte VMs begin at+180 and three at+2348; six20-byte
+timers and the0x118-byte copied camera now have checked physical views. These
+names/layouts do not claim the original source class declaration or TU split.
+
+InitializeStageResource0x004024C0 is strict cold630-byte linked-PE exact with21
+reviewed fields. It publishes variant/global stage before loading, copies the
+runtime+434 camera, sets vector/distance defaults, allocates/registers three
+callbacks at update12/draw2/draw5, then updates timer/reset flags. No rollback,
+allocation guard or handling of registration failure was added. The first625-byte
+family let the sole update registration's constant12 specialize away; an
+independent receiver/priority probe restores its real general contract. Camera
+vector temporary evaluation before the scalar distance store restores the
+remaining native schedule naturally, with no instruction or ABI normalization.
+
+StageEmbeddedVm construction0x00402270 is complete101-byte exact, destructor
+0x00402170 complete34-byte exact, each with one reviewed CRT field. Construction
+initializes eleven timer flags, clears434 bytes and sets short+39C=-1; it is
+not ResetAnimationVm's matrix/scale initialization. Destruction frees/clears
+optional+400 storage. StageResourceView constructs the eight/three VM arrays,
+then deliberately clears all3158 bytes and sets flags2, overwriting those just-
+initialized markers. Natural C++ member constructors/destructors preserve this
+and the automatic reverse cleanup order; do not repair it.
+
+Two seven-byte draw adapters0x00403910/0x00403920 are strict exact with one real
+callee binding each. The update adapter0x00403900 remains seven bytes/three
+diagnostic differences: native forwards ECX through EAX to the still-external
+update body, while the ordinary source call uses its declared stack contract.
+All three entries were absent from provisional inventory and were added only
+after explicit full-span reference/neighbor review. Their original authored
+versus compiler-generated attribution remains indeterminate.
+
+Five non-EH public primary-TU proofs add779 bytes/25 bindings; current totals
+are1,992 candidates,93 source mappings and50 exact/10,476 bytes. Other45 exact
+contexts were unchanged and not replayed. The180-byte stage constructor and
+159-byte factory have diagnostic address-field matches only: EH handler/funclet
+ownership is outside the current exact lane, so neither gets exact credit.
+The603-byte stage destructor has597 source bytes/143 diagnostic differences;
+its full ordinary behavior and C++ member/EH structure are present, while
+exception injection/full unwind/native-product acceptance remain open.
+
+Full-body diagnostics agree on48 lifecycle cases, including five matching null
+allocation faults. They execute actual VM constructors/destructors within
+modeled forward/reverse CRT iteration and cover publication, optional cleanup,
+slot mutation, alias globals, timer flags, callback values, ignored registration
+failure, depth wrapping, manager changes and runtime flags changing across
+conditional Enter/Leave. The fixture uses real32-bit GDT code/data/stack segments
+and a separate FS TEB segment: mapping address0 to fake FS would hide null-chain
+faults, and FS_BASE writes alone do not work for this Unicorn32-bit setup.
+The native/candidate normal exception-chain restoration, full storage, calls,
+stack and registers are checked. Heap/loading/chain/document services remain
+models, not whole-game runtime evidence. The affected old loader context was
+cold-rebuilt and its34 cases still agree, with unchanged297/434/131-byte sizes.
+See `STAGE_LIFECYCLE.md` for sources, contracts, proof commands and limitations.

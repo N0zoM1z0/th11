@@ -1154,3 +1154,103 @@ linkages = [
   { offset = 36, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0xf4 },
   { offset = 51, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0xfc },
 ]
+
+[units.stage-embedded-vm-destructor]
+artifact_kind = "linked-pe"
+source = "src/StageLifecycle.cpp"
+inputs = ["src/StageResource.hpp"]
+support_sources = ["src/StageCallbacks.cpp", "probes/stage-lifecycle-context.cpp", "src/StageResource.cpp", "src/AnimationDocument.cpp", "src/ErrorLog.cpp", "src/LogBuffer.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/VmBindings.cpp"]
+output_dir = "build/match-linked/StageLifecycle"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageLifecycleProbe@24"
+functions = ["StageEmbeddedVmDestructor"]
+symbol = "??1StageEmbeddedVm@@QAE@XZ"
+target_address = 0x402170
+size = 34
+linkages = [
+  { offset = 15, type = "REL32", symbol = "_free", target = 0x45fc3b, addend = 0x0 },
+]
+
+[units.stage-embedded-vm-constructor]
+artifact_kind = "linked-pe"
+source = "src/StageLifecycle.cpp"
+inputs = ["src/StageResource.hpp"]
+support_sources = ["src/StageCallbacks.cpp", "probes/stage-lifecycle-context.cpp", "src/StageResource.cpp", "src/AnimationDocument.cpp", "src/ErrorLog.cpp", "src/LogBuffer.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/VmBindings.cpp"]
+output_dir = "build/match-linked/StageLifecycle"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageLifecycleProbe@24"
+functions = ["StageEmbeddedVmConstructor"]
+symbol = "??0StageEmbeddedVm@@QAE@XZ"
+target_address = 0x402270
+size = 101
+linkages = [
+  { offset = 80, type = "REL32", symbol = "_memset", target = 0x46a720, addend = 0x0 },
+]
+
+[units.initialize-stage-resource]
+artifact_kind = "linked-pe"
+source = "src/StageLifecycle.cpp"
+inputs = ["src/StageResource.hpp"]
+support_sources = ["src/StageCallbacks.cpp", "probes/stage-lifecycle-context.cpp", "src/StageResource.cpp", "src/AnimationDocument.cpp", "src/ErrorLog.cpp", "src/LogBuffer.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/VmBindings.cpp"]
+output_dir = "build/match-linked/StageLifecycle"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageLifecycleProbe@24"
+functions = ["InitializeStageResource"]
+symbol = "?InitializeStageResource@@YGHPAUStageResourceView@@PBD@Z"
+target_address = 0x4024c0
+size = 630
+linkages = [
+  { offset = 1, type = "DIR32", symbol = "?g_StageVariant@@3IA", target = 0x4a5728, addend = 0x0 },
+  { offset = 27, type = "DIR32", symbol = "?g_StagePrimary@@3PAUStageResourceView@@A", target = 0x4a8d60, addend = 0x0 },
+  { offset = 32, type = "REL32", symbol = "?LoadStageResource@@YGHPAUStageResourceView@@PBD@Z", target = 0x403fc0, addend = 0x0 },
+  { offset = 41, type = "DIR32", symbol = "?g_StageLoadError@@3QBDB", target = 0x4938e8, addend = 0x0 },
+  { offset = 46, type = "DIR32", symbol = "?g_RuntimeLog@@3UErrorLogBufferView@@A", target = 0x4a5940, addend = 0x0 },
+  { offset = 51, type = "REL32", symbol = "?AppendErrorLog@@YAPBDPAUErrorLogBufferView@@PBDZZ", target = 0x458af0, addend = 0x0 },
+  { offset = 90, type = "DIR32", symbol = "__real@c4160000", target = 0x49847c, addend = 0x0 },
+  { offset = 109, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x434 },
+  { offset = 131, type = "DIR32", symbol = "__real@43960000", target = 0x498478, addend = 0x0 },
+  { offset = 148, type = "DIR32", symbol = "__real@44160000", target = 0x498474, addend = 0x0 },
+  { offset = 245, type = "DIR32", symbol = "__real@4b12a310", target = 0x498470, addend = 0x0 },
+  { offset = 286, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x45fce4, addend = 0x0 },
+  { offset = 346, type = "DIR32", symbol = "?StageUpdateCallback@@YIHPAX@Z", target = 0x403900, addend = 0x0 },
+  { offset = 363, type = "REL32", symbol = "?AddToUpdateChain@@YGHPAUChainElement@@H@Z", target = 0x456b70, addend = 0x0 },
+  { offset = 373, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x45fce4, addend = 0x0 },
+  { offset = 431, type = "DIR32", symbol = "?StageDrawCallback@@YIHPAX@Z", target = 0x403910, addend = 0x0 },
+  { offset = 448, type = "REL32", symbol = "?AddToDrawChain@@YGHPAUChainElement@@H@Z", target = 0x456c10, addend = 0x0 },
+  { offset = 458, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x45fce4, addend = 0x0 },
+  { offset = 516, type = "DIR32", symbol = "?StageOverlayCallback@@YIHPAX@Z", target = 0x403920, addend = 0x0 },
+  { offset = 533, type = "REL32", symbol = "?AddToDrawChain@@YGHPAUChainElement@@H@Z", target = 0x456c10, addend = 0x0 },
+  { offset = 579, type = "DIR32", symbol = "?g_AnimationTimeScale@@3MA", target = 0x4a7948, addend = 0x0 },
+]
+
+[units.stage-draw-callback]
+artifact_kind = "linked-pe"
+source = "src/StageCallbacks.cpp"
+inputs = ["src/StageResource.hpp"]
+support_sources = ["src/StageLifecycle.cpp", "probes/stage-lifecycle-context.cpp", "src/StageResource.cpp", "src/AnimationDocument.cpp", "src/ErrorLog.cpp", "src/LogBuffer.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/VmBindings.cpp"]
+output_dir = "build/match-linked/StageCallbacks"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageLifecycleProbe@24"
+functions = ["StageDrawCallback"]
+symbol = "?StageDrawCallback@@YIHPAX@Z"
+target_address = 0x403910
+size = 7
+linkages = [
+  { offset = 2, type = "REL32", symbol = "?DrawStage@@YGHPAUStageResourceView@@@Z", target = 0x403130, addend = 0x0 },
+]
+
+[units.stage-overlay-callback]
+artifact_kind = "linked-pe"
+source = "src/StageCallbacks.cpp"
+inputs = ["src/StageResource.hpp"]
+support_sources = ["src/StageLifecycle.cpp", "probes/stage-lifecycle-context.cpp", "src/StageResource.cpp", "src/AnimationDocument.cpp", "src/ErrorLog.cpp", "src/LogBuffer.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/VmBindings.cpp"]
+output_dir = "build/match-linked/StageCallbacks"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageLifecycleProbe@24"
+functions = ["StageOverlayCallback"]
+symbol = "?StageOverlayCallback@@YIHPAX@Z"
+target_address = 0x403920
+size = 7
+linkages = [
+  { offset = 2, type = "REL32", symbol = "?DrawStageOverlay@@YGHPAUStageResourceView@@@Z", target = 0x4035a0, addend = 0x0 },
+]

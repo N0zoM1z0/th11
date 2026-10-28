@@ -85,6 +85,10 @@ The transparent-pixel helper now has complete source and a reviewed1,427-byte
 owner including switch tables; it remains non-exact. Its validation also
 corrects earlier surface-descriptor fixtures; see
 [`docs/ANIMATION_TRANSPARENT_PIXELS.md`](docs/ANIMATION_TRANSPARENT_PIXELS.md).
+Stage lifecycle source now includes natural C++ member cleanup. Its630-byte
+initializer, VM construction/destruction and two drawing callbacks add779 exact
+bytes; EH-bearing diagnostic matches remain uncredited. See
+[`docs/STAGE_LIFECYCLE.md`](docs/STAGE_LIFECYCLE.md).
 The Windows i386 production build is open. Semantic reconstruction and
 portability have not started.
 

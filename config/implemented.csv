@@ -82,3 +82,12 @@ CreateAnimationEmbeddedTexture
 CreateAnimationEmptyTexture
 CreateAnimationRenderTarget
 FixAnimationTextureTransparentPixels
+StageEmbeddedVmDestructor
+StageEmbeddedVmConstructor
+StageResourceConstructor
+InitializeStageResource
+StageResourceDestructor
+CreateStageResource
+StageUpdateCallback
+StageDrawCallback
+StageOverlayCallback
