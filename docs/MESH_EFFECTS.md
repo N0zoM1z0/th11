@@ -12,7 +12,7 @@ There are no embedded tables or external interior references in these owners.
 | UpdateMeshEffectSpellState | 4068C0 | 91 | 91 | Exact |
 | InitializeColumnMeshEffect | 406920 | 998 | 1,022 | Non-exact; EH |
 | InitializeSquareMeshEffect | 407BB0 | 342 | 343 | Non-exact; EH |
-| SquareMeshVmCallback | 408070 | 398 | 398 | Non-exact;12 diagnostic differences |
+| SquareMeshVmCallback | 408070 | 398 | 398 | Exact |
 | QueueMeshEffectSound | 44A1E0 | 125 | 126 | Non-exact |
 | CreatePositionedAnimationVmId | 455B10 | 171 | 169 | Non-exact |
 
@@ -53,15 +53,15 @@ The VM callback computes phase/(pointCount-1). For each segment it makes four
 RNG calls and perturbs X/Y of two consecutive vertices by samples scaled by8.
 It closes the strip by copying its first two complete28-byte vertices into the
 last pair, with both final V coordinates set to the preceding V plus the phase
-increment, then returns0. The complete398-byte owner still has12 x87 load/add
-scheduling differences at+183..188 and+318..323.
+increment, then returns0. Capturing each vertex's Y address before the X sample
+restores the native x87 load/add schedule and closes all398 bytes.
 
 RNG sampling first uses the compiler's unsigned-to-float conversion, then
 `sample*2^-31-1`, a float rounding point, and the scale with another float
 rounding point. A double parameter in the inlined helper introduced an unwanted
 8-byte stack alignment. A constant template parameter removes it. An inline
-coordinate updater reduces callback differences22 to12; postincrementing its
-Y-coordinate argument retains12. The standalone RNG probe keeps input states
+coordinate updater reduces callback differences22 to12. Capturing the Y
+address before each X sample removes the final12; postincrement alone did not. The standalone RNG probe keeps input states
 independent so LTCG does not specialize every call to the one global state.
 
 Positioned ID creation locks section9 conditionally, allocates/flags the VM,
@@ -78,7 +78,7 @@ first frame and increments its existing pending count. The partial queue at
 4C44A0 has slots+0, pending counts+30 and frame rows+60; records start4A34F6 and
 settings4C4288. Register allocation, loop form and store scheduling remain open.
 
-## Status exact proof and current context
+## Exact proofs and current context
 
 When status flag1 is set, age>=60 clears value+8E4 and flags22. Otherwise, an
 active dependency and `selection1+3*selection0 != 5` set flag20. Other paths
@@ -88,8 +88,29 @@ bindings: status pointer4A8D6C, active pointer4A8D64, and the two selections.
 The canonical unit is `update-mesh-effect-spell-state`, with MeshEffects.cpp
 primary, `probes/mesh-effects-context.cpp` and real mesh/VM/factory/RNG/binding
 sources as support. Entry is `MeshEffectsProbe@40`; profile is
-`/TP /O2 /Ob1 /Gy /MT /Isrc /EHsc /GL`. Cold pinned VC9 /GL proof verifies the complete91-byte public primary-TU
-PDB contribution, current receipts, PE/MAP/PDB identity, all four fields and
-every byte with zero differences.
+`/TP /O2 /Ob1 /Gy /MT /Isrc /EHsc /GL`. Cold pinned VC9 /GL proof verifies
+the complete91-byte public primary-TU PDB contribution and all four fields.
+`square-mesh-vm-callback` shares that family and verifies the complete398-byte
+public contribution and24 RNG/call/float-constant bindings. Current receipts,
+PE/MAP/PDB identity, ownership and every byte agree. The handoff checkpoint
+cold-replayed only these two units, both passing.
 The context also supplies independent positioned-factory, sound and RNG inputs.
 No behavioral/failure/random regression suite is part of this work.
+
+## Retained next experiment
+
+The checked-in column initializer remains1022 bytes/498 diagnostic differences.
+An unpromoted source form samples RNG before selecting each destination address:
+`.analysis/column-sample-first.cpp` gives998 bytes/269 differences and retains
+the exact callback. Its explicit-sample and argument-expression forms produce
+the same result. These are diagnostics, not new exact credit. The source, log,
+full-owner JSON and assembly remain private; obsolete compiled variants were
+removed. Reproduce if useful with:
+
+```bash
+scripts/repo-python .analysis/probe-effect-source.py .analysis/column-sample-first.cpp column-sample-first
+```
+
+The next concrete differences include a20-byte versus native24-byte local frame
+and positioned-ID argument/return placement. Do not introduce padding for the
+frame gap. The initializers' EH ownership remains open.

@@ -1535,3 +1535,42 @@ linkages = [
   { offset = 59, type = "DIR32", symbol = "?g_MeshEffectSelection0@@3HA", target = 0x4a5710, addend = 0x0 },
   { offset = 66, type = "DIR32", symbol = "?g_MeshEffectSelection1@@3HA", target = 0x4a5714, addend = 0x0 },
 ]
+
+[units.square-mesh-vm-callback]
+artifact_kind = "linked-pe"
+source = "src/MeshEffects.cpp"
+inputs = ["src/MeshEffects.hpp"]
+support_sources = ["probes/mesh-effects-context.cpp", "src/StageMesh.cpp", "src/AnimationVmFactory.cpp", "src/AnimationVm.cpp", "src/Random.cpp", "src/VmBindings.cpp"]
+output_dir = "build/match-linked/MeshEffects"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "MeshEffectsProbe@40"
+functions = ["SquareMeshVmCallback"]
+symbol = "?SquareMeshVmCallback@@YIHPAUAnimationVmView@@@Z"
+target_address = 0x408070
+size = 398
+linkages = [
+  { offset = 51, type = "DIR32", symbol = "?g_TextRandomState@@3URandomStateView@@A", target = 0x4c2f00, addend = 0x0 },
+  { offset = 56, type = "REL32", symbol = "?RandomNext32@@YGIPAURandomStateView@@@Z", target = 0x458c30, addend = 0x0 },
+  { offset = 74, type = "DIR32", symbol = "__real@4f800000", target = 0x497f98, addend = 0x0 },
+  { offset = 80, type = "DIR32", symbol = "__real@3e00000000000000", target = 0x498028, addend = 0x0 },
+  { offset = 85, type = "DIR32", symbol = "?g_TextRandomState@@3URandomStateView@@A", target = 0x4c2f00, addend = 0x0 },
+  { offset = 91, type = "DIR32", symbol = "__real@3ff0000000000000", target = 0x497e48, addend = 0x0 },
+  { offset = 105, type = "DIR32", symbol = "__real@4020000000000000", target = 0x4981d0, addend = 0x0 },
+  { offset = 122, type = "REL32", symbol = "?RandomNext32@@YGIPAURandomStateView@@@Z", target = 0x458c30, addend = 0x0 },
+  { offset = 140, type = "DIR32", symbol = "__real@4f800000", target = 0x497f98, addend = 0x0 },
+  { offset = 146, type = "DIR32", symbol = "__real@3e00000000000000", target = 0x498028, addend = 0x0 },
+  { offset = 151, type = "DIR32", symbol = "?g_TextRandomState@@3URandomStateView@@A", target = 0x4c2f00, addend = 0x0 },
+  { offset = 160, type = "DIR32", symbol = "__real@3ff0000000000000", target = 0x497e48, addend = 0x0 },
+  { offset = 174, type = "DIR32", symbol = "__real@4020000000000000", target = 0x4981d0, addend = 0x0 },
+  { offset = 193, type = "REL32", symbol = "?RandomNext32@@YGIPAURandomStateView@@@Z", target = 0x458c30, addend = 0x0 },
+  { offset = 211, type = "DIR32", symbol = "__real@4f800000", target = 0x497f98, addend = 0x0 },
+  { offset = 217, type = "DIR32", symbol = "__real@3e00000000000000", target = 0x498028, addend = 0x0 },
+  { offset = 222, type = "DIR32", symbol = "?g_TextRandomState@@3URandomStateView@@A", target = 0x4c2f00, addend = 0x0 },
+  { offset = 228, type = "DIR32", symbol = "__real@3ff0000000000000", target = 0x497e48, addend = 0x0 },
+  { offset = 242, type = "DIR32", symbol = "__real@4020000000000000", target = 0x4981d0, addend = 0x0 },
+  { offset = 259, type = "REL32", symbol = "?RandomNext32@@YGIPAURandomStateView@@@Z", target = 0x458c30, addend = 0x0 },
+  { offset = 277, type = "DIR32", symbol = "__real@4f800000", target = 0x497f98, addend = 0x0 },
+  { offset = 283, type = "DIR32", symbol = "__real@3e00000000000000", target = 0x498028, addend = 0x0 },
+  { offset = 295, type = "DIR32", symbol = "__real@3ff0000000000000", target = 0x497e48, addend = 0x0 },
+  { offset = 309, type = "DIR32", symbol = "__real@4020000000000000", target = 0x4981d0, addend = 0x0 },
+]

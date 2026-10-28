@@ -232,10 +232,14 @@ int __fastcall SquareMeshVmCallback(AnimationVmView *vm)
     RenderVertex *vertex = self->vertices;
     for (int i = 0; i < segments; ++i)
     {
+        float *y = &vertex->y;
         AddMeshEffectJitter<8>(vertex->x);
-        AddMeshEffectJitter<8>(vertex++->y);
+        AddMeshEffectJitter<8>(*y);
+        ++vertex;
+        y = &vertex->y;
         AddMeshEffectJitter<8>(vertex->x);
-        AddMeshEffectJitter<8>(vertex++->y);
+        AddMeshEffectJitter<8>(*y);
+        ++vertex;
     }
     float endV = vertex[-1].v + increment;
     *vertex = self->vertices[0];
