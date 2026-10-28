@@ -86,37 +86,8 @@ cold-replayed with the real pixel helper in their declared family; all423 bytes
 and20 linked fields still agree. The other42 exact contexts were unchanged
 and were not replayed. Decoder codegen remains811 bytes/10 diagnostic differences.
 
-Private `.analysis/check-animation-transparent.py` and
-`animation_transparent_fixture.py` independently execute complete original and
-candidate bodies, including owned switch tables, in242 cases. Cases cover all
-selectors and out-of-range formats, zero/single/multiple dimensions, transparent/
-opaque/checker/random pixels, six random seeds, padded/zero/non-divisible/
-negative row pitches, ignored COM failures and two matching faults. An explicit
-four-neighbor center case checks the expected average separately; valid aligned
-layouts also check alpha preservation. Every pixel-buffer byte, call trace,
-stack balance and preserved register is compared. The current run uses about
-40 MiB RSS, one CPU and nice10. COM surface behavior is modeled; real D3D drivers
-and full-game runtime are not validated.
+## Descriptor layout correction
 
-An additional116 constructor cases include92 corrected-descriptor regressions
-and24 integrated file-construction/real-pixel-processing cases. Both adoption
-and crop branches have explicit trace assertions, and the integrated cases run
-the complete native/candidate pixel bodies instead of a postprocess stub.
-D3DX loading/copying and COM calls remain fixtures. The corrected58-case
-chunk/sprite regression also agrees. These are bounded diagnostics, not full
-native product or semantic-phase acceptance.
-
-## Correction to earlier fixture evidence
-
-The former constructor and chunk fixtures packed seven DWORDs into surface
-descriptions, omitting MultiSampleQuality. D3DSURFACE_DESC actually contains
-eight DWORDs: Width is at+24 and Height at+28. Thus earlier native/candidate
-agreement did not establish the intended dimension/branch coverage. This was
-a fixture error; source uses the SDK type, and strict code-byte proofs never
-depended on that fixture.
-
-Both affected fixture families now write all32 bytes. The92 constructor and
-58 chunk cases were rerun successfully with proper dimensions. Explicit crop/
-adoption assertions and24 integrated pixel cases now strengthen that evidence.
-Earlier fixture-coverage claims should be interpreted through this correction;
-the exact byte-match claims retain their separate receipt-bound authority.
+D3DSURFACE_DESC contains eight DWORDs: MultiSampleQuality precedes Width at+24
+and Height at+28. Earlier seven-DWORD fixtures misplaced the dimensions. The
+source uses the SDK type; strict byte proofs are independent of those fixtures.

@@ -50,20 +50,8 @@ This is an LZSS-style format, but generic algorithm similarity and game
 integration do not independently establish authored versus third-party origin.
 Origin remains explicitly indeterminate.
 
-## Bounded verification
+## Codegen and remaining work
 
-A private single-CPU/nice10 Unicorn diagnostic executed the original complete
-target body and the complete473-byte compiler contribution in62 cases. It
-compared returns, allocation sizes, the full64KiB output region including
-canaries, all8192 history bytes, callee-saved registers and stack cleanup.
-Empty/literal streams, overlapping references, ring wrap,8300 literals,
-allocation failure, zero/negative/truncated input lengths, independent output
-allocation size and persistent history all agreed. This diagnostic has no
-exact-codegen, complete-native-product or semantic-phase acceptance authority.
-
-Private evidence: `.analysis/archive-decompress-span.txt`,
-`archive-decompress-*-caller-registers.txt`, `archive-decompress-final-linked.json`,
-`check-archive-decompress.py` and `archive-decompress-differential.json`.
 Initial outlined/class/scalar helper contexts yielded277/407/456/473 bytes;
 an output-reference helper yielded500 and changed the private convention.
 Keeping the history in a separate normal object did not change473/177.

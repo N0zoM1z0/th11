@@ -165,26 +165,3 @@ scripts/repo-python scripts/replay-exact-units.py \
 Only these three new units were cold-replayed. Previous35 canonical inputs
 are unchanged and not replayed; directly required bodies are compiled as new
 family support, which grants them no new proof or credit.
-
-## Bounded device diagnostic
-
-Complete original and candidate initializer bodies agree on36 modeled cases:
-34 returning cases and two bounded prefixes of persistent retry paths. They
-cover HAL/REF order, hardware/software VP, format and timing options, refresh
-fallback, interval retry, fatal release, API parameter mutation, capability
-warnings, exact-zero format checks, ignored query/clear/reset failures and
-both Present cycles. Full0xB44 runtime observations, call order/arguments,
-presentation values, log identities, matrices/viewport, returns, cleanup,
-callee-saved registers and stack agree under those models.
-
-The diagnostic models D3D COM, logging, memset and D3DX output matrices, uses
-a controlled tangent return0.25 and an absent renderer. It neither tests real
-drivers/math libraries nor establishes exactness, native-product behavior or
-the later semantic gate. Instructions are not patched. It runs one CPU at
-nice10 and measured about64 MiB peak RSS. Full native game closure remains open.
-
-Private evidence: `.analysis/device-initialization-review.txt`,
-`device-initialization-tail.txt`, `device-initialization-full-span.txt`,
-`device-callees-review.txt`, `device-default-target-review.txt`,
-`device-tangent-review.txt`, current probe JSONs/assembly, the strict
-`device-initialization-cold-replay.log`, and the device differential script/report.

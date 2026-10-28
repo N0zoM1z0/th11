@@ -87,7 +87,7 @@ coordinates by actual height; recovered sizes divide endpoint differences by
 the original X/Y scales. The source also preserves aliasing when the supplied
 sprite already occupies its destination cell.
 
-## Exact proof and bounded diagnostics
+## Exact proof and open differences
 
 ```bash
 scripts/repo-python scripts/replay-exact-units.py --unit store-animation-sprite
@@ -111,34 +111,9 @@ byte counts/unequal diagnostic positions; its known lower helper contracts,
 typed records and observed field/table evaluation order restore most of the
 decoder's native context. No artificial ABI, padding or executable patch was used.
 
-Private `.analysis/check-animation-chunk.py` executes full original and
-candidate bodies independently under Unicorn. Its58 cases agree, including
-version/load/creation failures, all four texture paths, signed offsets,
-unsigned high-bit texture dimensions, ignored description HRESULT, empty and
-multiple sprite/script tables, byte-accounting wraparound, seven cursor values,
-decode failures, cursor mutation, five integrated advance/decode cases and
-aliased sprite input. Semantic snapshots omit only the decoder's indeterminate
-sprite DWORD+44; standalone sprite tests compare the full72-byte record.
-Neighbors, pointer tables, defined sprite bytes, calls, results, nonvolatile
-registers, GS checks and stack balance are compared. Fixture helper contracts
-model I/O, texture constructors, logging and COM description behavior. They do
-not establish real D3D behavior, full-game runtime or semantic-phase acceptance.
-Maximum diagnostic RSS is41,080 KiB after timely Unicorn fixture collection.
-
-The current pass adds a second58-case run in the real constructor family,
-recorded in `.analysis/animation-postload-differential.json`. Its actual private
-ABIs were re-read from that artifact: the specialized resource loader receives
-EBX filename/stack size with disk-mode1 implicit. The full original and candidate
-function bodies remain independently executed. The stage/document family
-retains297/434/131-byte sizes and17/337/80 differences, with all34 cases agreeing.
-The sprite exact context was cold-replayed after its source/header dependencies
-changed; unrelated exact contexts were not replayed.
-
-The former GetLevelDesc fixture wrote seven DWORDs and omitted the descriptor's
-MultiSampleQuality, so its claimed dimensions were misplaced. A current58-case
-rerun uses the correct32-byte/eight-DWORD SDK layout and still agrees. The earlier
-run did not prove its intended dimension coverage; this fixture correction
-does not affect independent strict byte-match proofs.
+D3DSURFACE_DESC is32 bytes/eight DWORDs, including MultiSampleQuality before
+Width and Height. Earlier seven-DWORD fixtures do not establish dimensions;
+strict byte proofs are independent of those fixtures.
 
 Next useful work includes the medium stage initializer and EH destruction,
 alongside the documented remaining pixel/file/decoder codegen gaps. The

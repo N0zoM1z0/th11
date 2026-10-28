@@ -53,19 +53,3 @@ bytes. They are not masked or substituted. The origin review identifies
 game-authored stage/VM lifecycle integration through its renderer-specific
 lists, flag propagation and real stage destruction callers. Complete original
 data ownership and full native integration remain open.
-
-## Bounded diagnostic
-
-Private `.analysis/vm-bindings-differential.json` records83 original/source
-machine-code cases against an independent list/flag/free-order reference.
-They cover primary/secondary precedence, duplicates, missing/zero IDs, opaque
-markers, nonrecursive propagation, signed count limits and optional storage.
-There are67 completed returns and16 matching faults for a null ID table with
-a positive iteration count. Both fault at the first slot read, offset0x3E,
-after the initial buffer frees; no new guard or clean error path is added.
-
-The diagnostic models free rather than executing a native heap. It checks
-contents at the ID-table free, full surviving binding/VM storage, node bytes,
-stack balance and preserved registers. It grants no full native/runtime
-authority. One CPU/nice10, maximum RSS104,376 KiB; Ghidra and compiler jobs keep
-the existing shared lock and resource limits.

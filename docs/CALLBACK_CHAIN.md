@@ -99,20 +99,6 @@ scripts/repo-python scripts/replay-exact-units.py \
   --unit execute-draw-chain --unit unregister-chain-element
 ```
 
-Private Unicorn1.0.2 target-vs-VC9 diagnostics passed220 draw and440 update
-cases, comparing return values, element/manager memory, lock-counter wrap,
-callback/auxiliary/delete events and lock events. They cover enabled/disabled
-and null callbacks, all return codes, retry with flag changes, restart, pause,
-and owned/non-owned removal. Registration passed560 cases per function,
-including empty/middle/tail/equal-priority insertion, signed priorities,
-initializer errors and lock-counter wrap. List ordering and back-links were
-also checked independently. Library/callback shims are deterministic.
-
-Reproduction and results remain in private `.analysis/check-chain.py`,
-`.analysis/check-chain-registration.py`, `.analysis/chain-behavior.json` and
-`.analysis/chain-registration-behavior.json`. These bounded diagnostics do
-not establish the complete native product or close the later semantic phase.
-
 ## Registration exactness and shared runtime storage
 
 Both registration functions now cold-replay exactly across147 bytes each.

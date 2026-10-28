@@ -87,23 +87,5 @@ frame/type context remains open. No dummy local or padding is inserted to
 erase this difference. A future edit to this shared source must revalidate
 the two affected exact units, without replaying unrelated units.
 
-## Bounded diagnostic and phase limits
-
-Private `.analysis/formatted-text-differential.json` records123 complete-body
-machine-code cases. vsprintf, finite FTOL, placement dispatch and cookie checks
-are modeled. Observations include actual va_list values, formatted bytes,
-all physical dispatcher parameters, x87 inputs, unchanged VM bytes, changed
-flag publication, stack balance and preserved registers. An independent integer/
-floating reference checks each alignment expression. Cases include byte-height
-0/1/8/9/17/255, empty/odd/CP932 strings,131 output bytes, fractional positive/
-negative width, rendering flags, colors and a changed flag modified during the
-modeled dispatcher. The GS cookie is verified after every case.
-
-This diagnostic does not validate the complete printf/FTOL implementations or
-exceptional values, and grants no full native/runtime authority. It runs on
-one CPU/nice10 with maximum RSS106,712 KiB. Ghidra/compiler serialization and
-resource limits remain unchanged. Existing outlined/plain text and filter
-sources are compiled only as direct support, with no changes to old canonical
-inputs. All three source origins remain independently indeterminate despite
-their established renderer/VM-like use. Native game build/runtime closure
-remains open.
+All three source origins remain independently indeterminate despite their
+established renderer/VM-like use.

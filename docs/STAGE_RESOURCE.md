@@ -85,27 +85,9 @@ family gave297/24 differences; adding directly needed existing resource/log
 bodies and independent unknown inputs gives297/17. Old canonical proofs were
 not replayed. Do not repeat those same contexts without new evidence.
 
-## Bounded validation and remaining work
+## Remaining exact work
 
-Private `.analysis/stage-resource-differential.json` records34 cases:33 returns
-and one persistent-wait prefix stopped at8 modeled Sleep calls. It runs all
-three complete original/candidate bodies independently, with modeled resource,
-allocator, decoder, logger, trace and Sleep contracts. Actual target/candidate
-private calling conventions are handled separately. Trace records are call
-instrumentation, not native printed output from the RET sink.
-
-Comparisons cover stage storage, relocated pointers, allocation order and
-sizes, cache publication, file/table contents, decoder indices, returns, GS
-cookies, registers and stack. Cases include cached source, resource/animation/
-chunk failures, signed counts/indices, empty/multiple chunks, busy-cache returns,
-shutdown before/during waiting and persistence. Negative VM counts preserve the
-large unsigned malloc request; the bounded allocator fixture returns null
-without allocating that amount. Real I/O, decompression, texture decode,
-background threads and the complete native game are not validated here.
-
-The standalone focused fixture recorded one CPU/nice10 and maximum RSS42,148 KiB, with
-timely fixture collection. Ghidra/compiler jobs retain
-the shared serialization lock and limits. Remaining useful targets include
+Remaining useful targets include
 texture codegen gaps and stage update/draw bodies. The texture
 constructors and stage lifecycle now have full source; initialization0x004024C0
 is strict630-byte exact, while the603-byte EH destructor remains non-exact.

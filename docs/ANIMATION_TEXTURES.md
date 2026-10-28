@@ -110,21 +110,3 @@ was also cold-replayed. Earlier41 exact contexts were not modified or replayed.
 The current family additionally includes AnimationTransparentPixels.cpp, and
 only its three affected exact constructors were cold-replayed after that
 addition. Original TU partition and full native product closure remain open.
-
-Private `.analysis/check-animation-texture.py` and `animation_texture_fixture.py`
-compare complete original/candidate constructors in92 cases, including all six
-formats with/without fallback, crop branches and signed edge cases, positive/
-negative HRESULTs, ignored failures, surface releases, accounting wraparound,
-signed embedded dimensions and four matching native/candidate faults. D3DX,
-COM and transparent-pixel processing are modeled contracts. A current additional
-58-case chunk/sprite run uses the new family, retaining five integrated
-advance/decode cases; the affected old stage/document family is independently
-rebuilt and its34 cases still agree. These bounded diagnostics do not establish
-actual D3D pixel results, full-game runtime or semantic-phase acceptance.
-
-The original92-case and58-case descriptions omitted MultiSampleQuality from
-D3DSURFACE_DESC fixtures. They have now been corrected to eight DWORDs and
-rerun, with explicit crop/adoption trace assertions. A further24 integrated
-file/pixel cases execute the actual postprocess bodies. Earlier dimension/
-branch coverage claims were too strong; strict receipt-bound byte proofs were
-independent of this fixture bug. See `ANIMATION_TRANSPARENT_PIXELS.md`.

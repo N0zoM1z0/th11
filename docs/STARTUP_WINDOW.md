@@ -142,33 +142,3 @@ Explicit memset fixes the observed input convention and48-byte frame, but the
 Zero-register lifetime, save/restore placement and instruction scheduling remain
 open. The correct black-brush constant, explicit record writes and fullscreen
 branch order are retained. No canonical context is declared for this mismatch.
-
-## Bounded machine-code verification
-
-A private diagnostic executed complete target and compiler-produced bodies in
-Unicorn with explicit Win32, COM and CRT models. It checked51 distinct scenarios:
-nine direct shortcut cases, eighteen startup cases and twenty-four window cases.
-These cover null destination, negative COM results, ignored initialization/
-conversion failures, nonnegative S_FALSE, title/no-title/extension/existence
-branches, repeated original-source shortcut loading, three return-gate values,
-four modes, timing/frame-skip combinations and window creation success/failure.
-
-Returns, API order/arguments, allocation size, release/delete paths, destination
-strings, runtime state, callee-saved registers and each observed stack convention
-agree. The shortcut inputs were marshalled separately for the two different
-physical ABIs. Actual target GUID/class/title data were supplied to candidate
-data anchors; target function instructions were not patched. The window subset
-was refreshed after the final field-name cleanup.
-
-The models cover ASCII path conversion and successful allocation; they do not
-exercise real OLE, filesystems, locale conversion, windows or allocator throws.
-This is bounded diagnostic evidence with **no exact, native-product or full
-semantic acceptance authority**. Full production build/runtime and later gates
-remain open. Ghidra/Wine retain their serialized resource limits; the diagnostic
-uses one CPU at nice10 and measured about88 MiB peak RSS for the full case set.
-
-Private evidence: `.analysis/font-startup-review.txt`, `startup-dependencies-review.txt`,
-`startup-caller-return.txt`, `startup-return-gate-refs.txt`, `window-setup-review.txt`,
-`window-setup-caller.txt`, `startup-path-*-linked.json`,
-`window-initialization-*-linked.json`, `check-startup-window.py`,
-`startup-window-differential.json` and `window-differential.json`.

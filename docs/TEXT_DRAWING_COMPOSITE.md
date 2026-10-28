@@ -110,25 +110,7 @@ surface is released regardless of HRESULT. The surface output is not initialized
 before the COM call, matching native behavior; failure without writing it remains
 indeterminate, and is not turned into a clean error path.
 
-## Focused diagnostics and remaining work
-
-Two cold private families compile only the new compositor and text paths.
-The compositor's 74 machine-code cases agree with both the original full body
-and an independent integer reference, including all formats, signed dimensions,
-negative pitches, overlapping buffers, COM failures and ignored status values.
-The text family's 162 cases execute all three complete bodies and compare
-pixels, unchanged workspace, AL results where meaningful, API order/arguments,
-source rectangles, font choices, release behavior, stack balance and preserved
-registers. Standalone processing cases also agree with an independent pixel
-reference. Integrated drawing uses modeled GDI raster bytes and D3DX transfer;
-it does not establish real font rendering or GPU behavior.
-
-Private reports are `.analysis/surface-composite-differential.json` and
-`.analysis/text-drawing-differential.json`. Each runs at nice10 on one CPU;
-measured maximum RSS was95,504 and107,536 KiB respectively. Compiler/Ghidra
-jobs retain the shared lock and existing resource limits. These bounded
-diagnostics are neither exact proofs nor complete native/runtime acceptance.
-No existing canonical unit was replayed.
+## Remaining codegen work
 
 Original type/TU/frame context remains open. Drawing currently turns its
 background word loop into REP stores, while native reloads the byte limit.

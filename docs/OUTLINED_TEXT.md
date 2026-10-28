@@ -114,22 +114,5 @@ The earlier plain drawing source is unchanged; in this new support context it
 is403 bytes and still non-exact. This is not a replay of its old context or of
 any previous canonical proof. No old exact unit was replayed.
 
-Private `.analysis/outlined-text-differential.json` records123 bounded cases.
-They execute all three new complete bodies plus actual directly called text
-filters/plain drawing, and compare image buffers, unchanged workspace/views,
-API order and arguments, rectangle values, AL result, cleanup, preserved
-registers and stack balance. An independent rectangle reference checks the
-surface outline, including duplicate positions and modeled writes to RECTs.
-Cases cover all fonts, formats21/25/26, plain/outlined routing, both spacing
-branches, signed spacing/coordinates, empty/odd/even/CP932 strings, height
-gates, clipping, null text on the skipped path, null surface and ignored GDI/
-COM/D3DX errors.
-
-GDI rasterization and D3DX transfer are modeled. FTOL observes actual x87 inputs
-and models truncation/pop behavior for finite bounded values; it does not
-validate the original helper implementation or exceptional conversion cases.
-These diagnostics grant no exact, full native or full runtime authority.
-The run uses one CPU/nice10 with maximum RSS117,400 KiB. Ghidra and compiler
-jobs retain the existing shared lock and resource limits. All three source
-origins remain indeterminate: text/GDI use and real callers alone do not prove
-original game versus bundled library ownership.
+All three source origins remain indeterminate: text/GDI use and real callers
+alone do not prove original game versus bundled library ownership.
