@@ -46,6 +46,10 @@ BindAnimationScript,0x0044ACD0,function
 FlushRenderBatch,0x0044FD10,function
 BeginLoadAnimationDocument,0x00454190,function
 AcquireAnimationDocument,0x00454360,function
+LoadAnimationChunkSource,0x004543E0,function
+AdvanceAnimationDocument,0x004544C0,function
+DecodeAnimationChunk,0x004545A0,function
+StoreAnimationSprite,0x00454B10,function
 DrawPlacedTextureText,0x00454BB0,function
 FormatTextureText,0x00454C60,function
 FormatRightAlignedTextureText,0x00454D00,function

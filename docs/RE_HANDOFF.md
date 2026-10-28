@@ -8,8 +8,8 @@ its counts and next-target suggestions are historical.
 
 - Target: original Japanese TH11 v1.00a, private `resources/th11.exe`;
   identity in [config/target.toml](../config/target.toml).
-- Inventory:1,989 provisional candidates;75 reviewed/source-present mappings.
-- Exact:41 functions /9,125 owned bytes:8 normal-COFF and33 linked-PE units.
+- Inventory:1,989 provisional candidates;79 reviewed/source-present mappings.
+- Exact:42 functions /9,274 owned bytes:8 normal-COFF and34 linked-PE units.
   [PROGRESS.md](PROGRESS.md) is generated from maintained ledgers.
 - Full Windows i386 game build/runtime closure is open. Diagnostic executables
   are non-runnable link contexts; modeled cases are not full runtime acceptance.
@@ -31,26 +31,32 @@ scripts/repo-python scripts/progress.py --check
 ```
 
 Do not replay all exact units on resume. Revalidate only the units whose source,
-headers or declared context changed. For a change to VM binding cleanup:
+headers or declared context changed. AnimationChunk.cpp and AnimationDocument.hpp
+now belong to the new sprite exact context:
 
 ```bash
-scripts/repo-python scripts/replay-exact-units.py --unit release-vm-binding-block
+scripts/repo-python scripts/replay-exact-units.py --unit store-animation-sprite
 ```
 
 ## Latest completed code
 
 | Function | Native bytes | State | Details |
 | --- | ---: | --- | --- |
+| StoreAnimationSprite,0x00454B10 | 149 | exact, no fields | [ANIMATION_CHUNKS.md](ANIMATION_CHUNKS.md) |
+| DecodeAnimationChunk,0x004545A0 | 811 | source629,735 diagnostic differences | [ANIMATION_CHUNKS.md](ANIMATION_CHUNKS.md) |
+| AdvanceAnimationDocument,0x004544C0 | 212 | source212,161 differences | [ANIMATION_CHUNKS.md](ANIMATION_CHUNKS.md) |
+| LoadAnimationChunkSource,0x004543E0 | 221 | source239,156 differences | [ANIMATION_CHUNKS.md](ANIMATION_CHUNKS.md) |
 | ReleaseVmBindingBlock,0x00402300 | 231 | exact,6 bindings | [VM_BINDINGS.md](VM_BINDINGS.md) |
 | LoadStageResource,0x00403FC0 | 297 | source297,17 diagnostic differences | [STAGE_RESOURCE.md](STAGE_RESOURCE.md) |
 | BeginLoadAnimationDocument,0x00454190 | 454 | source434,337 differences | [STAGE_RESOURCE.md](STAGE_RESOURCE.md) |
 | AcquireAnimationDocument,0x00454360 | 124 | source131,80 differences | [STAGE_RESOURCE.md](STAGE_RESOURCE.md) |
 
-The new cleanup unit has a current strict cold primary-TU proof. Earlier40
+The new sprite unit has a current strict cold primary-TU proof. Earlier41
 canonical inputs/proofs were not replayed or modified. New private diagnostics
-agree on83 cleanup cases (including16 matching malformed-table faults) and34
-loader cases (including one8-Sleep persistent-wait prefix). They model external
-helpers and grant no complete native/runtime authority.
+agree on58 chunk/sprite cases, including five integrated advance/decode cases;
+the affected stage/document-loader family was cold-rebuilt and its34 cases
+still agree. Timely Unicorn collection holds these runs to roughly41/42 MiB.
+They model external helpers and grant no complete native/runtime authority.
 
 Preserve these behavior details:
 
@@ -63,16 +69,26 @@ Preserve these behavior details:
   validation or cleanup has been added to alter native failure behavior.
 - The native trace sink is RET and preserves registers that the opaque source
   context spills. This old trace/LTCG gap remains open; no fake ABI or padding.
+- Busy is a one-based postload cursor: the worker rescans counts and decodes
+  at most one chunk per call, then increments or clears it.0x004543E0 only loads
+  external source bytes;0x004545A0 is the actual decoder. The old role guesses
+  were wrong. Sprite+44 remains indeterminate; do not zero-initialize it.
 
 ## Useful next work
 
-1. Review/recover chunk decoder0x004543E0 (provisional221 bytes) and sprite
-   helper0x004544C0 (212). Their bodies are still external/unmapped.
+1. Recover the texture constructors0x00453D90 (484 bytes),0x00453F80 (287),
+   0x004540A0 (67) and0x004540F0 (69). Argument/return contracts have complete
+   private direct-Ghidra review in `.analysis/animation-texture-contracts.txt`.
+   This will close external decoder dependencies and permit new LTCG contexts.
 2. Stage initialization0x004024C0 (630) and EH destruction0x00402740 (603) have
    private complete instruction/decompiler review but no source. Original EH/
    specialized ownership is outside the current public linked acceptance lane.
 3. Improve existing non-exact functions only with new evidence; read the
    corresponding topic before repeating a compiler/context experiment.
+
+The worker dispatcher0x004548D0 (135 bytes) was privately reviewed but is not
+mapped/source-present. Its destruction path clears a slot then writes through
+the null slot; preserve the observed fault rather than silently fixing it.
 
 The mode-transition function0x00406510 is unrelated to VM lookup. Its241-byte
 code candidate has a trailing six-entry table and needs a complete ownership

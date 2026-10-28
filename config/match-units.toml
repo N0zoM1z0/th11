@@ -1075,3 +1075,17 @@ linkages = [
   { offset = 200, type = "REL32", symbol = "_free", target = 0x45fc3b, addend = 0x0 },
   { offset = 219, type = "REL32", symbol = "_free", target = 0x45fc3b, addend = 0x0 },
 ]
+
+[units.store-animation-sprite]
+artifact_kind = "linked-pe"
+source = "src/AnimationSprite.cpp"
+inputs = ["src/AnimationDocument.hpp", "src/RenderBatch.hpp", "src/ResourceFile.hpp", "src/ErrorLog.hpp", "src/LogBuffer.hpp"]
+support_sources = ["src/AnimationChunk.cpp", "probes/animation-chunk-context.cpp"]
+output_dir = "build/match-linked/AnimationSprite"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "AnimationChunkProbe@28"
+functions = ["StoreAnimationSprite"]
+symbol = "?StoreAnimationSprite@@YGXPAUAnimationDocumentView@@HPBUAnimationSpriteView@@@Z"
+target_address = 0x454b10
+size = 149
+linkages = []

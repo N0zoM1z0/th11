@@ -54,9 +54,10 @@ With data present, the routine publishes the index, data and original filename.
 ANM headers provide unsigned16-bit sprite/script counts at+4/+6 and a next
 offset at+24, relative to the current chunk. Counts sum across this chain.
 It allocates and clears20 bytes per texture/chunk, allocates72 bytes per sprite
-and4 bytes per script, then decodes chunks in order. A negative decoder result
-returns null without undoing the published document/tables. The chunk decoder
-at0x004543E0 remains an external dependency requiring its own full recovery.
+and4 bytes per script, then loads chunk texture sources in order. A negative result
+returns null without undoing the published document/tables. The source loader
+at0x004543E0 is now recovered as LoadAnimationChunkSource; the later worker
+decodes textures/sprites/scripts at0x004545A0. See `ANIMATION_CHUNKS.md`.
 
 ## Acquisition and waiting
 
@@ -100,10 +101,13 @@ large unsigned malloc request; the bounded allocator fixture returns null
 without allocating that amount. Real I/O, decompression, texture decode,
 background threads and the complete native game are not validated here.
 
-The run uses one CPU/nice10, maximum RSS77,624 KiB. Ghidra/compiler jobs retain
+The current focused rerun uses one CPU/nice10, maximum RSS42,148 KiB, with
+timely fixture collection. Ghidra/compiler jobs retain
 the shared serialization lock and limits. Remaining useful targets are the
-221-byte chunk decoder0x004543E0, its212-byte sprite helper0x004544C0, the
-630-byte stage initializer0x004024C0 and its603-byte EH destructor0x00402740.
+484-byte file-texture constructor0x00453D90,287-byte embedded constructor
+0x00453F80,630-byte stage initializer0x004024C0 and its603-byte EH destructor
+0x00402740. The former role guesses for0x004543E0/0x004544C0 were incorrect;
+their source-loader/cursor behavior is now documented in `ANIMATION_CHUNKS.md`.
 The mode-transition routine0x00406510 is unrelated to VM lookup and owns a
 six-entry trailing jump table; do not treat its241-byte code-only candidate
 as a reviewed standalone lookup function.

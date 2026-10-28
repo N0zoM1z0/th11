@@ -73,3 +73,7 @@ ReleaseVmBindingBlock
 LoadStageResource
 BeginLoadAnimationDocument
 AcquireAnimationDocument
+LoadAnimationChunkSource
+AdvanceAnimationDocument
+DecodeAnimationChunk
+StoreAnimationSprite

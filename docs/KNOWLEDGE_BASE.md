@@ -704,3 +704,45 @@ before retrying those configurations; full native data/runtime closure is open.
   COM/log/math models. Tangent return0.25 and D3DX matrices are fixtures; this
   supplies no exact/native/full-semantic authority. One CPU/nice10,~64 MiB RSS.
   See DEVICE_INITIALIZATION.md and private strict/differential logs.
+
+## ANM source loading, postload cursor and sprite construction (2026-10-28)
+
+Direct full-text-attested Ghidra review corrects the former next-target guesses:
+0x004543E0 is a221-byte external-source loader,0x004544C0 is a212-byte document
+postload cursor, and0x004545A0 is the actual811-byte texture/sprite/script decoder.
+All now have maintained full source. The decoder's sparse802-address Ghidra body
+omits9 internal alignment bytes; its complete811-byte extent is preserved.
+
+Busy+124 is a one-based chunk cursor. Each worker call rescans preceding chunks
+to accumulate texture/sprite/script indices, decodes at most one matching chunk,
+and increments busy or clears it at completion/failure. External source loading
+requires version7, skips embedded/@ names and uses disk-mode1. The decoder has
+ordinary-file, @R render-target, other-@ empty-texture and embedded-data paths.
+Only file/embedded negative results are rejected; empty-texture results are
+added unchecked and render-target results ignored. GetLevelDesc HRESULT is
+ignored. Script records contain a skipped ID followed by the relative offset.
+
+StoreAnimationSprite at0x00454B10 is a complete149-byte raw match under a cold
+VC9 /GL public primary-TU proof, no linked fields. The physical72-byte record
+stores height+1C/width+20, UVs+24..30, recovered height+34/width+38, and X/Y scales
++3C/+40. It copies the entire record before calculations; decoder stack+44 is
+indeterminate and must not be initialized gratuitously. Destination-aliasing
+source pointers retain the native read/write behavior. Canonical command:
+`scripts/repo-python scripts/replay-exact-units.py --unit store-animation-sprite`.
+
+Private complete-body diagnostics agree in58 chunk/sprite cases, including five
+integrated cursor/decoder cases; modeled I/O, texture constructors, error/trace
+and COM helpers do not establish full runtime or semantic-phase acceptance.
+Only indeterminate decoder sprite+44 is omitted from semantic snapshots; exact
+code replay has no byte masks. The affected stage/document-loader family was
+cold-built and all34 modeled cases still agree, with unchanged code sizes and
+difference counts. Earlier41 exact contexts were not modified or replayed.
+Unicorn callback cycles delayed fixture release in the first diagnostic pass;
+collecting fixtures after each execution reduces current maximum RSS to41,080
+and42,148 KiB. Ghidra/compiler serialization and default limits are retained.
+
+See `ANIMATION_CHUNKS.md` for source/native extents, private ABI differences,
+review artifacts, exact evidence and remaining lower texture constructors.
+The worker dispatcher0x004548D0 remains unmapped despite private review; its
+native destruction branch clears the slot and then dereferences that null slot.
+Do not turn that observation into a repaired source path without evidence.

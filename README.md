@@ -75,6 +75,9 @@ non-exact in [`docs/FORMATTED_TEXTURE_TEXT.md`](docs/FORMATTED_TEXTURE_TEXT.md).
 Stage VM binding cleanup has an exact proof in
 [`docs/VM_BINDINGS.md`](docs/VM_BINDINGS.md). Stage/animation document loading has
 maintained non-exact source in [`docs/STAGE_RESOURCE.md`](docs/STAGE_RESOURCE.md).
+The chunk decoder and postload cursor now have maintained source, and sprite
+registration is exact across149 bytes; see
+[`docs/ANIMATION_CHUNKS.md`](docs/ANIMATION_CHUNKS.md).
 The Windows i386 production build is open. Semantic reconstruction and
 portability have not started.
 

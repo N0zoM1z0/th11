@@ -41,16 +41,16 @@ AnimationDocumentView *__stdcall BeginLoadAnimationDocument(RenderBatchView *ren
         ++textureCount;
     }
     file->textureCount = textureCount;
-    file->textures = malloc(textureCount * 20);
+    file->textures = static_cast<AnimationDocumentTextureView *>(malloc(textureCount * 20));
     memset(file->textures, 0, textureCount * 20);
-    file->sprites = malloc(spriteCount * 72);
+    file->sprites = static_cast<AnimationSpriteView *>(malloc(spriteCount * 72));
     file->scripts = static_cast<unsigned char **>(malloc(scriptCount * 4));
     file->spriteCount = spriteCount;
     file->scriptCount = scriptCount;
     AnimationChunkHeaderView *chunk = data;
     while (chunk)
     {
-        if (DecodeAnimationChunk(file, chunkIndex, chunk) < 0)
+        if (LoadAnimationChunkSource(file, chunkIndex, chunk) < 0)
             return 0;
         ++chunkIndex;
         if (!chunk->nextOffset)
