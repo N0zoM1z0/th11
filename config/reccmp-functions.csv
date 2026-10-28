@@ -19,7 +19,15 @@ StageOverlayCallback,0x00403920,function
 LoadStageResource,0x00403FC0,function
 UpdateStageObjects,0x004040F0,function
 ExecuteStageScript,0x00404470,function
+StepStageVectorTween,0x00405240,function
+StepStageFogTween,0x004055D0,function
+StageVectorTweenFactor,0x00405960,function
+StageFogTweenFactor,0x00405990,function
+SubtractStageFog,0x004059D0,function
+ScaleStageFog,0x00405A10,function
+AddStageFog,0x00405A50,function
 PackStageFog,0x00405B70,function
+SetStageTimer,0x00406100,function
 ScreenshotWriteThread,0x00429BB0,function
 CaptureScreenshot,0x00429CA0,function
 DisableRuntimeFog,0x0042A300,function
@@ -96,5 +104,6 @@ RandomNext16,0x00458BC0,function
 RandomNext32,0x00458C30,function
 AddAngles,0x00458E30,function
 NormalizeAngle,0x00458ED0,function
+AdvanceStageTimer,0x00459270,function
 StopRuntimeThread,0x00459430,function
 UpdateInputRepeatState,0x00459B50,function

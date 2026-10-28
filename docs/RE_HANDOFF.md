@@ -8,8 +8,8 @@ its counts and next-target suggestions are historical.
 
 - Target: original Japanese TH11 v1.00a, private `resources/th11.exe`;
   identity in [config/target.toml](../config/target.toml).
-- Inventory:1,992 provisional candidates;99 reviewed/source-present mappings.
-- Exact:51 functions /10,647 owned bytes:8 normal-COFF and43 linked-PE units.
+- Inventory:1,992 provisional candidates;108 reviewed/source-present mappings.
+- Exact:52 functions /10,706 owned bytes:8 normal-COFF and44 linked-PE units.
   [PROGRESS.md](PROGRESS.md) is generated from maintained ledgers.
 - Full Windows i386 game build/runtime closure is open. Diagnostic executables
   are non-runnable link contexts; modeled cases are not full runtime acceptance.
@@ -30,24 +30,23 @@ scripts/repo-python scripts/validate-tracking.py --require-target
 scripts/repo-python scripts/progress.py --check
 ```
 
-Do not replay all exact units on resume. Revalidate only the units whose source,
-headers or declared context changed. The new StageResource.hpp/lifecycle context
-affects these five units; it does not require replaying the older cohort:
+Do not replay all exact units on resume. Revalidate only units whose declared
+source, headers or context changed. The latest tween/timer checkpoint affected
+only these two canonical families; both passed cold replay:
 
 ```bash
 scripts/repo-python scripts/replay-exact-units.py \
-  --unit initialize-stage-resource \
-  --unit stage-embedded-vm-constructor \
-  --unit stage-embedded-vm-destructor \
-  --unit stage-draw-callback \
-  --unit stage-overlay-callback
+  --unit set-stage-timer --unit pack-stage-fog
 ```
 
 ## Latest completed code
 
 | Function | Native bytes | State | Details |
 | --- | ---: | --- | --- |
-| ExecuteStageScript,0x00404470 | 2,736 including tables | source2,740; non-exact, EH open | [STAGE_SCRIPT.md](STAGE_SCRIPT.md) |
+| StepStageVectorTween/StepStageFogTween,0x00405240/0x004055D0 | 883/737 | source785/534; non-exact | [STAGE_TWEEN.md](STAGE_TWEEN.md) |
+| SetStageTimer,0x00406100 | 59 | exact;1 field | [STAGE_TWEEN.md](STAGE_TWEEN.md) |
+| AdvanceStageTimer,0x00459270 | 83 | source83/8 diagnostic differences | [STAGE_TWEEN.md](STAGE_TWEEN.md) |
+| ExecuteStageScript,0x00404470 | 2,736 including tables | source2,728; non-exact, EH open | [STAGE_SCRIPT.md](STAGE_SCRIPT.md) |
 | PackStageFog,0x00405B70 | 171 | exact; no fields | [STAGE_SCRIPT.md](STAGE_SCRIPT.md) |
 | UpdateStage,0x00402AA0 | 1,677 | source1,705; non-exact | [STAGE_UPDATE.md](STAGE_UPDATE.md) |
 | UpdateStageObjects,0x004040F0 | 153 | source151; non-exact | [STAGE_UPDATE.md](STAGE_UPDATE.md) |
@@ -165,15 +164,45 @@ was reverted. These are diagnostic codegen observations, not extent shortcuts.
 Final canonical mixed-context checks passed all709 cases; public CI passed8+25
 checks. Fog packing's171-byte cold proof remains current in that same family.
 
+Latest tween checkpoint adds nine complete bodies: two steps, two factor
+getters, three fog operators and two timers. SetStageTimer59 is strictly exact
+with one reviewed DIR32 scale binding; Pack171 remains exact after affected
+cold replay. Other new bodies remain non-exact. Generic timer provenance is
+indeterminate. Source counts108; exact52/10,706 (8 COFF,44 linked PE).
+
+All2,171 direct-body cases pass, including four null-scale faults and200 extra
+extended-precision randomized Hermite cases. All709 script cases also pass
+with actual tween/timer/fog arithmetic bodies replacing their earlier models;
+five remaining modeled-dependency faults and20 six-frame programs remain.
+Candidate easing/conversion uses isolated original-machine dependencies, not
+reconstructed source. VM reset/bind, mesh/heap and sine still use models.
+Canonical script is now2,728 bytes/frame68 with2,217 address-masked diagnostic
+differences; primary tween family's support interpreter is2,608, also non-exact.
+Never reuse the previous2,740 size as the current canonical measurement.
+
+Private `.analysis/stage_tween_fixture.py`, `stage_tween_oracles.py` and
+`check-stage-tween.py` use `TH11_STAGE_TWEEN_TEST_DIR` to select the canonical
+`build/match-linked/StageTween`; `TH11_STAGE_SCRIPT_REAL_TWEENS=1` enables real
+integration in the canonical script fixture. The private probe family remains
+`build/probe-ltcg/stage-tween`. Logs are `.analysis/stage-tween-check.log`,
+`stage-tween-canonical-check.log`, `stage-tween-script-check.log` and
+`stage-tween-cold-replay.log`. See `STAGE_TWEEN.md` for scope and ABIs.
+
+An early supposed mode7 vector Z bug was disproved: POP changes stack offsets;
+actual native Z is oldZ+deltaZ. Corrected source plus independent XYZ assertion
+preserve this finding. Do not reintroduce the oldY hypothesis.
+Final canonical tween cases peaked at191,132 KiB; script integration140,584 KiB.
+Target/toolchain/tracking/progress and public CI8+25 checks all passed.
+
 ## Useful next work
 
-1. Complete the interpreter's actual interpolation dependencies: vector tween
-   at0x00405240 and fog tween at0x004055D0. Review their full owners/tables before
-   credit. Fresh direct-Ghidra reviews are `.analysis/stage-script-dependencies.txt`
-   and the complete interpreter code/tables are `.analysis/stage-script-full.txt`
-   and `.analysis/stage-script-tables.txt`. ResetStageMesh0x0040E6C0 (325 bytes)
-   and its mesh constructor0x0040E530 remain declared external dependencies.
-   ExecuteStageScript now has complete source; do not treat it as unimplemented.
+1. Recover easing dispatcher0x00459730 only after complete code/data ownership
+   review. Its initial seven-byte extent is merely an indirect JMP; private
+   `.analysis/stage-easing-span.txt` includes arms and16-entry table4599EC..459A2B
+   before entry459A30. No easing source mapping/credit exists yet.
+   ResetStageMesh0x0040E6C0 (325 bytes) and mesh constructor0x0040E530 remain
+   declared external dependencies. Script and both step functions now have
+   complete source; do not treat them as unimplemented.
 2. Improve the pixel helper's source0x3C/target0x44 frame and the file
    constructor's source0x44/target0x4C frame with new evidence. The ordinary
    source pixel call now naturally uses native EAX. Byte versus typed32-bit

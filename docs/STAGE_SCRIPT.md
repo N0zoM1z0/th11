@@ -6,7 +6,7 @@ section and reconciled its full extent, instruction flow, callers and tables.
 
 | Function | Full target owner | Source contribution | State |
 | --- | ---: | ---: | --- |
-| ExecuteStageScript,0x00404470 | 2,736 bytes through0x00404F1F | 2,740 bytes | Non-exact; EH ownership open |
+| ExecuteStageScript,0x00404470 | 2,736 bytes through0x00404F1F | 2,728 bytes | Non-exact; EH ownership open |
 | PackStageFog,0x00405B70 | 171 bytes through0x00405C1A | 171 bytes | Exact linked-PE unit `pack-stage-fog` |
 
 The interpreter's Ghidra code body ends at404EB8 and contains2,633 bytes.
@@ -111,9 +111,9 @@ fractional, infinite and NaN inputs were checked against the actual bodies.
 
 ## Code generation and proofs
 
-The maintained direct vector writes with an opaque normal-COFF angle-math
-support produce a2,740-byte primary interpreter contribution with a0x68-byte
-local reservation versus native0x98. An initial
+The current real-tween support context produces a2,728-byte primary
+interpreter contribution with a0x68-byte local reservation versus native0x98.
+The preceding opaque-tween context produced2,740 bytes. An initial
 aggregate-return helper produced3,048 bytes/0x120; a hybrid with aggregate tween
 vectors produced2,924 bytes/0xF8. Retained direct writes pass the same full-body
 checks. Reversing the scheduling comparison operands did not recover the native
@@ -121,7 +121,7 @@ load order or improve the3,048-byte baseline and was reverted. An all-GL angle-m
 minimum-radius comparison by proving the callee could not change it. Using the
 existing normal-COFF angle source restores that comparison while preserving
 GL on the primary interpreter. This supports an opaque-callee hypothesis; it
-does not establish the original TU partition. Current2,197
+does not establish the original TU partition. Current2,217
 address-masked diagnostic positions differ; shifting instructions make this
 count unsuitable as a completion percentage. The interpreter receives no exact
 credit, including for its unresolved EH/funclet context.
@@ -136,16 +136,18 @@ scripts/repo-python scripts/replay-exact-units.py --unit pack-stage-fog
 ```
 
 Its canonical family is `build/match-linked/StageScript`, primary
-`src/StageScript.cpp`, supporting `probes/stage-script-context.cpp` and
-`src/AngleMath.cpp` (normal COFF), entry `StageScriptProbe@12`, primary profile
+`src/StageScript.cpp`, supporting `probes/stage-script-context.cpp`, `src/StageTween.cpp`,
+`probes/stage-tween-context.cpp` and `src/AngleMath.cpp` (normal COFF), entry `StageScriptProbe@12`, primary profile
 `/TP /O2 /Ob1 /Gy /MT /Isrc /EHsc /GL`. The normal support keeps the same
 switches except GL. The constructor and other unresolved
 dependencies are diagnostic data anchors; this PE is not a runnable game.
 
 Private `.analysis/stage_script_fixture.py` executes complete original and
-candidate interpreter/pack bodies. Real PackStageFog and NormalizeAngle bodies
-execute in both runs; timers, interpolation, reset/bind, mesh construction,
-allocation, release/delete and CRT sine are explicit models. A real32-bit GDT
+candidate interpreter/pack bodies. With `TH11_STAGE_SCRIPT_REAL_TWEENS=1`, real timers, interpolation, fog
+arithmetic, packing and NormalizeAngle bodies execute in both runs. Candidate
+easing/conversion calls use isolated original-machine dependency Oracles.
+Reset/bind, mesh construction, allocation, release/delete and CRT sine remain
+explicit models. See [STAGE_TWEEN.md](STAGE_TWEEN.md) for their exact scope. A real32-bit GDT
 and separate FS TEB leave page0 unmapped. Normal returns restore the original
 exception chain. Constructor exception injection and full unwind are open.
 
@@ -160,10 +162,11 @@ the non-clamping byte conversion. Modeled negative-VM resets can overwrite the
 cursor and fault; these outcomes do not establish the behavior of the real VM
 reset dependency on corrupt input.
 
-All709 declared cases agree, including five matching faults under those models
-and20 persistent six-frame programs. One complete run peaked at190,020 KiB RSS.
+All709 declared cases agree after real tween/timer integration, including five
+matching faults under the remaining models and20 persistent six-frame programs.
+The integrated run peaked at140,584 KiB RSS.
 Public CI passed8+25 checks.
 
-Only the new pack unit requires cold replay for this checkpoint; the earlier50
-exact contexts have unchanged source and inputs. Full native product/runtime
+The real-tween integration cold-replayed `pack-stage-fog` and the new
+`set-stage-timer`; the earlier50 exact contexts have unchanged inputs. Full native product/runtime
 closure remains a separate open gate.

@@ -97,3 +97,12 @@ UpdateStage
 UpdateStageObjects
 ExecuteStageScript
 PackStageFog
+StepStageVectorTween
+StepStageFogTween
+StageVectorTweenFactor
+StageFogTweenFactor
+SubtractStageFog
+ScaleStageFog
+AddStageFog
+SetStageTimer
+AdvanceStageTimer

@@ -99,7 +99,10 @@ source;853 modeled cases agree, with real angle/RNG bodies executed. See
 The complete stage script interpreter now includes both owned jump tables.
 Its source remains non-exact; fog packing adds171 exact bytes. See
 [`docs/STAGE_SCRIPT.md`](docs/STAGE_SCRIPT.md) for709 modeled comparisons,
-including multi-frame scripts.
+including multi-frame scripts with actual tween/timer bodies. Nine interpolation,
+fog arithmetic and timer functions now have source; timer assignment adds59
+exact bytes. See [`docs/STAGE_TWEEN.md`](docs/STAGE_TWEEN.md) for2,171
+full-body comparisons and remaining easing/codegen gaps.
 The Windows i386 production build is open. Semantic reconstruction and
 portability have not started.
 

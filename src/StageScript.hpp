@@ -23,6 +23,9 @@ struct StageFogView
     unsigned int packed;
 
     void Pack();
+    StageFogView operator+(const StageFogView &other) const;
+    StageFogView operator-(const StageFogView &other) const;
+    StageFogView operator*(float scale) const;
 };
 
 struct StageFogTween
@@ -57,8 +60,7 @@ typedef char StageScriptFogOffset[(offsetof(StageScriptStateView, fogTween) == 0
 typedef char StageScriptFogTimerOffset[(offsetof(StageFogTween, time) == 0x70) ? 1 : -1];
 typedef char StageScriptMeshSize[(sizeof(StageScriptMesh) == 0x18) ? 1 : -1];
 
-// Reviewed external boundaries. Bodies are not supplied by these declarations.
 CameraVector __stdcall StepStageVectorTween(StageVectorTween *self);
 StageFogView __stdcall StepStageFogTween(StageFogTween *self);
-void __stdcall AdvanceStageTimer(StageTimerView *self);
+int __stdcall AdvanceStageTimer(StageTimerView *self);
 void __stdcall SetStageTimer(StageTimerView *self, int frame);

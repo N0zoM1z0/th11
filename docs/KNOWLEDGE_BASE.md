@@ -1067,3 +1067,50 @@ behavior. Only the new pack unit requires cold replay; earlier50 exact inputs
 are unchanged. See `STAGE_SCRIPT.md` and the private probe/fixture/check scripts.
 The final mixed context passed all709 cases and the canonical171-byte cold
 proof. Public CI passed8+25 checks; this checkpoint adds no private payloads.
+
+
+## Stage tween bodies and exact timer assignment (2026-10-28)
+
+Nine complete owners now map to `StageTween.cpp`: vector883, fog737,
+factors39/45, fog subtraction61/scaling64/addition61, setter59 and advance83.
+Full direct-Ghidra boundary/reference/neighbor reviews found no embedded tables
+or external interior references in these nine owners. Generic timer provenance
+remains indeterminate; source presence does not establish original authorship.
+SetStageTimer406100 is strictly exact as a59-byte public primary-TU linked
+contribution, with only DIR32+36 to global scale4A7948. The affected Pack171 unit
+also passes cold replay. Totals108 mappings,52 exact/10,706 bytes (8 COFF,44 PE).
+
+Positive duration alone advances the timer; completion resets time to duration,
+clears duration and returns initial only for mode7, target for all others.
+Nonpositive duration still evaluates the mode. Mode7 accumulates initial+target;
+mode17 accumulates initial+control2 before control2+target. Vector mode7 uses
+old Z for Z: an early oldY hypothesis missed a POP changing stack offsets and
+was disproved by original execution. Independent XYZ assertions retain the
+correction. Hermite mode8 uses float-normalized t and double coefficient
+arithmetic, with float stores after coefficients, vector scales and pairwise
+adds. Fog repacks after every arithmetic result; terminal return preserves the
+stored packed DWORD. No clamping is added.
+
+Advance459270 returns EAX current on both paths. Its fast interval is strictly
+(double(0.99f),1.01f); integer increment wraps, while fraction adds double1.0.
+Other scales store scale+fraction then convert to signed32. Setter lazily
+initializes flag bit0/global pointer and finally writes previous=frame-1 with
+wrap, current=frame and fraction=float(frame). Natural source advance83 retains
+8 diagnostic register/scheduling differences; fog operators save2 bytes through
+private output-register differences. These are not exact claims.
+
+All2,171 direct-body comparisons pass, including four null-scale faults and200
+extra randomized Hermite cases under x87 control037F. Canonical script709 cases
+also pass with actual tween/timer/arithmetic bodies, including20 six-frame
+programs and five faults under remaining explicit models. Easing/conversion
+source boundaries use isolated original-machine dependencies; VM reset/bind,
+mesh construction/heap and sine remain models. This is bounded execution,
+not native product closure. Canonical interpreter contribution changes from
+2,740 to2,728/frame68 with real GL support (2,217 masked diagnostic differences);
+its EH and full codegen remain open. Public checks and final evidence are
+recorded in `STAGE_TWEEN.md` and `RE_HANDOFF.md`.
+
+Easing459730's seven-byte inventory is only an indirect JMP. Direct span review
+reveals polynomial arms and16-entry table4599EC..459A2B, next entry459A30. Full
+code/data ownership remains unaccepted; no easing mapping or source credit was
+added. Do not mistake the entry-only inventory for the dispatcher owner.

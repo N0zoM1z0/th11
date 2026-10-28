@@ -1259,7 +1259,7 @@ linkages = [
 artifact_kind = "linked-pe"
 source = "src/StageScript.cpp"
 inputs = ["src/StageScript.hpp"]
-support_sources = ["probes/stage-script-context.cpp", "src/AngleMath.cpp"]
+support_sources = ["probes/stage-script-context.cpp", "src/StageTween.cpp", "probes/stage-tween-context.cpp", "src/AngleMath.cpp"]
 normal_support_sources = ["src/AngleMath.cpp"]
 output_dir = "build/match-linked/StageScript"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -1269,3 +1269,20 @@ symbol = "?Pack@StageFogView@@QAEXXZ"
 target_address = 0x405b70
 size = 171
 linkages = []
+
+[units.set-stage-timer]
+artifact_kind = "linked-pe"
+source = "src/StageTween.cpp"
+inputs = ["src/StageTween.hpp", "src/StageScript.hpp"]
+support_sources = ["probes/stage-tween-context.cpp", "src/StageScript.cpp", "src/AngleMath.cpp"]
+normal_support_sources = ["src/AngleMath.cpp"]
+output_dir = "build/match-linked/StageTween"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageTweenProbe@24"
+functions = ["SetStageTimer"]
+symbol = "?SetStageTimer@@YGXPAUStageTimerView@@H@Z"
+target_address = 0x406100
+size = 59
+linkages = [
+  { offset = 36, type = "DIR32", symbol = "?g_AnimationTimeScale@@3MA", target = 0x4a7948, addend = 0x0 },
+]
