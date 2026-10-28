@@ -796,3 +796,53 @@ and its34 cases still agree. D3DX/COM/pixel-processing/I/O models do not establi
 actual pixel output, full native game/runtime closure or semantic acceptance.
 The user's current tool preference is direct local commands, without Factory
 MCP; this is now recorded in AGENTS.md as well.
+
+## Complete texture-pixel owner and corrected descriptor fixtures (2026-10-28)
+
+FixAnimationTextureTransparentPixels at0x004534C0 now has complete maintained
+source. Its owner is1,427 bytes through0x00453A52, not the initial1,381-byte code
+candidate: code throughRET+3 alignment bytes+four absolute jump destinations+
+27 selector bytes. All apparent external code-interior references come from
+that owned table; every owned-tail byte was checked for references, with only
+the two internal table reads. Following13 CC bytes precede an uncatalogued
+entry0x00453A60, which remains unmapped and needs its own complete review.
+Generic pixel/COM processing plus game callers do not establish original
+source authorship: this new mapping's origin remains indeterminate.
+
+The function locks surface0, uses unsigned dimensions and signed per-row
+pitch, averages nonzero-alpha left/right/above/below RGB for transparent pixels,
+retains alpha, and unconditionally unlocks/releases. Formats UNKNOWN/ARGB32,
+A1R5G5B5 and A4R4G4B4 are handled; others still perform the surface calls.
+Negative and non-divisible vertical offsets retain signed pitch/2 or pitch/4
+truncation. HRESULTs remain ignored, including the native fault paths. The A4
+case preserves full averaged channel values; unrelated text-pixel half-scaling
+is not evidence here. Full details are in `ANIMATION_TRANSPARENT_PIXELS.md`.
+
+VC9 /GL produces a complete1,383-byte pixel contribution (1,338 code+2 alignment+
+43 table bytes), non-exact. Its source0x3C/target0x44 local frame and zero-register
+scheduling differ. Byte versus typed32-bit pixels and truth versus unsigned
+positive conditions gave the same code. The current linked decoder also stops
+before the final selector byte; no exact unit is configured and no extent is
+cropped. The real body naturally restores the file constructor's EAX helper
+argument, improving that caller from483/70 to484/40 byte/diagnostic differences.
+The three affected exact constructors were cold-replayed with the new source in
+their family: all423 bytes/20 fields still agree. Other42 exact contexts were
+unchanged and not replayed. Decoder811/10 remains non-exact.
+
+The prior private constructor/chunk fixtures omitted MultiSampleQuality and
+packed seven DWORDs for D3DSURFACE_DESC. The SDK type is32 bytes/eight DWORDs;
+Width is+24 and Height+28. Thus previous differential agreement did not prove
+its intended dimension/branch coverage. Source used the correct SDK type and
+strict byte proofs were independent of the fixture. Corrected92 constructor
+and58 chunk cases now agree; explicit crop/adoption trace assertions and24
+additional integrated file/pixel cases strengthen the corrected evidence.
+
+New242-case diagnostics execute both complete original/candidate pixel bodies,
+owned tables and buffers, with all format selectors, boundaries, random/checker/
+opaque/transparent data, row padding, negative/non-divisible pitch, ignored API
+failures and two matching faults. An independent four-neighbor expected average
+and valid-layout alpha checks supplement full buffer/call/stack/register
+comparisons. The116 constructor cases include24 actual file/pixel integrations
+and four matching faults. COM and D3DX loading/copying remain fixtures; these
+results do not establish native game/runtime or semantic-phase acceptance.
+Current mappings84, exact45/9,697 bytes; full Windows i386 product remains open.

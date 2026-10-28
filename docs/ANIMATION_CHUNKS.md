@@ -65,8 +65,8 @@ Its four creation paths are:
 | embedded data | 0x00453F80, CreateAnimationEmbeddedTexture | pass chunk+textureOffset; negative result logs and returns-1; otherwise add result |
 
 These four lower texture helpers now have full source, three exact; see
-`ANIMATION_TEXTURES.md`. The file path still calls an external transparent-pixel
-helper. The GetLevelDesc COM call uses slot+44,
+`ANIMATION_TEXTURES.md`. The file path's transparent-pixel helper now also has
+full source in `ANIMATION_TRANSPARENT_PIXELS.md`. The GetLevelDesc COM call uses slot+44,
 level0 and a D3DSURFACE_DESC. Its HRESULT is ignored. There is no synthesized
 fallback for texture allocation/description failure.
 
@@ -134,8 +134,14 @@ retains297/434/131-byte sizes and17/337/80 differences, with all34 cases agreein
 The sprite exact context was cold-replayed after its source/header dependencies
 changed; unrelated exact contexts were not replayed.
 
-Next useful work is full recovery of the file-texture path's transparent-pixel
-helper, followed by the medium stage initializer and EH destruction. The
+The former GetLevelDesc fixture wrote seven DWORDs and omitted the descriptor's
+MultiSampleQuality, so its claimed dimensions were misplaced. A current58-case
+rerun uses the correct32-byte/eight-DWORD SDK layout and still agrees. The earlier
+run did not prove its intended dimension coverage; this fixture correction
+does not affect independent strict byte-match proofs.
+
+Next useful work includes the medium stage initializer and EH destruction,
+alongside the documented remaining pixel/file/decoder codegen gaps. The
 background dispatcher at0x004548D0 also needs its own
 source and review: its destruction path writes through a slot after clearing
 it, an observed failure path that must not be silently repaired.

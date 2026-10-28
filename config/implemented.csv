@@ -81,3 +81,4 @@ CreateAnimationFileTexture
 CreateAnimationEmbeddedTexture
 CreateAnimationEmptyTexture
 CreateAnimationRenderTarget
+FixAnimationTextureTransparentPixels

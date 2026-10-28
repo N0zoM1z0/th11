@@ -12,7 +12,7 @@ the instruction review and ABI-correct SDK declarations take precedence.
 
 | Function | Complete target span | Current source bytes | State |
 | --- | --- | ---: | --- |
-| CreateAnimationFileTexture | 0x00453D90..0x00453F73, 484 bytes | 483 | non-exact, 70 diagnostic differences |
+| CreateAnimationFileTexture | 0x00453D90..0x00453F73, 484 bytes | 484 | non-exact, 40 diagnostic differences |
 | CreateAnimationEmbeddedTexture | 0x00453F80..0x0045409E, 287 bytes | 287 | canonical linked-PE exact, 10 bindings |
 | CreateAnimationEmptyTexture | 0x004540A0..0x004540E2, 67 bytes | 67 | canonical linked-PE exact, 5 bindings |
 | CreateAnimationRenderTarget | 0x004540F0..0x00454134, 69 bytes | 69 | canonical linked-PE exact, 5 bindings |
@@ -43,13 +43,13 @@ Creation, surface and copy results are ignored, including the native null-fault
 paths. Source surface, destination surface and temporary texture are released
 in that order when non-null, with local pointers then cleared.
 
-File success calls the still-external transparent-pixel helper0x004534C0 before
+File success calls the now-recovered transparent-pixel helper0x004534C0 before
 publishing bytesPerPixel; the return is requested width*height*selected byte count,
-not the copied rectangle size. The helper's provisional1,381-byte candidate has
-only preliminary decompilation here: its full ownership and implementation
-remain open. It is not a source-buffer free operation. Native passes the entry
-in EAX; the current opaque ordinary source contract uses a stack argument.
-Together with local-frame layout this remains part of the483/484-byte gap.
+not the copied rectangle size. Its complete1,427-byte ownership includes the
+1,381-byte code body and owned switch tables. It is not a source-buffer free
+operation. The real source definition naturally restores the native EAX helper
+argument; the file constructor is now484 bytes/40 diagnostic differences, with
+its local-frame gap still open. See `ANIMATION_TRANSPARENT_PIXELS.md`.
 
 The embedded constructor reads a16-byte texture header: signed format+6 and
 signed width/height+8/+A; pixel data starts at+10. Its zero-origin source and
@@ -100,14 +100,16 @@ scripts/repo-python scripts/replay-exact-units.py \
   --unit store-animation-sprite
 ```
 
-The three new strict proofs share one cold VC9 /GL family with AnimationTexture.cpp
+The three strict proofs share one cold VC9 /GL family with AnimationTexture.cpp
 as primary TU. All423 bytes and all20 independently reviewed linked fields agree
 after exhaustive replay. Receipts cover source/header/tool/producer/PE/MAP/PDB
 identity and complete public primary-TU code ownership. Runtime member bindings
 use the independently reviewed MainRuntime base plus offsets; D3DX thunks and
 format tables bind separately. The affected existing149-byte sprite exact unit
 was also cold-replayed. Earlier41 exact contexts were not modified or replayed.
-Original TU partition and full native product closure remain open.
+The current family additionally includes AnimationTransparentPixels.cpp, and
+only its three affected exact constructors were cold-replayed after that
+addition. Original TU partition and full native product closure remain open.
 
 Private `.analysis/check-animation-texture.py` and `animation_texture_fixture.py`
 compare complete original/candidate constructors in92 cases, including all six
@@ -119,3 +121,10 @@ COM and transparent-pixel processing are modeled contracts. A current additional
 advance/decode cases; the affected old stage/document family is independently
 rebuilt and its34 cases still agree. These bounded diagnostics do not establish
 actual D3D pixel results, full-game runtime or semantic-phase acceptance.
+
+The original92-case and58-case descriptions omitted MultiSampleQuality from
+D3DSURFACE_DESC fixtures. They have now been corrected to eight DWORDs and
+rerun, with explicit crop/adoption trace assertions. A further24 integrated
+file/pixel cases execute the actual postprocess bodies. Earlier dimension/
+branch coverage claims were too strong; strict receipt-bound byte proofs were
+independent of this fixture bug. See `ANIMATION_TRANSPARENT_PIXELS.md`.

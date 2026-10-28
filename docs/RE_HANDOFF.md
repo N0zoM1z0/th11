@@ -8,7 +8,7 @@ its counts and next-target suggestions are historical.
 
 - Target: original Japanese TH11 v1.00a, private `resources/th11.exe`;
   identity in [config/target.toml](../config/target.toml).
-- Inventory:1,989 provisional candidates;83 reviewed/source-present mappings.
+- Inventory:1,989 provisional candidates;84 reviewed/source-present mappings.
 - Exact:45 functions /9,697 owned bytes:8 normal-COFF and37 linked-PE units.
   [PROGRESS.md](PROGRESS.md) is generated from maintained ledgers.
 - Full Windows i386 game build/runtime closure is open. Diagnostic executables
@@ -46,7 +46,8 @@ scripts/repo-python scripts/replay-exact-units.py \
 
 | Function | Native bytes | State | Details |
 | --- | ---: | --- | --- |
-| CreateAnimationFileTexture,0x00453D90 | 484 | source483,70 diagnostic differences | [ANIMATION_TEXTURES.md](ANIMATION_TEXTURES.md) |
+| FixAnimationTextureTransparentPixels,0x004534C0 | 1,427 including tables | source1383, non-exact | [ANIMATION_TRANSPARENT_PIXELS.md](ANIMATION_TRANSPARENT_PIXELS.md) |
+| CreateAnimationFileTexture,0x00453D90 | 484 | source484,40 diagnostic differences | [ANIMATION_TEXTURES.md](ANIMATION_TEXTURES.md) |
 | CreateAnimationEmbeddedTexture,0x00453F80 | 287 | exact,10 fields | [ANIMATION_TEXTURES.md](ANIMATION_TEXTURES.md) |
 | CreateAnimationEmptyTexture,0x004540A0 | 67 | exact,5 fields | [ANIMATION_TEXTURES.md](ANIMATION_TEXTURES.md) |
 | CreateAnimationRenderTarget,0x004540F0 | 69 | exact,5 fields | [ANIMATION_TEXTURES.md](ANIMATION_TEXTURES.md) |
@@ -59,13 +60,16 @@ scripts/repo-python scripts/replay-exact-units.py \
 | BeginLoadAnimationDocument,0x00454190 | 454 | source434,337 differences | [STAGE_RESOURCE.md](STAGE_RESOURCE.md) |
 | AcquireAnimationDocument,0x00454360 | 124 | source131,80 differences | [STAGE_RESOURCE.md](STAGE_RESOURCE.md) |
 
-The three new texture units and affected sprite unit have current strict cold
-primary-TU proofs. Earlier41 canonical inputs/proofs were not replayed or
-modified. New private diagnostics agree on92 constructor cases, including four
-matching faults, and58 chunk/sprite cases, including five integrated advance/
-decode cases. The affected stage/document family was cold-rebuilt and its34
-cases still agree. These model external helpers and grant no complete native/
-runtime authority. Evidence/context details are in `ANIMATION_TEXTURES.md`.
+The three exact texture units were cold-replayed after adding the real pixel
+helper to their family; all423 bytes/20 fields still agree. Other42 exact
+contexts were unchanged and not replayed. New diagnostics agree on242 pixel
+cases (two matching faults) and116 constructor cases (four matching faults,
+including24 integrated file/pixel cases), plus58 chunk/sprite cases. The former
+seven-DWORD surface descriptor fixtures were wrong: corrected eight-DWORD
+fixtures and explicit crop/adoption assertions now replace those earlier
+coverage claims. Strict byte proofs were independent of the fixture mistake.
+These models grant no full native/runtime authority; see
+`ANIMATION_TRANSPARENT_PIXELS.md`.
 
 Preserve these behavior details:
 
@@ -82,19 +86,30 @@ Preserve these behavior details:
   at most one chunk per call, then increments or clears it.0x004543E0 only loads
   external source bytes;0x004545A0 is the actual decoder. The old role guesses
   were wrong. Sprite+44 remains indeterminate; do not zero-initialize it.
+- D3DSURFACE_DESC is32 bytes: eight DWORDs including MultiSampleQuality before
+  Width+24/Height+28. Do not reuse the old seven-DWORD descriptor fixtures.
+- Pixel processing uses signed per-row pitch and signed pitch/2 or pitch/4
+  vertical neighbor offsets. Alpha stays unchanged. Unsupported formats still
+  lock/unlock/release, and HRESULTs remain ignored.
 
 ## Useful next work
 
-1. Review/recover transparent-pixel processing0x004534C0 (provisional1,381-byte
-   candidate, ownership/tables not yet reviewed). Preliminary decompilation is
-   `.analysis/animation-texture-create.c`; do not trust its COM/prototype errors.
-   Its native EAX argument versus current opaque stack argument remains part
-   of the file constructor's483/484-byte context gap.
-2. Stage initialization0x004024C0 (630) and EH destruction0x00402740 (603) have
+1. Stage initialization0x004024C0 (630) and EH destruction0x00402740 (603) have
    private complete instruction/decompiler review but no source. Original EH/
    specialized ownership is outside the current public linked acceptance lane.
+2. Improve the pixel helper's source0x3C/target0x44 frame and the file
+   constructor's source0x44/target0x4C frame with new evidence. The ordinary
+   source pixel call now naturally uses native EAX. Byte versus typed32-bit
+   pixel and truth versus unsigned-positive tests produced identical1383-byte
+   code; do not repeat them. Keep the complete1427-byte owner, including tables.
+   The current Oracle cannot account for a final selector byte and no pixel
+   exact unit is configured; do not crop or claim masked equality.
 3. Improve existing non-exact functions only with new evidence; read the
    corresponding topic before repeating a compiler/context experiment.
+
+Neighbor code at0x00453A60 is absent from the provisional inventory and has no
+mapping/source credit. Its existence was checked after the pixel owner's13-byte
+CC padding, but its full extent/ABI/origin require review before recovery.
 
 Decoder0x004545A0 now has811 source bytes/10 diagnostic differences. Remaining
 positions are five sprite setup register/store positions and five script-loop

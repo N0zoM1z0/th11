@@ -784,7 +784,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x004526F0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00453130,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00453220,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x004534C0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x004534C0,unknown,AnimationTexture,indeterminate,unknown,animation-transparent-origin-20261028
 0x00453B50,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00453C50,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00453D90,authored_game,AnimationTexture,authored,high,animation-texture-origin-20261028

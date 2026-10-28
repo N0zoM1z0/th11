@@ -81,6 +81,10 @@ registration is exact across149 bytes; see
 All four texture constructors have source; three add423 exact bytes, and the
 811-byte decoder now has10 diagnostic differences. Details are in
 [`docs/ANIMATION_TEXTURES.md`](docs/ANIMATION_TEXTURES.md).
+The transparent-pixel helper now has complete source and a reviewed1,427-byte
+owner including switch tables; it remains non-exact. Its validation also
+corrects earlier surface-descriptor fixtures; see
+[`docs/ANIMATION_TRANSPARENT_PIXELS.md`](docs/ANIMATION_TRANSPARENT_PIXELS.md).
 The Windows i386 production build is open. Semantic reconstruction and
 portability have not started.
 
