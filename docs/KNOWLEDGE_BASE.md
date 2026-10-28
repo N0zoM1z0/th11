@@ -905,3 +905,46 @@ stack and registers are checked. Heap/loading/chain/document services remain
 models, not whole-game runtime evidence. The affected old loader context was
 cold-rebuilt and its34 cases still agree, with unchanged297/434/131-byte sizes.
 See `STAGE_LIFECYCLE.md` for sources, contracts, proof commands and limitations.
+
+## Complete stage drawing and overlay (2026-10-28)
+
+Direct local hash-attested Ghidra review now covers complete DrawStage403130
+through403597 (1,128 bytes) and DrawStageOverlay4035A0 through4038F5 (854 bytes).
+Both take one stack stage pointer and RET4; the overlay decompiler's phantom
+fastcall register arguments are not inputs. No tables or external interior
+references occur in either owner. Maintained `StageDrawing.cpp` has complete
+non-exact source for both, with public primary-TU contributions1,106/852 bytes.
+Prototypes of their external helpers do not grant those helpers source credit.
+Counts are95 source mappings and unchanged50 exact/10,476 bytes.
+
+Recovered fields include stage draw counter+2324, packed tint+2328,
+accent+232C, draw offset vector+2FE4 and camera fog bits+FC/+100/+114.
+Layout and constructor/destructor behavior remain unchanged. The initial camera
+pass copies0x118 bytes into runtime+434, preserves runtime camera offsets and
+publishes active camera/index. Each D3D state call retains its preceding flush;
+fog updates compare the runtime+990 cache. Failure HRESULTs remain ignored.
+
+Main drawing uses layers0..7 and an eight-VM pass gated by the FIRST VM+3AC;
+later active VMs alone do not start that pass. Overlay draws groups25/26 and
+layers8..11. Flag mask04 with timer below30 starts `(3,30,0,0,10)` and resets the
+timer to1 on EVERY main draw. Overlay decrements a positive timer by-1, reloads
+it, optionally sets flag08 when02 was set, clears06, and finishes with tint
+00FFFFFF despite an earlier alphaFF store. Captured renderer pointers survive
+the observed dependency boundaries; do not gratuitously reload globals.
+
+Copy fog float bits through const-reference memcpy into DWORD. A float value
+parameter emitted x87 FLD/FST and quieted signaling NaNs, unlike the original
+integer loads. The source correction is ordinary representation copying and
+passed signaling-NaN, negative-zero, infinity and quiet-NaN cases.
+
+Full original/candidate body diagnostics agree on952 modeled cases, including
+four null faults and128 persistent three-frame main/overlay sequences. Ordered
+COM/dependency calls, whole stage/runtime state, renderer replacement, active
+camera redirection, tint, signed timer/age thresholds, unsigned counter/viewport
+wrap, stack and nonvolatile registers are checked. Dependencies are explicit
+models; this is not whole-game runtime acceptance. Only the five affected
+canonical lifecycle/callback units were cold-replayed, all exact. The48
+lifecycle cases still agree with five matching allocation faults. The affected
+loader family was rebuilt with unchanged297/434/131 sizes and17/337/80
+diagnostic differences; its34 modeled cases still agree. Public CI passed8+25
+tests. See `STAGE_DRAWING.md`.

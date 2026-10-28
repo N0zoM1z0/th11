@@ -10,6 +10,8 @@ StageResourceConstructor,0x004023F0,function
 InitializeStageResource,0x004024C0,function
 StageResourceDestructor,0x00402740,function
 CreateStageResource,0x004029C0,function
+DrawStage,0x00403130,function
+DrawStageOverlay,0x004035A0,function
 StageUpdateCallback,0x00403900,function
 StageDrawCallback,0x00403910,function
 StageOverlayCallback,0x00403920,function

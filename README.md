@@ -89,6 +89,10 @@ Stage lifecycle source now includes natural C++ member cleanup. Its630-byte
 initializer, VM construction/destruction and two drawing callbacks add779 exact
 bytes; EH-bearing diagnostic matches remain uncredited. See
 [`docs/STAGE_LIFECYCLE.md`](docs/STAGE_LIFECYCLE.md).
+The complete stage main/overlay drawing functions now have non-exact source
+covering1,982 reviewed target bytes. See
+[`docs/STAGE_DRAWING.md`](docs/STAGE_DRAWING.md) for behavior and952 modeled
+full-body comparisons, including persistent three-frame sequences.
 The Windows i386 production build is open. Semantic reconstruction and
 portability have not started.
 

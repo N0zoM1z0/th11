@@ -91,3 +91,5 @@ CreateStageResource
 StageUpdateCallback
 StageDrawCallback
 StageOverlayCallback
+DrawStage
+DrawStageOverlay

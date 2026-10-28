@@ -8,7 +8,7 @@ its counts and next-target suggestions are historical.
 
 - Target: original Japanese TH11 v1.00a, private `resources/th11.exe`;
   identity in [config/target.toml](../config/target.toml).
-- Inventory:1,992 provisional candidates;93 reviewed/source-present mappings.
+- Inventory:1,992 provisional candidates;95 reviewed/source-present mappings.
 - Exact:50 functions /10,476 owned bytes:8 normal-COFF and42 linked-PE units.
   [PROGRESS.md](PROGRESS.md) is generated from maintained ledgers.
 - Full Windows i386 game build/runtime closure is open. Diagnostic executables
@@ -47,6 +47,8 @@ scripts/repo-python scripts/replay-exact-units.py \
 
 | Function | Native bytes | State | Details |
 | --- | ---: | --- | --- |
+| DrawStage,0x00403130 | 1,128 | source1,106; non-exact | [STAGE_DRAWING.md](STAGE_DRAWING.md) |
+| DrawStageOverlay,0x004035A0 | 854 | source852; non-exact | [STAGE_DRAWING.md](STAGE_DRAWING.md) |
 | InitializeStageResource,0x004024C0 | 630 | exact,21 fields | [STAGE_LIFECYCLE.md](STAGE_LIFECYCLE.md) |
 | StageEmbeddedVmConstructor,0x00402270 | 101 | exact,1 field | [STAGE_LIFECYCLE.md](STAGE_LIFECYCLE.md) |
 | StageEmbeddedVmDestructor,0x00402170 | 34 | exact,1 field | [STAGE_LIFECYCLE.md](STAGE_LIFECYCLE.md) |
@@ -106,13 +108,28 @@ Preserve these behavior details:
   descriptors. Mapping the null page to fake FS hides null-chain faults; writing
   Unicorn FS_BASE alone does not work for this32-bit fixture.
 
+Latest drawing checkpoint adds two complete non-exact owners totaling1,982
+target bytes. Source contributions are1,106/852 bytes versus native1,128/854;
+no new exact claim. Full modeled checks agree on952 cases including four null
+faults and128 persistent three-frame sequences. The shared layout refinements
+kept all offsets intact; only the five affected canonical lifecycle/callback
+units were cold-replayed, all passing. Private probe/check scripts are
+`.analysis/probe-stage-drawing.py`, `.analysis/stage_drawing_fixture.py` and
+`.analysis/check-stage-drawing.py`; build family is
+`build/probe-ltcg/stage-drawing`. Remaining private ABI dependencies explain
+some codegen differences; do not substitute invented calling conventions.
+The48 lifecycle and34 rebuilt loader cases still agree; public CI passed8+25
+tests. Current stage-drawing logs and reports are private `.analysis/` files.
+
 ## Useful next work
 
-1. Stage update0x00402AA0 (1,677 bytes), draw0x00403130 and overlay0x004035A0
-   still have no source. Fresh private entry/contract review is in
-   `.analysis/stage-update-entry.txt`; its larger disassemblies can be truncated,
-   so review full extents/tables before credit. Update receives private EAX,
-   explaining the remaining seven-byte update adapter mismatch.
+1. Stage update0x00402AA0 (1,677 bytes) still has no source. Complete private
+   disassembly is now in `.analysis/stage-main-full-review.txt`, with decompiler
+   hypotheses in `.analysis/stage-main.c`. Reconcile all math dependencies and
+   ownership before source credit. Update receives private EAX, explaining the
+   remaining seven-byte update adapter mismatch. Draw/overlay now have complete
+   source and952 full-body modeled comparisons; see `STAGE_DRAWING.md`. Their
+   unresolved external helpers remain prototypes, not source coverage.
 2. Improve the pixel helper's source0x3C/target0x44 frame and the file
    constructor's source0x44/target0x4C frame with new evidence. The ordinary
    source pixel call now naturally uses native EAX. Byte versus typed32-bit
