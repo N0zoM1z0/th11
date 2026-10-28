@@ -32,7 +32,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00403FC0,authored_game,StageResource,authored,high,stage-resource-origin-20261024
 0x004040F0,authored_game,StageUpdate,authored,high,stage-update-origin-20261028
 0x00404190,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00404470,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00404470,authored_game,StageScript,authored,high,stage-script-origin-20261028
 0x00404F20,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00405030,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00405130,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
@@ -45,7 +45,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00405A10,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00405A50,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00405B10,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00405B70,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00405B70,authored_game,StageScript,authored,high,stage-script-origin-20261028
 0x00405C60,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00405D60,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00405E80,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

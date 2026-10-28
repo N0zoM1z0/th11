@@ -8,8 +8,8 @@ its counts and next-target suggestions are historical.
 
 - Target: original Japanese TH11 v1.00a, private `resources/th11.exe`;
   identity in [config/target.toml](../config/target.toml).
-- Inventory:1,992 provisional candidates;97 reviewed/source-present mappings.
-- Exact:50 functions /10,476 owned bytes:8 normal-COFF and42 linked-PE units.
+- Inventory:1,992 provisional candidates;99 reviewed/source-present mappings.
+- Exact:51 functions /10,647 owned bytes:8 normal-COFF and43 linked-PE units.
   [PROGRESS.md](PROGRESS.md) is generated from maintained ledgers.
 - Full Windows i386 game build/runtime closure is open. Diagnostic executables
   are non-runnable link contexts; modeled cases are not full runtime acceptance.
@@ -47,6 +47,8 @@ scripts/repo-python scripts/replay-exact-units.py \
 
 | Function | Native bytes | State | Details |
 | --- | ---: | --- | --- |
+| ExecuteStageScript,0x00404470 | 2,736 including tables | source2,740; non-exact, EH open | [STAGE_SCRIPT.md](STAGE_SCRIPT.md) |
+| PackStageFog,0x00405B70 | 171 | exact; no fields | [STAGE_SCRIPT.md](STAGE_SCRIPT.md) |
 | UpdateStage,0x00402AA0 | 1,677 | source1,705; non-exact | [STAGE_UPDATE.md](STAGE_UPDATE.md) |
 | UpdateStageObjects,0x004040F0 | 153 | source151; non-exact | [STAGE_UPDATE.md](STAGE_UPDATE.md) |
 | DrawStage,0x00403130 | 1,128 | source1,106; non-exact | [STAGE_DRAWING.md](STAGE_DRAWING.md) |
@@ -139,15 +141,39 @@ See `STAGE_UPDATE.md` for floating-point and dependency-model limits.
 The rebuilt drawing952 and loader34 regressions passed, along with public
 CI8+25 checks. Exact/source ledgers remain the authority for separate claims.
 
+Latest script checkpoint recovers the complete2,736-byte interpreter owner:
+2,633 code bytes +3 alignment bytes +100 bytes in18+7 destination tables.
+Source2,740 remains non-exact, with EH/funclet context open. Fog packing171 is
+strictly exact with zero linked fields, raising exact totals to51/10,647. Only
+its new canonical unit `pack-stage-fog` was cold-replayed; the prior50 contexts
+have unchanged inputs. Complete modeled checks agree on709 cases including
+five faults under declared dependencies and20 persistent six-frame programs.
+They execute actual fog packing and angle normalization. Timers/interpolation,
+VM reset/bind, construction and allocation remain models; full exception unwind
+and native product closure are open.
+
+Private `.analysis/probe-stage-script.py`, `.analysis/stage_script_fixture.py`
+and `.analysis/check-stage-script.py` use the canonical
+`build/match-linked/StageScript` for final checks. The fixture can select a
+private context with `TH11_STAGE_SCRIPT_TEST_DIR`. Direct vector writes reduced
+3,048 bytes/frame120 to2,724/frame68; hybrid tween aggregates gave2,924/frameF8.
+Final normal-COFF angle support restores the target minimum-radius comparison,
+producing2,740/frame68 while the primary source retains GL. Original TU
+ownership remains unknown; the all-GL support had folded that comparison.
+Native frame is98. Reversing scheduling-comparison operands did not help and
+was reverted. These are diagnostic codegen observations, not extent shortcuts.
+Final canonical mixed-context checks passed all709 cases; public CI passed8+25
+checks. Fog packing's171-byte cold proof remains current in that same family.
+
 ## Useful next work
 
-1. ExecuteStageScript0x00404470 is a useful next large target. Its Ghidra
-   code body is2,633 bytes, with additional trailing switch tables/alignment;
-   review the complete owner and EH context before source credit. Fresh private
-   ABI/entry/table-reference evidence is `.analysis/stage-update-contracts.txt`.
-   ResetStageMesh0x0040E6C0 (325 bytes) is another reviewed dependency with no
-   source. UpdateStage and UpdateStageObjects now have complete non-exact source,
-   so do not treat their prototypes as the remaining work.
+1. Complete the interpreter's actual interpolation dependencies: vector tween
+   at0x00405240 and fog tween at0x004055D0. Review their full owners/tables before
+   credit. Fresh direct-Ghidra reviews are `.analysis/stage-script-dependencies.txt`
+   and the complete interpreter code/tables are `.analysis/stage-script-full.txt`
+   and `.analysis/stage-script-tables.txt`. ResetStageMesh0x0040E6C0 (325 bytes)
+   and its mesh constructor0x0040E530 remain declared external dependencies.
+   ExecuteStageScript now has complete source; do not treat it as unimplemented.
 2. Improve the pixel helper's source0x3C/target0x44 frame and the file
    constructor's source0x44/target0x4C frame with new evidence. The ordinary
    source pixel call now naturally uses native EAX. Byte versus typed32-bit

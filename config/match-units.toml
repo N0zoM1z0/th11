@@ -1254,3 +1254,18 @@ size = 7
 linkages = [
   { offset = 2, type = "REL32", symbol = "?DrawStageOverlay@@YGHPAUStageResourceView@@@Z", target = 0x4035a0, addend = 0x0 },
 ]
+
+[units.pack-stage-fog]
+artifact_kind = "linked-pe"
+source = "src/StageScript.cpp"
+inputs = ["src/StageScript.hpp"]
+support_sources = ["probes/stage-script-context.cpp", "src/AngleMath.cpp"]
+normal_support_sources = ["src/AngleMath.cpp"]
+output_dir = "build/match-linked/StageScript"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageScriptProbe@12"
+functions = ["PackStageFog"]
+symbol = "?Pack@StageFogView@@QAEXXZ"
+target_address = 0x405b70
+size = 171
+linkages = []

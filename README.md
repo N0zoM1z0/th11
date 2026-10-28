@@ -96,6 +96,10 @@ full-body comparisons, including persistent three-frame sequences.
 Stage update and object traversal add1,830 reviewed target bytes of non-exact
 source;853 modeled cases agree, with real angle/RNG bodies executed. See
 [`docs/STAGE_UPDATE.md`](docs/STAGE_UPDATE.md).
+The complete stage script interpreter now includes both owned jump tables.
+Its source remains non-exact; fog packing adds171 exact bytes. See
+[`docs/STAGE_SCRIPT.md`](docs/STAGE_SCRIPT.md) for709 modeled comparisons,
+including multi-frame scripts.
 The Windows i386 production build is open. Semantic reconstruction and
 portability have not started.
 

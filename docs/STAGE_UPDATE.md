@@ -137,9 +137,9 @@ changes, temporary scale mutation and replacement of the mesh block. Default
 Windows53-bit and extended64-bit x87 precision contexts are covered. The
 one complete run peaked at121,548 KiB RSS; full native product closure remains open.
 
-ExecuteStageScript404470 and ResetStageMesh40E6C0 remain declared dependencies,
-not source coverage. The script's2,633-byte Ghidra code body has trailing switch
-tables and alignment; review that complete owner before implementing it. Only
+ExecuteStageScript404470 now has complete non-exact source and its full2,736-byte
+owner has been reviewed; see [STAGE_SCRIPT.md](STAGE_SCRIPT.md). ResetStageMesh
+40E6C0 remains a declared dependency without source coverage. Only
 the five canonical lifecycle/callback units affected by StageResource.hpp were
 cold-replayed; all passed. Other exact families were not replayed.
 The affected drawing and loader contexts were rebuilt; their952 and34 modeled

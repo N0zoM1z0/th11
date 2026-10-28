@@ -18,6 +18,8 @@ StageDrawCallback,0x00403910,function
 StageOverlayCallback,0x00403920,function
 LoadStageResource,0x00403FC0,function
 UpdateStageObjects,0x004040F0,function
+ExecuteStageScript,0x00404470,function
+PackStageFog,0x00405B70,function
 ScreenshotWriteThread,0x00429BB0,function
 CaptureScreenshot,0x00429CA0,function
 DisableRuntimeFog,0x0042A300,function

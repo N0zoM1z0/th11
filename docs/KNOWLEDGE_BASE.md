@@ -1004,3 +1004,66 @@ with unchanged sizes/differences;48 lifecycle cases still agree. See
 `STAGE_UPDATE.md` for exact scope and reproduction artifacts.
 Drawing952 and loader34 modeled regressions passed after those rebuilds;
 public CI passed8+25 checks. Earlier unrelated exact contexts were not replayed.
+
+## Complete stage script owner and exact fog packing (2026-10-28)
+
+ExecuteStageScript404470 now has complete maintained source. Fresh direct local
+Ghidra review corrects the old2,633-byte code-only extent:2633 code +3 alignment
++100 bytes in18+7 destination tables gives2,736 bytes through404F1F, immediately
+before the next entry404F20. All25 table references are internal to that full
+owner. Separate EH handler/cleanup ownership remains open; the interpreter is
+not exact. Fog helper405B70..405C1A is a complete non-EH171-byte public primary-TU
+match with no linked fields. Canonical `pack-stage-fog` passes cold VC9 linked
+receipts, full PDB/MAP/PE owner/identity checks and zero final byte differences.
+Counts are99 source mappings,51 exact/10,647 bytes (8 COFF,43 linked PE).
+
+The8-byte instruction header has signed32 frame and signed16 opcode/byte size.
+The interpreter executes all due records, advances cursor by signed size and
+increments the script timer only when it reaches a future record. Opcode0
+keeps cursor and bypasses timer advance but still applies interpolation and
+oscillation. Jump opcode1 sets timer fields from argument1, then reloads the
+cursor argument0 and adds section008. There are no stream/cycle/index guards.
+
+Recovered commands cover direct/interpolated/cubic camera position and target,
+up/FOV/fog, oscillator selection, runtime+9C0 DWORD, VM activation/binding and
+mesh replacement. Target/position/fog tween state starts at50/9C/E8; camera
+fog is28 bytes starting at+FC. Opcode14 captures animation document/script
+before reset, sets VM bytes41C/41D to10 and reloads cursor after bind. Opcode17
+releases/deletes the captured old binding, clears it, sets radii112/192,
+word301C=-1, phases NormalizeAngle(0), then reloads mode and constructs24-byte
+mesh(17,25,0) for mode1 or(17,17,0) otherwise. Null allocation publishes null.
+Ordinary C++ new provides real cleanup; full exception injection is unvalidated.
+
+Postpass applies target, position and fog tweens in that order, then only
+oscillator modes1/5/6/7. Periods are512/2048/1024/512. Float-rounded pi and
+float-rounded0.1/0.01 doubles matter; sine input/result round to float at the
+observed points. Mode5 has a second NormalizeAngle/sine for eye Z. Unsupported
+modes leave the oscillator timer untouched. Period wrap calls SetStageTimer(0).
+
+PackStageFog is four truncating float-to-signed32 conversions followed by
+low-byte stores, restoring x87 control after each. It does not clamp or rescale.
+Natural casts reproduce all171 bytes, including NaN/overflow conversion code.
+No instruction blobs, fake ABI, added padding or cropped table extents were used.
+
+Compiler exploration retained direct scalar vector writes: aggregate-return
+vectors gave3,048 bytes/frame120, hybrid tween aggregates2,924/frameF8 and
+all-GL direct writes2,724/frame68. Treating the existing angle source as an
+opaque normal-COFF support restores the target's minimum-radius comparison,
+giving the final2,740/frame68 context. The primary interpreter remains GL.
+This supports an opaque-callee context hypothesis, not original TU ownership.
+Reversing scheduling-comparison operands did not improve the baseline and was
+reverted. Interpreter codegen and EH context remain open despite source coverage.
+
+Private full-body checks cover709 declared cases, including20 persistent
+six-frame scripts and five matching faults under explicit models. Actual fog
+packing and NormalizeAngle execute; timer/interpolation, VM reset/bind, mesh
+construction, allocation/release/delete and CRT sine remain models. Normal
+exception-chain restoration uses a separate FS TEB and real32-bit GDT with page0
+unmapped. Complete stage/runtime/heap state, call/float arguments, nonvolatile
+registers, stack and FPU control/tag state are checked. Independent assertions
+verify stop-versus-future timing and non-clamping conversion. Negative VM-index
+faults under a reset model do not prove the real dependency's corrupt-input
+behavior. Only the new pack unit requires cold replay; earlier50 exact inputs
+are unchanged. See `STAGE_SCRIPT.md` and the private probe/fixture/check scripts.
+The final mixed context passed all709 cases and the canonical171-byte cold
+proof. Public CI passed8+25 checks; this checkpoint adds no private payloads.
