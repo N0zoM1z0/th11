@@ -4,5 +4,5 @@
 
 float __stdcall StageVectorTweenFactor(StageVectorTween *self);
 float __stdcall StageFogTweenFactor(StageFogTween *self);
-// Curve dispatcher boundary; its complete code/data ownership remains open.
+// The dispatcher requires a curve in [0, 15], as its unchecked native table does.
 float __stdcall EvaluateStageEasing(int curve, float progress);

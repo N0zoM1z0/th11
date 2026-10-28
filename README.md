@@ -102,7 +102,10 @@ Its source remains non-exact; fog packing adds171 exact bytes. See
 including multi-frame scripts with actual tween/timer bodies. Nine interpolation,
 fog arithmetic and timer functions now have source; timer assignment adds59
 exact bytes. See [`docs/STAGE_TWEEN.md`](docs/STAGE_TWEEN.md) for2,171
-full-body comparisons and remaining easing/codegen gaps.
+full-body comparisons. The complete764-byte polynomial easing dispatcher
+and both factor getters now have exact proofs;
+[`docs/STAGE_EASING.md`](docs/STAGE_EASING.md) records their35,760 direct
+comparisons and integration.
 The Windows i386 production build is open. Semantic reconstruction and
 portability have not started.
 

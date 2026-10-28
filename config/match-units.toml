@@ -1259,7 +1259,7 @@ linkages = [
 artifact_kind = "linked-pe"
 source = "src/StageScript.cpp"
 inputs = ["src/StageScript.hpp"]
-support_sources = ["probes/stage-script-context.cpp", "src/StageTween.cpp", "probes/stage-tween-context.cpp", "src/AngleMath.cpp"]
+support_sources = ["probes/stage-script-context.cpp", "src/StageTween.cpp", "probes/stage-tween-context.cpp", "src/StageEasing.cpp", "src/AngleMath.cpp"]
 normal_support_sources = ["src/AngleMath.cpp"]
 output_dir = "build/match-linked/StageScript"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -1274,7 +1274,7 @@ linkages = []
 artifact_kind = "linked-pe"
 source = "src/StageTween.cpp"
 inputs = ["src/StageTween.hpp", "src/StageScript.hpp"]
-support_sources = ["probes/stage-tween-context.cpp", "src/StageScript.cpp", "src/AngleMath.cpp"]
+support_sources = ["probes/stage-tween-context.cpp", "src/StageScript.cpp", "src/StageEasing.cpp", "src/AngleMath.cpp"]
 normal_support_sources = ["src/AngleMath.cpp"]
 output_dir = "build/match-linked/StageTween"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -1285,4 +1285,88 @@ target_address = 0x406100
 size = 59
 linkages = [
   { offset = 36, type = "DIR32", symbol = "?g_AnimationTimeScale@@3MA", target = 0x4a7948, addend = 0x0 },
+]
+
+[units.evaluate-stage-easing]
+artifact_kind = "linked-pe"
+source = "src/StageEasing.cpp"
+inputs = ["src/StageTween.hpp"]
+support_sources = ["probes/stage-easing-context.cpp"]
+output_dir = "build/match-linked/StageEasing"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageEasingProbe@8"
+functions = ["EvaluateStageEasing"]
+symbol = "?EvaluateStageEasing@@YGMHM@Z"
+target_address = 0x459730
+size = 764
+linkages = [
+  { offset = 3, type = "DIR32", local = true, target = 0x4599ec },
+  { offset = 161, type = "DIR32", symbol = "__real@4000000000000000", target = 0x497e68, addend = 0x0 },
+  { offset = 196, type = "DIR32", symbol = "__real@3fe0000000000000", target = 0x497e60, addend = 0x0 },
+  { offset = 219, type = "DIR32", symbol = "__real@3fe0000000000000", target = 0x497e60, addend = 0x0 },
+  { offset = 269, type = "DIR32", symbol = "__real@3fe0000000000000", target = 0x497e60, addend = 0x0 },
+  { offset = 290, type = "DIR32", symbol = "__real@3ff0000000000000", target = 0x497e48, addend = 0x0 },
+  { offset = 298, type = "DIR32", symbol = "__real@3fe0000000000000", target = 0x497e60, addend = 0x0 },
+  { offset = 323, type = "DIR32", symbol = "__real@4000000000000000", target = 0x497e68, addend = 0x0 },
+  { offset = 362, type = "DIR32", symbol = "__real@3fe0000000000000", target = 0x497e60, addend = 0x0 },
+  { offset = 389, type = "DIR32", symbol = "__real@3fe0000000000000", target = 0x497e60, addend = 0x0 },
+  { offset = 443, type = "DIR32", symbol = "__real@3fe0000000000000", target = 0x497e60, addend = 0x0 },
+  { offset = 464, type = "DIR32", symbol = "__real@3ff0000000000000", target = 0x497e48, addend = 0x0 },
+  { offset = 476, type = "DIR32", symbol = "__real@3fe0000000000000", target = 0x497e60, addend = 0x0 },
+  { offset = 501, type = "DIR32", symbol = "__real@4000000000000000", target = 0x497e68, addend = 0x0 },
+  { offset = 542, type = "DIR32", symbol = "__real@3fe0000000000000", target = 0x497e60, addend = 0x0 },
+  { offset = 571, type = "DIR32", symbol = "__real@3fe0000000000000", target = 0x497e60, addend = 0x0 },
+  { offset = 627, type = "DIR32", symbol = "__real@3fe0000000000000", target = 0x497e60, addend = 0x0 },
+  { offset = 648, type = "DIR32", symbol = "__real@3ff0000000000000", target = 0x497e48, addend = 0x0 },
+  { offset = 662, type = "DIR32", symbol = "__real@3fe0000000000000", target = 0x497e60, addend = 0x0 },
+  { offset = 700, type = "DIR32", local = true, target = 0x459737 },
+  { offset = 704, type = "DIR32", local = true, target = 0x459763 },
+  { offset = 708, type = "DIR32", local = true, target = 0x459795 },
+  { offset = 712, type = "DIR32", local = true, target = 0x459748 },
+  { offset = 716, type = "DIR32", local = true, target = 0x459778 },
+  { offset = 720, type = "DIR32", local = true, target = 0x4597ac },
+  { offset = 724, type = "DIR32", local = true, target = 0x4599e3 },
+  { offset = 728, type = "DIR32", local = true, target = 0x4599e3 },
+  { offset = 732, type = "DIR32", local = true, target = 0x4597cb },
+  { offset = 736, type = "DIR32", local = true, target = 0x45986d },
+  { offset = 740, type = "DIR32", local = true, target = 0x45991f },
+  { offset = 744, type = "DIR32", local = true, target = 0x45981a },
+  { offset = 748, type = "DIR32", local = true, target = 0x4598c4 },
+  { offset = 752, type = "DIR32", local = true, target = 0x45997a },
+  { offset = 756, type = "DIR32", local = true, target = 0x4599d9 },
+  { offset = 760, type = "DIR32", local = true, target = 0x4599de },
+]
+
+[units.stage-vector-tween-factor]
+artifact_kind = "linked-pe"
+source = "src/StageTween.cpp"
+inputs = ["src/StageTween.hpp", "src/StageScript.hpp"]
+support_sources = ["probes/stage-tween-context.cpp", "src/StageScript.cpp", "src/StageEasing.cpp", "src/AngleMath.cpp"]
+normal_support_sources = ["src/AngleMath.cpp"]
+output_dir = "build/match-linked/StageTween"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageTweenProbe@24"
+functions = ["StageVectorTweenFactor"]
+symbol = "?StageVectorTweenFactor@@YGMPAUStageVectorTween@@@Z"
+target_address = 0x405960
+size = 39
+linkages = [
+  { offset = 27, type = "REL32", symbol = "?EvaluateStageEasing@@YGMHM@Z", target = 0x459730, addend = 0x0 },
+]
+
+[units.stage-fog-tween-factor]
+artifact_kind = "linked-pe"
+source = "src/StageTween.cpp"
+inputs = ["src/StageTween.hpp", "src/StageScript.hpp"]
+support_sources = ["probes/stage-tween-context.cpp", "src/StageScript.cpp", "src/StageEasing.cpp", "src/AngleMath.cpp"]
+normal_support_sources = ["src/AngleMath.cpp"]
+output_dir = "build/match-linked/StageTween"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageTweenProbe@24"
+functions = ["StageFogTweenFactor"]
+symbol = "?StageFogTweenFactor@@YGMPAUStageFogTween@@@Z"
+target_address = 0x405990
+size = 45
+linkages = [
+  { offset = 33, type = "REL32", symbol = "?EvaluateStageEasing@@YGMHM@Z", target = 0x459730, addend = 0x0 },
 ]

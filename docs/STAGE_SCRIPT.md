@@ -145,7 +145,9 @@ dependencies are diagnostic data anchors; this PE is not a runnable game.
 Private `.analysis/stage_script_fixture.py` executes complete original and
 candidate interpreter/pack bodies. With `TH11_STAGE_SCRIPT_REAL_TWEENS=1`, real timers, interpolation, fog
 arithmetic, packing and NormalizeAngle bodies execute in both runs. Candidate
-easing/conversion calls use isolated original-machine dependency Oracles.
+easing executes the reconstructed dispatcher with
+`TH11_STAGE_SCRIPT_REAL_EASING=1`; conversion uses an isolated original-machine
+dependency Oracle.
 Reset/bind, mesh construction, allocation, release/delete and CRT sine remain
 explicit models. See [STAGE_TWEEN.md](STAGE_TWEEN.md) for their exact scope. A real32-bit GDT
 and separate FS TEB leave page0 unmapped. Normal returns restore the original
@@ -162,9 +164,9 @@ the non-clamping byte conversion. Modeled negative-VM resets can overwrite the
 cursor and fault; these outcomes do not establish the behavior of the real VM
 reset dependency on corrupt input.
 
-All709 declared cases agree after real tween/timer integration, including five
+All709 declared cases agree after real tween/timer/easing integration, including five
 matching faults under the remaining models and20 persistent six-frame programs.
-The integrated run peaked at140,584 KiB RSS.
+The integrated run peaked at121,020 KiB RSS.
 Public CI passed8+25 checks.
 
 The real-tween integration cold-replayed `pack-stage-fog` and the new

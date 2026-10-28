@@ -1114,3 +1114,56 @@ Easing459730's seven-byte inventory is only an indirect JMP. Direct span review
 reveals polynomial arms and16-entry table4599EC..459A2B, next entry459A30. Full
 code/data ownership remains unaccepted; no easing mapping or source credit was
 added. Do not mistake the entry-only inventory for the dispatcher owner.
+
+
+## Complete easing owner and factor getters (2026-10-28)
+
+The initial459730 seven-byte inventory was only an indirect JMP. New direct
+hash-attested Ghidra span review, all seven caller reviews and an independent
+21-return control-flow walk establish698 code bytes,2 alignment bytes and the
+64-byte table4599EC..459A2B. Four CC bytes precede next entry459A30. Every arm
+byte is reachable from the table; all16 destinations remain internal. A full
+raw-backed PE section pointer scan finds only the17 internal absolute pointers.
+The original generic polynomial provenance remains indeterminate.
+
+Natural source now reproduces the complete764-byte public primary-TU owner,
+including alignment/table. Cold `evaluate-stage-easing` replays35 reviewed
+DIR32 fields:17 local(table base plus16 entries),18 external double-constant
+references. Full receipts, ownership, PE/MAP/PDB identity and all bytes agree.
+Explicit curve0..15 preconditions match all seven callers' unsigned range
+checks; no progress clamp or invalid-index behavior claim is added. Curves
+0/1/2 are quadratic/cubic/quartic in,3/4/5 out,6/7 linear,8/9/10 in-out,
+11/12/13 out-in,14 zero,15 one. Doubled progress rounds to float before halves.
+Out-in keeps0.5-power*0.5 or power*0.5+0.5; float1.0 comparison and double
+arithmetic constants recover native x87 scheduling. All35,760 pure-body cases
+and28 independent formula assertions pass, including80-bit return bits,
+exception flags, NaN payloads, signed zeros, subnormals and five control words.
+No external dependency models execute in this standalone comparison.
+
+Shared double locals produced792 bytes; branch-local doubles804; repeated
+expressions without local doubles removed the frame, giving748. The observed
+out-in order gives764, with no fake ABI, byte arrays or inserted padding.
+Real easing support naturally restores the factor helpers' EAX curve ABI.
+Unsigned<=15 fixes comparison bytes. If-assignment getters then retain one
+branch-destination difference by bypassing an extra final float store.
+Double getter locals produce61/67-byte aligned frames and were discarded.
+A conditional-expression return joins both paths at the final store and
+reproduces complete39/45-byte factor owners, each with one REL32 to459730.
+Do not reintroduce the documented double-local or assignment-only forms.
+
+Source mappings109, exact55/11,554 bytes (8 COFF,47 linked PE). Only the new
+easing/factor units and directly affected timer/pack families were cold-replayed;
+older unrelated exact inputs remain unchanged. See `STAGE_EASING.md` for current
+execution switches and full evidence scope. CRT conversion and script VM/mesh/
+heap/sine models remain separate from native product/runtime closure.
+
+Final rebuilt real-easing checks pass all2,171 tween cases (four null-scale
+faults) and709 script cases (five remaining-model faults and20 six-frame
+programs), with peaks198,284/121,020 KiB. All five changed/affected exact units
+have current cold proofs and final read-only receipt/field checks. Public
+CI8+25, target-bound tracking, generated progress and diff checks all pass.
+
+Fresh review corrected the two factor getters' earlier authored-origin labels
+to indeterminate: five other layouts share the generic factor pattern, which
+establishes reuse rather than original authorship. Source/55 exact proofs are
+unchanged; generated origin-specific counts now reflect this correction.

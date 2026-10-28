@@ -107,3 +107,4 @@ NormalizeAngle,0x00458ED0,function
 AdvanceStageTimer,0x00459270,function
 StopRuntimeThread,0x00459430,function
 UpdateInputRepeatState,0x00459B50,function
+EvaluateStageEasing,0x00459730,function

@@ -74,18 +74,14 @@ float __stdcall StageVectorTweenFactor(StageVectorTween *self)
 {
     float progress = self->time.fraction / self->duration;
     unsigned int curve = static_cast<unsigned int>(self->mode) - 1;
-    if (curve < 16)
-        progress = EvaluateStageEasing(curve, progress);
-    return progress;
+    return curve <= 15 ? EvaluateStageEasing(curve, progress) : progress;
 }
 
 float __stdcall StageFogTweenFactor(StageFogTween *self)
 {
     float progress = self->time.fraction / self->duration;
     unsigned int curve = static_cast<unsigned int>(self->mode) - 1;
-    if (curve < 16)
-        progress = EvaluateStageEasing(curve, progress);
-    return progress;
+    return curve <= 15 ? EvaluateStageEasing(curve, progress) : progress;
 }
 
 static __forceinline CameraVector ScaleTweenVector(const CameraVector &value, float scale)

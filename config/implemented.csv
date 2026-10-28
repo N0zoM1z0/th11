@@ -106,3 +106,4 @@ ScaleStageFog
 AddStageFog
 SetStageTimer
 AdvanceStageTimer
+EvaluateStageEasing

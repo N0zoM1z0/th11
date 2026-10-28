@@ -8,8 +8,8 @@ its counts and next-target suggestions are historical.
 
 - Target: original Japanese TH11 v1.00a, private `resources/th11.exe`;
   identity in [config/target.toml](../config/target.toml).
-- Inventory:1,992 provisional candidates;108 reviewed/source-present mappings.
-- Exact:52 functions /10,706 owned bytes:8 normal-COFF and44 linked-PE units.
+- Inventory:1,992 provisional candidates;109 reviewed/source-present mappings.
+- Exact:55 functions /11,554 owned bytes:8 normal-COFF and47 linked-PE units.
   [PROGRESS.md](PROGRESS.md) is generated from maintained ledgers.
 - Full Windows i386 game build/runtime closure is open. Diagnostic executables
   are non-runnable link contexts; modeled cases are not full runtime acceptance.
@@ -31,12 +31,14 @@ scripts/repo-python scripts/progress.py --check
 ```
 
 Do not replay all exact units on resume. Revalidate only units whose declared
-source, headers or context changed. The latest tween/timer checkpoint affected
-only these two canonical families; both passed cold replay:
+source, headers or context changed. The latest easing checkpoint affected
+these five canonical units across three families:
 
 ```bash
 scripts/repo-python scripts/replay-exact-units.py \
-  --unit set-stage-timer --unit pack-stage-fog
+  --unit set-stage-timer --unit pack-stage-fog \
+  --unit evaluate-stage-easing \
+  --unit stage-vector-tween-factor --unit stage-fog-tween-factor
 ```
 
 ## Latest completed code
@@ -44,6 +46,8 @@ scripts/repo-python scripts/replay-exact-units.py \
 | Function | Native bytes | State | Details |
 | --- | ---: | --- | --- |
 | StepStageVectorTween/StepStageFogTween,0x00405240/0x004055D0 | 883/737 | source785/534; non-exact | [STAGE_TWEEN.md](STAGE_TWEEN.md) |
+| EvaluateStageEasing,0x00459730 | 764 including table | exact;35 fields | [STAGE_EASING.md](STAGE_EASING.md) |
+| StageVectorTweenFactor/StageFogTweenFactor,0x00405960/0x00405990 | 39/45 | exact;1 field each | [STAGE_EASING.md](STAGE_EASING.md) |
 | SetStageTimer,0x00406100 | 59 | exact;1 field | [STAGE_TWEEN.md](STAGE_TWEEN.md) |
 | AdvanceStageTimer,0x00459270 | 83 | source83/8 diagnostic differences | [STAGE_TWEEN.md](STAGE_TWEEN.md) |
 | ExecuteStageScript,0x00404470 | 2,736 including tables | source2,728; non-exact, EH open | [STAGE_SCRIPT.md](STAGE_SCRIPT.md) |
@@ -164,7 +168,7 @@ was reverted. These are diagnostic codegen observations, not extent shortcuts.
 Final canonical mixed-context checks passed all709 cases; public CI passed8+25
 checks. Fog packing's171-byte cold proof remains current in that same family.
 
-Latest tween checkpoint adds nine complete bodies: two steps, two factor
+The preceding tween checkpoint added nine complete bodies: two steps, two factor
 getters, three fog operators and two timers. SetStageTimer59 is strictly exact
 with one reviewed DIR32 scale binding; Pack171 remains exact after affected
 cold replay. Other new bodies remain non-exact. Generic timer provenance is
@@ -194,15 +198,46 @@ preserve this finding. Do not reintroduce the oldY hypothesis.
 Final canonical tween cases peaked at191,132 KiB; script integration140,584 KiB.
 Target/toolchain/tracking/progress and public CI8+25 checks all passed.
 
+Latest easing checkpoint closes the complete764-byte dispatcher owner and the
+39/45-byte factor getters, adding848 exact bytes. All three new primary-TU
+units pass cold linked ownership/receipt/field replay:35 fields for easing,
+one REL32 per getter. The affected existing setter59 and pack171 also pass.
+Only these five units across three families were checked; other exact inputs
+are unchanged. Counts109 mappings,55 exact/11,554 (8 COFF,47 linked PE).
+
+Standalone easing executes actual original/candidate bodies without dependency
+models:35,760 cases across16 curves,447 bit patterns and five x87 control words,
+plus28 independent formula assertions. Real easing also passes the rebuilt
+canonical tween2,171 cases/four null-scale faults and script709 cases/five
+remaining-model faults, including20 six-frame programs. Their peaks are198,284
+and121,020 KiB. CRT conversion remains an original-machine Oracle; script
+VM/mesh/heap/sine remain models. No native game closure claim is added.
+
+Current reproduction uses `TH11_STAGE_TWEEN_REAL_EASING=1` with
+`TH11_STAGE_TWEEN_TEST_DIR=build/match-linked/StageTween`, and
+`TH11_STAGE_SCRIPT_REAL_TWEENS=1 TH11_STAGE_SCRIPT_REAL_EASING=1` for script.
+The direct pure easing checker uses `TH11_STAGE_EASING_TEST_DIR` set to
+`build/match-linked/StageEasing`. Easing review source, owner/field proofs and
+execution commands are in `STAGE_EASING.md`. Private final logs are
+`.analysis/stage-easing-canonical-check.log`, `stage-easing-tween-canonical-check.log`,
+`stage-easing-script-check.log`, `stage-easing-cold-replay.log`,
+`stage-easing-final-cold-replay.log` and `stage-easing-ci.log`.
+
+Expression experiments: shared double easing locals792 bytes, scoped doubles804,
+repeated expressions748, original out-in arithmetic764. Getter if-assignment
+skips a final float store on the raw-progress branch; double locals introduce
+61/67-byte frames. Conditional-expression returns plus unsigned<=15 reproduce
+native39/45 bytes. Do not repeat these discarded forms unchanged.
+Final target-bound tracking/progress, public CI8+25 and diff checks all pass.
+
 ## Useful next work
 
-1. Recover easing dispatcher0x00459730 only after complete code/data ownership
-   review. Its initial seven-byte extent is merely an indirect JMP; private
-   `.analysis/stage-easing-span.txt` includes arms and16-entry table4599EC..459A2B
-   before entry459A30. No easing source mapping/credit exists yet.
-   ResetStageMesh0x0040E6C0 (325 bytes) and mesh constructor0x0040E530 remain
-   declared external dependencies. Script and both step functions now have
-   complete source; do not treat them as unimplemented.
+1. Recover ResetStageMesh0x0040E6C0 (325 provisional bytes) and mesh
+   constructor0x0040E530 after fresh full boundary/ABI reviews. These remain
+   modeled dependencies in stage script/update checks. Script, both tween steps
+   and the complete easing dispatcher now have source; easing and both factor
+   getters are exact. Do not repeat entry-only easing ownership review or the
+   documented factor double-local experiment.
 2. Improve the pixel helper's source0x3C/target0x44 frame and the file
    constructor's source0x44/target0x4C frame with new evidence. The ordinary
    source pixel call now naturally uses native EAX. Byte versus typed32-bit
@@ -263,3 +298,8 @@ probe/check scripts, dumps and reports remain available; obsolete compiled
 variants were removed. See [ARTIFACTS.md](ARTIFACTS.md) for what was retained,
 what can be regenerated and the cleanup audit. No original target, tools or
 Ghidra database was removed. Keep private payloads out of commits.
+
+Fresh review corrected the two factor getters' earlier authored-origin labels
+to indeterminate: five other layouts share the generic factor pattern, which
+establishes reuse rather than original authorship. Source/55 exact proofs are
+unchanged; generated origin-specific counts now reflect this correction.

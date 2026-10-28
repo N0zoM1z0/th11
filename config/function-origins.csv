@@ -39,8 +39,8 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x004051D0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00405240,authored_game,StageTween,authored,high,stage-tween-origin-20261028
 0x004055D0,authored_game,StageTween,authored,high,stage-tween-origin-20261028
-0x00405960,authored_game,StageTween,authored,high,stage-tween-origin-20261028
-0x00405990,authored_game,StageTween,authored,high,stage-tween-origin-20261028
+0x00405960,unknown,StageTween,indeterminate,unknown,stage-easing-factor-origin-20261028
+0x00405990,unknown,StageTween,indeterminate,unknown,stage-easing-factor-origin-20261028
 0x004059D0,authored_game,StageTween,authored,high,stage-tween-origin-20261028
 0x00405A10,authored_game,StageTween,authored,high,stage-tween-origin-20261028
 0x00405A50,authored_game,StageTween,authored,high,stage-tween-origin-20261028
@@ -888,7 +888,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00459540,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00459590,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00459670,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00459730,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00459730,unknown,StageEasing,indeterminate,unknown,stage-easing-origin-20261028
 0x00459A30,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00459AA0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00459B50,authored_game,InputState,authored,high,input-repeat-target-review-2026-10-23
