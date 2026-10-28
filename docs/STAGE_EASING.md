@@ -84,32 +84,6 @@ Its primary source is `src/StageEasing.cpp`, support is
 `/TP /O2 /Ob1 /Gy /MT /Isrc /EHsc /GL`. The exported ordinary wrapper supplies
 a stable test boundary around the compiler's actual private ABI.
 
-## Bounded execution
-
-Private `.analysis/check-stage-easing.py` executes complete original and source
-machine bodies without modeled arithmetic or external dependency substitution.
-All35,760 cases agree, with28 independent formula assertions. They exercise all
-16 curves,447 input bit patterns, x87 control words027F/037F/067F/0A7F/0E7F,
-random float bits and finite progress outside0..1, adjacent branch-boundary
-values, signed zeros, subnormals, extreme finite values, infinities and both
-quiet/signaling NaN payloads. Cases compare the returned80-bit representation,
-exception flags, control word and tag state, and check stack cleanup and all
-nonvolatile registers. Separate machines are reused with input/register/FPU
-state reset for each call.
-
-```bash
-TH11_STAGE_EASING_TEST_DIR=build/match-linked/StageEasing \
-  scripts/repo-python .analysis/check-stage-easing.py
-```
-
-The retained evidence is private `.analysis/stage-easing-reviewed-span.txt`,
-`stage-easing-callers.txt`, `stage-easing-owner.json`,
-`stage-easing-pointer-scan.json`, `stage-easing-linked.json` and the build,
-execution and cold-replay logs. The earlier endpoint-at-table Ghidra query
-failed because its linear decoder reached an incomplete apparent instruction;
-the completed wider review and independent data classification supersede it.
-The complete native game build/runtime remains an open gate.
-
 ## Factor getters and caller integration
 
 Linking the real dispatcher naturally recovers the EAX curve convention in
@@ -129,37 +103,12 @@ current receipts and complete linked-field replay are required for exact
 acceptance. The common source still declares ordinary functions; private
 register conventions arise from LTCG rather than false prototypes.
 
-Real easing is included as support in both the tween and script canonical
-families. Current execution uses these switches:
 
-```bash
-TH11_STAGE_TWEEN_TEST_DIR=build/match-linked/StageTween \
-TH11_STAGE_TWEEN_REAL_EASING=1 \
-  scripts/repo-python .analysis/check-stage-tween.py
-TH11_STAGE_SCRIPT_REAL_TWEENS=1 TH11_STAGE_SCRIPT_REAL_EASING=1 \
-  scripts/repo-python .analysis/check-stage-script.py
-```
+Real easing is support in the tween and script canonical families. All three
+new exact units add848 bytes; the affected setter59 and pack171 remain exact.
+Only changed/affected families need cold replay. Broad behavioral matrices and
+caller regressions are not checkpoint requirements.
 
-The easing hooks now observe arguments and let the actual reconstructed body
-run. Candidate CRT conversion still uses an isolated original-machine Oracle;
-the script fixture's VM/mesh/heap/sine dependencies remain explicit models.
-These checks do not constitute a complete native game product.
-
-
-Final cold proofs accept all three new units, adding848 exact bytes. The two
-affected existing units (`set-stage-timer`, `pack-stage-fog`) also pass cold
-replay. A final read-only receipt/field check confirms all five current proofs;
-the unrelated exact cohort was not replayed. Totals are109 source mappings,
-55 exact/11,554 bytes (8 normal COFF,47 linked PE).
-
-Rebuilt canonical real-easing execution passes2,171 tween cases, including four
-null-scale faults, and709 script cases, including five remaining-model faults
-and20 six-frame programs. Peak RSS is198,284/121,020 KiB respectively. The
-private tween probe context also passes its2,171 cases. Target/toolchain checks,
-target-bound tracking, generated progress, public CI8+25 and diff checks pass.
-
-The fresh caller review also corrects the earlier authored-origin assignment
-for the two factor getters. Their shared generic pattern occurs at419580 and
-44EDD0/44EE00/44EE30/44EE60 across several layouts; this establishes reuse,
-not original authorship. Both now have indeterminate provenance alongside the
-dispatcher. This classification correction changes no source or exact proof.
+The factor getters' earlier authored-origin assignment was corrected to
+indeterminate. Their generic pattern also occurs at419580 and
+44EDD0/44EE00/44EE30/44EE60 across layouts; reuse does not establish authorship.

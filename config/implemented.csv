@@ -107,3 +107,10 @@ AddStageFog
 SetStageTimer
 AdvanceStageTimer
 EvaluateStageEasing
+StageMeshVmCallback
+StageScriptMeshConstructor
+ResetStageMesh
+PublishStageMesh
+CreateStageMeshRow
+CreateAlternateStageMeshRow
+FindAnimationVmById

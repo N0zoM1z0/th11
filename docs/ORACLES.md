@@ -5,13 +5,15 @@
 | Target identity | Exact size, SHA-256/SHA-1/MD5, PE sections, Rich stream against manifest |
 | Ghidra routing | Hash-pinned Ghidra/JDK, original module metadata, image base/entry, distributed mapped samples, complete mapped `.text` SHA-256 |
 | Boundary and origin | Complete target flow, all reviewed references/tables/adjacent bytes; provisional when unresolved |
-| Compiler candidate | TH11 PE/Rich evidence plus hash/banner checks and executed artifact-family smoke |
+| Compiler candidate | TH11 PE/Rich evidence, pinned hashes/banners and initial toolchain smoke |
 | Source presence | Maintained source mapping; grants no byte credit |
 | Normal-COFF exactness | Cold VC9 object, source/tool/object receipt, full owned extent, exhaustive relocation replay, zero byte differences |
 | LTCG exactness | Cold VC9 linked family receipt, matching PE/MAP/PDB identity, complete public primary-TU contribution, exhaustive linked-field replay, zero differences; specialized static/EH/split ownership remains open |
-| Native product | Full build/link/data/resource/library/initialization closure |
-| Runtime behavior | Original and reconstructed native products agree on declared deterministic observables |
-| Portability | Native baseline and port agree independently |
+
+This phase pursues exact reconstruction. Native-product/runtime/portability
+validation is deferred. Broad behavior harnesses and failure-injection matrices
+are not exactness requirements. Only focused execution that answers a concrete
+codegen/ABI question belongs in the current loop.
 
 The original target's `.text` occupies inclusive addresses
 `0x00401000..0x0048AE14` (564,757 bytes). Compute its full mapped hash from the
@@ -34,7 +36,9 @@ separate unknowns even when normal-COFF code generation reproduces a body.
 Synthetic public negative controls reject wrong final bytes, truncated bodies,
 escaping auxiliary extents, undeclared relocations, wrong relocation values,
 and stale receipts. Private target-bound cold replays provide the actual
-exactness evidence; public CI checks cannot replace them.
+exactness evidence; public CI checks cannot replace them. Run the public Oracle
+tests when changing the comparison/receipt/build infrastructure; they are not a
+mandatory rerun for ordinary reconstructed source or documentation edits.
 
 `compare-linked-function.py --unit NAME` is a separate acceptance lane for
 public primary-TU code contributions. See `LINKED_ORACLE.md` for its full

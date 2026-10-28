@@ -107,7 +107,7 @@ object. An initially terminated stream clears the flag without a VM call.
 Object count and table are reloaded while advancing the outer loop. Negative
 indices/strides and null payloads are not sanitized.
 
-## Validation and remaining work
+## Code generation and remaining work
 
 Private `.analysis/probe-stage-update.py` cold-builds the public primary TU
 with VC9 RTM `/O2 /Ob1 /Gy /MT /EHsc /GL`. Its context includes the maintained
@@ -116,31 +116,8 @@ callback address to preserve its ordinary indirect-call contract; a direct-only
 probe had allowed a specialized five-byte callback. Neither context reproduces
 the target callback/update private convention, so neither grants exact credit.
 
-Private `.analysis/stage_update_fixture.py` executes the complete original and
-candidate updates and their callback adapters. It executes the real original
-and compiled NormalizeAngle and RandomNext32 bodies. Additional cases execute
-the complete object traversal bodies inside the update. Script, VM, mesh reset,
-D3DX normalization and CRT sine remain explicit models. The reset model supplies
-controlled grids, including nonzero source Z for the traversal dependency.
-Deliberately leaving null buffers from that model tests caller dereferences;
-it does not locate the first fault inside the real ResetStageMesh dependency.
 
-All853 declared cases agree, including nine matching faults under these models.
-Checks cover whole stage/runtime storage, both vertex buffers, source positions,
-ordered calls and float argument bits, RNG state, time scale, object flags,
-return value, stack, nonvolatile registers and FPU control/tag state. Independent
-assertions check interior-only Z clearing, alpha/color values, radius decrement,
-RNG count wrapping and live-object flags. Cases include all flag combinations,
-29/30/59/60 boundaries, signed/empty grids, finite randomized coordinates,
-infinities/NaNs, zero radius, negative indices/strides, counter wrapping, script
-changes, temporary scale mutation and replacement of the mesh block. Default
-Windows53-bit and extended64-bit x87 precision contexts are covered. The
-one complete run peaked at121,548 KiB RSS; full native product closure remains open.
-
-ExecuteStageScript404470 now has complete non-exact source and its full2,736-byte
-owner has been reviewed; see [STAGE_SCRIPT.md](STAGE_SCRIPT.md). ResetStageMesh
-40E6C0 remains a declared dependency without source coverage. Only
-the five canonical lifecycle/callback units affected by StageResource.hpp were
-cold-replayed; all passed. Other exact families were not replayed.
-The affected drawing and loader contexts were rebuilt; their952 and34 modeled
-cases still agree, as do48 lifecycle cases. Public CI passed8+25 checks.
+ExecuteStageScript404470 has complete non-exact source and a reviewed2,736-byte
+owner; see [STAGE_SCRIPT.md](STAGE_SCRIPT.md). ResetStageMesh40E6C0 and its
+publisher now have source; the publisher is exact. See [STAGE_MESH.md](STAGE_MESH.md).
+Continue with byte/codegen differences; broad caller regressions are not required.

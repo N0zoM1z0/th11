@@ -1259,7 +1259,7 @@ linkages = [
 artifact_kind = "linked-pe"
 source = "src/StageScript.cpp"
 inputs = ["src/StageScript.hpp"]
-support_sources = ["probes/stage-script-context.cpp", "src/StageTween.cpp", "probes/stage-tween-context.cpp", "src/StageEasing.cpp", "src/AngleMath.cpp"]
+support_sources = ["probes/stage-script-context.cpp", "src/StageTween.cpp", "probes/stage-tween-context.cpp", "src/StageEasing.cpp", "src/StageMesh.cpp", "src/AngleMath.cpp"]
 normal_support_sources = ["src/AngleMath.cpp"]
 output_dir = "build/match-linked/StageScript"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -1274,7 +1274,7 @@ linkages = []
 artifact_kind = "linked-pe"
 source = "src/StageTween.cpp"
 inputs = ["src/StageTween.hpp", "src/StageScript.hpp"]
-support_sources = ["probes/stage-tween-context.cpp", "src/StageScript.cpp", "src/StageEasing.cpp", "src/AngleMath.cpp"]
+support_sources = ["probes/stage-tween-context.cpp", "src/StageScript.cpp", "src/StageEasing.cpp", "src/StageMesh.cpp", "src/AngleMath.cpp"]
 normal_support_sources = ["src/AngleMath.cpp"]
 output_dir = "build/match-linked/StageTween"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -1341,7 +1341,7 @@ linkages = [
 artifact_kind = "linked-pe"
 source = "src/StageTween.cpp"
 inputs = ["src/StageTween.hpp", "src/StageScript.hpp"]
-support_sources = ["probes/stage-tween-context.cpp", "src/StageScript.cpp", "src/StageEasing.cpp", "src/AngleMath.cpp"]
+support_sources = ["probes/stage-tween-context.cpp", "src/StageScript.cpp", "src/StageEasing.cpp", "src/StageMesh.cpp", "src/AngleMath.cpp"]
 normal_support_sources = ["src/AngleMath.cpp"]
 output_dir = "build/match-linked/StageTween"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -1358,7 +1358,7 @@ linkages = [
 artifact_kind = "linked-pe"
 source = "src/StageTween.cpp"
 inputs = ["src/StageTween.hpp", "src/StageScript.hpp"]
-support_sources = ["probes/stage-tween-context.cpp", "src/StageScript.cpp", "src/StageEasing.cpp", "src/AngleMath.cpp"]
+support_sources = ["probes/stage-tween-context.cpp", "src/StageScript.cpp", "src/StageEasing.cpp", "src/StageMesh.cpp", "src/AngleMath.cpp"]
 normal_support_sources = ["src/AngleMath.cpp"]
 output_dir = "build/match-linked/StageTween"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -1369,4 +1369,34 @@ target_address = 0x405990
 size = 45
 linkages = [
   { offset = 33, type = "REL32", symbol = "?EvaluateStageEasing@@YGMHM@Z", target = 0x459730, addend = 0x0 },
+]
+
+[units.publish-stage-mesh]
+artifact_kind = "linked-pe"
+source = "src/StageMesh.cpp"
+inputs = ["src/StageMesh.hpp"]
+support_sources = ["probes/stage-mesh-context.cpp"]
+output_dir = "build/match-linked/StageMesh"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageMeshProbe@40"
+functions = ["PublishStageMesh"]
+symbol = "?PublishStageMesh@@YGXPAUStageMeshView@@@Z"
+target_address = 0x40e890
+size = 123
+linkages = []
+
+[units.stage-mesh-vm-callback]
+artifact_kind = "linked-pe"
+source = "src/StageMesh.cpp"
+inputs = ["src/StageMesh.hpp"]
+support_sources = ["probes/stage-mesh-context.cpp"]
+output_dir = "build/match-linked/StageMesh"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageMeshProbe@40"
+functions = ["StageMeshVmCallback"]
+symbol = "?StageMeshVmCallback@@YIHPAUAnimationVmView@@@Z"
+target_address = 0x40e520
+size = 16
+linkages = [
+  { offset = 8, type = "REL32", symbol = "?PublishStageMesh@@YGXPAUStageMeshView@@@Z", target = 0x40e890, addend = 0x0 },
 ]

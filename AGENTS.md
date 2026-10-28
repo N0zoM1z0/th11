@@ -10,7 +10,8 @@ The canonical private input is ignored `resources/th11.exe`. Never substitute
 Read `docs/RE_HANDOFF.md`, `docs/RE_WORKFLOW.md`, `docs/ORACLES.md`, and relevant
 source/ledger rows. Inspect `git status --short --branch` and the current diff
 before changes. Use `scripts/repo-python` for repository Python commands.
-Verify target, toolchain, tracking, and progress before target-dependent work.
+Verify target/toolchain identity once on resume. Refresh tracking and progress
+at checkpoints; existing dirty work is ours and should be continued.
 
 The operator requests **direct Ghidra**, without REA. Use `scripts/ghidra.py`.
 Invoke local tools/scripts directly; do not route work through Factory MCP.
@@ -20,7 +21,20 @@ jobs and Wine/compiler jobs; do not raise resource defaults without a measured
 need. The compiler must follow TH11-local PE/Rich/codegen evidence: the current
 candidate is VC9 RTM build 21022, not TH10's VC7.1 toolchain.
 
-## Evidence and phase gates
+## Current focus: exact reconstruction
+
+Prioritize complete functions and byte-level codegen differences. The normal
+loop is target review, natural C++, pinned compilation, complete byte/field
+comparison, affected cold proof, and commit. Work on substantial functions as
+well as useful leaves.
+
+Do not create or run broad behavioral harnesses, allocation-failure/null-pointer
+matrices, randomized/multiframe suites, or caller/subsystem regressions as
+routine work or checkpoint requirements. Use a small targeted execution check
+only when it resolves a concrete exact-codegen or ABI question. Historical
+behavior-test counts do not create a requirement to rerun them.
+
+## Exact evidence
 
 Keep target observations, Ghidra hypotheses, compiler observations, source
 presence, exact codegen, native product closure, runtime behavior, and port
@@ -40,9 +54,9 @@ receipts, PE/MAP/PDB identity and owner agreement, exhaustive field replay,
 and full byte equality. Specialized static-owner, EH and split-owner contexts
 remain open. Never crop an extent to fit this lane.
 
-Required order: exact reconstruction; faithful Windows i386 build and runtime
-closure; semantic reconstruction with target plus native product Oracles;
-portability. Never report a diagnostic harness as the complete game.
+Native product closure, broad runtime comparisons and portability are later
+work, not prerequisites for this exact-reconstruction phase. A diagnostic link
+context is not the complete game.
 
 ## Checkpoints
 
@@ -52,9 +66,11 @@ commit game executables/data/archives, compiler payloads, decompiler output,
 Ghidra databases, credentials, or local private endpoints.
 
 Use commits prefixed `gpt-6.1-sol: `. The operator authorized a public GitHub
-repository and pushes for this project. Run focused cold exact replays,
-tracking validation, generated progress checks, public CI, and `git diff --check`
-before each checkpoint. Prioritize useful medium-size functions; only replay
-changed units and directly affected dependencies, never the full cohort by
-default. Record durable facts in `docs/KNOWLEDGE_BASE.md` and
-resume state in `docs/RE_HANDOFF.md`.
+repository and pushes for this project. Save meaningful progress promptly.
+Cold-replay only changed exact units and directly affected dependencies. Update
+tracking/generated progress and run `git diff --check`; do not replay the full
+cohort. Public Oracle/infrastructure tests are needed when their implementation
+changes, not for every reconstructed function or documentation edit.
+Keep `docs/RE_HANDOFF.md` concise: current exact state, concrete codegen gaps and
+next work. Record useful target/compiler findings in `docs/KNOWLEDGE_BASE.md`;
+do not expand routine handoffs into behavioral-test reports.

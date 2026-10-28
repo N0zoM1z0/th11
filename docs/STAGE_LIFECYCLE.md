@@ -103,7 +103,7 @@ The180-byte constructor and159-byte factory have diagnostic zero differences
 after address-field masking, but their EH handlers/funclets and ownership are
 outside the current exact acceptance lane. They are not canonical exact units.
 
-## Strict proofs and bounded diagnostics
+## Strict exact proofs
 
 ```bash
 scripts/repo-python scripts/replay-exact-units.py \
@@ -123,28 +123,9 @@ contents were separately checked against the target. Callback proofs use
 StageCallbacks.cpp as primary, not a borrowed support-TU owner. Earlier45 exact
 contexts were unchanged and were not replayed.
 
-Private `.analysis/stage_lifecycle_fixture.py` and `check-stage-lifecycle.py`
-execute complete original/candidate bodies in48 cases, including actual VM
-constructors/destructors during modeled forward/reverse CRT vector iteration.
-Cases cover load/registration/allocation failures, timer flags, poisoned chain
-storage, publication order, ignored registration failures, callback returns,
-optional resources, slot mutation, alias globals, byte-depth wraparound,
-manager changes and flags changing between Enter/Leave checks. Five cases
-agree on native/candidate faults. Full object/chain/binding storage, calls,
-stack balance, preserved registers and normal FS exception-chain restoration
-are compared; the constructor's final zeroing is independently asserted.
 
-The fixture installs real32-bit GDT code/data/stack segments and a separate FS
-TEB segment, leaving address zero unmapped. An initial low-page FS surrogate
-would have hidden null chain faults; it was corrected before these recorded
-results. Unicorn's FS_BASE write does not provide the required32-bit behavior,
-and a real32-bit SS descriptor is required to avoid16-bit stack wrapping.
-Heap, loading, registration/unlink, document cleanup, critical-section services
-and CRT iteration are modeled; C++ exception injection/full unwind execution
-and the native game/runtime are not accepted by these tests. Current maximum
-RSS is about40 MiB with one CPU/nice10.
-
-The directly affected older stage/document-loader diagnostic family was also
-cold-rebuilt; its34 cases still agree and297/434/131-byte sizes remain unchanged.
-The new lifecycle family's LoadStageResource is297 bytes/25 diagnostic differences,
-versus the earlier family297/17; those contexts are distinct and non-exact.
+Constructor/destructor/factory EH and specialized-owner gaps remain open.
+The older loader contexts remain non-exact:297/434/131 source bytes. The new
+lifecycle context's loader has297 bytes/25 diagnostic differences, compared
+with297/17 in the earlier family. Keep those contexts distinct when pursuing
+byte equality; broad runtime/fault matrices are not checkpoint requirements.

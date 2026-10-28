@@ -84,22 +84,8 @@ camera and runtime-fog source supply their real compiled call contracts.
 Remaining functions are unresolved diagnostic data anchors; the executable
 is not runnable as a product.
 
-Private `.analysis/stage_drawing_fixture.py` executes both complete original
-and candidate main bodies under Unicorn. External drawing, camera, timer and
-COM methods are explicit models, including the native private register versus
-ordinary source stack argument differences. Checks compare ordered calls and
-arguments, whole0x3158-byte stage state, runtime state, active camera, both
-renderer tints, return values, stack and nonvolatile registers. Cases cover
-flags, signed timer and age boundaries, tint and VM activation combinations,
-counter wrap, ignored HRESULT failures, signaling/quiet NaNs, viewport overflow,
-camera redirection and renderer replacement during callbacks. Null stage and
-null renderer faults are compared as faults. Three-frame main/overlay sequences
-also run against persistent fixture state. All952 cases agree, including four
-matching null-pointer faults; the fixture peak RSS was84,952 KiB.
-
 `StageDrawing.hpp` declares the reviewed external boundaries at405E80,
 406100,4489E0,459210,455660,451EF0 and404190. They are not source coverage.
-Timer operations, animation groups and stage layers remain modeled dependencies;
-these results do not establish whole-game native runtime equivalence. Update
-402AA0 and object traversal4040F0 now have complete non-exact source; see
-[STAGE_UPDATE.md](STAGE_UPDATE.md) for their own evidence and limits.
+Some timer, animation-group and stage-layer boundaries remain external. Update
+402AA0 and object traversal4040F0 have complete non-exact source; see
+[STAGE_UPDATE.md](STAGE_UPDATE.md). Prioritize their complete codegen gaps.

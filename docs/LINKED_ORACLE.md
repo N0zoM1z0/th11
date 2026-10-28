@@ -62,8 +62,10 @@ both complete owners. Every declared field is replayed at its reviewed target
 address; every remaining byte is compared directly. These are address
 relocations, never a masked exactness score.
 
-## Verification and use
+## Oracle maintenance and unit replay
 
+Run the synthetic tests when changing Oracle/receipt/build infrastructure.
+They are not per-function or per-documentation checkpoint requirements.
 Twenty-five public synthetic tests use generated PE32/MSF7/PDB fixtures,
 without game bytes or the historical compiler. They cover complete positive
 replay, final-byte corruption, cropped/overlapping contributions, wrong

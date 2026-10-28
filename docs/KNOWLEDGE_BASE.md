@@ -1,5 +1,11 @@
 # TH11-local knowledge
 
+Current priority: byte-exact reconstruction. Historical behavioral-test counts
+and commands below are records, not requirements to rerun or rebuild suites.
+Broad stage drivers/models were retired at the operator's request; current
+workflow and recovery instructions are in AGENTS.md and RE_HANDOFF.md.
+
+
 ## Stage VM cleanup and resource loading (2026-10-24)
 
 ReleaseVmBindingBlock0x00402300(231) now has a complete strict cold primary-TU
@@ -1167,3 +1173,39 @@ Fresh review corrected the two factor getters' earlier authored-origin labels
 to indeterminate: five other layouts share the generic factor pattern, which
 establishes reuse rather than original authorship. Source/55 exact proofs are
 unchanged; generated origin-specific counts now reflect this correction.
+
+
+## Mesh recovery and exact-focused workflow (2026-10-28)
+
+Seven full owners now map to StageMesh.cpp: constructor389, reset325,
+publisher123, callback16, row creators168/170 and lookup79. Publisher123
+(including3 alignment bytes) and callback16 have strict complete primary-TU
+linked proofs; callback has one REL32+8 to40E890. The callback was absent from
+inventory and raises candidates to1,993; mappings116, exact57/11,693 bytes.
+Only the new pair plus five affected exact units were cold-replayed, all passing.
+No source/header inputs of the older lifecycle/callback cohort changed.
+
+Mesh+0C stores VM pointers, not indices. Row-array allocations are4*rows-1
+bytes; grid arrays are rows*columns*28 and*12. Reset origins are X+192+32,
+Y+16, with X advancing per row and Y per column. UV divides by640/480 and clamps
+only below zero. Publication alternates vertices from adjacent rows into VM
+buffers. Alternate creation always records column count; normal small-column
+creation preserves the previous count. Keep both code paths' flag ordering.
+
+Current source: constructor362, reset325/75 diagnostic differences,
+normal/alternate creators162/164, lookup73. Tuple-prefix aggregate copying
+removed extra x87 operations and reduced reset358 to325. Writing rounded Y
+back to its parameter gave79 differences; position/originY locals give75.
+Other differences include native rows-EAX/columns-EBX versus this probe's
+columns-EAX and native stack lookup ID versus source ECX. No exact credit for
+these five open owners. Canonical mesh context and fields are in match-units;
+source/codegen details are in STAGE_MESH.md.
+
+Operator correction: current work prioritizes complete byte-exact functions.
+Broad failure/null/random/multiframe behavior suites, caller regressions and
+per-function full CI requirements were removed from AGENTS/workflow/handoff.
+Sixteen private stage behavior drivers/fixtures/models were deleted; historical
+references to them are records, not recovery instructions. Keep complete extent,
+pinned compiler, receipt/owner/field verification and affected cold byte proofs.
+Use execution only for a concrete codegen/ABI question; do not rebuild behavioral
+cohorts by default. Future handoffs should stay focused on exact differences.

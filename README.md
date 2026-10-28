@@ -83,7 +83,7 @@ All four texture constructors have source; three add423 exact bytes, and the
 [`docs/ANIMATION_TEXTURES.md`](docs/ANIMATION_TEXTURES.md).
 The transparent-pixel helper now has complete source and a reviewed1,427-byte
 owner including switch tables; it remains non-exact. Its validation also
-corrects earlier surface-descriptor fixtures; see
+corrects the reviewed surface-descriptor layout; see
 [`docs/ANIMATION_TRANSPARENT_PIXELS.md`](docs/ANIMATION_TRANSPARENT_PIXELS.md).
 Stage lifecycle source now includes natural C++ member cleanup. Its630-byte
 initializer, VM construction/destruction and two drawing callbacks add779 exact
@@ -91,21 +91,22 @@ bytes; EH-bearing diagnostic matches remain uncredited. See
 [`docs/STAGE_LIFECYCLE.md`](docs/STAGE_LIFECYCLE.md).
 The complete stage main/overlay drawing functions now have non-exact source
 covering1,982 reviewed target bytes. See
-[`docs/STAGE_DRAWING.md`](docs/STAGE_DRAWING.md) for behavior and952 modeled
-full-body comparisons, including persistent three-frame sequences.
+[`docs/STAGE_DRAWING.md`](docs/STAGE_DRAWING.md) for the remaining codegen gaps.
 Stage update and object traversal add1,830 reviewed target bytes of non-exact
-source;853 modeled cases agree, with real angle/RNG bodies executed. See
+source. See
 [`docs/STAGE_UPDATE.md`](docs/STAGE_UPDATE.md).
 The complete stage script interpreter now includes both owned jump tables.
 Its source remains non-exact; fog packing adds171 exact bytes. See
-[`docs/STAGE_SCRIPT.md`](docs/STAGE_SCRIPT.md) for709 modeled comparisons,
-including multi-frame scripts with actual tween/timer bodies. Nine interpolation,
+[`docs/STAGE_SCRIPT.md`](docs/STAGE_SCRIPT.md) for ownership and codegen gaps.
+Nine interpolation,
 fog arithmetic and timer functions now have source; timer assignment adds59
-exact bytes. See [`docs/STAGE_TWEEN.md`](docs/STAGE_TWEEN.md) for2,171
-full-body comparisons. The complete764-byte polynomial easing dispatcher
+exact bytes. See [`docs/STAGE_TWEEN.md`](docs/STAGE_TWEEN.md).
+The complete764-byte polynomial easing dispatcher
 and both factor getters now have exact proofs;
-[`docs/STAGE_EASING.md`](docs/STAGE_EASING.md) records their35,760 direct
-comparisons and integration.
+[`docs/STAGE_EASING.md`](docs/STAGE_EASING.md) records their full byte proofs.
+Mesh construction/reset and row-VM helpers now have complete source; vertex
+publication and its callback add139 exact bytes. See
+[`docs/STAGE_MESH.md`](docs/STAGE_MESH.md).
 The Windows i386 production build is open. Semantic reconstruction and
 portability have not started.
 
@@ -116,11 +117,9 @@ independent normal C/C++, `/GL`, resource, linker, and PDB smoke checks are
 tracked in [`config/tools.lock.toml`](config/tools.lock.toml).
 
 ```bash
-scripts/repo-python scripts/verify-toolchain.py --execute
-scripts/repo-python scripts/build-match-unit.py --check
-scripts/repo-python scripts/replay-exact-units.py --unit poll-joystick-buttons
+scripts/repo-python scripts/verify-toolchain.py --check
+scripts/repo-python scripts/replay-exact-units.py --unit publish-stage-mesh
 scripts/repo-python scripts/progress.py
-scripts/repo-python scripts/ci.py
 ```
 
 Canonical normal-COFF units cold-compile maintained C/C++ with the locked VC9
@@ -144,14 +143,13 @@ Java heap limit. JVM and native overhead are additional. Ghidra jobs and
 Wine/compiler jobs are serialized. Tool installation and reproduction details
 are in [`docs/TOOLS.md`](docs/TOOLS.md).
 
-## Required phase order
+## Current workflow
 
-1. Review boundaries/origins and reconstruct exact historical-toolchain units.
-2. Close and exercise the faithful Windows i386 product, including data,
-   initializers, resources, libraries, translation units, and link order.
-3. Reconstruct semantics with the original and reconstructed native products as
-   independent runtime Oracles.
-4. Begin portability after the native baseline is trustworthy.
+Focus on complete functions and byte-exact historical code generation: review
+the target, write natural C++, compile, compare full owners/fields, cold-replay
+only affected exact units, and commit meaningful progress. Broad behavioral,
+fault-injection, randomized/multiframe and caller regression suites are not
+routine prerequisites. Native product/runtime and portability work are deferred.
 
 ## Project map
 

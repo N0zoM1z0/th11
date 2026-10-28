@@ -107,53 +107,7 @@ AngleMath is normal-COFF support in the tween/script families. Sources, entries 
 not replayed. Totals are109 source mappings and55 exact/11,554 bytes:8 COFF,
 47 linked PE. Diagnostic executables still contain unresolved data anchors.
 
-## Bounded execution evidence
 
-Private `.analysis/stage_tween_fixture.py` and `check-stage-tween.py` compare
-complete original and candidate bodies for all nine functions. An exported
-eight-argument wrapper executes actual candidate aggregate returns without
-inventing private ABI declarations. The tests compare full state/output bytes,
-relevant return values, easing calls/float bits, stack, preserved registers and
-x87 control/tag state. Only declared global-scale pointers are normalized.
-
-All2,171 cases agree in both the private probe and canonical setter families,
-including four matching null-scale faults. The canonical run peaked at198,284
-KiB RSS with real easing. They cover all modes0..18 and extreme signed modes, negative/zero/positive durations,
-completion, repeated updates, fractional/negative/scaled clocks, timer flags,
-wrap, large odd divisors, nonfinite fog arithmetic and randomized vectors.
-Two hundred extra randomized Hermite cases use x87 extended precision control
-0x037F in addition to the normal0x027F cases. Independent assertions check XYZ
-accumulation, position/velocity order, terminal packed-value preservation and
-duration clearing. The canonical family is selected with:
-
-```bash
-TH11_STAGE_TWEEN_TEST_DIR=build/match-linked/StageTween \
-TH11_STAGE_TWEEN_REAL_EASING=1 \
-  scripts/repo-python .analysis/check-stage-tween.py
-TH11_STAGE_SCRIPT_REAL_TWEENS=1 TH11_STAGE_SCRIPT_REAL_EASING=1 \
-  scripts/repo-python .analysis/check-stage-script.py
-```
-
-The second command passes all709 script cases, including five faults under
-the remaining declared models and20 six-frame programs. Timers, interpolation,
-fog arithmetic, packing and angle normalization now execute actual bodies.
-VM reset/bind, mesh construction/allocation/release/delete and CRT sine remain
-models. Candidate conversion executes an isolated original-machine dependency
-through `.analysis/stage_tween_oracles.py`; the reconstructed easing body now runs with
-`TH11_STAGE_TWEEN_REAL_EASING=1` or `TH11_STAGE_SCRIPT_REAL_EASING=1`. The earlier
-checks used an original easing Oracle; the new integrated runs supersede that
-substitution. This supplies no CRT source credit or independent native product
-validation. Original runs execute their actual dependencies directly.
-
-The easing dispatcher now has a complete764-byte exact implementation, including
-its table and alignment; see [STAGE_EASING.md](STAGE_EASING.md). Its original
-seven-byte inventory was only the indirect JMP. The standalone checks above
-originally used an easing dependency Oracle; current real-easing integration
-runs the reconstructed dispatcher directly. Mesh reset40E6C0 and constructor
-40E530 remain useful script dependencies. Full game build/runtime
-and exception-unwind closure remain open.
-
-Target/toolchain checks, target-bound tracking, generated progress and public
-CI all pass; public Oracle suites contain8+25 tests. The subsequent easing
-checkpoint also validates its new764-byte unit and
-the two new39/45-byte factor units. Only changed/affected families were replayed.
+The complete easing dispatcher is exact; see [STAGE_EASING.md](STAGE_EASING.md).
+Large step functions, fog operators and AdvanceStageTimer retain the codegen
+gaps above. Broad behavioral matrices are not part of the exact workflow.

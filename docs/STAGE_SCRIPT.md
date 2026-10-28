@@ -81,8 +81,8 @@ When minimum radius is positive it constructs a24-byte mesh with `(17,25,0)`
 for mode1 and `(17,17,0)` otherwise. Null allocation publishes null. Source uses
 ordinary C++ new expressions and their genuine exception cleanup; constructor
 exceptions and complete EH unwind are not yet validated. The reviewed mesh
-constructor at40E530 is an external class constructor declaration, not an
-implemented body.
+constructor at40E530 now has complete non-exact source; see
+[STAGE_MESH.md](STAGE_MESH.md).
 
 ## Oscillation and numerical details
 
@@ -137,38 +137,8 @@ scripts/repo-python scripts/replay-exact-units.py --unit pack-stage-fog
 
 Its canonical family is `build/match-linked/StageScript`, primary
 `src/StageScript.cpp`, supporting `probes/stage-script-context.cpp`, `src/StageTween.cpp`,
-`probes/stage-tween-context.cpp` and `src/AngleMath.cpp` (normal COFF), entry `StageScriptProbe@12`, primary profile
+`probes/stage-tween-context.cpp`, `src/StageEasing.cpp`, `src/StageMesh.cpp` and
+`src/AngleMath.cpp` (normal COFF), entry `StageScriptProbe@12`, primary profile
 `/TP /O2 /Ob1 /Gy /MT /Isrc /EHsc /GL`. The normal support keeps the same
 switches except GL. The constructor and other unresolved
 dependencies are diagnostic data anchors; this PE is not a runnable game.
-
-Private `.analysis/stage_script_fixture.py` executes complete original and
-candidate interpreter/pack bodies. With `TH11_STAGE_SCRIPT_REAL_TWEENS=1`, real timers, interpolation, fog
-arithmetic, packing and NormalizeAngle bodies execute in both runs. Candidate
-easing executes the reconstructed dispatcher with
-`TH11_STAGE_SCRIPT_REAL_EASING=1`; conversion uses an isolated original-machine
-dependency Oracle.
-Reset/bind, mesh construction, allocation, release/delete and CRT sine remain
-explicit models. See [STAGE_TWEEN.md](STAGE_TWEEN.md) for their exact scope. A real32-bit GDT
-and separate FS TEB leave page0 unmapped. Normal returns restore the original
-exception chain. Constructor exception injection and full unwind are open.
-
-Checks compare ordered calls and float argument bits, whole stage/runtime
-storage, heap state, timer pointers normalized only to their declared symbol,
-return values, stack, nonvolatile registers and x87 control/tag state. Tests
-cover all opcode branches, signed strides and jumps, mixed instruction streams,
-oscillator boundaries and fractional time, NaN/inf payloads, VM index/sign
-behavior, cursor mutation during bind, captured document/mesh pointers and
-allocation failure. Independent assertions check stop-versus-future timing and
-the non-clamping byte conversion. Modeled negative-VM resets can overwrite the
-cursor and fault; these outcomes do not establish the behavior of the real VM
-reset dependency on corrupt input.
-
-All709 declared cases agree after real tween/timer/easing integration, including five
-matching faults under the remaining models and20 persistent six-frame programs.
-The integrated run peaked at121,020 KiB RSS.
-Public CI passed8+25 checks.
-
-The real-tween integration cold-replayed `pack-stage-fog` and the new
-`set-stage-timer`; the earlier50 exact contexts have unchanged inputs. Full native product/runtime
-closure remains a separate open gate.

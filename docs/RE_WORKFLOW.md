@@ -1,8 +1,8 @@
 # Reconstruction workflow
 
 Read `AGENTS.md` and `RE_HANDOFF.md`; inspect dirty work before touching it.
-Run target verification, toolchain hash attestation, tracking validation, and
-status reporting. Query the target through direct `scripts/ghidra.py` only.
+Verify target/toolchain identity once on resume; update tracking/progress at
+checkpoints. Query the target through direct `scripts/ghidra.py` only.
 
 For each coherent subsystem:
 
@@ -17,16 +17,23 @@ For each coherent subsystem:
    and exhaustive relocation list. Review every relocation's meaning and target
    independently of its masked diagnostic. Configure a canonical unit only when
    its complete zero-difference replay is reproducible.
-5. Cold-replay affected canonical units, update ledgers and generated progress,
-   run public CI, and make a concise `gpt-6.1-sol: ...` checkpoint.
+5. Cold-replay affected canonical units, update ledgers/generated progress,
+   check the diff, and make a concise `gpt-6.1-sol: ...` checkpoint.
+
+Broad behavior tests, null/allocation-failure matrices, randomized/multiframe
+execution and caller regressions are not part of this loop. Use focused
+execution only to answer a specific codegen/ABI question. Do not rebuild callers
+or rerun historical suites merely because a dependency now has source. Run
+Oracle/infrastructure tests when those tools change; full CI is not a per-function
+or per-documentation-edit prerequisite.
 
 Use `.analysis/` for unresolved probes and generated dumps, `build/` for
 artifacts, `.tools/` for private tools, and `ghidra-project/` for the private DB.
 Do not refresh the initial inventory over maintained mappings or exact rows.
 Export later candidates to a separate private location and reconcile changes.
 
-Whole native product closure, target/native runtime comparisons, semantic
-reconstruction, and portability are separate later gates. The normal-COFF
+Whole native product closure, broad runtime comparisons and portability are
+deferred; they do not block exact checkpoints. The normal-COFF
 Oracle has no authority over established LTCG-owned units. Public primary-TU
 linked contributions use the separate VC9 Oracle described in
 `LINKED_ORACLE.md`; specialized static/EH/split-owner contexts remain open.

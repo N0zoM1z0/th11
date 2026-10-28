@@ -9,7 +9,7 @@ struct StageMeshView
 {
     int rows, columns;
     unsigned int *ids;
-    void *indices;
+    AnimationVmView **rowVms;
     RenderVertex *vertices;
     CameraVector *positions;
 };
@@ -30,7 +30,6 @@ struct StagePrimitiveView
 };
 
 int __stdcall UpdateStageObjects(StageResourceView *self);
-// Reviewed external dependencies; their bodies remain open.
 int __stdcall ExecuteStageScript(StageResourceView *self);
 void __stdcall ResetStageMesh(StageMeshView *self, float x, float y, float width, float height);
 extern RandomStateView g_TextRandomState;

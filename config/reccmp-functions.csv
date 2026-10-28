@@ -108,3 +108,10 @@ AdvanceStageTimer,0x00459270,function
 StopRuntimeThread,0x00459430,function
 UpdateInputRepeatState,0x00459B50,function
 EvaluateStageEasing,0x00459730,function
+StageMeshVmCallback,0x0040E520,function
+StageScriptMeshConstructor,0x0040E530,function
+ResetStageMesh,0x0040E6C0,function
+PublishStageMesh,0x0040E890,function
+CreateStageMeshRow,0x0042B3D0,function
+CreateAlternateStageMeshRow,0x0042B480,function
+FindAnimationVmById,0x004561E0,function
