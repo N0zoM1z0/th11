@@ -7,18 +7,19 @@ outrank historical notes. All dirty work belongs to this active goal.
 ## Checked-in state
 
 - Original Japanese TH11 v1.00a; config/target.toml pins identity.
-- 2,097 candidates;416 reviewed boundaries;319 source mappings.
-- 181 exact functions/22,739 bytes:8 normal COFF and173 linked PE.
-- Origins:90 authored,314 indeterminate,10 exclusions,1,683 pending.
+- 2,109 candidates;431 reviewed boundaries;333 source mappings.
+- 189 exact functions/22,869 bytes:8 normal COFF and181 linked PE.
+- Origins:90 authored,327 indeterminate,12 exclusions,1,680 pending.
 - Direct Ghidra/scripts; no Factory MCP/REA. VC9 RTM21022/SDK6.0A.
 - Commit/push authorized; prefix `gpt-6.1-sol: `.
 
-Latest checkpoint adds16 complete mappings/5,896 target bytes, including full
-state4230 and transition561 source. Seven primary-TU owners close294 bytes/14
-fields;13 new origin reviews stay indeterminate. See
+Latest checkpoint adds14 complete mappings/373 target bytes and8 exact primary
+owners/130 bytes/one field. Fifteen new origin reviews yield13 indeterminate and
+two independently identified VC9 CRT floor exclusions. Pair673 is now673/352;
+shared Hermite product trees are corrected. See
+[SECONDARY_PAIR_MATH](SECONDARY_PAIR_MATH.md),
 [SECONDARY_ACTOR_STATE](SECONDARY_ACTOR_STATE.md),
-[SECONDARY_ACTOR](SECONDARY_ACTOR.md), [SECONDARY_LIFETIME](SECONDARY_LIFETIME.md),
-[SECONDARY_PROGRAM](SECONDARY_PROGRAM.md), [SECONDARY_SCRIPT](SECONDARY_SCRIPT.md).
+[SECONDARY_ACTOR](SECONDARY_ACTOR.md), [SECONDARY_LIFETIME](SECONDARY_LIFETIME.md).
 
 ## Current actor source and evidence
 
@@ -28,7 +29,8 @@ fields;13 new origin reviews stay indeterminate. See
   eight IDs/tracking/flash, mesh vertices/colors/normalization/sine and timers.
 - Initial4023/3510 has EAX receiver/frame100. Real support restores native stack
   receiver/frame92,4055/3295. Full frame body, separate sound branches and counter
-  support give4177/3219. All64 direct-call target multiplicities,3 callbacks and5
+  support give4177/3219; actual pair/math definitions yield current4161/3261. All64
+  direct-call target multiplicities,3 callbacks and5
   returns agree independently. This does not prove exactness/runtime. No prefix
   or simplified-loop replacement, forced frame/register, or precision shortcut.
 - Physical actor is base103C+state163C=2678. State ctor410440/126 is an empty
@@ -36,8 +38,9 @@ fields;13 new origin reviews stay indeterminate. See
   then clears state again. Defaults24/32 are verified. New source fields expose
   script-pointer slots, hit sizes, flash, mesh limit/color/phases and callbacks.
 - Motion18 is speed/angular increment selected by flags;1C is angle. Advance75
-  exactly calls actual FSINCOS SetPolar30 and Normalize145. FSINCOS/quantizer99
-  remain source-open. Compose215 and rotation86 contracts are fully reviewed.
+  exactly calls actual FSINCOS SetPolar30 and Normalize145. FSINCOS30 remains
+  source-open. Quantizer99/rotation86 now have complete source88/74 and82/73;
+  floor486590 is independently identified VC9 CRT. Compose215 stays non-exact.
 - ClearMissingAnimationId456520/21 really returns the VM pointer: native state
   caller immediately dereferences VM3B0. Validate419A20/30 instead returns full
   integer0/1. Independent renderer probe input prevents LTCG from removing the
@@ -76,11 +79,11 @@ fields;13 new origin reviews stay indeterminate. See
 
 | Owner | Full target | Source / normalized differences |
 | --- | ---: | --- |
-| Actor state411750 | 4230 | 4177 /3219; full actual support context |
+| Actor state411750 | 4230 | 4161 /3261; full actual support context |
 | Actor transition417B40 | 561 | 521 /497 |
 | Actor ctor4111C0 / EH dtor411480 | 699 /384 | 706 /442;390 /327 |
 | Actor deleting410420 / unlink410B60 | 31 /82 | 30 /20 aliases;79 /74 |
-| Actor position411610 / pair4191F0 | 309 /673 | 310 /269;632 /627 |
+| Actor position411610 / pair4191F0 | 309 /673 | 310 /269;673 /352 |
 | Compose459590 / timer459210 | 215 /96 | 208 /180;96 /6 |
 | VM release4562E0 / position456430 | 66 /110 | 64 /39;110 /45 |
 | VM position4563A0 / raw456330 | 132 /97 | 126 /104;86 /85 |
@@ -92,9 +95,12 @@ fields;13 new origin reviews stay indeterminate. See
 | Pop45DC80 / push45DC30 / end45DD20 | 83 /71 /41 | 83 /2;70 /15;41 /2 |
 | Start thread45D7A0 | 147 | 154 /61 |
 
-Continue complete large owners and codegen gaps. State's early pair receiver is
-EAX versus native EDI; real vector return ABI remains unknown. Do not invent a
-constructor to force sret. Inspect actual caller/member context. Position110
+Continue complete large owners and codegen gaps. Pair673 naturally recovers EDI,
+frame28 and six returns via initial snapshots, component publication and native
+Hermite product trees, but352 differences remain. Original vector return ABI is
+unknown; do not invent a constructor/frame/register. Quantizer99 and rotation86
+have frame-alignment/x87 scheduling gaps; do not force aligned locals. New pair
+preset copies19/8 each, duration4/1 and addition16/4 remain open. Position110
 moves marker comparison after stores; timer96 swaps FLD/FADD memory operands.
 Installer retains full-count insertion/publication/ignored extension result.
 
@@ -109,19 +115,20 @@ Audio aliases/factories/refill, VM11640, rendering and master374 remain open.
 
 ## Current proof and replay scope
 
-`.analysis/secondary-state-affected-cold.log` passes7 new+7 directly affected prior
-units across7 contexts. Fourteen independent fields/full bytes, unique primary-TU
-owners and current source/header/support/tool/producer/PE/MAP/PDB receipts pass.
-Actual receipt dependencies select affected actor lifetime/thread/pair
-families and ordinary adapter12; common script/stage/renderer headers unchanged. Source froze before
-cold builds; all jobs terminal. No full cohort, broad behavior or infrastructure
-suite. Initial13 passed; a stale declaration-header comment correction requires final14
-with fresh header receipts. Recompute dependencies next time, not a fixed replay.
+`.analysis/secondary-pair-math-cold-replay.log` passes8 new+19 directly affected
+prior units, across6 linked families. Full bytes, exhaustive fields, unique
+primary-TU owners and current source/header/support/tool/producer/PE/MAP/PDB
+receipts pass. Actual old receipt hashes select StageTween, StageScript,
+AnimationTween, SecondaryPairTween and SecondaryActorMotion dependencies.
+Source froze before the cold build; all jobs are terminal. No full cohort,
+broad behavior or infrastructure suite. Recompute dependencies next time.
 
-Private diagnostics: `build/probe-ltcg/SecondaryActorUpdate/complete-frame/`,
-`.analysis/secondary-state-final-open-diagnostics.json`, full-call audit,
-source-freeze, independent21-owner CFG/hash records and seven binding recipes.
-Topic doc lists reviews/experiments. Bytes/decompiler/tool/build artifacts remain
-private; DB unchanged. Refresh progress/check staged diff including new EOF,
-commit/push substantive work. Native product/runtime/portability remain later;
-goal stays active.
+Private diagnostics: `build/probe-ltcg/SecondaryActorUpdate/pair-math-full/`,
+`.analysis/secondary-pair-math-final-open-diagnostics.json`, full parent-call audit,
+source-freeze and vendor-floor identity/relocation/CodeView records. Direct
+read-only span reviews add11 missing pair entries and the225-byte CRT entry;
+419520 already existed. Floor's auto3113 span is corrected to64; fallback4870E4
+and unrelated helpers stay outside this reviewed vendor pair. No exact/source
+credit is awarded for the289-byte library identity. Bytes/decompiler/tool/build
+artifacts stay private; DB unchanged. Native product/runtime/portability remain
+later; goal stays active.

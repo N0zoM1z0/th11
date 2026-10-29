@@ -48,22 +48,27 @@ SecondaryVector2 *__stdcall StepSecondaryPairTween(SecondaryVector2 *result, Sec
             self->time.previous = static_cast<int>(static_cast<unsigned int>(duration) - 1);
             self->time.fraction = static_cast<float>(duration);
             self->duration = 0;
-            *result = self->mode == 7 ? self->initial : self->target;
+            if (self->mode != 7)
+            {
+                *result = self->target;
+                return result;
+            }
+            *result = self->initial;
             return result;
         }
     }
     if (self->mode == 7)
     {
-        SecondaryVector2 value = AddPair(self->initial, self->target);
-        self->initial = value;
-        *result = value;
+        SecondaryVector2 previous = self->initial;
+        result->x = self->initial.x = previous.x + self->target.x;
+        result->y = self->initial.y = previous.y + self->target.y;
         return result;
     }
     if (self->mode == 17)
     {
-        SecondaryVector2 value = AddPair(self->initial, self->control2);
-        self->initial = value;
-        *result = value;
+        SecondaryVector2 previous = self->initial;
+        result->x = self->initial.x = previous.x + self->control2.x;
+        result->y = self->initial.y = previous.y + self->control2.y;
         self->control2 = AddPair(self->control2, self->target);
         return result;
     }
@@ -71,8 +76,8 @@ SecondaryVector2 *__stdcall StepSecondaryPairTween(SecondaryVector2 *result, Sec
     {
         float progress = self->time.fraction / duration;
         double t = progress;
-        float a = static_cast<float>((t + t + 1.0) * (t - 1.0) * (t - 1.0));
-        float b = static_cast<float>(t * t * (3.0 - (t + t)));
+        float a = static_cast<float>((t - 1.0) * (t - 1.0) * (t + t + 1.0));
+        float b = static_cast<float>((3.0 - (t + t)) * (t * t));
         float c = static_cast<float>((1.0 - t) * (1.0 - t) * t);
         float d = static_cast<float>((t - 1.0) * t * t);
         *result = AddPair(AddPair(AddPair(ScalePair(self->initial, a),

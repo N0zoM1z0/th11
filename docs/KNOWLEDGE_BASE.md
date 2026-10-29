@@ -391,7 +391,7 @@ Useful boundary corrections:
  with private receiver/base-inlining/alias ownership still open.
 - Pair interpolation673 has complete source and observed output-buffer/returned
  pointer contract; original vector return ABI is open. POD register return was
- wrong; no invented constructor forces sret. Current632/627 stays non-exact.
+ wrong; no invented constructor forces sret. Current673/352 stays non-exact.
  Actual easing support closes factor39 naturally. Thread release45 leaves head
  untouched; reset64 preserves VM stack cursors/program. Both pass full proof.
 - Actor factory4108F0 owns621=545 code+3 alignment+20 table+53 selectors. Five
@@ -426,6 +426,36 @@ Useful boundary corrections:
   final selected cold proof; declaration-header comment correction adds adapter12. Thirteen new origin reviews remain indeterminate. See
   [SECONDARY_ACTOR_STATE](SECONDARY_ACTOR_STATE.md); no full-cohort replay.
 
+## Pair arithmetic, omitted leaves and vendor floor
+
+- Native pair673/vector883/fog737 form Hermite a as `(t-1)*(t-1)*(2*t+1)`;
+  the former factor-first tree was wrong. Natural source now preserves the
+  square-first products and all float rounding boundaries. Initial snapshots,
+  separate terminal paths and component publication recover EDI/frame28/six
+  returns and full673 bytes, with352 masked differences. No nominal return ABI,
+  constructor or frame is invented. Shared vector785/824 and fog536/643 stay open.
+- Twelve small pair/vector owners188 bytes receive complete source and boundary
+  review; eleven were missing candidates.419520 was already present and4195D0
+  is inside4195C0. Eight full primary owners130 bytes/one field pass strict cold
+  proof; two preset copies19/8, duration4/1 and addition16/4 stay non-exact.
+  Original class/header provenance stays indeterminate.4195F0/101 gets full
+  origin/boundary review;419660/31 is the existing cosine wrapper, not atan2.
+- Math source uses real VC9 float sin/cos/floor overloads and observed double100
+  scaling/float spills. Quantizer99->88/74 and rotation86->82/73 retain native
+  frame-alignment/x87 gaps. No forced aligned local or substitute FSINCOS is used.
+  Full4230 state caller with actual pair/math support is4161/3261; independent
+  audit again agrees on64 direct-call targets/multiplicities,3 callbacks,5 returns.
+- Vendor COFF symbols/CodeView lengths split automatic floor3113 into64-byte
+  dispatcher486590 and225-byte SSE owner4865D0. Complete289-byte text/10 fields
+  and80 constants replay identically. This establishes VC9 CRT library origin
+  and two exclusions, with no reconstruction/exact credit. Observed archive hash
+  is not falsely described as pre-pinned. Fallback4870E4 and unrelated runtime
+  helpers remain separate/open.
+- Twenty-seven selected cold replays pass:8 new and19 affected old units, selected
+  from actual source hashes. Fourteen new mappings cover373 target bytes;15 new
+  origin reviews are13 indeterminate and2 library exclusions. No full cohort or
+  routine behavioral suite. See [SECONDARY_PAIR_MATH](SECONDARY_PAIR_MATH.md).
+
 ## Topic index
 
 | Work | Evidence and remaining differences |
@@ -441,6 +471,7 @@ Useful boundary corrections:
 | Secondary lifetime, counters and large actor owners | [SECONDARY_LIFETIME](SECONDARY_LIFETIME.md) |
 | Actor construction/destruction, pair interpolation and source contexts | [SECONDARY_ACTOR](SECONDARY_ACTOR.md) |
 | Complete actor state, transitions, motion and VM return contracts | [SECONDARY_ACTOR_STATE](SECONDARY_ACTOR_STATE.md) |
+| Pair arithmetic, omitted vector leaves and vendor floor | [SECONDARY_PAIR_MATH](SECONDARY_PAIR_MATH.md) |
 | Streaming factories and lifetime ownership | [MUSIC_FACTORIES](MUSIC_FACTORIES.md) |
 | Device setup and buffer recreation | [AUDIO_DEVICE](AUDIO_DEVICE.md) |
 | Streaming buffers, decoder state and fades | [MUSIC_STREAM](MUSIC_STREAM.md) |

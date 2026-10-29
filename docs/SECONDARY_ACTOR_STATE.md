@@ -3,13 +3,13 @@
 Sixteen new complete source mappings cover5,896 target bytes, including the full
 4,230-byte state update and561-byte transition selector. Seven complete public
 primary-TU owners pass294 exact bytes and14 independently reviewed address fields.
-Thirteen new origin/boundary reviews remain indeterminate. Current totals are
+Thirteen new origin/boundary reviews remain indeterminate. Totals at that state checkpoint were
 2,097 candidates,416 reviewed boundaries,319 mappings and181 exact functions /
-22,739 bytes. Origins are90 authored,314 indeterminate,10 exclusions and1,683 pending.
+22,739 bytes. Origins then were90 authored,314 indeterminate,10 exclusions and1,683 pending.
 
 | Owner | Address | Full target bytes | Current result |
 | --- | --- | ---: | --- |
-| UpdateSecondaryActorState | 411750 | 4230 | Source4177/3219 diagnostic differences |
+| UpdateSecondaryActorState | 411750 | 4230 | Source4161/3261 diagnostic differences |
 | SelectSecondaryActorTransition | 417B40 | 561 | Source521/497 |
 | AdvanceSecondaryMotion | 459540 | 75 | Exact;2 fields |
 | ComposeSecondaryMotion | 459590 | 215 | Source208/180 |
@@ -62,17 +62,18 @@ current horizontal distances, then the tracking gate and lock-byte publication.
 Initial full source emits4023/3510 with a private EAX receiver and100-byte local
 frame. Actual script/actor/tween/animation/mesh/math support recovers the native
 stack receiver and92-byte frame naturally, giving4055/3295. Complete native frame
-logic, separate sound branches and real counter support give4177/3219. This final
-context has17 support TUs plus the primary; no forced register/frame, instruction
-bytes or padding. An independent audit finds all64 direct-call targets and their
+logic, separate sound branches and real counter support give4177/3219. Adding
+the real quantizer/rotation definitions and revised pair source gives current
+4161/3261, with18 support TUs plus the primary; no forced register/frame,
+instruction bytes or padding. An independent audit finds all64 direct-call targets and their
 multiplicities, three indirect callbacks and five returns agree. This supports
 source completeness, not byte equality or whole-game runtime closure.
 
-All3219 normalized differences and the full53-byte size gap remain open. Early
-gaps include pair-helper receiver allocation, then vector/motion/call scheduling
+All3261 normalized differences and the full69-byte size gap remain open. Early
+gaps include timer/call scheduling, vector/motion allocation
 and mesh arithmetic/control-flow layout. Original vector return ABI is open.
 Refreshed old diagnostics remain actor699->706/442, EH384->390/327, deleting31->
-30/20, unlink82->79/74, position309->310/269 and pair673->632/627. No EH/static/
+30/20, unlink82->79/74, position309->310/269 and pair673->673/352. No EH/static/
 split-owner context is cropped or exempted.
 
 ## Pointer-return correction and exact helpers
@@ -89,8 +90,10 @@ marker18 is null. Release66 marks04000000; raw position97 includes three native
 alignment bytes. Those full non-exact owners remain open.
 
 Advance75 retains the real FSINCOS-member and angle-normalizer boundaries.
-FSINCOS30 remains source-open; no sin/cos substitute is invented. Variable timer96
-remains96/6, differing only in near-one FLD/FADD scheduling. Compound and reversed
+FSINCOS30 remains source-open; no sin/cos substitute is invented. Quantizer99
+and rotation86 now have complete non-exact source; real VC9 CRT floor identity
+is independently established. See [SECONDARY_PAIR_MATH](SECONDARY_PAIR_MATH.md).
+Variable timer96 remains96/6, differing only in near-one FLD/FADD scheduling. Compound and reversed
 addition spelling do not close it; no precision/volatile/ABI workaround is used.
 Score51 preserves signed-truncated input/10, wrapped addition and signed cap at
 999999999, without lower clamping or overflow saturation. Direct global assignment

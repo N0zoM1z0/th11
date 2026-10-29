@@ -23,7 +23,7 @@ proof/gaps are recorded in [SECONDARY_ACTOR_STATE](SECONDARY_ACTOR_STATE.md).
 | SecondaryActorReferenceStatus | 410690 | 32 | Exact;1 field |
 | ReleaseSecondaryAuxiliaryThreads | 40FE80 | 45 | Exact;2 fields |
 | ResetSecondaryMainThread | 40FED0 | 64 | Exact;0 fields |
-| StepSecondaryPairTween | 4191F0 | 673 | Source632/627 |
+| StepSecondaryPairTween | 4191F0 | 673 | Source673/352 |
 | SecondaryPairTweenFactor | 419580 | 39 | Exact;1 field |
 
 ## Real member construction and complete actor lifetime
@@ -83,7 +83,9 @@ The target writes an eight-byte result buffer and returns its address. Source
 models that physical buffer contract directly; the original vector class's
 nominal return ABI remains unknown. The initial POD-by-value model incorrectly
 returned in EDX:EAX. No invented vector constructor forces a hidden result.
-The complete current632/627 candidate remains non-exact.
+The complete current673/352 candidate remains non-exact. Native product trees,
+initial snapshots and publication/terminal order are now preserved; see
+[SECONDARY_PAIR_MATH](SECONDARY_PAIR_MATH.md) for the current probes and CRT floor identity.
 
 Factor39 divides fraction by duration, rounds to float, dispatches only unsigned
 mode-1<=15 to the real easing function and returns float. Opaque easing support

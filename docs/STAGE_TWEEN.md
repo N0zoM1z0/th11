@@ -8,7 +8,7 @@ without embedded tables or external interior references.
 | Function | Address | Target bytes | Source bytes | State |
 | --- | --- | ---: | ---: | --- |
 | StepStageVectorTween | 00405240 | 883 | 785 | Non-exact |
-| StepStageFogTween | 004055D0 | 737 | 534 | Non-exact |
+| StepStageFogTween | 004055D0 | 737 | 536 | Non-exact |
 | StageVectorTweenFactor | 00405960 | 39 | 39 | Exact linked unit |
 | StageFogTweenFactor | 00405990 | 45 | 45 | Exact linked unit |
 | SubtractStageFog | 004059D0 | 61 | 59 | Non-exact |
@@ -48,12 +48,16 @@ new initial. Mode8 evaluates cubic Hermite interpolation. With float-rounded
 t=time.fraction/duration, the float coefficients are:
 
 ```
-a = (2*t+1)*(t-1)*(t-1)
-b = t*t*(3-2*t)
+a = (t-1)*(t-1)*(2*t+1)
+b = (3-2*t)*(t*t)
 c = (1-t)*(1-t)*t
 d = (t-1)*t*t
 result = ((initial*a + target*b) + control1*c) + control2*d
 ```
+
+Independent x87 review confirms that a forms the square before the last factor.
+The current full diagnostics are vector785/824 and fog536/643; neither is exact.
+See [SECONDARY_PAIR_MATH](SECONDARY_PAIR_MATH.md).
 
 Coefficient evaluation promotes t to double. Each coefficient, scaled vector
 and pairwise vector sum rounds to float at the observed boundary. Fog performs

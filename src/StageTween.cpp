@@ -105,8 +105,8 @@ static __forceinline CameraVector SubtractTweenVector(const CameraVector &left, 
 static __forceinline void HermiteCoefficients(float progress, float &a, float &b, float &c, float &d)
 {
     double t = progress;
-    a = static_cast<float>((t + t + 1.0) * (t - 1.0) * (t - 1.0));
-    b = static_cast<float>(t * t * (3.0 - (t + t)));
+    a = static_cast<float>((t - 1.0) * (t - 1.0) * (t + t + 1.0));
+    b = static_cast<float>((3.0 - (t + t)) * (t * t));
     c = static_cast<float>((1.0 - t) * (1.0 - t) * t);
     d = static_cast<float>((t - 1.0) * t * t);
 }

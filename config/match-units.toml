@@ -3519,3 +3519,117 @@ linkages = [
   { offset = 2, type = "DIR32", symbol = "?g_SecondaryCollisionCount@@3HA", target = 0x4a5754, addend = 0x0 },
   { offset = 14, type = "DIR32", symbol = "?g_SecondaryCollisionCount@@3HA", target = 0x4a5754, addend = 0x0 },
 ]
+
+[units.set-secondary-pair-mode]
+artifact_kind = "linked-pe"
+source = "src/SecondaryPairAccess.cpp"
+inputs = ["src/SecondaryPairAccess.hpp", "src/SecondaryActorState.hpp"]
+support_sources = ["probes/secondary-pair-access-context.cpp"]
+output_dir = "build/match-linked/SecondaryPairAccess"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryPairAccessProbe@20"
+functions = ["SetSecondaryPairMode"]
+symbol = "?SetSecondaryPairMode@@YGXPAUSecondaryPairTween@@H@Z"
+target_address = 0x4194a0
+size = 4
+linkages = []
+
+[units.set-secondary-pair-initial]
+artifact_kind = "linked-pe"
+source = "src/SecondaryPairAccess.cpp"
+inputs = ["src/SecondaryPairAccess.hpp", "src/SecondaryActorState.hpp"]
+support_sources = ["probes/secondary-pair-access-context.cpp"]
+output_dir = "build/match-linked/SecondaryPairAccess"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryPairAccessProbe@20"
+functions = ["SetSecondaryPairInitial"]
+symbol = "?SetSecondaryPairInitial@@YGXPAUSecondaryPairTween@@PBUSecondaryVector2@@@Z"
+target_address = 0x4194b0
+size = 11
+linkages = []
+
+[units.set-secondary-pair-target]
+artifact_kind = "linked-pe"
+source = "src/SecondaryPairAccess.cpp"
+inputs = ["src/SecondaryPairAccess.hpp", "src/SecondaryActorState.hpp"]
+support_sources = ["probes/secondary-pair-access-context.cpp"]
+output_dir = "build/match-linked/SecondaryPairAccess"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryPairAccessProbe@20"
+functions = ["SetSecondaryPairTarget"]
+symbol = "?SetSecondaryPairTarget@@YGXPAUSecondaryPairTween@@PBUSecondaryVector2@@@Z"
+target_address = 0x4194c0
+size = 12
+linkages = []
+
+[units.reset-secondary-pair-timer]
+artifact_kind = "linked-pe"
+source = "src/SecondaryPairAccess.cpp"
+inputs = ["src/SecondaryPairAccess.hpp", "src/SecondaryActorState.hpp"]
+support_sources = ["probes/secondary-pair-access-context.cpp"]
+output_dir = "build/match-linked/SecondaryPairAccess"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryPairAccessProbe@20"
+functions = ["ResetSecondaryPairTimer"]
+symbol = "?ResetSecondaryPairTimer@@YGXPAUSecondaryPairTween@@@Z"
+target_address = 0x419520
+size = 52
+linkages = [
+  { offset = 31, type = "DIR32", symbol = "?g_AnimationTimeScale@@3MA", target = 0x4a7948, addend = 0x0 },
+]
+
+[units.get-secondary-pair-duration]
+artifact_kind = "linked-pe"
+source = "src/SecondaryPairAccess.cpp"
+inputs = ["src/SecondaryPairAccess.hpp", "src/SecondaryActorState.hpp"]
+support_sources = ["probes/secondary-pair-access-context.cpp"]
+output_dir = "build/match-linked/SecondaryPairAccess"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryPairAccessProbe@20"
+functions = ["GetSecondaryPairDuration"]
+symbol = "?GetSecondaryPairDuration@@YGHPBUSecondaryPairTween@@@Z"
+target_address = 0x419560
+size = 4
+linkages = []
+
+[units.stop-secondary-pair-tween]
+artifact_kind = "linked-pe"
+source = "src/SecondaryPairAccess.cpp"
+inputs = ["src/SecondaryPairAccess.hpp", "src/SecondaryActorState.hpp"]
+support_sources = ["probes/secondary-pair-access-context.cpp"]
+output_dir = "build/match-linked/SecondaryPairAccess"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryPairAccessProbe@20"
+functions = ["StopSecondaryPairTween"]
+symbol = "?StopSecondaryPairTween@@YGXPAUSecondaryPairTween@@@Z"
+target_address = 0x419570
+size = 8
+linkages = []
+
+[units.subtract-secondary-pair]
+artifact_kind = "linked-pe"
+source = "src/SecondaryPairAccess.cpp"
+inputs = ["src/SecondaryPairAccess.hpp", "src/SecondaryActorState.hpp"]
+support_sources = ["probes/secondary-pair-access-context.cpp"]
+output_dir = "build/match-linked/SecondaryPairAccess"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryPairAccessProbe@20"
+functions = ["SubtractSecondaryPair"]
+symbol = "?SubtractSecondaryPair@@YGPAUSecondaryVector2@@PAU1@PBU1@1@Z"
+target_address = 0x4195b0
+size = 16
+linkages = []
+
+[units.scale-secondary-pair]
+artifact_kind = "linked-pe"
+source = "src/SecondaryPairAccess.cpp"
+inputs = ["src/SecondaryPairAccess.hpp", "src/SecondaryActorState.hpp"]
+support_sources = ["probes/secondary-pair-access-context.cpp"]
+output_dir = "build/match-linked/SecondaryPairAccess"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryPairAccessProbe@20"
+functions = ["ScaleSecondaryPair"]
+symbol = "?ScaleSecondaryPair@@YGPAUSecondaryVector2@@PAU1@PBU1@M@Z"
+target_address = 0x4195c0
+size = 23
+linkages = []

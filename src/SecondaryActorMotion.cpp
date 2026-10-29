@@ -1,8 +1,7 @@
 #include "SecondaryActorRuntime.hpp"
 #include "AngleMath.hpp"
 
-void __stdcall QuantizeSecondaryMotionPosition(SecondaryMotionView *self);
-void __stdcall RotateSecondaryVector(SecondaryVector2 *output, const SecondaryVector2 *input, float angle);
+#include "SecondaryMotionMath.hpp"
 
 void __stdcall AdvanceSecondaryMotion(SecondaryMotionView *self)
 {
