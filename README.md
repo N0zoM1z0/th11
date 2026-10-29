@@ -43,7 +43,9 @@ in [`docs/PROGRESS.md`](docs/PROGRESS.md). Start continuation at
 [`docs/RE_HANDOFF.md`](docs/RE_HANDOFF.md); the concise
 [`working knowledge`](docs/KNOWLEDGE_BASE.md) links the detailed topic records.
 
-The latest checkpoint closes the complete398-byte mesh deformation callback.
+The latest checkpoint recovers ASCII construction, initialization, destruction,
+missed callbacks and sprite binding. Three new exact owners add114 bytes; the
+998-byte mesh initializer also has a smaller codegen gap.
 Stage meshes, VM creation, the full stage interpreter, interpolation, stage
 update/drawing, ANM resources, rendering, text, input and file paths have varying
 levels of maintained source and exact proofs. Source presence, exact codegen and
@@ -52,6 +54,7 @@ full runtime and portability are open.
 
 | Current area | Details |
 | --- | --- |
+| ASCII lifecycle and sprite binding | [lifecycle](docs/ASCII_LIFECYCLE.md) |
 | Mesh effects and VM factory | [mesh](docs/STAGE_MESH.md), [effects](docs/MESH_EFFECTS.md), [factory](docs/ANIMATION_VM_FACTORY.md) |
 | Stage interpreter and interpolation | [script](docs/STAGE_SCRIPT.md), [tweens](docs/STAGE_TWEEN.md), [easing](docs/STAGE_EASING.md) |
 | Stage lifecycle/update/drawing | [lifecycle](docs/STAGE_LIFECYCLE.md), [update](docs/STAGE_UPDATE.md), [drawing](docs/STAGE_DRAWING.md) |

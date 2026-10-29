@@ -59,8 +59,9 @@ Useful boundary corrections:
   the native rhw-based induction pointer.
 - SquareMeshVmCallback: save the Y field address before each X sample to recover
   all398 bytes. Constant template scales avoid an unwanted aligned frame.
-- Column initialization: tracked source1022/498 diagnostic differences; retained
-  sample-first experiment998/269. The latter remains unpromoted and EH-bearing.
+- Column initialization: sample RNG before selecting each row address. Current
+  source recovers998 bytes/269 diagnostic differences instead of1022/498; EH
+  ownership and the remaining codegen are open.
 - ResetStageMesh: complete325-byte source still has11 x87 load/add differences
   at+243..248/+279..283. Source position-prefix copying avoids extra float stores.
 - Factory initialization: three fresh zero-vector returns recover171 bytes;
@@ -69,6 +70,11 @@ Useful boundary corrections:
 - Conditional-expression returns in tween factor getters preserve the final
   float rounding point. Double locals and assignment-only returns differ.
 - Vector tween mode7 uses old Z plus delta Z, not old Y.
+
+- ASCII lifecycle: the98-byte constructor really clears the full object after
+  constructing its two VMs, including its vptr. Missing callback entries4014C0
+  and4014D0 own9/7 bytes. Sprite binding writes four UV corners at70..8C;
+  interpreting those eight floats as two current/base rectangles is wrong.
 
 ## Topic index
 
@@ -79,6 +85,7 @@ Useful boundary corrections:
 | Stage lifecycle, updates and drawing | [STAGE_LIFECYCLE](STAGE_LIFECYCLE.md), [STAGE_UPDATE](STAGE_UPDATE.md), [STAGE_DRAWING](STAGE_DRAWING.md) |
 | Stage/ANM resources | [STAGE_RESOURCE](STAGE_RESOURCE.md), [ANIMATION_CHUNKS](ANIMATION_CHUNKS.md), [ANIMATION_TEXTURES](ANIMATION_TEXTURES.md), [pixel processing](ANIMATION_TRANSPARENT_PIXELS.md) |
 | Renderer and device | [RENDER_CAMERA](RENDER_CAMERA.md), [DEVICE_INITIALIZATION](DEVICE_INITIALIZATION.md), [RENDER_STATE_RESET](RENDER_STATE_RESET.md), [RUNTIME_SURFACES](RUNTIME_SURFACES.md) |
+| ASCII lifecycle and sprite binding | [ASCII_LIFECYCLE](ASCII_LIFECYCLE.md) |
 | Text | [TEXT_RESOURCES](TEXT_RESOURCES.md), [TEXT_DRAWING_COMPOSITE](TEXT_DRAWING_COMPOSITE.md), [OUTLINED_TEXT](OUTLINED_TEXT.md), [FORMATTED_TEXTURE_TEXT](FORMATTED_TEXTURE_TEXT.md) |
 | File/archive | [RESOURCE_FILES](RESOURCE_FILES.md), [SHARED_FILE](SHARED_FILE.md), [ARCHIVE_DECOMPRESSION](ARCHIVE_DECOMPRESSION.md) |
 | Callbacks, input, frame and startup | [CALLBACK_CHAIN](CALLBACK_CHAIN.md), [INPUT_POLLING](INPUT_POLLING.md), [FRAME_LOOP](FRAME_LOOP.md), [STARTUP_WINDOW](STARTUP_WINDOW.md) |

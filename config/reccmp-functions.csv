@@ -125,3 +125,9 @@ InitializeSquareMeshEffect,0x00407BB0,function
 SquareMeshVmCallback,0x00408070,function
 QueueMeshEffectSound,0x0044A1E0,function
 CreatePositionedAnimationVmId,0x00455B10,function
+AsciiManagerConstructor,0x00401000,function
+InitializeAsciiManager,0x00401080,function
+AsciiManagerDestructor,0x00401210,function
+AsciiManagerDrawCallback,0x004014C0,function
+AsciiManagerOverlayCallback,0x004014D0,function
+BindAnimationSprite,0x0044AB40,function

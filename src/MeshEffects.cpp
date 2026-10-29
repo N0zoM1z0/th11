@@ -89,6 +89,14 @@ static __forceinline void AddMeshEffectJitter(float &coordinate)
     coordinate += value;
 }
 
+template<int Scale>
+static __forceinline void AddMeshEffectSample(float &coordinate, unsigned int sample)
+{
+    float value = static_cast<float>(static_cast<float>(sample) * (2.0 / 4294967296.0) - 1.0);
+    value = static_cast<float>(value * static_cast<double>(Scale));
+    coordinate += value;
+}
+
 static __forceinline void SetMeshEffectTimer(StageTimerView &timer, int value)
 {
     if (!(timer.flags & 1))
@@ -172,10 +180,14 @@ int __stdcall InitializeColumnMeshEffect(MeshEffectControllerView *self)
     CameraVector *position = self->mesh->positions;
     for (int column = 0; column < self->mesh->columns; ++column, ++position, ++vertex)
     {
-        AddMeshEffectJitter<4>(position->x);
-        AddMeshEffectJitter<4>(position[self->mesh->columns].x);
-        AddMeshEffectJitter<4>(position[self->mesh->columns * 2].x);
-        AddMeshEffectJitter<4>(position[self->mesh->columns * 3].x);
+        unsigned int sample = RandomNext32(&g_TextRandomState);
+        AddMeshEffectSample<4>(position->x, sample);
+        sample = RandomNext32(&g_TextRandomState);
+        AddMeshEffectSample<4>(position[self->mesh->columns].x, sample);
+        sample = RandomNext32(&g_TextRandomState);
+        AddMeshEffectSample<4>(position[self->mesh->columns * 2].x, sample);
+        sample = RandomNext32(&g_TextRandomState);
+        AddMeshEffectSample<4>(position[self->mesh->columns * 3].x, sample);
         vertex[self->mesh->columns].color = column < self->mesh->columns - 1 ? 0xffff8080 : 0xffffffff;
         vertex[self->mesh->columns * 2].color = column < self->mesh->columns - 1 ? 0xffff8080 : 0xffffffff;
     }

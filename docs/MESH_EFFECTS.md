@@ -10,7 +10,7 @@ There are no embedded tables or external interior references in these owners.
 | Function | Address | Target bytes | Current source | State |
 | --- | --- | ---: | ---: | --- |
 | UpdateMeshEffectSpellState | 4068C0 | 91 | 91 | Exact |
-| InitializeColumnMeshEffect | 406920 | 998 | 1,022 | Non-exact; EH |
+| InitializeColumnMeshEffect | 406920 | 998 | 998 | Non-exact; EH |
 | InitializeSquareMeshEffect | 407BB0 | 342 | 343 | Non-exact; EH |
 | SquareMeshVmCallback | 408070 | 398 | 398 | Exact |
 | QueueMeshEffectSound | 44A1E0 | 125 | 126 | Non-exact |
@@ -97,20 +97,24 @@ cold-replayed only these two units, both passing.
 The context also supplies independent positioned-factory, sound and RNG inputs.
 No behavioral/failure/random regression suite is part of this work.
 
-## Retained next experiment
+## Current column experiment
 
-The checked-in column initializer remains1022 bytes/498 diagnostic differences.
-An unpromoted source form samples RNG before selecting each destination address:
-`.analysis/column-sample-first.cpp` gives998 bytes/269 differences and retains
-the exact callback. Its explicit-sample and argument-expression forms produce
-the same result. These are diagnostics, not new exact credit. The source, log,
-full-owner JSON and assembly remain private; obsolete compiled variants were
-removed. Reproduce if useful with:
+The maintained column initializer now samples RNG before selecting each row's
+position address. The prior coordinate-reference form selected the destination
+before RNG; it produced1,022 bytes/498 diagnostic differences. The promoted
+sample-first form produces the complete998-byte owner with269 diagnostic
+differences in the current canonical family. Sampling is explicit and the
+conversion/rounding/scaling helper remains natural C++. Four samples still
+perturb the four row X values in their original order.
 
-```bash
-scripts/repo-python .analysis/probe-effect-source.py .analysis/column-sample-first.cpp column-sample-first
-```
+Current evidence is `.analysis/column-promoted-diagnostic.json`, read from the
+cold-rebuilt MeshEffects family. The older private
+`.analysis/column-sample-first.cpp` probe independently reaches the same result.
+This is a codegen improvement, not exact credit. The remaining differences
+include a20-byte versus native24-byte local frame and positioned-ID
+argument/return placement. Initializer EH ownership remains open.
 
-The next concrete differences include a20-byte versus native24-byte local frame
-and positioned-ID argument/return placement. Do not introduce padding for the
-frame gap. The initializers' EH ownership remains open.
+Only the directly affected `update-mesh-effect-spell-state` and
+`square-mesh-vm-callback` exact units were cold-replayed for this source change;
+both remain exact. The complete998-byte initializer was inspected from the same
+cold output; no full-cohort replay or behavioral regression suite was run.

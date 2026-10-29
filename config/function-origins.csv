@@ -1,8 +1,10 @@
 address,origin,subsystem,disposition,confidence,evidence_id
-0x00401000,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00401080,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00401210,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00401000,authored_game,AsciiManager,authored,high,ascii-lifecycle-origin-2026-10-29
+0x00401080,authored_game,AsciiManager,authored,high,ascii-lifecycle-origin-2026-10-29
+0x00401210,authored_game,AsciiManager,authored,high,ascii-lifecycle-origin-2026-10-29
 0x004014A0,authored_game,AsciiManager,authored,high,ascii-lifetime-target-2026-10-23
+0x004014C0,authored_game,AsciiManager,authored,high,ascii-lifecycle-origin-2026-10-29
+0x004014D0,authored_game,AsciiManager,authored,high,ascii-lifecycle-origin-2026-10-29
 0x004014E0,authored_game,AsciiManager,authored,high,ascii-append-ghidra-review-20261023
 0x004015A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00401600,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
@@ -731,7 +733,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0044A900,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0044A9C0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0044AB00,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0044AB40,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0044AB40,unknown,AnimationSprite,indeterminate,unknown,ascii-lifecycle-origin-2026-10-29
 0x0044ACD0,authored_game,AnimationVm,authored,high,runtime-surfaces-animation-origin-review-20261023
 0x0044ADA0,unknown,AnimationVmFactory,indeterminate,unknown,scene-vm-factory-origin-20261028
 0x0044AE60,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

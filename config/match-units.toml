@@ -1574,3 +1574,55 @@ linkages = [
   { offset = 295, type = "DIR32", symbol = "__real@3ff0000000000000", target = 0x497e48, addend = 0x0 },
   { offset = 309, type = "DIR32", symbol = "__real@4020000000000000", target = 0x4981d0, addend = 0x0 },
 ]
+
+[units.ascii-manager-constructor]
+artifact_kind = "linked-pe"
+source = "src/AsciiLifecycle.cpp"
+inputs = ["src/AsciiLifecycle.hpp"]
+support_sources = ["probes/ascii-lifecycle-context.cpp", "src/StageLifecycle.cpp", "src/ChainRegistration.cpp", "src/AnimationVm.cpp", "src/AnimationDocument.cpp", "src/ErrorLog.cpp", "src/AnimationSpriteBinding.cpp"]
+output_dir = "build/match-linked/AsciiLifecycle"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AsciiLifecycleProbe@16"
+functions = ["AsciiManagerConstructor"]
+symbol = "??0AsciiManagerObject@@QAE@XZ"
+target_address = 0x401000
+size = 98
+linkages = [
+  { offset = 5, type = "DIR32", symbol = "??_7AsciiManagerObject@@6B@", target = 0x4938c8, addend = 0x0 },
+  { offset = 10, type = "REL32", symbol = "??0StageEmbeddedVm@@QAE@XZ", target = 0x402270, addend = 0x0 },
+  { offset = 21, type = "REL32", symbol = "??0StageEmbeddedVm@@QAE@XZ", target = 0x402270, addend = 0x0 },
+  { offset = 34, type = "REL32", symbol = "_memset", target = 0x46a720, addend = 0x0 },
+  { offset = 61, type = "DIR32", symbol = "?g_AsciiManager@@3PAUAsciiManagerObject@@A", target = 0x4a8d58, addend = 0x0 },
+]
+
+[units.ascii-manager-draw-callback]
+artifact_kind = "linked-pe"
+source = "src/AsciiLifecycle.cpp"
+inputs = ["src/AsciiLifecycle.hpp"]
+support_sources = ["probes/ascii-lifecycle-context.cpp", "src/StageLifecycle.cpp", "src/ChainRegistration.cpp", "src/AnimationVm.cpp", "src/AnimationDocument.cpp", "src/ErrorLog.cpp", "src/AnimationSpriteBinding.cpp"]
+output_dir = "build/match-linked/AsciiLifecycle"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AsciiLifecycleProbe@16"
+functions = ["AsciiManagerDrawCallback"]
+symbol = "?AsciiManagerDrawCallback@@YIHPAUAsciiManagerObject@@@Z"
+target_address = 0x4014c0
+size = 9
+linkages = [
+  { offset = 4, type = "REL32", symbol = "?DrawAsciiManager@@YGHPAUAsciiManagerObject@@H@Z", target = 0x401670, addend = 0x0 },
+]
+
+[units.ascii-manager-overlay-callback]
+artifact_kind = "linked-pe"
+source = "src/AsciiLifecycle.cpp"
+inputs = ["src/AsciiLifecycle.hpp"]
+support_sources = ["probes/ascii-lifecycle-context.cpp", "src/StageLifecycle.cpp", "src/ChainRegistration.cpp", "src/AnimationVm.cpp", "src/AnimationDocument.cpp", "src/ErrorLog.cpp", "src/AnimationSpriteBinding.cpp"]
+output_dir = "build/match-linked/AsciiLifecycle"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AsciiLifecycleProbe@16"
+functions = ["AsciiManagerOverlayCallback"]
+symbol = "?AsciiManagerOverlayCallback@@YIHPAUAsciiManagerObject@@@Z"
+target_address = 0x4014d0
+size = 7
+linkages = [
+  { offset = 2, type = "REL32", symbol = "?DrawAsciiOverlay@@YGHPAUAsciiManagerObject@@@Z", target = 0x401ce0, addend = 0x0 },
+]

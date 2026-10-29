@@ -124,3 +124,9 @@ InitializeSquareMeshEffect
 SquareMeshVmCallback
 QueueMeshEffectSound
 CreatePositionedAnimationVmId
+AsciiManagerConstructor
+InitializeAsciiManager
+AsciiManagerDestructor
+AsciiManagerDrawCallback
+AsciiManagerOverlayCallback
+BindAnimationSprite
