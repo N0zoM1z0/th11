@@ -39,8 +39,9 @@ block sizes 4, 5, 7, 8, 16, 32, 64; empty/small/odd/tail-boundary and larger
 buffers up to 1,024 bytes; zero, one-block, two-block and full limits;
 successful and failed allocation. Buffers, return pointers, ABI stack
 cleanup, and allocation/copy/free events agreed; guard bytes stayed intact.
-Private reproduction: `.analysis/check-byte-cipher.py`; results:
-`.analysis/byte-cipher-behavior.json`.
+The recorded results remain in `.analysis/byte-cipher-behavior.json`; the
+retired execution driver is removed. These cases are historical observations,
+not a required continuation suite.
 
 These diagnostics cover the stated inputs and shimmed library calls. They do
 not establish exact code generation, a complete native product, or completion

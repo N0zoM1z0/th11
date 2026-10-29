@@ -103,8 +103,9 @@ Target review files are `.analysis/ascii-drawing-review-next.txt`,
 `ascii-draw-code-review.txt`, `ascii-draw-native.asm`,
 `ascii-draw-table-review.json` and their direct-Ghidra attestation logs.
 Renderer dependency hypotheses are private `ascii-render-deps-next.c`.
-Compiler driver: `.analysis/probe-ascii-drawing.py`; initial/full independent
-contexts are retained under `build/probe-ltcg/ascii-drawing`.
+Initial/full diagnostic records are retained under
+`build/probe-ltcg/ascii-drawing`; private driver/code copies are removed.
+Current exact contexts are declared in `config/match-units.toml`.
 
 `probes/ascii-drawing-context.cpp` supplies independent manager/mode, sprite,
 format/variadic, renderer and camera inputs. Real appender, UV setter, flush

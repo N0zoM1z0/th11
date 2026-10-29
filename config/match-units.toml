@@ -4044,3 +4044,72 @@ linkages = [
   { offset = 3, type = "DIR32", symbol = "?g_SecondaryActorReferences@@3PAUSecondaryActorReferencesView@@A", target = 0x4a8eb4, addend = 0x0 },
   { offset = 18, type = "REL32", symbol = "?ResetSecondaryPlayerEmitters@@YGXPAUSecondaryDamageReferencesView@@@Z", target = 0x432cc0, addend = 0x0 },
 ]
+
+[units.refresh-secondary-player-emitters]
+artifact_kind = "linked-pe"
+source = "src/SecondaryPlayerControllerHelpers.cpp"
+inputs = ["src/SecondaryPlayerController.hpp", "src/SecondaryPattern.hpp"]
+support_sources = ["probes/secondary-player-controller-context.cpp", "src/SecondaryPlayerController.cpp", "src/SecondaryPlayerCallbacks.cpp", "src/StageTween.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryMotionMath.cpp", "src/StageMesh.cpp", "src/AngleMath.cpp", "src/AnimationImmediateDraw.cpp", "src/SecondaryDamageSupport.cpp", "src/SecondaryPatternDispatch.cpp", "src/SecondaryPattern.cpp", "src/Random.cpp", "src/SecondaryProjectileMath.cpp", "src/SecondaryProjectile.cpp", "src/ResourceFile.cpp", "src/SecondaryEmitterReset.cpp", "src/SecondaryEmitterAnimation.cpp", "src/AnimationVmFactory.cpp"]
+normal_support_sources = ["src/SecondaryPlayerCallbacks.cpp"]
+output_dir = "build/match-linked/SecondaryPlayerControllerHelpers"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryPlayerControllerProbe@16"
+functions = ["RefreshSecondaryPlayerEmitters"]
+symbol = "?RefreshSecondaryPlayerEmitters@@YGXPAUSecondaryDamageReferencesView@@@Z"
+target_address = 0x410610
+size = 54
+linkages = [
+]
+
+[units.secondary-player-aim-angle]
+artifact_kind = "linked-pe"
+source = "src/SecondaryPlayerControllerHelpers.cpp"
+inputs = ["src/SecondaryPlayerController.hpp", "src/SecondaryPattern.hpp"]
+support_sources = ["probes/secondary-player-controller-context.cpp", "src/SecondaryPlayerController.cpp", "src/SecondaryPlayerCallbacks.cpp", "src/StageTween.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryMotionMath.cpp", "src/StageMesh.cpp", "src/AngleMath.cpp", "src/AnimationImmediateDraw.cpp", "src/SecondaryDamageSupport.cpp", "src/SecondaryPatternDispatch.cpp", "src/SecondaryPattern.cpp", "src/Random.cpp", "src/SecondaryProjectileMath.cpp", "src/SecondaryProjectile.cpp", "src/ResourceFile.cpp", "src/SecondaryEmitterReset.cpp", "src/SecondaryEmitterAnimation.cpp", "src/AnimationVmFactory.cpp"]
+normal_support_sources = ["src/SecondaryPlayerCallbacks.cpp"]
+output_dir = "build/match-linked/SecondaryPlayerControllerHelpers"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryPlayerControllerProbe@16"
+functions = ["SecondaryPlayerAimAngle"]
+symbol = "?SecondaryPlayerAimAngle@@YGMPAUSecondaryDamageReferencesView@@PBUCameraVector@@@Z"
+target_address = 0x431d20
+size = 101
+linkages = [
+  { offset = 72, type = "DIR32", symbol = "__real@3fc90fdb", target = 0x497f90, addend = 0x0 },
+  { offset = 85, type = "REL32", symbol = "__CIatan2", target = 0x486c9a, addend = 0x0 },
+]
+
+[units.angle-to-secondary-player]
+artifact_kind = "linked-pe"
+source = "src/SecondaryPlayerControllerHelpers.cpp"
+inputs = ["src/SecondaryPlayerController.hpp", "src/SecondaryPattern.hpp"]
+support_sources = ["probes/secondary-player-controller-context.cpp", "src/SecondaryPlayerController.cpp", "src/SecondaryPlayerCallbacks.cpp", "src/StageTween.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryMotionMath.cpp", "src/StageMesh.cpp", "src/AngleMath.cpp", "src/AnimationImmediateDraw.cpp", "src/SecondaryDamageSupport.cpp", "src/SecondaryPatternDispatch.cpp", "src/SecondaryPattern.cpp", "src/Random.cpp", "src/SecondaryProjectileMath.cpp", "src/SecondaryProjectile.cpp", "src/ResourceFile.cpp", "src/SecondaryEmitterReset.cpp", "src/SecondaryEmitterAnimation.cpp", "src/AnimationVmFactory.cpp"]
+normal_support_sources = ["src/SecondaryPlayerCallbacks.cpp"]
+output_dir = "build/match-linked/SecondaryPlayerControllerHelpers"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryPlayerControllerProbe@16"
+functions = ["AngleToSecondaryPlayer"]
+symbol = "?AngleToSecondaryPlayer@@YGMPBUCameraVector@@@Z"
+target_address = 0x431d90
+size = 106
+linkages = [
+  { offset = 10, type = "DIR32", symbol = "?g_SecondaryActorReferences@@3PAUSecondaryActorReferencesView@@A", target = 0x4a8eb4, addend = 0x0 },
+  { offset = 77, type = "DIR32", symbol = "__real@3fc90fdb", target = 0x497f90, addend = 0x0 },
+  { offset = 90, type = "REL32", symbol = "__CIatan2", target = 0x486c9a, addend = 0x0 },
+]
+
+# This new callback has no established LTCG primary owner. Normal COFF proves
+# its complete seven bytes; original normal-COFF/LTCG TU identity remains unknown.
+[units.update-secondary-player-callback]
+artifact_kind = "coff"
+source = "src/SecondaryPlayerCallbacks.cpp"
+inputs = ["src/SecondaryPlayerController.hpp", "src/SecondaryPattern.hpp"]
+object = "build/match/SecondaryPlayerCallbacks.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc"]
+functions = ["UpdateSecondaryPlayerCallback"]
+symbol = "?UpdateSecondaryPlayerCallback@@YIHPAUSecondaryDamageReferencesView@@@Z"
+target_address = 0x431c50
+size = 7
+relocations = [
+  { offset = 2, type = "REL32", symbol = "?UpdateSecondaryPlayerController@@YGHPAUSecondaryDamageReferencesView@@@Z", target = 0x431070 },
+]

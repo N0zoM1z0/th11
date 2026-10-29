@@ -53,7 +53,7 @@ separate double x+32+192/y+16 operations, preserves the early renderer capture a
 calls eight actual emitter callbacks. Independent renderer probe input retains the
 existing draw API's receiver; a global-only context had specialized it away.
 
-## Full callback source and current diagnostics
+## Full callback source and checkpoint diagnostics
 
 | Owner | Address | Full target | Current result |
 | --- | --- | ---: | --- |
@@ -109,8 +109,9 @@ earlier interleaved reads/stores. Real frame/fixed callers give849/733 in the fi
 context, against the full853-byte target. A real-only context with independent RNG
 gives859/690 before the final spelling; its private inputs still differ. No source
 signature is fabricated to demand EAX/ESI/EDI, and no padding fills the extent.
-The current diagnostic still lacks actual positional-sound support, making that
-callee and independent RNG context concrete next experiments for spawn.
+Later actual positional-sound support produces846/733; real-only with independent
+RNG produces856/690. Both remain non-exact. The Sound experiment is completed,
+not an untried next step; see [SECONDARY_EMITTER_RESET](SECONDARY_EMITTER_RESET.md).
 
 Selection branch order and a local timer reference improve frame/update diagnostics.
 Renderer capture/field-iterator variants keep the full target extent open; no inert
@@ -124,11 +125,17 @@ and original TU ownership remain separate from normalized diagnostic similarity.
 Reset432CC0 owns2508=2457 code+3 alignment+two six-entry tables through43368B.
 The sparse2442-byte body omits15 internal alignment bytes. Both indexed jumps,
 all12 table targets,696 instructions and the return are independently checked;
-all twelve apparent foreign case refs are owned table data. The complete source
-remains open. Power/max gates, VM release/signal/create, six configuration layouts,
+all twelve apparent foreign case refs are owned table data. Complete maintained
+source now exists and remains non-exact at2444/1967; see
+[SECONDARY_EMITTER_RESET](SECONDARY_EMITTER_RESET.md). Power/max gates,
+VM release/signal/create, six configuration layouts,
 fixed-point values, focus, callbacks, slot and eight refresh writes are reviewed.
 
-Other complete new reviews cover render130, loader162, player-relative angles101/106,
+Later controller work closes both player-relative angles101/106 and refresh54,
+and recovers update/draw callbacks431C50/7 and431C60/10; see
+[SECONDARY_PLAYER_CONTROLLER](SECONDARY_PLAYER_CONTROLLER.md).
+
+The reviews at this checkpoint cover render130, loader162, player-relative angles101/106,
 rectangle collision366, aim callback4337A0/12 and nine missing initializer/target/
 timer entries. All16 origins remain indeterminate. Their game/format/math roles
 cannot establish original game versus reused-library authorship.
@@ -145,7 +152,7 @@ existing emitter helpers: every direct-call target/multiplicity and indirect-cal
 count agrees. Return counts are recorded separately; this audit grants no exact
 credit to the remaining codegen gaps.
 
-## Selected proof
+## Historical selected proof
 
 Eight new and ten affected old exact units are selected from actual current receipt
 dependencies. The old affected families are SecondaryDamageSupport,

@@ -57,7 +57,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00406260,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00406440,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004064F0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00406510,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00406510,unknown,SecondaryPlayerController,indeterminate,unknown,secondary-controller-callee-origin-2026-10-29
 0x00406720,unknown,SecondaryDamage,indeterminate,unknown,secondary-damage-origin-2026-10-29
 0x00406860,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004068C0,unknown,MeshEffects,indeterminate,unknown,mesh-effects-origin-20261028
@@ -116,11 +116,11 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0040AC60,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0040ADC0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0040AE90,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0040AF90,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0040AF90,unknown,SecondaryPlayerController,indeterminate,unknown,secondary-controller-callee-origin-2026-10-29
 0x0040B0E0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0040B210,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0040B3A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0040B5C0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0040B5C0,unknown,SecondaryPlayerController,indeterminate,unknown,secondary-controller-callee-origin-2026-10-29
 0x0040B830,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0040B8A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0040B900,unknown,SecondaryScriptVm,indeterminate,unknown,secondary-script-origin-2026-10-29
@@ -216,7 +216,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00410550,unknown,SecondaryScriptVm,indeterminate,unknown,secondary-extension-origin-2026-10-29
 0x00410560,unknown,SecondaryScriptVm,indeterminate,unknown,secondary-extension-origin-2026-10-29
 0x00410580,unknown,SecondaryLifetime,indeterminate,unknown,secondary-lifetime-origin-2026-10-29
-0x00410610,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00410610,unknown,SecondaryPlayerController,indeterminate,unknown,secondary-controller-callee-origin-2026-10-29
 0x00410660,unknown,SecondaryActor,indeterminate,unknown,secondary-actor-origin-2026-10-29
 0x00410690,unknown,SecondaryActor,indeterminate,unknown,secondary-actor-origin-2026-10-29
 0x00410720,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
@@ -374,7 +374,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00423530,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00423550,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004240F0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00424230,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00424230,unknown,SecondaryPlayerController,indeterminate,unknown,secondary-controller-callee-origin-2026-10-29
 0x00424590,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004245E0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00424640,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
@@ -410,8 +410,8 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00424EE0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00424F30,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00424FB0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00424FE0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00425040,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00424FE0,unknown,SecondaryPlayerController,indeterminate,unknown,secondary-controller-callee-origin-2026-10-29
+0x00425040,unknown,SecondaryPlayerController,indeterminate,unknown,secondary-controller-callee-origin-2026-10-29
 0x004250B0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00425370,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00425850,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
@@ -488,10 +488,10 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0042BFE0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042C150,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042C620,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0042C760,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0042C760,unknown,SecondaryPlayerController,indeterminate,unknown,secondary-controller-callee-origin-2026-10-29
 0x0042C880,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042C8D0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0042D560,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0042D560,unknown,SecondaryPlayerController,indeterminate,unknown,secondary-controller-callee-origin-2026-10-29
 0x0042D6B0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042D7F0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042D850,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
@@ -509,10 +509,12 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00430010,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004301B0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00430270,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00430290,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00430290,unknown,SecondaryPlayerController,indeterminate,unknown,secondary-controller-callee-origin-2026-10-29
 0x00430E50,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00431070,unknown,SecondaryPattern,indeterminate,unknown,secondary-pattern-origin-2026-10-29
 0x00431BC0,unknown,SecondaryPatternCallbacks,indeterminate,unknown,secondary-pattern-caller-origin-2026-10-29
+0x00431C50,unknown,SecondaryPlayerController,indeterminate,unknown,secondary-controller-callee-origin-2026-10-29
+0x00431C60,unknown,SecondaryPlayerController,indeterminate,unknown,secondary-controller-callee-origin-2026-10-29
 0x00431C70,unknown,SecondaryPatternCallbacks,indeterminate,unknown,secondary-pattern-caller-origin-2026-10-29
 0x00431D20,unknown,SecondaryPatternCallbacks,indeterminate,unknown,secondary-pattern-caller-origin-2026-10-29
 0x00431D90,unknown,SecondaryPatternCallbacks,indeterminate,unknown,secondary-pattern-caller-origin-2026-10-29
@@ -521,7 +523,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00432070,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004322F0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00432520,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x004327D0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x004327D0,unknown,SecondaryPlayerController,indeterminate,unknown,secondary-controller-callee-origin-2026-10-29
 0x00432A90,unknown,SecondaryDamage,indeterminate,unknown,secondary-damage-origin-2026-10-29
 0x00432CC0,unknown,SecondaryPatternCallbacks,indeterminate,unknown,secondary-pattern-caller-origin-2026-10-29
 0x00433690,unknown,SecondaryPattern,indeterminate,unknown,secondary-pattern-origin-2026-10-29

@@ -123,8 +123,9 @@ Private target evidence: `.analysis/quad-render-review.txt`,
 `quad-owners-review.json` and their direct-Ghidra attestation logs. Floor
 callee hypotheses remain private `quad-floor-callee.c`.
 
-Compiler probes: `.analysis/probe-animation-quad.py` and
-`probe-quad-source.py`; output variants under `build/probe-ltcg/animation-quad`.
+Compiler diagnostic records remain under `build/probe-ltcg/animation-quad`.
+Rebuild current units through `config/match-units.toml`; retired private drivers
+and code copies are removed.
 Source profiles stay VC9 RTM `/TP /O2 /Ob1 /Gy /MT /Isrc /EHsc /GL`.
 `probes/animation-quad-context.cpp` supplies independent owners, corners,
 colors and floor input, with real `RenderBatch.cpp` support. The linked image

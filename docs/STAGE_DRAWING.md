@@ -77,7 +77,7 @@ retains the original bits without aliasing violations or instruction tricks.
 
 ## Reproduction and limits
 
-Private `.analysis/probe-stage-drawing.py` cold-builds the maintained public
+The canonical configuration cold-builds the maintained public
 primary TU with pinned VC9, `/O2 /Ob1 /Gy /MT /EHsc /GL`, and the two-stage
 caller `probes/stage-drawing-context.cpp`. Existing render-batch, perspective
 camera and runtime-fog source supply their real compiled call contracts.

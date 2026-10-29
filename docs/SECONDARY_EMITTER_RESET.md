@@ -125,3 +125,7 @@ callers. It yields846/733; the real-only context with independent RNG yields
 856/690. Neither closes that owner, and neither speculative source variant is
 adopted. Further work should use the root's concrete call-merging/counter gaps
 and remaining real positioned factory callers, preserving full extents.
+
+The later [controller checkpoint](SECONDARY_PLAYER_CONTROLLER.md) supplies full
+controller2888 source, real chain callbacks and exact refresh/angle helpers.
+Controller source is complete but non-exact; it is no longer source-open.

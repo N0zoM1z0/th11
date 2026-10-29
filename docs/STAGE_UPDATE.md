@@ -109,7 +109,7 @@ indices/strides and null payloads are not sanitized.
 
 ## Code generation and remaining work
 
-Private `.analysis/probe-stage-update.py` cold-builds the public primary TU
+The maintained diagnostic context builds the public primary TU
 with VC9 RTM `/O2 /Ob1 /Gy /MT /EHsc /GL`. Its context includes the maintained
 fastcall callback, angle math and random source. The probe publishes the
 callback address to preserve its ordinary indirect-call contract; a direct-only

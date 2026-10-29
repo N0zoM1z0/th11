@@ -1,47 +1,49 @@
 # Local artifacts and cleanup
 
 Maintained C++, probes, ledgers, tooling and current documentation are tracked.
-Private targets, analysis state and generated binaries remain ignored. Start
-continuation at [RE_HANDOFF.md](RE_HANDOFF.md).
+Private targets, analysis state and generated binaries remain ignored. Start at
+[RE_HANDOFF.md](RE_HANDOFF.md); counts come from [PROGRESS.md](PROGRESS.md).
 
 | Path | Retention |
 | --- | --- |
 | `resources/th11.exe` | Keep the hash-bound original Japanese1.00a input |
-| `.tools/` | Keep pinned compiler/SDK, Ghidra/JDK links, dependencies and Wine state |
+| `.tools/` | Keep installed compiler/SDK, Ghidra/JDK links, dependencies and Wine state |
 | `ghidra-project/` | Keep the TH11 analysis database |
-| `build/match/`, `build/match-linked/` | Keep every current canonical artifact and receipt declared by match-units |
-| `build/toolchain-bootstrap/` | Keep historical compiler/linker smoke artifacts |
-| `.analysis/` | Keep native reviews, useful compiler observations, cold logs and current source probes |
-| `build/probe-ltcg/`, `build/probes/` | Experimental outputs; regenerate when pursuing a concrete byte gap |
-| Python caches | Regenerable |
+| `build/match/`, `build/match-linked/` | Keep current canonical artifacts and receipts declared by match-units |
+| `.analysis/` | Keep native/decompiler reviews, result records, current proof logs and cleanup audits; remove unused code variants/drivers |
+| `build/probe-ltcg/`, `build/probes/` | Disposable experimental binaries; retain useful diagnostic JSON/ASM/MAP/logs and regenerate binaries when needed |
+| Python bytecode caches | Regenerable |
 
-The2026-10-28 handoff cleanup removed825 files, about27.5 MiB: obsolete compiled
-experiments, old Factory UX fixtures,39 retired behavior/mutation/helper scripts,
-72 unused source snapshots, behavior reports, caches and35 unbound canonical
-auxiliary objects/libraries. The cleanup helper itself was also retired.
+## Latest cleanup:2026-10-30
 
-All435 protected target/database/canonical files were hashed before and after
-cleanup and remained identical. Current receipt-bound PE/MAP/PDB/object/anchor
-files were preserved; installed tools were outside the deletion scope. The
-private audit is `.analysis/handoff-cleanup-20261028.json`.
+Removed2047 ignored compiled/cache files and716 unused experiment-code files,
+freeing about219.0 MiB allocated space. The latter are private Python drivers,
+C/C++/header variants and generated trial anchor source. Three small current
+analysis drivers remain; maintained `src`, `probes` and public tools are retained.
+No code backups or compressed copies are created.
 
-Current exact artifacts include the newly completed398-byte callback. Only it
-and the affected91-byte status function were cold-replayed for this checkpoint.
-Cleanup itself did not trigger a full-cohort replay.
+All documents, logs, diagnostic JSON/ASM/MAP, native reviews, decompiler records
+and historical notes are retained. The binary cleanup verified1114 protected
+target/database/canonical files; code cleanup verified3154 protected document,
+record, target/database/canonical files. All hashes stayed identical during the
+respective deletion operations; installed toolchain verification passes.
 
-The next unpromoted column experiment remains in `.analysis/column-sample-first.cpp`
-with its log, full-owner diagnostic JSON and assembly. Its reusable compiler
-driver is `.analysis/probe-effect-source.py`; it can regenerate the deleted
-experimental binary using current canonical support objects. See
-[MESH_EFFECTS.md](MESH_EFFECTS.md) for the concrete gap and command.
+Current canonical files remain in `build/match`/`build/match-linked`. Trial
+binaries below `build/probe-ltcg` are removed while result records remain.
+Private audits are `.analysis/generated-trial-cleanup-20261030.json` and
+`.analysis/unused-code-cleanup-audit.json`. The earlier cleanup audit and
+[historical notes](archive/KNOWLEDGE_BASE_2026-10-30.md) are records, not build
+requirements or old code dependencies.
 
-Earlier knowledge narratives moved to
-[the historical archive](archive/KNOWLEDGE_BASE_2026-10-28.md). Old test counts and
-private paths there are records, not requirements to recreate retired suites.
-The concise [working knowledge](KNOWLEDGE_BASE.md) links active topic documents.
+## Reproduction and checks
 
-For later source changes, cold-replay affected exact units only, for example:
+Rebuild a concrete experiment from its retained `.analysis` driver/source when
+pursuing its byte gap. A diagnostic JSON or old binary does not establish current
+exactness; canonical acceptance requires current source/artifact receipts.
 
-```bash
-scripts/repo-python scripts/replay-exact-units.py --unit square-mesh-vm-callback --unit update-mesh-effect-spell-state
-```
+Cleanup itself requires checking the protected artifacts' identities. Source
+changes require cold-replaying only new/changed exact units and actual receipt
+dependencies. Neither operation calls for a full-cohort replay or reinstating
+retired broad behavior suites. For example, a controller support change affects
+the three linked controller-helper units; its unchanged standalone COFF callback
+receipt can be checked directly.

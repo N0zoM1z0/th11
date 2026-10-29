@@ -40,21 +40,13 @@ payloads, and generated build artifacts are private and never committed.
 
 Current reviewed boundaries, source mappings and exact-byte counts are generated
 in [`docs/PROGRESS.md`](docs/PROGRESS.md). Start continuation at
-[`docs/RE_HANDOFF.md`](docs/RE_HANDOFF.md); the concise
+[`docs/RE_HANDOFF.md`](docs/RE_HANDOFF.md); the
 [`working knowledge`](docs/KNOWLEDGE_BASE.md) links the detailed topic records.
 
-The latest checkpoint adds program/manager lifetime, real default virtual bodies,
-counter operations and an actor adapter:14 complete source mappings /355 target
-bytes,12 new exact owners /246 bytes. Thirty-six new origin reviews recover15
-omitted entries and independently identify two compiler EH entries. The complete
-4,230-byte actor update,699-byte construction and384-byte destruction are now
-reviewed; their source remains open. The513-byte SCPT installer and7,093-byte
-interpreter remain non-exact. Only12 new and16 affected prior units were replayed.
-Stage meshes, VM creation, the full stage interpreter, interpolation, stage
-update/drawing, ANM resources, rendering, text, input and file paths have varying
-levels of maintained source and exact proofs. Source presence, exact codegen and
-a runnable product remain separate claims. The Windows i386 production build,
-full runtime and portability are open.
+Maintained source covers large actor, damage, projectile, controller and emitter
+routines alongside complete byte-exact helpers. Source coverage and exact codegen
+remain separate; the current counts come from the generated ledgers above.
+The Windows i386 production build, full runtime and portability are open.
 
 | Current area | Details |
 | --- | --- |
@@ -63,6 +55,8 @@ full runtime and portability are open.
 | Secondary program installation and context selection | [program evidence](docs/SECONDARY_PROGRAM.md) |
 | Secondary extension parser and trace context | [extension evidence](docs/SECONDARY_EXTENSION.md) |
 | Secondary lifetime, counters and large actor owners | [lifetime evidence](docs/SECONDARY_LIFETIME.md) |
+| Secondary actor state, damage and projectiles | [state](docs/SECONDARY_ACTOR_STATE.md), [damage](docs/SECONDARY_DAMAGE.md), [projectiles](docs/SECONDARY_PROJECTILES.md) |
+| Player controller and emitter reset | [controller](docs/SECONDARY_PLAYER_CONTROLLER.md), [reset](docs/SECONDARY_EMITTER_RESET.md), [pattern callbacks](docs/SECONDARY_PATTERN_CALLBACKS.md) |
 | Streaming factories and lifetime ownership | [factory evidence](docs/MUSIC_FACTORIES.md) |
 | Device setup and buffer recreation | [device evidence](docs/AUDIO_DEVICE.md) |
 | Streaming buffers, decoder state and fades | [streaming evidence](docs/MUSIC_STREAM.md) |

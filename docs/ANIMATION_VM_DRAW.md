@@ -53,8 +53,8 @@ A small pinned-VC9 console check links the real CRT and calls `_frnd` on
 chop1/-1. Each mode remains unchanged across the calls. This resolves the
 specific C ABI/rounding-mode question; it is not a game/runtime regression
 suite or a general floating-point equivalence claim. Private evidence:
-`.analysis/frnd-library/identity.json`, `abi-check.log`, `check.cpp` and
-`run-check.py`. Compiler/library payloads and extracted objects stay private.
+`.analysis/frnd-library/identity.json`, `abi-check.log`. Unused check code/drivers were removed; their result records
+remain. Compiler/library payloads and extracted objects stay private.
 
 ## Submission order and unordered comparisons
 

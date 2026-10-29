@@ -108,8 +108,8 @@ conversion/rounding/scaling helper remains natural C++. Four samples still
 perturb the four row X values in their original order.
 
 Current evidence is `.analysis/column-promoted-diagnostic.json`, read from the
-cold-rebuilt MeshEffects family. The older private
-`.analysis/column-sample-first.cpp` probe independently reaches the same result.
+cold-rebuilt MeshEffects family. An earlier sampling-order probe independently reached the same result; its
+diagnostic record is retained and the unused code copy is removed.
 This is a codegen improvement, not exact credit. The remaining differences
 include a20-byte versus native24-byte local frame and positioned-ID
 argument/return placement. Initializer EH ownership remains open.

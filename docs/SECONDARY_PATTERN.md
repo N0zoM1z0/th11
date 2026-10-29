@@ -67,7 +67,7 @@ records and end7C90; prefix75CC is record+5C. See
 at75CC was the unproved assumption behind the earlier overlap restriction.
 
 Initial source735/731 retained out-of-line emitter/VM helpers. Ordinary inline
-physical accessors and the native two-list lookup produce824/745 in that earlier context. Current real-caller source849/733 also
+physical accessors and the native two-list lookup produce824/745 in that earlier context. The later real-caller source849/733 also
 snapshots the float3 before publication and uses the observed unsigned-to-float
 x87 conversion. Full
 private ABI/frame, unsigned-conversion constant storage, comparisons and register
@@ -81,7 +81,7 @@ output views do not assert an original constructor or aggregate-return ABI.
 
 | Owner | Address | Target bytes | Current result |
 | --- | --- | ---: | --- |
-| SpawnSecondaryProjectile | 433F90 | 853 | Source849/733; later real-caller context |
+| SpawnSecondaryProjectile | 433F90 | 853 | Real Sound846/733; real-only independent RNG856/690; non-exact |
 | GetSecondaryEmitter | 433F30 | 14 | Exact |
 | CopySecondaryEmitterId | 433F40 | 16 | Exact |
 | ConvertSecondaryIntegerPair | 433DB0 | 26 | Exact |
@@ -113,6 +113,9 @@ Controller431070 owns2,888 bytes:2,867 code, one NOP and five switch entries at
 431BA4..431BB7. All695 instructions/two returns are independently decoded.
 Every apparent foreign DATA reference into a case comes from this owned table;
 all five targets are actual instruction starts. The old2,867 count omitted21 bytes.
+Complete controller source now exists at2800/2285 and remains non-exact; aim101,
+inverse aim106 and refresh54 are exact. Real callbacks431C50/7 and431C60/10
+are independently reviewed. See [SECONDARY_PLAYER_CONTROLLER](SECONDARY_PLAYER_CONTROLLER.md).
 
 Other complete new reviews cover callback433690/12, orbit4336A0/255,
 aim4337B0/495, spawn433F90/853 and replay initialization4356E0/1380. The last
@@ -147,8 +150,10 @@ No full cohort or routine behavioral suite is run.
 Private evidence lives under.analysis/secondary-pattern-* and
 build/probe-ltcg/SecondaryPattern, SecondaryIntegerPair and the affected families.
 Native bytes, tool payloads, binaries, objects and decompiler output stay private.
-Canonical artifacts live under build/match-linked. Runtime/product/port work remains later.
+Canonical artifacts live under build/match-linked. Experimental binaries are
+regenerable and may have been pruned; diagnostic text is retained.
+Runtime/product/port work remains later.
 
 Later full caller/callback source, period/phase fields, containing emitter array,
-44 false-reference classifications and the current18-unit cold proof are recorded
+44 false-reference classifications and that checkpoint's18-unit cold proof are recorded
 in [SECONDARY_PATTERN_CALLBACKS](SECONDARY_PATTERN_CALLBACKS.md).
