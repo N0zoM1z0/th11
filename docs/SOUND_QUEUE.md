@@ -43,18 +43,18 @@ and exact context are unchanged. New view names do not establish data ownership.
 dispatcher's nonzero gate; its underlying device/interface type remains open.
 
 Music controller prefix fields include buffer pointer array4, unsigned count10,
-fade14/18/1C, active30, decoderC and cross-thread busy78. Decoder record90 has
-loop information at1C within a34-byte record. Size/offset assertions check the
+fade14/18/1C, active30, decoderC and cross-thread busy78. Decoder record90 has dataSize1C and loopStart18 within a34-byte record.
+The earlier loop label at1C was corrected by full decoder review; see
+[MUSIC_STREAM](MUSIC_STREAM.md). Size/offset assertions check the
 observed layouts. Its slot0 scalar-deleting destructor is modeled by a real
 virtual destructor declaration and virtual delete call, without an invented
 implementation.
 
-The pinned SDK payload lacks dsound.h. `SoundBuffer.hpp` therefore models the
-observed COM vtable directly: Play30, SetCurrentPosition34, SetVolume3C,
-SetPan40 and Stop48, with correct stack receiver/arguments and HRESULT returns.
-Unobserved slots stay opaque and are never invoked. It embeds no target bytes
-and does not invent signatures for those slots. The125-byte volume proof
-independently covers the resulting real indirect call sequence.
+The pinned SDK payload lacks dsound.h. The initial `SoundBuffer.hpp` used a
+physical function-table view for observed calls. It now declares the full COM
+method order with accurate stdcall signatures and opaque unused pointees;
+[MUSIC_STREAM](MUSIC_STREAM.md) records the protocol comparison and current
+proofs. No library implementation or compiler payload was imported.
 
 ## Dispatcher state machine
 
@@ -151,8 +151,10 @@ Fifteen called helpers were independently reviewed in full: filename lookup
 decoder open45A4F0/353, refill45A6F0/570, first buffer45AA00/19,
 play45AA60/133, volume45AAF0/125, stop45AB70/129, pause45AC00/117,
 resume45AC80/77, worker update45AEE0/543, reset position45B100/223 and
-record configure45B2D0/130. Only getter and volume have body source here.
-The other declarations denote these real reviewed boundaries, with no fake
+record configure45B2D0/130. At this queue checkpoint only getter and volume had body source. The later
+[MUSIC_STREAM](MUSIC_STREAM.md) checkpoint implements most streaming/decoder
+helpers and supersedes those source-open states.
+Remaining declarations denote real reviewed boundaries, with no fake
 success implementations. All have full RET/reference/neighbor reviews and
 no embedded tables or external interior entries.
 

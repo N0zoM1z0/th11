@@ -15,14 +15,28 @@ struct SoundEffectQueue
 };
 struct SoundTrackRecord
 {
-    unsigned char unknown000[0x1c];
-    int loop;
-    unsigned char unknown020[0x34 - 0x20];
+    char name[16];
+    DWORD dataOffset, storedBytes;
+    int loopStart;
+    DWORD dataSize;
+    WORD formatTag, channels;
+    DWORD samplesPerSecond, bytesPerSecond;
+    WORD blockAlign, bitsPerSample, extraBytes, unknown032;
 };
 struct MusicDecoderView
 {
-    unsigned char unknown000[0x90];
+    unsigned char unknown000[8];
+    DWORD remaining;
+    unsigned char unknown00c[0x2c - 0xc];
+    DWORD dataSize;
+    unsigned char unknown030[0x78 - 0x30];
+    int closeOnStop, memoryMode;
+    const unsigned char *memoryStart, *cursor;
+    DWORD memorySize;
+    HANDLE file;
     SoundTrackRecord *record;
+    const char *filename;
+    DWORD savedFilePosition;
 };
 // Partial polymorphic prefix, observed scalar-deleting destructor in vtable slot0.
 struct MusicControllerView
@@ -35,7 +49,12 @@ struct MusicControllerView
     int fadeRemaining, fadeInitial, fadeEnabled;
     unsigned int playPriority, playFlags, unknown028, unknown02c;
     int active;
-    unsigned char unknown034[0x78 - 0x34];
+    int paused;
+    unsigned char unknown038[0x60 - 0x38];
+    DWORD lastPlayPosition, playProgress, nextWriteOffset;
+    int fillSilence;
+    DWORD notificationBytes;
+    unsigned int unknown074;
     volatile int busy;
 };
 struct SoundManagerQueueView
@@ -58,6 +77,10 @@ typedef char SoundQueueOffset[(offsetof(SoundManagerQueueView, effects) == 0x620
 typedef char SoundCommandOffset[(offsetof(SoundManagerQueueView, commands) == 0x1f88) ? 1 : -1];
 typedef char SoundFilenameOffset[(offsetof(SoundManagerQueueView, filenames) == 0x4108) ? 1 : -1];
 typedef char SoundRecordSize[(sizeof(SoundTrackRecord) == 0x34) ? 1 : -1];
+typedef char MusicRecordDataSizeOffset[(offsetof(SoundTrackRecord, dataSize) == 0x1c) ? 1 : -1];
+typedef char MusicRecordBitsOffset[(offsetof(SoundTrackRecord, bitsPerSample) == 0x2e) ? 1 : -1];
+typedef char MusicDecoderRecordOffset[(offsetof(MusicDecoderView, record) == 0x90) ? 1 : -1];
+typedef char MusicNotificationOffset[(offsetof(MusicControllerView, notificationBytes) == 0x70) ? 1 : -1];
 typedef char MusicDecoderOffset[(offsetof(MusicControllerView, decoder) == 0xc) ? 1 : -1];
 typedef char MusicBusyOffset[(offsetof(MusicControllerView, busy) == 0x78) ? 1 : -1];
 

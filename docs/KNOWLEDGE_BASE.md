@@ -190,10 +190,32 @@ Useful boundary corrections:
 249/195, still missing native8-byte stack alignment. Draw127 and allocator177
  retain full zero proofs. Source/body changes to other exact families were
  unnecessary; only these two affected old units were cold-replayed.
-- Latest:2,047 candidates,262 reviewed boundaries,206 source mappings and111
+- Audio queue checkpoint:2,047 candidates,262 boundaries,206 mappings and111
  exact functions/18,735 bytes. Eighteen further origin reviews are indeterminate.
  Three new audio plus two affected renderer owners pass complete cold replay;
  no full cohort or broad behavior suite ran. See the audio topic below.
+
+- Full decoder review corrects SoundTrackRecord+1C from the earlier loop label
+ to dataSize. LoopStart is+18; remaining is decoder+8, total size+2C, memory
+ base/cursor/extent80/84/88, file8C, record90, name94 and saved position98.
+ The queue still passes dataSize!=0 at its actual refill sites.
+- Streaming refill570 and notification543 now have complete source, including
+ lost-buffer restoration, lock/read/loop/silence/position paths that untyped
+ Ghidra COM calls had wrongly marked unreachable. Full raw control flow wins.
+ Restore calls twice per retry iteration. Decoder file read subtracts remaining
+ before ReadFile, ignores its BOOL return, and returns the actual S_OK.
+- Memory read snapshots cursor before clearing output count; this order matters.
+ Memory binder43 mutates record/base/cursor/size/mode then returns E_NOTIMPL;
+ that actual failure is retained. Four fade modes stop/complete differently
+ and do not all force a final volume. Seventeen new full cold proofs add1,185 bytes.
+- SoundBuffer now models the complete COM virtual method order, checked against
+ the installed public protocol declaration. No implementation or tool payload
+ was imported. Target RTTI names CSound/CStreamingSound establish names but
+ do not prove unmodified sample/library provenance; origins stay indeterminate.
+- Current candidates2,060, reviewed boundaries285, source mappings232 and exact
+ functions128/19,920 bytes. Thirteen omitted entries and23 new origin reviews
+ are maintained. Only17 new plus3 affected SoundQueue exact owners were replayed.
+ Refill545/500 and notification544/421 remain open, as do private read arguments.
 
 ## Topic index
 
@@ -204,6 +226,7 @@ Useful boundary corrections:
 | Stage lifecycle, updates and drawing | [STAGE_LIFECYCLE](STAGE_LIFECYCLE.md), [STAGE_UPDATE](STAGE_UPDATE.md), [STAGE_DRAWING](STAGE_DRAWING.md) |
 | Stage/ANM resources | [STAGE_RESOURCE](STAGE_RESOURCE.md), [ANIMATION_CHUNKS](ANIMATION_CHUNKS.md), [ANIMATION_TEXTURES](ANIMATION_TEXTURES.md), [pixel processing](ANIMATION_TRANSPARENT_PIXELS.md) |
 | Renderer quad construction/submission | [ANIMATION_QUAD](ANIMATION_QUAD.md), [ANIMATION_VM_DRAW](ANIMATION_VM_DRAW.md), [ANIMATION_PROJECTED_QUAD](ANIMATION_PROJECTED_QUAD.md), [ANIMATION_IMMEDIATE_DRAW](ANIMATION_IMMEDIATE_DRAW.md) |
+| Streaming buffers, decoder state and fades | [MUSIC_STREAM](MUSIC_STREAM.md) |
 | Audio command queue and streaming worker | [SOUND_QUEUE](SOUND_QUEUE.md) |
 | Animation interpolation, dispatch and pool allocation | [ANIMATION_TWEEN_DISPATCH](ANIMATION_TWEEN_DISPATCH.md) |
 | Renderer lifecycle and pixel helpers | [ANIMATION_RENDERER_LIFECYCLE](ANIMATION_RENDERER_LIFECYCLE.md) |

@@ -7,92 +7,89 @@ source, receipts and target bytes outrank historical notes.
 ## Checked-in state
 
 - Original Japanese TH11 v1.00a only; target identity: `config/target.toml`.
-- 2,047 candidates;262 reviewed boundaries,206 source-present mappings.
-- 111 exact functions /18,735 bytes:8 normal COFF and103 linked PE.
-- Origins:90 authored,163 reviewed indeterminate,7 exclusions,1,787 pending.
+- 2,060 candidates;285 reviewed boundaries,232 source-present mappings.
+- 128 exact functions /19,920 bytes:8 normal COFF and120 linked PE.
+- Origins:90 authored,186 reviewed indeterminate,7 exclusions,1,777 pending.
 - Direct local scripts/Ghidra; no Factory MCP or REA. Pinned VC9 RTM/SDK6.0A.
 - Commit prefix: `gpt-6.1-sol: `. All dirty work belongs to this effort.
 
-Latest checkpoint adds five complete source mappings/1,932 target bytes:
-audio dispatcher1,460, streaming worker177, enqueue151, getter19 and volume125.
-Three complete cold exact proofs add453 bytes (177/151/125). Eighteen further
-boundary/origin reviews remain indeterminate. See [SOUND_QUEUE.md](SOUND_QUEUE.md).
+Latest checkpoint adds26 complete source mappings/3,230 target bytes, including
+refill570 and streaming update543. Seventeen complete cold exact proofs add1,185
+bytes, including decoder reset223/open164/configure130/pause117/restore93 and
+four fades70/51/51/57. Thirteen missing entries recovered;23 new boundary/origin
+reviews plus eight earlier owners rechecked. All remain indeterminate. See
+[MUSIC_STREAM.md](MUSIC_STREAM.md).
 
-44A340 is audio code, not ANM despite neighboring bind functions. Its old1,428
-inventory omitted32 bytes of owned switch table44A8D4..44A8F3; full owner now
-1,460. Eight prior external-interior references originate in that table and
-are internal arms. Twelve CC bytes precede thread44A900. Ghidra's inferred two
-fastcall inputs are unused. Maintain this correction and all prior missing
-entry additions; never regenerate the old inventory over the CSVs. DB unchanged.
+Preserve all maintained missing-entry additions and boundary corrections. Audio
+dispatch44A340 owns1,460 including its32-byte table; initial inventory1,428 was
+wrong. No DB mutation or regeneration over CSVs. New RTTI inspection confirms
+CSound/CStreamingSound names, not original unmodified library/sample ownership.
 
-## Current gaps and next work
+## Current gaps and concrete next work
 
 | Function | Target bytes | Current source / diagnostic differences |
 | --- | ---: | --- |
-| ProcessSoundQueue,44A340 | 1,460 | 1,556 /1,085; includes full code/table |
-| FirstMusicBuffer,45AA00 | 19 | 19 /13; return-block layout |
+| RefillMusicBuffer,45A6F0 | 570 | 545 /500; receiver/private read arguments |
+| UpdateMusicStream,45AEE0 | 543 | 544 /421 |
+| ReadMusicDecoder,45B480 | 192 | 158 /179 |
+| ResetMusicPosition,45B100 | 223 | 220 /160 |
+| SelectAvailableMusicBuffer,45A990 | 100 | 100 /21 |
+| PlayMusicStream,45AA60 | 133 | 132 /20 |
+| StopMusicStream,45AB70 | 129 | 135 /129 |
+| ResumeMusicStream,45AC80 | 77 | 77 /62 |
+| IsAnyMusicBufferPlaying,45AD10 | 78 | 78 /13 |
+| ProcessSoundQueue,44A340 | 1,460 | 1,540 /1,077; full code/table |
+| FirstMusicBuffer,45AA00 | 19 | 19 /13 |
 | UpdateAnimationRenderer,455480 | 221 | 213 /170; native8-byte alignment absent |
-| UpdateOtherAnimationRenderer,455560 | 249 | 249 /195; same frame issue |
-| StepAnimationIntVectorTween,44E4B0 | 768 | 768 /345; frame48 versus native40 |
-| StepAnimationIntScalarTween,44E7C0 | 332 | 321 /263 |
-| StepAnimationFloatPairTween,44E910 | 673 | 615 /581 |
-| StepAnimationFloatScalarTween,44EBD0 | 331 | 326 /269 |
-| AnimationRendererConstructor,4526F0 | 2,601 | 2,601 /153; EH acceptance open |
-| AnimationRendererDestructor,453130 | 225 | 202 /73; EH/default-member inlining open |
-| InitializeFanAnimationVm,4520F0 | 805 | 805 /417 |
-| UpdateFanAnimationVm,452420 | 598 | 614 /436 |
-| DrawWorldAnimationVm,4513A0 | 1,036 | 1,038 /750 |
+| UpdateOtherAnimationRenderer,455560 | 249 | 249 /195; same alignment gap |
+| StepAnimationIntVectorTween,44E4B0 | 768 | 768 /345; frame48/native40 |
 
-1. Continue audio dispatcher and its real helpers. Full reviews now cover
-   lookup215, prepared load515/start291/close178, decoder open353, refill570,
-   play133/stop129/pause117/resume77, streaming update543, reset223 and configure130.
-   Only getter19 and volume125 have source among these15 helpers. Manager610
-   is currently a physical nonzero gate; its concrete interface type is open. Opaque helper
-   calling contexts, frame and scheduling still differ; never crop the switch
-   table or substitute fake successes. Command cursor advances during shift,
-   load repeat does not reset it, and shutdown wait retry cancels step increment.
-2. Worker177 needs actual CreateThread callback escape to retain unused context
-   and RET4. Its per-wake snapshot and two subsequent shared-root reads are
-   independently observed. A scoped volatile view expresses those worker reads;
-   making the whole global pointer volatile added unwanted dispatcher reads and
-   was rejected. Busy is a volatile physical view, not proof of original source
-   qualifiers. Effect volume uses cube; music volume uses square. Do not merge.
-3. Renderer-dispatch canonical support now includes real AnimationRendererLifecycle.
-   It improves update213/170 and249/195; draw127 and allocator177 stay exact.
-   Interpreter44B4B0/11,640 bytes is still source-open; actual8-byte alignment
-   context and full interpreter remain substantial work. Four operand helpers
-   near44B080/B2A0/B380/B400 also have following tables omitted by auto extents;
-   they were inspected but not yet granted reviewed ledger states or source.
-4. Continue the four interpolation bodies. Separate completion returns/value
-   snapshots and a four-float coefficient aggregate improve integer XYZ from
-   723/647 to768/345. Keep vector per-component truncation versus scalar final
-   truncation, mode7 velocity and17 position/velocity updates, and real float
-   coefficient/product rounding. Equal size gives no exact credit.
-5. Continue broader big paths: constructor/destructor EH with3/6 alignment bytes,
+1. Continue the two larger streaming bodies and read context. Native refill has
+   EBX receiver, two stack arguments/RET8; candidate keeps all three on stack.
+   Native read has ESI decoder/EAX bytes, destination/output on stack/RET8;
+   candidate additionally uses EDX/EBX and RET. A member-refill experiment gave
+   unchanged code and was rejected. A concrete next type probe is BYTE pointers
+   for locked/read data instead of void pointers, consistently in real callers;
+   never force register ABI or add dummy uses. Keep full contributions.
+2. Restore calls twice per iteration, with Sleep10 only on the first BufferLost
+   result. Refill/notification must retain all lost/loop/silence paths that
+   untyped Ghidra COM calls incorrectly dropped as unreachable. Early failure
+   lock lifetimes, ignored first position result, and zero-progress loops remain
+   native behavior; do not add cleanup, guards or fallback success.
+3. Corrected record1C is dataSize, not loop. Signed loopStart is18. Decoder8 is
+   remaining and2C total size; base/cursor/extent80/84/88, file8C, record90,
+   filename94 and saved98. Memory read snapshots cursor before clearing output.
+   File read decrements remaining before ReadFile, ignores BOOL and returnsS_OK.
+   Memory binder43 really publishes state then returnsE_NOTIMPL; it is exact.
+4. All21 COM methods are declared in normal C++ interface order; old explicit
+   function-table view is superseded. Public signatures were checked against
+   installed protocol declarations; no implementation/tool payload imported.
+   /Ob2 did not improve the big gaps and enlarged configure130 to265, so canonical
+   /Ob1 /GL remains. Real MusicStream support now belongs to SoundQueue context;
+   worker177/enqueue151/volume125 retain full zero proof.
+5. Lifetimes remain source-open: base ctor119/destructor133, streaming ctor48,
+   scalar-deleting destructor36 and plain destructor tail11. Keep ownership/EH
+   acceptance separate. Continue broader large paths too: interpreter44B4B0
+   /11,640 source-open; interpolation332/673/331, renderer ctor2601/dtor225 EH,
    fan805/598, world1036, state572, submission1112, billboard976, rotation571,
-   projected792, fog794/546 and dispatcher217/table. Paired FSINCOS4526A0 and
-   its EDX preservation remain open; no separate sin/cos implementation is used.
-   See prior topic records for actual fan and UV/storage behavior.
+   projected792, fog794/546 and dispatcher217/table. Four VM operand helper
+   tables near44B080/B2A0/B380/B400 need complete owner review before credit.
 
 ## Evidence and replay scope
 
-New family: `build/match-linked/SoundQueue`. Latest proof:
-`.analysis/sound-queue-and-renderer-affected-cold.log`: three new owners/453
-bytes/19 fields, plus exactly two affected old renderer owners/304 bytes/14
-fields. Complete public primary-TU PDB extents, current source/header/tool/
-producer/PE/MAP/PDB receipts and all bytes pass. No full cohort or broad
-behavior suite ran. Oracle/build infrastructure is unchanged.
+New family: `build/match-linked/MusicStream`. Latest proof:
+`.analysis/music-stream-twenty-affected-cold.log`:17 new owners/1,185 bytes/26
+fields plus exactly3 affected SoundQueue owners/453 bytes/19 fields. Complete
+public primary-TU PDB extents and current source/header/tool/producer/PE/MAP/PDB
+receipts pass with all bytes zero-difference. No other exact family, full cohort,
+broad behavior suite or infrastructure tests ran. Infrastructure is unchanged.
 
-New physical `SoundBuffer.hpp` models only observed COM calls because the pinned
-SDK payload lacks dsound.h; opaque slots are never invoked. It introduces no
-compiler payload or target bytes. Existing mesh-effect queue source/context
-and other canonical families did not change. Source froze before cold proof.
-
-Current diagnostics: `.analysis/sound-queue-scoped-shared-read.log` and
-`.analysis/renderer-dispatch-real-reclaim.log`; the audio topic links full
-Ghidra attestations, table references, independent bindings/extents and rejected
-probes. Trace44AB00 is a verified single RET; only the real boundary is declared,
-with no new stub source or exact credit. No tool job is live at checkpoint.
+Current diagnostics: `.analysis/music-stream-virtual-buffer.log` and
+`.analysis/sound-queue-stream-owner.log`. Topic doc links full mapped-text
+Ghidra attestations, explicit missing-entry spans, independent fields/extents,
+RTTI evidence, protocol-reference hash and rejected profile/member probes.
+Source froze before cold verification. Target, decompiler output, compiler
+payloads and build artifacts stay private. No tool job is live at checkpoint.
 
 ```bash
 git status --short --branch

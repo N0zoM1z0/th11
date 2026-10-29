@@ -81,7 +81,7 @@ int __cdecl ProcessSoundQueue()
                 else if (command->step == 5)
                 {
                     SoundBufferView *buffer = FirstMusicBuffer(g_MusicController);
-                    command->value = g_MusicController->decoder->record->loop != 0;
+                    command->value = g_MusicController->decoder->record->dataSize != 0;
                     if (FAILED(RefillMusicBuffer(g_MusicController, buffer, command->value)))
                         goto RemoveCommand;
                 }
@@ -111,7 +111,7 @@ int __cdecl ProcessSoundQueue()
             {
                 SoundBufferView *buffer = FirstMusicBuffer(g_MusicController);
                 ResetMusicPosition(g_MusicController);
-                command->value = g_MusicController->decoder->record->loop != 0;
+                command->value = g_MusicController->decoder->record->dataSize != 0;
                 if (FAILED(RefillMusicBuffer(g_MusicController, buffer, command->value)))
                     goto RemoveCommand;
             }
