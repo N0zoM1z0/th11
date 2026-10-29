@@ -37,7 +37,9 @@ The new physical views preserve these verified offsets:
 - Global944 starts the five-field damage timer. Equal current/previous returns0.
 - Global96C starts256 projectile records of6C bytes. Each record has a timer of0x14
   bytes and a motion record of0x34 bytes, state48, animation ID4C, auxiliary ID50, target54,
-  per-frame hit58, signalled-hit5C, damage60 and parameters pointer64.
+  per-frame hit58, signalled-hit5C, damage60, acceleration64 and parameters pointer68.
+  The earlier pointer64 claim and its self-authored assertion were wrong; see
+  [the independent cross-owner correction](SECONDARY_PATTERN.md).
 - Parameter width/height are0C/10, kind1D, signed script20 and callback30.
   The actual callback receives owner in ECX, record in EDX and position on stack.
 - Global7C9C starts32 region records of74 bytes. Radius0, growth4, angle8,

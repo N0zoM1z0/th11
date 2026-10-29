@@ -57,13 +57,13 @@ int __fastcall TrackSecondaryProjectileTarget(SecondaryDamageReferencesView *sel
 float __stdcall SecondaryPositionLength(const CameraVector *position)
 {
     float squared = position->x * position->x + position->y * position->y;
-    return sqrt(squared);
+    return static_cast<float>(sqrt(static_cast<double>(squared)));
 }
 
 float __stdcall SecondaryVelocityLength(const SecondaryMotionView *motion)
 {
     float squared = motion->velocity.x * motion->velocity.x + motion->velocity.y * motion->velocity.y;
-    return sqrt(squared);
+    return static_cast<float>(sqrt(static_cast<double>(squared)));
 }
 
 float __stdcall SecondaryPositionAngle(const CameraVector *position)

@@ -3752,3 +3752,91 @@ size = 123
 linkages = [
   { offset = 6, type = "DIR32", symbol = "?g_SecondaryProgramHost@@3PAEA", target = 0x4a8d7c, addend = 0x0 },
 ]
+
+[units.convert-secondary-integer-pair]
+artifact_kind = "linked-pe"
+source = "src/SecondaryIntegerPair.cpp"
+inputs = ["src/SecondaryIntegerPair.hpp"]
+support_sources = ["probes/secondary-integer-pair-context.cpp"]
+output_dir = "build/match-linked/SecondaryIntegerPair"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryIntegerPairProbe@28"
+functions = ["ConvertSecondaryIntegerPair"]
+symbol = "?ConvertSecondaryIntegerPair@@YGPAUCameraVector@@PAU1@PBUSecondaryIntegerPair@@@Z"
+target_address = 0x433db0
+size = 26
+linkages = [
+  { offset = 4, type = "DIR32", symbol = "__real@3f80000000000000", target = 0x497ed0, addend = 0x0 },
+]
+
+[units.secondary-integer-pair-nonzero]
+artifact_kind = "linked-pe"
+source = "src/SecondaryIntegerPair.cpp"
+inputs = ["src/SecondaryIntegerPair.hpp"]
+support_sources = ["probes/secondary-integer-pair-context.cpp"]
+output_dir = "build/match-linked/SecondaryIntegerPair"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryIntegerPairProbe@28"
+functions = ["SecondaryIntegerPairNonzero"]
+symbol = "?SecondaryIntegerPairNonzero@@YGHPBUSecondaryIntegerPair@@@Z"
+target_address = 0x433df0
+size = 20
+linkages = []
+
+[units.set-secondary-integer-pair]
+artifact_kind = "linked-pe"
+source = "src/SecondaryIntegerPair.cpp"
+inputs = ["src/SecondaryIntegerPair.hpp"]
+support_sources = ["probes/secondary-integer-pair-context.cpp"]
+output_dir = "build/match-linked/SecondaryIntegerPair"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryIntegerPairProbe@28"
+functions = ["SetSecondaryIntegerPair"]
+symbol = "?SetSecondaryIntegerPair@@YGPAUSecondaryIntegerPair@@PAU1@HH@Z"
+target_address = 0x433e90
+size = 6
+linkages = []
+
+[units.get-secondary-emitter]
+artifact_kind = "linked-pe"
+source = "src/SecondaryPattern.cpp"
+inputs = ["src/SecondaryPattern.hpp", "src/SecondaryDamage.hpp"]
+support_sources = ["probes/secondary-pattern-context.cpp", "src/Random.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryMotionMath.cpp", "src/StageMesh.cpp", "src/AngleMath.cpp", "src/AnimationImmediateDraw.cpp"]
+output_dir = "build/match-linked/SecondaryPattern"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryPatternProbe@20"
+functions = ["GetSecondaryEmitter"]
+symbol = "?GetSecondaryEmitter@@YGPAUSecondaryEmitterView@@PAUSecondaryDamageReferencesView@@H@Z"
+target_address = 0x433f30
+size = 14
+linkages = []
+
+[units.copy-secondary-emitter-id]
+artifact_kind = "linked-pe"
+source = "src/SecondaryPattern.cpp"
+inputs = ["src/SecondaryPattern.hpp", "src/SecondaryDamage.hpp"]
+support_sources = ["probes/secondary-pattern-context.cpp", "src/Random.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryMotionMath.cpp", "src/StageMesh.cpp", "src/AngleMath.cpp", "src/AnimationImmediateDraw.cpp"]
+output_dir = "build/match-linked/SecondaryPattern"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryPatternProbe@20"
+functions = ["CopySecondaryEmitterId"]
+symbol = "?CopySecondaryEmitterId@@YGPAIPAIPAUSecondaryDamageReferencesView@@H@Z"
+target_address = 0x433f40
+size = 16
+linkages = []
+
+[units.track-secondary-projectile-target]
+artifact_kind = "linked-pe"
+source = "src/SecondaryProjectileMath.cpp"
+inputs = ["src/SecondaryProjectile.hpp", "src/SecondaryDamage.hpp"]
+support_sources = ["probes/secondary-projectile-math-context.cpp"]
+output_dir = "build/match-linked/SecondaryProjectileMath"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryProjectileMathProbe@20"
+functions = ["TrackSecondaryProjectileTarget"]
+symbol = "?TrackSecondaryProjectileTarget@@YIHPAUSecondaryDamageReferencesView@@PAUSecondaryProjectileView@@PBUCameraVector@@@Z"
+target_address = 0x435030
+size = 73
+linkages = [
+  { offset = 47, type = "DIR32", symbol = "__real@406c000000000000", target = 0x497f70, addend = 0x0 },
+]

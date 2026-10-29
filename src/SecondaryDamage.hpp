@@ -14,14 +14,17 @@ struct SecondaryDamageReferencesView;
 struct SecondaryProjectileView;
 struct SecondaryProjectileParameters
 {
-    unsigned char unknown000[0xc];
+    short unknown000, damage;
+    float offsetX, offsetY;
     float width, height;
-    unsigned char unknown014[0x1c - 0x14];
+    float angle, speed;
     signed char index;
     unsigned char kind;
-    unsigned char unknown01e[2];
+    short initialScript;
     short script;
-    unsigned char unknown022[0x28 - 0x22];
+    short sound;
+    int (__fastcall *onSpawn)(SecondaryDamageReferencesView *self,
+        SecondaryProjectileView *projectile, unsigned int context);
     int (__fastcall *onUpdate)(SecondaryDamageReferencesView *self,
         SecondaryProjectileView *projectile);
     unsigned int unknown02c;
@@ -35,8 +38,8 @@ struct SecondaryProjectileView
     unsigned int state, animationId, auxiliaryId;
     SecondaryActorManagerView *target;
     int hitThisFrame, hitSignalled, damage;
+    float acceleration;
     SecondaryProjectileParameters *parameters;
-    unsigned int unknown068;
 };
 struct SecondaryDamageRegionView
 {
@@ -119,7 +122,9 @@ void __stdcall BeginSecondaryCollision(SecondaryCollisionReferencesView *self);
 typedef char SecondaryDamageTimerSize[(sizeof(SecondaryDamageTimerView) == 0x14) ? 1 : -1];
 typedef char SecondaryProjectileSize[(sizeof(SecondaryProjectileView) == 0x6c) ? 1 : -1];
 typedef char SecondaryProjectileStateOffset[(offsetof(SecondaryProjectileView, state) == 0x48) ? 1 : -1];
-typedef char SecondaryProjectileParametersOffset[(offsetof(SecondaryProjectileView, parameters) == 0x64) ? 1 : -1];
+typedef char SecondaryProjectileAccelerationOffset[(offsetof(SecondaryProjectileView, acceleration) == 0x64) ? 1 : -1];
+typedef char SecondaryProjectileParametersOffset[(offsetof(SecondaryProjectileView, parameters) == 0x68) ? 1 : -1];
+typedef char SecondaryProjectileSpawnCallbackOffset[(offsetof(SecondaryProjectileParameters, onSpawn) == 0x24) ? 1 : -1];
 typedef char SecondaryProjectileCallbackOffset[(offsetof(SecondaryProjectileParameters, onHit) == 0x30) ? 1 : -1];
 typedef char SecondaryDamageRegionSize[(sizeof(SecondaryDamageRegionView) == 0x74) ? 1 : -1];
 typedef char SecondaryDamageRegionTimerOffset[(offsetof(SecondaryDamageRegionView, time) == 0x4c) ? 1 : -1];

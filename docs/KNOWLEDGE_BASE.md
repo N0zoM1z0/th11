@@ -503,13 +503,14 @@ Useful boundary corrections:
   and close full101 with all3 field/constant values. Outside93 closes with the
   actual ordered -192/192/0/448 predicates. No Oracle or static-owner exception.
 - RET4 on tracked-target73 proves a third unused stack word; old two-parameter
-  hypothesis was wrong. Correct physical source61/68 keeps its cleanup width;
-  nominal type/role and aligned frame remain unresolved. Do not invent a double
-  or aligned local. Other47/48/31 vector math wrappers stay open.
+  hypothesis was wrong. Initial correct physical source61/68 kept cleanup width.
+  Later explicit double sqrt API calls in the same TU naturally close73 bytes;
+  nominal third-slot type/role remains unproved. Other47/48/31 wrappers stay open.
 - Special damage385 scans exactly five script IDs, not the prior erroneous32.
   It begins at embedded VM node+10, includes root and preserves native lookup-null
   fault after clearing ID. Full246/385 source252/204 and385/337 stays non-exact.
-  New view fields preserve all prior offsets; four affected old exact helpers pass.
+  Four affected old exact helpers passed that checkpoint; later cross-owner
+  review corrects the old parameters64 view to68, with acceleration64.
 - Nineteen new reviews give17 indeterminate origins and two library exclusions.
   Vendor COFF/CodeView proves ordinary atan2/CIatan2 lengths10+10; entire20-byte
   text/four fields agrees, ordinary486C90 was missing. Library code receives no
@@ -520,6 +521,39 @@ Useful boundary corrections:
   Initial new-owner registration ordering was corrected using the same current
   artifacts, with no recompilation or full cohort. See
   [SECONDARY_PROJECTILES](SECONDARY_PROJECTILES.md).
+
+## Spawn, shared-layout correction and integer leaves
+
+- The old parameters64 assertion checked our own layout, not native truth.
+  Spawn433FE7 publishes at68; damage biases record+4C then reads1C, update biases
+  record+20 then reads48, and gravity4352CF reads acceleration64. Correct shared
+  record fields are damage60, float acceleration64 and parameters68; size6C and
+  target54/global9C0 remain fixed. Generic emitter/gravity callbacks need no
+  alternate record interpretation to explain them.
+- Full spawn853/258 instructions preserves the partial timer reset,256-record
+  scan, kind4 slot gate, signed descriptor fields,1/128 emitter position,
+  ordered995/1000 sentinels, two RNG draws and their actual float stores,
+  angle perturbation pi/12, motion, inline VM lookup, callback/context, sound and
+  VM position. Current824/745 is open; all8 direct calls/one callback agree,
+  but source has one RET8 against native two. No forced ABI/frame/null guard.
+- Emitter address75CC+index*E4 and ID7620+index*E4 close14/16 bytes. E4 is a stride;
+  only a physical prefix is modeled. An invented eight-object array would cross
+  the independently verified region pool. Integer conversion26, nonzero20 and
+  component publication6 also close. The six other integer-pair owners retain
+  full source, wrapped arithmetic/signed division and complete open diagnostics.
+- Explicit double sqrt calls with float results leave both length-helper bodies
+  unchanged33/34, but restore tracked-target73's aligned frame in the same TU.
+  This measured compiler effect closes73/0; it does not establish original TU
+  partition or nominal callback type. Double fabs/atan2 variants do not close it.
+- Controller431070 owns2888=2867 code+one NOP+five-entry table, correcting the old
+  2867 count. Complete695 instructions/two returns and five table DATA references
+  are checked independently. Replay initializer4356E0/1380 is state/record setup,
+  not collision geometry; all406 instructions/four returns are covered.
+- Twelve mappings add1087 bytes;17 new reviews are indeterminate,11 missing
+  candidates are added. Six new exact owners pass155 bytes/two fields, and7
+  affected old owners pass678 bytes/15 fields. All13 selected cold proofs pass
+  with frozen source. Fresh damage/update diagnostics keep the previous numeric
+  totals under the corrected header. See [SECONDARY_PATTERN](SECONDARY_PATTERN.md).
 
 ## Topic index
 
@@ -539,6 +573,7 @@ Useful boundary corrections:
 | Pair arithmetic, omitted vector leaves and vendor floor | [SECONDARY_PAIR_MATH](SECONDARY_PAIR_MATH.md) |
 | Complete damage/collision, projectile records and region allocation | [SECONDARY_DAMAGE](SECONDARY_DAMAGE.md) |
 | Complete projectile update/homing, iterator/literal math and atan2 | [SECONDARY_PROJECTILES](SECONDARY_PROJECTILES.md) |
+| Complete spawn, corrected record layout and omitted integer/emitter leaves | [SECONDARY_PATTERN](SECONDARY_PATTERN.md) |
 | Streaming factories and lifetime ownership | [MUSIC_FACTORIES](MUSIC_FACTORIES.md) |
 | Device setup and buffer recreation | [AUDIO_DEVICE](AUDIO_DEVICE.md) |
 | Streaming buffers, decoder state and fades | [MUSIC_STREAM](MUSIC_STREAM.md) |

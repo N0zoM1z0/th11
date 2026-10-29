@@ -16,7 +16,7 @@ class/header/TU ownership and whole-game runtime remain separate from codegen.
 | AcquireSecondaryProjectileTarget | 417E70 | 123 | Exact;1 field |
 | SecondaryProjectileAngleDifference | 435480 | 101 | Exact;3 fields |
 | SecondaryProjectileOutside | 435560 | 93 | Exact;4 fields |
-| TrackSecondaryProjectileTarget | 435030 | 73 | Source61/68; corrected stack contract |
+| TrackSecondaryProjectileTarget | 435030 | 73 | Exact;1 field; see later spawn/layout review |
 | SecondaryPositionLength | 435400 | 47 | Source33/42 |
 | SecondaryVelocityLength | 435430 | 48 | Source34/42 |
 | SecondaryPositionAngle | 435460 | 31 | Source19/27 |
@@ -46,8 +46,10 @@ The full source preserves the256-record loop and all of these paths:
   is skipped after lost/culled animations.
 
 The physical view now exposes signed parameter index1C, callback28, pattern timer
-930, slot7C90, tracked pointer7C94 and raw slot storage8B8C. Existing damage fields
-and all old offsets remain fixed. Slot count/original owner sizes are not invented.
+930, slot7C90, tracked pointer7C94 and raw slot storage8B8C. Later independent
+spawn/update/damage/gravity review corrects the old parameters64 claim to68,
+with float acceleration64; see [SECONDARY_PATTERN](SECONDARY_PATTERN.md).
+Slot count/original owner sizes are not invented.
 The four affected exact damage helpers remain byte-identical under this header.
 
 The final independent audit agrees on all13 direct-call targets/multiplicities,
@@ -76,7 +78,10 @@ The73-byte tracked-target callback is a separate contract. Native ECX/EDX reads
 and RET4 prove an additional unused stack word that the old two-input hypothesis
 missed. Source retains it using the matching hit-callback shape; its original
 nominal type/role remains provisional and there is no inferred native registration
-site. Source61/68 keeps the correct cleanup width but still lacks the native frame.
+site. The initial source61/68 kept the correct cleanup width but lacked the
+native frame. Later explicit double sqrt calls in the same TU retain the real
+CRT API/float result contract and naturally close this complete73-byte owner;
+see [the current proof](SECONDARY_PATTERN.md).
 No dummy input, aligned local, volatile access or instruction padding forces equality.
 
 ## Special damage and corrected old interpretation
@@ -137,8 +142,9 @@ Seventeen newly reviewed non-runtime owners are417E70/123,433BE0/101,433C80/31,
 433CA0/35,433CD0/30,435030/73,435080/399,4352A0/132,435330/112,435400/47,
 435430/48,435460/31,435480/101,4354F0/52,435560/93,4355C0/20 and435630/110.
 Full flows, callbacks, actual inputs/returns/neighbors and incoming refs are
-independently checked. Alternate record interpretations remain open for generic
-vector/emitter callbacks; those roles do not prove original class/game authorship.
+independently checked. Later spawn publication and gravity use reconcile
+configuration68 and acceleration64 within the same projectile record. Original
+class/game authorship remains unproved; generic callback roles do not establish it.
 
 Vendor ordinary atan2 at486C90 and _CIatan2 at486C9A are separate10-byte procedures.
 COFF publics and CodeView lengths establish both; the object contains exactly20
@@ -155,7 +161,7 @@ are observed witnesses, not newly invented pre-existing tool pins. Both entries
 are library exclusions, with no source/exact credit and no claim about the full
 runtime dispatchers' extents.
 
-## Selected proof and private artifacts
+## Earlier checkpoint proof and private artifacts
 
 Only three new and four affected old exact units are cold compiled, across
 SecondaryProjectileMath and SecondaryDamageSupport. All seven complete owners
