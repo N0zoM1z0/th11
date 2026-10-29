@@ -170,10 +170,30 @@ Useful boundary corrections:
 - Allocator4569C0 checks only two pool slots, then constructs/resets a heap VM;
  it does not scan all4096. Signed nextPoolSlot is4350BC; used map4340BC.
  The updated physical header triggered cold replay of exactly two old units.
-- Latest inventory2,047;244 reviewed boundaries,201 source mappings and108
+- Interpolation checkpoint:2,047 candidates,244 reviewed boundaries,201 mappings and108
  exact functions/18,282 bytes. Twenty-two new origin reviews remain
  indeterminate. Fifteen new proofs plus two affected old proofs passed;
  no full cohort or broad behavior harness ran. See interpolation/dispatch below.
+
+- Audio44A340 owns1,460 bytes:1,428-byte code plus32-byte eight-command switch
+ table through44A8F3. Initial inventory omitted the table and Ghidra's inferred
+ two fastcall inputs are unused. This is audio state-machine code, despite ANM
+ neighbors. Full code/table/reference review corrects the maintained extent.
+- Command removal advances the cursor during the shift; load's repeat branch
+ does not reset to the head. Shutdown waits256ms and cancels the common step
+ increment on retry. Preserve these actual state-machine behaviors.
+- Sound effects use a rounded cubic attenuation curve; music uses a square.
+ Native scalar volume helper125, enqueue151 and worker177 now have full cold
+ exact proofs. The worker needs its actual CreateThread escape and three
+ distinct shared-pointer reads; original C++ qualifiers remain unknown.
+- Real reclamation support changes renderer update diagnostics to213/170 and
+249/195, still missing native8-byte stack alignment. Draw127 and allocator177
+ retain full zero proofs. Source/body changes to other exact families were
+ unnecessary; only these two affected old units were cold-replayed.
+- Latest:2,047 candidates,262 reviewed boundaries,206 source mappings and111
+ exact functions/18,735 bytes. Eighteen further origin reviews are indeterminate.
+ Three new audio plus two affected renderer owners pass complete cold replay;
+ no full cohort or broad behavior suite ran. See the audio topic below.
 
 ## Topic index
 
@@ -184,6 +204,7 @@ Useful boundary corrections:
 | Stage lifecycle, updates and drawing | [STAGE_LIFECYCLE](STAGE_LIFECYCLE.md), [STAGE_UPDATE](STAGE_UPDATE.md), [STAGE_DRAWING](STAGE_DRAWING.md) |
 | Stage/ANM resources | [STAGE_RESOURCE](STAGE_RESOURCE.md), [ANIMATION_CHUNKS](ANIMATION_CHUNKS.md), [ANIMATION_TEXTURES](ANIMATION_TEXTURES.md), [pixel processing](ANIMATION_TRANSPARENT_PIXELS.md) |
 | Renderer quad construction/submission | [ANIMATION_QUAD](ANIMATION_QUAD.md), [ANIMATION_VM_DRAW](ANIMATION_VM_DRAW.md), [ANIMATION_PROJECTED_QUAD](ANIMATION_PROJECTED_QUAD.md), [ANIMATION_IMMEDIATE_DRAW](ANIMATION_IMMEDIATE_DRAW.md) |
+| Audio command queue and streaming worker | [SOUND_QUEUE](SOUND_QUEUE.md) |
 | Animation interpolation, dispatch and pool allocation | [ANIMATION_TWEEN_DISPATCH](ANIMATION_TWEEN_DISPATCH.md) |
 | Renderer lifecycle and pixel helpers | [ANIMATION_RENDERER_LIFECYCLE](ANIMATION_RENDERER_LIFECYCLE.md) |
 | Buffered drawing and randomized fan | [ANIMATION_FAN](ANIMATION_FAN.md) |

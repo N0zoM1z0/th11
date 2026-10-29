@@ -199,3 +199,8 @@ SetAnimationFloatScalarTweenInitial
 SetAnimationFloatScalarTweenTarget
 SetAnimationFloatScalarTweenControl1
 SetAnimationFloatScalarTweenControl2
+ProcessSoundQueue
+MusicStreamingThread
+EnqueueSoundCommand
+FirstMusicBuffer
+SetMusicBufferVolume

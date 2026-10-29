@@ -200,3 +200,8 @@ SetAnimationFloatScalarTweenInitial,0x0044ED30,function
 SetAnimationFloatScalarTweenTarget,0x0044ED40,function
 SetAnimationFloatScalarTweenControl1,0x0044ED50,function
 SetAnimationFloatScalarTweenControl2,0x0044ED60,function
+ProcessSoundQueue,0x0044A340,function
+MusicStreamingThread,0x0044A900,function
+EnqueueSoundCommand,0x0044A9C0,function
+FirstMusicBuffer,0x0045AA00,function
+SetMusicBufferVolume,0x0045AAF0,function

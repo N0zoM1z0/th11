@@ -2309,7 +2309,7 @@ linkages = []
 artifact_kind = "linked-pe"
 source = "src/AnimationRendererDispatch.cpp"
 inputs = ["src/AnimationRendererDispatch.hpp"]
-support_sources = ["probes/animation-renderer-dispatch-context.cpp", "src/AnimationVm.cpp", "src/StageLifecycle.cpp", "src/AnimationImmediateDraw.cpp"]
+support_sources = ["probes/animation-renderer-dispatch-context.cpp", "src/AnimationVm.cpp", "src/StageLifecycle.cpp", "src/AnimationImmediateDraw.cpp", "src/AnimationRendererLifecycle.cpp"]
 output_dir = "build/match-linked/AnimationRendererDispatch"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "AnimationRendererDispatchProbe@12"
@@ -2333,7 +2333,7 @@ linkages = [
 artifact_kind = "linked-pe"
 source = "src/AnimationRendererDispatch.cpp"
 inputs = ["src/AnimationRendererDispatch.hpp"]
-support_sources = ["probes/animation-renderer-dispatch-context.cpp", "src/AnimationVm.cpp", "src/StageLifecycle.cpp", "src/AnimationImmediateDraw.cpp"]
+support_sources = ["probes/animation-renderer-dispatch-context.cpp", "src/AnimationVm.cpp", "src/StageLifecycle.cpp", "src/AnimationImmediateDraw.cpp", "src/AnimationRendererLifecycle.cpp"]
 output_dir = "build/match-linked/AnimationRendererDispatch"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "AnimationRendererDispatchProbe@12"
@@ -2347,4 +2347,68 @@ linkages = [
   { offset = 105, type = "REL32", symbol = "??0StageEmbeddedVm@@QAE@XZ", target = 0x402270, addend = 0x0 },
   { offset = 115, type = "REL32", symbol = "?ResetAnimationVm@@YGXPAUAnimationVmView@@@Z", target = 0x401fd0, addend = 0x0 },
   { offset = 130, type = "REL32", symbol = "?ResetAnimationVm@@YGXPAUAnimationVmView@@@Z", target = 0x401fd0, addend = 0x0 },
+]
+
+[units.music-streaming-thread]
+artifact_kind = "linked-pe"
+source = "src/SoundQueue.cpp"
+inputs = ["src/SoundQueue.hpp", "src/SoundBuffer.hpp"]
+support_sources = ["probes/sound-queue-context.cpp"]
+output_dir = "build/match-linked/SoundQueue"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SoundQueueProbe@28"
+functions = ["MusicStreamingThread"]
+symbol = "?MusicStreamingThread@@YGKPAX@Z"
+target_address = 0x44a900
+size = 177
+linkages = [
+  { offset = 6, type = "DIR32", symbol = "__imp__PeekMessageA@20", target = 0x48b254, addend = 0x0 },
+  { offset = 13, type = "DIR32", symbol = "__imp__MsgWaitForMultipleObjects@20", target = 0x48b21c, addend = 0x0 },
+  { offset = 42, type = "DIR32", symbol = "?g_MusicEvent@@3PAXA", target = 0x4c908c, addend = 0x0 },
+  { offset = 51, type = "DIR32", symbol = "?g_MusicController@@3PAUMusicControllerView@@A", target = 0x4c9088, addend = 0x0 },
+  { offset = 133, type = "DIR32", symbol = "?g_MusicController@@3PAUMusicControllerView@@A", target = 0x4c9088, addend = 0x0 },
+  { offset = 139, type = "REL32", symbol = "?UpdateMusicStream@@YGJPAUMusicControllerView@@@Z", target = 0x45aee0, addend = 0x0 },
+  { offset = 144, type = "DIR32", symbol = "?g_MusicController@@3PAUMusicControllerView@@A", target = 0x4c9088, addend = 0x0 },
+]
+
+[units.enqueue-sound-command]
+artifact_kind = "linked-pe"
+source = "src/SoundQueue.cpp"
+inputs = ["src/SoundQueue.hpp", "src/SoundBuffer.hpp"]
+support_sources = ["probes/sound-queue-context.cpp"]
+output_dir = "build/match-linked/SoundQueue"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SoundQueueProbe@28"
+functions = ["EnqueueSoundCommand"]
+symbol = "?EnqueueSoundCommand@@YGXPAUSoundManagerQueueView@@HHPBD@Z"
+target_address = 0x44a9c0
+size = 151
+linkages = [
+  { offset = 2, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x590 },
+  { offset = 16, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x918 },
+  { offset = 22, type = "DIR32", symbol = "__imp__EnterCriticalSection@4", target = 0x48b084, addend = 0x0 },
+  { offset = 28, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x93b },
+  { offset = 120, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x590 },
+  { offset = 132, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x918 },
+  { offset = 138, type = "DIR32", symbol = "__imp__LeaveCriticalSection@4", target = 0x48b088, addend = 0x0 },
+  { offset = 144, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x93b },
+]
+
+[units.set-music-buffer-volume]
+artifact_kind = "linked-pe"
+source = "src/SoundQueue.cpp"
+inputs = ["src/SoundQueue.hpp", "src/SoundBuffer.hpp"]
+support_sources = ["probes/sound-queue-context.cpp"]
+output_dir = "build/match-linked/SoundQueue"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SoundQueueProbe@28"
+functions = ["SetMusicBufferVolume"]
+symbol = "?SetMusicBufferVolume@@YGXPAUMusicControllerView@@H@Z"
+target_address = 0x45aaf0
+size = 125
+linkages = [
+  { offset = 3, type = "DIR32", symbol = "?g_MusicVolume@@3HA", target = 0x4c9168, addend = 0x0 },
+  { offset = 15, type = "DIR32", symbol = "?g_MusicVolume@@3HA", target = 0x4c9168, addend = 0x0 },
+  { offset = 30, type = "DIR32", symbol = "__real@4059000000000000", target = 0x497e50, addend = 0x0 },
+  { offset = 88, type = "REL32", symbol = "__ftol2_sse", target = 0x4864e0, addend = 0x0 },
 ]
