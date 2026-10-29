@@ -162,3 +162,11 @@ UpdateStripVertexUv,0x004518C0,function
 DrawAnimationVertexStrip,0x00451A00,function
 DrawAnimationVertexFan,0x00451E10,function
 DrawAnimationVmByMode,0x00451EF0,function
+DrawAnimationQuadVertices,0x00451AE0,function
+DrawAnimationColoredStrip,0x00451B70,function
+DrawAnimationColoredFan,0x00451CC0,function
+IsAnimationVmActive,0x00452080,function
+AnimationVectorLength,0x00452090,function
+InitializeFanAnimationVm,0x004520F0,function
+UpdateFanAnimationVm,0x00452420,function
+DrawFanAnimationVm,0x00452680,function

@@ -149,8 +149,10 @@ have no fields. All17 fields and every other byte replay with zero differences.
 Only ten units were cold-replayed: the four new units plus six directly
 affected AnimationQuad/AnimationVmDraw units. The latter remain exact despite
 the corrected wrapper return types. No full cohort or behavioral suite ran.
-Total exact state is now82 functions/15,952 bytes; original TU ownership and a
-complete native product remain open.
+At this checkpoint exact state reached82 functions/15,952 bytes; original TU
+ownership and a complete native product remain open. The subsequent
+[fan review](ANIMATION_FAN.md) recovers three additional draw owners from the
+gap451AE0..451E0F and three other missing entries, with six new exact proofs.
 
 Private logs: `.analysis/immediate-draw-ten-cold.log` and
 `immediate-draw-current.log`; complete current diagnostics in

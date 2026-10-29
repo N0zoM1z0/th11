@@ -161,3 +161,11 @@ UpdateStripVertexUv
 DrawAnimationVertexStrip
 DrawAnimationVertexFan
 DrawAnimationVmByMode
+DrawAnimationQuadVertices
+DrawAnimationColoredStrip
+DrawAnimationColoredFan
+IsAnimationVmActive
+AnimationVectorLength
+InitializeFanAnimationVm
+UpdateFanAnimationVm
+DrawFanAnimationVm

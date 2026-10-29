@@ -115,6 +115,16 @@ Useful boundary corrections:
   gates, flushes global g_RenderBatch after local setup and disables Z writes
   without restoring them. Their full224-byte proofs and both258-byte UV
   proofs are exact. Dispatcher EAX forwarding establishes int wrapper returns.
+- Explicit gaps recover six missed owners:451AE0/138,451B70/336,451CC0/336,
+  452080/10,452090/44 and452680/25. All six have complete cold proofs,889 bytes;
+  inventory now2,001 candidates. Ghidra DB remains unmodified.
+- Fan805/598 uses4B0 storage,33 vertices,31 live edge radius/delta slots and
+  a real30-byte polar boundary. Both UV axes use drift4A4;4A8 is unused.
+  Negative UV shifts all33 vertices by1, positive values do not wrap. Edge Z
+  accumulates after XY-only polar writes; preserve the closing copy1->32.
+- Polar4526A0 preserves EDX in native code; opaque C++ declarations cannot
+  supply that private fact. Its FSINCOS body remains open. Reversing world-draw
+  source parameter order did not change1,038/750 codegen and was not adopted.
 - VC9 rejects `#pragma intrinsic(_frnd)` with C4163. Precise sin/cos probes
   call CRT intrinsics; /fp:fast emits separate FSIN/FCOS. Neither experiment
   closes native inline FRNDINT or paired FSINCOS; those gaps remain open.
@@ -132,6 +142,7 @@ Useful boundary corrections:
 | Stage lifecycle, updates and drawing | [STAGE_LIFECYCLE](STAGE_LIFECYCLE.md), [STAGE_UPDATE](STAGE_UPDATE.md), [STAGE_DRAWING](STAGE_DRAWING.md) |
 | Stage/ANM resources | [STAGE_RESOURCE](STAGE_RESOURCE.md), [ANIMATION_CHUNKS](ANIMATION_CHUNKS.md), [ANIMATION_TEXTURES](ANIMATION_TEXTURES.md), [pixel processing](ANIMATION_TRANSPARENT_PIXELS.md) |
 | Renderer quad construction/submission | [ANIMATION_QUAD](ANIMATION_QUAD.md), [ANIMATION_VM_DRAW](ANIMATION_VM_DRAW.md), [ANIMATION_PROJECTED_QUAD](ANIMATION_PROJECTED_QUAD.md), [ANIMATION_IMMEDIATE_DRAW](ANIMATION_IMMEDIATE_DRAW.md) |
+| Buffered drawing and randomized fan | [ANIMATION_FAN](ANIMATION_FAN.md) |
 | Renderer and device | [RENDER_CAMERA](RENDER_CAMERA.md), [DEVICE_INITIALIZATION](DEVICE_INITIALIZATION.md), [RENDER_STATE_RESET](RENDER_STATE_RESET.md), [RUNTIME_SURFACES](RUNTIME_SURFACES.md) |
 | ASCII lifecycle, glyph drawing and formatting | [ASCII_LIFECYCLE](ASCII_LIFECYCLE.md), [ASCII_DRAWING](ASCII_DRAWING.md) |
 | Text | [TEXT_RESOURCES](TEXT_RESOURCES.md), [TEXT_DRAWING_COMPOSITE](TEXT_DRAWING_COMPOSITE.md), [OUTLINED_TEXT](OUTLINED_TEXT.md), [FORMATTED_TEXTURE_TEXT](FORMATTED_TEXTURE_TEXT.md) |
