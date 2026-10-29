@@ -3,10 +3,15 @@
 Fourteen new complete source mappings cover355 target bytes. Twelve complete
 unique public primary-TU owners pass246 exact bytes/eight address fields. The
 base program constructor and generated deleting entry remain non-exact. Total
-state is2,097 candidates,385 reviewed boundaries,291 mappings and168 exact /
+state at this lifetime checkpoint was2,097 candidates,385 reviewed boundaries,291 mappings and168 exact /
 22,118 bytes. Thirty-six new origin reviews add34 indeterminate and two verified
 compiler exclusions; origins are90 authored,283 indeterminate,10 excluded and
 1,714 pending.
+
+Later full actor lifecycle/pair source, refined member construction and six
+additional exact owners are recorded in [SECONDARY_ACTOR](SECONDARY_ACTOR.md).
+Its current source/gap and progress counts supersede the source-open lifecycle
+status below.
 
 | Owner | Address | Full bytes | Current result |
 | --- | --- | ---: | --- |

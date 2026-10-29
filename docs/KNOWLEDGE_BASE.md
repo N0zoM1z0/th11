@@ -366,8 +366,8 @@ Useful boundary corrections:
  nine internal alignment bytes, no tables/foreign interior entry. Full instruction
  export and independent decoding replace the initial250-instruction prefix. Complete motion/tween,
  script/hooks, damage, animation IDs, mesh deformation and time/status flow is
- reviewed; source remains open. Constructor699 and EH destructor384 are likewise
- fully reviewed/source-open; base103C+state163C gives actor2678.
+ reviewed; source remains open. Constructor699 and EH destructor384 now have
+ complete natural source but remain non-exact; base103C+state163C gives actor2678.
 - Ordinary actor adapter411600 is12 bytes through41160B; its first13-byte review
  span included a neighboring CC. It calls the real4230 owner on object+103C and
  now passes12 exact bytes. It is not an EH action: FuncInfo49FB78/unwind49FB70
@@ -378,6 +378,28 @@ Useful boundary corrections:
 6993/5877, float conditional7001/5937 and per-format arms7141/5984; all retain64.
  None is adopted. Canonical full Run6993/5880 and /O2 /Ob1 /GL remain; no source
  type/precision/alignment trick replaces the still-open native ESP/120 context.
+
+## Actor members and complete interpolation
+
+- State410440/126 is explained by real member construction: nine early and two
+ late timer-bit clears, with eight214-byte record constructors between them.
+ Empty out-of-line state construction naturally reproduces all126 bytes. The
+ actor then genuinely clears the state again. Native float defaults are24/32.
+- Actual script support removes extra actor-constructor EH, reducing766 to706
+ against699. A stack-constructor model704/493 does not close the gap and is
+ rejected; common headers remain unchanged. EH destructor384 has full source390,
+ with private receiver/base-inlining/alias ownership still open.
+- Pair interpolation673 has complete source and observed output-buffer/returned
+ pointer contract; original vector return ABI is open. POD register return was
+ wrong; no invented constructor forces sret. Current632/627 stays non-exact.
+ Actual easing support closes factor39 naturally. Thread release45 leaves head
+ untouched; reset64 preserves VM stack cursors/program. Both pass full proof.
+- Actor factory4108F0 owns621=545 code+3 alignment+20 table+53 selectors. Five
+ table DATA edges are internal, not foreign interior entries. The previous545
+ boundary omitted76 owned bytes. No factory source/exact claim follows.
+- Six new complete primary owners/327 bytes/six fields pass selected cold proof;
+ actual prior receipt dependencies select no affected old units. Eighteen new
+ origin reviews remain indeterminate. See [SECONDARY_ACTOR](SECONDARY_ACTOR.md).
 
 ## Topic index
 
@@ -392,6 +414,7 @@ Useful boundary corrections:
 | Secondary program installation and context selection | [SECONDARY_PROGRAM](SECONDARY_PROGRAM.md) |
 | Secondary extension parser and trace context | [SECONDARY_EXTENSION](SECONDARY_EXTENSION.md) |
 | Secondary lifetime, counters and large actor owners | [SECONDARY_LIFETIME](SECONDARY_LIFETIME.md) |
+| Actor construction/destruction, pair interpolation and source contexts | [SECONDARY_ACTOR](SECONDARY_ACTOR.md) |
 | Streaming factories and lifetime ownership | [MUSIC_FACTORIES](MUSIC_FACTORIES.md) |
 | Device setup and buffer recreation | [AUDIO_DEVICE](AUDIO_DEVICE.md) |
 | Streaming buffers, decoder state and fades | [MUSIC_STREAM](MUSIC_STREAM.md) |

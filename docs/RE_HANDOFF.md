@@ -7,17 +7,18 @@ receipts outrank historical notes. All dirty work belongs to this goal.
 ## Checked-in state
 
 - Original Japanese TH11 v1.00a; config/target.toml pins identity.
-- 2,097 candidates;385 reviewed boundaries;291 source mappings.
-- 168 exact functions /22,118 bytes:8 normal COFF and160 linked PE.
-- Origins:90 authored,283 indeterminate,10 exclusions,1,714 pending.
+- 2,097 candidates;403 reviewed boundaries;303 source mappings.
+- 174 exact functions /22,445 bytes:8 normal COFF and166 linked PE.
+- Origins:90 authored,301 indeterminate,10 exclusions,1,696 pending.
 - Direct local Ghidra/scripts; no Factory MCP/REA. VC9 RTM21022/SDK6.0A.
 - Commit/push authorized; prefix `gpt-6.1-sol: `.
 
-Latest checkpoint adds14 complete source mappings/355 target bytes. Twelve
-unique primary-TU owners close246 bytes/eight fields. Thirty-six new origin
-reviews add34 indeterminate and two compiler exclusions;15 missing entries
-recovered. Large actor update4230, constructor699 and destructor384 have full
-reviews and remain source-open. See [SECONDARY_LIFETIME](SECONDARY_LIFETIME.md),
+Latest checkpoint adds12 complete source mappings/2,505 target bytes, including
+actor constructor699/destructor384/position309 and pair interpolation673. Six
+unique primary-TU owners close327 bytes/six fields;18 new origin reviews remain
+indeterminate. Factory4108F0 boundary is corrected545->621 including its tables.
+Large actor-state update4230 remains source-open. See [SECONDARY_ACTOR](SECONDARY_ACTOR.md),
+[SECONDARY_LIFETIME](SECONDARY_LIFETIME.md),
 [SECONDARY_EXTENSION](SECONDARY_EXTENSION.md), [SECONDARY_PROGRAM](SECONDARY_PROGRAM.md).
 
 ## Corrected models and ownership
@@ -44,6 +45,24 @@ reviews and remain source-open. See [SECONDARY_LIFETIME](SECONDARY_LIFETIME.md),
 - Actor-state update411750..4127D5 owns4230, including9 alignment bytes omitted
   by sparse4221. Full1108 instructions/five returns, no tables or foreign interior
   entries; all flow reviewed. Initial250-instruction prefix was insufficient.
+- State410440/126 is now a genuine out-of-line empty-body constructor: eleven
+  StageTimer member constructors and eight214-byte record constructors naturally
+  explain every byte. Full state163C has asserted physical views in
+  SecondaryActorState.hpp. Four floating defaults are24, effect dimensions32.
+  Actor699 source706/442 includes all initialization; actual Script support
+  naturally removes extra EH. Explicit VM writes leave706; a stack-constructor
+  model704/493 is rejected. Common headers are unchanged.
+- Actor384 destructor source390/327 preserves all ten ID scans,256 references,
+  mesh ReleaseVmBindingBlock231/delete and implicit base cleanup. Private receiver,
+  base inlining and EH/alias acceptance stay open. Pair673 source632/627 models
+  the observed result-buffer/address-return contract; original vector return ABI
+  remains open. No invented constructor or fake ABI to force sret. Factor39,
+  tracking21/status32 and thread release45/reset64 are exact. Release leaves head
+  untouched; reset preserves stack cursors/program.
+- Factory4108F0 owns621=545 code+3 alignment+20 table+53 selectors. Five table
+  DATA references are internal. Successful attested code review plus independent
+  full PE/table/selector review establishes extent; mixed-data linear review_span
+  failed and is not used as acceptance evidence. Source remains open.
 - Interpreter45B860 owns7093 through45D414:6759 code+1 NOP+244 jump+89 selectors.
   Full1783-instruction review;61 table DATA edges are internal. Never crop to6759,
   restore false callback410D69 or create a function at table cell45D2D0.
@@ -52,6 +71,12 @@ reviews and remain source-open. See [SECONDARY_LIFETIME](SECONDARY_LIFETIME.md),
 
 | Owner | Target bytes | Current source / diagnostic differences |
 | --- | ---: | --- |
+| SecondaryActorConstructor,4111C0 | 699 | 706 /442 |
+| SecondaryActorDestructor,411480 | 384 | 390 /327; EH/private receiver open |
+| SecondaryActorDeletingDestructor,410420 | 31 | 30 /20; aliases open |
+| DetachSecondaryActor,410B60 | 82 | 79 /74 |
+| UpdateSecondaryActorPosition,411610 | 309 | 310 /269; opaque motion support |
+| StepSecondaryPairTween,4191F0 | 673 | 632 /627; all six returns |
 | InstallSecondaryProgram,45D900 | 513 | 513 /339 |
 | SecondaryProgramBaseConstructor,40FFC0 | 38 | 38 /3; support-owned |
 | SecondaryManagerDeletingDestructor,40FF40 | 71 | 30 /62; ??_G/??_E aliases |
@@ -72,9 +97,12 @@ reviews and remain source-open. See [SECONDARY_LIFETIME](SECONDARY_LIFETIME.md),
    keeps full-count insertion, publication and ignored extension result; remaining
    registers, allocation expression, free gate and alignment are real gaps.
    Actor4230 flow covers motion/tweens, script/hooks, damage/counter, eight VM IDs,
-   mesh deformation and timers/status. Source remains open; do not replace it with
-   a bounded prefix or guessed simplified loop. Actor699/384 and master374 offer
-   real construction/cleanup context; EH ownership is separate.
+   mesh deformation and timers/status. Source remains open; use the new complete
+   state/member/lifecycle views and pair source, not a bounded prefix or simplified
+   loop. New full helper reviews include transition417B40/561, motion459540/75,
+   compose459590/215, quantization459A30/99, rotation458F70/86, finish4127E0/156,
+   animation position4563A0/132, validation30/21 and script switch456770/36.
+   Master374 remains source-open; EH ownership is separate.
 2. Interpreter64 alignment is localized to its double variadic trace call, whose
    native QWORD argument must remain. Ablations omit behavior and are rejected.
    Fixed-format/real trace bodies, /Zp4, /fp:fast and float temporaries failed.
@@ -91,19 +119,21 @@ reviews and remain source-open. See [SECONDARY_LIFETIME](SECONDARY_LIFETIME.md),
 
 ## Current proof and affected scope
 
-`.analysis/secondary-lifetime-affected-cold.log` passes12 new+16 affected prior
-units acrossfive contexts. Actual source/header receipt dependencies select only
-these; no full cohort or unrelated family replay. New246 bytes/eight independent
-fields pass complete unique public primary-TU ownership, current source/header/
-support/tool/producer/PE/MAP/PDB receipts and every byte. Source froze before cold
-builds; all jobs terminal. Build/Oracle tools unchanged; no broad behavior or
-infrastructure suite.
+`.analysis/secondary-actor-affected-cold.log` passes six new units across three
+contexts; actual prior receipt dependencies select zero affected old units.
+New327 bytes/six independent fields pass complete unique public primary-TU
+ownership, current source/header/support/tool/producer/PE/MAP/PDB receipts and
+every byte. Source froze before cold builds. Initial comparison preceded source
+mapping registration and rejected the missing owner; registered mappings then
+passed on the unchanged cold artifacts without another build. All jobs terminal.
+Build/Oracle tools unchanged; no broad behavior or infrastructure suite.
 
-Current diagnostics: secondary-script-default-virtuals, secondary-program-frozen-lifetime,
-secondary-extension-frozen-lifetime, secondary-counter-typed-prefix and
-secondary-actor-full-adapter logs/diagnostic.json. Topic doc lists full Ghidra,
-independent38-span/CFG/vtable/EH/field evidence and rejected probes. Private
-bytes/decompiler/tool/build artifacts stay private; DB unchanged.
+Current full diagnostics are `.analysis/secondary-actor-final-diagnostic.json`
+from canonical artifacts; independent24-span CFG/hash/table records and six
+bindings sit beside it. Topic doc records successful Ghidra reviews, failed
+mixed-data span, source/compiler models and open ownership. Prior lifetime
+proof12+16 remains unchanged. Private bytes/decompiler/tool/build artifacts stay
+private; DB unchanged.
 
 Replay changed exact owners/direct dependencies only. Script/Program sources
 support the Extension family; inspect actual receipts including transitive headers.
