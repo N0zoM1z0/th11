@@ -764,11 +764,11 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0044FD10,authored_game,Rendering,authored,high,render-camera-origin-review-20261023
 0x0044FDA0,unknown,AnimationQuad,indeterminate,unknown,animation-quad-origin-2026-10-29
 0x0044FE30,unknown,AnimationQuad,indeterminate,unknown,animation-quad-origin-2026-10-29
-0x004500B0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x004500F0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00450310,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x004503D0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00450610,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x004500B0,unknown,AnimationVmDraw,indeterminate,unknown,animation-vm-draw-origin-2026-10-29
+0x004500F0,unknown,AnimationVmDraw,indeterminate,unknown,animation-vm-draw-origin-2026-10-29
+0x00450310,unknown,AnimationVmDraw,indeterminate,unknown,animation-vm-draw-origin-2026-10-29
+0x004503D0,unknown,AnimationVmDraw,indeterminate,unknown,animation-vm-draw-origin-2026-10-29
+0x00450610,unknown,AnimationVmDraw,indeterminate,unknown,animation-vm-draw-origin-2026-10-29
 0x00450690,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00450700,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00450AD0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
@@ -1912,7 +1912,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00489A96,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00489AEB,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00489B4C,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00489CED,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00489CED,library,MSVCCRT,exclude,high,vc9-frnd-archive-identity-2026-10-29
 0x00489D01,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00489D2D,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00489D45,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

@@ -141,3 +141,8 @@ ApplyAnimationVmDrawState,0x0044F710,function
 AppendRenderQuad,0x0044FDA0,function
 BuildAnimationVmQuad,0x0044FE30,function
 FloorAnimationCoordinate,0x004520C0,function
+DrawAnimationVm,0x0044F880,function
+DrawUnrotatedAnimationVm,0x004500B0,function
+BuildUnroundedAnimationVmQuad,0x004500F0,function
+DrawUnroundedAnimationVm,0x00450310,function
+DrawAdaptiveAnimationVm,0x00450610,function

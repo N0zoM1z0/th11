@@ -140,3 +140,8 @@ ApplyAnimationVmDrawState
 AppendRenderQuad
 BuildAnimationVmQuad
 FloorAnimationCoordinate
+DrawAnimationVm
+DrawUnrotatedAnimationVm
+BuildUnroundedAnimationVmQuad
+DrawUnroundedAnimationVm
+DrawAdaptiveAnimationVm

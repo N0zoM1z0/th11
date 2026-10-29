@@ -141,9 +141,12 @@ An explicit cached sprite pointer and a SetSprite member form failed to close
 the existing389-byte binder; it remains388/289. An out-of-line definition
 marked inline was not emitted by VC9 and failed linking, so it was rejected.
 Independent camera/renderer parameters, unlike global-only support, recover
-the native101-byte overlay owner. The632-byte coordinate helper now has complete source and a53-byte stack-only
-codegen gap; see [animation quads](ANIMATION_QUAD.md). The1,112-byte44F880
-submission body is still open, including its current-mode FRNDINT contract.
+the native101-byte overlay owner. The632-byte coordinate helper now has a complete cold exact proof, and the
+1,112-byte44F880 submission body has complete source preserving its current
+rounding mode through the verified CRT primitive. See
+[VM submission](ANIMATION_VM_DRAW.md). This older ASCII family still uses
+opaque renderer calls; no caller-wide replay is required merely because the
+dependency acquired source.
 
 Proof logs: `.analysis/ascii-drawing-seven-cold.log` and
 `ascii-drawing-final-four-cold.log`. Complete current main-function diagnostics:

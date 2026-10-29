@@ -1,8 +1,8 @@
 # Animation quad construction and submission review
 
-Six further complete target owners have boundary and origin reviews. Five
-have maintained source in `src/AnimationQuad.cpp`; the1,112-byte submission
-body remains an explicitly open source task. Authorship is indeterminate for
+Six further complete target owners have boundary and origin reviews. Five helper owners have source in `src/AnimationQuad.cpp`. The1,112-byte
+submission body is now maintained separately in `src/AnimationVmDraw.cpp`; see
+[VM submission](ANIMATION_VM_DRAW.md). Authorship is indeterminate for
 all six: their custom renderer/ANM role is established, but that does not
 independently distinguish game authorship, reused engine utilities or (for the
 floor adapter) compiler/library support.
@@ -11,10 +11,10 @@ floor adapter) compiler/library support.
 | --- | --- | ---: | --- |
 | ScaleAnimationColorChannel | 44F490 | 25 | Present |
 | ApplyAnimationVmDrawState | 44F710 | 368 | Present |
-| DrawAnimationVm | 44F880 | 1,112 | Open |
+| DrawAnimationVm | 44F880 | 1,112 | Present; non-exact |
 | AppendRenderQuad | 44FDA0 | 142 | Present |
 | BuildAnimationVmQuad | 44FE30 | 632 | Present |
-| FloorAnimationCoordinate | 4520C0 | 40 | Present; non-exact frame |
+| FloorAnimationCoordinate | 4520C0 | 40 | Exact linked proof |
 
 ## Complete boundaries
 
@@ -52,9 +52,9 @@ would change the observed data dependencies.
 to float and returns through x87. The callee's independently observed fast
 path truncates nonnegative fractional mantissas; for negative nonintegral
 inputs it subtracts1 from the truncated value. This supports `floor`, not
-current-mode rounding. The adapter's64-byte-aligned native frame is still
-unexplained. Natural `float(floor(double(value)))` source has no artificial
-alignment or padding and grants no exact credit for that adapter.
+current-mode rounding. The adapter's64-byte-aligned frame is now reproduced naturally in the real submission
+caller context. Natural `float(floor(double(value)))` source has no artificial
+alignment or padding; the complete40-byte owner has a cold exact proof.
 
 Ghidra's inferred486590 function is sparse and extends into4870E4 fallback
 code across many other candidate functions. That auto-analysis extent has not
@@ -97,7 +97,7 @@ is the identity. Byte parameters preserve the native AL/CL contract; an
 explicit unsigned promotion preserves logical SHR. With byte promotion left
 as signed int, VC9 emits SAR instead, differing at the single shift opcode.
 
-## Submission body still open
+## Submission source and current-mode rounding
 
 44F880 adds renderer camera offsets to all four scratch corners, optionally
 rounds positions, fills UVs using VM+54/+58 offsets, derives quad bounds and
@@ -110,10 +110,11 @@ scratch quad. The function returns0 even when culled.
 Native pixel alignment is four FRNDINT operations followed by subtraction of
 float0.5 at4973F8 and propagation of the aligned rectangle corners. FRNDINT
 uses the current x87 rounding-control mode. `floor`, integer truncation or
-an assumed fixed nearest mode is not an equivalent full contract. No
-approximate body, invented external helper, target instruction bytes or
-handwritten instruction sequence is substituted. This is the concrete next
-codegen/precision question for completing submission source.
+an assumed fixed nearest mode is not equivalent. The existing CRT primitive
+`_frnd` at489CED has now been identified against the pinned VC9 library in all
+20 bytes. Complete submission source uses that real primitive in natural C++;
+its current-rounding-mode ABI was checked independently. Native inline
+instruction codegen remains a gap. See ANIMATION_VM_DRAW.md for the evidence.
 
 ## Reproduction
 
@@ -132,34 +133,25 @@ is a diagnostic context, not the game.
 
 ## Current exact and compiler evidence
 
-The canonical `AnimationQuad` family cold-replays two complete public
-primary-TU functions: ScaleAnimationColorChannel25 and AppendRenderQuad142.
-Neither has relocation or external control-transfer fields. Current
-source/tool/artifact receipts, PE/MAP/PDB identity, complete ownership and all
-167 bytes agree. Both origins remain indeterminate; codegen equality does not
-prove original authorship. Only these two new exact units were cold-built;
-no earlier unit or full cohort was replayed.
+The expanded canonical caller context includes the actual submission and its
+dispatch wrappers. It closes the complete632-byte coordinate function and
+40-byte floor adapter with three/one independently reviewed fields. Color25
+and appender142 remain exact after cold replay in that same context. The new
+VM-draw primary family also closes the537-byte unrounded coordinate function
+and54-byte unrounded dispatch. All six full primary-TU PDB contributions,
+receipts, PE/MAP/PDB identities and exhaustive field/byte replays agree.
+Original TU partition and complete data ownership remain unknown.
 
-BuildAnimationVmQuad has the complete632-byte candidate extent. Exhaustive
-instruction decoding shows all53 diagnostic differences are ESP-relative
-addressing bytes or stack allocation sizes. Target frame16 versus source12
-is still open; this is diagnostic evidence, not an exact match. The current
-state contribution is348 bytes/216 diagnostic differences against368 target
-bytes; shared blend-call blocks and register/filter scheduling differ. The
-floor adapter is29/35 against40.
+The former narrow caller context produced632/53 and29/35: every coordinate
+difference was ESP-relative addressing or frame allocation. Arrays/two-field
+structs worsened the coordinate differences to72; double locals produced
+651-byte coordinate bodies and were rejected. Real caller reconstruction
+closes the gaps without modifying either helper or introducing padding,
+explicit alignment or ABI tricks. The state contribution remains348/216
+against368; shared blend-call blocks and register/filter scheduling are open.
 
-Natural two-float arrays and structures retained632 bytes but increased the
-coordinate differences to72. Double-width/half-height locals produced651-byte
-coordinate bodies with604/607 differences, while the separate floor adapter
-naturally acquired the native64-byte-aligned40-byte body with zero diagnostic
-differences. Those larger-body variants were rejected; the floor was not
-promoted independently to narrow this checkpoint around a smaller match.
-Changing the floor's logical return width or adding an independent double
-caller did not close the ordinary632-byte caller's stack gap. No inert local,
-explicit stack alignment, instruction bytes or ABI trick was introduced.
-
-The final complete diagnostics and stack-byte classification are private
-`.analysis/animation-quad-final-diagnostic.json`; strict cold log:
-`.analysis/animation-quad-cold.log`. Real coordinate source can later replace
-the opaque call in the ASCII diagnostic context when investigating a concrete
-caller codegen gap; its affected units must then be replayed separately.
+Latest cold log: `.analysis/vm-draw-six-cold.log`. The old narrow-context
+compiler findings remain private `animation-quad-*.log` and
+`animation-quad-final-diagnostic.json`; they are historical context, not the
+current exact state. [VM submission](ANIMATION_VM_DRAW.md) records the current
+proofs and the still non-exact1,112-byte submission owner.

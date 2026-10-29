@@ -1710,10 +1710,10 @@ linkages = [
 artifact_kind = "linked-pe"
 source = "src/AnimationQuad.cpp"
 inputs = ["src/AnimationQuad.hpp"]
-support_sources = ["probes/animation-quad-context.cpp", "src/RenderBatch.cpp"]
+support_sources = ["probes/animation-vm-draw-context.cpp", "src/AnimationVmDraw.cpp", "src/RenderBatch.cpp"]
 output_dir = "build/match-linked/AnimationQuad"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
-entry = "AnimationQuadProbe@40"
+entry = "AnimationVmDrawProbe@36"
 functions = ["ScaleAnimationColorChannel"]
 symbol = "?ScaleAnimationColorChannel@@YGIEE@Z"
 target_address = 0x44f490
@@ -1724,12 +1724,83 @@ linkages = []
 artifact_kind = "linked-pe"
 source = "src/AnimationQuad.cpp"
 inputs = ["src/AnimationQuad.hpp"]
-support_sources = ["probes/animation-quad-context.cpp", "src/RenderBatch.cpp"]
+support_sources = ["probes/animation-vm-draw-context.cpp", "src/AnimationVmDraw.cpp", "src/RenderBatch.cpp"]
 output_dir = "build/match-linked/AnimationQuad"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
-entry = "AnimationQuadProbe@40"
+entry = "AnimationVmDrawProbe@36"
 functions = ["AppendRenderQuad"]
 symbol = "?AppendRenderQuad@@YGHPAURenderBatchView@@PBURenderVertex@@@Z"
 target_address = 0x44fda0
 size = 142
 linkages = []
+
+[units.build-animation-vm-quad]
+artifact_kind = "linked-pe"
+source = "src/AnimationQuad.cpp"
+inputs = ["src/AnimationQuad.hpp"]
+support_sources = ["probes/animation-vm-draw-context.cpp", "src/AnimationVmDraw.cpp", "src/RenderBatch.cpp"]
+output_dir = "build/match-linked/AnimationQuad"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationVmDrawProbe@36"
+functions = ["BuildAnimationVmQuad"]
+symbol = "?BuildAnimationVmQuad@@YGXPAUAnimationVmView@@PAUCameraVector@@111@Z"
+target_address = 0x44fe30
+size = 632
+linkages = [
+  { offset = 51, type = "DIR32", symbol = "__real@3fe0000000000000", target = 0x497e60, addend = 0x0 },
+  { offset = 279, type = "REL32", symbol = "?FloorAnimationCoordinate@@YGMM@Z", target = 0x4520c0, addend = 0x0 },
+  { offset = 539, type = "REL32", symbol = "?FloorAnimationCoordinate@@YGMM@Z", target = 0x4520c0, addend = 0x0 },
+]
+
+[units.floor-animation-coordinate]
+artifact_kind = "linked-pe"
+source = "src/AnimationQuad.cpp"
+inputs = ["src/AnimationQuad.hpp"]
+support_sources = ["probes/animation-vm-draw-context.cpp", "src/AnimationVmDraw.cpp", "src/RenderBatch.cpp"]
+output_dir = "build/match-linked/AnimationQuad"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationVmDrawProbe@36"
+functions = ["FloorAnimationCoordinate"]
+symbol = "?FloorAnimationCoordinate@@YGMM@Z"
+target_address = 0x4520c0
+size = 40
+linkages = [
+  { offset = 19, type = "REL32", symbol = "_floor", target = 0x486590, addend = 0x0 },
+]
+
+[units.build-unrounded-animation-vm-quad]
+artifact_kind = "linked-pe"
+source = "src/AnimationVmDraw.cpp"
+inputs = ["src/AnimationVmDraw.hpp", "src/CrtRounding.hpp"]
+support_sources = ["probes/animation-vm-draw-context.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp"]
+output_dir = "build/match-linked/AnimationVmDraw"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationVmDrawProbe@36"
+functions = ["BuildUnroundedAnimationVmQuad"]
+symbol = "?BuildUnroundedAnimationVmQuad@@YGXPAUAnimationVmView@@PAUCameraVector@@111@Z"
+target_address = 0x4500f0
+size = 537
+linkages = [
+  { offset = 48, type = "DIR32", symbol = "__real@3fe0000000000000", target = 0x497e60, addend = 0x0 },
+]
+
+[units.draw-unrounded-animation-vm]
+artifact_kind = "linked-pe"
+source = "src/AnimationVmDraw.cpp"
+inputs = ["src/AnimationVmDraw.hpp", "src/CrtRounding.hpp"]
+support_sources = ["probes/animation-vm-draw-context.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp"]
+output_dir = "build/match-linked/AnimationVmDraw"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationVmDrawProbe@36"
+functions = ["DrawUnroundedAnimationVm"]
+symbol = "?DrawUnroundedAnimationVm@@YGXPAURenderBatchView@@PAUAnimationVmView@@@Z"
+target_address = 0x450310
+size = 54
+linkages = [
+  { offset = 10, type = "DIR32", symbol = "?g_AnimationQuad@@3PAURenderVertex@@A", target = 0x4c91d8, addend = 0x54 },
+  { offset = 15, type = "DIR32", symbol = "?g_AnimationQuad@@3PAURenderVertex@@A", target = 0x4c91d8, addend = 0x38 },
+  { offset = 20, type = "DIR32", symbol = "?g_AnimationQuad@@3PAURenderVertex@@A", target = 0x4c91d8, addend = 0x1c },
+  { offset = 25, type = "DIR32", symbol = "?g_AnimationQuad@@3PAURenderVertex@@A", target = 0x4c91d8, addend = 0x0 },
+  { offset = 30, type = "REL32", symbol = "?BuildUnroundedAnimationVmQuad@@YGXPAUAnimationVmView@@PAUCameraVector@@111@Z", target = 0x4500f0, addend = 0x0 },
+  { offset = 43, type = "REL32", symbol = "?DrawAnimationVm@@YGHPAURenderBatchView@@PAUAnimationVmView@@E@Z", target = 0x44f880, addend = 0x0 },
+]
