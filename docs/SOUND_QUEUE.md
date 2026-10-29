@@ -148,12 +148,14 @@ source presence and lower diagnostic counts grant no exact credit.
 
 Fifteen called helpers were independently reviewed in full: filename lookup
 4496B0/215, prepared load449C70/515, start449E80/291, close449FE0/178,
-decoder open45A4F0/353, refill45A6F0/570, first buffer45AA00/19,
+buffer recreation45A4F0/353 (earlier decoder-open label corrected), refill45A6F0/570, first buffer45AA00/19,
 play45AA60/133, volume45AAF0/125, stop45AB70/129, pause45AC00/117,
 resume45AC80/77, worker update45AEE0/543, reset position45B100/223 and
 record configure45B2D0/130. At this queue checkpoint only getter and volume had body source. The later
 [MUSIC_STREAM](MUSIC_STREAM.md) checkpoint implements most streaming/decoder
-helpers and supersedes those source-open states.
+helpers and supersedes those source-open states. [AUDIO_DEVICE](AUDIO_DEVICE.md)
+then reconstructs the full353-byte buffer/notification recreation owner and
+corrects its earlier OpenMusicDecoder name; it performs no decoder-file open.
 Remaining declarations denote real reviewed boundaries, with no fake
 success implementations. All have full RET/reference/neighbor reviews and
 no embedded tables or external interior entries.

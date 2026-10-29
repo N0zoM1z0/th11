@@ -230,3 +230,8 @@ CloseMusicDecoder
 MusicDecoderSavedPosition
 ConfigureControllerMusicDecoder
 SaveMusicDecoderPosition
+InitializeSoundDeviceOwner
+ReleaseSoundDevice
+InitializeSoundDevice
+ConfigurePrimarySoundFormat
+RecreateMusicBuffers

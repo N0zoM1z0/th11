@@ -231,3 +231,8 @@ CloseMusicDecoder,0x0045B540,function
 MusicDecoderSavedPosition,0x0045B560,function
 ConfigureControllerMusicDecoder,0x0045B570,function
 SaveMusicDecoderPosition,0x0045B580,function
+InitializeSoundDeviceOwner,0x00459D20,function
+ReleaseSoundDevice,0x00459D30,function
+InitializeSoundDevice,0x00459D50,function
+ConfigurePrimarySoundFormat,0x00459DA0,function
+RecreateMusicBuffers,0x0045A4F0,function

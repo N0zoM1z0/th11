@@ -1,8 +1,10 @@
 # Streaming buffers, decoder state and fades
 
-Twenty-six complete source mappings cover3,230 target bytes, including buffer
-refill570 and streaming update543. Seventeen new complete cold linked proofs
-add1,185 bytes. Both larger bodies and seven other owners remain non-exact.
+The initial streaming checkpoint added26 complete source mappings /3,230 target
+bytes, including refill570 and streaming update543, and17 cold exact owners
+/1,185 bytes. The later [device checkpoint](AUDIO_DEVICE.md) adds5 source
+mappings and9 exact owners, including four closures below. Five original
+streaming owners remain non-exact. The table records their current state.
 Thirteen omitted entries are recovered, bringing inventory to2,060. Twenty-three
 new boundary/origin reviews supplement eight previously reviewed owners;
 all31 reviewed origins remain indeterminate.
@@ -10,21 +12,21 @@ all31 reviewed origins remain indeterminate.
 | Owner | Address | Full bytes | Current state |
 | --- | --- | ---: | --- |
 | RestoreMusicBuffer | 45A930 | 93 | Exact;1 field |
-| SelectAvailableMusicBuffer | 45A990 | 100 | Source;100 /21 diagnostic differences |
-| RefillMusicBuffer | 45A6F0 | 570 | Source;545 /500 |
+| SelectAvailableMusicBuffer | 45A990 | 100 | Exact;1 field |
+| RefillMusicBuffer | 45A6F0 | 570 | Source;569 /504 diagnostic differences |
 | ResetMusicBufferPositions | 45ACD0 | 52 | Exact; no fields |
-| PlayMusicStream | 45AA60 | 133 | Source;132 /20 |
-| StopMusicStream | 45AB70 | 129 | Source;135 /129 |
+| PlayMusicStream | 45AA60 | 133 | Source;132 /18 |
+| StopMusicStream | 45AB70 | 129 | Exact;1 field |
 | PauseMusicStream | 45AC00 | 117 | Exact;2 fields |
-| ResumeMusicStream | 45AC80 | 77 | Source;77 /62 |
+| ResumeMusicStream | 45AC80 | 77 | Exact;1 field |
 | UpdateMusicStream | 45AEE0 | 543 | Source;544 /421 |
 | ResetMusicPosition | 45B100 | 223 | Source;220 /160 |
 | OpenMusicDecoderFile | 45B220 | 164 | Exact;5 fields |
 | ConfigureMusicDecoder | 45B2D0 | 130 | Exact;4 fields |
 | ResetMusicDecoder | 45B3A0 | 223 | Exact;6 fields |
-| ReadMusicDecoder | 45B480 | 192 | Source;158 /179 |
+| ReadMusicDecoder | 45B480 | 192 | Source;160 /177 |
 | QueryMusicBufferInterface | 45AA20 | 49 | Exact;1 field |
-| IsAnyMusicBufferPlaying | 45AD10 | 78 | Source;78 /13 |
+| IsAnyMusicBufferPlaying | 45AD10 | 78 | Exact; no fields |
 | StepMusicFadeMode1 /2 /3 /4 | 45ADD0 /45AE20 /45AE60 /45AEA0 | 70 /51 /51 /57 | Exact;1 field each |
 | BindMusicDecoderMemory | 45B360 | 43 | Exact; no fields |
 | MusicDecoderDataSize | 45B390 | 4 | Exact; no fields |
@@ -81,8 +83,11 @@ Restore twice per iteration, sleeping10ms only if the first result equals
 sets optional output TRUE and returns S_OK. This is not a one-call retry loop.
 The93-byte owner includes its complete loop/return layout; no padding is added.
 
-Refill rejects a null buffer, restores it, locks its full buffer at offset0,
-restarts the decoder and reads. A zero first read fills silence. A short nonzero
+Refill first zeroes its data pointer, byte count and read count, then rejects a
+null buffer, restores it, locks at offset0, restarts the decoder and reads. The
+first reset status is ignored; repeated-fill reset failure returns immediately.
+These two details were corrected after a fresh raw-body review in the device
+checkpoint; the previous source omitted them. A zero first read fills silence. A short nonzero
 read either repeatedly restarts and fills the remaining bytes or fills the
 remainder with silence, depending on the actual loop argument. No zero-progress
 escape is added to the loop. Eight-bit PCM silence is128; other formats use0.
@@ -160,9 +165,11 @@ multiplication: mode1 is5000*r/n-5000; mode2 -5000*r/n; mode3 -1000*r/n;
 mode4 1000*r/n-1000. Original counters and divisor behavior are retained.
 All four complete owners have cold zero proofs.
 
-The new COM interface improves selector100 from44 to21 diagnostic differences,
+The initial COM interface probe improved selector100 from44 to21 differences,
 any-playing78 from38 to13, and notification543 from538/428 to544/421. Refill
-remains545 bytes/500 differences. Its receiver remains stack-passed in the
+was545 bytes/500 differences; corrected output/reset behavior now produces
+569/504. Selector and any-playing now have complete exact proofs. Refill
+receiver remains stack-passed in the
 candidate, while native uses EBX; decoder read uses extra private registers
 instead of native two stack arguments/RET8. Those calling-context differences
 propagate through the larger owners.
@@ -180,14 +187,15 @@ constructor/destructor implementations or assigning ordinary exact credit.
 
 ## Cold proof and remaining scope
 
-New family `build/match-linked/MusicStream` uses the17 new complete public
+At the initial streaming checkpoint, `build/match-linked/MusicStream` used17
+new complete public
 primary-TU contributions,1,185 bytes and26 independently reviewed fields.
 Fields bind Sleep/CloseHandle/CreateFileA/SetFilePointer IAT slots, archive4C9094,
 trace45B5A0 and its two formats, GUID48D11C, real decoder/helper calls and
 volume45AAF0. Every field and every byte replay with current source/header/
 tool/producer/PE/MAP/PDB receipts and owner agreement.
 
-The existing SoundQueue family now includes actual MusicStream support.
+The SoundQueue family began including actual MusicStream support in that checkpoint.
 Dispatcher diagnostic improves from1,556/1,085 to1,540/1,077. Its three existing
 exact owners (worker177, enqueue151, volume125) retain453 bytes/19 fields of
 full zero proof after the header/type/context changes. Cold selection was

@@ -43,12 +43,11 @@ in [`docs/PROGRESS.md`](docs/PROGRESS.md). Start continuation at
 [`docs/RE_HANDOFF.md`](docs/RE_HANDOFF.md); the concise
 [`working knowledge`](docs/KNOWLEDGE_BASE.md) links the detailed topic records.
 
-The latest checkpoint adds26 complete streaming/decoder source mappings covering
-3,230 target bytes, including570-byte refill and543-byte notification paths.
-Seventeen new exact functions add1,185 bytes; both larger bodies retain open
-codegen gaps. Twenty-three further boundaries/origins are reviewed and13 omitted
-entries recovered. Full decoder review corrects the earlier record+1C loop label
-to dataSize, with loopStart at+18.
+The latest checkpoint adds five complete device/buffer source mappings /719
+bytes and nine complete exact owners /1,103 bytes, including353-byte buffer
+recreation and272-byte primary-format setup. Twelve more boundary/origin reviews
+recover seven missing entries. Fresh refill review corrects zero initialization
+and repeated-reset error handling; its full570-byte target remains non-exact.
 Stage meshes, VM creation, the full stage interpreter, interpolation, stage
 update/drawing, ANM resources, rendering, text, input and file paths have varying
 levels of maintained source and exact proofs. Source presence, exact codegen and
@@ -58,6 +57,7 @@ full runtime and portability are open.
 | Current area | Details |
 | --- | --- |
 | Renderer quad construction/submission | [quads](docs/ANIMATION_QUAD.md), [submission](docs/ANIMATION_VM_DRAW.md), [projection/fog](docs/ANIMATION_PROJECTED_QUAD.md), [immediate modes](docs/ANIMATION_IMMEDIATE_DRAW.md) |
+| Device setup and buffer recreation | [device evidence](docs/AUDIO_DEVICE.md) |
 | Streaming buffers, decoder state and fades | [streaming evidence](docs/MUSIC_STREAM.md) |
 | Audio command queue and streaming worker | [audio queue evidence](docs/SOUND_QUEUE.md) |
 | Animation interpolation, layer dispatch and allocation | [interpolation/dispatch evidence](docs/ANIMATION_TWEEN_DISPATCH.md) |

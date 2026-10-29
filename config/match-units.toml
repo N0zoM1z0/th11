@@ -2352,7 +2352,7 @@ linkages = [
 [units.music-streaming-thread]
 artifact_kind = "linked-pe"
 source = "src/SoundQueue.cpp"
-inputs = ["src/SoundQueue.hpp", "src/SoundBuffer.hpp"]
+inputs = ["src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/MusicStream.hpp", "src/SoundDevice.hpp"]
 support_sources = ["probes/sound-queue-context.cpp", "src/MusicStream.cpp"]
 output_dir = "build/match-linked/SoundQueue"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -2374,7 +2374,7 @@ linkages = [
 [units.enqueue-sound-command]
 artifact_kind = "linked-pe"
 source = "src/SoundQueue.cpp"
-inputs = ["src/SoundQueue.hpp", "src/SoundBuffer.hpp"]
+inputs = ["src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/MusicStream.hpp", "src/SoundDevice.hpp"]
 support_sources = ["probes/sound-queue-context.cpp", "src/MusicStream.cpp"]
 output_dir = "build/match-linked/SoundQueue"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -2397,7 +2397,7 @@ linkages = [
 [units.set-music-buffer-volume]
 artifact_kind = "linked-pe"
 source = "src/SoundQueue.cpp"
-inputs = ["src/SoundQueue.hpp", "src/SoundBuffer.hpp"]
+inputs = ["src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/MusicStream.hpp", "src/SoundDevice.hpp"]
 support_sources = ["probes/sound-queue-context.cpp", "src/MusicStream.cpp"]
 output_dir = "build/match-linked/SoundQueue"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -2416,7 +2416,7 @@ linkages = [
 [units.restore-music-buffer]
 artifact_kind = "linked-pe"
 source = "src/MusicStream.cpp"
-inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp"]
+inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/SoundDevice.hpp"]
 support_sources = ["probes/music-stream-context.cpp", "src/SoundQueue.cpp"]
 output_dir = "build/match-linked/MusicStream"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -2432,7 +2432,7 @@ linkages = [
 [units.reset-music-buffer-positions]
 artifact_kind = "linked-pe"
 source = "src/MusicStream.cpp"
-inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp"]
+inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/SoundDevice.hpp"]
 support_sources = ["probes/music-stream-context.cpp", "src/SoundQueue.cpp"]
 output_dir = "build/match-linked/MusicStream"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -2446,7 +2446,7 @@ linkages = []
 [units.pause-music-stream]
 artifact_kind = "linked-pe"
 source = "src/MusicStream.cpp"
-inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp"]
+inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/SoundDevice.hpp"]
 support_sources = ["probes/music-stream-context.cpp", "src/SoundQueue.cpp"]
 output_dir = "build/match-linked/MusicStream"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -2463,7 +2463,7 @@ linkages = [
 [units.open-music-decoder-file]
 artifact_kind = "linked-pe"
 source = "src/MusicStream.cpp"
-inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp"]
+inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/SoundDevice.hpp"]
 support_sources = ["probes/music-stream-context.cpp", "src/SoundQueue.cpp"]
 output_dir = "build/match-linked/MusicStream"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -2483,7 +2483,7 @@ linkages = [
 [units.configure-music-decoder]
 artifact_kind = "linked-pe"
 source = "src/MusicStream.cpp"
-inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp"]
+inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/SoundDevice.hpp"]
 support_sources = ["probes/music-stream-context.cpp", "src/SoundQueue.cpp"]
 output_dir = "build/match-linked/MusicStream"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -2502,7 +2502,7 @@ linkages = [
 [units.reset-music-decoder]
 artifact_kind = "linked-pe"
 source = "src/MusicStream.cpp"
-inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp"]
+inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/SoundDevice.hpp"]
 support_sources = ["probes/music-stream-context.cpp", "src/SoundQueue.cpp"]
 output_dir = "build/match-linked/MusicStream"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -2523,7 +2523,7 @@ linkages = [
 [units.query-music-buffer-interface]
 artifact_kind = "linked-pe"
 source = "src/MusicStream.cpp"
-inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp"]
+inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/SoundDevice.hpp"]
 support_sources = ["probes/music-stream-context.cpp", "src/SoundQueue.cpp"]
 output_dir = "build/match-linked/MusicStream"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -2539,7 +2539,7 @@ linkages = [
 [units.step-music-fade-mode1]
 artifact_kind = "linked-pe"
 source = "src/MusicStream.cpp"
-inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp"]
+inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/SoundDevice.hpp"]
 support_sources = ["probes/music-stream-context.cpp", "src/SoundQueue.cpp"]
 output_dir = "build/match-linked/MusicStream"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -2555,7 +2555,7 @@ linkages = [
 [units.step-music-fade-mode2]
 artifact_kind = "linked-pe"
 source = "src/MusicStream.cpp"
-inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp"]
+inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/SoundDevice.hpp"]
 support_sources = ["probes/music-stream-context.cpp", "src/SoundQueue.cpp"]
 output_dir = "build/match-linked/MusicStream"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -2571,7 +2571,7 @@ linkages = [
 [units.step-music-fade-mode3]
 artifact_kind = "linked-pe"
 source = "src/MusicStream.cpp"
-inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp"]
+inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/SoundDevice.hpp"]
 support_sources = ["probes/music-stream-context.cpp", "src/SoundQueue.cpp"]
 output_dir = "build/match-linked/MusicStream"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -2587,7 +2587,7 @@ linkages = [
 [units.step-music-fade-mode4]
 artifact_kind = "linked-pe"
 source = "src/MusicStream.cpp"
-inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp"]
+inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/SoundDevice.hpp"]
 support_sources = ["probes/music-stream-context.cpp", "src/SoundQueue.cpp"]
 output_dir = "build/match-linked/MusicStream"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -2603,7 +2603,7 @@ linkages = [
 [units.bind-music-decoder-memory]
 artifact_kind = "linked-pe"
 source = "src/MusicStream.cpp"
-inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp"]
+inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/SoundDevice.hpp"]
 support_sources = ["probes/music-stream-context.cpp", "src/SoundQueue.cpp"]
 output_dir = "build/match-linked/MusicStream"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -2617,7 +2617,7 @@ linkages = []
 [units.music-decoder-data-size]
 artifact_kind = "linked-pe"
 source = "src/MusicStream.cpp"
-inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp"]
+inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/SoundDevice.hpp"]
 support_sources = ["probes/music-stream-context.cpp", "src/SoundQueue.cpp"]
 output_dir = "build/match-linked/MusicStream"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -2631,7 +2631,7 @@ linkages = []
 [units.close-music-decoder]
 artifact_kind = "linked-pe"
 source = "src/MusicStream.cpp"
-inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp"]
+inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/SoundDevice.hpp"]
 support_sources = ["probes/music-stream-context.cpp", "src/SoundQueue.cpp"]
 output_dir = "build/match-linked/MusicStream"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -2647,7 +2647,7 @@ linkages = [
 [units.music-decoder-saved-position]
 artifact_kind = "linked-pe"
 source = "src/MusicStream.cpp"
-inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp"]
+inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/SoundDevice.hpp"]
 support_sources = ["probes/music-stream-context.cpp", "src/SoundQueue.cpp"]
 output_dir = "build/match-linked/MusicStream"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -2661,7 +2661,7 @@ linkages = []
 [units.configure-controller-music-decoder]
 artifact_kind = "linked-pe"
 source = "src/MusicStream.cpp"
-inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp"]
+inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/SoundDevice.hpp"]
 support_sources = ["probes/music-stream-context.cpp", "src/SoundQueue.cpp"]
 output_dir = "build/match-linked/MusicStream"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -2677,7 +2677,7 @@ linkages = [
 [units.save-music-decoder-position]
 artifact_kind = "linked-pe"
 source = "src/MusicStream.cpp"
-inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp"]
+inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/SoundDevice.hpp"]
 support_sources = ["probes/music-stream-context.cpp", "src/SoundQueue.cpp"]
 output_dir = "build/match-linked/MusicStream"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -2688,4 +2688,150 @@ target_address = 0x45b580
 size = 26
 linkages = [
   { offset = 15, type = "DIR32", symbol = "__imp__SetFilePointer@16", target = 0x48b09c, addend = 0x0 },
+]
+
+[units.select-available-music-buffer]
+artifact_kind = "linked-pe"
+source = "src/MusicStream.cpp"
+inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/SoundDevice.hpp"]
+support_sources = ["probes/music-stream-context.cpp", "src/SoundQueue.cpp"]
+output_dir = "build/match-linked/MusicStream"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "MusicStreamProbe@44"
+functions = ["SelectAvailableMusicBuffer"]
+symbol = "?SelectAvailableMusicBuffer@@YGPAUSoundBufferView@@PAUMusicControllerView@@@Z"
+target_address = 0x45a990
+size = 100
+linkages = [
+  { offset = 82, type = "REL32", symbol = "_rand", target = 0x46190d, addend = 0x0 },
+]
+
+[units.stop-music-stream]
+artifact_kind = "linked-pe"
+source = "src/MusicStream.cpp"
+inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/SoundDevice.hpp"]
+support_sources = ["probes/music-stream-context.cpp", "src/SoundQueue.cpp"]
+output_dir = "build/match-linked/MusicStream"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "MusicStreamProbe@44"
+functions = ["StopMusicStream"]
+symbol = "?StopMusicStream@@YGJPAUMusicControllerView@@H@Z"
+target_address = 0x45ab70
+size = 129
+linkages = [
+  { offset = 107, type = "DIR32", symbol = "__imp__CloseHandle@4", target = 0x48b0a0, addend = 0x0 },
+]
+
+[units.resume-music-stream]
+artifact_kind = "linked-pe"
+source = "src/MusicStream.cpp"
+inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/SoundDevice.hpp"]
+support_sources = ["probes/music-stream-context.cpp", "src/SoundQueue.cpp"]
+output_dir = "build/match-linked/MusicStream"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "MusicStreamProbe@44"
+functions = ["ResumeMusicStream"]
+symbol = "?ResumeMusicStream@@YGJPAUMusicControllerView@@@Z"
+target_address = 0x45ac80
+size = 77
+linkages = [
+  { offset = 42, type = "REL32", symbol = "?ConfigureMusicDecoder@@YGJPAUMusicDecoderView@@PAUSoundTrackRecord@@H@Z", target = 0x45b2d0, addend = 0x0 },
+]
+
+[units.is-any-music-buffer-playing]
+artifact_kind = "linked-pe"
+source = "src/MusicStream.cpp"
+inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/SoundDevice.hpp"]
+support_sources = ["probes/music-stream-context.cpp", "src/SoundQueue.cpp"]
+output_dir = "build/match-linked/MusicStream"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "MusicStreamProbe@44"
+functions = ["IsAnyMusicBufferPlaying"]
+symbol = "?IsAnyMusicBufferPlaying@@YGHPAUMusicControllerView@@@Z"
+target_address = 0x45ad10
+size = 78
+linkages = []
+
+[units.configure-primary-sound-format]
+artifact_kind = "linked-pe"
+source = "src/MusicStream.cpp"
+inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/SoundDevice.hpp"]
+support_sources = ["probes/music-stream-context.cpp", "src/SoundQueue.cpp"]
+output_dir = "build/match-linked/MusicStream"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "MusicStreamProbe@44"
+functions = ["ConfigurePrimarySoundFormat"]
+symbol = "?ConfigurePrimarySoundFormat@@YGJPAUSoundDeviceOwnerView@@@Z"
+target_address = 0x459da0
+size = 272
+linkages = [
+  { offset = 4, type = "DIR32", symbol = "___security_cookie", target = 0x4a2088, addend = 0x0 },
+  { offset = 43, type = "REL32", symbol = "@__security_check_cookie@4", target = 0x45fc2c, addend = 0x0 },
+  { offset = 262, type = "REL32", symbol = "@__security_check_cookie@4", target = 0x45fc2c, addend = 0x0 },
+]
+
+[units.recreate-music-buffers]
+artifact_kind = "linked-pe"
+source = "src/MusicStream.cpp"
+inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/SoundDevice.hpp"]
+support_sources = ["probes/music-stream-context.cpp", "src/SoundQueue.cpp"]
+output_dir = "build/match-linked/MusicStream"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "MusicStreamProbe@44"
+functions = ["RecreateMusicBuffers"]
+symbol = "?RecreateMusicBuffers@@YGJPAUMusicControllerView@@@Z"
+target_address = 0x45a4f0
+size = 353
+linkages = [
+  { offset = 58, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x45fd49, addend = 0x0 },
+  { offset = 93, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x45fce4, addend = 0x0 },
+  { offset = 170, type = "DIR32", symbol = "?g_MusicNotificationInterfaceId@@3U_GUID@@B", target = 0x48d15c, addend = 0x0 },
+  { offset = 191, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x45fce4, addend = 0x0 },
+  { offset = 280, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x45fd49, addend = 0x0 },
+  { offset = 336, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x45fd49, addend = 0x0 },
+]
+
+[units.initialize-sound-device-owner]
+artifact_kind = "linked-pe"
+source = "src/MusicStream.cpp"
+inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/SoundDevice.hpp"]
+support_sources = ["probes/music-stream-context.cpp", "src/SoundQueue.cpp"]
+output_dir = "build/match-linked/MusicStream"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "MusicStreamProbe@44"
+functions = ["InitializeSoundDeviceOwner"]
+symbol = "?InitializeSoundDeviceOwner@@YGXPAUSoundDeviceOwnerView@@@Z"
+target_address = 0x459d20
+size = 7
+linkages = []
+
+[units.release-sound-device]
+artifact_kind = "linked-pe"
+source = "src/MusicStream.cpp"
+inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/SoundDevice.hpp"]
+support_sources = ["probes/music-stream-context.cpp", "src/SoundQueue.cpp"]
+output_dir = "build/match-linked/MusicStream"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "MusicStreamProbe@44"
+functions = ["ReleaseSoundDevice"]
+symbol = "?ReleaseSoundDevice@@YGXPAUSoundDeviceOwnerView@@@Z"
+target_address = 0x459d30
+size = 21
+linkages = []
+
+[units.initialize-sound-device]
+artifact_kind = "linked-pe"
+source = "src/MusicStream.cpp"
+inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/SoundDevice.hpp"]
+support_sources = ["probes/music-stream-context.cpp", "src/SoundQueue.cpp"]
+output_dir = "build/match-linked/MusicStream"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "MusicStreamProbe@44"
+functions = ["InitializeSoundDevice"]
+symbol = "?InitializeSoundDevice@@YGJPAUSoundDeviceOwnerView@@PAUHWND__@@@Z"
+target_address = 0x459d50
+size = 66
+linkages = [
+  { offset = 26, type = "REL32", symbol = "_DirectSoundCreate8@12", target = 0x45f9b0, addend = 0x0 },
+  { offset = 57, type = "REL32", symbol = "?ConfigurePrimarySoundFormat@@YGJPAUSoundDeviceOwnerView@@@Z", target = 0x459da0, addend = 0x0 },
 ]

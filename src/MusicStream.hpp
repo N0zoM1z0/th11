@@ -21,6 +21,12 @@ HRESULT __stdcall ResetMusicDecoder(MusicDecoderView *self, DWORD offset, bool l
 HRESULT __stdcall ReadMusicDecoder(MusicDecoderView *self, void *destination, DWORD bytes, DWORD *read);
 
 extern const GUID g_MusicBufferInterfaceId;
+extern const GUID g_MusicNotificationInterfaceId;
+HRESULT __stdcall ConfigurePrimarySoundFormat(SoundDeviceOwnerView *self);
+HRESULT __stdcall RecreateMusicBuffers(MusicControllerView *self);
+void __stdcall InitializeSoundDeviceOwner(SoundDeviceOwnerView *self);
+void __stdcall ReleaseSoundDevice(SoundDeviceOwnerView *self);
+HRESULT __stdcall InitializeSoundDevice(SoundDeviceOwnerView *self, HWND window);
 HRESULT __stdcall QueryMusicBufferInterface(MusicControllerView *self, DWORD index, void **object);
 BOOL __stdcall IsAnyMusicBufferPlaying(MusicControllerView *self);
 int __stdcall StepMusicFadeMode1(MusicControllerView *self);

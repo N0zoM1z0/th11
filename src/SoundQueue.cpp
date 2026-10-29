@@ -8,7 +8,7 @@ void __stdcall ClosePreparedMusic(SoundManagerQueueView *self);
 int __stdcall LoadPreparedMusic(SoundManagerQueueView *self, int index, const char *name);
 int __stdcall StartPreparedMusic(SoundManagerQueueView *self, int index);
 int __stdcall FindSoundTrack(const char *name, SoundManagerQueueView *self);
-HRESULT __stdcall OpenMusicDecoder(MusicControllerView *self);
+HRESULT __stdcall RecreateMusicBuffers(MusicControllerView *self);
 HRESULT __stdcall ConfigureMusicDecoder(MusicDecoderView *self, SoundTrackRecord *record, int offset);
 HRESULT __stdcall RefillMusicBuffer(MusicControllerView *self, SoundBufferView *buffer, int loop);
 HRESULT __stdcall ResetMusicPosition(MusicControllerView *self);
@@ -97,7 +97,7 @@ int __cdecl ProcessSoundQueue()
             else if (command->step == 1)
             {
                 if (g_MusicController->busy) goto FinishedCommands;
-                OpenMusicDecoder(g_MusicController);
+                RecreateMusicBuffers(g_MusicController);
             }
             else if (command->step == 2)
             {

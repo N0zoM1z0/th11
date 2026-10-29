@@ -1,7 +1,7 @@
 #pragma once
 
 #include <windows.h>
-#include "SoundBuffer.hpp"
+#include "SoundDevice.hpp"
 #include <stddef.h>
 
 struct SoundCommand
@@ -50,11 +50,12 @@ struct MusicControllerView
     unsigned int playPriority, playFlags, unknown028, unknown02c;
     int active;
     int paused;
-    unsigned char unknown038[0x60 - 0x38];
+    SoundBufferDescription bufferDescription;
+    SoundDeviceOwnerView *deviceOwner;
     DWORD lastPlayPosition, playProgress, nextWriteOffset;
     int fillSilence;
     DWORD notificationBytes;
-    unsigned int unknown074;
+    HANDLE notificationEvent;
     volatile int busy;
 };
 struct SoundManagerQueueView
@@ -81,6 +82,8 @@ typedef char MusicRecordDataSizeOffset[(offsetof(SoundTrackRecord, dataSize) == 
 typedef char MusicRecordBitsOffset[(offsetof(SoundTrackRecord, bitsPerSample) == 0x2e) ? 1 : -1];
 typedef char MusicDecoderRecordOffset[(offsetof(MusicDecoderView, record) == 0x90) ? 1 : -1];
 typedef char MusicNotificationOffset[(offsetof(MusicControllerView, notificationBytes) == 0x70) ? 1 : -1];
+typedef char MusicDescriptionOffset[(offsetof(MusicControllerView, bufferDescription) == 0x38) ? 1 : -1];
+typedef char MusicDeviceOwnerOffset[(offsetof(MusicControllerView, deviceOwner) == 0x5c) ? 1 : -1];
 typedef char MusicDecoderOffset[(offsetof(MusicControllerView, decoder) == 0xc) ? 1 : -1];
 typedef char MusicBusyOffset[(offsetof(MusicControllerView, busy) == 0x78) ? 1 : -1];
 

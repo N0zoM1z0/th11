@@ -33,6 +33,11 @@ extern "C" HRESULT __stdcall MusicStreamProbe(int kind, MusicControllerView *mus
     case 23: return MusicDecoderSavedPosition(decoder);
     case 24: return ConfigureControllerMusicDecoder(music, record, setting);
     case 25: SaveMusicDecoderPosition(decoder); break;
+    case 26: return RecreateMusicBuffers(music);
+    case 27: return ConfigurePrimarySoundFormat(reinterpret_cast<SoundDeviceOwnerView *>(data));
+    case 28: InitializeSoundDeviceOwner(reinterpret_cast<SoundDeviceOwnerView *>(data)); break;
+    case 29: ReleaseSoundDevice(reinterpret_cast<SoundDeviceOwnerView *>(data)); break;
+    case 30: return InitializeSoundDevice(reinterpret_cast<SoundDeviceOwnerView *>(data), reinterpret_cast<HWND>(buffer));
     }
     return 0;
 }

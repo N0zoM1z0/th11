@@ -212,10 +212,33 @@ Useful boundary corrections:
  the installed public protocol declaration. No implementation or tool payload
  was imported. Target RTTI names CSound/CStreamingSound establish names but
  do not prove unmodified sample/library provenance; origins stay indeterminate.
-- Current candidates2,060, reviewed boundaries285, source mappings232 and exact
+- Streaming checkpoint candidates2,060, reviewed boundaries285, source mappings232 and exact
  functions128/19,920 bytes. Thirteen omitted entries and23 new origin reviews
  are maintained. Only17 new plus3 affected SoundQueue exact owners were replayed.
  Refill545/500 and notification544/421 remain open, as do private read arguments.
+
+- Full353-byte45A4F0 review corrects its earlier OpenMusicDecoder label: it
+ recreates device buffers and sixteen notification positions, with no decoder
+ file open. Source/dispatcher/inventory now use RecreateMusicBuffers. Controller
+ description38 is36 bytes, device-owner pointer5C and notification event74.
+- Primary setup272 preserves the full GS-protected PCM44100/stereo16 format
+ path and native failure lifetime. Device init66 ignores its format HRESULT
+ after successful creation/cooperative setup. Ordinal11 thunk45F9B0/IAT48B008
+ is independently verified; installed export metadata supplies DirectSoundCreate8
+ name evidence only. Public protocol declarations import no implementation.
+- Refill570 re-review found three missing zero initializations and a missing
+ repeated-reset failure return. Those are corrected; first reset result stays
+ ignored. Candidate569/504 remains open. BYTE-pointer and genuine member-read
+ probes did not change the larger gaps; no ABI/register forcing is adopted.
+- Decoder snapshot across CloseHandle and buffer snapshot before active
+ publication close Stop129/Resume77. Selector100 and any-playing78 also close
+ through observed branch/initialization order. Nine new cold proofs add1,103
+ bytes, including buffer recreation353 and primary272. Exactly9 new plus20
+ affected old owners pass; no full cohort or broad suites ran.
+- Current2,067 candidates,297 reviewed boundaries,237 mappings and137 exact
+ functions/21,023 bytes. Twelve new origin reviews stay indeterminate; seven
+ missing entries are preserved. Factory713/665 full intervals include10/8
+ internal alignment omitted by Ghidra's sparse bodies; source/EH remains open.
 
 ## Topic index
 
@@ -226,6 +249,7 @@ Useful boundary corrections:
 | Stage lifecycle, updates and drawing | [STAGE_LIFECYCLE](STAGE_LIFECYCLE.md), [STAGE_UPDATE](STAGE_UPDATE.md), [STAGE_DRAWING](STAGE_DRAWING.md) |
 | Stage/ANM resources | [STAGE_RESOURCE](STAGE_RESOURCE.md), [ANIMATION_CHUNKS](ANIMATION_CHUNKS.md), [ANIMATION_TEXTURES](ANIMATION_TEXTURES.md), [pixel processing](ANIMATION_TRANSPARENT_PIXELS.md) |
 | Renderer quad construction/submission | [ANIMATION_QUAD](ANIMATION_QUAD.md), [ANIMATION_VM_DRAW](ANIMATION_VM_DRAW.md), [ANIMATION_PROJECTED_QUAD](ANIMATION_PROJECTED_QUAD.md), [ANIMATION_IMMEDIATE_DRAW](ANIMATION_IMMEDIATE_DRAW.md) |
+| Device setup and buffer recreation | [AUDIO_DEVICE](AUDIO_DEVICE.md) |
 | Streaming buffers, decoder state and fades | [MUSIC_STREAM](MUSIC_STREAM.md) |
 | Audio command queue and streaming worker | [SOUND_QUEUE](SOUND_QUEUE.md) |
 | Animation interpolation, dispatch and pool allocation | [ANIMATION_TWEEN_DISPATCH](ANIMATION_TWEEN_DISPATCH.md) |

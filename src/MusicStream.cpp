@@ -82,22 +82,21 @@ SoundBufferView *__stdcall SelectAvailableMusicBuffer(MusicControllerView *self)
         self->buffers[index]->GetStatus(&status);
         if (!(status & 1)) break;
     }
-    if (index == self->bufferCount)
-        return self->buffers[static_cast<unsigned int>(rand()) % self->bufferCount];
-    return self->buffers[index];
+    if (index != self->bufferCount)
+        return self->buffers[index];
+    return self->buffers[static_cast<unsigned int>(rand()) % self->bufferCount];
 }
 
 HRESULT __stdcall RefillMusicBuffer(MusicControllerView *self, SoundBufferView *buffer, int loop)
 {
+    void *data = 0;
+    DWORD bytes = 0, read = 0;
     if (!buffer) return NotInitialized;
     HRESULT result = RestoreBuffer(buffer, 0);
     if (FAILED(result)) return result;
-    void *data;
-    DWORD bytes;
     result = buffer->Lock(0, self->bufferBytes, &data, &bytes, 0, 0, 0);
     if (FAILED(result)) return result;
     ResetDecoder(self->decoder, 0, false);
-    DWORD read;
     result = ReadMusicDecoder(self->decoder, data, bytes, &read);
     if (FAILED(result)) return result;
     if (!read)
@@ -109,7 +108,8 @@ HRESULT __stdcall RefillMusicBuffer(MusicControllerView *self, SoundBufferView *
             DWORD filled = read;
             do
             {
-                ResetDecoder(self->decoder, 0, false);
+                result = ResetDecoder(self->decoder, 0, false);
+                if (FAILED(result)) return result;
                 result = ReadMusicDecoder(self->decoder,
                     static_cast<unsigned char *>(data) + filled, bytes - filled, &read);
                 if (FAILED(result)) return result;
@@ -146,7 +146,7 @@ HRESULT __stdcall PlayMusicStream(MusicControllerView *self)
         if (FAILED(result)) return result;
         ResetMusicBufferPositions(self);
     }
-    self->fadeEnabled = self->fadeRemaining = self->fadeInitial = 0;
+    self->fadeInitial = self->fadeRemaining = self->fadeEnabled = 0;
     SetMusicBufferVolume(self, 0);
     self->active = 1;
     self->playPriority = 0;
@@ -158,18 +158,23 @@ HRESULT __stdcall PlayMusicStream(MusicControllerView *self)
 HRESULT __stdcall StopMusicStream(MusicControllerView *self, int closeFile)
 {
     if (!self->buffers) return NotInitialized;
-    self->active = self->paused = 0;
     HRESULT result = S_OK;
+    self->active = 0;
+    self->paused = 0;
     for (unsigned int i = 0; i < self->bufferCount; ++i)
     {
         result |= self->buffers[i]->Stop();
         result |= self->buffers[i]->SetCurrentPosition(0);
     }
     self->fadeEnabled = 0;
-    if (closeFile && self->decoder->closeOnStop == 1)
+    if (closeFile)
     {
-        CloseHandle(self->decoder->file);
-        self->decoder->file = INVALID_HANDLE_VALUE;
+        MusicDecoderView *decoder = self->decoder;
+        if (decoder->closeOnStop == 1)
+        {
+            CloseHandle(decoder->file);
+            decoder->file = INVALID_HANDLE_VALUE;
+        }
     }
     return result;
 }
@@ -198,12 +203,14 @@ HRESULT __stdcall PauseMusicStream(MusicControllerView *self)
 
 HRESULT __stdcall ResumeMusicStream(MusicControllerView *self)
 {
-    if (!self->buffers || !self->paused) return NotInitialized;
+    if (!self->buffers) return NotInitialized;
+    if (!self->paused) return NotInitialized;
     self->paused = 0;
     MusicDecoderView *decoder = self->decoder;
     ConfigureMusicDecoder(decoder, decoder->record, decoder->savedFilePosition);
+    SoundBufferView *buffer = self->buffers[0];
     self->active = 1;
-    return self->buffers[0]->Play(0, self->playPriority, self->playFlags);
+    return buffer->Play(0, self->playPriority, self->playFlags);
 }
 
 HRESULT __stdcall UpdateMusicStream(MusicControllerView *self)
@@ -327,7 +334,7 @@ HRESULT __stdcall ReadMusicDecoder(MusicDecoderView *self, void *destination, DW
         ULONG_PTR cursor = reinterpret_cast<ULONG_PTR>(source);
         ULONG_PTR end = reinterpret_cast<ULONG_PTR>(self->memoryStart) + self->memorySize;
         if (cursor + bytes > end)
-            bytes = static_cast<DWORD>(end - cursor);
+            bytes = static_cast<DWORD>(reinterpret_cast<ULONG_PTR>(self->memoryStart) - cursor + self->memorySize);
         memcpy(destination, source, bytes);
         self->cursor += bytes;
         if (read) *read = bytes;
@@ -353,8 +360,8 @@ HRESULT __stdcall QueryMusicBufferInterface(MusicControllerView *self, DWORD ind
 
 BOOL __stdcall IsAnyMusicBufferPlaying(MusicControllerView *self)
 {
-    if (!self->buffers) return FALSE;
     BOOL result = FALSE;
+    if (!self->buffers) return result;
     for (unsigned int i = 0; i < self->bufferCount; ++i)
     {
         if (self->buffers[i])
@@ -421,4 +428,115 @@ HRESULT __stdcall ConfigureControllerMusicDecoder(MusicControllerView *self, Sou
 void __stdcall SaveMusicDecoderPosition(MusicDecoderView *self)
 {
     self->savedFilePosition = SetFilePointer(self->file, 0, 0, FILE_CURRENT);
+}
+
+HRESULT __stdcall ConfigurePrimarySoundFormat(SoundDeviceOwnerView *self)
+{
+    SoundBufferView *buffer = 0;
+    if (!self->device) return NotInitialized;
+    SoundBufferDescription description;
+    memset(&description, 0, sizeof(description));
+    description.size = sizeof(description);
+    description.flags = 1;
+    description.bytes = 0;
+    description.format = 0;
+    HRESULT result = self->device->CreateSoundBuffer(&description, &buffer, 0);
+    if (FAILED(result)) return result;
+    SoundWaveFormatView format;
+    memset(&format, 0, sizeof(format));
+    format.formatTag = 1;
+    format.channels = 2;
+    format.samplesPerSecond = 44100;
+    format.bitsPerSample = 16;
+    format.blockAlign = 4;
+    format.bytesPerSecond = 176400;
+    result = buffer->SetFormat(&format);
+    if (FAILED(result)) return result;
+    if (buffer) buffer->Release();
+    return S_OK;
+}
+
+HRESULT __stdcall RecreateMusicBuffers(MusicControllerView *self)
+{
+    self->active = 0;
+    for (unsigned int i = 0; i < self->bufferCount; ++i)
+    {
+        if (self->buffers[i])
+        {
+            self->buffers[i]->Release();
+            self->buffers[i] = 0;
+        }
+    }
+    if (self->buffers)
+    {
+        delete[] self->buffers;
+        self->buffers = 0;
+    }
+    SoundNotificationView *notification = 0;
+    self->buffers = new SoundBufferView *[self->bufferCount];
+    for (unsigned int i = 0; i < self->bufferCount; ++i)
+    {
+        HRESULT result = self->deviceOwner->device->CreateSoundBuffer(
+            &self->bufferDescription, &self->buffers[i], 0);
+        if (FAILED(result)) return E_FAIL;
+        result = self->buffers[i]->QueryInterface(g_MusicNotificationInterfaceId,
+            reinterpret_cast<void **>(&notification));
+        if (FAILED(result)) return E_FAIL;
+        SoundNotificationPosition *positions = new SoundNotificationPosition[16];
+        if (!positions) return E_OUTOFMEMORY;
+        for (DWORD j = 0; j < 16; ++j)
+        {
+            positions[j].offset = self->notificationBytes * (j + 1) - 1;
+            positions[j].event = self->notificationEvent;
+        }
+        result = notification->SetNotificationPositions(16, positions);
+        if (FAILED(result))
+        {
+            if (notification)
+            {
+                notification->Release();
+                notification = 0;
+            }
+            delete[] positions;
+            return E_FAIL;
+        }
+        if (notification)
+        {
+            notification->Release();
+            notification = 0;
+        }
+        delete[] positions;
+    }
+    return S_OK;
+}
+
+
+void __stdcall InitializeSoundDeviceOwner(SoundDeviceOwnerView *self)
+{
+    self->device = 0;
+}
+void __stdcall ReleaseSoundDevice(SoundDeviceOwnerView *self)
+{
+    if (self->device)
+    {
+        self->device->Release();
+        self->device = 0;
+    }
+}
+
+// Target calls the DSOUND ordinal11 import thunk (DirectSoundCreate8).
+extern "C" HRESULT WINAPI DirectSoundCreate8(const GUID *device, SoundDeviceView **sound, SoundUnknownView *outer);
+HRESULT __stdcall InitializeSoundDevice(SoundDeviceOwnerView *self, HWND window)
+{
+    if (self->device)
+    {
+        self->device->Release();
+        self->device = 0;
+    }
+    HRESULT result = DirectSoundCreate8(0, &self->device, 0);
+    if (FAILED(result)) return result;
+    result = self->device->SetCooperativeLevel(window, 2);
+    if (FAILED(result)) return result;
+    ConfigurePrimarySoundFormat(self);
+    return S_OK;
 }
