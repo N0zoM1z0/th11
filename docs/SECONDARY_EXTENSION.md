@@ -2,10 +2,11 @@
 
 Five new complete source mappings and exact owners cover340 target bytes. The
 full238-byte ANIM/ECLI callback,95-byte file entry,5-byte file getter and two
-genuine RET-only trace functions pass complete strict cold proof. Total exact
-state is156 functions/21,872 bytes; boundary/origin state is2,082 candidates,
+genuine RET-only trace functions pass complete strict cold proof. At this
+extension checkpoint exact state was156 functions/21,872 bytes; boundary/origin state was2,082 candidates,
 349 reviewed boundaries,277 mappings,90 authored,249 indeterminate,8 exclusions
-and1,735 pending origins.
+and1,735 pending origins. Later lifetime/source/proof updates are in
+[SECONDARY_LIFETIME](SECONDARY_LIFETIME.md).
 
 | Owner | Address | Full bytes | Exhaustive address fields |
 | --- | --- | ---: | ---: |
@@ -33,8 +34,9 @@ its complete type and slot capacity remain unknown. The new byte view does not
 create another native storage object.
 
 The derived program view overrides slot4 and adds LoadFile at8. It describes the
-observed virtual prefix only; its constructor/full1098-byte object are separate
-open work. LoadFile clears shared filename byte0, uses strcat with its observed
+observed virtual prefix. Its derived constructor and full1098-byte raw storage
+view are now reconstructed in the lifetime record; original member identities
+remain open. LoadFile clears shared filename byte0, uses strcat with its observed
 source scan/destination scan/copy order, loads through LoadResourceFile with null
 size and mode0, calls the base Install directly and translates index<0 to-1,
 otherwise0. There is no added load-null guard or ownership cleanup. The filename
@@ -101,8 +103,9 @@ remain unknown.
 Base construction really writes49404C before memset1098, erasing its own vptr.
 Derived construction clears1098 first and publishes494090 afterward. The former
 matches the unusual browser initialization previously observed. Do not rewrite
-either into an assumed safe constructor or claim the current90-byte prefix is
-the full allocation. Both constructors remain source-open.
+either into an assumed safe constructor. Later source models the full observed
+1098 allocation, closes the derived38 bytes and retains the base38/3 and owner
+gap; see the lifetime record. Original raw-region member identities remain open.
 
 New host reviews cover initialization410BE0/318 and state reset410440/126. The
 initializer imports an existing animation file, constructs/publishes the derived

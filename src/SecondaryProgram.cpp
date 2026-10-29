@@ -15,6 +15,15 @@ struct SecondaryProgramHeader
 typedef char SecondaryProgramHeaderSize[(sizeof(SecondaryProgramHeader) == 0x24) ? 1 : -1];
 }
 
+SecondaryProgramView::~SecondaryProgramView()
+{
+    if (subroutines)
+    {
+        free(subroutines);
+        subroutines = 0;
+    }
+}
+
 int SecondaryProgramView::Install(void *data)
 {
     files[fileCount] = data;

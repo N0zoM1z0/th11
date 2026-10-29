@@ -1,6 +1,7 @@
 #pragma once
 #include <windows.h>
 #include <stddef.h>
+#include <string.h>
 
 struct SecondaryInstruction
 {
@@ -39,20 +40,30 @@ struct SecondaryThread
 struct SecondarySubroutine { const char *name; unsigned char *body; };
 struct SecondaryProgramView
 {
+    SecondaryProgramView();
+    ~SecondaryProgramView();
     virtual int Install(void *data);
     virtual int ProcessExtension(void *data);
     void *File(int index);
     int fileCount, subroutineCount;
     void *files[32];
     SecondarySubroutine *subroutines;
+    // Both native constructors clear this observed allocation extent; contents stay unknown.
+    unsigned char unknown090[0x1000];
+    DWORD unknown1090, unknown1094;
 };
+inline SecondaryProgramView::SecondaryProgramView() : unknown1090(0), unknown1094(0)
+{
+    memset(this, 0, sizeof(*this));
+}
 struct SecondaryManager
 {
-    virtual int ExecuteInstruction() = 0;
-    virtual int ReadGlobalInt(int reference) = 0;
-    virtual int *GlobalIntPointer(int reference) = 0;
-    virtual float ReadGlobalFloat(int reference) = 0;
-    virtual float *GlobalFloatPointer(int reference) = 0;
+    virtual int ExecuteInstruction();
+    virtual int ReadGlobalInt(int reference);
+    virtual int *GlobalIntPointer(int reference);
+    virtual float ReadGlobalFloat(int reference);
+    virtual float *GlobalFloatPointer(int reference);
+    virtual ~SecondaryManager();
     int Initialize(SecondaryProgramView *source, const char *name);
     int Select(SecondaryProgramView *source, const char *name);
     int Restart(const char *name);
@@ -74,7 +85,10 @@ typedef char SecondaryVmTop[(offsetof(SecondaryVm, stack) + offsetof(SecondarySt
 typedef char SecondaryVmOwner[(offsetof(SecondaryVm, owner) == 0x1014) ? 1 : -1];
 typedef char SecondaryManagerMain[(offsetof(SecondaryManager, main) == 8) ? 1 : -1];
 typedef char SecondaryManagerThreads[(offsetof(SecondaryManager, threads) == 0x1030) ? 1 : -1];
+typedef char SecondaryManagerSize[(sizeof(SecondaryManager) == 0x103c) ? 1 : -1];
 typedef char SecondaryProgramTable[(offsetof(SecondaryProgramView, subroutines) == 0x8c) ? 1 : -1];
+typedef char SecondaryProgramTail[(offsetof(SecondaryProgramView, unknown1090) == 0x1090) ? 1 : -1];
+typedef char SecondaryProgramSize[(sizeof(SecondaryProgramView) == 0x1098) ? 1 : -1];
 
 void *__stdcall SecondaryStackAbsoluteAddress(SecondaryStack *self, int offset);
 int __stdcall SecondaryStackTop(SecondaryStack *self);

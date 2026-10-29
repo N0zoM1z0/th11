@@ -17,6 +17,8 @@ struct SecondaryExtensionHeader
 };
 }
 
+SecondaryProgramWithExtensions::SecondaryProgramWithExtensions() {}
+
 int SecondaryProgramWithExtensions::ProcessExtension(void *data)
 {
     SecondaryExtensionHeader *header = static_cast<SecondaryExtensionHeader *>(data);

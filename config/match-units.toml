@@ -3125,3 +3125,183 @@ symbol = "?TraceSecondaryScript@@YAXZZ"
 target_address = 0x45b5b0
 size = 1
 linkages = []
+
+[units.secondary-default-execute]
+artifact_kind = "linked-pe"
+source = "src/SecondaryScript.cpp"
+inputs = ["src/SecondaryScript.hpp"]
+support_sources = ["probes/secondary-script-context.cpp"]
+output_dir = "build/match-linked/SecondaryScript"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryScriptProbe@32"
+functions = ["SecondaryDefaultExecute"]
+symbol = "?ExecuteInstruction@SecondaryManager@@UAEHXZ"
+target_address = 0x40fd40
+size = 3
+linkages = []
+
+[units.secondary-default-int]
+artifact_kind = "linked-pe"
+source = "src/SecondaryScript.cpp"
+inputs = ["src/SecondaryScript.hpp"]
+support_sources = ["probes/secondary-script-context.cpp"]
+output_dir = "build/match-linked/SecondaryScript"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryScriptProbe@32"
+functions = ["SecondaryDefaultInt"]
+symbol = "?ReadGlobalInt@SecondaryManager@@UAEHH@Z"
+target_address = 0x40fe30
+size = 5
+linkages = []
+
+[units.secondary-default-int-pointer]
+artifact_kind = "linked-pe"
+source = "src/SecondaryScript.cpp"
+inputs = ["src/SecondaryScript.hpp"]
+support_sources = ["probes/secondary-script-context.cpp"]
+output_dir = "build/match-linked/SecondaryScript"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryScriptProbe@32"
+functions = ["SecondaryDefaultIntPointer"]
+symbol = "?GlobalIntPointer@SecondaryManager@@UAEPAHH@Z"
+target_address = 0x40fe40
+size = 5
+linkages = []
+
+[units.secondary-default-float]
+artifact_kind = "linked-pe"
+source = "src/SecondaryScript.cpp"
+inputs = ["src/SecondaryScript.hpp"]
+support_sources = ["probes/secondary-script-context.cpp"]
+output_dir = "build/match-linked/SecondaryScript"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryScriptProbe@32"
+functions = ["SecondaryDefaultFloat"]
+symbol = "?ReadGlobalFloat@SecondaryManager@@UAEMH@Z"
+target_address = 0x40fe50
+size = 5
+linkages = []
+
+[units.secondary-default-float-pointer]
+artifact_kind = "linked-pe"
+source = "src/SecondaryScript.cpp"
+inputs = ["src/SecondaryScript.hpp"]
+support_sources = ["probes/secondary-script-context.cpp"]
+output_dir = "build/match-linked/SecondaryScript"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryScriptProbe@32"
+functions = ["SecondaryDefaultFloatPointer"]
+symbol = "?GlobalFloatPointer@SecondaryManager@@UAEPAMH@Z"
+target_address = 0x40fe60
+size = 5
+linkages = []
+
+[units.secondary-manager-destructor]
+artifact_kind = "linked-pe"
+source = "src/SecondaryScript.cpp"
+inputs = ["src/SecondaryScript.hpp"]
+support_sources = ["probes/secondary-script-context.cpp"]
+output_dir = "build/match-linked/SecondaryScript"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryScriptProbe@32"
+functions = ["SecondaryManagerDestructor"]
+symbol = "??1SecondaryManager@@UAE@XZ"
+target_address = 0x40ff10
+size = 47
+linkages = [
+  { offset = 9, type = "DIR32", symbol = "??_7SecondaryManager@@6B@", target = 0x494058, addend = 0x0 },
+  { offset = 25, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x45fd49, addend = 0x0 },
+  { offset = 31, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x45fd49, addend = 0x0 },
+]
+
+[units.secondary-program-base-destructor]
+artifact_kind = "linked-pe"
+source = "src/SecondaryProgram.cpp"
+inputs = ["src/SecondaryScript.hpp"]
+support_sources = ["probes/secondary-program-context.cpp", "src/SecondaryScript.cpp"]
+output_dir = "build/match-linked/SecondaryProgram"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryProgramProbe@16"
+functions = ["SecondaryProgramBaseDestructor"]
+symbol = "??1SecondaryProgramView@@QAE@XZ"
+target_address = 0x40fff0
+size = 36
+linkages = [
+  { offset = 8, type = "DIR32", symbol = "??_7SecondaryProgramView@@6B@", target = 0x49404c, addend = 0x0 },
+  { offset = 18, type = "REL32", symbol = "_free", target = 0x45fc3b, addend = 0x0 },
+]
+
+[units.set-secondary-counter-scaled]
+artifact_kind = "linked-pe"
+source = "src/SecondaryCounter.cpp"
+inputs = ["src/SecondaryCounter.hpp"]
+support_sources = ["probes/secondary-counter-context.cpp"]
+output_dir = "build/match-linked/SecondaryCounter"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryCounterProbe@12"
+functions = ["SetSecondaryCounterScaled"]
+symbol = "?SetScaled@SecondaryCounterView@@QAEXH@Z"
+target_address = 0x410060
+size = 13
+linkages = []
+
+[units.set-secondary-counter-flag]
+artifact_kind = "linked-pe"
+source = "src/SecondaryCounter.cpp"
+inputs = ["src/SecondaryCounter.hpp"]
+support_sources = ["probes/secondary-counter-context.cpp"]
+output_dir = "build/match-linked/SecondaryCounter"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryCounterProbe@12"
+functions = ["SetSecondaryCounterFlag"]
+symbol = "?SetFlag@SecondaryCounterView@@QAEXI@Z"
+target_address = 0x410070
+size = 16
+linkages = []
+
+[units.subtract-secondary-counter]
+artifact_kind = "linked-pe"
+source = "src/SecondaryCounter.cpp"
+inputs = ["src/SecondaryCounter.hpp"]
+support_sources = ["probes/secondary-counter-context.cpp"]
+output_dir = "build/match-linked/SecondaryCounter"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryCounterProbe@12"
+functions = ["SubtractSecondaryCounter"]
+symbol = "?Subtract@SecondaryCounterView@@QAEHH@Z"
+target_address = 0x4100e0
+size = 61
+linkages = []
+
+[units.secondary-program-derived-constructor]
+artifact_kind = "linked-pe"
+source = "src/SecondaryProgramExtension.cpp"
+inputs = ["src/SecondaryProgramExtension.hpp", "src/SecondaryScript.hpp", "src/AnimationDocument.hpp", "src/ResourceFile.hpp", "src/ErrorLog.hpp", "src/LogBuffer.hpp"]
+support_sources = ["probes/secondary-program-extension-context.cpp", "src/SecondaryProgram.cpp", "src/SecondaryScript.cpp", "src/ResourceFile.cpp", "src/AnimationDocument.cpp", "src/LogBuffer.cpp", "src/AnimationTrace.cpp"]
+output_dir = "build/match-linked/SecondaryProgramExtension"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryProgramExtensionProbe@28"
+functions = ["SecondaryProgramDerivedConstructor"]
+symbol = "??0SecondaryProgramWithExtensions@@QAE@XZ"
+target_address = 0x410d20
+size = 38
+linkages = [
+  { offset = 22, type = "REL32", symbol = "_memset", target = 0x46a720, addend = 0x0 },
+  { offset = 31, type = "DIR32", symbol = "??_7SecondaryProgramWithExtensions@@6B@", target = 0x494090, addend = 0x0 },
+]
+
+[units.update-secondary-actor]
+artifact_kind = "linked-pe"
+source = "src/SecondaryActor.cpp"
+inputs = ["src/SecondaryActor.hpp", "src/SecondaryScript.hpp"]
+support_sources = ["probes/secondary-actor-context.cpp"]
+output_dir = "build/match-linked/SecondaryActor"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryActorProbe@4"
+functions = ["UpdateSecondaryActor"]
+symbol = "?UpdateSecondaryActor@@YGHPAUSecondaryManager@@@Z"
+target_address = 0x411600
+size = 12
+linkages = [
+  { offset = 7, type = "REL32", symbol = "?UpdateSecondaryActorState@@YGHPAUSecondaryActorStateView@@@Z", target = 0x411750, addend = 0x0 },
+]

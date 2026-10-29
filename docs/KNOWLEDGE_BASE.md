@@ -335,12 +335,49 @@ Useful boundary corrections:
  four singleton helpers410530/11,410540/9,410550/10,410560/21 and derived
  constructor410D20/38. Base writes vptr then memset1098 erases it; derived
  memset1098 then writes vptr. Native browser order was real, not a decompiler
- artifact. Neither constructor nor full object layout has source yet.
+ artifact. At that checkpoint neither constructor had source; the lifetime work
+ now supplies raw1098 storage and genuine inline base/ordinary derived source.
 - New host initialization318 and state reset126 are fully reviewed; all ten new
- origin reviews remain indeterminate. Current2,082 candidates,349 reviewed
+ origin reviews remain indeterminate. Extension checkpoint:2,082 candidates,349 reviewed
  boundaries and277 mappings. Five new exact owners add340 bytes:156 exact /
 21,872 bytes total. Affected cold selection uses actual receipt dependencies,
  including transitive headers:79 prior units plus five new; no full cohort.
+
+- Lifetime checkpoint:2,097 candidates,385 reviewed boundaries,291 mappings and
+168 exact/22,118 bytes. Fourteen new source mappings cover355 bytes; twelve
+ unique complete primary-TU contributions close246 bytes/eight fields. Thirty-six
+ new origin reviews add34 indeterminate and two compiler exclusions;15 omitted
+ entries are recovered. Only12 new+16 affected prior units cold-replayed.
+- Program raw storage is1098, with known prefix through8C, unknown90..108F and
+ observed DWORD1090/1094. A normal inline base constructor enables derived38 to
+ inline the real zeroing and publish494090 afterward. Base38 still has3 schedule
+ differences and support ownership. Program destructor36 frees only the table;
+ master cleanup374 separately frees all32 file slots before deleting program.
+- The manager really has six virtual slots: five concrete default bodies and
+ virtual deleting destructor14. Former pure-virtual declarations were incomplete.
+ Actual defaults3/5/5/5/5 and ordinary destructor47 now pass full proof. Generated
+ scalar/vector aliases emit30 versus native71 with inlined cleanup; remain
+ source-backed/non-exact, no fabricated deleting wrapper or Oracle exemption.
+- Counter fields0/C/10/14 preserve wrapped scaled7 arithmetic and signed division
+ by7, direct subtraction when flag0 is clear, and low-bit replacement rather
+ than boolean normalization. Full61/13/16 agree; full original counter type is
+ not inferred from matching offsets or repeated primitive accessors.
+- Actor update411750 owns4230, not sparse4221:1108 instructions, five returns,
+ nine internal alignment bytes, no tables/foreign interior entry. Full instruction
+ export and independent decoding replace the initial250-instruction prefix. Complete motion/tween,
+ script/hooks, damage, animation IDs, mesh deformation and time/status flow is
+ reviewed; source remains open. Constructor699 and EH destructor384 are likewise
+ fully reviewed/source-open; base103C+state163C gives actor2678.
+- Ordinary actor adapter411600 is12 bytes through41160B; its first13-byte review
+ span included a neighboring CC. It calls the real4230 owner on object+103C and
+ now passes12 exact bytes. It is not an EH action: FuncInfo49FB78/unwind49FB70
+ explicitly points48A730/8, then to ordinary base destructor40FF10. Handler48A738
+ checks GS cookie and selects that FuncInfo/CxxFrameHandler3; PE SafeSEH table
+49E960/56 independently contains its RVA. These two compiler entries are excluded.
+- More trace experiments fail to close interpreter alignment: split calls give
+6993/5877, float conditional7001/5937 and per-format arms7141/5984; all retain64.
+ None is adopted. Canonical full Run6993/5880 and /O2 /Ob1 /GL remain; no source
+ type/precision/alignment trick replaces the still-open native ESP/120 context.
 
 ## Topic index
 
@@ -354,6 +391,7 @@ Useful boundary corrections:
 | Secondary script interpreter, typed stack and threads | [SECONDARY_SCRIPT](SECONDARY_SCRIPT.md) |
 | Secondary program installation and context selection | [SECONDARY_PROGRAM](SECONDARY_PROGRAM.md) |
 | Secondary extension parser and trace context | [SECONDARY_EXTENSION](SECONDARY_EXTENSION.md) |
+| Secondary lifetime, counters and large actor owners | [SECONDARY_LIFETIME](SECONDARY_LIFETIME.md) |
 | Streaming factories and lifetime ownership | [MUSIC_FACTORIES](MUSIC_FACTORIES.md) |
 | Device setup and buffer recreation | [AUDIO_DEVICE](AUDIO_DEVICE.md) |
 | Streaming buffers, decoder state and fades | [MUSIC_STREAM](MUSIC_STREAM.md) |

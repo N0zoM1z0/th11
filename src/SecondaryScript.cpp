@@ -11,6 +11,24 @@ float __stdcall SecondaryAngleMath(float y, float x);
 float __stdcall AnimationDistanceRoot(float value);
 float __stdcall NormalizeAngle(float value);
 
+int SecondaryManager::ExecuteInstruction() { return 0; }
+int SecondaryManager::ReadGlobalInt(int reference) { return 0; }
+int *SecondaryManager::GlobalIntPointer(int reference) { return 0; }
+float SecondaryManager::ReadGlobalFloat(int reference) { return 0.0f; }
+float *SecondaryManager::GlobalFloatPointer(int reference) { return 0; }
+
+SecondaryManager::~SecondaryManager()
+{
+    SecondaryThread *node = threads.next;
+    while (node)
+    {
+        SecondaryThread *next = node->next;
+        delete node->vm;
+        delete node;
+        node = next;
+    }
+}
+
 namespace
 {
 __forceinline unsigned char *Payload(SecondaryInstruction *instruction)

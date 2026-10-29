@@ -15,6 +15,9 @@ Later complete extension/file source and current proof are recorded in
 | SelectSecondaryScript | 45DC00 | 36 | Exact; one REL32 field at6 |
 | RestartSecondaryScript | 45DD50 | 28 | 28 /10; not exact |
 
+Current construction/destruction and full raw storage views are recorded in
+[SECONDARY_LIFETIME](SECONDARY_LIFETIME.md).
+
 ## Real virtual and file contracts
 
 The base program vptr49404C points to Install45D900 in slot0 and the five-byte
@@ -26,10 +29,10 @@ the derived callback has observed0/-1 results. Install ignores that result.
 These are normal C++ virtual declarations, with no guessed destructor slot.
 
 The physical prefix remains fileCount4, subroutineCount8, file pointersC..8B
-and the name/body table8C. The header view is only that prefix, not a full
-object-size or constructor claim. One browser caller allocates1098 bytes;
-the larger derived state remains open. Existing manager slots and field
-offsets are unaffected by adding ordinary manager methods.
+and the name/body table8C. The initial header described only that prefix.
+Constructor/allocation evidence now supplies a1098-byte raw storage view,
+without guessing its remaining member identities or ownership; see the lifetime
+record. Adding ordinary manager methods does not change existing field offsets.
 
 The36-byte file header contains SCPT magic0, version WORD4, extension extent
 WORD6 and subroutine-count WORD10. Offsets begin24+extensionBytes; names follow

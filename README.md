@@ -43,12 +43,13 @@ in [`docs/PROGRESS.md`](docs/PROGRESS.md). Start continuation at
 [`docs/RE_HANDOFF.md`](docs/RE_HANDOFF.md); the concise
 [`working knowledge`](docs/KNOWLEDGE_BASE.md) links the detailed topic records.
 
-The latest checkpoint reconstructs the complete238-byte ANIM/ECLI extension
-parser and95-byte file entry, plus a file getter and two real empty trace bodies.
-Five new exact owners add340 bytes. Ten more origin reviews recover seven omitted
-entries and confirm the different base/derived constructor vptr/zeroing order.
-The513-byte SCPT installer and7,093-byte interpreter remain non-exact. Current
-affected proof and remaining gaps are in the linked topic records.
+The latest checkpoint adds program/manager lifetime, real default virtual bodies,
+counter operations and an actor adapter:14 complete source mappings /355 target
+bytes,12 new exact owners /246 bytes. Thirty-six new origin reviews recover15
+omitted entries and independently identify two compiler EH entries. The complete
+4,230-byte actor update,699-byte construction and384-byte destruction are now
+reviewed; their source remains open. The513-byte SCPT installer and7,093-byte
+interpreter remain non-exact. Only12 new and16 affected prior units were replayed.
 Stage meshes, VM creation, the full stage interpreter, interpolation, stage
 update/drawing, ANM resources, rendering, text, input and file paths have varying
 levels of maintained source and exact proofs. Source presence, exact codegen and
@@ -61,6 +62,7 @@ full runtime and portability are open.
 | Secondary script interpreter, stack and threads | [script evidence](docs/SECONDARY_SCRIPT.md) |
 | Secondary program installation and context selection | [program evidence](docs/SECONDARY_PROGRAM.md) |
 | Secondary extension parser and trace context | [extension evidence](docs/SECONDARY_EXTENSION.md) |
+| Secondary lifetime, counters and large actor owners | [lifetime evidence](docs/SECONDARY_LIFETIME.md) |
 | Streaming factories and lifetime ownership | [factory evidence](docs/MUSIC_FACTORIES.md) |
 | Device setup and buffer recreation | [device evidence](docs/AUDIO_DEVICE.md) |
 | Streaming buffers, decoder state and fades | [streaming evidence](docs/MUSIC_STREAM.md) |

@@ -35,6 +35,9 @@ Current extension/trace source, diagnostics and affected proof are in
 | SetTop | 45B5F0 | 7 | Exact; no fields |
 | SecondaryScriptTable | 45B600 | 7 | Exact; no fields |
 
+The true six-slot manager interface and current lifetime proof are recorded in
+[SECONDARY_LIFETIME](SECONDARY_LIFETIME.md).
+
 ## Corrected complete interpreter owner
 
 The initial6,759-byte interval was code-only. Independent PE decoding covers all
@@ -70,13 +73,18 @@ these observed offsets. The program prefix has file count4, subroutine count8,
 32 file pointersC..8B and sorted name/body table8C. These are physical views,
 not claims of original source spelling or full data ownership.
 
-Five observed manager virtual slots execute a host instruction, read an integer,
+Five observed manager virtual methods execute a host instruction, read an integer,
 return integer address, read a float and return float address. Receiver, stack
 arguments and return contracts are typed as ordinary C++ virtual methods. In
 particular45D600's negative-reference tail jump is slot4, not the unknown jump
 table suggested by Ghidra. Actual polar and math wrapper boundaries remain
 external declarations; no placeholder implementations or guessed intrinsic names
 are supplied.
+
+The manager's actual sixth slot is its virtual deleting destructor. Its five
+real default bodies and ordinary destructor47 are now reconstructed; the former
+pure-virtual-only view is superseded. The scalar deleting body remains non-exact
+and has ambiguous candidate publics; see the lifetime record.
 
 ## Stack, references and frame transfer
 
