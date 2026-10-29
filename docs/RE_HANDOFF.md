@@ -1,35 +1,34 @@
 # Agent handoff
 
 Work in `/home/pentester/coding/codex_ida/th11-reconstruction/th11`; the outer
-folder is not Git. Read AGENTS.md and current source/ledgers; current target
-bytes and receipts outrank historical notes. All dirty work is ours.
+folder is not Git. Read AGENTS.md and current source/ledgers. Current target
+bytes and receipts outrank historical notes. All dirty work belongs to this goal.
 
 ## Checked-in state
 
-- Original Japanese TH11 v1.00a only; identity in config/target.toml.
-- 2,067 candidates;297 reviewed boundaries;237 source mappings.
-- 137 exact functions /21,023 bytes:8 normal COFF and129 linked PE.
-- Origins:90 authored,198 reviewed indeterminate,7 exclusions,1,772 pending.
+- Original Japanese TH11 v1.00a only; config/target.toml pins identity.
+- 2,072 candidates;305 reviewed boundaries;245 source mappings.
+- 139 exact functions /21,167 bytes:8 normal COFF and131 linked PE.
+- Origins:90 authored,206 reviewed indeterminate,7 exclusions,1,769 pending.
 - Direct local Ghidra/scripts; no Factory MCP/REA. VC9 RTM21022/SDK6.0A.
 - Commit/push authorized; prefix `gpt-6.1-sol: `.
 
-Latest device checkpoint adds5 complete source mappings /719 bytes and9 complete
-exact owners /1,103 bytes. Those include primary-format setup272 and buffer
-recreation353. Twelve new boundary/origin reviews recover7 missing entries;
-all indeterminate. Both factories713/665 reviewed; source/EH remains open.
-See [AUDIO_DEVICE](AUDIO_DEVICE.md), [MUSIC_STREAM](MUSIC_STREAM.md).
+Latest checkpoint adds8 complete source mappings /1,755 bytes, including file713
+and memory665 factories and six real/generated lifetime boundaries. Ordinary
+base destructor133 and derived tail11 gain cold exact proof. Scalar-delete30/36
+have zero diagnostics but fail unique MAP ownership; NO exact credit. Eight new
+origin reviews recover five omitted secondary-script accessors. See
+[MUSIC_FACTORIES](MUSIC_FACTORIES.md), [AUDIO_DEVICE](AUDIO_DEVICE.md),
+[MUSIC_STREAM](MUSIC_STREAM.md).
 
-45A4F0 is buffer/notification recreation, not decoder open. Earlier label
-OpenMusicDecoder was wrong; current source/caller/inventory use
-RecreateMusicBuffers. Record1C is dataSize, signed loopStart18. Controller38 is
-36-byte buffer description,5C device-owner pointer,74 notification event.
-Device66 ignores primary272 HRESULT after successful creation/cooperative setup.
-RTTI names CSound/CStreamingSound and public protocols do not prove provenance.
-
-## Current gaps and concrete next work
+## Current gaps and next work
 
 | Owner | Target | Current source / diagnostic differences |
 | --- | ---: | --- |
+| CreateFileMusicStream,459EB0 | 713 | 675 /590; full EH closure open |
+| CreateMemoryMusicStream,45A1B0 | 665 | 595 /556; full EH closure open |
+| MusicSoundBaseConstructor,45A450 | 119 | 116 /83 |
+| MusicStreamingConstructor,45AD60 | 48 | 48 /23 |
 | RefillMusicBuffer,45A6F0 | 570 | 569 /504 |
 | UpdateMusicStream,45AEE0 | 543 | 544 /421 |
 | ReadMusicDecoder,45B480 | 192 | 160 /177 |
@@ -41,49 +40,60 @@ RTTI names CSound/CStreamingSound and public protocols do not prove provenance.
 | UpdateOtherAnimationRenderer,455560 | 249 | 249 /195; same gap |
 | StepAnimationIntVectorTween,44E4B0 | 768 | 768 /345; frame48/native40 |
 
-1. Continue large streaming/read context. Native refill uses EBX receiver and
-   buffer/loop on stack, RET8; candidate keeps three args on stack, RET12.
-   Native read has ESI decoder/EAX bytes, destination/output on stack, RET8;
-   candidate additionally uses EDX/EBX and RET. Genuine refill/member-read
-   experiments did not change code. BYTE-pointer data probe also changed none.
-   One concrete untried context probe: omit diagnostic entry's direct calls to
-   Read/Refill while keeping their actual Play/Update/queue caller graph. Target
-   Read has only its four refill/update sites; the current diagnostic adds one.
-   Do not force registers, add dummy uses, crop extents or inject padding.
-2. Refill re-review corrected actual missing semantics: zero data/bytes/read
-   before guards, propagate repeated decoder-reset failure; first reset status
-   is ignored. Keep both distinctions. Restore calls twice per retry iteration;
-   sleep10 only for first BufferLost. Untyped Ghidra wrongly removed lost/loop
-   and notification release branches. Raw full flow is authoritative.
-3. Stop129/Resume77 now exact: decoder snapshot across CloseHandle and first
-   buffer snapshot before active publication matter. Selector100/any-playing78
-   also exact after branch/initialization order corrections. Full new COM
-   protocol types retain real stdcall calls; no implementation was imported.
-4. Read snapshots cursor before clearing optional count. File branch subtracts
-   remaining before ReadFile and ignores BOOL. Binder43 really writes state
-   then E_NOTIMPL. Keep archive/loop/seek formulas and actual failure lifetime.
-5. Source lifetimes remain open: base ctor119/dtor133/scalar-delete30, streaming
-   ctor48/scalar-delete36/tail11. Factories713/665 include10/8 internal alignment
-   omitted from sparse Ghidra703/657. Preserve full intervals/EH ownership.
-   Broader large work remains: VM interpreter44B4B0/11,640, interpolation332/673/
-   331, renderer ctor2601/dtor225 EH, fan805/598, world1036, state572,
-   submission1112, billboard976, rotation571, projected792, fog794/546 and
-   dispatcher217/table. Review four VM helper tables44B080/B2A0/B380/B400 fully.
+1. Real base0x38 /derived0x7C /decoder0x9C lifetimes are now implemented. Native
+   refill uses EBX receiver plus two stack args/RET8; candidate keeps three on
+   stack/RET12. Its public source now accepts MusicSoundBaseView. Base ctor's
+   three-byte gap also depends on this private call. A genuine base-member
+   refill probe after the new hierarchy remains untried; an older controller-
+   member probe did not help. Do not force register ABI, dummy uses or padding.
+2. Removing diagnostic entry's direct Read/Refill roots changes nothing, both
+   before and after actual factory/lifetime context; rejected hypothesis.
+   BYTE-pointer data and member-read probes were also unchanged. Canonical
+   roots remain intact. Native read has ESI decoder/EAX bytes, two stack args/
+   RET8; candidate uses additional EDX/EBX and RET.
+3. Strict first cold attempt rejected scalar-delete30: MAP scalar/vector public
+   aliases ??_G/??_E share its entry. Derived36 has the same ambiguity. Both
+   source bodies are compiler-generated, not hand-written flag wrappers.
+   Ordinary base133 and derived11 have unique full primary PDB/MAP owners and
+   zero proofs; do not weaken the ambiguity Oracle to accept the scalar aliases.
+4. Factories preserve prefix-only decoder initialization (record90, unknown0,
+   size2C, memoryMode7C). File rejects ANY nonzero open HRESULT and deletes its
+   decoder; memory ignores binder E_NOTIMPL after mutation. Other failure paths
+   preserve native leaks/lifetimes. Source member methods have native32/36 stack
+   cleanup. Sparse factory703/657 omit10/8 alignment; keep713/665 intervals.
+5. Adjacent secondary-script frame helper45B610/584 now has complete boundary/
+   origin review; sparse583 omits one alignment byte. Its6759-byte interpreter
+   caller45B860 remains fully unreviewed and is a concrete next large target:
+   inspect full flow/table/extents, not review's default250-instruction prefix.
+   Five missing accessors45B5C0/D0/E0/F0/600 are maintained; trace45B5A0/B0 are
+   actual RET-only entries, source-open. Do not invent formatting or authorship.
+6. Keep earlier audio corrections: record1C=dataSize, loopStart18; buffer
+   description38/device-owner5C/event74. Refill zeroes data/bytes/read before
+   guards and propagates repeated-reset failure; first reset status ignored.
+   Restore calls twice per retry, sleeps10 only for first BufferLost. Untyped
+   Ghidra dropped real lost/loop/release paths; raw target flow wins. RTTI names
+   and public protocols establish role, not original authored provenance.
 
-## Current evidence and replay scope
+Broader large work is still open: VM44B4B0/11,640, interpolation332/673/331,
+renderer ctor2601/dtor225 EH, fan805/598, world1036, state572, submission1112,
+billboard976, rotation571, projected792, fog794/546 and dispatcher217/table.
+Four VM helper tables44B080/B2A0/B380/B400 need complete owner review.
 
-`.analysis/audio-device-twenty-nine-affected-cold.log` passes exactly9 new plus20
-affected old MusicStream/SoundQueue owners:29 complete public primary-TU PDB
-contributions /2,741 bytes /59 fields, full zero byte differences and current
-source/header/tool/producer/PE/MAP/PDB receipts. New SoundDevice.hpp and existing
-MusicStream.hpp declared in all affected contexts. No other family/full cohort,
-broad behavior suite or infrastructure tests ran; infrastructure unchanged.
+## Evidence and replay scope
 
-Final diagnostics: `.analysis/music-stream-refill-reviewed-outputs.log` and
-`.analysis/sound-queue-device-recreate.log`. Topic doc lists fresh full mapped-
-text Ghidra attestations, explicit missing-prefix/reference queries, independent
-full extents/fields/protocol/import review and rejected probes. All jobs are
-terminal; source froze before cold proof. Private inputs/artifacts stay private.
+`.analysis/music-factory-thirty-one-affected-cold.log` passes exactly2 new plus29
+affected old MusicStream/SoundQueue owners:31 complete public primary-TU PDB
+contributions /2,885 bytes /65 fields, current source/header/tool/producer/PE/
+MAP/PDB receipts and every byte zero-difference. Earlier33-owner attempt failed
+as expected at the ambiguous scalar entry; the two invalid units were removed.
+No unrelated family/full cohort, broad behavior or infrastructure tests ran.
+Infrastructure unchanged. Source froze before final cold proof.
+
+Final diagnostics: `.analysis/music-stream-explicit-factory-locals.log`,
+`.analysis/music-lifetime-explicit-factory-locals.log` and
+`.analysis/sound-queue-factory-lifetimes.log`. Topic doc lists fresh mapped-text
+Ghidra attestations, missing-gap/reference queries, independent full extents/
+fields and rejected probes. All jobs terminal; private inputs/artifacts stay private.
 
 ```bash
 git status --short --branch
@@ -92,7 +102,6 @@ scripts/repo-python scripts/verify-toolchain.py --check
 scripts/repo-python scripts/validate-tracking.py --require-target
 ```
 
-Replay changed exact units and directly affected dependencies only. Refresh
-tracking/progress, check staged diff (including new-file EOF), commit and push
-meaningful progress. Native product/runtime/portability remain later work;
-the full reconstruction goal remains active.
+Replay only changed exact owners/direct dependencies. Refresh progress, check
+staged diff including new-file EOF, commit/push meaningful progress. Full native
+product/runtime/portability remain later work; reconstruction goal stays active.

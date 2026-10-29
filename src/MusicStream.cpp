@@ -87,7 +87,7 @@ SoundBufferView *__stdcall SelectAvailableMusicBuffer(MusicControllerView *self)
     return self->buffers[static_cast<unsigned int>(rand()) % self->bufferCount];
 }
 
-HRESULT __stdcall RefillMusicBuffer(MusicControllerView *self, SoundBufferView *buffer, int loop)
+HRESULT __stdcall RefillMusicBuffer(MusicSoundBaseView *self, SoundBufferView *buffer, int loop)
 {
     void *data = 0;
     DWORD bytes = 0, read = 0;
@@ -538,5 +538,180 @@ HRESULT __stdcall InitializeSoundDevice(SoundDeviceOwnerView *self, HWND window)
     result = self->device->SetCooperativeLevel(window, 2);
     if (FAILED(result)) return result;
     ConfigurePrimarySoundFormat(self);
+    return S_OK;
+}
+
+
+__forceinline MusicDecoderView::MusicDecoderView()
+{
+    record = 0;
+    unknown000 = 0;
+    dataSize = 0;
+    memoryMode = 0;
+}
+__forceinline MusicDecoderView::~MusicDecoderView()
+{
+    if (closeOnStop == 1)
+    {
+        CloseHandle(file);
+        file = INVALID_HANDLE_VALUE;
+    }
+}
+
+MusicSoundBaseView::MusicSoundBaseView(SoundBufferView **initial, DWORD bytes,
+    DWORD count, MusicDecoderView *wave)
+{
+    buffers = new SoundBufferView *[count];
+    for (DWORD i = 0; i < count; ++i) buffers[i] = initial[i];
+    bufferBytes = bytes;
+    bufferCount = count;
+    decoder = wave;
+    RefillMusicBuffer(this, buffers[0], 0);
+    buffers[0]->SetCurrentPosition(0);
+    active = 0;
+    paused = 0;
+}
+MusicSoundBaseView::~MusicSoundBaseView()
+{
+    for (DWORD i = 0; i < bufferCount; ++i)
+    {
+        if (buffers[i])
+        {
+            buffers[i]->Release();
+            buffers[i] = 0;
+        }
+    }
+    if (buffers)
+    {
+        delete[] buffers;
+        buffers = 0;
+    }
+    if (decoder)
+    {
+        delete decoder;
+        decoder = 0;
+    }
+}
+MusicControllerView::MusicControllerView(SoundBufferView *buffer, DWORD bytes,
+    MusicDecoderView *wave, DWORD notifyBytes)
+    : MusicSoundBaseView(&buffer, bytes, 1, wave)
+{
+    lastPlayPosition = 0;
+    playProgress = 0;
+    nextWriteOffset = 0;
+    fillSilence = 0;
+    notificationBytes = notifyBytes;
+}
+inline MusicControllerView::~MusicControllerView() {}
+
+HRESULT SoundDeviceOwnerView::CreateFileMusicStream(MusicControllerView **output,
+    GUID algorithm, DWORD notificationBytes, HANDLE event, SoundTrackRecord *record)
+{
+    SoundDeviceOwnerView *owner = this;
+    if (!owner->device) return NotInitialized;
+    SoundBufferView *buffer = 0;
+    SoundNotificationView *notification = 0;
+    MusicDecoderView *decoder = new MusicDecoderView;
+    decoder->memoryMode = 0;
+    decoder->closeOnStop = 1;
+    if (OpenMusicDecoderFile(decoder, g_MusicArchiveFilename, record) != S_OK)
+    {
+        delete decoder;
+        return E_FAIL;
+    }
+    SoundBufferDescription description;
+    memset(&description, 0, sizeof(description));
+    description.size = sizeof(description);
+    description.flags = 0x18188;
+    description.bytes = notificationBytes * 16;
+    description.algorithm = algorithm;
+    description.format = reinterpret_cast<SoundWaveFormatView *>(&decoder->record->formatTag);
+    HRESULT result = owner->device->CreateSoundBuffer(&description, &buffer, 0);
+    if (FAILED(result)) return E_FAIL;
+    result = buffer->QueryInterface(g_MusicNotificationInterfaceId,
+        reinterpret_cast<void **>(&notification));
+    if (FAILED(result)) return E_FAIL;
+    SoundNotificationPosition *positions = new SoundNotificationPosition[16];
+    if (!positions) return E_OUTOFMEMORY;
+    for (DWORD i = 0; i < 16; ++i)
+    {
+        positions[i].offset = notificationBytes * (i + 1) - 1;
+        positions[i].event = event;
+    }
+    result = notification->SetNotificationPositions(16, positions);
+    if (FAILED(result))
+    {
+        if (notification)
+        {
+            notification->Release();
+            notification = 0;
+        }
+        delete[] positions;
+        return E_FAIL;
+    }
+    if (notification)
+    {
+        notification->Release();
+        notification = 0;
+    }
+    delete[] positions;
+    *output = new MusicControllerView(buffer, description.bytes, decoder, notificationBytes);
+    (*output)->bufferDescription = description;
+    (*output)->deviceOwner = owner;
+    (*output)->notificationEvent = event;
+    (*output)->busy = 0;
+    return S_OK;
+}
+HRESULT SoundDeviceOwnerView::CreateMemoryMusicStream(MusicControllerView **output,
+    const unsigned char *data, DWORD bytes, SoundTrackRecord *record, GUID algorithm,
+    DWORD notificationBytes, HANDLE event)
+{
+    SoundDeviceOwnerView *owner = this;
+    if (!owner->device) return NotInitialized;
+    SoundBufferView *buffer = 0;
+    SoundNotificationView *notification = 0;
+    MusicDecoderView *decoder = new MusicDecoderView;
+    BindMusicDecoderMemory(decoder, record, data, bytes);
+    SoundBufferDescription description;
+    memset(&description, 0, sizeof(description));
+    description.size = sizeof(description);
+    description.flags = 0x18188;
+    description.bytes = notificationBytes * 16;
+    description.algorithm = algorithm;
+    description.format = reinterpret_cast<SoundWaveFormatView *>(&decoder->record->formatTag);
+    HRESULT result = owner->device->CreateSoundBuffer(&description, &buffer, 0);
+    if (FAILED(result)) return E_FAIL;
+    result = buffer->QueryInterface(g_MusicNotificationInterfaceId,
+        reinterpret_cast<void **>(&notification));
+    if (FAILED(result)) return E_FAIL;
+    SoundNotificationPosition *positions = new SoundNotificationPosition[16];
+    if (!positions) return E_OUTOFMEMORY;
+    for (DWORD i = 0; i < 16; ++i)
+    {
+        positions[i].offset = notificationBytes * (i + 1) - 1;
+        positions[i].event = event;
+    }
+    result = notification->SetNotificationPositions(16, positions);
+    if (FAILED(result))
+    {
+        if (notification)
+        {
+            notification->Release();
+            notification = 0;
+        }
+        delete[] positions;
+        return E_FAIL;
+    }
+    if (notification)
+    {
+        notification->Release();
+        notification = 0;
+    }
+    delete[] positions;
+    *output = new MusicControllerView(buffer, description.bytes, decoder, notificationBytes);
+    (*output)->bufferDescription = description;
+    (*output)->deviceOwner = owner;
+    (*output)->notificationEvent = event;
+    (*output)->busy = 0;
     return S_OK;
 }

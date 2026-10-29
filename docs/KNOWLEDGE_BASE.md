@@ -235,10 +235,31 @@ Useful boundary corrections:
  through observed branch/initialization order. Nine new cold proofs add1,103
  bytes, including buffer recreation353 and primary272. Exactly9 new plus20
  affected old owners pass; no full cohort or broad suites ran.
-- Current2,067 candidates,297 reviewed boundaries,237 mappings and137 exact
+- Device checkpoint:2,067 candidates,297 reviewed boundaries,237 mappings and137 exact
  functions/21,023 bytes. Twelve new origin reviews stay indeterminate; seven
  missing entries are preserved. Factory713/665 full intervals include10/8
  internal alignment omitted by Ghidra's sparse bodies; source/EH remains open.
+
+- Factories713/665 now have full natural source and a real0x38 sound base /
+ 0x7C streaming derivative. Decoder0x9C constructor writes only record90,
+ unknown DWORD0, dataSize2C and memoryMode7C; other state stays uninitialized.
+ Memory binder failure remains ignored; file open rejects every nonzero HRESULT.
+ Observed allocation/cleanup asymmetries and subsequent description publication
+ are retained. Base ctor count1 specializes naturally from its derived caller.
+- Ordinary base destructor133 and derived11 each have one unique complete public
+ primary-TU contribution and six independent fields total; cold full-byte proof
+ passes. Real inline empty derived destructor also emits scalar36 diagnostic0,
+ but scalar/vector public aliases share both30/36 starts. Strict cold ownership
+ rejects them. No Oracle exemption or artificial deleting wrapper is introduced.
+- Removing extra Read/Refill diagnostic roots changes neither larger body even
+ after real factory/lifetime callers are present; that hypothesis is rejected.
+ Final factories675/590 and595/556, base ctor116/83, derived ctor48/23 remain
+ open, including EH ownership. Other audio codegen gaps persist.
+- Current2,072 candidates,305 reviewed boundaries,245 mappings and139 exact
+ functions/21,167 bytes. Eight new reviews are indeterminate; five missing stack/
+ frame accessors are recovered. Adjacent584 full owner includes one alignment
+ byte omitted by sparse583. Its6759-byte interpreter caller45B860 still needs
+ complete owner/table review. Exactly2 new plus29 affected old units pass cold.
 
 ## Topic index
 
@@ -249,6 +270,7 @@ Useful boundary corrections:
 | Stage lifecycle, updates and drawing | [STAGE_LIFECYCLE](STAGE_LIFECYCLE.md), [STAGE_UPDATE](STAGE_UPDATE.md), [STAGE_DRAWING](STAGE_DRAWING.md) |
 | Stage/ANM resources | [STAGE_RESOURCE](STAGE_RESOURCE.md), [ANIMATION_CHUNKS](ANIMATION_CHUNKS.md), [ANIMATION_TEXTURES](ANIMATION_TEXTURES.md), [pixel processing](ANIMATION_TRANSPARENT_PIXELS.md) |
 | Renderer quad construction/submission | [ANIMATION_QUAD](ANIMATION_QUAD.md), [ANIMATION_VM_DRAW](ANIMATION_VM_DRAW.md), [ANIMATION_PROJECTED_QUAD](ANIMATION_PROJECTED_QUAD.md), [ANIMATION_IMMEDIATE_DRAW](ANIMATION_IMMEDIATE_DRAW.md) |
+| Streaming factories and lifetime ownership | [MUSIC_FACTORIES](MUSIC_FACTORIES.md) |
 | Device setup and buffer recreation | [AUDIO_DEVICE](AUDIO_DEVICE.md) |
 | Streaming buffers, decoder state and fades | [MUSIC_STREAM](MUSIC_STREAM.md) |
 | Audio command queue and streaming worker | [SOUND_QUEUE](SOUND_QUEUE.md) |

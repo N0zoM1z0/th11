@@ -47,8 +47,9 @@ fade14/18/1C, active30, decoderC and cross-thread busy78. Decoder record90 has d
 The earlier loop label at1C was corrected by full decoder review; see
 [MUSIC_STREAM](MUSIC_STREAM.md). Size/offset assertions check the
 observed layouts. Its slot0 scalar-deleting destructor is modeled by a real
-virtual destructor declaration and virtual delete call, without an invented
-implementation.
+virtual destructor and virtual delete call. The later
+[MUSIC_FACTORIES](MUSIC_FACTORIES.md) checkpoint supplies actual base/derived
+resource cleanup and ordinary public destructor proofs.
 
 The pinned SDK payload lacks dsound.h. The initial `SoundBuffer.hpp` used a
 physical function-table view for observed calls. It now declares the full COM

@@ -37,6 +37,12 @@ extern "C" HRESULT __stdcall MusicStreamProbe(int kind, MusicControllerView *mus
     case 27: return ConfigurePrimarySoundFormat(reinterpret_cast<SoundDeviceOwnerView *>(data));
     case 28: InitializeSoundDeviceOwner(reinterpret_cast<SoundDeviceOwnerView *>(data)); break;
     case 29: ReleaseSoundDevice(reinterpret_cast<SoundDeviceOwnerView *>(data)); break;
+    case 31: return reinterpret_cast<SoundDeviceOwnerView *>(buffer)->CreateFileMusicStream(
+        reinterpret_cast<MusicControllerView **>(read), *reinterpret_cast<const GUID *>(data),
+        bytes, reinterpret_cast<HANDLE>(music), record);
+    case 32: return reinterpret_cast<SoundDeviceOwnerView *>(buffer)->CreateMemoryMusicStream(
+        reinterpret_cast<MusicControllerView **>(read), static_cast<const unsigned char *>(data),
+        bytes, record, *reinterpret_cast<const GUID *>(filename), bytes, reinterpret_cast<HANDLE>(music));
     case 30: return InitializeSoundDevice(reinterpret_cast<SoundDeviceOwnerView *>(data), reinterpret_cast<HWND>(buffer));
     }
     return 0;

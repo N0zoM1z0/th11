@@ -25,7 +25,10 @@ struct SoundTrackRecord
 };
 struct MusicDecoderView
 {
-    unsigned char unknown000[8];
+    MusicDecoderView();
+    ~MusicDecoderView();
+    DWORD unknown000;
+    unsigned char unknown004[4];
     DWORD remaining;
     unsigned char unknown00c[0x2c - 0xc];
     DWORD dataSize;
@@ -38,10 +41,11 @@ struct MusicDecoderView
     const char *filename;
     DWORD savedFilePosition;
 };
-// Partial polymorphic prefix, observed scalar-deleting destructor in vtable slot0.
-struct MusicControllerView
+// The streaming controller extends the observed 0x38-byte sound owner.
+struct MusicSoundBaseView
 {
-    virtual ~MusicControllerView();
+    MusicSoundBaseView(SoundBufferView **initial, DWORD bytes, DWORD count, MusicDecoderView *wave);
+    virtual ~MusicSoundBaseView();
     SoundBufferView **buffers;
     unsigned int bufferBytes;
     MusicDecoderView *decoder;
@@ -50,6 +54,11 @@ struct MusicControllerView
     unsigned int playPriority, playFlags, unknown028, unknown02c;
     int active;
     int paused;
+};
+struct MusicControllerView : MusicSoundBaseView
+{
+    MusicControllerView(SoundBufferView *buffer, DWORD bytes, MusicDecoderView *wave, DWORD notifyBytes);
+    virtual ~MusicControllerView();
     SoundBufferDescription bufferDescription;
     SoundDeviceOwnerView *deviceOwner;
     DWORD lastPlayPosition, playProgress, nextWriteOffset;
@@ -78,6 +87,9 @@ typedef char SoundQueueOffset[(offsetof(SoundManagerQueueView, effects) == 0x620
 typedef char SoundCommandOffset[(offsetof(SoundManagerQueueView, commands) == 0x1f88) ? 1 : -1];
 typedef char SoundFilenameOffset[(offsetof(SoundManagerQueueView, filenames) == 0x4108) ? 1 : -1];
 typedef char SoundRecordSize[(sizeof(SoundTrackRecord) == 0x34) ? 1 : -1];
+typedef char MusicSoundBaseSize[(sizeof(MusicSoundBaseView) == 0x38) ? 1 : -1];
+typedef char MusicControllerSize[(sizeof(MusicControllerView) == 0x7c) ? 1 : -1];
+typedef char MusicDecoderSize[(sizeof(MusicDecoderView) == 0x9c) ? 1 : -1];
 typedef char MusicRecordDataSizeOffset[(offsetof(SoundTrackRecord, dataSize) == 0x1c) ? 1 : -1];
 typedef char MusicRecordBitsOffset[(offsetof(SoundTrackRecord, bitsPerSample) == 0x2e) ? 1 : -1];
 typedef char MusicDecoderRecordOffset[(offsetof(MusicDecoderView, record) == 0x90) ? 1 : -1];

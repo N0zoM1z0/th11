@@ -180,10 +180,11 @@ inlined reset logic into configure, expanding its130-byte owner to265 bytes;
 canonical context retains `/Ob1` and `/GL`. No register promises, synthetic
 parameter uses, cropping or alignment padding are introduced.
 
-Source lifetime work is still open for base ctor119/destructor133, streaming
-ctor48/scalar-deleting destructor36 and its11-byte plain destructor tail.
-Their full bodies and references were reviewed without supplying guessed
-constructor/destructor implementations or assigning ordinary exact credit.
+The later [factory/lifetime checkpoint](MUSIC_FACTORIES.md) supplies complete
+source for base ctor119/destructor133/scalar-delete30 and streaming ctor48/
+scalar-delete36/plain tail11, plus both713/665 factories. Base133 and plain11
+are exact; scalar aliases and both constructors remain open. C++ generates
+actual vptr/deleting behavior, without guessed flag ABI wrappers.
 
 ## Cold proof and remaining scope
 

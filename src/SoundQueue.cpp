@@ -10,7 +10,7 @@ int __stdcall StartPreparedMusic(SoundManagerQueueView *self, int index);
 int __stdcall FindSoundTrack(const char *name, SoundManagerQueueView *self);
 HRESULT __stdcall RecreateMusicBuffers(MusicControllerView *self);
 HRESULT __stdcall ConfigureMusicDecoder(MusicDecoderView *self, SoundTrackRecord *record, int offset);
-HRESULT __stdcall RefillMusicBuffer(MusicControllerView *self, SoundBufferView *buffer, int loop);
+HRESULT __stdcall RefillMusicBuffer(MusicSoundBaseView *self, SoundBufferView *buffer, int loop);
 HRESULT __stdcall ResetMusicPosition(MusicControllerView *self);
 HRESULT __stdcall PlayMusicStream(MusicControllerView *self);
 HRESULT __stdcall StopMusicStream(MusicControllerView *self, int closeFile);

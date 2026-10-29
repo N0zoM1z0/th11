@@ -50,7 +50,16 @@ struct __declspec(novtable) SoundNotificationView
     virtual HRESULT WINAPI SetNotificationPositions(DWORD count,
         const SoundNotificationPosition *positions) = 0;
 };
-struct SoundDeviceOwnerView { SoundDeviceView *device; };
+struct MusicControllerView;
+struct SoundTrackRecord;
+struct SoundDeviceOwnerView
+{
+    SoundDeviceView *device;
+    HRESULT CreateFileMusicStream(MusicControllerView **output, GUID algorithm,
+        DWORD notificationBytes, HANDLE event, SoundTrackRecord *record);
+    HRESULT CreateMemoryMusicStream(MusicControllerView **output, const unsigned char *data,
+        DWORD bytes, SoundTrackRecord *record, GUID algorithm, DWORD notificationBytes, HANDLE event);
+};
 
 typedef char SoundWaveFormatSize[(sizeof(SoundWaveFormatView) == 18) ? 1 : -1];
 typedef char SoundBufferDescriptionSize[(sizeof(SoundBufferDescription) == 36) ? 1 : -1];

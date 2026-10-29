@@ -7,7 +7,7 @@ extern const char g_MusicOpenTrace[], g_MusicConfigureTrace[];
 
 HRESULT __stdcall RestoreMusicBuffer(SoundBufferView *buffer, BOOL *restored);
 SoundBufferView *__stdcall SelectAvailableMusicBuffer(MusicControllerView *self);
-HRESULT __stdcall RefillMusicBuffer(MusicControllerView *self, SoundBufferView *buffer, int loop);
+HRESULT __stdcall RefillMusicBuffer(MusicSoundBaseView *self, SoundBufferView *buffer, int loop);
 HRESULT __stdcall ResetMusicBufferPositions(MusicControllerView *self);
 HRESULT __stdcall PlayMusicStream(MusicControllerView *self);
 HRESULT __stdcall StopMusicStream(MusicControllerView *self, int closeFile);
@@ -40,3 +40,5 @@ HRESULT __stdcall CloseMusicDecoder(MusicDecoderView *self);
 DWORD __stdcall MusicDecoderSavedPosition(MusicDecoderView *self);
 HRESULT __stdcall ConfigureControllerMusicDecoder(MusicControllerView *self, SoundTrackRecord *record, int offset);
 void __stdcall SaveMusicDecoderPosition(MusicDecoderView *self);
+
+extern const char g_MusicArchiveFilename[];

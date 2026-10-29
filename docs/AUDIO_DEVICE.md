@@ -3,8 +3,9 @@
 This checkpoint adds five complete source mappings /719 target bytes and nine
 complete exact owners /1,103 bytes. Four existing streaming source owners close
 alongside all five new mappings. Twelve further boundary/origin reviews recover
-seven omitted entries; all remain indeterminate. Full factory713/665 bodies are
-reviewed but remain source-open with specialized EH/lifetime ownership unresolved.
+seven omitted entries; all remain indeterminate. Full factory713/665 bodies were source-open at this checkpoint; the subsequent
+[MUSIC_FACTORIES](MUSIC_FACTORIES.md) checkpoint supplies complete source. Their
+codegen/EH ownership remains unresolved.
 
 | Owner | Address | Full bytes | Current state / fields |
 | --- | --- | ---: | --- |
@@ -92,8 +93,8 @@ streaming buffer before constructing the controller. File713 calls the real file
 open and handles its failure; memory665 ignores the memory binder's E_NOTIMPL
 return after its state mutation. Both install16 notification events and copy the
 complete description to controller38. All native branches, resource lifetime
-asymmetries and EH setup remain review evidence; no guessed bodies or ordinary
-exact credit are assigned. Ghidra's sparse703/657 bodies omit10/8 internal
+asymmetries and EH setup remained review evidence at this checkpoint. The later
+factory/lifetime checkpoint supplies actual bodies without ordinary EH credit. Ghidra's sparse703/657 bodies omit10/8 internal
 alignment bytes; maintained713/665 intervals remain intact.
 
 ## Boundary/origin expansion and cold proof

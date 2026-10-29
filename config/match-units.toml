@@ -2835,3 +2835,39 @@ linkages = [
   { offset = 26, type = "REL32", symbol = "_DirectSoundCreate8@12", target = 0x45f9b0, addend = 0x0 },
   { offset = 57, type = "REL32", symbol = "?ConfigurePrimarySoundFormat@@YGJPAUSoundDeviceOwnerView@@@Z", target = 0x459da0, addend = 0x0 },
 ]
+
+[units.music-sound-base-destructor]
+artifact_kind = "linked-pe"
+source = "src/MusicStream.cpp"
+inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/SoundDevice.hpp"]
+support_sources = ["probes/music-stream-context.cpp", "src/SoundQueue.cpp"]
+output_dir = "build/match-linked/MusicStream"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "MusicStreamProbe@44"
+functions = ["MusicSoundBaseDestructor"]
+symbol = "??1MusicSoundBaseView@@UAE@XZ"
+target_address = 0x45a660
+size = 133
+linkages = [
+  { offset = 8, type = "DIR32", symbol = "??_7MusicSoundBaseView@@6B@", target = 0x497cb4, addend = 0x0 },
+  { offset = 64, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x45fd49, addend = 0x0 },
+  { offset = 100, type = "DIR32", symbol = "__imp__CloseHandle@4", target = 0x48b0a0, addend = 0x0 },
+  { offset = 116, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x45fd49, addend = 0x0 },
+]
+
+[units.music-streaming-destructor-tail]
+artifact_kind = "linked-pe"
+source = "src/MusicStream.cpp"
+inputs = ["src/MusicStream.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/SoundDevice.hpp"]
+support_sources = ["probes/music-stream-context.cpp", "src/SoundQueue.cpp"]
+output_dir = "build/match-linked/MusicStream"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "MusicStreamProbe@44"
+functions = ["MusicStreamingDestructorTail"]
+symbol = "??1MusicControllerView@@UAE@XZ"
+target_address = 0x45adc0
+size = 11
+linkages = [
+  { offset = 2, type = "DIR32", symbol = "??_7MusicControllerView@@6B@", target = 0x497cbc, addend = 0x0 },
+  { offset = 7, type = "REL32", symbol = "??1MusicSoundBaseView@@UAE@XZ", target = 0x45a660, addend = 0x0 },
+]
