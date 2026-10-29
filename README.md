@@ -43,12 +43,13 @@ in [`docs/PROGRESS.md`](docs/PROGRESS.md). Start continuation at
 [`docs/RE_HANDOFF.md`](docs/RE_HANDOFF.md); the concise
 [`working knowledge`](docs/KNOWLEDGE_BASE.md) links the detailed topic records.
 
-The latest checkpoint adds eight complete source mappings covering3,746 target
-bytes, including the2,601-byte renderer constructor and225-byte destructor.
-Five new exact functions add890 bytes; EH lifecycle codegen remains open.
-Forty-one further boundaries/origins are reviewed, with37 previously unlisted
-entries recovered. Earlier checkpoints cover randomized fans, world/immediate
-drawing, projected quads, fog and exact coordinate builders.
+The latest checkpoint adds22 complete source mappings covering3,129 target
+bytes, including768-byte integer XYZ and673-byte float-pair interpolation,
+two renderer updates and pool allocation. Fifteen new exact functions add551
+bytes; the four larger interpolation bodies and two updates remain non-exact.
+Twenty-two further boundaries/origins are reviewed, with nine omitted entries
+recovered. Earlier checkpoints cover renderer lifecycle, randomized fans,
+world/immediate drawing, projected quads, fog and exact coordinate builders.
 Stage meshes, VM creation, the full stage interpreter, interpolation, stage
 update/drawing, ANM resources, rendering, text, input and file paths have varying
 levels of maintained source and exact proofs. Source presence, exact codegen and
@@ -58,6 +59,7 @@ full runtime and portability are open.
 | Current area | Details |
 | --- | --- |
 | Renderer quad construction/submission | [quads](docs/ANIMATION_QUAD.md), [submission](docs/ANIMATION_VM_DRAW.md), [projection/fog](docs/ANIMATION_PROJECTED_QUAD.md), [immediate modes](docs/ANIMATION_IMMEDIATE_DRAW.md) |
+| Animation interpolation, layer dispatch and allocation | [interpolation/dispatch evidence](docs/ANIMATION_TWEEN_DISPATCH.md) |
 | Renderer lifecycle, VM reclamation and pixel helpers | [lifecycle evidence](docs/ANIMATION_RENDERER_LIFECYCLE.md) |
 | Buffered drawing and randomized fan | [fan evidence](docs/ANIMATION_FAN.md) |
 | ASCII lifecycle, glyph drawing and formatting | [lifecycle](docs/ASCII_LIFECYCLE.md), [drawing](docs/ASCII_DRAWING.md) |

@@ -22,10 +22,11 @@ struct AnimationRenderer
     unsigned char unknown0a0[8];
     unsigned int applications, drawCalls;
     float cameraOffsetX, cameraOffsetY;
-    unsigned int unknown0b8;
+    unsigned int processedVmCount;
     StageEmbeddedVm vms[0x1000];
     unsigned char used[0x1000];
-    unsigned char unknown4350bc[0x435180 - 0x4350bc];
+    int nextPoolSlot;
+    unsigned char unknown4350c0[0x435180 - 0x4350c0];
     StageEmbeddedVm defaultVm;
     unsigned int unknown4355b4;
     unsigned int textureFactor;
@@ -40,7 +41,7 @@ struct AnimationRenderer
     RenderVertex *nextVertex, *batchStart;
     AnimationVmNode *activeHead, *activeTail, *otherHead, *otherTail;
     StageEmbeddedVm additionalVms[31];
-    unsigned int unknown7bd888;
+    unsigned int nextVmId;
     unsigned int tint;
     int tintEnabled;
 
@@ -51,6 +52,8 @@ struct AnimationRenderer
 typedef char RendererHeadSize[(sizeof(AnimationRendererPrefixSlot) == 0x28) ? 1 : -1];
 typedef char ScratchVertexSize[(sizeof(AnimationScratchVertex) == 24) ? 1 : -1];
 typedef char RendererVmOffset[(offsetof(AnimationRenderer, vms) == 0xbc) ? 1 : -1];
+typedef char RendererUsedOffset[(offsetof(AnimationRenderer, used) == 0x4340bc) ? 1 : -1];
+typedef char RendererPoolSlotOffset[(offsetof(AnimationRenderer, nextPoolSlot) == 0x4350bc) ? 1 : -1];
 typedef char RendererDefaultVmOffset[(offsetof(AnimationRenderer, defaultVm) == 0x435180) ? 1 : -1];
 typedef char RendererBufferOffset[(offsetof(AnimationRenderer, worldBuffer) == 0x4355cc) ? 1 : -1];
 typedef char RendererCornersOffset[(offsetof(AnimationRenderer, corners) == 0x4355d0) ? 1 : -1];

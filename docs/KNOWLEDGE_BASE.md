@@ -148,9 +148,32 @@ Useful boundary corrections:
  The40-byte format selector tests runtime+200 as a byte, bit0. Six formats
  at496548 are followed by six bytes-per-pixel DWORDs, not extra formats.
 - Renderer lifecycle/pixels add37 absent candidates and41 boundary/origin
- reviews, all indeterminate. Inventory now2,038; identity3-byte entries and
+ reviews, all indeterminate. Inventory at that checkpoint2,038; identity3-byte entries and
 29 registration callbacks remain source-open. Five new full cold proofs add890
  bytes; no previous exact contexts changed. See the lifecycle topic below.
+
+- Animation interpolation has four independently reviewed physical owners:
+ integer XYZ768, integer scalar332, float pair673 and float scalar331. Integer
+ XYZ truncates each weighted component before adding vectors; scalar integer
+ sums before truncation. Ordinary paths also differ in when initial is added.
+- Explicit completion returns/value snapshots and a four-float coefficient
+ aggregate improve integer XYZ from723/647 to768/345 diagnostic differences.
+ Its48-byte frame still differs from native40; equal size is not exactness.
+- Real easing source support naturally closes four39-byte factor owners;
+ opaque support pushed an extra curve argument and produced40-byte bodies.
+ Real draw-dispatch support similarly closes renderer layer127. Allocator177,
+ scalar timer reset52 and eight small physical accessors also have cold proofs.
+- The renderer's31 extra VMs are29 ordinary layer sentinels plus layers29/30.
+ Secondary update clears processedB8, remaps other layers to29 and uses a real
+ two-slot tail array. Callback410 precedes interpreter44B4B0; callback414
+ precedes drawing. Saved update-node next and late draw-next reads differ.
+- Allocator4569C0 checks only two pool slots, then constructs/resets a heap VM;
+ it does not scan all4096. Signed nextPoolSlot is4350BC; used map4340BC.
+ The updated physical header triggered cold replay of exactly two old units.
+- Latest inventory2,047;244 reviewed boundaries,201 source mappings and108
+ exact functions/18,282 bytes. Twenty-two new origin reviews remain
+ indeterminate. Fifteen new proofs plus two affected old proofs passed;
+ no full cohort or broad behavior harness ran. See interpolation/dispatch below.
 
 ## Topic index
 
@@ -161,6 +184,7 @@ Useful boundary corrections:
 | Stage lifecycle, updates and drawing | [STAGE_LIFECYCLE](STAGE_LIFECYCLE.md), [STAGE_UPDATE](STAGE_UPDATE.md), [STAGE_DRAWING](STAGE_DRAWING.md) |
 | Stage/ANM resources | [STAGE_RESOURCE](STAGE_RESOURCE.md), [ANIMATION_CHUNKS](ANIMATION_CHUNKS.md), [ANIMATION_TEXTURES](ANIMATION_TEXTURES.md), [pixel processing](ANIMATION_TRANSPARENT_PIXELS.md) |
 | Renderer quad construction/submission | [ANIMATION_QUAD](ANIMATION_QUAD.md), [ANIMATION_VM_DRAW](ANIMATION_VM_DRAW.md), [ANIMATION_PROJECTED_QUAD](ANIMATION_PROJECTED_QUAD.md), [ANIMATION_IMMEDIATE_DRAW](ANIMATION_IMMEDIATE_DRAW.md) |
+| Animation interpolation, dispatch and pool allocation | [ANIMATION_TWEEN_DISPATCH](ANIMATION_TWEEN_DISPATCH.md) |
 | Renderer lifecycle and pixel helpers | [ANIMATION_RENDERER_LIFECYCLE](ANIMATION_RENDERER_LIFECYCLE.md) |
 | Buffered drawing and randomized fan | [ANIMATION_FAN](ANIMATION_FAN.md) |
 | Renderer and device | [RENDER_CAMERA](RENDER_CAMERA.md), [DEVICE_INITIALIZATION](DEVICE_INITIALIZATION.md), [RENDER_STATE_RESET](RENDER_STATE_RESET.md), [RUNTIME_SURFACES](RUNTIME_SURFACES.md) |

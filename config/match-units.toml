@@ -2112,3 +2112,239 @@ symbol = "?AccumulateAnimationA4Pixel@@YGXPAUAnimationPixelSums@@PBGPAI@Z"
 target_address = 0x453490
 size = 45
 linkages = []
+
+[units.animation-int-vector-tween-factor]
+artifact_kind = "linked-pe"
+source = "src/AnimationTween.cpp"
+inputs = ["src/AnimationTween.hpp"]
+support_sources = ["probes/animation-tween-context.cpp", "src/StageTween.cpp", "src/StageEasing.cpp"]
+output_dir = "build/match-linked/AnimationTween"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationTweenProbe@40"
+functions = ["AnimationIntVectorTweenFactor"]
+symbol = "?AnimationIntVectorTweenFactor@@YGMPAUAnimationIntVectorTween@@@Z"
+target_address = 0x44edd0
+size = 39
+linkages = [
+  { offset = 27, type = "REL32", symbol = "?EvaluateStageEasing@@YGMHM@Z", target = 0x459730, addend = 0x0 },
+]
+
+[units.animation-int-scalar-tween-factor]
+artifact_kind = "linked-pe"
+source = "src/AnimationTween.cpp"
+inputs = ["src/AnimationTween.hpp"]
+support_sources = ["probes/animation-tween-context.cpp", "src/StageTween.cpp", "src/StageEasing.cpp"]
+output_dir = "build/match-linked/AnimationTween"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationTweenProbe@40"
+functions = ["AnimationIntScalarTweenFactor"]
+symbol = "?AnimationIntScalarTweenFactor@@YGMPAUAnimationIntScalarTween@@@Z"
+target_address = 0x44ee00
+size = 39
+linkages = [
+  { offset = 27, type = "REL32", symbol = "?EvaluateStageEasing@@YGMHM@Z", target = 0x459730, addend = 0x0 },
+]
+
+[units.animation-float-pair-tween-factor]
+artifact_kind = "linked-pe"
+source = "src/AnimationTween.cpp"
+inputs = ["src/AnimationTween.hpp"]
+support_sources = ["probes/animation-tween-context.cpp", "src/StageTween.cpp", "src/StageEasing.cpp"]
+output_dir = "build/match-linked/AnimationTween"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationTweenProbe@40"
+functions = ["AnimationFloatPairTweenFactor"]
+symbol = "?AnimationFloatPairTweenFactor@@YGMPAUAnimationFloatPairTween@@@Z"
+target_address = 0x44ee30
+size = 39
+linkages = [
+  { offset = 27, type = "REL32", symbol = "?EvaluateStageEasing@@YGMHM@Z", target = 0x459730, addend = 0x0 },
+]
+
+[units.animation-float-scalar-tween-factor]
+artifact_kind = "linked-pe"
+source = "src/AnimationTween.cpp"
+inputs = ["src/AnimationTween.hpp"]
+support_sources = ["probes/animation-tween-context.cpp", "src/StageTween.cpp", "src/StageEasing.cpp"]
+output_dir = "build/match-linked/AnimationTween"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationTweenProbe@40"
+functions = ["AnimationFloatScalarTweenFactor"]
+symbol = "?AnimationFloatScalarTweenFactor@@YGMPAUAnimationFloatScalarTween@@@Z"
+target_address = 0x44ee60
+size = 39
+linkages = [
+  { offset = 27, type = "REL32", symbol = "?EvaluateStageEasing@@YGMHM@Z", target = 0x459730, addend = 0x0 },
+]
+
+[units.reset-animation-scalar-tween-time]
+artifact_kind = "linked-pe"
+source = "src/AnimationTween.cpp"
+inputs = ["src/AnimationTween.hpp"]
+support_sources = ["probes/animation-tween-context.cpp", "src/StageTween.cpp", "src/StageEasing.cpp"]
+output_dir = "build/match-linked/AnimationTween"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationTweenProbe@40"
+functions = ["ResetAnimationScalarTweenTime"]
+symbol = "?ResetAnimationScalarTweenTime@@YGXPAUAnimationScalarTweenTimeView@@@Z"
+target_address = 0x44ed80
+size = 52
+linkages = [
+  { offset = 31, type = "DIR32", symbol = "?g_AnimationTimeScale@@3MA", target = 0x4a7948, addend = 0x0 },
+]
+
+[units.animation-int-vector-tween-duration]
+artifact_kind = "linked-pe"
+source = "src/AnimationTween.cpp"
+inputs = ["src/AnimationTween.hpp"]
+support_sources = ["probes/animation-tween-context.cpp", "src/StageTween.cpp", "src/StageEasing.cpp"]
+output_dir = "build/match-linked/AnimationTween"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationTweenProbe@40"
+functions = ["AnimationIntVectorTweenDuration"]
+symbol = "?AnimationIntVectorTweenDuration@@YGHPAUAnimationIntVectorTween@@@Z"
+target_address = 0x44e7b0
+size = 4
+linkages = []
+
+[units.animation-float-pair-tween-duration]
+artifact_kind = "linked-pe"
+source = "src/AnimationTween.cpp"
+inputs = ["src/AnimationTween.hpp"]
+support_sources = ["probes/animation-tween-context.cpp", "src/StageTween.cpp", "src/StageEasing.cpp"]
+output_dir = "build/match-linked/AnimationTween"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationTweenProbe@40"
+functions = ["AnimationFloatPairTweenDuration"]
+symbol = "?AnimationFloatPairTweenDuration@@YGHPAUAnimationFloatPairTween@@@Z"
+target_address = 0x44ebc0
+size = 4
+linkages = []
+
+[units.animation-float-scalar-tween-duration]
+artifact_kind = "linked-pe"
+source = "src/AnimationTween.cpp"
+inputs = ["src/AnimationTween.hpp"]
+support_sources = ["probes/animation-tween-context.cpp", "src/StageTween.cpp", "src/StageEasing.cpp"]
+output_dir = "build/match-linked/AnimationTween"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationTweenProbe@40"
+functions = ["AnimationFloatScalarTweenDuration"]
+symbol = "?AnimationFloatScalarTweenDuration@@YGHPAUAnimationFloatScalarTween@@@Z"
+target_address = 0x44edc0
+size = 4
+linkages = []
+
+[units.set-animation-float-scalar-tween-mode]
+artifact_kind = "linked-pe"
+source = "src/AnimationTween.cpp"
+inputs = ["src/AnimationTween.hpp"]
+support_sources = ["probes/animation-tween-context.cpp", "src/StageTween.cpp", "src/StageEasing.cpp"]
+output_dir = "build/match-linked/AnimationTween"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationTweenProbe@40"
+functions = ["SetAnimationFloatScalarTweenMode"]
+symbol = "?SetAnimationFloatScalarTweenMode@@YGXPAUAnimationFloatScalarTween@@H@Z"
+target_address = 0x44ed20
+size = 4
+linkages = []
+
+[units.set-animation-float-scalar-tween-initial]
+artifact_kind = "linked-pe"
+source = "src/AnimationTween.cpp"
+inputs = ["src/AnimationTween.hpp"]
+support_sources = ["probes/animation-tween-context.cpp", "src/StageTween.cpp", "src/StageEasing.cpp"]
+output_dir = "build/match-linked/AnimationTween"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationTweenProbe@40"
+functions = ["SetAnimationFloatScalarTweenInitial"]
+symbol = "?SetAnimationFloatScalarTweenInitial@@YGXPAUAnimationFloatScalarTween@@PBM@Z"
+target_address = 0x44ed30
+size = 5
+linkages = []
+
+[units.set-animation-float-scalar-tween-target]
+artifact_kind = "linked-pe"
+source = "src/AnimationTween.cpp"
+inputs = ["src/AnimationTween.hpp"]
+support_sources = ["probes/animation-tween-context.cpp", "src/StageTween.cpp", "src/StageEasing.cpp"]
+output_dir = "build/match-linked/AnimationTween"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationTweenProbe@40"
+functions = ["SetAnimationFloatScalarTweenTarget"]
+symbol = "?SetAnimationFloatScalarTweenTarget@@YGXPAUAnimationFloatScalarTween@@PBM@Z"
+target_address = 0x44ed40
+size = 6
+linkages = []
+
+[units.set-animation-float-scalar-tween-control1]
+artifact_kind = "linked-pe"
+source = "src/AnimationTween.cpp"
+inputs = ["src/AnimationTween.hpp"]
+support_sources = ["probes/animation-tween-context.cpp", "src/StageTween.cpp", "src/StageEasing.cpp"]
+output_dir = "build/match-linked/AnimationTween"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationTweenProbe@40"
+functions = ["SetAnimationFloatScalarTweenControl1"]
+symbol = "?SetAnimationFloatScalarTweenControl1@@YGXPAUAnimationFloatScalarTween@@PBM@Z"
+target_address = 0x44ed50
+size = 6
+linkages = []
+
+[units.set-animation-float-scalar-tween-control2]
+artifact_kind = "linked-pe"
+source = "src/AnimationTween.cpp"
+inputs = ["src/AnimationTween.hpp"]
+support_sources = ["probes/animation-tween-context.cpp", "src/StageTween.cpp", "src/StageEasing.cpp"]
+output_dir = "build/match-linked/AnimationTween"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationTweenProbe@40"
+functions = ["SetAnimationFloatScalarTweenControl2"]
+symbol = "?SetAnimationFloatScalarTweenControl2@@YGXPAUAnimationFloatScalarTween@@PBM@Z"
+target_address = 0x44ed60
+size = 6
+linkages = []
+
+[units.draw-animation-renderer-layer]
+artifact_kind = "linked-pe"
+source = "src/AnimationRendererDispatch.cpp"
+inputs = ["src/AnimationRendererDispatch.hpp"]
+support_sources = ["probes/animation-renderer-dispatch-context.cpp", "src/AnimationVm.cpp", "src/StageLifecycle.cpp", "src/AnimationImmediateDraw.cpp"]
+output_dir = "build/match-linked/AnimationRendererDispatch"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationRendererDispatchProbe@12"
+functions = ["DrawAnimationRendererLayer"]
+symbol = "?DrawAnimationRendererLayer@@YGHPAUAnimationRenderer@@H@Z"
+target_address = 0x455660
+size = 127
+linkages = [
+  { offset = 2, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x590 },
+  { offset = 16, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8e8 },
+  { offset = 22, type = "DIR32", symbol = "__imp__EnterCriticalSection@4", target = 0x48b084, addend = 0x0 },
+  { offset = 28, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x939 },
+  { offset = 80, type = "REL32", symbol = "?DrawAnimationVmByMode@@YGHPAURenderBatchView@@PAUAnimationVmView@@@Z", target = 0x451ef0, addend = 0x0 },
+  { offset = 93, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x590 },
+  { offset = 105, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8e8 },
+  { offset = 111, type = "DIR32", symbol = "__imp__LeaveCriticalSection@4", target = 0x48b088, addend = 0x0 },
+  { offset = 117, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x939 },
+]
+
+[units.allocate-scene-animation-vm]
+artifact_kind = "linked-pe"
+source = "src/AnimationRendererDispatch.cpp"
+inputs = ["src/AnimationRendererDispatch.hpp"]
+support_sources = ["probes/animation-renderer-dispatch-context.cpp", "src/AnimationVm.cpp", "src/StageLifecycle.cpp", "src/AnimationImmediateDraw.cpp"]
+output_dir = "build/match-linked/AnimationRendererDispatch"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationRendererDispatchProbe@12"
+functions = ["AllocateSceneAnimationVm"]
+symbol = "?AllocateSceneAnimationVm@@YGPAUAnimationVmView@@XZ"
+target_address = 0x4569c0
+size = 177
+linkages = [
+  { offset = 4, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x4c3268, addend = 0x0 },
+  { offset = 91, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x45fce4, addend = 0x0 },
+  { offset = 105, type = "REL32", symbol = "??0StageEmbeddedVm@@QAE@XZ", target = 0x402270, addend = 0x0 },
+  { offset = 115, type = "REL32", symbol = "?ResetAnimationVm@@YGXPAUAnimationVmView@@@Z", target = 0x401fd0, addend = 0x0 },
+  { offset = 130, type = "REL32", symbol = "?ResetAnimationVm@@YGXPAUAnimationVmView@@@Z", target = 0x401fd0, addend = 0x0 },
+]
