@@ -456,6 +456,38 @@ Useful boundary corrections:
   origin reviews are13 indeterminate and2 library exclusions. No full cohort or
   routine behavioral suite. See [SECONDARY_PAIR_MATH](SECONDARY_PAIR_MATH.md).
 
+## Full damage, collision and timer-owned regions
+
+- Damage4347F0 owns1579 bytes/510 instructions/two RET8, with13 native alignment
+  bytes beyond sparse1566. Real two-stack-argument source now covers all256
+  projectile and32 region paths, callback/events/animation transitions, exact
+  float boundaries, wrapped accumulation and nonlinear30/70/80 compression/score.
+  Current1513/1414 is open; all14 direct-call targets/multiplicities, one callback
+  and both returns agree independently. Ghidra's extra register parameters are
+  spurious, not a reason to add dummy inputs.
+- Preserve ordered rejection/unordered branches rather than rewriting overlap as
+  `<=` conjunctions. Native distance differences and expanded graze radius stay
+  on x87 until the actual final float stores. Removing extra float-local stores
+  changes source1494/1427 and collision264/235 to1478/1417 and228/211; natural
+  record-pointer/countdown loops give damage1513/1414. No forced aligned local.
+- Region allocator433A90/192 returns one-past all32 occupied records, not null.
+  Genuine0x74/0x34 clears, timer initialization and damage/limit/period stores are
+  preserved. Local timer reference closes192/0 from192/24; a position snapshot
+  does not. Timer member29, event2/event3 owners70 each and allocator192 pass
+  complete strict cold proof:361 bytes/seven fields. Event3 never means zero.
+- Projectile96C+54 is the existing partial actor-reference pointer9C0; do not
+  rename the whole0x6C record into an actor. Native region timer-period skipping
+  is opposite to kind4 projectile elapsed-period damage; preserve both predicates.
+  Full positional sound148 source144/93 reads signed record+2, double x*1000/192,
+  ordered12 slots and128 cap. Special dispatcher406720 owns100 code+24 table;
+  six case DATA refs are owned, not foreign interior entries. Source83 stays open.
+- Fourteen new full origin/boundary reviews include special helpers246/385/66,
+  collision transition546, patterns142/183, projectile update896 and homing498.
+  The896 owner needs278 instructions/full650-limit export, not truncated250.
+  All14 origins remain indeterminate. Ten mappings add2557 target bytes. Actual
+  old receipt hashes select zero affected old exact units; only four new units
+  are cold replayed, all pass. See [SECONDARY_DAMAGE](SECONDARY_DAMAGE.md).
+
 ## Topic index
 
 | Work | Evidence and remaining differences |
@@ -472,6 +504,7 @@ Useful boundary corrections:
 | Actor construction/destruction, pair interpolation and source contexts | [SECONDARY_ACTOR](SECONDARY_ACTOR.md) |
 | Complete actor state, transitions, motion and VM return contracts | [SECONDARY_ACTOR_STATE](SECONDARY_ACTOR_STATE.md) |
 | Pair arithmetic, omitted vector leaves and vendor floor | [SECONDARY_PAIR_MATH](SECONDARY_PAIR_MATH.md) |
+| Complete damage/collision, projectile records and region allocation | [SECONDARY_DAMAGE](SECONDARY_DAMAGE.md) |
 | Streaming factories and lifetime ownership | [MUSIC_FACTORIES](MUSIC_FACTORIES.md) |
 | Device setup and buffer recreation | [AUDIO_DEVICE](AUDIO_DEVICE.md) |
 | Streaming buffers, decoder state and fades | [MUSIC_STREAM](MUSIC_STREAM.md) |

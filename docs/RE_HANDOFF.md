@@ -7,16 +7,17 @@ outrank historical notes. All dirty work belongs to this active goal.
 ## Checked-in state
 
 - Original Japanese TH11 v1.00a; config/target.toml pins identity.
-- 2,109 candidates;431 reviewed boundaries;333 source mappings.
-- 189 exact functions/22,869 bytes:8 normal COFF and181 linked PE.
-- Origins:90 authored,327 indeterminate,12 exclusions,1,680 pending.
+- 2,109 candidates;445 reviewed boundaries;343 source mappings.
+- 193 exact functions/23,230 bytes:8 normal COFF and185 linked PE.
+- Origins:90 authored,341 indeterminate,12 exclusions,1,666 pending.
 - Direct Ghidra/scripts; no Factory MCP/REA. VC9 RTM21022/SDK6.0A.
 - Commit/push authorized; prefix `gpt-6.1-sol: `.
 
-Latest checkpoint adds14 complete mappings/373 target bytes and8 exact primary
-owners/130 bytes/one field. Fifteen new origin reviews yield13 indeterminate and
-two independently identified VC9 CRT floor exclusions. Pair673 is now673/352;
-shared Hermite product trees are corrected. See
+Latest checkpoint adds10 complete mappings/2,557 target bytes, including full
+1579-byte damage and244-byte collision source. Four primary owners/361 bytes/
+seven fields close;14 new origin reviews stay indeterminate. Special dispatcher
+406720 is corrected from100 to124 bytes including its24-byte table. See
+[SECONDARY_DAMAGE](SECONDARY_DAMAGE.md),
 [SECONDARY_PAIR_MATH](SECONDARY_PAIR_MATH.md),
 [SECONDARY_ACTOR_STATE](SECONDARY_ACTOR_STATE.md),
 [SECONDARY_ACTOR](SECONDARY_ACTOR.md), [SECONDARY_LIFETIME](SECONDARY_LIFETIME.md).
@@ -51,10 +52,20 @@ shared Hermite product trees are corrected. See
   observed; preserve its direction. Timer96 is96/6, near-one FLD/FADD scheduling;
   compound/reversed spelling failed, no type/volatile trick. Score51 uses wrapped
   addition plus signed input/10/cap; count19 preserves its signed upper gate.
-- Native complete damage1579 has510 instructions/two RET8 and13 alignment bytes
-  missing from sparse1566. Full650-limit export covers both256/32-record paths,
-  callbacks/animation/damage/score. Collision244, positional sound148, effect457
-  and FSINCOS30 have full new origin review but remain source-open.
+- Damage1579 has full510-instruction/two-RET8 source with both256-projectile and
+  32-region paths, callback/animation transitions, ordered rejection, exact float
+  boundaries and wrapped nonlinear damage/score. Current1513/1414; all14 direct
+  call targets/multiplicities, one callback and two returns agree independently.
+- Collision244 source228/211 preserves strict/unordered threshold behavior,
+  real HUD/player gates and transition432A90. Sound148 source144/93 preserves
+  double pan scale, signed short record+2,12 slots and128 cap. No byte credit.
+- Timer29 and event2/event3 owners70 each are exact. Region allocator192 also
+  closes via a natural local timer reference; one-past return on full32 slots
+  is real. Partial actor references9C0 are projectile96C+54 target pointers.
+  Position35/6, special predicate66->68/62 and dispatcher124->83/97 stay open.
+  Patterns142/183, projectile update896 and homing498 have full new origin
+  review;896 uses a650-limit export, never the truncated250-instruction prefix.
+  Effect457 and FSINCOS30 remain source-open.
 
 ## Other corrected ownership
 
@@ -79,6 +90,8 @@ shared Hermite product trees are corrected. See
 
 | Owner | Full target | Source / normalized differences |
 | --- | ---: | --- |
+| Damage4347F0 / collision431F70 | 1579 /244 | 1513 /1414;228 /211 |
+| Sound44A260 / region433A90 | 148 /192 | 144 /93;192 exact |
 | Actor state411750 | 4230 | 4161 /3261; full actual support context |
 | Actor transition417B40 | 561 | 521 /497 |
 | Actor ctor4111C0 / EH dtor411480 | 699 /384 | 706 /442;390 /327 |
@@ -115,20 +128,19 @@ Audio aliases/factories/refill, VM11640, rendering and master374 remain open.
 
 ## Current proof and replay scope
 
-`.analysis/secondary-pair-math-cold-replay.log` passes8 new+19 directly affected
-prior units, across6 linked families. Full bytes, exhaustive fields, unique
-primary-TU owners and current source/header/support/tool/producer/PE/MAP/PDB
-receipts pass. Actual old receipt hashes select StageTween, StageScript,
-AnimationTween, SecondaryPairTween and SecondaryActorMotion dependencies.
-Source froze before the cold build; all jobs are terminal. No full cohort,
-broad behavior or infrastructure suite. Recompute dependencies next time.
+`.analysis/secondary-damage-cold-replay.log` passes4 new units/361 bytes/seven
+fields in SecondaryDamageSupport. Full unique primary-TU ownership, exhaustive
+fields/current source/header/support/tool/producer/PE/MAP/PDB receipts pass.
+Actual previous receipt hashes select zero affected prior units; existing shared
+sources/headers are unchanged. Source froze before cold compilation; all jobs
+are terminal. No full cohort, broad behavior or infrastructure suite. Recompute
+actual dependencies next time.
 
-Private diagnostics: `build/probe-ltcg/SecondaryActorUpdate/pair-math-full/`,
-`.analysis/secondary-pair-math-final-open-diagnostics.json`, full parent-call audit,
-source-freeze and vendor-floor identity/relocation/CodeView records. Direct
-read-only span reviews add11 missing pair entries and the225-byte CRT entry;
-419520 already existed. Floor's auto3113 span is corrected to64; fallback4870E4
-and unrelated helpers stay outside this reviewed vendor pair. No exact/source
-credit is awarded for the289-byte library identity. Bytes/decompiler/tool/build
-artifacts stay private; DB unchanged. Native product/runtime/portability remain
-later; goal stays active.
+Private diagnostics: `build/probe-ltcg/SecondaryDamage/final/`,
+`.analysis/secondary-damage-final-call-audit.json`, independent16-owner full
+PE/CFG/return/table records, full650-limit projectile export, source-freeze and
+four field recipes. New source views preserve real record/timer/parameter
+contracts without changing shared headers. Native damage frame0x54/8-byte
+alignment remains open; no artificial locals or ABI force it. Bytes/decompiler/
+tool/build artifacts stay private; DB unchanged. Native product/runtime/port
+closure remains later; goal stays active.

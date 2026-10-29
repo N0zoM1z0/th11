@@ -134,3 +134,7 @@ damage export, independent21-owner CFG/hash/return records, full call audit,
 seven binding recipes, source-freeze record, compiler variants, refreshed open
 diagnostics and selected cold receipts. Native bytes/decompiler/tool/build
 artifacts stay private. Product/runtime/port closure and the active goal stay open.
+
+Later complete damage1579/collision244/sound148 source, the124-byte special
+dispatcher correction and four new exact helper proofs are recorded in
+[SECONDARY_DAMAGE](SECONDARY_DAMAGE.md).
