@@ -14,7 +14,8 @@ struct SecondaryActorNode
 struct SecondaryMotionView
 {
     CameraVector position, velocity;
-    float angle, angularVelocity, radius, radialVelocity, tilt, ellipseRatio;
+    // The first scalar is Cartesian speed or angular increment, selected by flags.
+    float speed, angle, radius, radialVelocity, tilt, ellipseRatio;
     unsigned int flags;
 };
 
@@ -42,8 +43,8 @@ struct SecondaryActorEffectView
 
 struct SecondaryActorSlot
 {
-    int first, second, value;
-    unsigned int unknown00c;
+    int lifeThreshold, frameLimit;
+    const char *lifeScript, *frameScript;
 };
 
 // Observed 0x163c-byte state allocation. Unknown storage is retained without
@@ -62,21 +63,27 @@ struct SecondaryActorStateView
     StageVectorTween localTween, offsetTween;
     SecondaryPairTween pairTweens[6];
     SecondaryActorRecord records[8];
-    unsigned char unknown1414[0x14dc - 0x1414];
+    unsigned char unknown1414[0x14d4 - 0x1414];
+    float hitWidth, hitHeight;
     float boundX, boundY, boundWidth, boundHeight;
     unsigned int unknown14ec;
     SecondaryCounterView counter;
     SecondaryActorEffectView effect;
-    unsigned char unknown1544[0x1558 - 0x1544];
+    unsigned char unknown1544[0x1550 - 0x1544];
+    int flashFrames;
+    unsigned int unknown1554;
     StageTimerView timer1558, timer156c;
     unsigned int flags;
     int script1584, script1588, index, unknown1590;
     SecondaryActorSlot slots[8];
     SecondaryActorManagerView *owner;
     StageMeshView *mesh;
-    unsigned int unknown161c;
-    float meshProgress, mesh1624, mesh1628, mesh162c;
-    void *hook1630, *hook1634, *hook1638;
+    float meshLimit, meshProgress;
+    unsigned int meshColor;
+    float meshPhaseX, meshPhaseY;
+    int (__fastcall *hook1630)(SecondaryActorStateView *self);
+    int (__fastcall *hook1634)(SecondaryActorStateView *self);
+    void (__fastcall *hook1638)(SecondaryActorStateView *self);
 };
 
 struct SecondaryActorManagerView : SecondaryManager
@@ -93,7 +100,8 @@ struct SecondaryActorManagerView : SecondaryManager
 
 struct SecondaryMasterView
 {
-    unsigned char unknown000[0x1c];
+    unsigned char unknown000[0x18];
+    unsigned int value018;
     unsigned char indexed01c[0x64 - 0x1c];
     SecondaryProgramView *program;
     SecondaryActorNode *first, *last;
@@ -112,7 +120,11 @@ struct SecondaryActorReference
 
 struct SecondaryActorReferencesView
 {
-    unsigned char unknown000[0x9c0];
+    unsigned char unknown000[0x87c];
+    CameraVector position;
+    unsigned char unknown888[0x928 - 0x888];
+    int damageMode;
+    unsigned char unknown92c[0x9c0 - 0x92c];
     SecondaryActorReference records[256];
     unsigned char unknown75c0[0x7c94 - 0x75c0];
     SecondaryActorManagerView *tracked;
@@ -131,6 +143,10 @@ void __stdcall UpdateSecondaryActorPosition(SecondaryActorStateView *self);
 void __stdcall ComposeSecondaryMotion(SecondaryMotionView *self);
 void __fastcall TrackSecondaryActor(SecondaryActorManagerView *self);
 int __stdcall SecondaryActorReferenceStatus();
+void __stdcall AdvanceSecondaryMotion(SecondaryMotionView *self);
+const char *__fastcall SelectSecondaryActorTransition(SecondaryActorManagerView *self);
+int __stdcall FinishSecondaryActorEffect(SecondaryActorManagerView *self);
+int __stdcall OffsetSecondaryTimer(StageTimerView *self, float amount);
 // Native writes the pair through its result buffer and returns that address.
 // This physical contract leaves the original vector class's return ABI open.
 SecondaryVector2 *__stdcall StepSecondaryPairTween(SecondaryVector2 *result, SecondaryPairTween *self);

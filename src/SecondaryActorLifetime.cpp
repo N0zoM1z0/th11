@@ -46,10 +46,10 @@ SecondaryActorManagerView::SecondaryActorManagerView(const char *name)
     state.counter.unknown008 = 0;
     for (int i = 0; i < 8; ++i)
     {
-        state.slots[i].first = -1;
-        state.slots[i].second = -1;
+        state.slots[i].lifeThreshold = -1;
+        state.slots[i].frameLimit = -1;
     }
-    for (int i = 0; i < 8; ++i) state.slots[i].value = 0;
+    for (int i = 0; i < 8; ++i) state.slots[i].lifeScript = 0;
 }
 
 SecondaryActorManagerView::~SecondaryActorManagerView()

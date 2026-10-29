@@ -1,141 +1,127 @@
 # Agent handoff
 
-Work in `/home/pentester/coding/codex_ida/th11-reconstruction/th11`; the outer
-folder is not Git. Read AGENTS.md/current source/ledgers. Target bytes and current
-receipts outrank historical notes. All dirty work belongs to this goal.
+Work in `/home/pentester/coding/codex_ida/th11-reconstruction/th11`; outer folder
+is not Git. Read AGENTS.md/current source/ledgers. Target bytes/current receipts
+outrank historical notes. All dirty work belongs to this active goal.
 
 ## Checked-in state
 
 - Original Japanese TH11 v1.00a; config/target.toml pins identity.
-- 2,097 candidates;403 reviewed boundaries;303 source mappings.
-- 174 exact functions /22,445 bytes:8 normal COFF and166 linked PE.
-- Origins:90 authored,301 indeterminate,10 exclusions,1,696 pending.
-- Direct local Ghidra/scripts; no Factory MCP/REA. VC9 RTM21022/SDK6.0A.
+- 2,097 candidates;416 reviewed boundaries;319 source mappings.
+- 181 exact functions/22,739 bytes:8 normal COFF and173 linked PE.
+- Origins:90 authored,314 indeterminate,10 exclusions,1,683 pending.
+- Direct Ghidra/scripts; no Factory MCP/REA. VC9 RTM21022/SDK6.0A.
 - Commit/push authorized; prefix `gpt-6.1-sol: `.
 
-Latest checkpoint adds12 complete source mappings/2,505 target bytes, including
-actor constructor699/destructor384/position309 and pair interpolation673. Six
-unique primary-TU owners close327 bytes/six fields;18 new origin reviews remain
-indeterminate. Factory4108F0 boundary is corrected545->621 including its tables.
-Large actor-state update4230 remains source-open. See [SECONDARY_ACTOR](SECONDARY_ACTOR.md),
-[SECONDARY_LIFETIME](SECONDARY_LIFETIME.md),
-[SECONDARY_EXTENSION](SECONDARY_EXTENSION.md), [SECONDARY_PROGRAM](SECONDARY_PROGRAM.md).
+Latest checkpoint adds16 complete mappings/5,896 target bytes, including full
+state4230 and transition561 source. Seven primary-TU owners close294 bytes/14
+fields;13 new origin reviews stay indeterminate. See
+[SECONDARY_ACTOR_STATE](SECONDARY_ACTOR_STATE.md),
+[SECONDARY_ACTOR](SECONDARY_ACTOR.md), [SECONDARY_LIFETIME](SECONDARY_LIFETIME.md),
+[SECONDARY_PROGRAM](SECONDARY_PROGRAM.md), [SECONDARY_SCRIPT](SECONDARY_SCRIPT.md).
 
-## Corrected models and ownership
+## Current actor source and evidence
 
-- Program storage is1098: known prefix through8C, raw90..108F and observed
-  DWORD1090/1094. Unknown bytes are actual cleared storage, not instruction padding
-  or guessed ownership. Inline base construction writes49404C then memset erases
-  it. Empty derived construction naturally inlines zeroing and publishes494090
-  afterward; derived38 is exact. Base38/3 remains support-owned/non-exact.
-- Program destructor40FFF0/36 is nonvirtual and frees only the table. Master
-  cleanup410E90/374 frees all32 file slots then program/table; do not move that
-  ownership. Program vtable slots remain Install0/extension4, derived file8.
-- Manager494058 has five real zero/null/FLDZ defaults and virtual deleting
-  destructor14. The former pure-virtual-only model was incomplete. Five defaults
-  and ordinary destructor40FF10/47 are exact. Scalar deleting40FF40/71 is
-  source-backed but candidate30/62 calls ordinary47 and shares ??_G/??_E address;
-  strict ownership/extent remains open. No custom deleting wrapper.
-- Actor object is base103C+state163C=2678. Ordinary adapter411600 is12 bytes,
-  not13 including adjacent CC. It calls complete state update411750 on object
-  +103C and is exact. It is not an EH funclet: actual FuncInfo49FB78/unwind49FB70
-  points48A730/8, which jumps40FF10. Handler48A738/27 selects FuncInfo after GS
-  cookie check; SafeSEH49E960/56 independently includes it. Both compiler entries
-  excluded; main EH-bearing actor destructor384 remains source/acceptance-open.
-- Actor-state update411750..4127D5 owns4230, including9 alignment bytes omitted
-  by sparse4221. Full1108 instructions/five returns, no tables or foreign interior
-  entries; all flow reviewed. Initial250-instruction prefix was insufficient.
-- State410440/126 is now a genuine out-of-line empty-body constructor: eleven
-  StageTimer member constructors and eight214-byte record constructors naturally
-  explain every byte. Full state163C has asserted physical views in
-  SecondaryActorState.hpp. Four floating defaults are24, effect dimensions32.
-  Actor699 source706/442 includes all initialization; actual Script support
-  naturally removes extra EH. Explicit VM writes leave706; a stack-constructor
-  model704/493 is rejected. Common headers are unchanged.
-- Actor384 destructor source390/327 preserves all ten ID scans,256 references,
-  mesh ReleaseVmBindingBlock231/delete and implicit base cleanup. Private receiver,
-  base inlining and EH/alias acceptance stay open. Pair673 source632/627 models
-  the observed result-buffer/address-return contract; original vector return ABI
-  remains open. No invented constructor or fake ABI to force sret. Factor39,
-  tracking21/status32 and thread release45/reset64 are exact. Release leaves head
-  untouched; reset preserves stack cursors/program.
-- Factory4108F0 owns621=545 code+3 alignment+20 table+53 selectors. Five table
-  DATA references are internal. Successful attested code review plus independent
-  full PE/table/selector review establishes extent; mixed-data linear review_span
-  failed and is not used as acceptance evidence. Source remains open.
-- Interpreter45B860 owns7093 through45D414:6759 code+1 NOP+244 jump+89 selectors.
-  Full1783-instruction review;61 table DATA edges are internal. Never crop to6759,
-  restore false callback410D69 or create a function at table cell45D2D0.
+- State411750 owns4230 through4127D5, not sparse4221:1108 instructions/five
+  returns/nine internal alignment bytes, no table/foreign interior entry. Complete
+  source now includes all motion/tweens, script/hooks, damage/transitions, collision,
+  eight IDs/tracking/flash, mesh vertices/colors/normalization/sine and timers.
+- Initial4023/3510 has EAX receiver/frame100. Real support restores native stack
+  receiver/frame92,4055/3295. Full frame body, separate sound branches and counter
+  support give4177/3219. All64 direct-call target multiplicities,3 callbacks and5
+  returns agree independently. This does not prove exactness/runtime. No prefix
+  or simplified-loop replacement, forced frame/register, or precision shortcut.
+- Physical actor is base103C+state163C=2678. State ctor410440/126 is an empty
+  out-of-line body plus11 timer/eight214-byte record constructors; exact. Actor
+  then clears state again. Defaults24/32 are verified. New source fields expose
+  script-pointer slots, hit sizes, flash, mesh limit/color/phases and callbacks.
+- Motion18 is speed/angular increment selected by flags;1C is angle. Advance75
+  exactly calls actual FSINCOS SetPolar30 and Normalize145. FSINCOS/quantizer99
+  remain source-open. Compose215 and rotation86 contracts are fully reviewed.
+- ClearMissingAnimationId456520/21 really returns the VM pointer: native state
+  caller immediately dereferences VM3B0. Validate419A20/30 instead returns full
+  integer0/1. Independent renderer probe input prevents LTCG from removing the
+  lookup renderer parameter; full21/30/70 are exact. Event70 writes word37C=1;
+  release66 marks04000000. Do not conflate these contracts or insert null guards.
+- Transition561 source preserves life/time paths, signed UI time, frame/script
+  returns and spell/global gates. Tracking comparison is counterintuitive but
+  observed; preserve its direction. Timer96 is96/6, near-one FLD/FADD scheduling;
+  compound/reversed spelling failed, no type/volatile trick. Score51 uses wrapped
+  addition plus signed input/10/cap; count19 preserves its signed upper gate.
+- Native complete damage1579 has510 instructions/two RET8 and13 alignment bytes
+  missing from sparse1566. Full650-limit export covers both256/32-record paths,
+  callbacks/animation/damage/score. Collision244, positional sound148, effect457
+  and FSINCOS30 have full new origin review but remain source-open.
 
-## Current gaps and concrete next work
+## Other corrected ownership
 
-| Owner | Target bytes | Current source / diagnostic differences |
+- Program1098 includes known prefix/table8C, raw90..108F and tail1090/1094.
+  Inline base ctor writes49404C then memset erases it. Empty derived ctor naturally
+  publishes494090 after clearing; derived38 exact, base38/3 support-owned/open.
+  Nonvirtual program dtor36 frees only table; master cleanup374 frees32 file slots
+  first. Do not move that ownership or invent a virtual program destructor.
+- Manager494058 has five real zero/null/FLDZ defaults and deleting slot14.
+  Defaults and ordinary dtor47 exact; generated scalar/vector aliases30 vs71 stay
+  open. Actor deleting slot14 belongs494074. Native EH384, unwind48A730/8 and
+  handler48A738/27 remain separate. Actual FuncInfo49FB78/unwind49FB70 points8;
+  adapter411600/12 is ordinary/exact, never an EH action. SafeSEH49E960/56 agrees.
+- Factory4108F0 owns621=545 code+3 alignment+20 table+53 selectors; five table
+  DATA edges are internal. Valid attested code/refs plus independent PE/table
+  review establish extent; failed mixed-data linear review_span is not evidence.
+- Interpreter45B860 owns7093:6759 code+1 NOP+244 jump+89 selectors. Full1783
+  instructions/61 table edges reviewed. Never crop to6759, restore false410D69
+  callback or create an owner at table cell45D2D0.
+
+## Current gaps and next work
+
+| Owner | Full target | Source / normalized differences |
 | --- | ---: | --- |
-| SecondaryActorConstructor,4111C0 | 699 | 706 /442 |
-| SecondaryActorDestructor,411480 | 384 | 390 /327; EH/private receiver open |
-| SecondaryActorDeletingDestructor,410420 | 31 | 30 /20; aliases open |
-| DetachSecondaryActor,410B60 | 82 | 79 /74 |
-| UpdateSecondaryActorPosition,411610 | 309 | 310 /269; opaque motion support |
-| StepSecondaryPairTween,4191F0 | 673 | 632 /627; all six returns |
-| InstallSecondaryProgram,45D900 | 513 | 513 /339 |
-| SecondaryProgramBaseConstructor,40FFC0 | 38 | 38 /3; support-owned |
-| SecondaryManagerDeletingDestructor,40FF40 | 71 | 30 /62; ??_G/??_E aliases |
-| RestartSecondaryScript,45DD50 | 28 | 28 /10 |
-| RunSecondaryScript,45B860 | 7093 | 6993 /5880; full code/tables |
-| EnterSecondaryScriptFrame,45B610 | 584 | 572 /546 |
-| UpdateSecondaryScripts,45D420 | 142 | 155 /142 |
-| ReadSecondaryFloatArgument,45D550 | 175 | 184 /168 |
-| ReadSecondaryIntArgument,45D4B0 | 146 | 124 /125 |
-| ReadSecondaryIntReference,45D600 | 100 | 94 /85 |
-| ReadSecondaryFloatReference,45D670 | 145 | 147 /85 |
-| PopSecondaryValue,45DC80 | 83 | 83 /2; ADD-negative vs SUB |
-| PushSecondaryValue,45DC30 | 71 | 70 /15 |
-| EndSecondaryStackFrame,45DD20 | 41 | 41 /2; ADD-negative vs SUB |
-| StartSecondaryThread,45D7A0 | 147 | 154 /61 |
+| Actor state411750 | 4230 | 4177 /3219; full actual support context |
+| Actor transition417B40 | 561 | 521 /497 |
+| Actor ctor4111C0 / EH dtor411480 | 699 /384 | 706 /442;390 /327 |
+| Actor deleting410420 / unlink410B60 | 31 /82 | 30 /20 aliases;79 /74 |
+| Actor position411610 / pair4191F0 | 309 /673 | 310 /269;632 /627 |
+| Compose459590 / timer459210 | 215 /96 | 208 /180;96 /6 |
+| VM release4562E0 / position456430 | 66 /110 | 64 /39;110 /45 |
+| VM position4563A0 / raw456330 | 132 /97 | 126 /104;86 /85 |
+| Collision value40BAA0 | 95 | 92 /43; private EAX vs stack input |
+| Program install45D900 / restart45DD50 | 513 /28 | 513 /339;28 /10 |
+| Run45B860 / enter45B610 / update45D420 | 7093 /584 /142 | 6993 /5880;572 /546;155 /142 |
+| Float/int args45D550/45D4B0 | 175 /146 | 184 /168;124 /125 |
+| Int/float refs45D600/45D670 | 100 /145 | 94 /85;147 /85 |
+| Pop45DC80 / push45DC30 / end45DD20 | 83 /71 /41 | 83 /2;70 /15;41 /2 |
+| Start thread45D7A0 | 147 | 154 /61 |
 
-1. Continue full installer/interpreter and actor lifetimes/state update. Installer
-   keeps full-count insertion, publication and ignored extension result; remaining
-   registers, allocation expression, free gate and alignment are real gaps.
-   Actor4230 flow covers motion/tweens, script/hooks, damage/counter, eight VM IDs,
-   mesh deformation and timers/status. Source remains open; use the new complete
-   state/member/lifecycle views and pair source, not a bounded prefix or simplified
-   loop. New full helper reviews include transition417B40/561, motion459540/75,
-   compose459590/215, quantization459A30/99, rotation458F70/86, finish4127E0/156,
-   animation position4563A0/132, validation30/21 and script switch456770/36.
-   Master374 remains source-open; EH ownership is separate.
-2. Interpreter64 alignment is localized to its double variadic trace call, whose
-   native QWORD argument must remain. Ablations omit behavior and are rejected.
-   Fixed-format/real trace bodies, /Zp4, /fp:fast and float temporaries failed.
-   New split calls6993/5877, float conditional7001/5937 and format arms7141/5984
-   all retain64; none adopted. Investigate real call/spill/rounding/TU context,
-   not forced registers/alignment or changed precision. Canonical O2/Ob1/GL.
-3. Keep exact semantics: opcode85 integer-negates float bits; reference/argument
-   underflow differs; frame lookup failure leaves new current published and clears
-   caller instruction. Geometry86 resolves destination before arithmetic. Counter
-  61/13/16 retain wrapped7 arithmetic/truncated division and input low-bit semantics.
-4. Existing audio scalar30/36 alias gaps stay open; no exemption. Factories713/665
-   retain675/590 and595/556, refill570 remains569/504. Broader VM44B4B0/11640,
-   renderer/EH/interpolation/geometry remain open.
+Continue complete large owners and codegen gaps. State's early pair receiver is
+EAX versus native EDI; real vector return ABI remains unknown. Do not invent a
+constructor to force sret. Inspect actual caller/member context. Position110
+moves marker comparison after stores; timer96 swaps FLD/FADD memory operands.
+Installer retains full-count insertion/publication/ignored extension result.
 
-## Current proof and affected scope
+Interpreter64-byte alignment is localized to its required double variadic trace.
+Ablations omit behavior; fixed/real trace bodies, Zp4, fp:fast and float temps
+failed. Split calls6993/5877, float conditional7001/5937 and format arms7141/5984
+retain64; none adopted. Native ESP/120 frame remains open. Opcode85 negates float
+bits as integer; reference/argument underflow differs; frame failure leaves new
+current and clears caller instruction; geometry86 resolves destination first.
+Counter61/13/16 retain wrapped7 arithmetic/signed division/input low-bit semantics.
+Audio aliases/factories/refill, VM11640, rendering and master374 remain open.
 
-`.analysis/secondary-actor-affected-cold.log` passes six new units across three
-contexts; actual prior receipt dependencies select zero affected old units.
-New327 bytes/six independent fields pass complete unique public primary-TU
-ownership, current source/header/support/tool/producer/PE/MAP/PDB receipts and
-every byte. Source froze before cold builds. Initial comparison preceded source
-mapping registration and rejected the missing owner; registered mappings then
-passed on the unchanged cold artifacts without another build. All jobs terminal.
-Build/Oracle tools unchanged; no broad behavior or infrastructure suite.
+## Current proof and replay scope
 
-Current full diagnostics are `.analysis/secondary-actor-final-diagnostic.json`
-from canonical artifacts; independent24-span CFG/hash/table records and six
-bindings sit beside it. Topic doc records successful Ghidra reviews, failed
-mixed-data span, source/compiler models and open ownership. Prior lifetime
-proof12+16 remains unchanged. Private bytes/decompiler/tool/build artifacts stay
-private; DB unchanged.
+`.analysis/secondary-state-affected-cold.log` passes7 new+7 directly affected prior
+units across7 contexts. Fourteen independent fields/full bytes, unique primary-TU
+owners and current source/header/support/tool/producer/PE/MAP/PDB receipts pass.
+Actual receipt dependencies select affected actor lifetime/thread/pair
+families and ordinary adapter12; common script/stage/renderer headers unchanged. Source froze before
+cold builds; all jobs terminal. No full cohort, broad behavior or infrastructure
+suite. Initial13 passed; a stale declaration-header comment correction requires final14
+with fresh header receipts. Recompute dependencies next time, not a fixed replay.
 
-Replay changed exact owners/direct dependencies only. Script/Program sources
-support the Extension family; inspect actual receipts including transitive headers.
-Refresh progress, check staged diff including new-file EOF, commit/push meaningful
-progress. Native product/runtime/portability remain later work; goal stays active.
+Private diagnostics: `build/probe-ltcg/SecondaryActorUpdate/complete-frame/`,
+`.analysis/secondary-state-final-open-diagnostics.json`, full-call audit,
+source-freeze, independent21-owner CFG/hash records and seven binding recipes.
+Topic doc lists reviews/experiments. Bytes/decompiler/tool/build artifacts remain
+private; DB unchanged. Refresh progress/check staged diff including new EOF,
+commit/push substantive work. Native product/runtime/portability remain later;
+goal stays active.

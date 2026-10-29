@@ -366,7 +366,7 @@ Useful boundary corrections:
  nine internal alignment bytes, no tables/foreign interior entry. Full instruction
  export and independent decoding replace the initial250-instruction prefix. Complete motion/tween,
  script/hooks, damage, animation IDs, mesh deformation and time/status flow is
- reviewed; source remains open. Constructor699 and EH destructor384 now have
+ reviewed; full source now emits4177/3219 and remains non-exact. Constructor699 and EH destructor384 now have
  complete natural source but remain non-exact; base103C+state163C gives actor2678.
 - Ordinary actor adapter411600 is12 bytes through41160B; its first13-byte review
  span included a neighboring CC. It calls the real4230 owner on object+103C and
@@ -401,6 +401,31 @@ Useful boundary corrections:
  actual prior receipt dependencies select no affected old units. Eighteen new
  origin reviews remain indeterminate. See [SECONDARY_ACTOR](SECONDARY_ACTOR.md).
 
+## Full actor state and pointer-return contracts
+
+- Complete4230 state source preserves motion/tweens, script/hooks, damage and
+  transitions, collision, animation/tracking/flash, mesh geometry/color and timers.
+  Real support naturally restores stack receiver/frame92,4055/3295 from initial
+  4023/3510. Full frame body/counter context yields4177/3219. All64 direct-call
+  target multiplicities,3 callbacks and5 returns agree; exact/runtime stay open.
+- VM helper456520/21 returns the resolved pointer, independently required by
+  the next VM3B0 dereference. Earlier no-bool-only description was incomplete.
+  Separate419A20/30 returns integer0/1. Retaining independent renderer input
+  prevents false LTCG specialization of lookup79 and closes full21/30/70 owners.
+  Event70 writes word37C, not the release flag. Native alignment stays included.
+- Motion18 is speed/angular increment by flags and1C is angle; prior names were
+  ambiguous. Advance75 exact uses actual FSINCOS30/Normalize145 boundaries;
+  FSINCOS and quantizer99 remain source-open. Timer96/6 is operand scheduling,
+  not a reason to change precision or add volatile accesses. Transition561 has
+  full life/time/UI/global source521/497, not a reduced script-name lookup.
+- Score51 exact preserves wrapped addition, signed input/10 and upper cap; direct
+  global assignment recovers native scheduling. Count19 exact preserves signed
+  upper gate. Damage1579 has full510-instruction/two-return review with13 native
+  alignment bytes missing from sparse1566; both256/32-record loops are covered.
+- Seven new primary owners/294 bytes/14 fields and seven affected old owners pass
+  final selected cold proof; declaration-header comment correction adds adapter12. Thirteen new origin reviews remain indeterminate. See
+  [SECONDARY_ACTOR_STATE](SECONDARY_ACTOR_STATE.md); no full-cohort replay.
+
 ## Topic index
 
 | Work | Evidence and remaining differences |
@@ -415,6 +440,7 @@ Useful boundary corrections:
 | Secondary extension parser and trace context | [SECONDARY_EXTENSION](SECONDARY_EXTENSION.md) |
 | Secondary lifetime, counters and large actor owners | [SECONDARY_LIFETIME](SECONDARY_LIFETIME.md) |
 | Actor construction/destruction, pair interpolation and source contexts | [SECONDARY_ACTOR](SECONDARY_ACTOR.md) |
+| Complete actor state, transitions, motion and VM return contracts | [SECONDARY_ACTOR_STATE](SECONDARY_ACTOR_STATE.md) |
 | Streaming factories and lifetime ownership | [MUSIC_FACTORIES](MUSIC_FACTORIES.md) |
 | Device setup and buffer recreation | [AUDIO_DEVICE](AUDIO_DEVICE.md) |
 | Streaming buffers, decoder state and fades | [MUSIC_STREAM](MUSIC_STREAM.md) |

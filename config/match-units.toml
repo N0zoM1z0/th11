@@ -3400,3 +3400,122 @@ size = 39
 linkages = [
   { offset = 27, type = "REL32", symbol = "?EvaluateStageEasing@@YGMHM@Z", target = 0x459730, addend = 0x0 },
 ]
+
+[units.advance-secondary-motion]
+artifact_kind = "linked-pe"
+source = "src/SecondaryActorMotion.cpp"
+inputs = ["src/SecondaryActorRuntime.hpp", "src/SecondaryActorState.hpp"]
+support_sources = ["probes/secondary-actor-motion-context.cpp", "src/AngleMath.cpp"]
+output_dir = "build/match-linked/SecondaryActorMotion"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryActorMotionProbe@12"
+functions = ["AdvanceSecondaryMotion"]
+symbol = "?AdvanceSecondaryMotion@@YGXPAUSecondaryMotionView@@@Z"
+target_address = 0x459540
+size = 75
+linkages = [
+  { offset = 27, type = "REL32", symbol = "?SetPolar@SecondaryVector2@@QAEXMM@Z", target = 0x459aa0, addend = 0x0 },
+  { offset = 66, type = "REL32", symbol = "?NormalizeAngle@@YGMM@Z", target = 0x458ed0, addend = 0x0 },
+]
+
+[units.clear-missing-animation-id]
+artifact_kind = "linked-pe"
+source = "src/SecondaryActorAnimation.cpp"
+inputs = ["src/SecondaryActorRuntime.hpp", "src/SecondaryActorState.hpp"]
+support_sources = ["probes/secondary-actor-animation-context.cpp", "src/StageMesh.cpp"]
+output_dir = "build/match-linked/SecondaryActorAnimation"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryActorAnimationProbe@16"
+functions = ["ClearMissingAnimationId"]
+symbol = "?ClearMissingAnimationId@@YGPAUAnimationVmView@@PAI@Z"
+target_address = 0x456520
+size = 21
+linkages = [
+  { offset = 4, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x4c3268, addend = 0x0 },
+  { offset = 10, type = "REL32", symbol = "?FindAnimationVmById@@YGPAUAnimationVmView@@PAURenderBatchView@@UAnimationVmId@@@Z", target = 0x4561e0, addend = 0x0 },
+]
+
+[units.validate-secondary-animation-id]
+artifact_kind = "linked-pe"
+source = "src/SecondaryActorAnimation.cpp"
+inputs = ["src/SecondaryActorRuntime.hpp", "src/SecondaryActorState.hpp"]
+support_sources = ["probes/secondary-actor-animation-context.cpp", "src/StageMesh.cpp"]
+output_dir = "build/match-linked/SecondaryActorAnimation"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryActorAnimationProbe@16"
+functions = ["ValidateSecondaryAnimationId"]
+symbol = "?ValidateSecondaryAnimationId@@YGHPAI@Z"
+target_address = 0x419a20
+size = 30
+linkages = [
+  { offset = 4, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x4c3268, addend = 0x0 },
+  { offset = 10, type = "REL32", symbol = "?FindAnimationVmById@@YGPAUAnimationVmView@@PAURenderBatchView@@UAnimationVmId@@@Z", target = 0x4561e0, addend = 0x0 },
+]
+
+[units.signal-secondary-animation]
+artifact_kind = "linked-pe"
+source = "src/SecondaryActorAnimation.cpp"
+inputs = ["src/SecondaryActorRuntime.hpp", "src/SecondaryActorState.hpp"]
+support_sources = ["probes/secondary-actor-animation-context.cpp", "src/StageMesh.cpp"]
+output_dir = "build/match-linked/SecondaryActorAnimation"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryActorAnimationProbe@16"
+functions = ["SignalSecondaryAnimation"]
+symbol = "?SignalSecondaryAnimation@@YGXPAI@Z"
+target_address = 0x4070e0
+size = 70
+linkages = [
+  { offset = 4, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x4c3268, addend = 0x0 },
+  { offset = 10, type = "REL32", symbol = "?FindAnimationVmById@@YGPAUAnimationVmView@@PAURenderBatchView@@UAnimationVmId@@@Z", target = 0x4561e0, addend = 0x0 },
+]
+
+[units.secondary-global-status-bits]
+artifact_kind = "linked-pe"
+source = "src/SecondaryActorAnimation.cpp"
+inputs = ["src/SecondaryActorRuntime.hpp", "src/SecondaryActorState.hpp"]
+support_sources = ["probes/secondary-actor-animation-context.cpp", "src/StageMesh.cpp"]
+output_dir = "build/match-linked/SecondaryActorAnimation"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryActorAnimationProbe@16"
+functions = ["SecondaryGlobalStatusBits"]
+symbol = "?SecondaryGlobalStatusBits@@YGHXZ"
+target_address = 0x410780
+size = 28
+linkages = [
+  { offset = 1, type = "DIR32", symbol = "?g_MeshEffectSpell@@3PAUMeshEffectSpellView@@A", target = 0x4a8d6c, addend = 0x0 },
+]
+
+[units.add-secondary-actor-score]
+artifact_kind = "linked-pe"
+source = "src/SecondaryActorCounters.cpp"
+inputs = ["src/SecondaryActorRuntime.hpp", "src/SecondaryActorState.hpp"]
+support_sources = ["probes/secondary-actor-counters-context.cpp"]
+output_dir = "build/match-linked/SecondaryActorCounters"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryActorCountersProbe@4"
+functions = ["AddSecondaryActorScore"]
+symbol = "?AddSecondaryActorScore@@YGXH@Z"
+target_address = 0x40ceb0
+size = 51
+linkages = [
+  { offset = 10, type = "DIR32", symbol = "?g_SecondaryActorScore@@3HA", target = 0x4a56e4, addend = 0x0 },
+  { offset = 32, type = "DIR32", symbol = "?g_SecondaryActorScore@@3HA", target = 0x4a56e4, addend = 0x0 },
+  { offset = 40, type = "DIR32", symbol = "?g_SecondaryActorScore@@3HA", target = 0x4a56e4, addend = 0x0 },
+]
+
+[units.increment-secondary-collision-count]
+artifact_kind = "linked-pe"
+source = "src/SecondaryActorCounters.cpp"
+inputs = ["src/SecondaryActorRuntime.hpp", "src/SecondaryActorState.hpp"]
+support_sources = ["probes/secondary-actor-counters-context.cpp"]
+output_dir = "build/match-linked/SecondaryActorCounters"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryActorCountersProbe@4"
+functions = ["IncrementSecondaryCollisionCount"]
+symbol = "?IncrementSecondaryCollisionCount@@YGXXZ"
+target_address = 0x40bb10
+size = 19
+linkages = [
+  { offset = 2, type = "DIR32", symbol = "?g_SecondaryCollisionCount@@3HA", target = 0x4a5754, addend = 0x0 },
+  { offset = 14, type = "DIR32", symbol = "?g_SecondaryCollisionCount@@3HA", target = 0x4a5754, addend = 0x0 },
+]

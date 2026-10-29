@@ -2,6 +2,6 @@
 #include "SecondaryScript.hpp"
 
 struct SecondaryActorStateView;
-// Reviewed full native state update; its implementation remains source-open.
+// Complete state implementation is in SecondaryActorUpdate.cpp; codegen remains open.
 int __stdcall UpdateSecondaryActorState(SecondaryActorStateView *state);
 int __stdcall UpdateSecondaryActor(SecondaryManager *self);

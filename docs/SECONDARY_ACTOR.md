@@ -4,9 +4,12 @@ Twelve new complete source mappings cover2,505 target bytes, including actor
 construction699, EH-bearing destruction384, position update309 and pair
 interpolation673. Six complete public primary-TU contributions pass327 exact
 bytes and six independently reviewed address fields. Eighteen new boundary and
-origin reviews remain indeterminate. Current totals are2,097 candidates,
+origin reviews remain indeterminate. Totals at this actor checkpoint were2,097 candidates,
 403 reviewed boundaries,303 mappings and174 exact functions/22,445 bytes.
 Origins are90 authored,301 indeterminate,10 exclusions and1,696 pending.
+
+Later full4230-byte state source, the VM pointer-return correction and current
+proof/gaps are recorded in [SECONDARY_ACTOR_STATE](SECONDARY_ACTOR_STATE.md).
 
 | Owner | Address | Full target bytes | Current result |
 | --- | --- | ---: | --- |
