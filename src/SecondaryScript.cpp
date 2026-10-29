@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Reviewed real boundaries; these implementations remain outside this TU.
-void __cdecl TraceSecondaryScript(...);
+// Native 45B5B0 is RET-only; callers still evaluate and pass their arguments.
+void __cdecl TraceSecondaryScript(...) {}
+// Reviewed math boundaries; these implementations remain outside this TU.
 float __stdcall SecondaryUnaryMathA(float value);
 float __stdcall SecondaryUnaryMathB(float value);
 float __stdcall SecondaryAngleMath(float y, float x);

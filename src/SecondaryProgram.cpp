@@ -77,6 +77,11 @@ int SecondaryProgramView::ProcessExtension(void *data)
     return 0;
 }
 
+void *SecondaryProgramView::File(int index)
+{
+    return files[index];
+}
+
 int SecondaryManager::Initialize(SecondaryProgramView *source, const char *name)
 {
     program = source;

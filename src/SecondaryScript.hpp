@@ -41,6 +41,7 @@ struct SecondaryProgramView
 {
     virtual int Install(void *data);
     virtual int ProcessExtension(void *data);
+    void *File(int index);
     int fileCount, subroutineCount;
     void *files[32];
     SecondarySubroutine *subroutines;

@@ -3043,3 +3043,85 @@ symbol = "?ProcessExtension@SecondaryProgramView@@UAEHPAX@Z"
 target_address = 0x40ffa0
 size = 5
 linkages = []
+
+[units.secondary-program-file]
+artifact_kind = "linked-pe"
+source = "src/SecondaryProgram.cpp"
+inputs = ["src/SecondaryScript.hpp"]
+support_sources = ["probes/secondary-program-context.cpp", "src/SecondaryScript.cpp"]
+output_dir = "build/match-linked/SecondaryProgram"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryProgramProbe@16"
+functions = ["SecondaryProgramFile"]
+symbol = "?File@SecondaryProgramView@@QAEPAXH@Z"
+target_address = 0x40ffb0
+size = 5
+linkages = []
+
+[units.load-secondary-program-file]
+artifact_kind = "linked-pe"
+source = "src/SecondaryProgramExtension.cpp"
+inputs = ["src/SecondaryProgramExtension.hpp", "src/SecondaryScript.hpp", "src/AnimationDocument.hpp", "src/ResourceFile.hpp", "src/ErrorLog.hpp", "src/LogBuffer.hpp"]
+support_sources = ["probes/secondary-program-extension-context.cpp", "src/SecondaryProgram.cpp", "src/SecondaryScript.cpp", "src/ResourceFile.cpp", "src/AnimationDocument.cpp", "src/LogBuffer.cpp", "src/AnimationTrace.cpp"]
+output_dir = "build/match-linked/SecondaryProgramExtension"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryProgramExtensionProbe@28"
+functions = ["LoadSecondaryProgramFile"]
+symbol = "?LoadFile@SecondaryProgramWithExtensions@@UAEHPBD@Z"
+target_address = 0x4104d0
+size = 95
+linkages = [
+  { offset = 11, type = "DIR32", symbol = "?g_SecondaryProgramFilename@@3PADA", target = 0x4c9928, addend = 0x0 },
+  { offset = 26, type = "DIR32", symbol = "?g_SecondaryProgramFilename@@3PADA", target = 0x4c9928, addend = 0x0 },
+  { offset = 60, type = "DIR32", symbol = "?g_SecondaryProgramFilename@@3PADA", target = 0x4c9928, addend = 0x0 },
+  { offset = 67, type = "REL32", symbol = "?LoadResourceFile@@YGPAEPBDPAIH@Z", target = 0x458400, addend = 0x0 },
+  { offset = 75, type = "REL32", symbol = "?Install@SecondaryProgramView@@UAEHPAX@Z", target = 0x45d900, addend = 0x0 },
+]
+
+[units.process-secondary-program-extensions]
+artifact_kind = "linked-pe"
+source = "src/SecondaryProgramExtension.cpp"
+inputs = ["src/SecondaryProgramExtension.hpp", "src/SecondaryScript.hpp", "src/AnimationDocument.hpp", "src/ResourceFile.hpp", "src/ErrorLog.hpp", "src/LogBuffer.hpp"]
+support_sources = ["probes/secondary-program-extension-context.cpp", "src/SecondaryProgram.cpp", "src/SecondaryScript.cpp", "src/ResourceFile.cpp", "src/AnimationDocument.cpp", "src/LogBuffer.cpp", "src/AnimationTrace.cpp"]
+output_dir = "build/match-linked/SecondaryProgramExtension"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryProgramExtensionProbe@28"
+functions = ["ProcessSecondaryProgramExtensions"]
+symbol = "?ProcessExtension@SecondaryProgramWithExtensions@@UAEHPAX@Z"
+target_address = 0x410d50
+size = 238
+linkages = [
+  { offset = 52, type = "REL32", symbol = "?AcquireAnimationDocument@@YGPAUAnimationDocumentView@@HPBD@Z", target = 0x454360, addend = 0x0 },
+  { offset = 58, type = "DIR32", symbol = "?g_SecondaryProgramHost@@3PAEA", target = 0x4a8d7c, addend = 0x0 },
+  { offset = 156, type = "DIR32", symbol = "?g_SecondaryAnimationLoadError@@3QBDB", target = 0x493874, addend = 0x0 },
+  { offset = 161, type = "DIR32", symbol = "?g_RuntimeLog@@3UErrorLogBufferView@@A", target = 0x4a5940, addend = 0x0 },
+  { offset = 166, type = "REL32", symbol = "?AppendLog@@YAPBDPAULogBufferView@@PBDZZ", target = 0x458a10, addend = 0x0 },
+]
+
+[units.trace-animation-load]
+artifact_kind = "linked-pe"
+source = "src/AnimationTrace.cpp"
+inputs = ["src/AnimationDocument.hpp"]
+support_sources = ["probes/animation-trace-context.cpp"]
+output_dir = "build/match-linked/AnimationTrace"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationTraceProbe@8"
+functions = ["TraceAnimationLoad"]
+symbol = "?TraceAnimationLoad@@YAXZZ"
+target_address = 0x456ad0
+size = 1
+linkages = []
+
+[units.trace-secondary-script]
+artifact_kind = "linked-pe"
+source = "src/SecondaryScript.cpp"
+inputs = ["src/SecondaryScript.hpp"]
+support_sources = ["probes/secondary-script-context.cpp"]
+output_dir = "build/match-linked/SecondaryScript"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryScriptProbe@32"
+functions = ["TraceSecondaryScript"]
+symbol = "?TraceSecondaryScript@@YAXZZ"
+target_address = 0x45b5b0
+size = 1
+linkages = []

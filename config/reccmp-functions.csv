@@ -271,3 +271,8 @@ InstallSecondaryProgram,0x0045D900,function
 InitializeSecondaryContext,0x0045DBE0,function
 SelectSecondaryScript,0x0045DC00,function
 RestartSecondaryScript,0x0045DD50,function
+SecondaryProgramFile,0x0040FFB0,function
+LoadSecondaryProgramFile,0x004104D0,function
+ProcessSecondaryProgramExtensions,0x00410D50,function
+TraceAnimationLoad,0x00456AD0,function
+TraceSecondaryScript,0x0045B5B0,function

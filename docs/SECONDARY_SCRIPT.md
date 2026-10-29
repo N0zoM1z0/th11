@@ -7,10 +7,12 @@ six earlier owners rechecked cover28 complete target spans. The omitted83-byte
 typed pop entry is recovered; all reviewed origins remain indeterminate.
 Subsequent program/selector work and current affected cold proof are recorded
 in [SECONDARY_PROGRAM](SECONDARY_PROGRAM.md).
+Current extension/trace source, diagnostics and affected proof are in
+[SECONDARY_EXTENSION](SECONDARY_EXTENSION.md).
 
 | Owner | Address | Full bytes | Current source / diagnostic differences |
 | --- | --- | ---: | --- |
-| RunSecondaryScript | 45B860 | 7,093 | 6,989 /5,958; not exact |
+| RunSecondaryScript | 45B860 | 7,093 | 6,993 /5,880; not exact |
 | EnterSecondaryScriptFrame | 45B610 | 584 | 572 /546 |
 | UpdateSecondaryScripts | 45D420 | 142 | 155 /142 |
 | ReadSecondaryIntArgument | 45D4B0 | 146 | 124 /125 |
@@ -50,7 +52,7 @@ review output is supplemented by a full2,200-limit export ending at the actual
 RET4; no bounded prefix or cropped extent is accepted as a full review.
 
 The source contains normal switches/templates and no table byte payload. Its
-current candidate also owns61 jump cells and89 selectors, but6,989 bytes and5,958
+current candidate also owns61 jump cells and89 selectors, but6,993 bytes and5,880
 masked diagnostic differences remain. Matching table counts is not exactness.
 
 ## Physical views and call contracts
@@ -145,7 +147,7 @@ A grouped-operation baseline emitted3,382 interpreter bytes. Per-operation
 instantiation brought a first model to7,125. Recovering the real pop implementation
 corrected output/tag alias order and changed code generation; separating the
 remaining branch/thread/unary groups restored all61 dispatch entries. Current
-branch-order candidate6,989/5,958 remains open, including a64-byte-aligned EBP
+real-trace candidate6,993/5,880 remains open, including a64-byte-aligned EBP
 frame versus native ESP frame120. A controlled `/Zp4` probe changed none of the diagnostics and was
 rejected; canonical `/O2 /Ob1 /GL` remains. No alignment/register/byte injection
 was introduced. A later private double-to-float-temporary probe also retains
@@ -158,8 +160,9 @@ neighbors: program installation513, manager creation77, polar vector30 and three
 math wrappers31/34/31. Six previously reviewed stack/frame owners were rechecked.
 Program installation validates SCPT/version1 and merges sorted named subroutines;
 its full513-byte source and real virtual contract are now in
-[SECONDARY_PROGRAM](SECONDARY_PROGRAM.md); its constructor and derived callback
-remain open. The new83-byte pop is
+[SECONDARY_PROGRAM](SECONDARY_PROGRAM.md); the derived callback is now fully
+reconstructed in [SECONDARY_EXTENSION](SECONDARY_EXTENSION.md), while constructors
+remain source-open. The new83-byte pop is
 bounded by RET and CC neighbors with no interior entry. Custom script roles,
 format magic and generic math/stack wrappers do not establish original game,
 header or library authorship. All28 origins remain indeterminate.
@@ -171,7 +174,8 @@ actual byte agrees. Current source/header/tool/producer/PE/MAP/PDB receipts and
 full ownership initially passed `.analysis/secondary-script-nine-cold.log`.
 After the current header/inline changes all nine pass again in
 `.analysis/secondary-program-affected-cold.log`, together with three new program
-units. No other family was affected or replayed. No full cohort, broad behavior
+units. The current trace declaration/body changes have a wider affected receipt
+set, recorded in [SECONDARY_EXTENSION](SECONDARY_EXTENSION.md). No full cohort, broad behavior
 harness or infrastructure tests ran;
 comparison/build infrastructure is unchanged. Whole-game runtime and port stages
 remain open.

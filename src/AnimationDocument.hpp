@@ -83,7 +83,7 @@ extern const char g_AnimationCachedTraceFormat[], g_AnimationReadyTraceFormat[];
 extern const char g_AnimationVersionError[], g_AnimationTextureReadError[];
 extern const char g_AnimationTextureCreateError[], g_AnimationEmbeddedTextureError[];
 extern const char g_AnimationPostloadTraceFormat[];
-void __cdecl TraceAnimationLoad(const char *format, ...);
+void __cdecl TraceAnimationLoad(...);
 int __stdcall LoadAnimationChunkSource(AnimationDocumentView *file, int index,
     AnimationChunkHeaderView *chunk);
 AnimationDocumentView *__stdcall AdvanceAnimationDocument(AnimationDocumentView *file);

@@ -10,6 +10,7 @@ extern "C" int __stdcall SecondaryProgramProbe(int kind, SecondaryProgramView *p
     case 2: return manager->Select(program, static_cast<const char *>(data));
     case 3: return manager->Restart(static_cast<const char *>(data));
     case 4: return program->SecondaryProgramView::ProcessExtension(data);
+    case 5: return reinterpret_cast<int>(program->File(reinterpret_cast<int>(data)));
     }
     return 0;
 }

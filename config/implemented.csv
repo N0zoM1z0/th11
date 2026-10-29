@@ -270,3 +270,8 @@ InstallSecondaryProgram
 InitializeSecondaryContext
 SelectSecondaryScript
 RestartSecondaryScript
+SecondaryProgramFile
+LoadSecondaryProgramFile
+ProcessSecondaryProgramExtensions
+TraceAnimationLoad
+TraceSecondaryScript

@@ -43,13 +43,12 @@ in [`docs/PROGRESS.md`](docs/PROGRESS.md). Start continuation at
 [`docs/RE_HANDOFF.md`](docs/RE_HANDOFF.md); the concise
 [`working knowledge`](docs/KNOWLEDGE_BASE.md) links the detailed topic records.
 
-The latest checkpoint adds five complete program/context source mappings /610
-bytes, including the513-byte SCPT installer. Three new exact owners add69 bytes;
-installation and the7,093-byte interpreter remain non-exact. Twelve more origin
-reviews recover three omitted context entries, merge a falsely split238-byte
-extension callback and identify a DirectInput import thunk. Only three new and
-nine affected prior exact units were cold-replayed. Typed pop83 now differs by
-two bytes. See the linked topic records for full evidence and remaining gaps.
+The latest checkpoint reconstructs the complete238-byte ANIM/ECLI extension
+parser and95-byte file entry, plus a file getter and two real empty trace bodies.
+Five new exact owners add340 bytes. Ten more origin reviews recover seven omitted
+entries and confirm the different base/derived constructor vptr/zeroing order.
+The513-byte SCPT installer and7,093-byte interpreter remain non-exact. Current
+affected proof and remaining gaps are in the linked topic records.
 Stage meshes, VM creation, the full stage interpreter, interpolation, stage
 update/drawing, ANM resources, rendering, text, input and file paths have varying
 levels of maintained source and exact proofs. Source presence, exact codegen and
@@ -61,6 +60,7 @@ full runtime and portability are open.
 | Renderer quad construction/submission | [quads](docs/ANIMATION_QUAD.md), [submission](docs/ANIMATION_VM_DRAW.md), [projection/fog](docs/ANIMATION_PROJECTED_QUAD.md), [immediate modes](docs/ANIMATION_IMMEDIATE_DRAW.md) |
 | Secondary script interpreter, stack and threads | [script evidence](docs/SECONDARY_SCRIPT.md) |
 | Secondary program installation and context selection | [program evidence](docs/SECONDARY_PROGRAM.md) |
+| Secondary extension parser and trace context | [extension evidence](docs/SECONDARY_EXTENSION.md) |
 | Streaming factories and lifetime ownership | [factory evidence](docs/MUSIC_FACTORIES.md) |
 | Device setup and buffer recreation | [device evidence](docs/AUDIO_DEVICE.md) |
 | Streaming buffers, decoder state and fades | [streaming evidence](docs/MUSIC_STREAM.md) |

@@ -4,6 +4,8 @@ Five complete source mappings add610 target bytes: program installation513,
 the base extension callback5, and three previously omitted context entries
 28/36/28. Three unique public primary-TU contributions pass69 exact bytes with
 two independently reviewed REL32 fields. Installation remains non-exact.
+Later complete extension/file source and current proof are recorded in
+[SECONDARY_EXTENSION](SECONDARY_EXTENSION.md).
 
 | Owner | Address | Full bytes | Current source / diagnostic differences |
 | --- | --- | ---: | --- |
@@ -93,7 +95,8 @@ The continuation walks counted ANIM names, loads/stores handles, reports a faile
 load and returns-1. It aligns the relative cursor to four bytes and, if ECLI is
 present, walks counted names through the actual derived slot8. The strings and
 format roles establish behavior, not original game/header/library authorship.
-No source is supplied for this still-open238-byte callback.
+The subsequent full source and exact comparison are in
+[SECONDARY_EXTENSION](SECONDARY_EXTENSION.md).
 
 Thirteen complete owners were reviewed, twelve for the first time. Besides the
 five mapped owners and merged callback, reviews cover file loading95, browser
@@ -117,7 +120,7 @@ source/exact credit. Net inventory change is+3 missing entries-1 false split:
 
 ## Affected proof and related compiler findings
 
-Current source/header/support/tool/producer and PE/MAP/PDB receipts pass
+At the installation checkpoint, source/header/support/tool/producer and PE/MAP/PDB receipts passed
 `.analysis/secondary-program-affected-cold.log`: exactly three new program units
 and nine affected prior secondary-script units. These are complete unique public
 primary-TU contributions. All69 new bytes agree after exhaustive replay of the
@@ -133,6 +136,9 @@ diagnostics: full Run is now6989/5958, with native61 dispatch cells/89 selectors
 and an unresolved64-byte-aligned EBP frame. A private double-to-float-temporary
 probe kept alignment64, produced6873/5934 against the preceding source and
 could change rounding; it is rejected. Double temporaries remain in source.
+The real-trace source now gives6993/5880. Current trace-context experiments and
+the updated affected cold receipt supersede those earlier diagnostics; see
+[SECONDARY_EXTENSION](SECONDARY_EXTENSION.md).
 
 Private evidence: secondary-program-effects-review, secondary-program-callers-review,
 secondary-manager-create-caller-full, secondary-context-gaps-review,

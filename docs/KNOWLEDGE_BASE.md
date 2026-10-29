@@ -277,7 +277,7 @@ Useful boundary corrections:
  arithmetic occurs after its callback. Trace int-to-double promotion avoids
  added float rounding. These follow raw code, not decompiler float casts.
 - Per-operation instantiation and distinct branch/thread/unary arms reproduce
-61 jump entries/89 selectors, but current candidate6,989/5,958 is still non-exact.
+61 jump entries/89 selectors, but current candidate6,993/5,880 is still non-exact.
  Candidate stack aligns64 with an EBP frame; native uses ESP/120. /Zp4 changed
  none and was rejected. A private double-to-float-temporary probe retained
  alignment64, produced6873/5934 against the preceding source and risked changed
@@ -303,12 +303,44 @@ Useful boundary corrections:
  SUB4 versus ADD-negative bytes stay unmasked. A true Stack-member probe changes
  neither Pop83/2 nor End41/2 and is rejected. Shared inline changes alter larger
  diagnostics, so nine prior exact script units were revalidated.
-- Current2,075 candidates,339 reviewed boundaries,272 mappings and151 exact
+- Installation checkpoint:2,075 candidates,339 reviewed boundaries,272 mappings and151 exact
  functions/21,532 bytes. Twelve new origin reviews add eleven indeterminate and
  one PE-import-verified DirectInput8Create exclusion; one false split is removed.
  Browser934's267-instruction full export supersedes its truncated250 view;
  adjacent188/177/84 are effects, not script lifecycle. Three new plus nine
  affected units pass cold; no other family or full cohort was replayed.
+
+- Full ANIM/ECLI extension238 and filename entry95 now reproduce complete
+ public primary-TU owners. The parser publishes each loaded animation pointer
+ before testing failure, preserves signed relative alignment and ignores ECLI
+ load statuses. A normal repeated remainder expression closes the66 differences
+ caused by a retained temporary. Independent PE decoding binds all ten external
+ address fields across both functions; no table/padding/ABI injection.
+- Real resource-loader support needs independent variable filename/size/mode
+ inputs. Otherwise LTCG specializes away the file entry's two null/zero pushes,
+ producing91 bytes. The proper context restores the native95-byte entry.
+- Animation trace456AD0 and script trace45B5B0 are genuinely RET-only. Actual
+ bodies preserve caller volatile registers; an opaque declaration does not.
+ Native animation cached calls keep both format and filename pushes. All values
+ are variadic in the reconstructed trace API; a fixed unused format argument
+ would be trimmed by LTCG and loses native pushes. There is no invented success
+ implementation. AnimationTrace.cpp supplies the real body only to its declared
+ new contexts; other families retain their existing source partitions.
+- Trace-arm ablation changes interpreter alignment64 to8. Removing only its
+ double variadic trace call does the same, localizing that alignment request.
+ Both omit native behavior and are rejected. A fixed-format trace-body probe
+ and /fp:fast retain64; neither is adopted. Source keeps the actual QWORD trace
+ value and established /O2 /Ob1 /GL. Full real-trace Run6993/5880 stays open.
+- Seven omitted entries include file getter40FFB0/5, base constructor40FFC0/38,
+ four singleton helpers410530/11,410540/9,410550/10,410560/21 and derived
+ constructor410D20/38. Base writes vptr then memset1098 erases it; derived
+ memset1098 then writes vptr. Native browser order was real, not a decompiler
+ artifact. Neither constructor nor full object layout has source yet.
+- New host initialization318 and state reset126 are fully reviewed; all ten new
+ origin reviews remain indeterminate. Current2,082 candidates,349 reviewed
+ boundaries and277 mappings. Five new exact owners add340 bytes:156 exact /
+21,872 bytes total. Affected cold selection uses actual receipt dependencies,
+ including transitive headers:79 prior units plus five new; no full cohort.
 
 ## Topic index
 
@@ -321,6 +353,7 @@ Useful boundary corrections:
 | Renderer quad construction/submission | [ANIMATION_QUAD](ANIMATION_QUAD.md), [ANIMATION_VM_DRAW](ANIMATION_VM_DRAW.md), [ANIMATION_PROJECTED_QUAD](ANIMATION_PROJECTED_QUAD.md), [ANIMATION_IMMEDIATE_DRAW](ANIMATION_IMMEDIATE_DRAW.md) |
 | Secondary script interpreter, typed stack and threads | [SECONDARY_SCRIPT](SECONDARY_SCRIPT.md) |
 | Secondary program installation and context selection | [SECONDARY_PROGRAM](SECONDARY_PROGRAM.md) |
+| Secondary extension parser and trace context | [SECONDARY_EXTENSION](SECONDARY_EXTENSION.md) |
 | Streaming factories and lifetime ownership | [MUSIC_FACTORIES](MUSIC_FACTORIES.md) |
 | Device setup and buffer recreation | [AUDIO_DEVICE](AUDIO_DEVICE.md) |
 | Streaming buffers, decoder state and fades | [MUSIC_STREAM](MUSIC_STREAM.md) |
