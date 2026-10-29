@@ -130,3 +130,8 @@ AsciiManagerDestructor
 AsciiManagerDrawCallback
 AsciiManagerOverlayCallback
 BindAnimationSprite
+AsciiManagerPrint
+AsciiManagerPrintSmall
+DrawAsciiManager
+DrawAsciiOverlay
+SetAnimationSpriteUv

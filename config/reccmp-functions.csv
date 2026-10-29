@@ -131,3 +131,8 @@ AsciiManagerDestructor,0x00401210,function
 AsciiManagerDrawCallback,0x004014C0,function
 AsciiManagerOverlayCallback,0x004014D0,function
 BindAnimationSprite,0x0044AB40,function
+AsciiManagerPrint,0x004015A0,function
+AsciiManagerPrintSmall,0x00401600,function
+DrawAsciiManager,0x00401670,function
+DrawAsciiOverlay,0x00401CE0,function
+SetAnimationSpriteUv,0x00401E40,function

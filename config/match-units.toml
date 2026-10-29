@@ -1626,3 +1626,82 @@ size = 7
 linkages = [
   { offset = 2, type = "REL32", symbol = "?DrawAsciiOverlay@@YGHPAUAsciiManagerObject@@@Z", target = 0x401ce0, addend = 0x0 },
 ]
+
+[units.ascii-manager-print]
+artifact_kind = "linked-pe"
+source = "src/AsciiFormatting.cpp"
+inputs = ["src/AsciiFormatting.hpp"]
+support_sources = ["src/AsciiDrawing.cpp", "src/AsciiAppend.cpp", "src/AnimationSpriteBinding.cpp", "src/RenderBatch.cpp", "src/PerspectiveCamera.cpp", "probes/ascii-drawing-context.cpp"]
+output_dir = "build/match-linked/AsciiFormatting"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AsciiDrawingProbe@20"
+functions = ["AsciiManagerPrint"]
+symbol = "?AsciiManagerPrint@@YAXPAUAsciiManagerView@@PBMPBDZZ"
+target_address = 0x4015a0
+size = 83
+linkages = [
+  { offset = 7, type = "DIR32", symbol = "___security_cookie", target = 0x4a2088, addend = 0x0 },
+  { offset = 45, type = "REL32", symbol = "_vsprintf", target = 0x45fdd2, addend = 0x0 },
+  { offset = 57, type = "REL32", symbol = "?AsciiManagerAppendString@@YGXPAUAsciiManagerView@@PBMPBD@Z", target = 0x4014e0, addend = 0x0 },
+  { offset = 72, type = "REL32", symbol = "@__security_check_cookie@4", target = 0x45fc2c, addend = 0x0 },
+]
+
+[units.ascii-manager-print-small]
+artifact_kind = "linked-pe"
+source = "src/AsciiFormatting.cpp"
+inputs = ["src/AsciiFormatting.hpp"]
+support_sources = ["src/AsciiDrawing.cpp", "src/AsciiAppend.cpp", "src/AnimationSpriteBinding.cpp", "src/RenderBatch.cpp", "src/PerspectiveCamera.cpp", "probes/ascii-drawing-context.cpp"]
+output_dir = "build/match-linked/AsciiFormatting"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AsciiDrawingProbe@20"
+functions = ["AsciiManagerPrintSmall"]
+symbol = "?AsciiManagerPrintSmall@@YAXPAUAsciiManagerView@@PBMPBDZZ"
+target_address = 0x401600
+size = 106
+linkages = [
+  { offset = 7, type = "DIR32", symbol = "___security_cookie", target = 0x4a2088, addend = 0x0 },
+  { offset = 45, type = "REL32", symbol = "_vsprintf", target = 0x45fdd2, addend = 0x0 },
+  { offset = 57, type = "REL32", symbol = "?AsciiManagerAppendString@@YGXPAUAsciiManagerView@@PBMPBD@Z", target = 0x4014e0, addend = 0x0 },
+  { offset = 95, type = "REL32", symbol = "@__security_check_cookie@4", target = 0x45fc2c, addend = 0x0 },
+]
+
+[units.draw-ascii-overlay]
+artifact_kind = "linked-pe"
+source = "src/AsciiDrawing.cpp"
+inputs = ["src/AsciiDrawing.hpp"]
+support_sources = ["src/AsciiFormatting.cpp", "src/AsciiAppend.cpp", "src/AnimationSpriteBinding.cpp", "src/RenderBatch.cpp", "src/PerspectiveCamera.cpp", "probes/ascii-drawing-context.cpp"]
+output_dir = "build/match-linked/AsciiDrawing"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AsciiDrawingProbe@20"
+functions = ["DrawAsciiOverlay"]
+symbol = "?DrawAsciiOverlay@@YGHPAUAsciiManagerObject@@@Z"
+target_address = 0x401ce0
+size = 101
+linkages = [
+  { offset = 3, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x4c3268, addend = 0x0 },
+  { offset = 9, type = "REL32", symbol = "?FlushRenderBatch@@YGXPAURenderBatchView@@@Z", target = 0x44fd10, addend = 0x0 },
+  { offset = 21, type = "REL32", symbol = "?DrawAsciiManager@@YGHPAUAsciiManagerObject@@H@Z", target = 0x401670, addend = 0x0 },
+  { offset = 27, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x4c3268, addend = 0x0 },
+  { offset = 32, type = "REL32", symbol = "?FlushRenderBatch@@YGXPAURenderBatchView@@@Z", target = 0x44fd10, addend = 0x0 },
+  { offset = 37, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x31c },
+  { offset = 43, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x54c },
+  { offset = 48, type = "REL32", symbol = "?ApplyPerspectiveCamera@@YGXPAUPerspectiveCameraView@@@Z", target = 0x42a970, addend = 0x0 },
+  { offset = 54, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x54c },
+  { offset = 59, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 84, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x550 },
+]
+
+[units.set-animation-sprite-uv]
+artifact_kind = "linked-pe"
+source = "src/AnimationSpriteBinding.cpp"
+inputs = ["src/AnimationSpriteBinding.hpp"]
+support_sources = ["src/AsciiDrawing.cpp", "src/AsciiFormatting.cpp", "src/AsciiAppend.cpp", "src/RenderBatch.cpp", "src/PerspectiveCamera.cpp", "probes/ascii-drawing-context.cpp"]
+output_dir = "build/match-linked/AnimationSpriteBinding"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AsciiDrawingProbe@20"
+functions = ["SetAnimationSpriteUv"]
+symbol = "?SetAnimationSpriteUv@@YGXPAUAnimationVmView@@PAUAnimationSpriteView@@@Z"
+target_address = 0x401e40
+size = 81
+linkages = [
+]

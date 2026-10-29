@@ -34,6 +34,8 @@ Useful boundary corrections:
 - StageScriptMeshConstructor389 includes7 internal alignment bytes;
   PublishStageMesh123 includes3.
 - Transparent-pixel processing owns1,427 bytes including switch tables.
+- DrawAsciiManager401670 owns1,636 bytes through401CD3: the old1,618-byte
+  span omitted two alignment bytes and the four-entry switch table.
 
 ## Physical and ABI facts
 
@@ -76,6 +78,13 @@ Useful boundary corrections:
   and4014D0 own9/7 bytes. Sprite binding writes four UV corners at70..8C;
   interpreting those eight floats as two current/base rectangles is wrong.
 
+- ASCII small-font formatting writes `strings[count-1].unknown120 = 1`.
+  Native count*130+86C selects font style, not the draw channel at+128.
+- VM+374 is diffuse ARGB, not a sprite index. Native default ASCII advance
+  converts drawMode184A4 as signed (FILD), despite its older unsigned view label.
+- Independent renderer/camera inputs restore the full101-byte overlay owner;
+  global-only support had specialized parameters away and produced87 bytes.
+
 ## Topic index
 
 | Work | Evidence and remaining differences |
@@ -85,7 +94,7 @@ Useful boundary corrections:
 | Stage lifecycle, updates and drawing | [STAGE_LIFECYCLE](STAGE_LIFECYCLE.md), [STAGE_UPDATE](STAGE_UPDATE.md), [STAGE_DRAWING](STAGE_DRAWING.md) |
 | Stage/ANM resources | [STAGE_RESOURCE](STAGE_RESOURCE.md), [ANIMATION_CHUNKS](ANIMATION_CHUNKS.md), [ANIMATION_TEXTURES](ANIMATION_TEXTURES.md), [pixel processing](ANIMATION_TRANSPARENT_PIXELS.md) |
 | Renderer and device | [RENDER_CAMERA](RENDER_CAMERA.md), [DEVICE_INITIALIZATION](DEVICE_INITIALIZATION.md), [RENDER_STATE_RESET](RENDER_STATE_RESET.md), [RUNTIME_SURFACES](RUNTIME_SURFACES.md) |
-| ASCII lifecycle and sprite binding | [ASCII_LIFECYCLE](ASCII_LIFECYCLE.md) |
+| ASCII lifecycle, glyph drawing and formatting | [ASCII_LIFECYCLE](ASCII_LIFECYCLE.md), [ASCII_DRAWING](ASCII_DRAWING.md) |
 | Text | [TEXT_RESOURCES](TEXT_RESOURCES.md), [TEXT_DRAWING_COMPOSITE](TEXT_DRAWING_COMPOSITE.md), [OUTLINED_TEXT](OUTLINED_TEXT.md), [FORMATTED_TEXTURE_TEXT](FORMATTED_TEXTURE_TEXT.md) |
 | File/archive | [RESOURCE_FILES](RESOURCE_FILES.md), [SHARED_FILE](SHARED_FILE.md), [ARCHIVE_DECOMPRESSION](ARCHIVE_DECOMPRESSION.md) |
 | Callbacks, input, frame and startup | [CALLBACK_CHAIN](CALLBACK_CHAIN.md), [INPUT_POLLING](INPUT_POLLING.md), [FRAME_LOOP](FRAME_LOOP.md), [STARTUP_WINDOW](STARTUP_WINDOW.md) |

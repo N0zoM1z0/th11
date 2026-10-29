@@ -49,8 +49,9 @@ The draw wrapper at4014C0 pushes mode0 and its ECX context, calls401670, and
 returns the result. The overlay wrapper at4014D0 pushes the context, calls
 401CE0, and returns that result. Independent9/7-byte explicit-span reviews
 exclude the seven/nine following CC bytes and find no interior references.
-The underlying drawing bodies remain external to the maintained lifecycle
-source.
+The drawing bodies are now maintained separately in `src/AsciiDrawing.cpp`;
+see [full drawing and formatting](ASCII_DRAWING.md). They remain external to
+the lifecycle translation unit.
 
 Destruction restores the vptr; removes update, draw and overlay chains in
 order, with the same conditional section0 lock and depth bookkeeping as the

@@ -71,3 +71,13 @@ int __stdcall BindAnimationSprite(AnimationDocumentView *file, int sprite, Anima
     self->savedTransform = self->transform;
     return 0;
 }
+
+void __stdcall SetAnimationSpriteUv(AnimationVmView *vm, AnimationSpriteView *sprite)
+{
+    SpriteBindingVmView *self = reinterpret_cast<SpriteBindingVmView *>(vm);
+    self->sprite = sprite;
+    self->corners[0].u = self->corners[2].u = sprite->u0;
+    self->corners[1].u = self->corners[3].u = sprite->u1;
+    self->corners[0].v = self->corners[1].v = sprite->v0;
+    self->corners[2].v = self->corners[3].v = sprite->v1;
+}
