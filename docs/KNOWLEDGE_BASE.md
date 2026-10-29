@@ -117,7 +117,7 @@ Useful boundary corrections:
   proofs are exact. Dispatcher EAX forwarding establishes int wrapper returns.
 - Explicit gaps recover six missed owners:451AE0/138,451B70/336,451CC0/336,
   452080/10,452090/44 and452680/25. All six have complete cold proofs,889 bytes;
-  inventory now2,001 candidates. Ghidra DB remains unmodified.
+  inventory at that checkpoint2,001 candidates. Ghidra DB remains unmodified.
 - Fan805/598 uses4B0 storage,33 vertices,31 live edge radius/delta slots and
   a real30-byte polar boundary. Both UV axes use drift4A4;4A8 is unused.
   Negative UV shifts all33 vertices by1, positive values do not wrap. Edge Z
@@ -133,6 +133,25 @@ Useful boundary corrections:
 - Tint channels use byte inputs and an unsigned promoted product before SHR7.
   Leaving byte multiplication as signed promotion emits SAR, one opcode off.
 
+- Renderer4526F0 is a2,601-byte constructor for allocation7BD894, with real
+ 4096/default/31 VM member lifetimes before whole-object memset. Its225-byte
+ destructor saves next before reclaim and retains6 internal alignment bytes;
+ EH and default-member inlining remain open. Neither is counted exact.
+- Reclaim4558E0 needs rendererEDI and VMEAX, not a single VM parameter. The
+ pool occupancy map is4096 bytes at renderer4340BC. Pool VMs free/clear400
+ then reset; heap VMs free/clear400 then direct delete. This273-byte owner
+ and487-byte world-buffer setup have full cold exact proofs.
+- Projected scratch4C9248 is24-byte XYZ/fourth-scalar/UV, while world corners
+ are20-byte XYZ/UV and shared4C91D8 vertices are28 bytes. Buffer setup leaves
+ the scratch fourth scalar untouched. Avoid merging these physical layouts.
+- Pixel ushort snapshots reproduce45-byte A1/A4 helpers; uint snapshots give42.
+ The40-byte format selector tests runtime+200 as a byte, bit0. Six formats
+ at496548 are followed by six bytes-per-pixel DWORDs, not extra formats.
+- Renderer lifecycle/pixels add37 absent candidates and41 boundary/origin
+ reviews, all indeterminate. Inventory now2,038; identity3-byte entries and
+29 registration callbacks remain source-open. Five new full cold proofs add890
+ bytes; no previous exact contexts changed. See the lifecycle topic below.
+
 ## Topic index
 
 | Work | Evidence and remaining differences |
@@ -142,6 +161,7 @@ Useful boundary corrections:
 | Stage lifecycle, updates and drawing | [STAGE_LIFECYCLE](STAGE_LIFECYCLE.md), [STAGE_UPDATE](STAGE_UPDATE.md), [STAGE_DRAWING](STAGE_DRAWING.md) |
 | Stage/ANM resources | [STAGE_RESOURCE](STAGE_RESOURCE.md), [ANIMATION_CHUNKS](ANIMATION_CHUNKS.md), [ANIMATION_TEXTURES](ANIMATION_TEXTURES.md), [pixel processing](ANIMATION_TRANSPARENT_PIXELS.md) |
 | Renderer quad construction/submission | [ANIMATION_QUAD](ANIMATION_QUAD.md), [ANIMATION_VM_DRAW](ANIMATION_VM_DRAW.md), [ANIMATION_PROJECTED_QUAD](ANIMATION_PROJECTED_QUAD.md), [ANIMATION_IMMEDIATE_DRAW](ANIMATION_IMMEDIATE_DRAW.md) |
+| Renderer lifecycle and pixel helpers | [ANIMATION_RENDERER_LIFECYCLE](ANIMATION_RENDERER_LIFECYCLE.md) |
 | Buffered drawing and randomized fan | [ANIMATION_FAN](ANIMATION_FAN.md) |
 | Renderer and device | [RENDER_CAMERA](RENDER_CAMERA.md), [DEVICE_INITIALIZATION](DEVICE_INITIALIZATION.md), [RENDER_STATE_RESET](RENDER_STATE_RESET.md), [RUNTIME_SURFACES](RUNTIME_SURFACES.md) |
 | ASCII lifecycle, glyph drawing and formatting | [ASCII_LIFECYCLE](ASCII_LIFECYCLE.md), [ASCII_DRAWING](ASCII_DRAWING.md) |

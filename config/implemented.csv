@@ -169,3 +169,11 @@ AnimationVectorLength
 InitializeFanAnimationVm
 UpdateFanAnimationVm
 DrawFanAnimationVm
+AnimationRendererConstructor
+AnimationRendererDestructor
+InitializeAnimationWorldBuffer
+DestroyRendererAnimationVm
+ResolveAnimationTextureFormat
+AccumulateAnimationArgbPixel
+AccumulateAnimationA1Pixel
+AccumulateAnimationA4Pixel

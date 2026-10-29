@@ -170,3 +170,11 @@ AnimationVectorLength,0x00452090,function
 InitializeFanAnimationVm,0x004520F0,function
 UpdateFanAnimationVm,0x00452420,function
 DrawFanAnimationVm,0x00452680,function
+AnimationRendererConstructor,0x004526F0,function
+AnimationRendererDestructor,0x00453130,function
+InitializeAnimationWorldBuffer,0x00453220,function
+DestroyRendererAnimationVm,0x004558E0,function
+ResolveAnimationTextureFormat,0x00453410,function
+AccumulateAnimationArgbPixel,0x00453440,function
+AccumulateAnimationA1Pixel,0x00453460,function
+AccumulateAnimationA4Pixel,0x00453490,function
