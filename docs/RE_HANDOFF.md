@@ -7,25 +7,22 @@ outrank historical notes. All dirty work belongs to this active goal.
 ## Checked-in state
 
 - Original Japanese TH11 v1.00a; config/target.toml pins identity.
-- 2,131 candidates;497 reviewed boundaries;382 source mappings.
-- 210 exact functions/24,062 bytes:8 normal COFF and202 linked PE.
-- Origins:90 authored,391 indeterminate,14 exclusions,1,636 pending.
+- 2,134 candidates;510 reviewed boundaries;388 source mappings.
+- 213 exact functions/24,310 bytes:8 normal COFF and205 linked PE.
+- Origins:90 authored,404 indeterminate,14 exclusions,1,626 pending.
 - Direct Ghidra/scripts; no Factory MCP/REA. VC9 RTM21022/SDK6.0A.
 - Commit/push authorized; prefix `gpt-6.1-sol: `.
 
-Latest checkpoint adds16 complete mappings/1,564 bytes: real file/renderer/frame
-callers, long homing399, gravity132, emitter112 and callbacks. Eight new complete
-primary owners close360 bytes/17 fields;16 new reviews remain indeterminate and10
-omitted entries are added. Reset432CC0 now owns2508 including both six-entry tables.
-Render/reset prove eight E4 physical emitter records at7570..7C8F;75CC is their
-coordinate prefix at+5C. Descriptor0/1 are signed period/phase. See
+Latest checkpoint adds6 full mappings/2997 bytes, including complete reset2508
+source and two real list publishers/factories. Three new complete primary owners
+close248 bytes/24 fields. Thirteen new boundary/origin reviews cover1694 bytes/
+427 instructions and three omitted factory entries; all origins stay indeterminate.
+Raw reset instructions correct branch3 focused base148 and branch4's seven pairs
+with bases28/28/28/78/C8/118/168. Root2444/1967 remains open; slot24 and both
+explicit-layer factories112 each are exact. See
+[SECONDARY_EMITTER_RESET](SECONDARY_EMITTER_RESET.md),
 [SECONDARY_PATTERN_CALLBACKS](SECONDARY_PATTERN_CALLBACKS.md),
-[SECONDARY_PATTERN](SECONDARY_PATTERN.md),
-[SECONDARY_PROJECTILES](SECONDARY_PROJECTILES.md),
-[SECONDARY_DAMAGE](SECONDARY_DAMAGE.md),
-[SECONDARY_PAIR_MATH](SECONDARY_PAIR_MATH.md),
-[SECONDARY_ACTOR_STATE](SECONDARY_ACTOR_STATE.md),
-[SECONDARY_ACTOR](SECONDARY_ACTOR.md), [SECONDARY_LIFETIME](SECONDARY_LIFETIME.md).
+[SECONDARY_PATTERN](SECONDARY_PATTERN.md), [SECONDARY_DAMAGE](SECONDARY_DAMAGE.md).
 
 ## Current actor source and evidence
 
@@ -134,7 +131,9 @@ coordinate prefix at+5C. Descriptor0/1 are signed period/phase. See
 
 | Owner | Full target | Source / normalized differences |
 | --- | ---: | --- |
-| Spawn433F90 | 853 | 849 /733; real caller context; full target retained |
+| Spawn433F90 | 853 | baseline849 /733; real Sound846 /733; real-only/independent RNG856 /690 |
+| Reset432CC0 / slot4355F0 | 2508 /24 | full2444 /1967; slot exact |
+| Publishers455760 /4557E0 | 118 /123 | full111 /33;116 /47; factories455BC0/455DF0 exact112 each |
 | Pattern file431C70 / frame4342F0 / update434380 / render431BC0 | 162 /142 /183 /130 | exact;140 /30;166 /138;129 /86 |
 | Long homing435080 / gravity4352A0 / emitter435330 | 399 /132 /112 | 397 /309;134 /100;109 /19 |
 | Projectile434440 / homing434E30 | 896 /498 | last908 /765;493 /401; before period-header change |
@@ -177,30 +176,36 @@ Audio aliases/factories/refill, VM11640, rendering and master374 remain open.
 
 ## Current proof and replay scope
 
-`.analysis/secondary-pattern-caller-final-proof.json` records8 new+10 affected old
-cold units across new SecondaryPatternDispatch/SecondaryProjectileCallbacks and
-old SecondaryDamageSupport/SecondaryProjectileMath/SecondaryPattern. All18 pass
-1,141 bytes/33 fields, with unique complete public primary-TU PDB ownership/current
-receipts. Source freeze is intact. Actual prior receipt source hashes selected
-only those three old families; no full cohort. All jobs are terminal. Recompute
-actual dependencies on the next source edit.
+`.analysis/secondary-emitter-final-proof.json` records3 new+10 affected old cold
+units:638 bytes/41 fields, all exact with unique complete public primary-TU PDB
+ownership/current receipts and frozen source. Existing receipt source hashes
+select only SecondaryPattern's2, SecondaryPatternDispatch's1 and
+SecondaryProjectileCallbacks'7; new families are SecondaryEmitterReset and
+SecondaryEmitterAnimation. No full cohort; all jobs are terminal. Recompute actual
+receipt dependencies after the next source edit.
 
-Private full reset/caller exports and21-owner independent PE records establish
-reset2508=2457 code+3 alignment+48 tables,15 internal padding bytes beyond sparse2442,
-696 instructions and12 actual table targets. Both switches own their DATA refs.
-43 alleged refs in4355E0..43562F are based renderer member displacements, and
-49353C's alleged435246 pointer is ASCII FRC. All44 are independently classified;
-Ghidra bytes being correct does not prove its reference interpretation. DB unchanged.
-Aim callback4337A0/12 now has its own full missing-entry review, source-open.
-Fresh19-owner audit agrees on all direct target/multiplicity and indirect counts;
-return counts remain separately recorded, without an exactness claim for open owners.
+Reset owns2508=2457 code+3 alignment+48 tables,15 internal padding bytes beyond
+sparse2442;696 instructions/12 table targets were independently reviewed. Full
+source now preserves all six paths, max-power-before-equality processing, actual
+partial initialization and callbacks. Native/source both have30 integer
+conversions,5 auxiliary factory calls and2 normalizations; main factory sites
+are4 versus1 because VC9 merges calls. Do not claim complete call-shape agreement.
+The two publishers retain full118/123 owners; their counter zero-check/add-versus-
+store and secondary register allocation remain open. Natural insertion helper
+and public registry-type variants do not close them; no padding/barriers/forced ABI.
 
-Next substantial work: compile spawn with the real SecondaryDamageSound support
-(the current caller context still uses its opaque declaration), independent RNG
-state and actual frame/fixed callers. Real-only caller859/690 before final spelling
-also stays open. Do not force its EAX/ESI/EDI inputs. Continue full controller2888
-and emitter reset2508 source, orbit255/aim495 and their genuine callback contexts.
-Native draw130 still owns alignment and cannot be cropped to129. Emitter112's
-one descriptor-pointer reload remains open; do not use volatile to force it.
-Bytes/decompiler/vendor/build artifacts remain private. Product/runtime/port closure
-is later; goal stays active.
+Direct Ghidra/independent PE records cover13 new complete factory/publisher
+owners including missing455E60/151,455F00/167,455FB0/105. All427 instructions/
+13 returns/flow/bookends checked; no tables/foreign interior entries. Distinguish
+primary prepend455760, secondary append4557E0 and secondary prepend455860.
+Positioned factories use direct Bind44ACD0/204; initializer456910/171 instead
+zeros position and uses Bind44ADA0/191. Originals remain unproved/indeterminate.
+
+Next substantial work: root's main-call merging and full controller2888; orbit255/
+aim495 with genuine callback contexts; actual positioned factory callers may
+resolve publisher allocation/counter gaps. Sound846/733 and real-only856/690
+experiments do not close Spawn853 and no speculative Sound variant was adopted.
+Do not force its EAX/ESI/EDI inputs. Native draw130 cannot be cropped to129;
+emitter112's descriptor reload stays open without volatile. Private target/
+decompiler/compiler artifacts stay private. Product/runtime/port closure is
+later; goal stays active.

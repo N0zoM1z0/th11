@@ -597,6 +597,35 @@ Useful boundary corrections:
   with frozen source; no full cohort. See
   [SECONDARY_PATTERN_CALLBACKS](SECONDARY_PATTERN_CALLBACKS.md).
 
+## Complete emitter reset and list factory review (2026-10-29)
+
+- Full reset432CC0/2508 now has maintained C++; root2444/1967 remains non-exact.
+  Raw instructions correct branch3 focused base148, branch4 seven pairs at64..9B
+  with bases28/28/28/78/C8/118/168, and full32-bit dynamic scripts. Branch2 writes
+  float polar pairs but uses previous integer offsets. Maximum-power auxiliary
+  processing precedes slot equality. No clamp8/blanket callback or ID clear.
+- Native/source have30 integer conversions,5 auxiliary factory calls and2 angle
+  normalizations. Main factory call sites4 versus1 expose a real VC9 merging gap;
+  source presence does not prove the open owner's call shape or runtime behavior.
+  Slot4355F0/24 closes naturally with the real reset definition present.
+- Primary prepend455760/118, secondary append4557E0/123 and secondary prepend
+  455860/118 are distinct. Shared ID counter increments and skips0. A natural
+  pair of head tests restores EBX in factory455BC0/112; it and455DF0/112 close.
+  Publishers stay111/33 and116/47 with counter/register differences. Generic
+  insertion-helper and externally named registry variants do not close them.
+- Thirteen new complete reviews cover1694 bytes/427 instructions; previously
+  omitted455E60/151,455F00/167 and455FB0/105 have independent RET/CC boundaries.
+  Positioned factories use direct Bind44ACD0/204, not zero-position initializer
+  456910/171 with Bind44ADA0/191. Offset factories preserve double x+32+192/y+16.
+  All13 origins stay indeterminate; gameplay role/common scaffolding is no
+  original class/header/library-versus-game authorship evidence.
+- Real Sound source with actual Spawn853 callers gives846/733; real-only with
+  independent RNG856/690 also fails. No speculative Sound source is adopted.
+- Six new mappings cover2997 bytes. Three new exact owners close248 bytes/24
+  independently reviewed fields. Ten old units selected by actual Pattern.hpp
+  receipt dependencies also pass:13 selected cold units/638 bytes/41 fields,
+  frozen source, no full cohort. See [SECONDARY_EMITTER_RESET](SECONDARY_EMITTER_RESET.md).
+
 ## Topic index
 
 | Work | Evidence and remaining differences |
@@ -617,6 +646,7 @@ Useful boundary corrections:
 | Complete projectile update/homing, iterator/literal math and atan2 | [SECONDARY_PROJECTILES](SECONDARY_PROJECTILES.md) |
 | Complete spawn, corrected record layout and omitted integer/emitter leaves | [SECONDARY_PATTERN](SECONDARY_PATTERN.md) |
 | Real pattern file/callers, complete callbacks and containing emitter array | [SECONDARY_PATTERN_CALLBACKS](SECONDARY_PATTERN_CALLBACKS.md) |
+| Complete emitter reset, list directions and factory ownership | [SECONDARY_EMITTER_RESET](SECONDARY_EMITTER_RESET.md) |
 | Streaming factories and lifetime ownership | [MUSIC_FACTORIES](MUSIC_FACTORIES.md) |
 | Device setup and buffer recreation | [AUDIO_DEVICE](AUDIO_DEVICE.md) |
 | Streaming buffers, decoder state and fades | [MUSIC_STREAM](MUSIC_STREAM.md) |

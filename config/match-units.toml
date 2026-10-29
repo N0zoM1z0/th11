@@ -3975,3 +3975,72 @@ size = 20
 linkages = [
   { offset = 14, type = "REL32", symbol = "?OffsetSecondaryTimer@@YGHPAUStageTimerView@@M@Z", target = 0x459210, addend = 0x0 },
 ]
+
+[units.create-secondary-emitter-animation-vm-id]
+artifact_kind = "linked-pe"
+source = "src/SecondaryEmitterAnimation.cpp"
+inputs = ["src/SecondaryEmitterAnimation.hpp", "src/AnimationVmFactory.hpp", "src/AnimationVmId.hpp"]
+support_sources = ["probes/secondary-emitter-reset-context.cpp", "src/SecondaryEmitterReset.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryMotionMath.cpp", "src/StageMesh.cpp", "src/AngleMath.cpp", "src/AnimationImmediateDraw.cpp", "src/AnimationVmFactory.cpp"]
+output_dir = "build/match-linked/SecondaryEmitterAnimation"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryEmitterResetProbe@20"
+functions = ["CreateSecondaryEmitterAnimationVmId"]
+symbol = "?CreateSecondaryEmitterAnimationVmId@@YG?AUAnimationVmId@@PAUAnimationFileView@@HH@Z"
+target_address = 0x455bc0
+size = 112
+linkages = [
+  { offset = 2, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x590 },
+  { offset = 13, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8e8 },
+  { offset = 19, type = "DIR32", symbol = "__imp__EnterCriticalSection@4", target = 0x48b084, addend = 0x0 },
+  { offset = 25, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x939 },
+  { offset = 31, type = "REL32", symbol = "?AllocateSceneAnimationVm@@YGPAUAnimationVmView@@XZ", target = 0x4569c0, addend = 0x0 },
+  { offset = 66, type = "REL32", symbol = "?InitializeSceneAnimationVm@@YGXPAUAnimationVmView@@PAUAnimationFileView@@H@Z", target = 0x456910, addend = 0x0 },
+  { offset = 73, type = "REL32", symbol = "?PublishSecondaryEmitterAnimationVm@@YG?AUAnimationVmId@@PAUAnimationVmView@@@Z", target = 0x455760, addend = 0x0 },
+  { offset = 79, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x590 },
+  { offset = 91, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8e8 },
+  { offset = 97, type = "DIR32", symbol = "__imp__LeaveCriticalSection@4", target = 0x48b088, addend = 0x0 },
+  { offset = 103, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x939 },
+]
+
+[units.create-secondary-draw-animation-vm-id]
+artifact_kind = "linked-pe"
+source = "src/SecondaryEmitterAnimation.cpp"
+inputs = ["src/SecondaryEmitterAnimation.hpp", "src/AnimationVmFactory.hpp", "src/AnimationVmId.hpp"]
+support_sources = ["probes/secondary-emitter-reset-context.cpp", "src/SecondaryEmitterReset.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryMotionMath.cpp", "src/StageMesh.cpp", "src/AngleMath.cpp", "src/AnimationImmediateDraw.cpp", "src/AnimationVmFactory.cpp"]
+output_dir = "build/match-linked/SecondaryEmitterAnimation"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryEmitterResetProbe@20"
+functions = ["CreateSecondaryDrawAnimationVmId"]
+symbol = "?CreateSecondaryDrawAnimationVmId@@YG?AUAnimationVmId@@PAUAnimationFileView@@HH@Z"
+target_address = 0x455df0
+size = 112
+linkages = [
+  { offset = 2, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x590 },
+  { offset = 13, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8e8 },
+  { offset = 19, type = "DIR32", symbol = "__imp__EnterCriticalSection@4", target = 0x48b084, addend = 0x0 },
+  { offset = 25, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x939 },
+  { offset = 31, type = "REL32", symbol = "?AllocateSceneAnimationVm@@YGPAUAnimationVmView@@XZ", target = 0x4569c0, addend = 0x0 },
+  { offset = 66, type = "REL32", symbol = "?InitializeSceneAnimationVm@@YGXPAUAnimationVmView@@PAUAnimationFileView@@H@Z", target = 0x456910, addend = 0x0 },
+  { offset = 73, type = "REL32", symbol = "?PublishSecondaryDrawAnimationVm@@YG?AUAnimationVmId@@PAUAnimationVmView@@@Z", target = 0x4557e0, addend = 0x0 },
+  { offset = 79, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x590 },
+  { offset = 91, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8e8 },
+  { offset = 97, type = "DIR32", symbol = "__imp__LeaveCriticalSection@4", target = 0x48b088, addend = 0x0 },
+  { offset = 103, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x939 },
+]
+
+[units.reset-secondary-pattern-slot]
+artifact_kind = "linked-pe"
+source = "src/SecondaryEmitterReset.cpp"
+inputs = ["src/SecondaryPattern.hpp", "src/SecondaryDamage.hpp", "src/SecondaryEmitterAnimation.hpp"]
+support_sources = ["probes/secondary-emitter-reset-context.cpp", "src/SecondaryEmitterAnimation.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryMotionMath.cpp", "src/StageMesh.cpp", "src/AngleMath.cpp", "src/AnimationImmediateDraw.cpp", "src/AnimationVmFactory.cpp"]
+output_dir = "build/match-linked/SecondaryEmitterReset"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryEmitterResetProbe@20"
+functions = ["ResetSecondaryPatternSlot"]
+symbol = "?ResetSecondaryPatternSlot@@YAXXZ"
+target_address = 0x4355f0
+size = 24
+linkages = [
+  { offset = 3, type = "DIR32", symbol = "?g_SecondaryActorReferences@@3PAUSecondaryActorReferencesView@@A", target = 0x4a8eb4, addend = 0x0 },
+  { offset = 18, type = "REL32", symbol = "?ResetSecondaryPlayerEmitters@@YGXPAUSecondaryDamageReferencesView@@@Z", target = 0x432cc0, addend = 0x0 },
+]
