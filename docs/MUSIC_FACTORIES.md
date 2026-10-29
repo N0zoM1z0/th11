@@ -127,8 +127,9 @@ The adjacent584-byte secondary-script frame helper is fully reviewed, preserving
 one internal alignment byte omitted by sparse583. It handles f/g operand type
 bytes, argument masks, integer/float conversion, bounded frame pushes, saved
 frame state and subroutine lookup; failure traces and clears current context.
-Two callers are45B860 and45D7A0. The6759-byte45B860 interpreter has not yet received
-a full owner/table review and remains a concrete large-function follow-up.
+Two callers are45B860 and45D7A0. The later [SECONDARY_SCRIPT](SECONDARY_SCRIPT.md)
+checkpoint supplies full source and corrects the earlier code-only6759 interval
+to7093 including its two tables; exact codegen remains open.
 Generic VM/frame/helper roles do not establish original game/header authorship.
 
 Removing the diagnostic entry's extra direct Read/Refill calls changed no larger

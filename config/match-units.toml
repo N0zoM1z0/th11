@@ -2871,3 +2871,129 @@ linkages = [
   { offset = 2, type = "DIR32", symbol = "??_7MusicControllerView@@6B@", target = 0x497cbc, addend = 0x0 },
   { offset = 7, type = "REL32", symbol = "??1MusicSoundBaseView@@UAE@XZ", target = 0x45a660, addend = 0x0 },
 ]
+
+[units.secondary-stack-relative-address]
+artifact_kind = "linked-pe"
+source = "src/SecondaryScript.cpp"
+inputs = ["src/SecondaryScript.hpp"]
+support_sources = ["probes/secondary-script-context.cpp"]
+output_dir = "build/match-linked/SecondaryScript"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryScriptProbe@32"
+functions = ["SecondaryStackRelativeAddress"]
+symbol = "?RelativeAddress@SecondaryStack@@QAEPAXH@Z"
+target_address = 0x45b5c0
+size = 15
+linkages = []
+
+[units.secondary-stack-absolute-address]
+artifact_kind = "linked-pe"
+source = "src/SecondaryScript.cpp"
+inputs = ["src/SecondaryScript.hpp"]
+support_sources = ["probes/secondary-script-context.cpp"]
+output_dir = "build/match-linked/SecondaryScript"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryScriptProbe@32"
+functions = ["SecondaryStackAbsoluteAddress"]
+symbol = "?SecondaryStackAbsoluteAddress@@YGPAXPAUSecondaryStack@@H@Z"
+target_address = 0x45b5d0
+size = 3
+linkages = []
+
+[units.secondary-stack-top]
+artifact_kind = "linked-pe"
+source = "src/SecondaryScript.cpp"
+inputs = ["src/SecondaryScript.hpp"]
+support_sources = ["probes/secondary-script-context.cpp"]
+output_dir = "build/match-linked/SecondaryScript"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryScriptProbe@32"
+functions = ["SecondaryStackTop"]
+symbol = "?SecondaryStackTop@@YGHPAUSecondaryStack@@@Z"
+target_address = 0x45b5e0
+size = 7
+linkages = []
+
+[units.set-secondary-stack-top]
+artifact_kind = "linked-pe"
+source = "src/SecondaryScript.cpp"
+inputs = ["src/SecondaryScript.hpp"]
+support_sources = ["probes/secondary-script-context.cpp"]
+output_dir = "build/match-linked/SecondaryScript"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryScriptProbe@32"
+functions = ["SetSecondaryStackTop"]
+symbol = "?SetTop@SecondaryStack@@QAEXH@Z"
+target_address = 0x45b5f0
+size = 7
+linkages = []
+
+[units.secondary-script-table]
+artifact_kind = "linked-pe"
+source = "src/SecondaryScript.cpp"
+inputs = ["src/SecondaryScript.hpp"]
+support_sources = ["probes/secondary-script-context.cpp"]
+output_dir = "build/match-linked/SecondaryScript"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryScriptProbe@32"
+functions = ["SecondaryScriptTable"]
+symbol = "?SecondaryScriptTable@@YGPAUSecondaryProgramView@@PAUSecondaryManager@@@Z"
+target_address = 0x45b600
+size = 7
+linkages = []
+
+[units.begin-secondary-stack-frame]
+artifact_kind = "linked-pe"
+source = "src/SecondaryScript.cpp"
+inputs = ["src/SecondaryScript.hpp"]
+support_sources = ["probes/secondary-script-context.cpp"]
+output_dir = "build/match-linked/SecondaryScript"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryScriptProbe@32"
+functions = ["BeginSecondaryStackFrame"]
+symbol = "?BeginSecondaryStackFrame@@YGHPAUSecondaryStack@@H@Z"
+target_address = 0x45dce0
+size = 64
+linkages = []
+
+[units.find-secondary-subroutine]
+artifact_kind = "linked-pe"
+source = "src/SecondaryScript.cpp"
+inputs = ["src/SecondaryScript.hpp"]
+support_sources = ["probes/secondary-script-context.cpp"]
+output_dir = "build/match-linked/SecondaryScript"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryScriptProbe@32"
+functions = ["FindSecondarySubroutine"]
+symbol = "?FindSecondarySubroutine@@YGPAUSecondaryInstruction@@PAUSecondaryProgramView@@PBD@Z"
+target_address = 0x45db10
+size = 126
+linkages = []
+
+[units.find-secondary-thread]
+artifact_kind = "linked-pe"
+source = "src/SecondaryScript.cpp"
+inputs = ["src/SecondaryScript.hpp"]
+support_sources = ["probes/secondary-script-context.cpp"]
+output_dir = "build/match-linked/SecondaryScript"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryScriptProbe@32"
+functions = ["FindSecondaryThread"]
+symbol = "?FindSecondaryThread@@YGPAUSecondaryThread@@PAUSecondaryManager@@H@Z"
+target_address = 0x45d840
+size = 36
+linkages = []
+
+[units.stop-secondary-threads]
+artifact_kind = "linked-pe"
+source = "src/SecondaryScript.cpp"
+inputs = ["src/SecondaryScript.hpp"]
+support_sources = ["probes/secondary-script-context.cpp"]
+output_dir = "build/match-linked/SecondaryScript"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryScriptProbe@32"
+functions = ["StopSecondaryThreads"]
+symbol = "?StopSecondaryThreads@@YGXPAUSecondaryManager@@@Z"
+target_address = 0x45d870
+size = 31
+linkages = []

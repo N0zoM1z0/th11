@@ -255,11 +255,36 @@ Useful boundary corrections:
  after real factory/lifetime callers are present; that hypothesis is rejected.
  Final factories675/590 and595/556, base ctor116/83, derived ctor48/23 remain
  open, including EH ownership. Other audio codegen gaps persist.
-- Current2,072 candidates,305 reviewed boundaries,245 mappings and139 exact
+- Factory checkpoint:2,072 candidates,305 reviewed boundaries,245 mappings and139 exact
  functions/21,167 bytes. Eight new reviews are indeterminate; five missing stack/
  frame accessors are recovered. Adjacent584 full owner includes one alignment
  byte omitted by sparse583. Its6759-byte interpreter caller45B860 still needs
  complete owner/table review. Exactly2 new plus29 affected old units pass cold.
+
+- Secondary interpreter45B860 was6,759 code-only bytes; full owner is7,093:
+ 6,759 code+1 native NOP+244 jump table+89 selectors. All61 Ghidra DATA edges
+ agree independently with raw PE entries and become internal to corrected owner.
+ Complete1,783-instruction review replaces any250-instruction prefix assumption.
+- New secondary-script source covers all dispatch arms, typed stack/references,
+ frame transfer, thread scheduler and lookup. VM top/frame are1008/100C;
+ stack-local1000 is top,1004 frame. Old getter/setter frame-offset names were
+ corrected. A missing83-byte typed pop writes output before reading/converting
+ its tag; underflow leaves output unchanged. Reference and argument underflow
+ sentinels differ and are not collapsed into a zero fallback.
+- Opcode85 performs integer NEG on a float bit pattern, not floating negation.
+ Frame lookup failure leaves new manager.current published and clears caller
+ instruction. Squared-length coordinates are rounded before output lookup,
+ arithmetic occurs after its callback. Trace int-to-double promotion avoids
+ added float rounding. These follow raw code, not decompiler float casts.
+- Per-operation instantiation and distinct branch/thread/unary arms reproduce
+61 jump entries/89 selectors, but candidate6,845/5,930 is still non-exact.
+ Candidate stack aligns64 with an EBP frame; native uses ESP/120. /Zp4 changed
+ none and was rejected. Genuine Stack members close relative15 and setter7.
+ Nine unique complete public owners pass296 raw-equal bytes with zero fields.
+- Current2,073 candidates,327 reviewed boundaries,267 mappings and148 exact
+ functions/21,463 bytes. Twenty-two new origin reviews stay indeterminate; six
+ earlier owners rechecked. Only nine new secondary-script units cold-replayed;
+ existing exact sources/contexts/dependencies and infrastructure are unchanged.
 
 ## Topic index
 
@@ -270,6 +295,7 @@ Useful boundary corrections:
 | Stage lifecycle, updates and drawing | [STAGE_LIFECYCLE](STAGE_LIFECYCLE.md), [STAGE_UPDATE](STAGE_UPDATE.md), [STAGE_DRAWING](STAGE_DRAWING.md) |
 | Stage/ANM resources | [STAGE_RESOURCE](STAGE_RESOURCE.md), [ANIMATION_CHUNKS](ANIMATION_CHUNKS.md), [ANIMATION_TEXTURES](ANIMATION_TEXTURES.md), [pixel processing](ANIMATION_TRANSPARENT_PIXELS.md) |
 | Renderer quad construction/submission | [ANIMATION_QUAD](ANIMATION_QUAD.md), [ANIMATION_VM_DRAW](ANIMATION_VM_DRAW.md), [ANIMATION_PROJECTED_QUAD](ANIMATION_PROJECTED_QUAD.md), [ANIMATION_IMMEDIATE_DRAW](ANIMATION_IMMEDIATE_DRAW.md) |
+| Secondary script interpreter, typed stack and threads | [SECONDARY_SCRIPT](SECONDARY_SCRIPT.md) |
 | Streaming factories and lifetime ownership | [MUSIC_FACTORIES](MUSIC_FACTORIES.md) |
 | Device setup and buffer recreation | [AUDIO_DEVICE](AUDIO_DEVICE.md) |
 | Streaming buffers, decoder state and fades | [MUSIC_STREAM](MUSIC_STREAM.md) |
