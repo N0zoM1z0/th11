@@ -1705,3 +1705,31 @@ target_address = 0x401e40
 size = 81
 linkages = [
 ]
+
+[units.scale-animation-color-channel]
+artifact_kind = "linked-pe"
+source = "src/AnimationQuad.cpp"
+inputs = ["src/AnimationQuad.hpp"]
+support_sources = ["probes/animation-quad-context.cpp", "src/RenderBatch.cpp"]
+output_dir = "build/match-linked/AnimationQuad"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationQuadProbe@40"
+functions = ["ScaleAnimationColorChannel"]
+symbol = "?ScaleAnimationColorChannel@@YGIEE@Z"
+target_address = 0x44f490
+size = 25
+linkages = []
+
+[units.append-render-quad]
+artifact_kind = "linked-pe"
+source = "src/AnimationQuad.cpp"
+inputs = ["src/AnimationQuad.hpp"]
+support_sources = ["probes/animation-quad-context.cpp", "src/RenderBatch.cpp"]
+output_dir = "build/match-linked/AnimationQuad"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationQuadProbe@40"
+functions = ["AppendRenderQuad"]
+symbol = "?AppendRenderQuad@@YGHPAURenderBatchView@@PBURenderVertex@@@Z"
+target_address = 0x44fda0
+size = 142
+linkages = []

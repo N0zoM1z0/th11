@@ -136,3 +136,8 @@ AsciiManagerPrintSmall,0x00401600,function
 DrawAsciiManager,0x00401670,function
 DrawAsciiOverlay,0x00401CE0,function
 SetAnimationSpriteUv,0x00401E40,function
+ScaleAnimationColorChannel,0x0044F490,function
+ApplyAnimationVmDrawState,0x0044F710,function
+AppendRenderQuad,0x0044FDA0,function
+BuildAnimationVmQuad,0x0044FE30,function
+FloorAnimationCoordinate,0x004520C0,function

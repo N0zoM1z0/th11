@@ -36,6 +36,8 @@ Useful boundary corrections:
 - Transparent-pixel processing owns1,427 bytes including switch tables.
 - DrawAsciiManager401670 owns1,636 bytes through401CD3: the old1,618-byte
   span omitted two alignment bytes and the four-entry switch table.
+- ApplyAnimationVmDrawState44F710 owns368 bytes through44F87F, including
+  two alignment bytes and seven switch entries after its338-byte code body.
 
 ## Physical and ABI facts
 
@@ -85,6 +87,15 @@ Useful boundary corrections:
 - Independent renderer/camera inputs restore the full101-byte overlay owner;
   global-only support had specialized parameters away and produced87 bytes.
 
+- BuildAnimationVmQuad: source and target both632 bytes; all53 remaining
+  diagnostic differences are ESP displacements/frame allocation (12 versus16).
+  No stack mask gives exact credit. Center anchors use floor; submission
+  alignment separately uses FRNDINT with the current x87 RC, then subtracts0.5.
+- Blend selector6 uses INVSRCCOLOR4, not SRCCOLOR3. Selector7 updates cache
+  without blend API calls. The state application counter increments every call.
+- Tint channels use byte inputs and an unsigned promoted product before SHR7.
+  Leaving byte multiplication as signed promotion emits SAR, one opcode off.
+
 ## Topic index
 
 | Work | Evidence and remaining differences |
@@ -93,6 +104,7 @@ Useful boundary corrections:
 | Stage interpreter and interpolation | [STAGE_SCRIPT](STAGE_SCRIPT.md), [STAGE_TWEEN](STAGE_TWEEN.md), [STAGE_EASING](STAGE_EASING.md) |
 | Stage lifecycle, updates and drawing | [STAGE_LIFECYCLE](STAGE_LIFECYCLE.md), [STAGE_UPDATE](STAGE_UPDATE.md), [STAGE_DRAWING](STAGE_DRAWING.md) |
 | Stage/ANM resources | [STAGE_RESOURCE](STAGE_RESOURCE.md), [ANIMATION_CHUNKS](ANIMATION_CHUNKS.md), [ANIMATION_TEXTURES](ANIMATION_TEXTURES.md), [pixel processing](ANIMATION_TRANSPARENT_PIXELS.md) |
+| Renderer quad construction/submission | [ANIMATION_QUAD](ANIMATION_QUAD.md) |
 | Renderer and device | [RENDER_CAMERA](RENDER_CAMERA.md), [DEVICE_INITIALIZATION](DEVICE_INITIALIZATION.md), [RENDER_STATE_RESET](RENDER_STATE_RESET.md), [RUNTIME_SURFACES](RUNTIME_SURFACES.md) |
 | ASCII lifecycle, glyph drawing and formatting | [ASCII_LIFECYCLE](ASCII_LIFECYCLE.md), [ASCII_DRAWING](ASCII_DRAWING.md) |
 | Text | [TEXT_RESOURCES](TEXT_RESOURCES.md), [TEXT_DRAWING_COMPOSITE](TEXT_DRAWING_COMPOSITE.md), [OUTLINED_TEXT](OUTLINED_TEXT.md), [FORMATTED_TEXTURE_TEXT](FORMATTED_TEXTURE_TEXT.md) |

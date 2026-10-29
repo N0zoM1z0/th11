@@ -141,8 +141,9 @@ An explicit cached sprite pointer and a SetSprite member form failed to close
 the existing389-byte binder; it remains388/289. An out-of-line definition
 marked inline was not emitted by VC9 and failed linking, so it was rejected.
 Independent camera/renderer parameters, unlike global-only support, recover
-the native101-byte overlay owner. Native renderer helpers44FE30 (632 bytes)
-and44F880 (1,112 bytes) are concrete next larger reconstruction targets.
+the native101-byte overlay owner. The632-byte coordinate helper now has complete source and a53-byte stack-only
+codegen gap; see [animation quads](ANIMATION_QUAD.md). The1,112-byte44F880
+submission body is still open, including its current-mode FRNDINT contract.
 
 Proof logs: `.analysis/ascii-drawing-seven-cold.log` and
 `ascii-drawing-final-four-cold.log`. Complete current main-function diagnostics:

@@ -135,3 +135,8 @@ AsciiManagerPrintSmall
 DrawAsciiManager
 DrawAsciiOverlay
 SetAnimationSpriteUv
+ScaleAnimationColorChannel
+ApplyAnimationVmDrawState
+AppendRenderQuad
+BuildAnimationVmQuad
+FloorAnimationCoordinate
