@@ -29,8 +29,11 @@ __forceinline int PopValue(SecondaryStack *stack, char requested, void *output)
     {
         stack->top = Add(stack->top, -4);
         char type = static_cast<char>(stack->data[stack->top]);
-        if (type == 'f' && requested == 'i') value->integer = static_cast<int>(value->real);
-        else if (type == 'i' && requested == 'f') value->real = static_cast<float>(value->integer);
+        if (type != 'f')
+        {
+            if (type == 'i' && requested == 'f') value->real = static_cast<float>(value->integer);
+        }
+        else if (requested == 'i') value->integer = static_cast<int>(value->real);
     }
     return 0;
 }

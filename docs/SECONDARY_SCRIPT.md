@@ -5,16 +5,18 @@ interpreter7,093 and frame-transfer584. Nine new unique public primary-TU owners
 add296 raw-equal exact bytes. Twenty-two further boundary/origin reviews plus
 six earlier owners rechecked cover28 complete target spans. The omitted83-byte
 typed pop entry is recovered; all reviewed origins remain indeterminate.
+Subsequent program/selector work and current affected cold proof are recorded
+in [SECONDARY_PROGRAM](SECONDARY_PROGRAM.md).
 
 | Owner | Address | Full bytes | Current source / diagnostic differences |
 | --- | --- | ---: | --- |
-| RunSecondaryScript | 45B860 | 7,093 | 6,845 /5,930; not exact |
+| RunSecondaryScript | 45B860 | 7,093 | 6,989 /5,958; not exact |
 | EnterSecondaryScriptFrame | 45B610 | 584 | 572 /546 |
 | UpdateSecondaryScripts | 45D420 | 142 | 155 /142 |
 | ReadSecondaryIntArgument | 45D4B0 | 146 | 124 /125 |
-| ReadSecondaryFloatArgument | 45D550 | 175 | 179 /162 |
+| ReadSecondaryFloatArgument | 45D550 | 175 | 184 /168 |
 | ReadSecondaryIntReference | 45D600 | 100 | 94 /85 |
-| ReadSecondaryFloatReference | 45D670 | 145 | 142 /83 |
+| ReadSecondaryFloatReference | 45D670 | 145 | 147 /85 |
 | SecondaryIntDestination | 45D710 | 48 | 47 /37 |
 | SecondaryFloatDestination | 45D740 | 89 | 105 /97 |
 | StartSecondaryThread | 45D7A0 | 147 | 154 /61 |
@@ -22,7 +24,7 @@ typed pop entry is recovered; all reviewed origins remain indeterminate.
 | StopSecondaryThreads | 45D870 | 31 | Exact; no fields |
 | FindSecondarySubroutine | 45DB10 | 126 | Exact; no fields |
 | PushSecondaryValue | 45DC30 | 71 | 70 /15 |
-| PopSecondaryValue | 45DC80 | 83 | 83 /27; newly recovered |
+| PopSecondaryValue | 45DC80 | 83 | 83 /2; ADD-negative versus SUB |
 | BeginSecondaryStackFrame | 45DCE0 | 64 | Exact; no fields |
 | EndSecondaryStackFrame | 45DD20 | 41 | 41 /2 |
 | RelativeAddress | 45B5C0 | 15 | Exact; no fields |
@@ -48,7 +50,7 @@ review output is supplemented by a full2,200-limit export ending at the actual
 RET4; no bounded prefix or cropped extent is accepted as a full review.
 
 The source contains normal switches/templates and no table byte payload. Its
-final candidate also owns61 jump cells and89 selectors, but6,845 bytes and5,930
+current candidate also owns61 jump cells and89 selectors, but6,989 bytes and5,958
 masked diagnostic differences remain. Matching table counts is not exactness.
 
 ## Physical views and call contracts
@@ -81,7 +83,9 @@ Native capacity checks and0/-1 statuses are preserved. Missing pop83 writes its
 output before decreasing top for the tag, then performs only observed i/f
 conversion. It returns-1 without writing output on underflow. Unknown tags keep
 their bits. This ordering matters when the output aliases stack state and is
-retained in the shared inline implementation and public owner.
+retained in the shared inline implementation and public owner. Natural
+non-float-first conversion now reduces83/27 to83/2; a genuine Stack-member probe
+does not change the remaining encoding gap. No exact credit is granted.
 
 Reference values>=0 address frame-relative bytes. Integer-1 and float-1 request
 a typed pop; other negatives call real manager slots. Raw integer reference
@@ -140,18 +144,22 @@ ordering, returning body+16 or null.
 A grouped-operation baseline emitted3,382 interpreter bytes. Per-operation
 instantiation brought a first model to7,125. Recovering the real pop implementation
 corrected output/tag alias order and changed code generation; separating the
-remaining branch/thread/unary groups restored all61 dispatch entries. Final
-6,845/5,930 remains open, including a64-byte-aligned EBP frame versus native
-ESP frame120. A controlled `/Zp4` probe changed none of the diagnostics and was
+remaining branch/thread/unary groups restored all61 dispatch entries. Current
+branch-order candidate6,989/5,958 remains open, including a64-byte-aligned EBP
+frame versus native ESP frame120. A controlled `/Zp4` probe changed none of the diagnostics and was
 rejected; canonical `/O2 /Ob1 /GL` remains. No alignment/register/byte injection
-was introduced. Real Stack members for relative address and SetTop closed their
-five/one differences without assigning a fake calling convention.
+was introduced. A later private double-to-float-temporary probe also retains
+alignment64, produces6873/5934 against the preceding source and risks a changed
+rounding point; it is rejected. Real Stack members for relative address and
+SetTop closed their five/one differences without assigning a fake calling convention.
 
 New reviews cover16 newly reviewed source owners and six still-source-open
 neighbors: program installation513, manager creation77, polar vector30 and three
 math wrappers31/34/31. Six previously reviewed stack/frame owners were rechecked.
 Program installation validates SCPT/version1 and merges sorted named subroutines;
-its constructor/callback and full source remain open. The new83-byte pop is
+its full513-byte source and real virtual contract are now in
+[SECONDARY_PROGRAM](SECONDARY_PROGRAM.md); its constructor and derived callback
+remain open. The new83-byte pop is
 bounded by RET and CC neighbors with no interior entry. Custom script roles,
 format magic and generic math/stack wrappers do not establish original game,
 header or library authorship. All28 origins remain indeterminate.
@@ -160,9 +168,11 @@ Canonical new family `build/match-linked/SecondaryScript` accepts exactly nine
 complete unique public primary-TU contributions /296 bytes. Every body has zero
 address fields; exhaustive decoding confirms an empty field list, and every
 actual byte agrees. Current source/header/tool/producer/PE/MAP/PDB receipts and
-full ownership all pass `.analysis/secondary-script-nine-cold.log`. No previously
-exact source, canonical context or dependency changed, so no old family was
-replayed. No full cohort, broad behavior harness or infrastructure tests ran;
+full ownership initially passed `.analysis/secondary-script-nine-cold.log`.
+After the current header/inline changes all nine pass again in
+`.analysis/secondary-program-affected-cold.log`, together with three new program
+units. No other family was affected or replayed. No full cohort, broad behavior
+harness or infrastructure tests ran;
 comparison/build infrastructure is unchanged. Whole-game runtime and port stages
 remain open.
 

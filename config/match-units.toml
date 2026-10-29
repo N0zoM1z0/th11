@@ -2997,3 +2997,49 @@ symbol = "?StopSecondaryThreads@@YGXPAUSecondaryManager@@@Z"
 target_address = 0x45d870
 size = 31
 linkages = []
+
+[units.initialize-secondary-context]
+artifact_kind = "linked-pe"
+source = "src/SecondaryProgram.cpp"
+inputs = ["src/SecondaryScript.hpp"]
+support_sources = ["probes/secondary-program-context.cpp", "src/SecondaryScript.cpp"]
+output_dir = "build/match-linked/SecondaryProgram"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryProgramProbe@16"
+functions = ["InitializeSecondaryContext"]
+symbol = "?Initialize@SecondaryManager@@QAEHPAUSecondaryProgramView@@PBD@Z"
+target_address = 0x45dbe0
+size = 28
+linkages = [
+  { offset = 8, type = "REL32", symbol = "?FindSecondarySubroutine@@YGPAUSecondaryInstruction@@PAUSecondaryProgramView@@PBD@Z", target = 0x45db10, addend = 0x0 },
+]
+
+[units.select-secondary-script]
+artifact_kind = "linked-pe"
+source = "src/SecondaryProgram.cpp"
+inputs = ["src/SecondaryScript.hpp"]
+support_sources = ["probes/secondary-program-context.cpp", "src/SecondaryScript.cpp"]
+output_dir = "build/match-linked/SecondaryProgram"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryProgramProbe@16"
+functions = ["SelectSecondaryScript"]
+symbol = "?Select@SecondaryManager@@QAEHPAUSecondaryProgramView@@PBD@Z"
+target_address = 0x45dc00
+size = 36
+linkages = [
+  { offset = 6, type = "REL32", symbol = "?FindSecondarySubroutine@@YGPAUSecondaryInstruction@@PAUSecondaryProgramView@@PBD@Z", target = 0x45db10, addend = 0x0 },
+]
+
+[units.secondary-program-extension-default]
+artifact_kind = "linked-pe"
+source = "src/SecondaryProgram.cpp"
+inputs = ["src/SecondaryScript.hpp"]
+support_sources = ["probes/secondary-program-context.cpp", "src/SecondaryScript.cpp"]
+output_dir = "build/match-linked/SecondaryProgram"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryProgramProbe@16"
+functions = ["SecondaryProgramExtensionDefault"]
+symbol = "?ProcessExtension@SecondaryProgramView@@UAEHPAX@Z"
+target_address = 0x40ffa0
+size = 5
+linkages = []

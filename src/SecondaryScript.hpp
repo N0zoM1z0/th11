@@ -39,7 +39,8 @@ struct SecondaryThread
 struct SecondarySubroutine { const char *name; unsigned char *body; };
 struct SecondaryProgramView
 {
-    void *vtable;
+    virtual int Install(void *data);
+    virtual int ProcessExtension(void *data);
     int fileCount, subroutineCount;
     void *files[32];
     SecondarySubroutine *subroutines;
@@ -51,6 +52,9 @@ struct SecondaryManager
     virtual int *GlobalIntPointer(int reference) = 0;
     virtual float ReadGlobalFloat(int reference) = 0;
     virtual float *GlobalFloatPointer(int reference) = 0;
+    int Initialize(SecondaryProgramView *source, const char *name);
+    int Select(SecondaryProgramView *source, const char *name);
+    int Restart(const char *name);
     SecondaryVm *current;
     SecondaryVm main;
     SecondaryProgramView *program;

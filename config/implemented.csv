@@ -265,3 +265,8 @@ StartSecondaryThread
 FindSecondaryThread
 StopSecondaryThreads
 PopSecondaryValue
+SecondaryProgramExtensionDefault
+InstallSecondaryProgram
+InitializeSecondaryContext
+SelectSecondaryScript
+RestartSecondaryScript

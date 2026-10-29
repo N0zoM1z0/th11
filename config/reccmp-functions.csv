@@ -266,3 +266,8 @@ StartSecondaryThread,0x0045D7A0,function
 FindSecondaryThread,0x0045D840,function
 StopSecondaryThreads,0x0045D870,function
 PopSecondaryValue,0x0045DC80,function
+SecondaryProgramExtensionDefault,0x0040FFA0,function
+InstallSecondaryProgram,0x0045D900,function
+InitializeSecondaryContext,0x0045DBE0,function
+SelectSecondaryScript,0x0045DC00,function
+RestartSecondaryScript,0x0045DD50,function

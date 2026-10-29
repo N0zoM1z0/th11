@@ -277,14 +277,38 @@ Useful boundary corrections:
  arithmetic occurs after its callback. Trace int-to-double promotion avoids
  added float rounding. These follow raw code, not decompiler float casts.
 - Per-operation instantiation and distinct branch/thread/unary arms reproduce
-61 jump entries/89 selectors, but candidate6,845/5,930 is still non-exact.
+61 jump entries/89 selectors, but current candidate6,989/5,958 is still non-exact.
  Candidate stack aligns64 with an EBP frame; native uses ESP/120. /Zp4 changed
- none and was rejected. Genuine Stack members close relative15 and setter7.
+ none and was rejected. A private double-to-float-temporary probe retained
+ alignment64, produced6873/5934 against the preceding source and risked changed
+ rounding; it is rejected. Genuine Stack members close relative15 and setter7.
  Nine unique complete public owners pass296 raw-equal bytes with zero fields.
-- Current2,073 candidates,327 reviewed boundaries,267 mappings and148 exact
- functions/21,463 bytes. Twenty-two new origin reviews stay indeterminate; six
- earlier owners rechecked. Only nine new secondary-script units cold-replayed;
- existing exact sources/contexts/dependencies and infrastructure are unchanged.
+- Program vptr49404C has Install45D900 at0 and integer-result extension callback
+40FFA0 at4, not a virtual destructor. Derived494090 overrides slot4 with410D50
+ and adds filename loading4104D0 at8. Native base callback returns0/RET4; the
+ derived callback's failure path returns-1. No invented destructor slot.
+- The old410D50/25 and410D69/213 are one238-byte callback: gate JE enters its
+ success continuation, which shares saved self/input/ABI and RET4 paths. Full
+94-instruction read-only span and independent PE decoding have no foreign
+ interior entries. Merge only these unmaintained auto candidates. The callback
+ processes ANIM first, then optional aligned ECLI; the former include-only label
+ was too narrow. Its complete source remains open.
+- Full513-byte SCPT/version1 installation source preserves file-slot publication,
+ invalid-header slot clearing, table copy/free and sorted insertion through the
+ full allocated count, including unfilled slots. Candidate513/339 is not exact.
+ Missing context entries45DBE0/28,45DC00/36 and45DD50/28 have distinct program
+ publication and return contracts; do not invent current initialization or guards.
+ The first two plus genuine base callback5 pass69 exact bytes/two REL32 fields.
+- Non-float-first typed-pop conversion reduces83/27 to83/2; remaining register
+ SUB4 versus ADD-negative bytes stay unmasked. A true Stack-member probe changes
+ neither Pop83/2 nor End41/2 and is rejected. Shared inline changes alter larger
+ diagnostics, so nine prior exact script units were revalidated.
+- Current2,075 candidates,339 reviewed boundaries,272 mappings and151 exact
+ functions/21,532 bytes. Twelve new origin reviews add eleven indeterminate and
+ one PE-import-verified DirectInput8Create exclusion; one false split is removed.
+ Browser934's267-instruction full export supersedes its truncated250 view;
+ adjacent188/177/84 are effects, not script lifecycle. Three new plus nine
+ affected units pass cold; no other family or full cohort was replayed.
 
 ## Topic index
 
@@ -296,6 +320,7 @@ Useful boundary corrections:
 | Stage/ANM resources | [STAGE_RESOURCE](STAGE_RESOURCE.md), [ANIMATION_CHUNKS](ANIMATION_CHUNKS.md), [ANIMATION_TEXTURES](ANIMATION_TEXTURES.md), [pixel processing](ANIMATION_TRANSPARENT_PIXELS.md) |
 | Renderer quad construction/submission | [ANIMATION_QUAD](ANIMATION_QUAD.md), [ANIMATION_VM_DRAW](ANIMATION_VM_DRAW.md), [ANIMATION_PROJECTED_QUAD](ANIMATION_PROJECTED_QUAD.md), [ANIMATION_IMMEDIATE_DRAW](ANIMATION_IMMEDIATE_DRAW.md) |
 | Secondary script interpreter, typed stack and threads | [SECONDARY_SCRIPT](SECONDARY_SCRIPT.md) |
+| Secondary program installation and context selection | [SECONDARY_PROGRAM](SECONDARY_PROGRAM.md) |
 | Streaming factories and lifetime ownership | [MUSIC_FACTORIES](MUSIC_FACTORIES.md) |
 | Device setup and buffer recreation | [AUDIO_DEVICE](AUDIO_DEVICE.md) |
 | Streaming buffers, decoder state and fades | [MUSIC_STREAM](MUSIC_STREAM.md) |
