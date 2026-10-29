@@ -7,79 +7,85 @@ source, receipts and target bytes outrank historical notes.
 ## Checked-in state
 
 - Original Japanese TH11 v1.00a only; target identity: `config/target.toml`.
-- 1,995 candidates;163 reviewed boundaries,154 source-present mappings.
-- 78 exact functions /14,988 bytes:8 normal COFF and70 linked PE.
-- Origins:90 authored,65 reviewed indeterminate,6 exclusions,1,834 pending.
+- 1,995 candidates;172 reviewed boundaries,163 source-present mappings.
+- 82 exact functions /15,952 bytes:8 normal COFF and74 linked PE.
+- Origins:90 authored,73 reviewed indeterminate,7 exclusions,1,825 pending.
 - Direct local scripts/Ghidra; no Factory MCP or REA. Pinned VC9 RTM/SDK6.0A.
 - Commit prefix: `gpt-6.1-sol: `. All dirty work belongs to this effort.
 
-This checkpoint adds seven complete projected-quad/software-fog mappings
-covering1,896 bytes, including the792/794-byte owners. Fourteen further
-boundaries/origins were reviewed: nine engine/math origins remain indeterminate,
-five D3DX import thunks have independent full-body/PE-import exclusions.
-No new exact claim. See [ANIMATION_PROJECTED_QUAD.md](ANIMATION_PROJECTED_QUAD.md).
+This checkpoint adds nine complete immediate-draw/dispatch mappings covering
+3,363 recorded code bytes, including world1036, state572 and projected fog546.
+Four new full cold proofs add964 bytes: strip/fan224 each and two UV258 owners.
+Nine further boundaries/origins reviewed: eight engine/math origins remain
+indeterminate; D3DXVec3Transform's six-byte import thunk is a verified exclusion.
+See [ANIMATION_IMMEDIATE_DRAW.md](ANIMATION_IMMEDIATE_DRAW.md).
 
-The preceding checkpoint closed coordinate632, floor40, unrounded coordinate537
-and dispatch54:1,263 exact bytes. Their canonical AnimationQuad/AnimationVmDraw
-families and six cold receipts are unchanged. Real submission caller context
-naturally produced the native16-byte coordinate and64-byte-aligned floor
-frames. Original TU/data ownership remains separate.
+Caller audit corrects four draw wrappers from void to actual int status returns.
+The54-byte unrounded unit's symbol changed accordingly; six affected old units
+remain exact. New canonical family: `build/match-linked/AnimationImmediateDraw`.
+Earlier AnimationQuad/AnimationVmDraw proofs remain current after this replay.
+Original TU/data ownership and complete native product closure remain open.
 
 ## Current gaps
 
-| Function | Target bytes | Current source / diagnostic differences |
+| Function | Target code bytes | Current source / diagnostic differences |
 | --- | ---: | --- |
-| DrawFoggedBillboardAnimationVm,450B00 | 794 | 795 /666 |
-| BuildProjectedAnimationVmQuad,450E20 | 792 | 779 /666 |
-| AnimationDistanceRoot,4196E0 | 31 | 20 /26 |
-| DrawProjectedAnimationVm,451140 | 46 | 48 /24 |
-| DrawBillboardAnimationVm,450AD0 | 33 | 38 /30 |
-| DrawAdaptiveUnroundedAnimationVm,450690 | 111 | 115 /67 |
-| BuildAnimationVmModeQuad,452010 | 89 | 124 /90 |
+| DrawWorldAnimationVm,4513A0 | 1,036 | 1,038 /750 |
+| ApplyAnimationVmWorldState,44F4B0 | 572 | 580 /411; switch-table ownership also open |
+| DrawFoggedProjectedAnimationVm,451170 | 546 | 548 /150 |
+| DrawAnimationVmByMode,451EF0 | 217 | 272 /115; full contribution includes table |
+| AnimationExtentMagnitude,40B930 | 28 | 17 /28; aligned-frame gap |
 | BuildBillboardAnimationVmQuad,450700 | 976 | Source open; complete295-instruction review |
-| DrawAnimationVmByMode,451EF0 | 217 | Source open; complete code/table review |
-| DrawAnimationVm,44F880 | 1,112 | 1,190 /858; canonical VM-draw context |
 | BuildRotatedAnimationVmQuad,4503D0 | 571 | Source open; complete target review |
-| ApplyAnimationVmDrawState,44F710 | 368 | 348 /216; previous context |
+
+Other large gaps remain in submission1112, projected construction792, billboard
+fog794, blend state368, VM/script/tween and resource paths. Older projected
+probe numbers predate the wrapper return correction; do not treat them as
+current receipts. Topic docs retain historical evidence and concrete contracts.
 
 ## Concrete next work
 
-1. Continue the794/792-byte owners. Fog now preserves staged float rounding,
-   ordered range tests, inline saturated tint, truncating byte writes and
-   submission flag2. Distance helper lacks native8-byte-aligned frame; fog
-   still differs in distance-expression scheduling and the opaque billboard
-   callee's private ABI. Projection has frame/register gaps. /Oy- did not
-   recover native layout and was not adopted; no inert local/alignment fix.
-2. Complete976-byte billboard and571-byte rotated source without replacing
-   paired FSINCOS semantics. Precise sin/cos probes call CRT intrinsics; fast
-   probes emit separate FSIN/FCOS. Neither yields native paired code. The
-   billboard has an initial pair overwritten later; retain its FP side effects.
-   Selector3 leaves local axes unwritten in both these/projected paths.
-3. Projection anchors are fixed +/-128 and +/-256, not unit coordinates.
-   Rebuild only when !4000 and flagsC, clear8 before rotations and4 after;
-   cache matrix+2F4, working X/Y add cached translations but Z replaces them.
-   Four real D3DX projects publish renderer world+435140. The wrapper resets
-   RHW after submission even when culled. Coordinate query modes2/3 always
-   use the unrounded helper, independent of angle.
-4. Continue the217-byte draw dispatcher and remaining modes7/8/9/B/C/D;
-   14 table entries451FCC..452003 are decoded, with9/C/D sharing a route.
-   The89-byte query's four-entry table45206C..45207B is also reviewed.
-   The1,112-byte submission still calls real CRT `_frnd`; pragma intrinsic
-   gives VC9 C4163 and does not inline it. Four-mode ABI proof remains valid.
-   Continue larger script/tween/VM work and expand origin review as well.
+1. Continue world1036. Three real matrices now live at function scope, restoring
+   independent rotation/texture storage: frameD4 versus nativeD0, formerly94.
+   Native has aligned EBP frame/private EBX VM/stack renderer; the candidate
+   uses stack VM and a different register allocation. Source has complete
+   dirty-cache, fabs half-anchor, world/texture and geometry/stream paths.
+   Do not add padding/alignment or misdeclare ABI to close it.
+2. State572 differs in shared blend-call blocks; dispatcher217 differs in
+   private callees/parameter allocation. Their code and separately reviewed
+   tables44F6EC..44F707 and451FCC..452003 need complete PDB ownership
+   reconciliation before any exact claim. Never crop a table/contribution.
+   Separate eligibility returns and natural index+=2 loops close the four
+   new224/258-byte owners; explicit remaining-count loops were263 bytes.
+3. Fog546 has alpha-store/red arithmetic scheduling and flag-ABI gaps. Do not
+   introduce a float red-difference temporary: it added a non-native float
+   rounding store. It uses fixed runtime eye+204, fractional fog channels,
+   preserved alpha, no tint and no far early return. Beyond range use camera
+   packed fog RGB with selected VM alpha. Restore all RHW after submission.
+4. Preserve observed quirks: world UV cache tests U twice and ignores V;
+   world uses FVF102/stride20/texture-factor args. Modes9/C/D are triangle
+   strip, B triangle fan. Fan has no eligibility gate, flushes global
+   g_RenderBatch and disables Z writes without restoring them. Four wrappers
+   forward EAX status. Mode counts double and subtract2 with unsigned wrap.
+5. Complete976-byte billboard/571-byte rotation without replacing FSINCOS.
+   Precise sin/cos calls and fast separate FSIN/FCOS did not recover pairing.
+   Submission1112's real CRT _frnd preserves RC but is not a VC9 intrinsic;
+   pragma gives C4163. Continue larger VM/script/tween work and origin review.
 
 ## Evidence and checkpoints
 
-Latest new-source probe: `.analysis/projected-quad-distance-lifetime.log` and
-`build/probe-ltcg/projected-quad/distance-lifetime/diagnostic.json`. All seven
-full primary-TU contributions compiled with real existing rendering support;
-no masked diagnostic grants exact credit. No existing canonical source/family
-changed, so no old exact unit or full cohort was cold-replayed this checkpoint.
+Latest proof: `.analysis/immediate-draw-ten-cold.log`, four new/six affected
+units only. All ten passed complete current receipts/ownership/fields/bytes.
+Current new-family full diagnostics: `.analysis/immediate-draw-current.log`
+and `immediate-draw-current/diagnostic.json`. All17 address fields of strip/fan
+were independently bound; UV owners have none. No full cohort or broad runtime
+suite ran. Infrastructure code did not change.
 
 Topic docs link full Ghidra/reference/neighbor/table reviews and compiler
-experiments. Original exact receipts remain in `build/match[-linked]`; last
-six-unit cold log is `.analysis/vm-draw-six-cold.log`. Target, compiler payloads,
-extracted CRT objects and `ghidra-project/TH11` remain private. No tool job is live.
+experiments (guards/loops, matrix lifetime, blend-pair/red temporary, restricted
+caller graph). The latter two variants did not improve the remaining gaps.
+Target, compiler payloads, extracted CRT objects and `ghidra-project/TH11`
+remain private. No tool job is live.
 
 ```bash
 git status --short --branch

@@ -152,3 +152,12 @@ DrawFoggedBillboardAnimationVm
 BuildProjectedAnimationVmQuad
 DrawProjectedAnimationVm
 BuildAnimationVmModeQuad
+AnimationExtentMagnitude
+ApplyAnimationVmWorldState
+DrawFoggedProjectedAnimationVm
+DrawWorldAnimationVm
+UpdateTransposedStripVertexUv
+UpdateStripVertexUv
+DrawAnimationVertexStrip
+DrawAnimationVertexFan
+DrawAnimationVmByMode

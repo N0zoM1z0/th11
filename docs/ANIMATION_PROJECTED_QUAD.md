@@ -16,7 +16,7 @@ remain indeterminate; the five import thunks are exclusions.
 | DrawFoggedBillboardAnimationVm | 450B00 | 794 | Complete source; non-exact |
 | BuildProjectedAnimationVmQuad | 450E20 | 792 | Complete source; non-exact |
 | DrawProjectedAnimationVm | 451140 | 46 | Complete source; non-exact |
-| DrawAnimationVmByMode | 451EF0 | 217 | Complete review; source open |
+| DrawAnimationVmByMode | 451EF0 | 217 | Source added in subsequent immediate-mode checkpoint |
 | BuildAnimationVmModeQuad | 452010 | 89 | Complete source; non-exact |
 
 ## Matrix cache and projection
@@ -118,7 +118,7 @@ fog retains billboard private-ABI, distance-expression and scheduling gaps.
 Remaining wrappers also depend on the opaque rotated/billboard callees.
 The maintained source uses the ordinary /O2 /Ob1 /GL diagnostic profile.
 
-| Current source contribution | Candidate bytes / diagnostic differences |
+| Initial projected-context contribution | Candidate bytes / diagnostic differences |
 | --- | ---: |
 | AnimationDistanceRoot | 20 /26 |
 | DrawAdaptiveUnroundedAnimationVm | 115 /67 |
@@ -128,7 +128,7 @@ The maintained source uses the ordinary /O2 /Ob1 /GL diagnostic profile.
 | DrawProjectedAnimationVm | 48 /24 |
 | BuildAnimationVmModeQuad | 124 /90 |
 
-Current full diagnostics: `build/probe-ltcg/projected-quad/distance-lifetime/diagnostic.json`
+Initial full diagnostics: `build/probe-ltcg/projected-quad/distance-lifetime/diagnostic.json`
 and `.analysis/projected-quad-distance-lifetime.log`. These positional byte
 differences include shifts from different entry sequences; neither equal
 length nor a small aligned region establishes whole-function equality.
@@ -154,6 +154,12 @@ Current probe artifacts/logs are under `build/probe-ltcg/projected-quad` and
 `.analysis/projected-quad-*.log`. Compiler payloads, extracted math objects,
 target text and decompiler hypotheses remain private.
 
-No existing canonical family changed, so no old exact unit or full cohort was
-cold-replayed. The seven new mappings remain non-exact; the existing78 exact
-functions/14,988 bytes are unchanged.
+At the initial projected checkpoint no existing canonical family changed, so
+no old exact unit or full cohort was cold-replayed. Its seven mappings were
+non-exact and exact state remained78 functions/14,988 bytes.
+
+The subsequent [immediate-mode checkpoint](ANIMATION_IMMEDIATE_DRAW.md) adds
+dispatcher source, corrects its topology labels to strip/fan and establishes
+int status returns for four wrappers, including adaptive unrounded drawing.
+Its ten-unit cold proof refreshes the affected prior families; the projected
+diagnostic snapshot above predates this return-type correction.

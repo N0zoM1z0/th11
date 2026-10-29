@@ -153,3 +153,12 @@ DrawFoggedBillboardAnimationVm,0x00450B00,function
 BuildProjectedAnimationVmQuad,0x00450E20,function
 DrawProjectedAnimationVm,0x00451140,function
 BuildAnimationVmModeQuad,0x00452010,function
+AnimationExtentMagnitude,0x0040B930,function
+ApplyAnimationVmWorldState,0x0044F4B0,function
+DrawFoggedProjectedAnimationVm,0x00451170,function
+DrawWorldAnimationVm,0x004513A0,function
+UpdateTransposedStripVertexUv,0x004517B0,function
+UpdateStripVertexUv,0x004518C0,function
+DrawAnimationVertexStrip,0x00451A00,function
+DrawAnimationVertexFan,0x00451E10,function
+DrawAnimationVmByMode,0x00451EF0,function

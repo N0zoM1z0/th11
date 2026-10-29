@@ -1793,7 +1793,7 @@ output_dir = "build/match-linked/AnimationVmDraw"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "AnimationVmDrawProbe@36"
 functions = ["DrawUnroundedAnimationVm"]
-symbol = "?DrawUnroundedAnimationVm@@YGXPAURenderBatchView@@PAUAnimationVmView@@@Z"
+symbol = "?DrawUnroundedAnimationVm@@YGHPAURenderBatchView@@PAUAnimationVmView@@@Z"
 target_address = 0x450310
 size = 54
 linkages = [
@@ -1804,3 +1804,78 @@ linkages = [
   { offset = 30, type = "REL32", symbol = "?BuildUnroundedAnimationVmQuad@@YGXPAUAnimationVmView@@PAUCameraVector@@111@Z", target = 0x4500f0, addend = 0x0 },
   { offset = 43, type = "REL32", symbol = "?DrawAnimationVm@@YGHPAURenderBatchView@@PAUAnimationVmView@@E@Z", target = 0x44f880, addend = 0x0 },
 ]
+
+[units.draw-animation-vertex-strip]
+artifact_kind = "linked-pe"
+source = "src/AnimationImmediateDraw.cpp"
+inputs = ["src/AnimationImmediateDraw.hpp"]
+support_sources = ["probes/animation-immediate-draw-context.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationVmDraw.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp"]
+output_dir = "build/match-linked/AnimationImmediateDraw"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationImmediateDrawProbe@28"
+functions = ["DrawAnimationVertexStrip"]
+symbol = "?DrawAnimationVertexStrip@@YGHPAURenderBatchView@@PAUAnimationVmView@@PBURenderVertex@@I@Z"
+target_address = 0x451a00
+size = 224
+linkages = [
+  { offset = 47, type = "REL32", symbol = "?FlushRenderBatch@@YGXPAURenderBatchView@@@Z", target = 0x44fd10, addend = 0x0 },
+  { offset = 78, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 106, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 136, type = "REL32", symbol = "?ApplyAnimationVmDrawState@@YGXPAURenderBatchView@@PAUAnimationVmView@@@Z", target = 0x44f710, addend = 0x0 },
+  { offset = 141, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 163, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 189, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+]
+
+[units.draw-animation-vertex-fan]
+artifact_kind = "linked-pe"
+source = "src/AnimationImmediateDraw.cpp"
+inputs = ["src/AnimationImmediateDraw.hpp"]
+support_sources = ["probes/animation-immediate-draw-context.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationVmDraw.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp"]
+output_dir = "build/match-linked/AnimationImmediateDraw"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationImmediateDrawProbe@28"
+functions = ["DrawAnimationVertexFan"]
+symbol = "?DrawAnimationVertexFan@@YGHPAURenderBatchView@@PAUAnimationVmView@@PBURenderVertex@@I@Z"
+target_address = 0x451e10
+size = 224
+linkages = [
+  { offset = 16, type = "REL32", symbol = "?FlushRenderBatch@@YGXPAURenderBatchView@@@Z", target = 0x44fd10, addend = 0x0 },
+  { offset = 30, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 60, type = "REL32", symbol = "?ApplyAnimationVmDrawState@@YGXPAURenderBatchView@@PAUAnimationVmView@@@Z", target = 0x44f710, addend = 0x0 },
+  { offset = 91, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 111, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x4c3268, addend = 0x0 },
+  { offset = 116, type = "REL32", symbol = "?FlushRenderBatch@@YGXPAURenderBatchView@@@Z", target = 0x44fd10, addend = 0x0 },
+  { offset = 121, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 141, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 163, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 189, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+]
+
+[units.update-strip-vertex-uv]
+artifact_kind = "linked-pe"
+source = "src/AnimationImmediateDraw.cpp"
+inputs = ["src/AnimationImmediateDraw.hpp"]
+support_sources = ["probes/animation-immediate-draw-context.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationVmDraw.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp"]
+output_dir = "build/match-linked/AnimationImmediateDraw"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationImmediateDrawProbe@28"
+functions = ["UpdateStripVertexUv"]
+symbol = "?UpdateStripVertexUv@@YGHPAUAnimationVmView@@PAURenderVertex@@H@Z"
+target_address = 0x4518c0
+size = 258
+linkages = []
+
+[units.update-transposed-strip-vertex-uv]
+artifact_kind = "linked-pe"
+source = "src/AnimationImmediateDraw.cpp"
+inputs = ["src/AnimationImmediateDraw.hpp"]
+support_sources = ["probes/animation-immediate-draw-context.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationVmDraw.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp"]
+output_dir = "build/match-linked/AnimationImmediateDraw"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationImmediateDrawProbe@28"
+functions = ["UpdateTransposedStripVertexUv"]
+symbol = "?UpdateTransposedStripVertexUv@@YGHPAUAnimationVmView@@PAURenderVertex@@H@Z"
+target_address = 0x4517b0
+size = 258
+linkages = []

@@ -143,3 +143,8 @@ The subsequent [projection/fog review](ANIMATION_PROJECTED_QUAD.md) supplies
 seven more source mappings, reviews the complete976-byte billboard owner and
 records the precise/fast sin-cos and rejected `_frnd` intrinsic experiments.
 Those new diagnostic families do not replace the canonical receipts above.
+
+The [immediate-mode caller audit](ANIMATION_IMMEDIATE_DRAW.md) subsequently
+establishes int status returns for the three draw wrappers. The54-byte unit's
+decorated symbol now reflects that return type; all six affected units retain
+complete exact proofs in `.analysis/immediate-draw-ten-cold.log`.

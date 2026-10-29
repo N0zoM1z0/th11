@@ -211,14 +211,14 @@ int __stdcall DrawFoggedBillboardAnimationVm(RenderBatchView *renderer, Animatio
     return DrawAnimationVm(renderer, vm, 2);
 }
 
-void __stdcall DrawAdaptiveUnroundedAnimationVm(RenderBatchView *renderer, AnimationVmView *vm)
+int __stdcall DrawAdaptiveUnroundedAnimationVm(RenderBatchView *renderer, AnimationVmView *vm)
 {
     ProjectedVmView *self = reinterpret_cast<ProjectedVmView *>(vm);
     if (self->rotation.z == 0.0f)
         BuildUnroundedAnimationVmQuad(vm, Corner(0), Corner(1), Corner(2), Corner(3));
     else
         BuildRotatedAnimationVmQuad(vm, Corner(0), Corner(1), Corner(2), Corner(3));
-    DrawAnimationVm(renderer, vm, 0);
+    return DrawAnimationVm(renderer, vm, 0);
 }
 
 void __stdcall BuildAnimationVmModeQuad(AnimationVmView *vm, CameraVector *quad)

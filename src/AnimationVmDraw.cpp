@@ -147,10 +147,10 @@ int __stdcall DrawAnimationVm(RenderBatchView *renderer, AnimationVmView *vm,
     return 0;
 }
 
-void __stdcall DrawUnrotatedAnimationVm(RenderBatchView *renderer, AnimationVmView *vm)
+int __stdcall DrawUnrotatedAnimationVm(RenderBatchView *renderer, AnimationVmView *vm)
 {
     BuildAnimationVmQuad(vm, Corner(0), Corner(1), Corner(2), Corner(3));
-    DrawAnimationVm(renderer, vm, 1);
+    return DrawAnimationVm(renderer, vm, 1);
 }
 
 void __stdcall BuildUnroundedAnimationVmQuad(AnimationVmView *vm, CameraVector *first,
@@ -194,23 +194,23 @@ void __stdcall BuildUnroundedAnimationVmQuad(AnimationVmView *vm, CameraVector *
         self->offset.z + self->position.z + self->extraOffset.z;
 }
 
-void __stdcall DrawUnroundedAnimationVm(RenderBatchView *renderer, AnimationVmView *vm)
+int __stdcall DrawUnroundedAnimationVm(RenderBatchView *renderer, AnimationVmView *vm)
 {
     BuildUnroundedAnimationVmQuad(vm, Corner(0), Corner(1), Corner(2), Corner(3));
-    DrawAnimationVm(renderer, vm, 0);
+    return DrawAnimationVm(renderer, vm, 0);
 }
 
-void __stdcall DrawAdaptiveAnimationVm(RenderBatchView *renderer, AnimationVmView *vm)
+int __stdcall DrawAdaptiveAnimationVm(RenderBatchView *renderer, AnimationVmView *vm)
 {
     DrawVmView *self = reinterpret_cast<DrawVmView *>(vm);
     if (self->angle == 0.0f)
     {
         BuildAnimationVmQuad(vm, Corner(0), Corner(1), Corner(2), Corner(3));
-        DrawAnimationVm(renderer, vm, 1);
+        return DrawAnimationVm(renderer, vm, 1);
     }
     else
     {
         BuildRotatedAnimationVmQuad(vm, Corner(0), Corner(1), Corner(2), Corner(3));
-        DrawAnimationVm(renderer, vm, 0);
+        return DrawAnimationVm(renderer, vm, 0);
     }
 }

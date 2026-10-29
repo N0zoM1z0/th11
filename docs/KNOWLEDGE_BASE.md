@@ -105,6 +105,16 @@ Useful boundary corrections:
 - Software fog retains float stores between offset+position, extraOffset and
   camera subtraction; it rejects ordered factor>=1 and truncates all four
   output channels. The projected wrapper resets RHW after submission/culling.
+- Projected per-corner fog546 is a different path: fixed runtime eye+204,
+  fractional fog channels, preserved alpha, no tint or far early rejection.
+  Beyond range it uses the camera's packed fog color and original alpha.
+- World draw1036 uses three real matrix objects, FVF102/stride20 and texture
+  factor color arguments. Its UV cache repeats the U-offset test and never
+  tests V. Keep that original condition. Matrix lifetime affects stack reuse.
+- Modes9/C/D use triangle strip; B uses fan. The fan owner lacks eligibility
+  gates, flushes global g_RenderBatch after local setup and disables Z writes
+  without restoring them. Their full224-byte proofs and both258-byte UV
+  proofs are exact. Dispatcher EAX forwarding establishes int wrapper returns.
 - VC9 rejects `#pragma intrinsic(_frnd)` with C4163. Precise sin/cos probes
   call CRT intrinsics; /fp:fast emits separate FSIN/FCOS. Neither experiment
   closes native inline FRNDINT or paired FSINCOS; those gaps remain open.
@@ -121,7 +131,7 @@ Useful boundary corrections:
 | Stage interpreter and interpolation | [STAGE_SCRIPT](STAGE_SCRIPT.md), [STAGE_TWEEN](STAGE_TWEEN.md), [STAGE_EASING](STAGE_EASING.md) |
 | Stage lifecycle, updates and drawing | [STAGE_LIFECYCLE](STAGE_LIFECYCLE.md), [STAGE_UPDATE](STAGE_UPDATE.md), [STAGE_DRAWING](STAGE_DRAWING.md) |
 | Stage/ANM resources | [STAGE_RESOURCE](STAGE_RESOURCE.md), [ANIMATION_CHUNKS](ANIMATION_CHUNKS.md), [ANIMATION_TEXTURES](ANIMATION_TEXTURES.md), [pixel processing](ANIMATION_TRANSPARENT_PIXELS.md) |
-| Renderer quad construction/submission | [ANIMATION_QUAD](ANIMATION_QUAD.md), [ANIMATION_VM_DRAW](ANIMATION_VM_DRAW.md), [ANIMATION_PROJECTED_QUAD](ANIMATION_PROJECTED_QUAD.md) |
+| Renderer quad construction/submission | [ANIMATION_QUAD](ANIMATION_QUAD.md), [ANIMATION_VM_DRAW](ANIMATION_VM_DRAW.md), [ANIMATION_PROJECTED_QUAD](ANIMATION_PROJECTED_QUAD.md), [ANIMATION_IMMEDIATE_DRAW](ANIMATION_IMMEDIATE_DRAW.md) |
 | Renderer and device | [RENDER_CAMERA](RENDER_CAMERA.md), [DEVICE_INITIALIZATION](DEVICE_INITIALIZATION.md), [RENDER_STATE_RESET](RENDER_STATE_RESET.md), [RUNTIME_SURFACES](RUNTIME_SURFACES.md) |
 | ASCII lifecycle, glyph drawing and formatting | [ASCII_LIFECYCLE](ASCII_LIFECYCLE.md), [ASCII_DRAWING](ASCII_DRAWING.md) |
 | Text | [TEXT_RESOURCES](TEXT_RESOURCES.md), [TEXT_DRAWING_COMPOSITE](TEXT_DRAWING_COMPOSITE.md), [OUTLINED_TEXT](OUTLINED_TEXT.md), [FORMATTED_TEXTURE_TEXT](FORMATTED_TEXTURE_TEXT.md) |

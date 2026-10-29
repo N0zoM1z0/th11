@@ -16,7 +16,7 @@ int __stdcall BuildProjectedAnimationVmQuad(RenderBatchView *renderer, Animation
 int __stdcall DrawProjectedAnimationVm(RenderBatchView *renderer, AnimationVmView *vm);
 int __stdcall DrawBillboardAnimationVm(RenderBatchView *renderer, AnimationVmView *vm);
 int __stdcall DrawFoggedBillboardAnimationVm(RenderBatchView *renderer, AnimationVmView *vm);
-void __stdcall DrawAdaptiveUnroundedAnimationVm(RenderBatchView *renderer, AnimationVmView *vm);
+int __stdcall DrawAdaptiveUnroundedAnimationVm(RenderBatchView *renderer, AnimationVmView *vm);
 void __stdcall BuildAnimationVmModeQuad(AnimationVmView *vm, CameraVector *quad);
 
 // Complete target owner reviewed; paired FSINCOS source/codegen remains open.
