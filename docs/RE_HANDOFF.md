@@ -7,16 +7,17 @@ outrank historical notes. All dirty work belongs to this active goal.
 ## Checked-in state
 
 - Original Japanese TH11 v1.00a; config/target.toml pins identity.
-- 2,109 candidates;445 reviewed boundaries;343 source mappings.
-- 193 exact functions/23,230 bytes:8 normal COFF and185 linked PE.
-- Origins:90 authored,341 indeterminate,12 exclusions,1,666 pending.
+- 2,110 candidates;464 reviewed boundaries;354 source mappings.
+- 196 exact functions/23,547 bytes:8 normal COFF and188 linked PE.
+- Origins:90 authored,358 indeterminate,14 exclusions,1,648 pending.
 - Direct Ghidra/scripts; no Factory MCP/REA. VC9 RTM21022/SDK6.0A.
 - Commit/push authorized; prefix `gpt-6.1-sol: `.
 
-Latest checkpoint adds10 complete mappings/2,557 target bytes, including full
-1579-byte damage and244-byte collision source. Four primary owners/361 bytes/
-seven fields close;14 new origin reviews stay indeterminate. Special dispatcher
-406720 is corrected from100 to124 bytes including its24-byte table. See
+Latest checkpoint adds11 complete mappings/2,541 target bytes, including full
+projectile896/homing498 and special damage246/385. Three primary owners/317
+bytes/eight fields close;19 new origin reviews are17 indeterminate plus two CRT
+atan2 exclusions. One omitted ordinary atan2 candidate is added. See
+[SECONDARY_PROJECTILES](SECONDARY_PROJECTILES.md),
 [SECONDARY_DAMAGE](SECONDARY_DAMAGE.md),
 [SECONDARY_PAIR_MATH](SECONDARY_PAIR_MATH.md),
 [SECONDARY_ACTOR_STATE](SECONDARY_ACTOR_STATE.md),
@@ -54,18 +55,30 @@ seven fields close;14 new origin reviews stay indeterminate. Special dispatcher
   addition plus signed input/10/cap; count19 preserves its signed upper gate.
 - Damage1579 has full510-instruction/two-RET8 source with both256-projectile and
   32-region paths, callback/animation transitions, ordered rejection, exact float
-  boundaries and wrapped nonlinear damage/score. Current1513/1414; all14 direct
+  boundaries and wrapped nonlinear damage/score. Last measured1513/1414 before the expanded projectile header; all14 direct
   call targets/multiplicities, one callback and two returns agree independently.
 - Collision244 source228/211 preserves strict/unordered threshold behavior,
-  real HUD/player gates and transition432A90. Sound148 source144/93 preserves
+  real HUD/player gates and transition432A90. Sound148 last source144/93 preserves
   double pan scale, signed short record+2,12 slots and128 cap. No byte credit.
 - Timer29 and event2/event3 owners70 each are exact. Region allocator192 also
   closes via a natural local timer reference; one-past return on full32 slots
   is real. Partial actor references9C0 are projectile96C+54 target pointers.
   Position35/6, special predicate66->68/62 and dispatcher124->83/97 stay open.
-  Patterns142/183, projectile update896 and homing498 have full new origin
-  review;896 uses a650-limit export, never the truncated250-instruction prefix.
-  Effect457 and FSINCOS30 remain source-open.
+  Patterns142/183 remain source-open. New complete projectile896 source908/765
+  preserves the256-record lifecycle, asymmetric primary/auxiliary cleanup, culling,
+  callbacks and timer. All13 calls/one callback/return agree. Homing498 source
+  493/401 preserves real callback address escape/fixed ECX/EDX; all5 calls/4 returns
+  agree, aligned frame stays open. No forced local/register fixes it.
+- Acquisition123, wrapped angle101 and outside93 are exact. Static named angle
+  constants had no public data binding; natural literals emit compiler __real
+  symbols for strict proof. Capture next before the actor body/advance afterward.
+  Special385 really scans five IDs, not32; embedded VM node+10 includes root and
+  retains native null-fault path. Full source252/204 and385/337 stays non-exact.
+- Tracked-target73 has an extra unused stack word proved by RET4; two-input
+  hypothesis was wrong. Source61/68 preserves cleanup, nominal slot role/type and
+  aligned frame stay open. Length47/48 and angle31 also remain non-exact. Generic
+  vector/emitter callbacks get individual indeterminate reviews. Effect457 and
+  FSINCOS30 remain source-open.
 
 ## Other corrected ownership
 
@@ -90,8 +103,10 @@ seven fields close;14 new origin reviews stay indeterminate. Special dispatcher
 
 | Owner | Full target | Source / normalized differences |
 | --- | ---: | --- |
-| Damage4347F0 / collision431F70 | 1579 /244 | 1513 /1414;228 /211 |
-| Sound44A260 / region433A90 | 148 /192 | 144 /93;192 exact |
+| Projectile434440 / homing434E30 | 896 /498 | 908 /765;493 /401 |
+| Special406E90 /407220 | 246 /385 | 252 /204;385 /337 |
+| Damage4347F0 / collision431F70 | 1579 /244 | last1513 /1414;228 /211; pre-expanded header |
+| Sound44A260 / region433A90 | 148 /192 | last144 /93;192 exact |
 | Actor state411750 | 4230 | 4161 /3261; full actual support context |
 | Actor transition417B40 | 561 | 521 /497 |
 | Actor ctor4111C0 / EH dtor411480 | 699 /384 | 706 /442;390 /327 |
@@ -128,19 +143,22 @@ Audio aliases/factories/refill, VM11640, rendering and master374 remain open.
 
 ## Current proof and replay scope
 
-`.analysis/secondary-damage-cold-replay.log` passes4 new units/361 bytes/seven
-fields in SecondaryDamageSupport. Full unique primary-TU ownership, exhaustive
-fields/current source/header/support/tool/producer/PE/MAP/PDB receipts pass.
-Actual previous receipt hashes select zero affected prior units; existing shared
-sources/headers are unchanged. Source froze before cold compilation; all jobs
-are terminal. No full cohort, broad behavior or infrastructure suite. Recompute
-actual dependencies next time.
+`.analysis/secondary-projectile-final-proof.json` records3 new+4 affected old
+cold owners across SecondaryProjectileMath/SecondaryDamageSupport. New317 bytes/
+eight fields and old361 bytes/seven fields pass complete strict primary-TU
+ownership/receipt/field/byte proof. Source freeze is unchanged. Initial new-owner
+gate preceded ledger registration; after registering the reviewed owners, the
+three new units pass on the same cold artifacts. No recompilation/full cohort.
+All jobs are terminal; recompute actual receipt dependencies next time.
 
-Private diagnostics: `build/probe-ltcg/SecondaryDamage/final/`,
-`.analysis/secondary-damage-final-call-audit.json`, independent16-owner full
-PE/CFG/return/table records, full650-limit projectile export, source-freeze and
-four field recipes. New source views preserve real record/timer/parameter
-contracts without changing shared headers. Native damage frame0x54/8-byte
-alignment remains open; no artificial locals or ABI force it. Bytes/decompiler/
-tool/build artifacts stay private; DB unchanged. Native product/runtime/port
-closure remains later; goal stays active.
+Private diagnostics: `build/probe-ltcg/SecondaryProjectile/final/`, complete call
+audit,23-owner independent PE/CFG/return records, literal/iterator/callback variants
+and vendor atan2 entire20-byte/four-field/CodeView witness. Missing486C90 gets
+read-only explicit span review; both10-byte vendor owners are exclusions only.
+Native sqrt dependency also has vendor-symbol evidence, but no new origin credit.
+Expanded shared damage header requires the four actual old receipt refreshes,
+all passed. Damage1513/1414 remains a prior-context baseline, not an unperformed
+new replay. Continue large owners and open codegen, including399-byte long homing,
+132/112 alternate callbacks and real-special support in future damage work.
+Bytes/decompiler/tool/build artifacts stay private; DB unchanged. Native product/
+runtime/port closure remains later; goal stays active.

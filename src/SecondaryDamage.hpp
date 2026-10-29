@@ -16,11 +16,15 @@ struct SecondaryProjectileParameters
 {
     unsigned char unknown000[0xc];
     float width, height;
-    unsigned char unknown014[0x1d - 0x14];
+    unsigned char unknown014[0x1c - 0x14];
+    signed char index;
     unsigned char kind;
     unsigned char unknown01e[2];
     short script;
-    unsigned char unknown022[0x30 - 0x22];
+    unsigned char unknown022[0x28 - 0x22];
+    int (__fastcall *onUpdate)(SecondaryDamageReferencesView *self,
+        SecondaryProjectileView *projectile);
+    unsigned int unknown02c;
     int (__fastcall *onHit)(SecondaryDamageReferencesView *self,
         SecondaryProjectileView *projectile, const CameraVector *position);
 };
@@ -48,18 +52,30 @@ struct SecondaryDamageReferencesView
 {
     unsigned char unknown000[0x10];
     AnimationFileView *file;
-    unsigned char unknown014[0x944 - 0x14];
+    unsigned char unknown014[0x930 - 0x14];
+    StageTimerView patternTime;
     SecondaryDamageTimerView damageTime;
     unsigned char unknown958[0x96c - 0x958];
     SecondaryProjectileView projectiles[256];
-    unsigned char unknown756c[0x7c9c - 0x756c];
+    unsigned char unknown756c[0x7c90 - 0x756c];
+    int patternSlot;
+    SecondaryActorManagerView *tracked;
+    unsigned char trackingLocked, unknown7c99[3];
     SecondaryDamageRegionView regions[32];
+    unsigned char unknown8b1c[0x8b8c - 0x8b1c];
+    unsigned char slotIdStorage[0x8bb0 - 0x8b8c];
+    StageTimerView statusTime;
+    unsigned int flags;
+
+    __forceinline unsigned int &SlotId(int index)
+    { return reinterpret_cast<unsigned int *>(slotIdStorage)[index]; }
 };
 struct SecondaryDamageEnemyView
 {
     unsigned char unknown000[0x3c];
     int active;
-    unsigned char unknown040[0x484 - 0x40];
+    unsigned int animationId;
+    unsigned char unknown044[0x484 - 0x44];
     float x, y;
     unsigned int unknown48c;
     float radius;

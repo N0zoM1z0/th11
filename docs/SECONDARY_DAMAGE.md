@@ -162,3 +162,8 @@ build/probe-ltcg/SecondaryDamage*/. Canonical artifacts live in
 build/match-linked/SecondaryDamageSupport/. Native bytes, binaries, objects,
 compiler payloads and decompiler dumps are not committed. Runtime/product and
 portability closure remain later work.
+
+Later complete projectile/homing and special246/385 source, five-ID correction,
+callback stack-contract correction and three new exact math proofs are recorded
+in [SECONDARY_PROJECTILES](SECONDARY_PROJECTILES.md). Damage/collision/sound measurements above belong to the earlier context
+before the expanded shared projectile view.

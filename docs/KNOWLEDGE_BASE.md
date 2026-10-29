@@ -488,6 +488,39 @@ Useful boundary corrections:
   old receipt hashes select zero affected old exact units; only four new units
   are cold replayed, all pass. See [SECONDARY_DAMAGE](SECONDARY_DAMAGE.md).
 
+## Full projectile update and literal/iterator contracts
+
+- Complete896/278-instruction projectile source preserves all256 records, events,
+  motion, callback, inline lookup, asymmetric cleanup, culling, VM output/flags
+  and timer. Current908/765 remains open; all13 calls, one callback and return
+  agree independently. Full498 homing source493/401 keeps adjusted acquisition,
+  actual fixed callback ABI and speed/turn gates; all5 calls/4 returns agree.
+  Address escape at descriptor4A3A40 prevents false LTCG ESI-receiver specialization.
+- Acquisition123 closes when next is captured before work and assigned at the
+  end; immediate advance121/28 and normal for121/91 do not. Angle101 local double
+  objects introduce117-byte aligned code. Static storage gives101/0 but lacks
+  public data bindings; natural literal expressions emit ordinary __real symbols
+  and close full101 with all3 field/constant values. Outside93 closes with the
+  actual ordered -192/192/0/448 predicates. No Oracle or static-owner exception.
+- RET4 on tracked-target73 proves a third unused stack word; old two-parameter
+  hypothesis was wrong. Correct physical source61/68 keeps its cleanup width;
+  nominal type/role and aligned frame remain unresolved. Do not invent a double
+  or aligned local. Other47/48/31 vector math wrappers stay open.
+- Special damage385 scans exactly five script IDs, not the prior erroneous32.
+  It begins at embedded VM node+10, includes root and preserves native lookup-null
+  fault after clearing ID. Full246/385 source252/204 and385/337 stays non-exact.
+  New view fields preserve all prior offsets; four affected old exact helpers pass.
+- Nineteen new reviews give17 indeterminate origins and two library exclusions.
+  Vendor COFF/CodeView proves ordinary atan2/CIatan2 lengths10+10; entire20-byte
+  text/four fields agrees, ordinary486C90 was missing. Library code receives no
+  source/exact credit. Additional symbol lookup confirms __CIsqrt486AA0 without
+  adding review credit for an incompletely reviewed runtime owner.
+- Eleven mappings cover2541 target bytes. Three new317-byte/eight-field owners
+  and four affected old361-byte/seven-field owners pass selected cold proof.
+  Initial new-owner registration ordering was corrected using the same current
+  artifacts, with no recompilation or full cohort. See
+  [SECONDARY_PROJECTILES](SECONDARY_PROJECTILES.md).
+
 ## Topic index
 
 | Work | Evidence and remaining differences |
@@ -505,6 +538,7 @@ Useful boundary corrections:
 | Complete actor state, transitions, motion and VM return contracts | [SECONDARY_ACTOR_STATE](SECONDARY_ACTOR_STATE.md) |
 | Pair arithmetic, omitted vector leaves and vendor floor | [SECONDARY_PAIR_MATH](SECONDARY_PAIR_MATH.md) |
 | Complete damage/collision, projectile records and region allocation | [SECONDARY_DAMAGE](SECONDARY_DAMAGE.md) |
+| Complete projectile update/homing, iterator/literal math and atan2 | [SECONDARY_PROJECTILES](SECONDARY_PROJECTILES.md) |
 | Streaming factories and lifetime ownership | [MUSIC_FACTORIES](MUSIC_FACTORIES.md) |
 | Device setup and buffer recreation | [AUDIO_DEVICE](AUDIO_DEVICE.md) |
 | Streaming buffers, decoder state and fades | [MUSIC_STREAM](MUSIC_STREAM.md) |

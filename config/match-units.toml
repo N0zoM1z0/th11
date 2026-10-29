@@ -3699,3 +3699,56 @@ linkages = [
   { offset = 62, type = "REL32", symbol = "_memset", target = 0x46a720, addend = 0x0 },
   { offset = 132, type = "DIR32", symbol = "?g_AnimationTimeScale@@3MA", target = 0x4a7948, addend = 0x0 },
 ]
+
+[units.secondary-projectile-angle-difference]
+artifact_kind = "linked-pe"
+source = "src/SecondaryProjectileMath.cpp"
+inputs = ["src/SecondaryProjectile.hpp", "src/SecondaryDamage.hpp"]
+support_sources = ["probes/secondary-projectile-math-context.cpp"]
+output_dir = "build/match-linked/SecondaryProjectileMath"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryProjectileMathProbe@20"
+functions = ["SecondaryProjectileAngleDifference"]
+symbol = "?SecondaryProjectileAngleDifference@@YGMMM@Z"
+target_address = 0x435480
+size = 101
+linkages = [
+  { offset = 16, type = "DIR32", symbol = "__real@400921fb60000000", target = 0x497e80, addend = 0x0 },
+  { offset = 35, type = "DIR32", symbol = "__real@401921fb60000000", target = 0x497e78, addend = 0x0 },
+  { offset = 69, type = "DIR32", symbol = "__real@401921fb60000000", target = 0x497e78, addend = 0x0 },
+]
+
+[units.secondary-projectile-outside]
+artifact_kind = "linked-pe"
+source = "src/SecondaryProjectileMath.cpp"
+inputs = ["src/SecondaryProjectile.hpp", "src/SecondaryDamage.hpp"]
+support_sources = ["probes/secondary-projectile-math-context.cpp"]
+output_dir = "build/match-linked/SecondaryProjectileMath"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryProjectileMathProbe@20"
+functions = ["SecondaryProjectileOutside"]
+symbol = "?SecondaryProjectileOutside@@YGHPBUCameraVector@@MM@Z"
+target_address = 0x435560
+size = 93
+linkages = [
+  { offset = 14, type = "DIR32", symbol = "__real@c068000000000000", target = 0x497ec8, addend = 0x0 },
+  { offset = 29, type = "DIR32", symbol = "__real@4068000000000000", target = 0x497ea0, addend = 0x0 },
+  { offset = 51, type = "DIR32", symbol = "__real@0000000000000000", target = 0x497ec0, addend = 0x0 },
+  { offset = 67, type = "DIR32", symbol = "__real@407c000000000000", target = 0x497eb8, addend = 0x0 },
+]
+
+[units.acquire-secondary-projectile-target]
+artifact_kind = "linked-pe"
+source = "src/SecondaryProjectileMath.cpp"
+inputs = ["src/SecondaryProjectile.hpp", "src/SecondaryDamage.hpp"]
+support_sources = ["probes/secondary-projectile-math-context.cpp"]
+output_dir = "build/match-linked/SecondaryProjectileMath"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryProjectileMathProbe@20"
+functions = ["AcquireSecondaryProjectileTarget"]
+symbol = "?AcquireSecondaryProjectileTarget@@YGPAUSecondaryActorManagerView@@PBUCameraVector@@M@Z"
+target_address = 0x417e70
+size = 123
+linkages = [
+  { offset = 6, type = "DIR32", symbol = "?g_SecondaryProgramHost@@3PAEA", target = 0x4a8d7c, addend = 0x0 },
+]
