@@ -537,8 +537,9 @@ Useful boundary corrections:
   VM position. Current824/745 is open; all8 direct calls/one callback agree,
   but source has one RET8 against native two. No forced ABI/frame/null guard.
 - Emitter address75CC+index*E4 and ID7620+index*E4 close14/16 bytes. E4 is a stride;
-  only a physical prefix is modeled. An invented eight-object array would cross
-  the independently verified region pool. Integer conversion26, nonzero20 and
+  that earlier coordinate prefix alone did not establish the containing base.
+  Later render/reset evidence proves eight physical E4 records at7570..7C8F,
+  with coordinate prefix at+5C. Integer conversion26, nonzero20 and
   component publication6 also close. The six other integer-pair owners retain
   full source, wrapped arithmetic/signed division and complete open diagnostics.
 - Explicit double sqrt calls with float results leave both length-helper bodies
@@ -554,6 +555,47 @@ Useful boundary corrections:
   affected old owners pass678 bytes/15 fields. All13 selected cold proofs pass
   with frozen source. Fresh damage/update diagnostics keep the previous numeric
   totals under the corrected header. See [SECONDARY_PATTERN](SECONDARY_PATTERN.md).
+
+## Real pattern callers, emitter records and callback precision
+
+- Render431BC0/130 visits8 callback slots at7650, passes slot minusE0 in ECX and
+  advancesE4. Reset2508 and position refresh110 independently corroborate record
+  base7570, coordinates5C, angleA8, IDB0, refreshD4 and callbackE0, ending exactly
+  at slot7C90. The old75CC prefix was an internal coordinate view; the earlier
+  whole-array restriction based on that prefix is superseded by this evidence.
+- Loader431C70 closes all162 bytes, including14 alignment bytes beyond sparse148.
+  ESI receiver and ECX filename are actual inputs, despite Ghidra's no-argument
+  hypothesis. Unsigned16 file count2, eight-byte entry268 rebasing and all four
+  indexed callback tables are preserved. Descriptor0/1 are signed period/phase;
+  negative period ends the list, and frame%period drives emission without a new
+  zero guard. Actual tables establish shared onSpawn/onUpdate signatures.
+- Full source now covers frame142, update183, render130, long homing399,
+  gravity132, emitter112, initialization12/59/70, detach59, fixed caller31,
+  timer13 and multiplier12/12. Long homing releases at age>=120, correcting the
+  earlier >120 description. No registration proves its nominal fixed callback
+  ABI, so one observed EDX input does not become a fabricated ECX owner slot.
+- RNG state specialized away in a global-only context. An independent real state
+  input restores ESI and leaves one opcode difference in acceleration70. Explicit
+  float unsigned conversion emits native float2^32 correction, while retaining
+  x87 precision until the actual signed-unit float store; all70 bytes close.
+  Four public constant payloads agree across28 bytes. Spawn's two draws adopt
+  the same contract, and its float3 now snapshots before publication.
+- Spawn remains full853 versus source849/733 with real callers; real-only/independent
+  RNG859/690 also remains open. Actual positional-sound support and the complete
+  controller are concrete next context work. Double APIs/conditional expressions,
+  offset helper and opaque normalization do not close gravity/emitter source;
+  no forced register, local alignment, fake ABI or padding is adopted.
+- Reset432CC0 owns2508=2457 code+3 alignment+two six-entry tables, including15
+  internal alignment bytes beyond sparse2442. All696 instructions/12 table targets
+  and incoming DATA refs are reviewed. Complete source remains open. Forty-three
+  alleged interior refs in4355E0..43562F are based renderer member displacements,
+  and49353C's435246 value is ASCII FRC. Byte attestation does not validate Ghidra's
+  reference interpretation; native operand/data structure decides it.
+- Sixteen mappings add1564 bytes;16 new reviews remain indeterminate and10 omitted
+  candidates are added. Eight new exact owners pass360 bytes/17 fields and10
+  affected old owners pass781 bytes/16 fields. All18 selected cold proofs pass
+  with frozen source; no full cohort. See
+  [SECONDARY_PATTERN_CALLBACKS](SECONDARY_PATTERN_CALLBACKS.md).
 
 ## Topic index
 
@@ -574,6 +616,7 @@ Useful boundary corrections:
 | Complete damage/collision, projectile records and region allocation | [SECONDARY_DAMAGE](SECONDARY_DAMAGE.md) |
 | Complete projectile update/homing, iterator/literal math and atan2 | [SECONDARY_PROJECTILES](SECONDARY_PROJECTILES.md) |
 | Complete spawn, corrected record layout and omitted integer/emitter leaves | [SECONDARY_PATTERN](SECONDARY_PATTERN.md) |
+| Real pattern file/callers, complete callbacks and containing emitter array | [SECONDARY_PATTERN_CALLBACKS](SECONDARY_PATTERN_CALLBACKS.md) |
 | Streaming factories and lifetime ownership | [MUSIC_FACTORIES](MUSIC_FACTORIES.md) |
 | Device setup and buffer recreation | [AUDIO_DEVICE](AUDIO_DEVICE.md) |
 | Streaming buffers, decoder state and fades | [MUSIC_STREAM](MUSIC_STREAM.md) |

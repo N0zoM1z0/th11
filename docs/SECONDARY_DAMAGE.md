@@ -40,7 +40,9 @@ The new physical views preserve these verified offsets:
   per-frame hit58, signalled-hit5C, damage60, acceleration64 and parameters pointer68.
   The earlier pointer64 claim and its self-authored assertion were wrong; see
   [the independent cross-owner correction](SECONDARY_PATTERN.md).
-- Parameter width/height are0C/10, kind1D, signed script20 and callback30.
+- Parameter signed period/phase are0/1, width/height0C/10, kind1D, signed script20
+  and callback30. Period/phase are established by the later complete file loader
+  and frame dispatcher in [SECONDARY_PATTERN_CALLBACKS](SECONDARY_PATTERN_CALLBACKS.md).
   The actual callback receives owner in ECX, record in EDX and position on stack.
 - Global7C9C starts32 region records of74 bytes. Radius0, growth4, angle8,
   width/height10/14, motion18, timer4C, damage60, accumulated64, limit68,

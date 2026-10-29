@@ -68,20 +68,20 @@ int __stdcall SpawnSecondaryProjectile(SecondaryDamageReferencesView *self,
     else
     {
         SecondaryEmitterView *emitter = EmitterAt(self, parameters->index - 1);
-        projectile->motion.position.x = static_cast<float>(emitter->x * 0.0078125);
-        projectile->motion.position.y = static_cast<float>(emitter->y * 0.0078125);
-        projectile->motion.position.z = 0.0f;
+        CameraVector position = {static_cast<float>(emitter->x * 0.0078125),
+            static_cast<float>(emitter->y * 0.0078125), 0.0f};
+        projectile->motion.position = position;
     }
     if (parameters->kind == 4) self->SlotId(parameters->index) = 1;
     projectile->motion.speed = parameters->speed;
     if (parameters->angle >= 1000.0 && parameters->index)
     {
-        float random = static_cast<float>(RandomNext32(&g_TextRandomState) *
+        float random = static_cast<float>(static_cast<float>(RandomNext32(&g_TextRandomState)) *
             4.656612873077392578125e-10 - 1.0);
         projectile->motion.angle = NormalizeAngle(static_cast<float>(
             EmitterAt(self, parameters->index - 1)->angle +
             random * static_cast<double>(3.1415927f) / 12.0));
-        random = static_cast<float>(RandomNext32(&g_TextRandomState) *
+        random = static_cast<float>(static_cast<float>(RandomNext32(&g_TextRandomState)) *
             4.656612873077392578125e-10 - 1.0);
         projectile->motion.speed = random + random + parameters->speed;
     }

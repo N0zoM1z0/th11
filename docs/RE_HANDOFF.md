@@ -7,18 +7,20 @@ outrank historical notes. All dirty work belongs to this active goal.
 ## Checked-in state
 
 - Original Japanese TH11 v1.00a; config/target.toml pins identity.
-- 2,121 candidates;481 reviewed boundaries;366 source mappings.
-- 202 exact functions/23,702 bytes:8 normal COFF and194 linked PE.
-- Origins:90 authored,375 indeterminate,14 exclusions,1,642 pending.
+- 2,131 candidates;497 reviewed boundaries;382 source mappings.
+- 210 exact functions/24,062 bytes:8 normal COFF and202 linked PE.
+- Origins:90 authored,391 indeterminate,14 exclusions,1,636 pending.
 - Direct Ghidra/scripts; no Factory MCP/REA. VC9 RTM21022/SDK6.0A.
 - Commit/push authorized; prefix `gpt-6.1-sol: `.
 
-Latest checkpoint adds12 complete mappings/1,087 target bytes, including full
-spawn853. Six new primary owners close155 bytes/two fields;17 new reviews remain
-indeterminate and11 omitted candidates are added. Controller431070 now owns2888
-including its five-entry table. The shared parameters64 view was wrong: spawn,
-biased damage/update loads and gravity independently establish parameters68 and
-float acceleration64. See [SECONDARY_PATTERN](SECONDARY_PATTERN.md),
+Latest checkpoint adds16 complete mappings/1,564 bytes: real file/renderer/frame
+callers, long homing399, gravity132, emitter112 and callbacks. Eight new complete
+primary owners close360 bytes/17 fields;16 new reviews remain indeterminate and10
+omitted entries are added. Reset432CC0 now owns2508 including both six-entry tables.
+Render/reset prove eight E4 physical emitter records at7570..7C8F;75CC is their
+coordinate prefix at+5C. Descriptor0/1 are signed period/phase. See
+[SECONDARY_PATTERN_CALLBACKS](SECONDARY_PATTERN_CALLBACKS.md),
+[SECONDARY_PATTERN](SECONDARY_PATTERN.md),
 [SECONDARY_PROJECTILES](SECONDARY_PROJECTILES.md),
 [SECONDARY_DAMAGE](SECONDARY_DAMAGE.md),
 [SECONDARY_PAIR_MATH](SECONDARY_PAIR_MATH.md),
@@ -67,7 +69,7 @@ float acceleration64. See [SECONDARY_PATTERN](SECONDARY_PATTERN.md),
   closes via a natural local timer reference; one-past return on full32 slots
   is real. Partial actor references9C0 are projectile96C+54 target pointers.
   Position35/6, special predicate66->68/62 and dispatcher124->83/97 stay open.
-  Patterns142/183 remain source-open. New complete projectile896 source908/765
+  Patterns142/183 now have complete140/30 and166/138 source. Projectile896 last source908/765
   preserves the256-record lifecycle, asymmetric primary/auxiliary cleanup, culling,
   callbacks and timer. All13 calls/one callback/return agree. Homing498 source
   493/401 preserves real callback address escape/fixed ECX/EDX; all5 calls/4 returns
@@ -83,14 +85,31 @@ float acceleration64. See [SECONDARY_PATTERN](SECONDARY_PATTERN.md),
   Double fabs/atan2 alternatives do not close it; no aligned local is introduced.
   Length47/48 and angle31 stay open. Source presence and original TU identity
   remain separate. Effect457 and FSINCOS30 remain source-open.
-- Complete spawn853 is824/745 with full eight-call/one-callback agreement and
+- Complete spawn853 is849/733 with full eight-call/one-callback agreement and
   actual partial initialization. Sentinels are995/1000; RNG perturbation rounds
   before pi/12 and doubled-speed expressions. Native EAX descriptor/ECX position/
   stack owner+context differ from current private allocation. Emitter14/16 and
   integer conversion26/predicate20/publication6 are exact. Six other integer
   pair operations retain full source; original return/class ABI remains open.
-  Do not invent eight wholeE4 emitter objects; only the used physical prefix is
-  established, and a full array would overlap regions7C9C.
+  Later render/reset prove eight containing physical records at7570, ending7C90;
+  75CC was their coordinate prefix at+5C. This supersedes the earlier array limit.
+- Full caller source: loader162 exact includes14 native alignment bytes, ESI owner/
+  ECX filename, pointer-table relocation and four callback tables; period/phase0/1
+  are signed, negative period is sentinel, zero period remains unguarded. Actual
+  tables prove shared onSpawn/onUpdate signatures. Renderer130 is129/86 with an
+  independent renderer retaining the actual draw receiver; frame142 is140/30,
+  update183 is166/138. No cropped contribution is registered.
+- Target initializer12, angle initializer59 and RNG acceleration initializer70
+  are exact. Independent RNG input retains ESI; explicit float conversion gives
+  native float2^32 unsigned correction with no extra x87 rounding store. Timer
+  changed13, multiplier get/set12 each and rewind20 also close. The latter does
+  wrapped integer NEG before float conversion. All four constant payloads/28 bytes
+  agree independently. No dummy ABI/register/local alignment/padding is introduced.
+- Long homing399 full source397/309 releases at age>=120, correcting >120; nominal
+  fixed callback registration remains unproved, so only one logical input is
+  declared. Gravity132 is134/100, emitter112 is109/19, target detach59 is52/50 and
+  fixed caller31 is29/10. Ordinary double/conditional/offset-helper and opaque-angle
+  variants do not close these full owners; none is adopted.
 
 ## Other corrected ownership
 
@@ -115,10 +134,12 @@ float acceleration64. See [SECONDARY_PATTERN](SECONDARY_PATTERN.md),
 
 | Owner | Full target | Source / normalized differences |
 | --- | ---: | --- |
-| Spawn433F90 | 853 | 824 /745; full eight-call/one-callback audit |
-| Projectile434440 / homing434E30 | 896 /498 | 908 /765;493 /401 |
+| Spawn433F90 | 853 | 849 /733; real caller context; full target retained |
+| Pattern file431C70 / frame4342F0 / update434380 / render431BC0 | 162 /142 /183 /130 | exact;140 /30;166 /138;129 /86 |
+| Long homing435080 / gravity4352A0 / emitter435330 | 399 /132 /112 | 397 /309;134 /100;109 /19 |
+| Projectile434440 / homing434E30 | 896 /498 | last908 /765;493 /401; before period-header change |
 | Special406E90 /407220 | 246 /385 | 252 /204;385 /337 |
-| Damage4347F0 / collision431F70 | 1579 /244 | 1513 /1414;228 /211; fresh corrected-layout context |
+| Damage4347F0 / collision431F70 | 1579 /244 | last1513 /1414;228 /211; corrected64/68 context |
 | Sound44A260 / region433A90 | 148 /192 | last144 /93;192 exact |
 | Actor state411750 | 4230 | 4161 /3261; full actual support context |
 | Actor transition417B40 | 561 | 521 /497 |
@@ -156,19 +177,30 @@ Audio aliases/factories/refill, VM11640, rendering and master374 remain open.
 
 ## Current proof and replay scope
 
-`.analysis/secondary-pattern-final-proof.json` records6 new+7 affected old cold
-owners across SecondaryPattern/SecondaryIntegerPair/SecondaryProjectileMath/
-SecondaryDamageSupport. All13 pass833 bytes/17 fields, complete public primary-TU
-ownership and current receipts. Source freeze remains intact. Actual prior
-receipt source hashes selected only the latter two families; no full cohort.
-All jobs are terminal. Recompute dependencies on the next source edit.
+`.analysis/secondary-pattern-caller-final-proof.json` records8 new+10 affected old
+cold units across new SecondaryPatternDispatch/SecondaryProjectileCallbacks and
+old SecondaryDamageSupport/SecondaryProjectileMath/SecondaryPattern. All18 pass
+1,141 bytes/33 fields, with unique complete public primary-TU PDB ownership/current
+receipts. Source freeze is intact. Actual prior receipt source hashes selected
+only those three old families; no full cohort. All jobs are terminal. Recompute
+actual dependencies on the next source edit.
 
-Private evidence: full17-owner independent PE records, full large Ghidra exports,
-five controller table DATA refs, biased-pointer field audit, spawn call audit,
-API/context variants and corrected-layout damage/update diagnostics. The latter
-retain1513/1414 and908/765 respectively; equal totals do not undo the corrected
-loads68. Real-special-caller variants do not improve246/385. No API/Oracle/tool
-infrastructure changed. Native bytes/decompiler/vendor/build artifacts stay private;
-DB unchanged. Continue full large owners and natural codegen gaps, including
-spawn853, player controller2888, long homing399, gravity132/emitter112 and the
-six open integer helpers. Runtime/product/port work remains later; goal stays active.
+Private full reset/caller exports and21-owner independent PE records establish
+reset2508=2457 code+3 alignment+48 tables,15 internal padding bytes beyond sparse2442,
+696 instructions and12 actual table targets. Both switches own their DATA refs.
+43 alleged refs in4355E0..43562F are based renderer member displacements, and
+49353C's alleged435246 pointer is ASCII FRC. All44 are independently classified;
+Ghidra bytes being correct does not prove its reference interpretation. DB unchanged.
+Aim callback4337A0/12 now has its own full missing-entry review, source-open.
+Fresh19-owner audit agrees on all direct target/multiplicity and indirect counts;
+return counts remain separately recorded, without an exactness claim for open owners.
+
+Next substantial work: compile spawn with the real SecondaryDamageSound support
+(the current caller context still uses its opaque declaration), independent RNG
+state and actual frame/fixed callers. Real-only caller859/690 before final spelling
+also stays open. Do not force its EAX/ESI/EDI inputs. Continue full controller2888
+and emitter reset2508 source, orbit255/aim495 and their genuine callback contexts.
+Native draw130 still owns alignment and cannot be cropped to129. Emitter112's
+one descriptor-pointer reload remains open; do not use volatile to force it.
+Bytes/decompiler/vendor/build artifacts remain private. Product/runtime/port closure
+is later; goal stays active.

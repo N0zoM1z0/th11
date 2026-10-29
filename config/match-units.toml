@@ -3840,3 +3840,138 @@ size = 73
 linkages = [
   { offset = 47, type = "DIR32", symbol = "__real@406c000000000000", target = 0x497f70, addend = 0x0 },
 ]
+
+[units.load-secondary-projectile-patterns]
+artifact_kind = "linked-pe"
+source = "src/SecondaryPatternDispatch.cpp"
+inputs = ["src/SecondaryPattern.hpp", "src/SecondaryDamage.hpp"]
+support_sources = ["probes/secondary-pattern-dispatch-context.cpp", "src/SecondaryPattern.cpp", "src/Random.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryMotionMath.cpp", "src/StageMesh.cpp", "src/AngleMath.cpp", "src/AnimationImmediateDraw.cpp", "src/SecondaryProjectileMath.cpp", "src/StageTween.cpp", "src/ResourceFile.cpp"]
+output_dir = "build/match-linked/SecondaryPatternDispatch"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryPatternDispatchProbe@24"
+functions = ["LoadSecondaryProjectilePatterns"]
+symbol = "?LoadSecondaryProjectilePatterns@@YGHPAUSecondaryDamageReferencesView@@PBD@Z"
+target_address = 0x431c70
+size = 162
+linkages = [
+  { offset = 5, type = "REL32", symbol = "?LoadResourceFile@@YGPAEPBDPAIH@Z", target = 0x458400, addend = 0x0 },
+  { offset = 86, type = "DIR32", symbol = "?g_SecondaryProjectileSpawnCallbacks@@3PAP6IHPAUSecondaryDamageReferencesView@@PAUSecondaryProjectileView@@I@ZA", target = 0x4a3a28, addend = 0x0 },
+  { offset = 99, type = "DIR32", symbol = "?g_SecondaryProjectileUpdateCallbacks@@3PAP6IHPAUSecondaryDamageReferencesView@@PAUSecondaryProjectileView@@@ZA", target = 0x4a3a3c, addend = 0x0 },
+  { offset = 112, type = "DIR32", symbol = "?g_SecondaryProjectileOtherCallbacks@@3PAIA", target = 0x4c3244, addend = 0x0 },
+  { offset = 125, type = "DIR32", symbol = "?g_SecondaryProjectileHitCallbacks@@3PAP6IHPAUSecondaryDamageReferencesView@@PAUSecondaryProjectileView@@PBUCameraVector@@@ZA", target = 0x4c3248, addend = 0x0 },
+]
+
+[units.initialize-secondary-projectile-target]
+artifact_kind = "linked-pe"
+source = "src/SecondaryProjectileCallbacks.cpp"
+inputs = ["src/SecondaryProjectileCallbacks.hpp", "src/SecondaryPattern.hpp", "src/SecondaryDamage.hpp", "src/Random.hpp"]
+support_sources = ["probes/secondary-projectile-callbacks-context.cpp", "src/SecondaryPattern.cpp", "src/Random.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryMotionMath.cpp", "src/StageMesh.cpp", "src/AngleMath.cpp", "src/AnimationImmediateDraw.cpp", "src/SecondaryProjectileMath.cpp", "src/StageTween.cpp", "src/ResourceFile.cpp"]
+output_dir = "build/match-linked/SecondaryProjectileCallbacks"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryProjectileCallbacksProbe@32"
+functions = ["InitializeSecondaryProjectileTarget"]
+symbol = "?InitializeSecondaryProjectileTarget@@YIHPAUSecondaryDamageReferencesView@@PAUSecondaryProjectileView@@I@Z"
+target_address = 0x434e20
+size = 12
+linkages = []
+
+[units.initialize-secondary-projectile-angle]
+artifact_kind = "linked-pe"
+source = "src/SecondaryProjectileCallbacks.cpp"
+inputs = ["src/SecondaryProjectileCallbacks.hpp", "src/SecondaryPattern.hpp", "src/SecondaryDamage.hpp", "src/Random.hpp"]
+support_sources = ["probes/secondary-projectile-callbacks-context.cpp", "src/SecondaryPattern.cpp", "src/Random.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryMotionMath.cpp", "src/StageMesh.cpp", "src/AngleMath.cpp", "src/AnimationImmediateDraw.cpp", "src/SecondaryProjectileMath.cpp", "src/StageTween.cpp", "src/ResourceFile.cpp"]
+output_dir = "build/match-linked/SecondaryProjectileCallbacks"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryProjectileCallbacksProbe@32"
+functions = ["InitializeSecondaryProjectileAngle"]
+symbol = "?InitializeSecondaryProjectileAngle@@YIHPAUSecondaryDamageReferencesView@@PAUSecondaryProjectileView@@I@Z"
+target_address = 0x435210
+size = 59
+linkages = [
+  { offset = 25, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x4c3268, addend = 0x0 },
+  { offset = 31, type = "REL32", symbol = "?FindAnimationVmById@@YGPAUAnimationVmView@@PAURenderBatchView@@UAnimationVmId@@@Z", target = 0x4561e0, addend = 0x0 },
+  { offset = 46, type = "REL32", symbol = "?NormalizeAngle@@YGMM@Z", target = 0x458ed0, addend = 0x0 },
+]
+
+[units.initialize-secondary-projectile-acceleration]
+artifact_kind = "linked-pe"
+source = "src/SecondaryProjectileCallbacks.cpp"
+inputs = ["src/SecondaryProjectileCallbacks.hpp", "src/SecondaryPattern.hpp", "src/SecondaryDamage.hpp", "src/Random.hpp"]
+support_sources = ["probes/secondary-projectile-callbacks-context.cpp", "src/SecondaryPattern.cpp", "src/Random.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryMotionMath.cpp", "src/StageMesh.cpp", "src/AngleMath.cpp", "src/AnimationImmediateDraw.cpp", "src/SecondaryProjectileMath.cpp", "src/StageTween.cpp", "src/ResourceFile.cpp"]
+output_dir = "build/match-linked/SecondaryProjectileCallbacks"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryProjectileCallbacksProbe@32"
+functions = ["InitializeSecondaryProjectileAcceleration"]
+symbol = "?InitializeSecondaryProjectileAcceleration@@YIHPAUSecondaryDamageReferencesView@@PAUSecondaryProjectileView@@I@Z"
+target_address = 0x435250
+size = 70
+linkages = [
+  { offset = 4, type = "DIR32", symbol = "?g_TextRandomState@@3URandomStateView@@A", target = 0x4c2f00, addend = 0x0 },
+  { offset = 11, type = "REL32", symbol = "?RandomNext32@@YGIPAURandomStateView@@@Z", target = 0x458c30, addend = 0x0 },
+  { offset = 29, type = "DIR32", symbol = "__real@4f800000", target = 0x497f98, addend = 0x0 },
+  { offset = 35, type = "DIR32", symbol = "__real@3e00000000000000", target = 0x498028, addend = 0x0 },
+  { offset = 43, type = "DIR32", symbol = "__real@3ff0000000000000", target = 0x497e48, addend = 0x0 },
+  { offset = 57, type = "DIR32", symbol = "__real@3f60624de0000000", target = 0x498128, addend = 0x0 },
+]
+
+[units.secondary-pattern-timer-changed]
+artifact_kind = "linked-pe"
+source = "src/SecondaryProjectileCallbacks.cpp"
+inputs = ["src/SecondaryProjectileCallbacks.hpp", "src/SecondaryPattern.hpp", "src/SecondaryDamage.hpp", "src/Random.hpp"]
+support_sources = ["probes/secondary-projectile-callbacks-context.cpp", "src/SecondaryPattern.cpp", "src/Random.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryMotionMath.cpp", "src/StageMesh.cpp", "src/AngleMath.cpp", "src/AnimationImmediateDraw.cpp", "src/SecondaryProjectileMath.cpp", "src/StageTween.cpp", "src/ResourceFile.cpp"]
+output_dir = "build/match-linked/SecondaryProjectileCallbacks"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryProjectileCallbacksProbe@32"
+functions = ["SecondaryPatternTimerChanged"]
+symbol = "?SecondaryPatternTimerChanged@@YGHPBUStageTimerView@@@Z"
+target_address = 0x4355e0
+size = 13
+linkages = []
+
+[units.get-secondary-pattern-multiplier]
+artifact_kind = "linked-pe"
+source = "src/SecondaryProjectileCallbacks.cpp"
+inputs = ["src/SecondaryProjectileCallbacks.hpp", "src/SecondaryPattern.hpp", "src/SecondaryDamage.hpp", "src/Random.hpp"]
+support_sources = ["probes/secondary-projectile-callbacks-context.cpp", "src/SecondaryPattern.cpp", "src/Random.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryMotionMath.cpp", "src/StageMesh.cpp", "src/AngleMath.cpp", "src/AnimationImmediateDraw.cpp", "src/SecondaryProjectileMath.cpp", "src/StageTween.cpp", "src/ResourceFile.cpp"]
+output_dir = "build/match-linked/SecondaryProjectileCallbacks"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryProjectileCallbacksProbe@32"
+functions = ["GetSecondaryPatternMultiplier"]
+symbol = "?GetSecondaryPatternMultiplier@@YAHXZ"
+target_address = 0x435610
+size = 12
+linkages = [
+  { offset = 1, type = "DIR32", symbol = "?g_SecondaryActorReferences@@3PAUSecondaryActorReferencesView@@A", target = 0x4a8eb4, addend = 0x0 },
+]
+
+[units.set-secondary-pattern-multiplier]
+artifact_kind = "linked-pe"
+source = "src/SecondaryProjectileCallbacks.cpp"
+inputs = ["src/SecondaryProjectileCallbacks.hpp", "src/SecondaryPattern.hpp", "src/SecondaryDamage.hpp", "src/Random.hpp"]
+support_sources = ["probes/secondary-projectile-callbacks-context.cpp", "src/SecondaryPattern.cpp", "src/Random.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryMotionMath.cpp", "src/StageMesh.cpp", "src/AngleMath.cpp", "src/AnimationImmediateDraw.cpp", "src/SecondaryProjectileMath.cpp", "src/StageTween.cpp", "src/ResourceFile.cpp"]
+output_dir = "build/match-linked/SecondaryProjectileCallbacks"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryProjectileCallbacksProbe@32"
+functions = ["SetSecondaryPatternMultiplier"]
+symbol = "?SetSecondaryPatternMultiplier@@YGXH@Z"
+target_address = 0x435620
+size = 12
+linkages = [
+  { offset = 1, type = "DIR32", symbol = "?g_SecondaryActorReferences@@3PAUSecondaryActorReferencesView@@A", target = 0x4a8eb4, addend = 0x0 },
+]
+
+[units.rewind-secondary-timer]
+artifact_kind = "linked-pe"
+source = "src/SecondaryProjectileCallbacks.cpp"
+inputs = ["src/SecondaryProjectileCallbacks.hpp", "src/SecondaryPattern.hpp", "src/SecondaryDamage.hpp", "src/Random.hpp"]
+support_sources = ["probes/secondary-projectile-callbacks-context.cpp", "src/SecondaryPattern.cpp", "src/Random.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryMotionMath.cpp", "src/StageMesh.cpp", "src/AngleMath.cpp", "src/AnimationImmediateDraw.cpp", "src/SecondaryProjectileMath.cpp", "src/StageTween.cpp", "src/ResourceFile.cpp"]
+output_dir = "build/match-linked/SecondaryProjectileCallbacks"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryProjectileCallbacksProbe@32"
+functions = ["RewindSecondaryTimer"]
+symbol = "?RewindSecondaryTimer@@YGXPAUStageTimerView@@H@Z"
+target_address = 0x4355c0
+size = 20
+linkages = [
+  { offset = 14, type = "REL32", symbol = "?OffsetSecondaryTimer@@YGHPAUStageTimerView@@M@Z", target = 0x459210, addend = 0x0 },
+]

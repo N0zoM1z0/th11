@@ -14,7 +14,8 @@ struct SecondaryDamageReferencesView;
 struct SecondaryProjectileView;
 struct SecondaryProjectileParameters
 {
-    short unknown000, damage;
+    signed char period, phase;
+    short damage;
     float offsetX, offsetY;
     float width, height;
     float angle, speed;

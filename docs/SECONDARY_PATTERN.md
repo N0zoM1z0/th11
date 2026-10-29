@@ -60,12 +60,16 @@ Rotation uses the raw configured angle. Auxiliary ID clears before callback24,
 optional sound follows it, and the VM gets separate double x+32+192/y+16 offsets.
 
 Emitter helpers establish owner75CC+index*E4 and ID at owner7620+index*E4. The
-maintained type is only the observed prefix through ID54. E4 is a stride, and
-neither a complete object size nor an eight-object array is established. Such an
-array would overlap the independently verified region pool; it is not introduced.
+helper type is the observed coordinate prefix through ID54. Later complete render
+and reset review establishes the containing record base7570, eight physical E4
+records and end7C90; prefix75CC is record+5C. See
+[SECONDARY_PATTERN_CALLBACKS](SECONDARY_PATTERN_CALLBACKS.md). Placing whole records
+at75CC was the unproved assumption behind the earlier overlap restriction.
 
 Initial source735/731 retained out-of-line emitter/VM helpers. Ordinary inline
-physical accessors and the native two-list lookup produce current824/745. Full
+physical accessors and the native two-list lookup produce824/745 in that earlier context. Current real-caller source849/733 also
+snapshots the float3 before publication and uses the observed unsigned-to-float
+x87 conversion. Full
 private ABI/frame, unsigned-conversion constant storage, comparisons and register
 scheduling remain open. This complete diagnostic grants no exact spawn credit.
 
@@ -77,7 +81,7 @@ output views do not assert an original constructor or aggregate-return ABI.
 
 | Owner | Address | Target bytes | Current result |
 | --- | --- | ---: | --- |
-| SpawnSecondaryProjectile | 433F90 | 853 | Source824/745 masked diagnostic |
+| SpawnSecondaryProjectile | 433F90 | 853 | Source849/733; later real-caller context |
 | GetSecondaryEmitter | 433F30 | 14 | Exact |
 | CopySecondaryEmitterId | 433F40 | 16 | Exact |
 | ConvertSecondaryIntegerPair | 433DB0 | 26 | Exact |
@@ -123,7 +127,7 @@ for that unresolved identity/constructor hypothesis or surrounding padding.
 All17 origins remain indeterminate. Specific game, replay, vector, timer or engine
 roles alone do not prove original authorship or reused-library identity.
 
-## Selected cold proof
+## Earlier checkpoint cold proof
 
 Six new owners pass155 bytes/two fields; seven affected old owners pass678 bytes/
 15 fields. All13 selected cold replays pass833 bytes/17 fields, with unique complete
@@ -144,3 +148,7 @@ Private evidence lives under.analysis/secondary-pattern-* and
 build/probe-ltcg/SecondaryPattern, SecondaryIntegerPair and the affected families.
 Native bytes, tool payloads, binaries, objects and decompiler output stay private.
 Canonical artifacts live under build/match-linked. Runtime/product/port work remains later.
+
+Later full caller/callback source, period/phase fields, containing emitter array,
+44 false-reference classifications and the current18-unit cold proof are recorded
+in [SECONDARY_PATTERN_CALLBACKS](SECONDARY_PATTERN_CALLBACKS.md).

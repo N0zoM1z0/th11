@@ -56,6 +56,9 @@ The final independent audit agrees on all13 direct-call targets/multiplicities,
 the callback and return. Source908/765 still differs in private allocation,
 inline lookup/cleanup layout and scheduling; no exact or runtime claim follows.
 
+Later complete long-homing/gravity/emitter source and actual callback-table ABI
+evidence are recorded in [SECONDARY_PATTERN_CALLBACKS](SECONDARY_PATTERN_CALLBACKS.md).
+
 ## Homing and callback interfaces
 
 The498-byte callback preserves state2 exit, acquisition from a copy of position
