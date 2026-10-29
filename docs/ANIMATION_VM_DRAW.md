@@ -138,3 +138,8 @@ Other private evidence: `frnd-contract-review.txt`,
 `quad-unsnapped-rotated-review.txt`, `quad-dispatch-callees.c` and attestation
 logs; `animation-vm-draw-*.log` compiler probes; complete current diagnostics
 `vm-draw-final-diagnostic.json`. No copied CRT or target code is committed.
+
+The subsequent [projection/fog review](ANIMATION_PROJECTED_QUAD.md) supplies
+seven more source mappings, reviews the complete976-byte billboard owner and
+records the precise/fast sin-cos and rejected `_frnd` intrinsic experiments.
+Those new diagnostic families do not replace the canonical receipts above.

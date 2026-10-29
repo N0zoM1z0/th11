@@ -98,6 +98,16 @@ Useful boundary corrections:
   source/exact credit.
 - Native viewport rejection uses ordered separating comparisons. Rewriting
   them as positive <= tests rejects NaN bounds and changes the actual paths.
+- Projected quads use fixed sprite-space anchors +/-128 and +/-256. Rebuilding
+  copies VM+2B4 to+2F4, scales only _11/_22 and clears dirty flags8/4 around
+  nonzero/NaN X/Y/Z rotations. Working _41/_42 add cached translations; _43
+  replaces the cached translation. D3DX imports are independently verified.
+- Software fog retains float stores between offset+position, extraOffset and
+  camera subtraction; it rejects ordered factor>=1 and truncates all four
+  output channels. The projected wrapper resets RHW after submission/culling.
+- VC9 rejects `#pragma intrinsic(_frnd)` with C4163. Precise sin/cos probes
+  call CRT intrinsics; /fp:fast emits separate FSIN/FCOS. Neither experiment
+  closes native inline FRNDINT or paired FSINCOS; those gaps remain open.
 - Blend selector6 uses INVSRCCOLOR4, not SRCCOLOR3. Selector7 updates cache
   without blend API calls. The state application counter increments every call.
 - Tint channels use byte inputs and an unsigned promoted product before SHR7.
@@ -111,7 +121,7 @@ Useful boundary corrections:
 | Stage interpreter and interpolation | [STAGE_SCRIPT](STAGE_SCRIPT.md), [STAGE_TWEEN](STAGE_TWEEN.md), [STAGE_EASING](STAGE_EASING.md) |
 | Stage lifecycle, updates and drawing | [STAGE_LIFECYCLE](STAGE_LIFECYCLE.md), [STAGE_UPDATE](STAGE_UPDATE.md), [STAGE_DRAWING](STAGE_DRAWING.md) |
 | Stage/ANM resources | [STAGE_RESOURCE](STAGE_RESOURCE.md), [ANIMATION_CHUNKS](ANIMATION_CHUNKS.md), [ANIMATION_TEXTURES](ANIMATION_TEXTURES.md), [pixel processing](ANIMATION_TRANSPARENT_PIXELS.md) |
-| Renderer quad construction/submission | [ANIMATION_QUAD](ANIMATION_QUAD.md), [ANIMATION_VM_DRAW](ANIMATION_VM_DRAW.md) |
+| Renderer quad construction/submission | [ANIMATION_QUAD](ANIMATION_QUAD.md), [ANIMATION_VM_DRAW](ANIMATION_VM_DRAW.md), [ANIMATION_PROJECTED_QUAD](ANIMATION_PROJECTED_QUAD.md) |
 | Renderer and device | [RENDER_CAMERA](RENDER_CAMERA.md), [DEVICE_INITIALIZATION](DEVICE_INITIALIZATION.md), [RENDER_STATE_RESET](RENDER_STATE_RESET.md), [RUNTIME_SURFACES](RUNTIME_SURFACES.md) |
 | ASCII lifecycle, glyph drawing and formatting | [ASCII_LIFECYCLE](ASCII_LIFECYCLE.md), [ASCII_DRAWING](ASCII_DRAWING.md) |
 | Text | [TEXT_RESOURCES](TEXT_RESOURCES.md), [TEXT_DRAWING_COMPOSITE](TEXT_DRAWING_COMPOSITE.md), [OUTLINED_TEXT](OUTLINED_TEXT.md), [FORMATTED_TEXTURE_TEXT](FORMATTED_TEXTURE_TEXT.md) |

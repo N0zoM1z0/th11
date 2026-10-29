@@ -145,3 +145,10 @@ DrawUnrotatedAnimationVm
 BuildUnroundedAnimationVmQuad
 DrawUnroundedAnimationVm
 DrawAdaptiveAnimationVm
+AnimationDistanceRoot
+DrawAdaptiveUnroundedAnimationVm
+DrawBillboardAnimationVm
+DrawFoggedBillboardAnimationVm
+BuildProjectedAnimationVmQuad
+DrawProjectedAnimationVm
+BuildAnimationVmModeQuad

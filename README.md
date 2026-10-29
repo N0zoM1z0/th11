@@ -43,9 +43,10 @@ in [`docs/PROGRESS.md`](docs/PROGRESS.md). Start continuation at
 [`docs/RE_HANDOFF.md`](docs/RE_HANDOFF.md); the concise
 [`working knowledge`](docs/KNOWLEDGE_BASE.md) links the detailed topic records.
 
-The latest checkpoint recovers complete VM submission source and closes the
-632/537-byte coordinate builders,40-byte floor adapter and54-byte dispatch.
-Four new exact functions add1,263 bytes. The submission body remains non-exact.
+The latest checkpoint adds seven projected-quad/software-fog source mappings
+covering1,896 target bytes, including the792/794-byte owners, and14 further
+boundary/origin reviews. These sources remain non-exact. The preceding
+checkpoint closed the632/537-byte builders,40-byte adapter and54-byte dispatch.
 Stage meshes, VM creation, the full stage interpreter, interpolation, stage
 update/drawing, ANM resources, rendering, text, input and file paths have varying
 levels of maintained source and exact proofs. Source presence, exact codegen and
@@ -54,7 +55,7 @@ full runtime and portability are open.
 
 | Current area | Details |
 | --- | --- |
-| Renderer quad construction/submission | [quads](docs/ANIMATION_QUAD.md), [submission](docs/ANIMATION_VM_DRAW.md) |
+| Renderer quad construction/submission | [quads](docs/ANIMATION_QUAD.md), [submission](docs/ANIMATION_VM_DRAW.md), [projection/fog](docs/ANIMATION_PROJECTED_QUAD.md) |
 | ASCII lifecycle, glyph drawing and formatting | [lifecycle](docs/ASCII_LIFECYCLE.md), [drawing](docs/ASCII_DRAWING.md) |
 | Mesh effects and VM factory | [mesh](docs/STAGE_MESH.md), [effects](docs/MESH_EFFECTS.md), [factory](docs/ANIMATION_VM_FACTORY.md) |
 | Stage interpreter and interpolation | [script](docs/STAGE_SCRIPT.md), [tweens](docs/STAGE_TWEEN.md), [easing](docs/STAGE_EASING.md) |
