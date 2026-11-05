@@ -400,3 +400,5 @@ SecondaryEmitterOrbitCallback,0x00433690,function
 SecondaryEmitterAimCallback,0x004337A0,function
 UpdateSecondaryLivesDisplay,0x0041A060,function
 BeginSecondaryPlayerDeath,0x004327D0,function
+AllocateSecondaryDeathEffect,0x00422560,function
+ApplySecondaryPlayerDeathPenalty,0x0042F6F0,function

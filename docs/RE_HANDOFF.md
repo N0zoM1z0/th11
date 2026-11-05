@@ -7,18 +7,23 @@ bytes/current receipts outrank older notes. All dirty work is ours.
 ## Current exact state
 
 - Original Japanese TH11v1.00a, pinned by `config/target.toml`.
-- 2,136 candidates;525 reviewed boundaries;401 source mappings.
+- 2,136 candidates;526 reviewed boundaries;403 source mappings.
 - 223 exact functions/25,597 bytes:9 normal COFF and214 linked PE.
-- Origins:90 authored,419 indeterminate,14 exclusions,1,613 pending.
+- Origins:90 authored,420 indeterminate,14 exclusions,1,612 pending.
 - VC9 RTM21022/SDK6.0A; direct Ghidra/scripts, no Factory MCP/REA.
 - Commit/push authorized, prefix `gpt-6.1-sol: `.
 - No reconstruction job remains running at this checkpoint.
 
-Latest work adds seven complete mappings/1,722 bytes. Six cold linked proofs
+Previous work added seven complete mappings/1,722 bytes. Six cold linked proofs
 close1,019 bytes/35 fields: orbit255, aim495, callbacks12/12, angle difference101
 and life HUD144. Death703 has complete source715/423 and remains non-exact.
 Two additional boundary/origin reviews cover246 bytes/74 instructions/two RET4;
 both origins remain indeterminate. See [EMITTER_MOTION](SECONDARY_EMITTER_MOTION.md).
+
+Latest continuation adds complete effect allocator229/penalty102 source and one
+boundary/origin review. Their current228/37 and102/14 diagnostics remain non-exact;
+the real death caller gives the same results as independent manager/position
+inputs. Earlier exact sources/headers/contexts are unchanged; no cold replay needed.
 
 ## Immediate continuation
 
@@ -26,6 +31,7 @@ both origins remain indeterminate. See [EMITTER_MOTION](SECONDARY_EMITTER_MOTION
 | --- | --- |
 | Movement430290/2896 | Full boundary reviewed, source-open; next substantial controller callee |
 | Death4327D0/703 | Source715/423 in real controller/HUD/Bind context; callee-save placement, global stores and emitter-loop layout |
+| Effect422560/229, penalty42F6F0/102 | Complete source228/37 and102/14; allocator position EDI versus native EBX and mode/lifetime stores |
 | Controller431070/2888 | Source2800/2285 in previous context; actual normal-COFF callback support preserves stack owner/two RET4; frame/vector stores |
 | Reset432CC0/2508 | Source2444/1967; main factory sites1 versus native4 |
 | Publishers455760/118,4557E0/123 |111/33 and116/47; ID zero-check/register allocation |
@@ -51,7 +57,12 @@ padding or forced frames. Full table/padding ownership remains mandatory.
   Independent real HUD/count/fragments inputs prevent global-only specialization.
   Independent file/script/VM inputs likewise preserve BindAnimationScript's ABI.
 - Penalty42F6F0/102 has a real position stack input loaded into EBX before422560;
-  Ghidra's no-argument hypothesis misses it. It remains a source declaration.
+  Ghidra's no-argument hypothesis misses it. Complete allocator/penalty source now
+  exists in SecondaryDeathEffect.cpp; the88-byte effect has position0/nodeC/text1C,
+  lifetime60/mode68/duration6C/delay70/scale7C/color84 and selected manager heads78.
+- Death pointer-count/end-pointer/field-iterator probes give721/434,712/481 and
+  721/443; swapping score/lives order changes none. These are completed probes,
+  not untried next steps. Maintained death715/423 and exact HUD144 remain intact.
 - Movement2896, reset2508, controller2888, drop851, special268 and interpreter7093
   retain all reviewed internal alignment and owned dispatch/selector data.
 

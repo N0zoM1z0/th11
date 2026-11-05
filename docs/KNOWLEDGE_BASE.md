@@ -78,6 +78,7 @@ specific retained contexts, not exactness scores or complete-product results.
 | --- | --- |
 | Controller2888 |2800/2285; real normal-COFF callback support preserves stack input/two RET4; frame/vector stores remain open |
 | Death703 |715/423 with independent real HUD/count/fragments and file/script/VM inputs; callee-save placement and emitter-loop layout remain open |
+| Death effect229 / penalty102 |228/37 and102/14; native position EBX versus candidate EDI and mode/lifetime store scheduling |
 | Reset2508 |2444/1967; main factory sites1 versus native4 |
 | Publishers118/123 |111/33 and116/47; counter zero check/register allocation |
 | Spawn853 |Real Sound846/733; real-only independent RNG856/690; both remain open |
@@ -103,6 +104,11 @@ specific retained contexts, not exactness scores or complete-product results.
   Float3 caller locals, separate signed conversions and component-level Player()
   reads recover the frame/conversion/global-load sequence naturally. The polar
   member remains a declaration with a real paired FSINCOS contract.
+- Effect422560 and its real penalty caller42F6F0 now have complete source. The
+ 88-byte effect clears/constructs its node, appends at selected manager head78,
+  copies float3 position and bounded text, then sets mode/lifetime. Reset/Append
+  members recover the native constructor/list sequence; private position register
+  and final stores remain open. Death loop/order probes do not improve715/423.
 
 ## Continuing work and evidence
 

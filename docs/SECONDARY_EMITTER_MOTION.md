@@ -1,8 +1,8 @@
 # Emitter motion and player death
 
-Seven complete source mappings cover1,722 target bytes. Six functions close
+Nine complete source mappings cover2,053 target bytes. Six functions close
 1,019 bytes through the public primary-TU linked Oracle; the703-byte death
-transition has complete source and remains non-exact. All observations concern
+transition and the229/102-byte effect caller chain have complete non-exact source. All observations concern
 the hash-pinned Japanese TH11v1.00a image and direct local Ghidra.
 
 | Function | Address | Full target bytes | Current result |
@@ -95,9 +95,44 @@ Two additional boundary/origin reviews cover246 bytes/74 instructions/two RET4:
 - Penalty42F6F0 owns102. Its real stack position is loaded into EBX and forwarded
   to422560; the no-argument Ghidra hypothesis missed it. Selection-specific list
   aging, returned effect lifetime floor, timers and color are observed. It remains
-  a real source declaration, not a reconstructed implementation.
+  a real source declaration at that checkpoint. Its complete source is now
+  present as described below.
 
 Both new origins remain indeterminate. Private complete instruction/flow reviews,
 compiler variants, field/payload checks and selected cold results live under
 `.analysis/secondary-emitter-motion-*` and `.analysis/secondary-death-*`;
 canonical artifacts live in `build/match-linked`.
+
+## Complete death-effect caller chain
+
+Further direct Ghidra and independent native review adds the complete229-byte
+allocator422560 and source for it and penalty42F6F0/102. These two mappings cover
+331 bytes; neither earns exact credit. The allocator owns three internal alignment
+bytes beyond sparse226,67 instructions, one RET4 and three direct calls. Its sole
+incoming call is42F723, with no foreign interior entries. Origin is indeterminate.
+
+The effect occupies88 bytes: float3 position0, linked nodeC, text1C/64 bytes,
+lifetime60, cleared word64, mode68, duration6C, delay70, scale7C and color84.
+Construction clears all88, resets the embedded node, sets scale1/colorFFFFFFFF/
+duration300/delay-1. Allocation appends its node to the selected manager head at
+78+variant*C, sets delay30, snapshots the input position, copies bounded text
+`Caution!`, and reads globals4A5730/34/38 for mode/lifetime. A null allocation is
+only handled around construction; no later guard is added to the native path.
+Text remains an external constant-data binding; full data ownership is open.
+
+Penalty captures each iterator's next before aging positive delay, then allocates
+using the real manager and position. It subtracts60 from lifetime with a floor1,
+sets duration90/colorFFFF8080/delay30. Node Reset/Append members naturally recover
+the allocator's native construction/list instruction sequence through offset96;
+the remaining private position register is EDI versus target EBX, and mode/lifetime
+store scheduling remains open. Current complete diagnostics are228/37 for the
+allocator and102/14 for penalty. An independent manager/position context and the
+real death caller give the same results. No artificial ABI or padding is adopted.
+
+Six additional death-loop/order probes fail: pointer-count loops give721/434,
+end-pointer loops712/481, and field iterators721/443. Swapping score/lives updates
+leaves each result unchanged. None replaces the maintained715/423 death source;
+life HUD stays144/0 in every probe. These are compiler diagnostics, not cold
+exact proofs or runtime tests. Earlier canonical sources/headers/contexts are
+unchanged, so no existing exact unit needs a cold replay. Private evidence is in
+`.analysis/secondary-death-effect-*` and `secondary-death-variants.log`.

@@ -399,3 +399,5 @@ SecondaryEmitterOrbitCallback
 SecondaryEmitterAimCallback
 UpdateSecondaryLivesDisplay
 BeginSecondaryPlayerDeath
+AllocateSecondaryDeathEffect
+ApplySecondaryPlayerDeathPenalty

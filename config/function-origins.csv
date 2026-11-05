@@ -363,7 +363,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x004223B0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00422490,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004224E0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00422560,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00422560,unknown,SecondaryPlayerController,indeterminate,unknown,secondary-death-effect-origin-2026-11-05
 0x00422650,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00423120,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00423220,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
