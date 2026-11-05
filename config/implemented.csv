@@ -403,3 +403,5 @@ AllocateSecondaryDeathEffect
 ApplySecondaryPlayerDeathPenalty
 UpdateSecondaryPlayerMovement
 SignalSecondaryAnimationEvent
+UpdateSecondaryPlayerHorizontalWrap
+AttractSecondaryPlayerItems

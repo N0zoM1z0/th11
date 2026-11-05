@@ -404,3 +404,5 @@ AllocateSecondaryDeathEffect,0x00422560,function
 ApplySecondaryPlayerDeathPenalty,0x0042F6F0,function
 UpdateSecondaryPlayerMovement,0x00430290,function
 SignalSecondaryAnimationEvent,0x00456230,function
+UpdateSecondaryPlayerHorizontalWrap,0x00430E50,function
+AttractSecondaryPlayerItems,0x004245E0,function

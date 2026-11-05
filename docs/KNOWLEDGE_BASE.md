@@ -81,6 +81,7 @@ specific retained contexts, not exactness scores or complete-product results.
 | Death703 |715/423 with independent real HUD/count/fragments and file/script/VM inputs; callee-save placement and emitter-loop layout remain open |
 | Death effect229 / penalty102 |228/37 and102/14; native position EBX versus candidate EDI and mode/lifetime store scheduling |
 | Movement2896 |2836/2434; full22 direct calls/one indirect callback/RET4 agree; frame18 hex; register/branch/vector gaps |
+| Horizontal wrap540 |499/415 with real movement/sound/reset source; counter-store folding, saved registers and refresh order |
 | Reset2508 |2412/1970 in corrected movement context; main factory grouping remains open |
 | Publishers118/123 |111/33 and116/47; counter zero check/register allocation |
 | Spawn853 |Real Sound846/733; real-only independent RNG856/690; both remain open |
@@ -115,11 +116,16 @@ specific retained contexts, not exactness scores or complete-product results.
   value wrapper: the ID stays on the stack and event in SI. Flattening ID to unsigned
   int promotes it to EAX and gives53/57. Preserve independent renderer input for
   FindAnimationVmById; a global-only graph specializes away its actual argument.
+- Item attraction4245E0 closes all63 bytes. Its2198 records start at manager+478,
+  stride478; state1 becomes3 and parameter+C receives player configuration+8 as
+  float. Direct parameter publication avoids a temporary rounding spill; increasing
+  index iteration gives the native pointer ADD/count SUB. Full wrap540 source
+  retains inclusive +/-6800 thresholds, D000 wrap, counter8/45 and sound47/48.
 
 ## Continuing work and evidence
 
 Controller/reset/death/movement have complete maintained source and remain non-exact.
-Real clear/drop and horizontal-wrap callees remain concrete source work. Orbit255,
+Real clear/drop callees remain concrete source work. Orbit255,
 aim495, both12-byte callbacks, angle difference101 and life HUD144 close1,019
 bytes with six strict cold primary-TU proofs and35 fields. Use real callback/
 registration evidence for ABI rather than decompiler parameter guesses.
@@ -155,6 +161,7 @@ are regenerable; result records are retained. See [ARTIFACTS.md](ARTIFACTS.md) f
 | Complete player controller, real callback contracts and full movement/drop tables | [SECONDARY_PLAYER_CONTROLLER](SECONDARY_PLAYER_CONTROLLER.md) |
 | Exact orbit/aim callbacks, player death and life HUD | [SECONDARY_EMITTER_MOTION](SECONDARY_EMITTER_MOTION.md) |
 | Complete player movement, callback-slot correction and event setter | [SECONDARY_PLAYER_MOVEMENT](SECONDARY_PLAYER_MOVEMENT.md) |
+| Complete horizontal wrap and exact item attraction | [SECONDARY_PLAYER_WRAP_ITEMS](SECONDARY_PLAYER_WRAP_ITEMS.md) |
 | Streaming factories and lifetime ownership | [MUSIC_FACTORIES](MUSIC_FACTORIES.md) |
 | Device setup and buffer recreation | [AUDIO_DEVICE](AUDIO_DEVICE.md) |
 | Streaming buffers, decoder state and fades | [MUSIC_STREAM](MUSIC_STREAM.md) |

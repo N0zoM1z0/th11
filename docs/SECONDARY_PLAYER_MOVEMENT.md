@@ -38,8 +38,8 @@ receipt dependencies, not new exact credit or a claim about original TU ownershi
   components only when direction is nonzero. Separate signed truncations produce
   steps8B8/8BC before wrapped fixed-point position accumulation.
 - Selection0 calls the actual horizontal-wrap helper430E50. Selection1 calls
-  item attraction4245E0 after more than10 still/released frames. Those two helper
-  implementations remain open declarations. For fire state below99, x clamps to
+  item attraction4245E0 after more than10 still/released frames. Both helpers now
+  have complete source; see [WRAP_ITEMS](SECONDARY_PLAYER_WRAP_ITEMS.md). For fire state below99, x clamps to
   +/-5C00 and y to1000..D800; horizontal selection0 boundary contact also starts
   fire state1/3 and clears924. Float position uses double1/128.
 - Focus VM position snapshots separate double x+32+192 and y+16 before raw
