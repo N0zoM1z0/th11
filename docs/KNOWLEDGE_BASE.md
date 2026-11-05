@@ -31,6 +31,7 @@ Older experiments are preserved in the explicitly
 | Projectile6C | Acceleration64, descriptor pointer68; old parameters64 was wrong |
 | Descriptor34 | Signed period/phase0/1; negative period terminates; no zero-period guard |
 | Emitters | Eight E4 records at7570..7C8F;75CC is record+5C coordinate prefix |
+| Emitter callbacks | Reset publishes orbit/aim at DC, called by movement; draw calls a separate E0 slot. The prior reset source used E0 incorrectly |
 | Reset configuration | Branch3 focused base148; branch4 seven pairs at64..9B from28/28/28/78/C8/118/168 |
 | Reset partial initialization | Branch2 sets float polar pairs and retains old integer offsets; auxiliary processing precedes slot equality |
 | Controller431070 | One actual stack owner, EAX1 and two RET4; no decompiler dummy ECX/EDX inputs |
@@ -79,7 +80,8 @@ specific retained contexts, not exactness scores or complete-product results.
 | Controller2888 |2800/2285; real normal-COFF callback support preserves stack input/two RET4; frame/vector stores remain open |
 | Death703 |715/423 with independent real HUD/count/fragments and file/script/VM inputs; callee-save placement and emitter-loop layout remain open |
 | Death effect229 / penalty102 |228/37 and102/14; native position EBX versus candidate EDI and mode/lifetime store scheduling |
-| Reset2508 |2444/1967; main factory sites1 versus native4 |
+| Movement2896 |2836/2434; full22 direct calls/one indirect callback/RET4 agree; frame18 hex; register/branch/vector gaps |
+| Reset2508 |2412/1970 in corrected movement context; main factory grouping remains open |
 | Publishers118/123 |111/33 and116/47; counter zero check/register allocation |
 | Spawn853 |Real Sound846/733; real-only independent RNG856/690; both remain open |
 | Actor state4230 |4161/3261 in full support context;64 calls/3 callbacks/5 returns audited |
@@ -109,11 +111,15 @@ specific retained contexts, not exactness scores or complete-product results.
   copies float3 position and bounded text, then sets mode/lifetime. Reset/Append
   members recover the native constructor/list sequence; private position register
   and final stores remain open. Death loop/order probes do not improve715/423.
+- Event helper456230 closes all67 bytes with the existing four-byte AnimationVmId
+  value wrapper: the ID stays on the stack and event in SI. Flattening ID to unsigned
+  int promotes it to EAX and gives53/57. Preserve independent renderer input for
+  FindAnimationVmById; a global-only graph specializes away its actual argument.
 
 ## Continuing work and evidence
 
-Controller/reset/death have complete maintained source and remain non-exact.
-Movement2896 and real clear/drop callees remain concrete source work. Orbit255,
+Controller/reset/death/movement have complete maintained source and remain non-exact.
+Real clear/drop and horizontal-wrap callees remain concrete source work. Orbit255,
 aim495, both12-byte callbacks, angle difference101 and life HUD144 close1,019
 bytes with six strict cold primary-TU proofs and35 fields. Use real callback/
 registration evidence for ABI rather than decompiler parameter guesses.
@@ -148,6 +154,7 @@ are regenerable; result records are retained. See [ARTIFACTS.md](ARTIFACTS.md) f
 | Complete emitter reset, list directions and factory ownership | [SECONDARY_EMITTER_RESET](SECONDARY_EMITTER_RESET.md) |
 | Complete player controller, real callback contracts and full movement/drop tables | [SECONDARY_PLAYER_CONTROLLER](SECONDARY_PLAYER_CONTROLLER.md) |
 | Exact orbit/aim callbacks, player death and life HUD | [SECONDARY_EMITTER_MOTION](SECONDARY_EMITTER_MOTION.md) |
+| Complete player movement, callback-slot correction and event setter | [SECONDARY_PLAYER_MOVEMENT](SECONDARY_PLAYER_MOVEMENT.md) |
 | Streaming factories and lifetime ownership | [MUSIC_FACTORIES](MUSIC_FACTORIES.md) |
 | Device setup and buffer recreation | [AUDIO_DEVICE](AUDIO_DEVICE.md) |
 | Streaming buffers, decoder state and fades | [MUSIC_STREAM](MUSIC_STREAM.md) |

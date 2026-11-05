@@ -16,7 +16,9 @@ Draw431BC0 starts its eight callback slots at7650 and passes slot minusE0 as ECX
 This establishes eight E4-stride containing records beginning7570 and ending
 exactly7C90. Reset432CC0 independently writes all eight refresh fields at recordD4;
 position publication435630 agrees. Coordinate prefix75CC is first record+5C,
-angle is recordA8, ID is recordB0, and callback is recordE0. The shared physical
+angle is recordA8, ID is recordB0, and draw callback is recordE0. Movement review
+later distinguishes the DC update callback and corrects reset's orbit/aim
+publications; see [PLAYER_MOVEMENT](SECONDARY_PLAYER_MOVEMENT.md). The shared physical
 view now represents these eight records. It introduces no original C++ constructor,
 class identity or claim about the complete player owner.
 

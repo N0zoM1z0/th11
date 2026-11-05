@@ -401,3 +401,5 @@ UpdateSecondaryLivesDisplay
 BeginSecondaryPlayerDeath
 AllocateSecondaryDeathEffect
 ApplySecondaryPlayerDeathPenalty
+UpdateSecondaryPlayerMovement
+SignalSecondaryAnimationEvent

@@ -402,3 +402,5 @@ UpdateSecondaryLivesDisplay,0x0041A060,function
 BeginSecondaryPlayerDeath,0x004327D0,function
 AllocateSecondaryDeathEffect,0x00422560,function
 ApplySecondaryPlayerDeathPenalty,0x0042F6F0,function
+UpdateSecondaryPlayerMovement,0x00430290,function
+SignalSecondaryAnimationEvent,0x00456230,function

@@ -66,7 +66,7 @@ int __stdcall SpawnSecondaryPlayerDrop(SecondaryControllerDropManager *manager,
     const CameraVector *position, int kind, unsigned int color, float angle, float speed);
 void __stdcall EnterSecondaryContinueMenu();
 void __stdcall EnterSecondaryGameOverMenu();
-void __stdcall UpdateSecondaryPlayerMovement(SecondaryDamageReferencesView *self);
+int __stdcall UpdateSecondaryPlayerMovement(SecondaryDamageReferencesView *self);
 void __stdcall BeginSecondaryPlayerDeath(SecondaryDamageReferencesView *self);
 void __stdcall UpdateSecondaryControllerAnimation(AnimationVmView *vm);
 

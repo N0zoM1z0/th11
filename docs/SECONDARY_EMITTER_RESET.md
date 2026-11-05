@@ -36,7 +36,9 @@ Raw instructions correct several decompiler hypotheses:
 
 The containing records remain eight objects at7570..7C8F; coordinate prefix75CC
 is record+5C. New physical fields preserve the E4 stride, D0 index, D4 refresh,
-E0 callback, owner integer position888/88C and angle8C14. Original C++ class and
+DC update/E0 draw callbacks, owner integer position888/88C and angle8C14. Movement
+review corrects orbit/aim publication to DC; see [PLAYER_MOVEMENT](SECONDARY_PLAYER_MOVEMENT.md).
+Original C++ class and
 header identities remain unknown. Callback entries433690/4337A0 are declared
 from their actual ECX publication/call contexts; their private helpers are not
 assigned fabricated register signatures.

@@ -116,7 +116,7 @@ void __stdcall ResetSecondaryPlayerEmitters(SecondaryDamageReferencesView *self)
         switch (Selection())
         {
         case 0:
-            emitter->onDraw = SecondaryEmitterOrbitCallback;
+            emitter->onUpdate = SecondaryEmitterOrbitCallback;
             emitter->angle = NormalizeAngle(static_cast<float>(i * static_cast<double>(6.2831855f) / count -
                 static_cast<double>(1.5707964f)));
             ReadFixedPoint(&emitter->offsets[0], owner, table, count, i, 0x28);
@@ -131,7 +131,7 @@ void __stdcall ResetSecondaryPlayerEmitters(SecondaryDamageReferencesView *self)
             emitter->idB0 = CreateAnimationVmId(self->file, 0x15, 0xb).value;
             break;
         case 2:
-            emitter->onDraw = SecondaryEmitterAimCallback;
+            emitter->onUpdate = SecondaryEmitterAimCallback;
             emitter->polar[0] = *ConfigPoint(owner, table, count, i, 0x28);
             emitter->polar[1] = *ConfigPoint(owner, table, count, i, 0x78);
             PositionEmitter(emitter, owner);

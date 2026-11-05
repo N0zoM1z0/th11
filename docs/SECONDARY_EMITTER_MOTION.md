@@ -17,7 +17,10 @@ the hash-pinned Japanese TH11v1.00a image and direct local Ghidra.
 
 ## Native motion contracts
 
-The actual reset publications and draw callback receiver remain intact. The
+Reset publishes orbit/aim into DC, and movement invokes that update slot with
+the emitter base in ECX. Draw uses an independent E0 slot. The earlier support
+source published orbit/aim into E0; movement review corrects it and cold-replays
+the affected exact units. See [PLAYER_MOVEMENT](SECONDARY_PLAYER_MOVEMENT.md). The
 orbit callback preserves its ECX input in ESI; aim preserves it in EDI. Ordinary
 one-owner helper declarations let VC9 choose those private registers through
 the real callers. No fabricated ESI/EDI calling convention is encoded.

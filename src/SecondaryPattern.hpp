@@ -29,7 +29,8 @@ struct SecondaryEmitterObjectView
     unsigned int unknown0ac, idB0, idB4;
     unsigned char unknown0b8[0xd0 - 0xb8];
     int index, refresh;
-    unsigned int flags, unknown0dc;
+    unsigned int flags;
+    int (__fastcall *onUpdate)(SecondaryEmitterObjectView *self);
     int (__fastcall *onDraw)(SecondaryEmitterObjectView *self);
 };
 
@@ -102,6 +103,7 @@ typedef char SecondaryEmitterObjectCoordinates[(offsetof(SecondaryEmitterObjectV
 typedef char SecondaryEmitterObjectOffsets[(offsetof(SecondaryEmitterObjectView, offsets) == 0x64) ? 1 : -1];
 typedef char SecondaryEmitterObjectIndex[(offsetof(SecondaryEmitterObjectView, index) == 0xd0) ? 1 : -1];
 typedef char SecondaryEmitterObjectCallback[(offsetof(SecondaryEmitterObjectView, onDraw) == 0xe0) ? 1 : -1];
+typedef char SecondaryEmitterObjectUpdateCallback[(offsetof(SecondaryEmitterObjectView, onUpdate) == 0xdc) ? 1 : -1];
 typedef char SecondaryPatternEmittersOffset[(offsetof(SecondaryPatternOwnerView, emitters) == 0x7570) ? 1 : -1];
 typedef char SecondaryPatternConfigurationCount[(offsetof(SecondaryPatternConfigurationView, levelCount) == 0x20) ? 1 : -1];
 typedef char SecondaryPatternConfigurationOffset[(offsetof(SecondaryPatternOwnerView, configuration) == 0x92c) ? 1 : -1];

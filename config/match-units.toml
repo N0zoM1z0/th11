@@ -4244,3 +4244,21 @@ target_address = 0x41a060
 size = 144
 linkages = [
 ]
+
+[units.signal-secondary-animation-event]
+artifact_kind = "linked-pe"
+source = "src/SecondaryPlayerMovement.cpp"
+inputs = ["src/SecondaryPlayerMovement.hpp", "src/SecondaryPlayerController.hpp", "src/SecondaryPattern.hpp"]
+support_sources = ["probes/secondary-player-movement-context.cpp", "src/SecondaryPlayerController.cpp", "src/SecondaryPlayerControllerHelpers.cpp", "src/SecondaryPlayerCallbacks.cpp", "src/StageTween.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryMotionMath.cpp", "src/StageMesh.cpp", "src/AngleMath.cpp", "src/AnimationImmediateDraw.cpp", "src/SecondaryDamageSupport.cpp", "src/SecondaryPatternDispatch.cpp", "src/SecondaryPattern.cpp", "src/Random.cpp", "src/SecondaryProjectileMath.cpp", "src/SecondaryProjectile.cpp", "src/ResourceFile.cpp", "src/SecondaryEmitterReset.cpp", "src/SecondaryEmitterAnimation.cpp", "src/AnimationVmFactory.cpp", "src/AnimationVm.cpp", "src/AnimationSpriteBinding.cpp", "src/SecondaryEmitterMotion.cpp", "src/SecondaryEmitterCallbacks.cpp"]
+normal_support_sources = ["src/SecondaryPlayerCallbacks.cpp", "src/AngleMath.cpp"]
+output_dir = "build/match-linked/SecondaryPlayerMovement"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryPlayerMovementProbe@16"
+functions = ["SignalSecondaryAnimationEvent"]
+symbol = "?SignalSecondaryAnimationEvent@@YGXUAnimationVmId@@F@Z"
+target_address = 0x456230
+size = 67
+linkages = [
+  { offset = 6, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x4c3268, addend = 0x0 },
+  { offset = 12, type = "REL32", symbol = "?FindAnimationVmById@@YGPAUAnimationVmView@@PAURenderBatchView@@UAnimationVmId@@@Z", target = 0x4561e0, addend = 0x0 },
+]
