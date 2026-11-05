@@ -168,8 +168,24 @@ Animation replacements preserve repeated reads, hidden-result ID transport and
 late coordinate-mode selection. Native default-script reads are full32-bit;
 decompiler short casts are not copied. Cold /GL probe2804 matches every opcode's
 CFG call/index trace set, but native89/candidate88 sites still differ at raw-int
-reader11/10, lookup6/5 and flag2-clear2/3. Remaining104 handled values and EH source
-are open. No complete owner mapping/exact credit or runtime claim is added.
+reader11/10, lookup6/5 and flag2-clear2/3. No complete owner mapping/exact credit
+or runtime claim is added.
+
+Control/effect140..174 adds53 values/49 primary targets, taking the same host to
+103/154 handled values;51 values and EH lifetimes remain. Blocking153/154 returns
+-1 through416BB0, bypassing the zero at416BAE; the previous zero-only host return
+description was wrong and would lose the interpreter's pause contract. The spell
+decoder uses signed length, byte key77/step7/step increment10 and a late opcode
+reread; preserve the evaluated-but-discarded argument2. Its enclosing buffer
+capacity is still unproved, so the compile-only context accepts workspace storage.
+15D/15E and160/161 share actual low/middle tails and resolve destinations before
+readers;163/164's difficulty guards/tables and opposite lookup order remain.
+15A has no intermediate float rounding,15B uses an integer divisor,162 truncates
+the wrapped signed product toward zero and170 rounds int to float before time
+subtraction. Cold /GL probe3248 has all100 physical calls with matching callee
+counts and all53 acyclic call/index skeletons; loops/numerical stages have24
+separate static checks. These fragment observations grant no full-owner exact
+credit. All prior source hashes remain unchanged; no existing exact unit is affected.
 
 Release66/raw-position97 close through the existing ID value transport. Capturing
 the actual marker pointer before position stores also closes offset132/direct110;

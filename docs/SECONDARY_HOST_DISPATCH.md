@@ -2,8 +2,8 @@
 
 The large host dispatcher at412E30 owns16,556 bytes, not the initial15,780-byte
 code-only inventory span. Its complete boundary, tables, control flow and call
-graph are reviewed. Motion and creation/animation source fragments now implement
-50 handled opcode values; the complete host implementation and exact byte proof
+graph are reviewed. Motion, creation/animation and control/effect source fragments implement
+103 handled opcode values; the complete host implementation and exact byte proof
 remain open.
 The existing7,093-byte RunSecondaryScript reconstruction remains non-exact.
 
@@ -31,8 +31,11 @@ exactly in these owned tables; there is no foreign interior reference.
 The actor-manager virtual slot at494074 points to the11-byte412E20 adapter.
 It adds103C to ECX and tail-transfers to412E30, agreeing with the existing physical
 manager/state view. The dispatcher reads state.owner at1614, owner.current at4
-and current.instruction at4, then dispatches the signed opcode. Its single common
-epilogue sets EAX to zero and returns without stack arguments. Ghidra's inferred
+and current.instruction at4, then dispatches the signed opcode. Ordinary paths
+clear EAX at416BAE. Blocking153/154 paths explicitly set EAX=-1 and jump to416BB0,
+bypassing that clear. Both reach the same single RET without stack arguments;
+the -1 result pauses RunSecondaryScript's instruction advancement. The earlier
+zero-only return description was incorrect. Ghidra's inferred
 fastcall/void prototype is not the ABI evidence. Ordinary member declarations are
 the prospective source representation; original class identity remains unknown.
 
@@ -118,7 +121,7 @@ compiled. No additional leaf-function implementation or exact credit is added.
 primary entry intervals cover2,603 bytes; together with motion the maintained
 fragments cover50 of154 handled values and38 of134 nondefault physical targets.
 These are source-coverage observations, not complete-function mappings or exact
-byte credit. The remaining104 handled values and full EH source are still open.
+byte credit. Control/effect source below extends this coverage further.
 
 The new physical packet is80 bytes: position, four integer fields, flags and a
 48-byte parameter block. Its variable string payload uses wrapped(length+4)/4
@@ -178,13 +181,71 @@ through the final cold compile and its static audit.
 Creation/animation evidence uses secondary-host-animation-{compile,call-audit,
 arm-ranges,dependency-audit}.json and its fresh mapped-text-attested complete
 Ghidra caller/callee reviews, plus build/probe-ltcg/SecondaryHostAnimation/.
-Both compile-only probes remain separate from complete-owner acceptance.
+The compile-only probes remain separate from complete-owner acceptance.
+
+## Control and effects inside the same owner
+
+`src/SecondaryActorInstructionControl.inc` implements all53 values140..174,
+covering49 primary targets/2,663 entry-interval bytes. Combined source covers
+103/154 handled values and87/134 nondefault primary targets. Remaining51 values
+and full EH lifetimes are open; there is still no complete-host source mapping.
+
+The fragment retains extent/bounds stores, ten animation-ID updates, effect
+parameter indexing and mirrored ID remapping, counter/HUD gauges, actor slots,
+timer resets, screen effects, clearing, spell transitions and selection/difficulty
+operations. State argument adapters417D80/417DD0 remain distinct boundaries from
+direct VM readers;417D90/417DE0 resolve operand0 destinations through state.owner.
+The physical selection object is at4A56E0 and the signed selector at4A5744;
+these addresses alone do not establish their original names or game-level role.
+
+Important target/compiler findings:
+
+-153/154 may return -1 as described above. All other implemented control values
+  return0. The caller's pause result must survive the adapter and common epilogue.
+-14E reads2,1,0, writes the selected owner's life threshold, then conditionally
+  calls417AD0 with that slot, instruction+20 and the saved frame limit. The helper
+  writes frameLimit/lifeScript/frameScript.155 only publishes instruction+18 as
+  the frame script.173 passes an integer group to the global actor clearer;
+  Ghidra's inferred unused this pointer is not added to that contract.
+-156/15C/165/166/167 share a decoder: signed length at instruction+1C, bytes+20,
+  unsigned-byte key77/step7, then key+=step and step+=10 each iteration. There is
+  no added terminator or length clamp. After argument0, the captured instruction's
+  opcode is reread for wrapped difficulty offsets. Argument2 is still evaluated
+  and discarded before argument1;40C650 receives name/id/value. Counter scaling
+  and the shared14D frame reset follow. The enclosing stack-array capacity is
+  unproved: the compile-only context accepts a workspace pointer rather than
+  inventing a local capacity, allocation or native host ABI.
+-15B snapshots the integer counter after the float reader and before the last
+  integer reader; x87 FIDIV keeps that integer divisor.15A squares the reader's
+  ST0 value without an added float rounding.15F uses double1024 and1/2048 and
+  rounds its result before destination lookup.162 wraps the product and divides
+  signed by2048 with truncation toward zero.170 rounds each selected integer to
+  float before subtracting VM time. These stages have separate instruction checks.
+-15D/15E and160/161 preserve the real shared low/middle reader tails, the signed
+  thresholds512/600/200/-200/-400 and destination-before-reader order.163/164
+  retain both five-cell difficulty tables, including3/4 sharing and the unsigned
+  range guard. The direct164 float reader precedes the VM destination lookup.
+
+Cold pinned VC9 /GL compilation of `probes/secondary-host-control-context.cpp`
+produces3,248 bytes, including212 primary-table and40 nested-table bytes. It
+preserves49 primary targets and100 physical direct call sites, with each callee's
+count equal to the corresponding native control paths. All53 acyclic call/index
+skeleton sets agree. Cycle reentry is omitted from these skeletons; ten-ID loop
+counts/strides and decoder byte arithmetic are checked separately. Return sets
+and24 targeted target/compiler details also pass static checks. This does not
+prove every predicate, full semantic equivalence or complete-owner byte equality.
+There is no runtime harness or added leaf implementation/exact credit.
+
+Private evidence uses secondary-host-control-{compile,call-audit,detail-proof,
+arm-ranges,dependency-audit}.json, the attested direct Ghidra contract review and
+build/probe-ltcg/SecondaryHostControl/. Frozen inputs identify the final compile.
 
 The dispatcher and its necessary virtual adapter now have reviewed boundaries
 and indeterminate origins. Complete source mappings and exact totals are unchanged.
 The prior27-unit cold proof remains current: all37 receipt source/header/support
 inputs are byte-identical. Recursive canonical contracts select no existing exact
-unit depending on either set of three fragment/header/probe files. The motion
-source hashes also remain unchanged by the new creation/animation files. No
+unit depending on the fragment/header/probe additions. This control checkpoint
+scans86 canonical receipt contracts; all earlier motion/animation source hashes
+also stay unchanged. No
 existing source, tool or Oracle implementation changed, so no prior unit is
 cold-replayed here.

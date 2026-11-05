@@ -34,14 +34,25 @@ Cold VC9 /GL probe4368 has the same opcode partition,89 physical call sites and
 all per-opcode call/index trace sets. This is partial-owner structural evidence,
 not a complete native function mapping or byte match.
 
-Latest creation/animation fragment100..115 adds22 values/22 primary targets.
+Creation/animation fragment100..115 adds22 values/22 primary targets.
 It retains guarded spawns, signed payload indexing, snapshots/repeated readers,
 the shared80-byte packet, real camera0 projection addresses, ID value transport,
 replacement/cache/event flows and111/115's angle join. Cold /GL probe2804 agrees
 on all per-opcode call/index trace sets and projection argument roles. Native89
 physical calls versus88 remain: raw integer reader11/10, lookup6/5, flag2-clear2/3.
-Combined source now covers50/154 handled values; remaining104 values and EH source
-are open. Neither fragment is a complete native mapping or exact comparison unit.
+New control/effect140..174 adds53 values/49 targets/2,663 entry-interval bytes:
+effect/counter/HUD state, slot changes, spell decoder/transitions, blocking returns,
+selection/difficulty and VM-time operations. Cold /GL probe3248 has all100 native
+physical calls/callee counts, all53 acyclic call/index skeletons and24 targeted
+static detail checks. Preserve shared low/middle reader tails; ten-ID loop bounds;
+signed decoder length, byte77/7/+10 and late opcode reread; discarded argument2;
+15A/15B/15F/162/170 rounding/division stages. Decoder workspace capacity remains
+unproved; the compile-only context takes a workspace pointer, not a native ABI.
+Important correction:153/154 returns -1 through416BB0 to pause the interpreter;
+other paths clear EAX at416BAE. Ghidra's void inference lost this result.
+Combined source covers103/154 handled values/87 of134 nondefault targets;
+remaining51 values and EH source are open. No fragment is a complete native
+mapping or exact comparison unit.
 
 Prior source work corrects arithmetic operand/result storage and angle87 argument
 publication inside that full owner. Actual-caller cold diagnostic is7013/5821
@@ -55,15 +66,15 @@ units pass1,027 bytes/22 fields cold; all37 source/header/support hashes stay fr
 Main VM ESI versus native EDI, unary84's merged negate/push paths and82/87's shared
 float destination remain open. Ordinary member/accessor hypotheses did not solve
 these gaps; keep the public interface and original /GL owners.
-The new creation/animation fragment/header/probe files affect no existing canonical
-receipt contract. All37 earlier inputs and motion hashes stay unchanged; no prior
-cold replay is repeated.
+The control fragment/header/probe additions affect none of86 canonical receipt
+contracts. All37 earlier inputs and motion/animation hashes stay unchanged; no
+prior cold replay is repeated.
 
 ## Immediate continuation
 
 | Area | Concrete remaining work |
 | --- | --- |
-| Host dispatcher412E30/16556 | Motion118..133 and creation/animation100..115 fragments implemented/compiled/audited; next control/effect140 onward,104 handled values remain; actual argument-reader/EH lifetimes; no partial/default native stub |
+| Host dispatcher412E30/16556 |103/154 values implemented/compiled/audited across animation100..115, motion118..133 and control140..174; next large record/effect134..13F and175..1C2 groups (51 values); original decoder storage and EH lifetimes; no partial/default native stub |
 | Interpreter45B860/7093 | Main priority: complete7013/5821; fixed120/all89 selectors/60-case order retained; VM ESI versus EDI, unary84 merged push and82/87 shared destination |
 | Collision432A90/546 | Complete source543/257; frame18 versus1C, EBX save/restore placement, sound argument EDX versus native ESI |
 | Movement430290/2896 | Complete source2928/2447 after animation value correction; native call/return/frame contracts agree; register/branch/vector stores remain open |
