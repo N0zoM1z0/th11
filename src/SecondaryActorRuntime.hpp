@@ -65,10 +65,10 @@ struct SecondaryActorAnimationView
 AnimationVmView *__stdcall ClearMissingAnimationId(unsigned int *id);
 int __stdcall ValidateSecondaryAnimationId(unsigned int *id);
 void __stdcall SignalSecondaryAnimation(unsigned int *id);
-void __stdcall ReleaseSecondaryAnimation(unsigned int id);
-void __stdcall PositionSecondaryAnimation(unsigned int id, const CameraVector *position);
+void __stdcall ReleaseSecondaryAnimation(AnimationVmId id);
+void __stdcall PositionSecondaryAnimation(AnimationVmId id, const CameraVector *position);
 void __stdcall PositionSecondaryAnimationVm(AnimationVmView *vm, const CameraVector *position);
-void __stdcall PositionSecondaryAnimationRaw(unsigned int id, const CameraVector *position);
+void __stdcall PositionSecondaryAnimationRaw(AnimationVmId id, const CameraVector *position);
 void __stdcall ChangeSecondaryAnimationScript(unsigned int *id, int script);
 int __stdcall SecondaryGlobalStatusBits();
 int __stdcall SampleSecondaryActorDamage(const CameraVector *position, const float *extent);

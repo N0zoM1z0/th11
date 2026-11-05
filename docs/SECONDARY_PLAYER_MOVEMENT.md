@@ -108,3 +108,8 @@ full extents and all13 literal uses/92 bytes after this correction. No full coho
 or public Oracle/infrastructure suite is replayed.
 Together with the new helper proof,24 selected units pass1,992 bytes/84 fields
 and relocations. `.analysis/secondary-movement-final-proof.json` records all results.
+
+Later [animation-value work](SECONDARY_ANIMATION_VALUES.md) makes release66 and
+raw position97 exact and updates the current movement contribution to2928/2447.
+Its12 direct targets/22 sites, indirect callback, RET4 and18-hex frame still agree;
+older2836/2434 above is the pre-correction API context. Reset is now2412/1951.

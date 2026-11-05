@@ -8,38 +8,39 @@ bytes/current receipts outrank older notes. All dirty work is ours.
 
 - Original Japanese TH11v1.00a, pinned by `config/target.toml`.
 - 2,136 candidates;529 reviewed boundaries;407 source mappings.
-- 225 exact functions/25,727 bytes:9 normal COFF and216 linked PE.
+- 227 exact functions/25,890 bytes:9 normal COFF and218 linked PE.
 - Origins:90 authored,423 indeterminate,14 exclusions,1,609 pending.
 - VC9 RTM21022/SDK6.0A; direct Ghidra/scripts, no Factory MCP/REA.
 - Commit/push authorized, prefix `gpt-6.1-sol: `.
 - No reconstruction job remains running at this checkpoint.
 
-Latest continuation adds complete horizontal wrap540/item attraction63 source.
-Attraction closes all63 linked bytes/two fields. Wrap remains499/415 with real
-movement/MeshEffects sound/reset context: counter-store folding, sound argument
-EDX versus native ESI, saved registers and refresh-store order remain open.
-Both full boundaries/origins are reviewed; both origins remain indeterminate.
-See [WRAP_ITEMS](SECONDARY_PLAYER_WRAP_ITEMS.md).
+Latest continuation closes complete VM release66/raw position97 through the
+existing four-byte ID value view. Three runtime API declarations now retain
+AnimationVmId rather than scalar uint; callers use its normal constructor, with
+no adapters or register ABI declarations. Original type/TU identity remains open.
+See [ANIMATION_VALUES](SECONDARY_ANIMATION_VALUES.md).
 
-Only the new63-byte unit is cold-replayed: no earlier canonical source/header/
-context depends on these new files. Existing movement/event context remains
-unchanged. Previous callback-slot correction proofs remain current:23 affected
-old units plus the new event setter pass1,992 bytes/84 fields/relocations. Reset
-publishes orbit/aim at DC, movement calls DC, and draw uses a separate E0 slot.
+Recursive current receipt inputs select40 old units, including the7-byte COFF
+callback through transitive headers. Those and two new public primary-TU units
+pass42 cold proofs/3,263 bytes/120 fields and relocations. The existing independent
+renderer probe stays intact. Old movement24, motion/HUD6 and attraction result
+summaries are refreshed from current proofs; originals are retained privately.
+No new source mappings or boundary/origin claims are added at this checkpoint.
 
 ## Immediate continuation
 
 | Area | Concrete remaining work |
 | --- | --- |
-| Movement430290/2896 | Complete source2836/2434; native call/return/frame contracts agree; register/branch/vector stores remain open |
+| Movement430290/2896 | Complete source2928/2447 after animation value correction; native call/return/frame contracts agree; register/branch/vector stores remain open |
+| Offset position4563A0/132, direct456430/110 |132/45 and110/45; native marker18 comparison precedes stores, current source tests afterward |
 | Horizontal wrap430E50/540 | Complete source499/415; preserve inclusive6800 boundaries, counter8/45 and real sound47/48/reset calls |
 | Death4327D0/703 | Source715/423 in real controller/HUD/Bind context; callee-save placement, global stores and emitter-loop layout |
 | Effect422560/229, penalty42F6F0/102 | Complete source228/37 and102/14; allocator position EDI versus native EBX and mode/lifetime stores |
 | Controller431070/2888 | Source2800/2285 in previous context; actual normal-COFF callback support preserves stack owner/two RET4; frame/vector stores |
-| Reset432CC0/2508 | Source2412/1970 in corrected movement context; main factory grouping remains open |
+| Reset432CC0/2508 | Source2412/1951 in corrected movement context; main factory grouping remains open |
 | Publishers455760/118,4557E0/123 |111/33 and116/47; ID zero-check/register allocation |
 | Spawn433F90/853 | Real Sound846/733 and real-only/independent RNG856/690 both fail |
-| Actor state411750/4230 | Source4161/3261 in full support context; frame/private allocation |
+| Actor state411750/4230 | Prior4161/3261 full-support measurement; not rebuilt for this API change; frame/private allocation |
 | Damage4347F0/1579, projectile434440/896 | Source1513/1414 and908/765 in recorded contexts |
 | Interpreter45B860/7093 | Source6993/5880; required variadic double trace aligns candidate64 versus native ESP/120 |
 
@@ -49,6 +50,10 @@ padding or forced frames. Full table/padding ownership remains mandatory.
 
 ## Current findings and proof
 
+- Retain the ID value object at Release/Position APIs. Scalar ID source loses
+  native stack transport; value view closes66/97. Original class identity is open.
+- Position bool snapshot/branch/early-return/unified-view probes do not close
+  the early marker comparison; none adopted. Detailed results are in ANIMATION_VALUES.
 - Item attraction visits2198 records at manager+478/stride478. State1 becomes3
   and float parameter+C receives player configuration+8. Direct publication before
   state assignment plus increasing index loop gives exact63; a float temporary
@@ -79,11 +84,12 @@ padding or forced frames. Full table/padding ownership remains mandatory.
 - Movement2896, reset2508, controller2888, drop851, special268 and interpreter7093
   retain all reviewed internal alignment and owned dispatch/selector data.
 
-`.analysis/secondary-wrap-items-final-proof.json` records the new63-byte strict
-cold result; native full-flow/field reviews, variants and source freeze share that
-prefix. Prior movement24-unit proof/call audit and six motion/HUD result/literal
-files remain current. No full cohort, broad behavior suite or Oracle/infrastructure
-suite ran. Original class/TU identities stay separate from exact codegen.
+`.analysis/secondary-animation-values-final-proof.json` records42 current cold
+results; field reviews and source freeze share that prefix. Current caller
+measurements and refreshed movement call audit retain all22 direct sites/one
+indirect callback/RET4 and18 hex stack allocation. No full cohort, broad behavior
+or Oracle/infrastructure suite ran. Exact claims do not establish original types,
+TU partition, native product closure or runtime/port status.
 
 Other corrected layouts and findings are indexed in [KNOWLEDGE_BASE](KNOWLEDGE_BASE.md).
 Older narratives are explicitly [historical](archive/KNOWLEDGE_BASE_2026-10-30.md).

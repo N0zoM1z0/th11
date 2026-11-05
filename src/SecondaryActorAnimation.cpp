@@ -27,9 +27,9 @@ void __stdcall SignalSecondaryAnimation(unsigned int *id)
     }
 }
 
-void __stdcall ReleaseSecondaryAnimation(unsigned int id)
+void __stdcall ReleaseSecondaryAnimation(AnimationVmId id)
 {
-    AnimationVmView *vm = FindAnimationVmById(g_RenderBatch, AnimationVmId(id));
+    AnimationVmView *vm = FindAnimationVmById(g_RenderBatch, id);
     if (vm)
     {
         BoundVmView *bound = reinterpret_cast<BoundVmView *>(vm);
@@ -63,15 +63,15 @@ __forceinline void PositionVm(AnimationVmView *vm, const CameraVector *position)
 void __stdcall PositionSecondaryAnimationVm(AnimationVmView *vm, const CameraVector *position)
 { PositionVm(vm, position); }
 
-void __stdcall PositionSecondaryAnimation(unsigned int id, const CameraVector *position)
+void __stdcall PositionSecondaryAnimation(AnimationVmId id, const CameraVector *position)
 {
-    AnimationVmView *vm = FindAnimationVmById(g_RenderBatch, AnimationVmId(id));
+    AnimationVmView *vm = FindAnimationVmById(g_RenderBatch, id);
     if (vm) PositionVm(vm, position);
 }
 
-void __stdcall PositionSecondaryAnimationRaw(unsigned int id, const CameraVector *position)
+void __stdcall PositionSecondaryAnimationRaw(AnimationVmId id, const CameraVector *position)
 {
-    AnimationVmView *vm = FindAnimationVmById(g_RenderBatch, AnimationVmId(id));
+    AnimationVmView *vm = FindAnimationVmById(g_RenderBatch, id);
     if (vm)
     {
         BoundVmView *bound = reinterpret_cast<BoundVmView *>(vm);

@@ -87,7 +87,9 @@ An independent variable renderer input retains both real inputs; complete21/30/7
 then agree naturally. Receipts capture this explicit context, without a fabricated
 target calling convention. Event70 writes only word37C=1 and propagates when
 marker18 is null. Release66 marks04000000; raw position97 includes three native
-alignment bytes. Those full non-exact owners remain open.
+alignment bytes. Later ID-value work closes release66 and
+raw position97; see [ANIMATION_VALUES](SECONDARY_ANIMATION_VALUES.md). Direct110
+and offset132 retain their marker-comparison scheduling gaps.
 
 Advance75 retains the real FSINCOS-member and angle-normalizer boundaries.
 FSINCOS30 remains source-open; no sin/cos substitute is invented. Quantizer99
