@@ -360,7 +360,30 @@ template<int Op> __forceinline void FloatOperation(SecondaryStack *stack)
     else if (Op == 68) PushInt(stack, left > right);
     else PushInt(stack, left >= right);
 }
-// The target's disabled trace entry is still called with the actual argument types.
+// The native trace arm first separates the output format, then the stored value type.
+template<bool RealOutput> __forceinline void TraceArgument(SecondaryVm *self,
+    int argument, int typeOffset, int valueWord)
+{
+    unsigned char *payload = Payload(self->instruction);
+    int length = *reinterpret_cast<int *>(payload);
+    char type = payload[length + 4 + typeOffset];
+    if (type == 'f' || type == 'g')
+    {
+        float value = reinterpret_cast<SecondaryValue *>(self->instruction)[length / 4 + valueWord].real;
+        if (self->instruction->references & ReferenceMask(argument))
+            value = ReadSecondaryFloatReference(self, value);
+        if (RealOutput) TraceSecondaryScript(static_cast<double>(value));
+        else TraceSecondaryScript(static_cast<int>(value));
+    }
+    else
+    {
+        int value = reinterpret_cast<SecondaryValue *>(self->instruction)[length / 4 + valueWord].integer;
+        if (self->instruction->references & ReferenceMask(argument))
+            value = ReadSecondaryIntReference(self, value);
+        if (RealOutput) TraceSecondaryScript(static_cast<double>(value));
+        else TraceSecondaryScript(value);
+    }
+}
 __forceinline void TraceInstruction(SecondaryVm *self)
 {
     const char *cursor = reinterpret_cast<const char *>(Payload(self->instruction) + 4);
@@ -377,25 +400,21 @@ __forceinline void TraceInstruction(SecondaryVm *self)
             strcpy(scratch, cursor);
             scratch[percent - cursor] = 0;
             TraceSecondaryScript();
-            char format = percent[1];
-            if (format == '%') TraceSecondaryScript();
-            else if (format == 'd' || format == 'f')
+            switch (percent[1])
             {
-                unsigned char *payload = Payload(self->instruction);
-                int length = *reinterpret_cast<int *>(payload);
-                char type = payload[length + 4 + typeOffset];
-                SecondaryValue value = reinterpret_cast<SecondaryValue *>(self->instruction)[length / 4 + valueWord];
-                bool real = type == 'f' || type == 'g';
-                if (self->instruction->references & ReferenceMask(argument))
-                {
-                    if (real) value.real = ReadSecondaryFloatReference(self, value.real);
-                    else value.integer = ReadSecondaryIntReference(self, value.integer);
-                }
-                if (format == 'd') TraceSecondaryScript(real ? static_cast<int>(value.real) : value.integer);
-                else TraceSecondaryScript(real ? static_cast<double>(value.real) : static_cast<double>(value.integer));
+            case 'f':
+                TraceArgument<true>(self, argument, typeOffset, valueWord);
                 typeOffset += 8;
                 valueWord += 2;
                 ++argument;
+                break;
+            case 'd':
+                TraceArgument<false>(self, argument, typeOffset, valueWord);
+                typeOffset += 8;
+                valueWord += 2;
+                ++argument;
+                break;
+            case '%': TraceSecondaryScript(); break;
             }
             cursor = percent + 2;
         } while (cursor);
@@ -426,41 +445,8 @@ int __stdcall RunSecondaryScript(SecondaryVm *self, float delta)
                 PopRaw(&self->stack, &self->time);
                 if (!self->instruction) return -1;
                 break;
-            case 11:
-                if (EnterSecondaryScriptFrame(self, self, 0)) return -1;
-                advance = false;
-                break;
-            case 12:
-                self->time = static_cast<float>(Argument(self, 1)->integer);
-                self->instruction = reinterpret_cast<SecondaryInstruction *>(
-                    reinterpret_cast<unsigned char *>(self->instruction) + Argument(self, 0)->bits);
-                advance = false;
-                break;
-            case 13:
-            {
-                int condition; PopInt(&self->stack, &condition);
-                if (!condition)
-                {
-                    self->time = static_cast<float>(Argument(self, 1)->integer);
-                    self->instruction = reinterpret_cast<SecondaryInstruction *>(
-                        reinterpret_cast<unsigned char *>(self->instruction) + Argument(self, 0)->bits);
-                    advance = false;
-                }
-                break;
-            }
-            case 14:
-            {
-                int condition; PopInt(&self->stack, &condition);
-                if (condition)
-                {
-                    self->time = static_cast<float>(Argument(self, 1)->integer);
-                    self->instruction = reinterpret_cast<SecondaryInstruction *>(
-                        reinterpret_cast<unsigned char *>(self->instruction) + Argument(self, 0)->bits);
-                    advance = false;
-                }
-                break;
-            }
             case 15: StartSecondaryThread(self->owner, -1, 0); break;
+            case 21: StopSecondaryThreads(self->owner); break;
             case 16:
             {
                 unsigned int offset = Argument(self, 0)->bits + 4;
@@ -501,8 +487,47 @@ int __stdcall RunSecondaryScript(SecondaryVm *self, float delta)
                 }
                 break;
             }
-            case 21: StopSecondaryThreads(self->owner); break;
-            case 30: TraceInstruction(self); break;
+            case 11:
+                if (EnterSecondaryScriptFrame(self, self, 0)) return -1;
+                advance = false;
+                break;
+            case 14:
+            {
+                int condition; PopInt(&self->stack, &condition);
+                if (condition)
+                {
+                    self->time = static_cast<float>(Argument(self, 1)->integer);
+                    self->instruction = reinterpret_cast<SecondaryInstruction *>(
+                        reinterpret_cast<unsigned char *>(self->instruction) + Argument(self, 0)->bits);
+                    advance = false;
+                }
+                break;
+            }
+            case 13:
+            {
+                int condition; PopInt(&self->stack, &condition);
+                if (!condition)
+                {
+                    self->time = static_cast<float>(Argument(self, 1)->integer);
+                    self->instruction = reinterpret_cast<SecondaryInstruction *>(
+                        reinterpret_cast<unsigned char *>(self->instruction) + Argument(self, 0)->bits);
+                    advance = false;
+                }
+                break;
+            }
+            case 12:
+                self->time = static_cast<float>(Argument(self, 1)->integer);
+                self->instruction = reinterpret_cast<SecondaryInstruction *>(
+                    reinterpret_cast<unsigned char *>(self->instruction) + Argument(self, 0)->bits);
+                advance = false;
+                break;
+            case 83:
+            {
+                double previous = self->time;
+                int amount = ReadSecondaryIntArgument(self, 0);
+                self->time = static_cast<float>(previous - amount);
+                break;
+            }
             case 40: BeginSecondaryStackFrame(&self->stack, ReadSecondaryIntArgument(self, 0)); break;
             case 41: EndSecondaryStackFrame(&self->stack); break;
             case 42: PushInt(&self->stack, ReadSecondaryIntArgument(self, 0)); break;
@@ -538,36 +563,49 @@ int __stdcall RunSecondaryScript(SecondaryVm *self, float delta)
             case 54: IntegerOperation<54>(&self->stack); break;
             case 56: IntegerOperation<56>(&self->stack); break;
             case 58: IntegerOperation<58>(&self->stack); break;
+            case 51: FloatOperation<51>(&self->stack); break;
+            case 53: FloatOperation<53>(&self->stack); break;
+            case 55: FloatOperation<55>(&self->stack); break;
+            case 57: FloatOperation<57>(&self->stack); break;
             case 59: IntegerOperation<59>(&self->stack); break;
             case 61: IntegerOperation<61>(&self->stack); break;
             case 63: IntegerOperation<63>(&self->stack); break;
             case 65: IntegerOperation<65>(&self->stack); break;
             case 67: IntegerOperation<67>(&self->stack); break;
             case 69: IntegerOperation<69>(&self->stack); break;
-            case 73: IntegerOperation<73>(&self->stack); break;
-            case 74: IntegerOperation<74>(&self->stack); break;
-            case 75: IntegerOperation<75>(&self->stack); break;
-            case 76: IntegerOperation<76>(&self->stack); break;
-            case 77: IntegerOperation<77>(&self->stack); break;
-            case 51: FloatOperation<51>(&self->stack); break;
-            case 53: FloatOperation<53>(&self->stack); break;
-            case 55: FloatOperation<55>(&self->stack); break;
-            case 57: FloatOperation<57>(&self->stack); break;
+            case 71:
+            {
+                int value; PopInt(&self->stack, &value);
+                PushInt(&self->stack, value == 0); break;
+            }
             case 60: FloatOperation<60>(&self->stack); break;
             case 62: FloatOperation<62>(&self->stack); break;
             case 64: FloatOperation<64>(&self->stack); break;
             case 66: FloatOperation<66>(&self->stack); break;
             case 68: FloatOperation<68>(&self->stack); break;
             case 70: FloatOperation<70>(&self->stack); break;
-            case 71:
-            {
-                int value; PopInt(&self->stack, &value);
-                PushInt(&self->stack, value == 0); break;
-            }
             case 72:
             {
                 float value; PopFloat(&self->stack, &value);
                 PushInt(&self->stack, value == 0.0f); break;
+            }
+            case 73: IntegerOperation<73>(&self->stack); break;
+            case 74: IntegerOperation<74>(&self->stack); break;
+            case 75: IntegerOperation<75>(&self->stack); break;
+            case 76: IntegerOperation<76>(&self->stack); break;
+            case 77: IntegerOperation<77>(&self->stack); break;
+            case 84:
+            {
+                int value; PopInt(&self->stack, &value);
+                PushInt(&self->stack, static_cast<int>(0u - static_cast<unsigned int>(value)));
+                break;
+            }
+            case 85:
+            {
+                SecondaryValue value; PopFloat(&self->stack, &value.real);
+                value.bits = 0u - value.bits;
+                PushSecondaryValue(&self->stack, 'f', &value);
+                break;
             }
             case 78:
             {
@@ -583,17 +621,17 @@ int __stdcall RunSecondaryScript(SecondaryVm *self, float delta)
                 PushFloat(&self->stack, result);
                 break;
             }
-            case 80:
-            {
-                float value; PopFloat(&self->stack, &value);
-                float result = SecondaryUnaryMathB(value);
-                PushFloat(&self->stack, result);
-                break;
-            }
             case 88:
             {
                 float value; PopFloat(&self->stack, &value);
                 float result = AnimationDistanceRoot(value);
+                PushFloat(&self->stack, result);
+                break;
+            }
+            case 80:
+            {
+                float value; PopFloat(&self->stack, &value);
+                float result = SecondaryUnaryMathB(value);
                 PushFloat(&self->stack, result);
                 break;
             }
@@ -607,38 +645,18 @@ int __stdcall RunSecondaryScript(SecondaryVm *self, float delta)
                 *SecondaryFloatDestination(self, 1) = vector.y;
                 break;
             }
-            case 82:
-            {
-                float result = NormalizeAngle(ReadSecondaryFloatArgument(self, 0));
-                *SecondaryFloatDestination(self, 0) = result;
-                break;
-            }
-            case 83:
-            {
-                double previous = self->time;
-                int amount = ReadSecondaryIntArgument(self, 0);
-                self->time = static_cast<float>(previous - amount);
-                break;
-            }
-            case 84:
-            {
-                int value; PopInt(&self->stack, &value);
-                PushInt(&self->stack, static_cast<int>(0u - static_cast<unsigned int>(value)));
-                break;
-            }
-            case 85:
-            {
-                SecondaryValue value; PopFloat(&self->stack, &value.real);
-                value.bits = 0u - value.bits;
-                PushSecondaryValue(&self->stack, 'f', &value);
-                break;
-            }
             case 86:
             {
                 float x = ReadSecondaryFloatArgument(self, 1);
                 float y = ReadSecondaryFloatArgument(self, 2);
                 float *destination = SecondaryFloatDestination(self, 0);
                 *destination = x * x + y * y;
+                break;
+            }
+            case 82:
+            {
+                float result = NormalizeAngle(ReadSecondaryFloatArgument(self, 0));
+                *SecondaryFloatDestination(self, 0) = result;
                 break;
             }
             case 87:
@@ -651,6 +669,7 @@ int __stdcall RunSecondaryScript(SecondaryVm *self, float delta)
                 *SecondaryFloatDestination(self, 0) = result;
                 break;
             }
+            case 30: TraceInstruction(self); break;
             default:
                 if (self->owner->ExecuteInstruction() == -1) return 0;
                 break;

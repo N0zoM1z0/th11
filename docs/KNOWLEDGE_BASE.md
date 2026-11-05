@@ -90,7 +90,7 @@ specific retained contexts, not exactness scores or complete-product results.
 | Actor state4230 |4161/3261 in full support context;64 calls/3 callbacks/5 returns audited |
 | Damage1579 |1513/1414; full32-region/256-projectile source and corrected64/68 fields |
 | Projectile896 / homing498 |908/765 and493/401 in earlier context; consult topic before reuse |
-| Interpreter7093 |6993/5880; required variadic double trace still gives64-byte candidate frame versus native ESP/120 |
+| Interpreter7093 |7033/5779 through sole actual caller; native fixed120 and all89 selectors/60-arm layout; register/tail sharing gaps |
 
 - Scoped reset result temporaries give2556/1977 and six main factory sites versus
   native four. Signed counter with wrapped increments does not close publishers.
@@ -172,6 +172,7 @@ are regenerable; result records are retained. See [ARTIFACTS.md](ARTIFACTS.md) f
 | Complete player controller, real callback contracts and full movement/drop tables | [SECONDARY_PLAYER_CONTROLLER](SECONDARY_PLAYER_CONTROLLER.md) |
 | Exact orbit/aim callbacks, player death and life HUD | [SECONDARY_EMITTER_MOTION](SECONDARY_EMITTER_MOTION.md) |
 | Exact VM release/position publication, ID values and marker read timing | [SECONDARY_ANIMATION_VALUES](SECONDARY_ANIMATION_VALUES.md) |
+| Large interpreter caller context, trace types and native fixed frame | [SECONDARY_INTERPRETER_CODEGEN](SECONDARY_INTERPRETER_CODEGEN.md) |
 | Complete scene/actor/object clearing and floating comparison distinctions | [SECONDARY_CLEARING](SECONDARY_CLEARING.md) |
 | Complete collision transition, primary plus32 VMs and timer/spell gates | [SECONDARY_COLLISION](SECONDARY_COLLISION.md) |
 | Complete player movement, callback-slot correction and event setter | [SECONDARY_PLAYER_MOVEMENT](SECONDARY_PLAYER_MOVEMENT.md) |
@@ -191,3 +192,8 @@ are regenerable; result records are retained. See [ARTIFACTS.md](ARTIFACTS.md) f
 
 A local-lifetime experiment in the death-effect allocator gives233/41 instead of
 228/37 and is not adopted; the maintained source remains unchanged.
+
+Run7093 now uses the sole actual updater caller and typed format branches: native
+fixed120, all89 selectors and60-arm physical order are recovered at7033/5779.
+The independent helper context still aligns64 despite coincident7093 size. No
+frame/type/ABI trick or trace ablation is adopted; the full owner remains open.

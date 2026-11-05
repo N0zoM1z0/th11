@@ -153,3 +153,7 @@ animation-ellipsis, explicit-offset and inline-offset diagnostics; trace ablatio
 body/fixed-format/no-double and fp:fast probes; current affected cold receipts.
 Original bytes, decompiler output, compiler payloads and build artifacts stay
 private. Native product, runtime and portability remain open.
+
+Later actual-caller and typed-trace work supersedes the interpreter alignment
+blocker above: fixed120 and native dispatch layout are recovered in the current
+7033/5779 context. See [SECONDARY_INTERPRETER_CODEGEN](SECONDARY_INTERPRETER_CODEGEN.md).

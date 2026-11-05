@@ -17,18 +17,23 @@ bytes/current receipts outrank older notes. All dirty work is ours.
 Operator priority is now large, difficult functions, not leaf accumulation.
 Main continuation is the complete7,093-byte script interpreter at45B860.
 
-Latest checkpoint adds seven complete clearing owners/1,291 source bytes.
-Radius334 and actor381 remain342/218 and378/70; call/return contracts agree.
-The rectangle93 and virtual traversals95/47 pass235 bytes/six fields in three
-strict cold public primary-TU proofs. Only new files are introduced, so no prior
-exact unit is affected. Three new boundary/origin reviews remain indeterminate.
-See [CLEARING](SECONDARY_CLEARING.md).
+Latest work restores the interpreter's physical60-case order and typed trace
+format branches. All60 opcode bodies stay unchanged. Through its sole actual
+updater caller, complete7033/5779 now has fixed120, all89 selector bytes and both
+RET4 paths matching the target. Trace/reference call multiplicities agree. Main
+VM ESI versus native EDI and extra push/destination tail sharing remain open.
+See [INTERPRETER](SECONDARY_INTERPRETER_CODEGEN.md).
+
+Only SecondaryScript.cpp plus a new actual-caller probe changed. Its27 affected
+old exact units pass1,027 bytes/22 fields cold; no unrelated replay. The large
+owner receives no exact credit. Independent-helper context size7093 still aligns
+64 and is not an acceptance result. Source/probe hashes remain frozen.
 
 ## Immediate continuation
 
 | Area | Concrete remaining work |
 | --- | --- |
-| Interpreter45B860/7093 | Main priority: complete6993/5880; required variadic double trace causes candidate alignment64 versus native fixed ESP/120; preserve61 dispatch cells/89 selectors |
+| Interpreter45B860/7093 | Main priority: complete7033/5779; fixed120/all89 selectors/60-case order recovered; VM ESI versus EDI, extra PushValue and FloatDestination tail sharing |
 | Collision432A90/546 | Complete source543/257; frame18 versus1C, EBX save/restore placement, sound argument EDX versus native ESI |
 | Movement430290/2896 | Complete source2928/2447 after animation value correction; native call/return/frame contracts agree; register/branch/vector stores remain open |
 | Horizontal wrap430E50/540 | Complete source499/415; preserve inclusive6800 boundaries, counter8/45 and real sound47/48/reset calls |
@@ -47,23 +52,22 @@ padding or forced frames. Full table/padding ownership remains mandatory.
 
 ## Findings to retain
 
-- Interpreter trace-arm/no-double/fixed-format/fp:fast and trace-splitting probes
-  do not close alignment; no behavior-removing variant is adopted. See
-  [EXTENSION](SECONDARY_EXTENSION.md) and [LIFETIME](SECONDARY_LIFETIME.md).
-- Preserve every full extent/table. Movement2896, reset2508, controller2888,
-  drop851, special268 and interpreter7093 own reviewed alignment/dispatch data.
-- Do not repeat completed Sound, scoped-reset-temporary or signed-publisher
-  experiments as untried. Existing topic docs retain the failed variants.
-- Scene radius clear accepts unordered distance comparisons; actor radius clear
-  rejects them. Pool2000/stride910 is separate from player256/stride6C.
-- The positioned factory455B10 still has a file/hidden-result stack-order gap in
-  the single-clear caller; do not declare a fake ABI to fit it.
-- Death-effect local lifetime gives233/41 versus maintained228/37, not adopted.
+- Native Run has one direct caller45D443 in UpdateSecondaryScripts. Direct
+  synthetic Run input changes LTCG alignment; do not treat64 as a double ABI rule.
+- Keep real trace double args and all side effects. Float/int formats resolve
+  their values separately; native seven trace calls and reference pairs remain.
+- Extra candidate tails:50 joins integer-comparison push;52/58 share another;
+  82/87 share float destination. Native itself shares comparison tails.
+- Do not repeat rejected trace ablations/fixed-format/fp:fast, int advance,
+  local/signed-pop or split trace-TU probes as untried. Current topic docs retain
+  their measured results. Keep wrapped arithmetic and the established /GL owners.
+- Preserve full extents/tables. No padding, forced alignment or private-register
+  declarations to close the remaining frame/register/control-flow differences.
 
-`.analysis/secondary-clearing-final-proof.json` records the three current cold
-results; source freeze, field review, complete diagnostics and call audit share
-that prefix. Earlier position-marker32 proofs remain current. No full cohort,
-broad behavior or unchanged-Oracle suite ran. Exact claims do not establish
+`.analysis/secondary-interpreter-hard-affected-proof.json` records27 current cold
+results. Maintained audit/diagnostic, opcode-body hashes and source freeze share
+that prefix. Clearing235 and position-marker proofs remain unaffected. No full
+cohort, broad behavior or unchanged-Oracle suite ran. Exact claims do not establish
 original classes/TU partition, native product closure or runtime/port status.
 
 Other findings are indexed in [KNOWLEDGE_BASE](KNOWLEDGE_BASE.md). Older narratives

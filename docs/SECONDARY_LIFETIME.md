@@ -157,3 +157,7 @@ full38-span/CFG/vtable/FuncInfo/field decoding, lifetime/inline/frozen/default/
 counter/adapter diagnostics, rejected trace variants and affected cold receipts.
 Original bytes/decompiler/tool/build artifacts stay private. Native product,
 runtime and portability closure remain open.
+
+Later actual-caller and typed-trace work supersedes the interpreter alignment
+blocker above: fixed120 and native dispatch layout are recovered in the current
+7033/5779 context. See [SECONDARY_INTERPRETER_CODEGEN](SECONDARY_INTERPRETER_CODEGEN.md).
