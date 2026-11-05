@@ -18,13 +18,22 @@ Operator priority is now large, difficult functions, not leaf accumulation.
 Main continuation is the complete7,093-byte script interpreter at45B860 and its
 missing16,556-byte host dispatcher at412E30.
 
-Latest checkpoint corrects that host's code-only boundary:15,780 code bytes plus
+The host's corrected boundary is15,780 code bytes plus
 540 primary table,195 selectors, one alignment byte and two nested tables/40
 bytes. Full4,003-instruction decode and4,001 reachable Ghidra instructions agree;
 all145 formerly external DATA refs are internal. Native has465 direct calls,
 two callbacks and one RET. Slot494074 reaches the host through412E20/state+103C.
 It accounts for83 int/107 float argument reads absent from the current diagnostic.
-No host source/exact credit is claimed. See [HOST](SECONDARY_HOST_DISPATCH.md).
+No complete-host source mapping/exact credit is claimed. See [HOST](SECONDARY_HOST_DISPATCH.md).
+
+Latest source work adds the motion fragment118..133:28 handled values/16 physical
+targets/4,517 native entry-interval bytes. The new .inc/header and compile-only
+probe preserve12A/12B's real fallthrough, ordered sentinel/NaN gates, mirrored and
+shortest-path angles, vector/pair/ellipse tweens, centers and timer resets.
+Cold VC9 /GL probe4368 has the same opcode partition,89 physical call sites and
+all per-opcode call/index trace sets. This is partial-owner structural evidence,
+not a complete native function mapping or byte match. Remaining126 handled opcode
+values and EH source are still open; do not credit a fragment as the whole host.
 
 Prior source work corrects arithmetic operand/result storage and angle87 argument
 publication inside that full owner. Actual-caller cold diagnostic is7013/5821
@@ -38,14 +47,14 @@ units pass1,027 bytes/22 fields cold; all37 source/header/support hashes stay fr
 Main VM ESI versus native EDI, unary84's merged negate/push paths and82/87's shared
 float destination remain open. Ordinary member/accessor hypotheses did not solve
 these gaps; keep the public interface and original /GL owners.
-The current checkpoint changes only boundary/origin tracking and documentation;
-all37 receipt source inputs remain unchanged, so no cold replay is repeated.
+The three new source fragment/header/probe files affect no existing canonical
+receipt contract. All37 earlier inputs remain unchanged; no cold replay is repeated.
 
 ## Immediate continuation
 
 | Area | Concrete remaining work |
 | --- | --- |
-| Host dispatcher412E30/16556 | Next large source owner:154 handled opcode values/134 nondefault physical targets; actual argument-reader contracts and full EH/GS lifetimes; no partial/default stub implementation |
+| Host dispatcher412E30/16556 | Motion118..133 fragment implemented/compiled/audited; continue remaining126 handled values, beginning animation100..115 and control/effect140 onward; actual argument-reader/EH lifetimes; no partial/default native stub |
 | Interpreter45B860/7093 | Main priority: complete7013/5821; fixed120/all89 selectors/60-case order retained; VM ESI versus EDI, unary84 merged push and82/87 shared destination |
 | Collision432A90/546 | Complete source543/257; frame18 versus1C, EBX save/restore placement, sound argument EDX versus native ESI |
 | Movement430290/2896 | Complete source2928/2447 after animation value correction; native call/return/frame contracts agree; register/branch/vector stores remain open |

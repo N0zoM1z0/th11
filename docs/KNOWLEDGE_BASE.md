@@ -57,7 +57,7 @@ includes540 primary table bytes,195 selectors, one alignment byte and two nested
 five-cell tables/40 bytes. All145 Ghidra external-to-code DATA refs become internal;
 4,001 reachable instructions plus two alignment instructions account for the full
 code. Its494074 virtual slot adjusts manager+103C through412E20. Origins remain
-indeterminate; neither owner has maintained source or exact credit. See
+indeterminate; neither owner has a complete maintained implementation or exact credit. See
 [HOST_DISPATCH](SECONDARY_HOST_DISPATCH.md).
 
 | Owner | Reviewed complete extent |
@@ -143,6 +143,21 @@ Run diagnostic, plus real state argument adapters. Complete native context must
 be reconstructed before attributing the VM ESI/EDI and tail-merging differences
 to source alone. Typed int-pointer extraction leaves Run7013/5821 unchanged;
 memcpy bit transport worsens it to7381/6120/frame1B0. Neither is adopted.
+
+Host motion118..133 now has maintained natural source as an explicit switch
+fragment:28 handled values/16 physical targets. Native12A/12B really falls into
+12C/12E after updating velocity; it rereads the captured instruction and selects
+offset for that second stage. Sentinel gates reject unordered inputs, so a
+decompiler <= fallback must not be copied blindly. Mutable vector/pair presets,
+mode7/8, mirrored/shortest-path float roundings, centers and every duration store
+remain. A cold /GL compile-only probe and static audit agree on opcode grouping,
+89 physical calls and all per-opcode call/index trace sets. The full16,556-byte
+host and its remaining126 handled values/EH source are still open; no complete
+source mapping, exact bytes or runtime credit is added. See the host topic.
+Random-direction bound tests differ from sentinel tests: they include unordered
+inputs and use negated greater-than conditions; the player/upper-Y comparisons
+remain ordered. Nine native x87 predicates were checked over all four compare
+relations before freezing the source.
 
 Release66/raw-position97 close through the existing ID value transport. Capturing
 the actual marker pointer before position stores also closes offset132/direct110;
