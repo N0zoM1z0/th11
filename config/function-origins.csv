@@ -246,8 +246,8 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00412990,unknown,SecondaryClearing,indeterminate,unknown,secondary-clearing-origin-2026-11-05
 0x00412B10,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00412C50,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00412E20,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00412E30,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00412E20,unknown,SecondaryHostDispatch,indeterminate,unknown,secondary-host-dispatch-origin-2026-11-05
+0x00412E30,unknown,SecondaryHostDispatch,indeterminate,unknown,secondary-host-dispatch-origin-2026-11-05
 0x00416EE0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004173A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004174B0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

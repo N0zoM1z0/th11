@@ -101,6 +101,13 @@ uses double slot20 versus candidate18; unary84 uses58 versus candidate3C.
 The next work is these branch/lifetime differences and register allocation
 inside this complete owner, not a new leaf-function search.
 
+The next context investigation finds the real actor host at412E30 owns16,556
+bytes and directly contributes83 integer/107 float argument-reader calls.
+Its complete tables, branch reachability, vtable adapter and EH frame are now
+reviewed; it has no maintained source in the current diagnostic. See
+[HOST_DISPATCH](SECONDARY_HOST_DISPATCH.md). This motivates reconstructing its
+full source, not assuming its presence would automatically close Run's gaps.
+
 Moving trace alone to the end gives6,985/5,787 in the old helper context. A separate
 /GL trace TU produces the same result and does not remove alignment. Native-order
 source before typed trace gives6,889/5,925 in the actual-caller context with128

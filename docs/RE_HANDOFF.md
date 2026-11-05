@@ -7,33 +7,45 @@ bytes/current receipts outrank older notes. All dirty work is ours.
 ## Current exact state
 
 - Original Japanese TH11v1.00a, pinned by `config/target.toml`.
-- 2,136 candidates;532 reviewed boundaries;415 source mappings.
+- 2,136 candidates;534 reviewed boundaries;415 source mappings.
 - 232 exact functions/26,367 bytes:9 normal COFF and223 linked PE.
-- Origins:90 authored,426 indeterminate,14 exclusions,1,606 pending.
+- Origins:90 authored,428 indeterminate,14 exclusions,1,604 pending.
 - VC9 RTM21022/SDK6.0A; direct Ghidra/scripts, no Factory MCP/REA.
 - Commit/push authorized, prefix `gpt-6.1-sol: `.
 - No reconstruction job remains running at this checkpoint.
 
 Operator priority is now large, difficult functions, not leaf accumulation.
-Main continuation is the complete7,093-byte script interpreter at45B860.
+Main continuation is the complete7,093-byte script interpreter at45B860 and its
+missing16,556-byte host dispatcher at412E30.
 
-Latest work corrects arithmetic operand/result storage and angle87 argument
+Latest checkpoint corrects that host's code-only boundary:15,780 code bytes plus
+540 primary table,195 selectors, one alignment byte and two nested tables/40
+bytes. Full4,003-instruction decode and4,001 reachable Ghidra instructions agree;
+all145 formerly external DATA refs are internal. Native has465 direct calls,
+two callbacks and one RET. Slot494074 reaches the host through412E20/state+103C.
+It accounts for83 int/107 float argument reads absent from the current diagnostic.
+No host source/exact credit is claimed. See [HOST](SECONDARY_HOST_DISPATCH.md).
+
+Prior source work corrects arithmetic operand/result storage and angle87 argument
 publication inside that full owner. Actual-caller cold diagnostic is7013/5821
 (previous7033/5779): full masked differences worsen, while reviewed local storage,
 X-push-before-Y-read and per-opcode tail topology improve. Fixed120, all89 selector
 bytes,60-arm physical order and both RET4 paths remain. No exact credit is added.
 See [INTERPRETER](SECONDARY_INTERPRETER_CODEGEN.md).
 
-Only SecondaryScript.cpp changes in this checkpoint. Its27 affected old exact
+That SecondaryScript.cpp change's27 affected old exact
 units pass1,027 bytes/22 fields cold; all37 source/header/support hashes stay frozen.
 Main VM ESI versus native EDI, unary84's merged negate/push paths and82/87's shared
 float destination remain open. Ordinary member/accessor hypotheses did not solve
 these gaps; keep the public interface and original /GL owners.
+The current checkpoint changes only boundary/origin tracking and documentation;
+all37 receipt source inputs remain unchanged, so no cold replay is repeated.
 
 ## Immediate continuation
 
 | Area | Concrete remaining work |
 | --- | --- |
+| Host dispatcher412E30/16556 | Next large source owner:154 handled opcode values/134 nondefault physical targets; actual argument-reader contracts and full EH/GS lifetimes; no partial/default stub implementation |
 | Interpreter45B860/7093 | Main priority: complete7013/5821; fixed120/all89 selectors/60-case order retained; VM ESI versus EDI, unary84 merged push and82/87 shared destination |
 | Collision432A90/546 | Complete source543/257; frame18 versus1C, EBX save/restore placement, sound argument EDX versus native ESI |
 | Movement430290/2896 | Complete source2928/2447 after animation value correction; native call/return/frame contracts agree; register/branch/vector stores remain open |
@@ -61,6 +73,9 @@ padding or forced frames. Full table/padding ownership remains mandatory.
   remains. Logical73/74 each use one push/result slot18. Unary84 still has one
   push versus native two;82/87 still share float destination. Preserve the angle87
   X-push-before-Y-read order and math-before-destination lookup.
+- Typed int-pointer pop leaves7013/5821 unchanged; memcpy bit transport expands
+  frame1B0 and gives7381/6120 without fixing either missing call. Both rejected.
+  Reconstruct the real large host context before another isolated probe lattice.
 - Do not repeat rejected trace ablations/fixed-format/fp:fast, int advance,
   local/signed-pop or split trace-TU probes as untried. Current topic docs retain
   their measured results. Keep wrapped arithmetic and the established /GL owners.

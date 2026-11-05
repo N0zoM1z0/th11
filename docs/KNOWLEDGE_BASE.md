@@ -52,6 +52,14 @@ that the target had that layout.
 
 ## Complete owner boundaries
 
+Actor host412E30 is16,556 bytes, not its initial15,780 code-only span. Full ownership
+includes540 primary table bytes,195 selectors, one alignment byte and two nested
+five-cell tables/40 bytes. All145 Ghidra external-to-code DATA refs become internal;
+4,001 reachable instructions plus two alignment instructions account for the full
+code. Its494074 virtual slot adjusts manager+103C through412E20. Origins remain
+indeterminate; neither owner has maintained source or exact credit. See
+[HOST_DISPATCH](SECONDARY_HOST_DISPATCH.md).
+
 | Owner | Reviewed complete extent |
 | --- | --- |
 | Actor state411750 |4230, including9 internal alignment bytes beyond sparse4221 |
@@ -129,6 +137,13 @@ specific retained contexts, not exactness scores or complete-product results.
 Operator priority: large, difficult functions. Main focus is the complete7,093-byte
 interpreter; do not use leaf counts as the work-selection objective.
 
+Next substantial source owner is the16,556-byte actor host dispatcher. Its465
+direct sites include83 integer/107 float argument reads omitted from the current
+Run diagnostic, plus real state argument adapters. Complete native context must
+be reconstructed before attributing the VM ESI/EDI and tail-merging differences
+to source alone. Typed int-pointer extraction leaves Run7013/5821 unchanged;
+memcpy bit transport worsens it to7381/6120/frame1B0. Neither is adopted.
+
 Release66/raw-position97 close through the existing ID value transport. Capturing
 the actual marker pointer before position stores also closes offset132/direct110;
 all8 new fields and the three double literal payloads are independently checked.
@@ -173,6 +188,7 @@ are regenerable; result records are retained. See [ARTIFACTS.md](ARTIFACTS.md) f
 | Exact orbit/aim callbacks, player death and life HUD | [SECONDARY_EMITTER_MOTION](SECONDARY_EMITTER_MOTION.md) |
 | Exact VM release/position publication, ID values and marker read timing | [SECONDARY_ANIMATION_VALUES](SECONDARY_ANIMATION_VALUES.md) |
 | Large interpreter caller context, trace types and native fixed frame | [SECONDARY_INTERPRETER_CODEGEN](SECONDARY_INTERPRETER_CODEGEN.md) |
+| Large actor host dispatcher, full tables and missing interpreter caller context | [SECONDARY_HOST_DISPATCH](SECONDARY_HOST_DISPATCH.md) |
 | Complete scene/actor/object clearing and floating comparison distinctions | [SECONDARY_CLEARING](SECONDARY_CLEARING.md) |
 | Complete collision transition, primary plus32 VMs and timer/spell gates | [SECONDARY_COLLISION](SECONDARY_COLLISION.md) |
 | Complete player movement, callback-slot correction and event setter | [SECONDARY_PLAYER_MOVEMENT](SECONDARY_PLAYER_MOVEMENT.md) |
