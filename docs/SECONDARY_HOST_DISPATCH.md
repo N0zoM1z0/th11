@@ -2,8 +2,8 @@
 
 The large host dispatcher at412E30 owns16,556 bytes, not the initial15,780-byte
 code-only inventory span. Its complete boundary, tables, control flow and call
-graph are reviewed. Motion, creation/animation and control/effect source fragments implement
-103 handled opcode values; the complete host implementation and exact byte proof
+graph are reviewed. Four maintained source fragments implement all154 handled
+opcode values; the original host wrapper, stack-array extent and exact byte proof
 remain open.
 The existing7,093-byte RunSecondaryScript reconstruction remains non-exact.
 
@@ -187,8 +187,9 @@ The compile-only probes remain separate from complete-owner acceptance.
 
 `src/SecondaryActorInstructionControl.inc` implements all53 values140..174,
 covering49 primary targets/2,663 entry-interval bytes. Combined source covers
-103/154 handled values and87/134 nondefault primary targets. Remaining51 values
-and full EH lifetimes are open; there is still no complete-host source mapping.
+103/154 handled values and87/134 nondefault primary targets at this stage.
+The records group below completes opcode coverage; there is still no complete-host
+source mapping.
 
 The fragment retains extent/bounds stores, ten animation-ID updates, effect
 parameter indexing and mirrored ID remapping, counter/HUD gauges, actor slots,
@@ -240,12 +241,105 @@ Private evidence uses secondary-host-control-{compile,call-audit,detail-proof,
 arm-ranges,dependency-audit}.json, the attested direct Ghidra contract review and
 build/probe-ltcg/SecondaryHostControl/. Frozen inputs identify the final compile.
 
+## Records, parameter packets and the remaining cases
+
+`src/SecondaryActorInstructionRecords.inc` implements all51 values190..1C2,
+covering47 primary targets/5,830 entry-interval bytes. The previous handoff's
+suggested134..13F/175..18F work range was incorrect: those values use the default
+entry. Independent selector replay proves that the four fragments now contain
+every154 handled value exactly once and all134 nondefault primary targets.
+The entry intervals total15,613 bytes;129 prologue and38 epilogue bytes account
+for the remainder of the15,780-byte native code interval. This is coverage
+accounting, not a native function implementation or cropped comparison lane.
+
+The new physical views assert complete214-byte records, eighteen24-byte pattern
+entries,1E4-byte basic packets and204-byte advanced packets. Record-copy19B uses
+133 DWORDs, while the four inherited-pattern cases copy108 DWORDs. The advanced
+reset helper410880 clears204 bytes and initializes its2C float to8. The source
+preserves variable indices, short narrowing, callback tables, radius-clear
+arguments, object lookup/virtual clear/relookup, target position updates and the
+score snapshot across both score callees.1C0 rereads its object ID argument after
+each virtual clear and zeroes the old object's6C ID before that reread.
+
+Target details that must survive later codegen work:
+
+- Record positions select local+offset only for ordered offset.z greater than
+  double0.89999997615814209. Otherwise they use local+world, including unordered
+  values. The offset case publishes Z=0; the native also computes a temporary Z
+  sum before overwriting it.1B7 uses a different predicate: offset.x>=-990 including
+  unordered values sets its Z marker to1. Its x87 parity branch is not an ordinary
+  ordered >= comparison. Both predicates have separate instruction checks.
+-19C/1AF and19D/1B0 normalize their angle through458ED0;1AC/1B1 and1AD/1B2 do not.
+  Basic packets put the two record values at1DC/1E0. Advanced19D puts them at40/44,
+  while1AD puts them at44/48. This real one-word shift is retained.1AD resolves its
+  destination before rereading the captured instruction's opcode for1B2; the
+  other inheritance gates use the entry opcode snapshot.19D's flag4 branch
+  reads argument0 as an ID override instead of looking up a destination.
+-195/1A6/1A7 and1A9/1AA preserve the actual shared pair-reader tails. Three-bin
+  selection uses512/-512, while five-bin selection uses600/200/-200/-600; these
+  are different from the earlier scalar selection's -400 boundary.1A8 retains
+  double1024 and1/2048;1AB wraps two signed products and truncates division before
+  narrowing.1B3/1B4 reread difficulty after publishing the first value.
+-1AE snapshots both tracked coordinates as doubles, publishes each rounded float
+  delta as a real argument, then computes the angle before destination lookup.
+  The 1B8 source uses the existing StageScriptMesh(17,17,0) constructor, guarded
+  allocation and the real destroy boundary; no fabricated constructor or EH path
+  is added.
+
+Cold /GL `probes/secondary-host-records-context.cpp` produces5,568 bytes, including
+204 dispatch-table bytes. Both target and candidate have186 direct/2 indirect
+physical call sites, equal per-callee counts and all51 acyclic call/index skeleton
+sets.29 static record/copy/FP/arithmetic/EH checks pass. The source remains a
+fragment and its probe remains a diagnostic, not a full native mapping or proof
+of every field and predicate.
+
+Direct attested Ghidra review and independent PE decoding identify the host's
+FuncInfo at49FE58: magic19930522, one unwind entry at49FE50 and no try blocks.
+That entry transitions to-1 through48AA90, which deletes the saved allocation
+using45FD49. Handler48AA9E checks cookies and passes49FE58 to484DAB. This establishes
+the mesh new-expression's cleanup role; it does not establish original source
+lifetimes, specialized EH ownership or exact acceptance.
+
+## Combined switch and concrete remaining gaps
+
+`probes/secondary-host-switch-context.cpp` compiles all four fragments together.
+Its three diagnostic inputs are state, captured instruction and decoder workspace;
+they are explicitly not the native host's ABI. The cold /GL contribution is15,776
+bytes:15,000 code-interval bytes plus the same135-cell table,195 selectors, one
+alignment byte and two five-cell tables. All195 handled/default selector groups,
+all per-opcode acyclic call/index skeletons, projection argument roles and0/-1
+return sets agree. Native464/candidate460 direct body calls and2/2 indirect calls
+remain: raw integer-value reader11/10, actor creator3/2 and ID lookup6/4. The native
+GS epilogue adds one more direct call to its complete465-call count.
+
+The combined candidate has a2D4 local allocation and no native EH registration;
+the target allocates310 and registers48AA9E. Decoder stack storage/capacity is
+still unproved and remains an explicit workspace input. There is no invented
+buffer size, padding or forced EH frame. The complete original host body and
+specialized EH/cold byte acceptance remain open despite complete opcode coverage.
+
+A second cold context includes the real StageMesh.cpp owner with /GL retained.
+The switch becomes15,772 bytes and still has the same call/index skeleton sets;
+EH registration is still absent. Its only constructor caller supplies17/17/0,
+so LTCG specializes the constructor to213 bytes with constants and no stack
+arguments. Native has six constructor call sites in five callers and a generic
+389-byte constructor. This measured specialization is not evidence for a new
+native constructor ABI. More real context is needed; do not encode those private
+register choices in declarations or manufacture throwing helpers.
+
+Private evidence uses secondary-host-records-{compile,call-audit,detail-proof,
+arm-ranges,dependency-audit}.json; secondary-host-switch[-mesh]-{compile,call-audit}
+.json; fresh mapped-text-attested record/helper/EH Ghidra exports and the matching
+build/probe-ltcg/SecondaryHostRecords, SecondaryHostSwitch and
+SecondaryHostSwitchMesh directories. These are static diagnostics, not runtime
+or product closure.
+
 The dispatcher and its necessary virtual adapter now have reviewed boundaries
 and indeterminate origins. Complete source mappings and exact totals are unchanged.
 The prior27-unit cold proof remains current: all37 receipt source/header/support
 inputs are byte-identical. Recursive canonical contracts select no existing exact
-unit depending on the fragment/header/probe additions. This control checkpoint
+unit depending on the fragment/header/probe additions. This records checkpoint
 scans86 canonical receipt contracts; all earlier motion/animation source hashes
-also stay unchanged. No
+and control hashes also stay unchanged. No
 existing source, tool or Oracle implementation changed, so no prior unit is
 cold-replayed here.

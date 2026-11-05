@@ -187,6 +187,25 @@ counts and all53 acyclic call/index skeletons; loops/numerical stages have24
 separate static checks. These fragment observations grant no full-owner exact
 credit. All prior source hashes remain unchanged; no existing exact unit is affected.
 
+Records190..1C2 completes the host's154 handled opcode values/134 nondefault
+targets.134..13F and175..18F are defaults, not missing handlers. The214-byte
+records contain18 six-word pattern entries; basic/advanced packets are1E4/204.
+Keep ordered offset.z>double0.899999976 for position selection and1B7's separate
+unordered-inclusive not-less-than-990 marker. Three-bin record pairs use-512,
+five-bin pairs-600, unlike earlier scalar-400. Advanced19D stores record values
+at40/44,1AD at44/48;1B2 rereads the instruction after destination lookup. Real
+1B8 new-expression cleanup is the sole unwind49FE50->48AA90 under FuncInfo49FE58.
+The records cold /GL probe5568 agrees on186 direct/2 indirect sites, callee counts,
+all51 acyclic call/index skeletons and29 static details. The combined switch
+probe15776 retains all195 selector groups, all skeletons/projection roles/returns,
+but native464/candidate460 body calls differ at raw-int-value11/10, actor creation
+3/2 and ID lookup6/4. Decoder capacity/native wrapper and EH context remain open;
+no complete host mapping or exact credit follows from opcode coverage. Real
+StageMesh.cpp /GL support gives15772, still no EH, and specializes its sole17/17/0
+caller to a213-byte constructor. Native has six constructor sites/five callers
+and generic389. Preserve this context distinction; do not fake a private ABI or
+add throwing/padding tricks. All earlier source inputs remain unchanged.
+
 Release66/raw-position97 close through the existing ID value transport. Capturing
 the actual marker pointer before position stores also closes offset132/direct110;
 all8 new fields and the three double literal payloads are independently checked.

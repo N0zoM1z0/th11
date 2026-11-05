@@ -26,33 +26,38 @@ two callbacks and one RET. Slot494074 reaches the host through412E20/state+103C.
 It accounts for83 int/107 float argument reads absent from the current diagnostic.
 No complete-host source mapping/exact credit is claimed. See [HOST](SECONDARY_HOST_DISPATCH.md).
 
-Motion fragment118..133 covers28 handled values/16 physical
-targets/4,517 native entry-interval bytes. The new .inc/header and compile-only
-probe preserve12A/12B's real fallthrough, ordered sentinel/NaN gates, mirrored and
-shortest-path angles, vector/pair/ellipse tweens, centers and timer resets.
-Cold VC9 /GL probe4368 has the same opcode partition,89 physical call sites and
-all per-opcode call/index trace sets. This is partial-owner structural evidence,
-not a complete native function mapping or byte match.
+All154 handled opcodes now have natural switch source: animation100..115,
+motion118..133, control140..174 and records190..1C2. The previously suggested
+134..13F/175..18F ranges are defaults. These cover all134 nondefault primary
+targets/15,613 entry-interval bytes; prologue129/epilogue38 complete the code span.
+No native wrapper/source mapping or exact credit is claimed.
 
-Creation/animation fragment100..115 adds22 values/22 primary targets.
-It retains guarded spawns, signed payload indexing, snapshots/repeated readers,
-the shared80-byte packet, real camera0 projection addresses, ID value transport,
-replacement/cache/event flows and111/115's angle join. Cold /GL probe2804 agrees
-on all per-opcode call/index trace sets and projection argument roles. Native89
-physical calls versus88 remain: raw integer reader11/10, lookup6/5, flag2-clear2/3.
-New control/effect140..174 adds53 values/49 targets/2,663 entry-interval bytes:
-effect/counter/HUD state, slot changes, spell decoder/transitions, blocking returns,
-selection/difficulty and VM-time operations. Cold /GL probe3248 has all100 native
-physical calls/callee counts, all53 acyclic call/index skeletons and24 targeted
-static detail checks. Preserve shared low/middle reader tails; ten-ID loop bounds;
-signed decoder length, byte77/7/+10 and late opcode reread; discarded argument2;
-15A/15B/15F/162/170 rounding/division stages. Decoder workspace capacity remains
-unproved; the compile-only context takes a workspace pointer, not a native ABI.
-Important correction:153/154 returns -1 through416BB0 to pause the interpreter;
-other paths clear EAX at416BAE. Ghidra's void inference lost this result.
-Combined source covers103/154 handled values/87 of134 nondefault targets;
-remaining51 values and EH source are open. No fragment is a complete native
-mapping or exact comparison unit.
+Latest records fragment adds51 values/47 targets/5,830 entry bytes. It asserts
+214-byte records,18 pattern entries,1E4 basic/204 advanced packets and object
+fields. Preserve record-position ordered >0.899999976 gate,1B7's unordered-inclusive
+not-less-than-990 marker, three-bin512/-512 versus five-bin600/200/-200/-600,
+shared pair-reader tails, advanced counter fields40/44 versus44/48, late1B2 opcode
+reread, argument/destination order and integer/float interpolation roundings.
+Cold /GL records probe5568 has all186 direct/2 indirect physical calls, equal
+callee counts/all51 acyclic call/index skeletons and29 targeted static checks.
+
+Combined compile-only switch probe15776 covers all195 selector groups and all
+call/index skeletons, projection roles and0/-1 results. Native464/candidate460
+body calls differ at raw-int-value reader11/10, actor creator3/2 and ID lookup6/4;
+2/2 indirect calls. Full native includes the additional GS call. It has local
+allocation310/EH; candidate2D4/no EH. Diagnostic inputs still include instruction
+and decoder workspace: original name-array capacity and native wrapper remain
+open. Do not invent buffer padding or a throwing helper to force the frame.
+
+Native FuncInfo49FE58 has one unwind entry49FE50 ->48AA90, which deletes the
+saved mesh allocation; handler48AA9E performs cookie checks and passes FuncInfo
+to484DAB. Natural1B8 new StageScriptMesh(17,17,0) retains the source obligation.
+A second cold switch context with real StageMesh.cpp /GL gives15772 and the same
+skeletons but still no EH. With only this caller, LTCG specializes the constructor
+to213 bytes/no stack args; native has six call sites/five callers and generic389.
+This is a missing-context finding, not a native ABI declaration. Next: original
+host wrapper/name storage and real constructor/throwing-call context; complete
+whole-owner field/byte diagnostics, without another leaf/probe-count campaign.
 
 Prior source work corrects arithmetic operand/result storage and angle87 argument
 publication inside that full owner. Actual-caller cold diagnostic is7013/5821
@@ -66,15 +71,15 @@ units pass1,027 bytes/22 fields cold; all37 source/header/support hashes stay fr
 Main VM ESI versus native EDI, unary84's merged negate/push paths and82/87's shared
 float destination remain open. Ordinary member/accessor hypotheses did not solve
 these gaps; keep the public interface and original /GL owners.
-The control fragment/header/probe additions affect none of86 canonical receipt
-contracts. All37 earlier inputs and motion/animation hashes stay unchanged; no
+The records/header/probe additions affect none of86 canonical receipt contracts.
+All37 earlier inputs and motion/animation/control hashes stay unchanged; no
 prior cold replay is repeated.
 
 ## Immediate continuation
 
 | Area | Concrete remaining work |
 | --- | --- |
-| Host dispatcher412E30/16556 |103/154 values implemented/compiled/audited across animation100..115, motion118..133 and control140..174; next large record/effect134..13F and175..1C2 groups (51 values); original decoder storage and EH lifetimes; no partial/default native stub |
+| Host dispatcher412E30/16556 | All154 handled values/134 nondefault targets implemented and jointly compiled; original wrapper/decoder stack capacity, missing EH and constructor context; native464/candidate460 body calls; full owner field/byte work, no native stub |
 | Interpreter45B860/7093 | Main priority: complete7013/5821; fixed120/all89 selectors/60-case order retained; VM ESI versus EDI, unary84 merged push and82/87 shared destination |
 | Collision432A90/546 | Complete source543/257; frame18 versus1C, EBX save/restore placement, sound argument EDX versus native ESI |
 | Movement430290/2896 | Complete source2928/2447 after animation value correction; native call/return/frame contracts agree; register/branch/vector stores remain open |
