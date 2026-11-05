@@ -225,26 +225,37 @@ affected old exact units/22 families to be replayed; other source inputs remain
 unchanged. Original TU/class/capacity and whole-host specialized EH exactness
 remain separate open questions.
 
-The current canonical owner supplies real SecondaryScript.cpp and
-SecondaryHostArguments.cpp /GL support: host15840/frame310, packets8C/shared
-spawn-name294/cookie318, EH registration320. Six host argument adapters have
-complete213-byte/71-instruction boundary/source reviews, without leaf exact credit.
-Native supplied-value adapters resolve the supplied value using the current mask;
-integer destination sends every negative reference, including-1, to the current
-VM owner's GlobalIntPointer. Reusing incoming parameters on native integer and
-reference-pop paths restores parameter storage and the integer index stack ABI.
-The pinned VC9/x86 variable shift emits native CL masking without explicit AND31;
-float index is now ECX. Float argument keeps its separate index-bit union.
-All195 selector/call-index skeletons, projection roles and0/-1 results agree.
-Physical body direct calls464/456 still differ: float107/106, int83/82, supplied
-int11/9, actor creator3/2, object creator4/3, missing-animation clear6/4. Host integer
-wrapper state/index ECX/EAX remains swapped versus native EAX/ECX; cleanup is
-EBP-310 versus native EBP-2F4. Run support7057/ESI/frame134 is not primary-TU
-acceptance. Only the11-byte manager adapter retains strict exact credit. The28
-affected old exact units/five families pass1,038 bytes cold; historical61-unit
-header replay remains separate. Whole-owner fields/bytes, FP/control sharing,
-original TU/class/capacity and specialized EH remain open. See the host topic
-for full native/candidate contracts and current private artifact names.
+The canonical large host now supplies real VM/argument, actor creation/lifetime,
+animation and4230-byte state-update sources under /GL. New complete factory
+source4108F0/621 retains ordinary new2678, payload/timer/flags, state update and
+both list-publication paths. All53 selectors and five table cells are reviewed.
+Current factory625/native621 uses stack arguments/RET8 versus native EBX spawn
+arguments/stack script/RET4; constructor706/native699. Equal621 in an earlier
+context still differs503 full rebased bytes; current625 differs545. Source
+presence and extent equality grant no exact credit. Other native factory callers
+40D600/1212 and420390/1149 remain substantial context work.
+
+12D/12F source now selects three tween pointers before reads, then stages each
+target Y/X before capturing its initial pair. All69 x87 operations/widths/register
+forms match native after memory-address erasure, versus prior57. Stack aliases,
+predicates and full bytes are not proved. Current complete host15904/frame328
+has packetA4/shared spawn-name2AC/cookie330/EH338; native8C/294/318/320 and cleanup
+EBP-2F4 versus source EBP-328 remain gaps.128-byte decoder capacity is still a
+hypothesis, with132-byte cookie distance. Do not preserve the earlier310 frame
+by dropping reviewed floating stages or inventing storage. VC9 consolidates four
+native pointer selections into one. Separate if statements are identical;
+manually sharing two working floats worsens frame330. Native physical case-order
+reordering also leaves excess sharing and is not retained.
+
+All195 selector/call-index skeletons/projection roles/returns agree, but direct
+body calls464/455 differ at float107/106, int83/82, supplied int11/9, actor3/2,
+object4/3, missing-animation6/4 and emitter6/5. Real state-update support restores
+Run's120 frame:6989/native7093, VM ESI/EDI, all89 selectors/case order/two RET4
+preserved. Unary84 and82/87 sharing remain, with32/31 push sites. State-update
+support4083/native4230 and Run are not primary-TU acceptance units in this family.
+Only the affected11-byte manager adapter is replayed cold and stays exact; other
+exact units are unchanged. The132-input union freeze and host topic preserve
+current contracts. Whole-owner bytes, EH, original TU/classes/capacity remain open.
 
 Release66/raw-position97 close through the existing ID value transport. Capturing
 the actual marker pointer before position stores also closes offset132/direct110;

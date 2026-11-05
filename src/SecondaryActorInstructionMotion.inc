@@ -229,32 +229,33 @@ case 0x12d:
 case 0x12f:
 {
     SecondaryMotionView *motion = opcode == 0x12d ? &self->local : &self->offset;
-    int pairIndex = opcode == 0x12d ? 0 : 1;
+    SecondaryPairTween *angular = opcode == 0x12d ? &self->pairTweens[0] : &self->pairTweens[1];
+    SecondaryPairTween *radial = opcode == 0x12d ? &self->pairTweens[2] : &self->pairTweens[3];
+    SecondaryPairTween *ellipse = opcode == 0x12d ? &self->pairTweens[4] : &self->pairTweens[5];
     float angle = Real(self, 2);
     float speed = Real(self, 3);
     float radius = Real(self, 4);
     float radialVelocity = Real(self, 5);
     float tilt = Real(self, 6);
     float ellipseRatio = Real(self, 7);
+    // Stage each target in Y/X order before taking its initial pair snapshot.
+    float angularY = Present(speed) ? speed : motion->speed;
+    float angularX = Present(angle) ? angle : motion->angle;
+    SecondaryVector2 angularTarget = { angularX, angularY };
     SecondaryVector2 angularInitial = { motion->angle, motion->speed };
-    SecondaryVector2 angularTarget = {
-        Present(angle) ? angle : motion->angle, Present(speed) ? speed : motion->speed
-    };
+    float radialY = Present(radialVelocity) ? radialVelocity : motion->radialVelocity;
+    float radialX = Present(radius) ? radius : motion->radius;
+    SecondaryVector2 radialTarget = { radialX, radialY };
     SecondaryVector2 radialInitial = { motion->radius, motion->radialVelocity };
-    SecondaryVector2 radialTarget = {
-        Present(radius) ? radius : motion->radius,
-        Present(radialVelocity) ? radialVelocity : motion->radialVelocity
-    };
+    float ellipseY = Present(ellipseRatio) ? ellipseRatio : motion->ellipseRatio;
+    float ellipseX = Present(tilt) ? tilt : motion->tilt;
+    SecondaryVector2 ellipseTarget = { ellipseX, ellipseY };
     SecondaryVector2 ellipseInitial = { motion->tilt, motion->ellipseRatio };
-    SecondaryVector2 ellipseTarget = {
-        Present(tilt) ? tilt : motion->tilt,
-        Present(ellipseRatio) ? ellipseRatio : motion->ellipseRatio
-    };
     int duration = Integer(self, 0);
     int mode = Integer(self, 1);
-    Pair(&self->pairTweens[pairIndex], angularInitial, angularTarget, duration, mode);
-    Pair(&self->pairTweens[pairIndex + 2], radialInitial, radialTarget, duration, mode);
-    Pair(&self->pairTweens[pairIndex + 4], ellipseInitial, ellipseTarget, duration, mode);
+    Pair(angular, angularInitial, angularTarget, duration, mode);
+    Pair(radial, radialInitial, radialTarget, duration, mode);
+    Pair(ellipse, ellipseInitial, ellipseTarget, duration, mode);
     motion->velocity = motion->position;
     motion->flags |= 3;
     RecomposeSecondaryHostMotion(motion);

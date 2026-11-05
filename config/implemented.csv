@@ -421,3 +421,4 @@ ReadSecondaryHostReal
 SecondaryHostFloatDestination
 ReadSecondaryHostIntegerValue
 ReadSecondaryHostRealValue
+CreateSecondaryHostActor

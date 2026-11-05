@@ -15,6 +15,7 @@ proof/gaps are recorded in [SECONDARY_ACTOR_STATE](SECONDARY_ACTOR_STATE.md).
 | --- | --- | ---: | --- |
 | SecondaryActorStateConstructor | 410440 | 126 | Exact;1 field |
 | SecondaryActorConstructor | 4111C0 | 699 | Source706/442 diagnostic differences |
+| CreateSecondaryHostActor | 4108F0 | 621 | Complete source625 in current host/actor cycle; ABI/bytes open |
 | SecondaryActorDestructor | 411480 | 384 | Source390/327; EH acceptance open |
 | SecondaryActorDeletingDestructor | 410420 | 31 | Generated30/20; aliases/ABI open |
 | DetachSecondaryActor | 410B60 | 82 | Source79/74 |
@@ -118,7 +119,7 @@ DATA references are internal to the complete owner; three CC bytes separate
 410B5D..5F from unlink410B60. The full factory allocates2678, calls699 construction,
 copies spawn payload, sets difficulty/timers/flags, runs state update4230 and
 publishes the intrusive node. Allocation failure is not given an invented guard.
-No factory source or exact credit is claimed. A linear review_span attempt over
+That initial review added no source or exact credit. A linear review_span attempt over
 its mixed code/data failed; acceptance uses the successful attested code/refs
 review plus independent complete PE/table/selector analysis, not that failed dump.
 
@@ -153,3 +154,26 @@ six independent bindings, member/ordered/stack/output compiler experiments,
 final full-contribution diagnostics and selected cold receipts. Original bytes,
 decompiler output, tools and build artifacts remain private. Native product,
 runtime, portability and the active reconstruction goal remain open.
+
+
+## Complete factory source in the large host context
+
+CreateSecondaryHostActor now has complete maintained source in
+SecondaryActorCreation.cpp. The full621-byte boundary retains545 code bytes,
+3 native alignment bytes,20 table bytes and53 selectors. Source keeps the captured
+master, ordinary new2678/manager construction, spawn payload/difficulty/timer/flag
+setup,4230-byte state update, effect remapping, render/script selection and both
+intrusive-node publication paths. It adds no allocation-failure guard. Fresh
+attested direct Ghidra code/constructor review and independent full PE/selector
+replay agree with the existing reviewed boundary.
+
+The canonical host family supplies real creation, lifetime, animation, state
+update and script implementations under /GL. Creation is625/native621 as support;
+its arguments remain stack/RET8 versus native EBX spawn arguments plus stack
+script/RET4. Constructor706/native699 and all full-byte differences remain open.
+An earlier context has equal621-byte extent but503 differing rebased bytes;
+current625 has545 differences. These are complete diagnostics, not cropped or
+primary-TU acceptance. No exact credit is added. Four other native caller sites
+in three owners remain outside this diagnostic context. See
+[SECONDARY_HOST_DISPATCH](SECONDARY_HOST_DISPATCH.md) for current whole-host,
+floating-storage and interpreter context evidence.

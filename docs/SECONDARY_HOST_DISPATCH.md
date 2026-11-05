@@ -431,7 +431,7 @@ runtime suite is required for this declaration and owner work.
 
 ## Real argument bodies in the complete host context
 
-The canonical family now includes SecondaryHostArguments.cpp as real /GL support,
+At the argument-body checkpoint, the canonical family added SecondaryHostArguments.cpp as real /GL support,
 without changing the public stdcall declarations or removing /GL. Direct Ghidra
 and independent PE review cover all six complete adapters:417D80/16,417D90/61,
 417DD0/14,417DE0/16,417DF0/49 and417E30/57. Their213 bytes/71 instructions have
@@ -452,7 +452,7 @@ index bits. The reference-mask expression uses the variable shift directly:
 pinned VC9/x86 emits the native hardware-masked CL shift without an extra AND31.
 This is pinned x86 codegen evidence, not a portable shift-range guarantee.
 
-With these real dependencies and storage contracts, the complete host measures
+With those dependencies and storage contracts, that complete host measured
 15,840 bytes/frame310. Packet8C, shared spawn/name294, cookie318 and EH registration
 320 recover in the canonical real-VM context. Integer argument index is now on
 the stack and float argument/destination index in ECX, matching native. The
@@ -480,5 +480,78 @@ affected-proof,source-freeze}.json and the canonical linked family artifacts.
 
 Creation-context review also confirms4111C0 receives the script name: the saved
 master pointer at4108FE is a local, while41090E reads the incoming script argument.
-The545-byte default creator boundary still omits its owned five-cell switch table;
-review the complete table ownership before any future creation acceptance.
+The default Ghidra creator body still reports545 code bytes; its already reviewed
+public621-byte boundary includes3 alignment bytes,20 table bytes and53 selectors.
+Use that complete ownership for all creation diagnostics and future acceptance.
+
+
+## Complete creation source and six-vector staging
+
+SecondaryActorCreation.cpp now implements the complete621-byte4108F0 factory,
+using the already reviewed physical spawn argument layout. It retains2678-byte
+allocation and ordinary manager construction, local position and payload copies,
+difficulty byte, masked flags, lazy timer initialization with current/fraction2
+and previous1, the full4230-byte state-update call, effect remapping, sparse
+animation-script selection and both intrusive-list publication paths. The master
+pointer is captured before allocation and reused after state update. The native
+allocation-failure path is not given an invented guard. Full selector replay
+checks all53 bytes and five table cells, including0/49,5/50,10/51 and15/52.
+
+The canonical host family now also supplies the existing real actor lifetime,
+animation and state-update implementations under /GL. This closes the observed
+host -> creation -> state update -> script update/interpreter -> virtual host
+call cycle inside the diagnostic link. It is not native product closure or proof
+of original TU partition. The current creation contribution is625/native621:
+source stack arguments/RET8 versus native EBX spawn arguments, stack script and
+RET4; constructor706/native699. Earlier opaque state-update support gives621
+bytes but503 differing full rebased bytes. Equal extents do not prove exactness.
+Current full creation rebasing differs545 bytes; no creator exact credit follows.
+The native factory also has four other caller sites in three owners, including
+unreconstructed40D600/1212 and420390/1149; native caller context remains incomplete.
+
+The12D/12F branch previously constructed each initial pair before selecting its
+target, with aggregate X/Y selection order and one common tween index. Native
+selects motion plus three tween pointers before argument reads. After six rounded
+real reads, each family selects target Y then X, stages its target pair and then
+captures its initial pair; only then are duration/mode read and three tween resets
+called. The maintained source now expresses those pointer selections and float
+stages directly. Its69 x87 instructions match native operation order, operand
+widths and register forms after erasing memory addresses; the previous source
+has57. This comparison deliberately does not prove memory aliases, stack slots,
+predicates, original vector classes or full bytes. No constructor, volatile,
+forced ABI or padding is introduced to obtain it.
+
+The complete current host is15,904 bytes/frame328, not exact. PacketsA4, shared
+spawn/name2AC, cookie330 and EH registration338 differ from native8C/294/318/320;
+cleanup is EBP-328 versus native EBP-2F4. The128-byte decoder capacity remains a
+hypothesis; its132-byte cookie distance persists. The earlier310 frame was
+compatible with the older floating storage representation, not proof of final
+source correctness. Do not shrink or pad storage to preserve that earlier result.
+The12D/12F entry interval is757/native790, a diagnostic attribution only. VC9
+consolidates the four native pointer-selection comparisons into one; scalar
+preset reloads, register allocation and stack storage remain concrete gaps.
+Separate if statements compile identically to the ternaries; two manually shared
+working floats worsen the frame to330 and are not retained. A private reordering
+of all154 cases by native physical entry also leaves the excess sharing unresolved.
+
+All195 selector groups, acyclic call/index skeletons, projection roles and return
+sets continue to agree. Physical body direct sites are464/455: float107/106,
+integer83/82, supplied integer11/9, actor creator3/2, object creator4/3,
+missing-animation clear6/4 and emitter creation6/5. Indirect2/2 and GS1/1 remain.
+These structural checks do not establish complete semantics or byte equality.
+
+Real state-update support restores RunSecondaryScript's fixed120 frame in the
+current family: complete6989/native7093, VM ESI versus EDI. All89 selectors,
+physical case groups and both RET4 paths agree. Native32/source31 push sites,
+unary84's merged paths and82/87's shared float destination remain. The4083-byte
+state-update support contribution is still non-exact against4230. Neither support
+contribution has primary-TU acceptance in this family.
+
+Only secondary-actor-instruction-adapter is affected among existing exact units;
+its complete11 bytes/one REL32 still pass a fresh cold family replay. The other
+sources, headers, tools and Oracles are unchanged. Source mappings rise by one;
+exact totals do not change. The current132-input union freeze changes the motion
+fragment and adds creation/state-update inputs; prior freezes remain historical.
+Private evidence uses secondary-host-pairs-{canonical-functions,canonical-call-audit,
+detail-proof,creation-proof,interpreter-diagnostic,adapter-proof,source-freeze}.json,
+secondary-interpreter-tails-host-pairs-cfg.json and the canonical linked family.
