@@ -406,3 +406,10 @@ SignalSecondaryAnimationEvent
 UpdateSecondaryPlayerHorizontalWrap
 AttractSecondaryPlayerItems
 BeginSecondaryCollision
+ClearSceneProjectile
+ClearSceneProjectilesInRadius
+ClearSceneProjectiles
+SceneClearOutside
+ClearSecondaryActorsInRadius
+ClearSecondaryObjectsInRadius
+ClearSecondaryObjects

@@ -407,3 +407,10 @@ SignalSecondaryAnimationEvent,0x00456230,function
 UpdateSecondaryPlayerHorizontalWrap,0x00430E50,function
 AttractSecondaryPlayerItems,0x004245E0,function
 BeginSecondaryCollision,0x00432A90,function
+ClearSceneProjectile,0x0040AE90,function
+ClearSceneProjectilesInRadius,0x0040AF90,function
+ClearSceneProjectiles,0x0040B5C0,function
+SceneClearOutside,0x0040B8A0,function
+ClearSecondaryActorsInRadius,0x00412990,function
+ClearSecondaryObjectsInRadius,0x00424FE0,function
+ClearSecondaryObjects,0x00425040,function
