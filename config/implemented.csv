@@ -422,3 +422,6 @@ SecondaryHostFloatDestination
 ReadSecondaryHostIntegerValue
 ReadSecondaryHostRealValue
 CreateSecondaryHostActor
+UpdateSecondaryEclDebug
+UpdateSecondaryGameplay
+SecondaryGameplayUpdateCallback

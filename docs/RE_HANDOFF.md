@@ -7,9 +7,9 @@ Target/current receipts outrank historical notes. All dirty work is ours.
 ## Current exact state
 
 - Original Japanese TH11v1.00a, pinned by config/target.toml; no substituted bytes.
-- 2,136 candidates;540 reviewed boundaries;424 source mappings.
+- 2,138 candidates;544 reviewed boundaries;427 source mappings.
 - 233 exact functions/26,378 bytes:9 normal COFF and224 linked PE.
-- Origins:90 authored,434 indeterminate,14 exclusions,1,598 pending.
+- Origins:90 authored,438 indeterminate,14 exclusions,1,596 pending.
 - VC9 RTM21022/SDK6.0A; direct scripts/ghidra.py, no Factory MCP/REA.
 - Commit/push authorized, prefix `gpt-6.1-sol: `.
 - No reconstruction job remains running at this checkpoint.
@@ -66,13 +66,37 @@ use secondary-host-pairs-* and secondary-interpreter-tails-host-pairs-cfg.json.
 The132-input union freeze changes the motion fragment and adds creation/update;
 older28-unit reader and61-unit header proofs/freezes remain historical.
 
+## New complete factory callers
+
+Gameplay420390/1149 and ECL debug40D600/1212 now have full source in
+SecondaryGameplay.cpp/SecondaryEclDebug.cpp with additional physical views in
+SecondaryGameplay.hpp. A normal COFF real callback420840/7 plus /GL main body
+preserves stack owner, frame54 and four RET4; the split is a hypothesis, not
+original TU proof. Debug preserves frame19C/GS. Current complete candidates are
+1151/930 and1153/744 replayed byte differences, with115/78 reviewed fields;
+62/41 call-site counts and183/26 acyclic call/return skeletons agree. No exact
+credit. Their separate cold family is build/probe-ltcg/SecondaryGameplayOwners;
+the canonical host family and132 protected inputs are unchanged (current union
+freeze143), so no old exact
+unit is affected. Source now covers six of seven native factory sites in three
+owners;418460/189 remains source-open.
+
+Ghidra missed the7-byte callback and the10-byte thread entry40D4F0. Both complete
+spans/refs/neighbors are independently reviewed. Thread entry has no explicit local argument
+reads, EAX0/RET and only an external declaration; nominal thread API remains
+unknown. Debug keeps two ANSI scans/unconditional FindClose, three D8 selectors,
+pressed/released distinction, teardown/start and life10000 spawning. Do not add
+allocation guards or crop native count-reset blocks folded by the current source.
+See [GAMEPLAY](SECONDARY_GAMEPLAY.md) and secondary-gameplay-owners-* private proofs.
+
 ## Next substantial work
 
 - Host12D/12F: retain the recovered69-operation FP stages; recover native pointer
   selection/storage/preset reloads without fake frames or ABI declarations.
-- Other real factory callers:40D600/1212 and420390/1149 are unreviewed substantial
-  owners; factory has seven native sites in four callers, three inside the host.
-  Complete their target reviews before claiming original factory context.
+- Gameplay/debug: recover EBX packet and shared pause/mode/gauge helper ABI;
+  return1 sharing, redundant stage-null test, statistics stores and count-reset
+  codegen remain. Both whole functions now have complete source/proofs; do not
+  redo their full target review as untried work.
 - Full host: recover missing physical call sites and all byte/field/EH ownership.
 - Interpreter: VM EDI, unary84's two push paths and82/87's separate destinations;
   preserve wrapped arithmetic, trace side effects and angle87 X-publication order.

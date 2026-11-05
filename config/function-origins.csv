@@ -147,8 +147,9 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0040D0C0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0040D190,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0040D320,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0040D4F0,unknown,SecondaryEclDebug,indeterminate,unknown,secondary-gameplay-origin-2026-11-06
 0x0040D500,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0040D600,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0040D600,unknown,SecondaryEclDebug,indeterminate,unknown,secondary-gameplay-origin-2026-11-06
 0x0040DAC0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0040DDE0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0040DE10,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
@@ -339,7 +340,8 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0041FE10,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004202D0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00420340,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00420390,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00420390,unknown,SecondaryGameplay,indeterminate,unknown,secondary-gameplay-origin-2026-11-06
+0x00420840,unknown,SecondaryGameplay,indeterminate,unknown,secondary-gameplay-origin-2026-11-06
 0x00420880,unknown,SecondaryDamage,indeterminate,unknown,secondary-damage-origin-2026-10-29
 0x004208B0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00420950,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

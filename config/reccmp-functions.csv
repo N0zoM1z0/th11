@@ -423,3 +423,6 @@ SecondaryHostFloatDestination,0x00417DE0,function
 ReadSecondaryHostIntegerValue,0x00417DF0,function
 ReadSecondaryHostRealValue,0x00417E30,function
 CreateSecondaryHostActor,0x004108F0,function
+UpdateSecondaryEclDebug,0x0040D600,function
+UpdateSecondaryGameplay,0x00420390,function
+SecondaryGameplayUpdateCallback,0x00420840,function

@@ -506,8 +506,11 @@ source stack arguments/RET8 versus native EBX spawn arguments, stack script and
 RET4; constructor706/native699. Earlier opaque state-update support gives621
 bytes but503 differing full rebased bytes. Equal extents do not prove exactness.
 Current full creation rebasing differs545 bytes; no creator exact credit follows.
-The native factory also has four other caller sites in three owners, including
-unreconstructed40D600/1212 and420390/1149; native caller context remains incomplete.
+The native factory also has four other caller sites in three owners. The two
+larger owners40D600/1212 and420390/1149 now have full source and a separate mixed
+compiler context;418460/189 remains source-open. See
+[SECONDARY_GAMEPLAY](SECONDARY_GAMEPLAY.md). Native TU/caller context is still
+not proved by the partial diagnostic link.
 
 The12D/12F branch previously constructed each initial pair before selecting its
 target, with aggregate X/Y selection order and one common tween index. Native

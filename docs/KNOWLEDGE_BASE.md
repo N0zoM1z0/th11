@@ -232,8 +232,8 @@ both list-publication paths. All53 selectors and five table cells are reviewed.
 Current factory625/native621 uses stack arguments/RET8 versus native EBX spawn
 arguments/stack script/RET4; constructor706/native699. Equal621 in an earlier
 context still differs503 full rebased bytes; current625 differs545. Source
-presence and extent equality grant no exact credit. Other native factory callers
-40D600/1212 and420390/1149 remain substantial context work.
+presence and extent equality grant no exact credit. The two larger native factory callers now have full maintained source; their
+separate mixed compiler context is recorded below.
 
 12D/12F source now selects three tween pointers before reads, then stages each
 target Y/X before capturing its initial pair. All69 x87 operations/widths/register
@@ -256,6 +256,28 @@ support4083/native4230 and Run are not primary-TU acceptance units in this famil
 Only the affected11-byte manager adapter is replayed cold and stays exact; other
 exact units are unchanged. The132-input union freeze and host topic preserve
 current contracts. Whole-owner bytes, EH, original TU/classes/capacity remain open.
+
+Complete gameplay420390/1149 and ECL debug40D600/1212 now have natural source;
+current complete candidates1151/930 and1153/744 remain non-exact. The frame54/19C,
+62/41 call-site counts and183/26 acyclic call/return traces agree. Replay covers
+115/78 reviewed address fields; matching lengths or skeletons grant no exact
+credit. Gameplay retains both initialization/spawn paths, HUD/delay/demo/stage6
+rules, required chain dereferences, statistics saturation and clock updates.
+Debug retains both ANSI scans/unconditional FindClose, byte filename allocation,
+three D8 selectors, pressed versus released confirmation, teardown/thread start,
+10000-life spawning and input backup at118/11C/124 inside the existing input view.
+
+Two missed entries are independently reviewed:420840/7 pushes ECX into the stack
+owner420390, while40D4F0/10 has no explicit local argument reads and returns EAX0/RET after40D500.
+The latter has only an external prototype; do not infer RET4 from the thread API.
+Normal COFF real callback plus /GL large body restores frame54/stack owner/four
+RET4 and a7-byte callback, versus all-/GL1135/frame50/5-byte tail. This does not
+establish original TU/GL ownership. Main gaps include EBX packet versus stack
+factory argument, generic helper ABI, redundant stage-null test, return sharing
+and counter stores. Debug keeps native count3/1 reset branches which current
+VC9 folds; do not force them with volatile/padding. Existing132 frozen inputs,
+canonical contexts and exact totals are unchanged. See
+[SECONDARY_GAMEPLAY](SECONDARY_GAMEPLAY.md) for complete ownership/proofs.
 
 Release66/raw-position97 close through the existing ID value transport. Capturing
 the actual marker pointer before position stores also closes offset132/direct110;
@@ -280,6 +302,7 @@ are regenerable; result records are retained. See [ARTIFACTS.md](ARTIFACTS.md) f
 
 | Work | Evidence and remaining differences |
 | --- | --- |
+| Gameplay and ECL debug factory callers | [SECONDARY_GAMEPLAY](SECONDARY_GAMEPLAY.md) |
 | Mesh and effects | [STAGE_MESH](STAGE_MESH.md), [MESH_EFFECTS](MESH_EFFECTS.md), [VM factory](ANIMATION_VM_FACTORY.md) |
 | Stage interpreter and interpolation | [STAGE_SCRIPT](STAGE_SCRIPT.md), [STAGE_TWEEN](STAGE_TWEEN.md), [STAGE_EASING](STAGE_EASING.md) |
 | Stage lifecycle, updates and drawing | [STAGE_LIFECYCLE](STAGE_LIFECYCLE.md), [STAGE_UPDATE](STAGE_UPDATE.md), [STAGE_DRAWING](STAGE_DRAWING.md) |
