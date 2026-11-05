@@ -225,18 +225,26 @@ affected old exact units/22 families to be replayed; other source inputs remain
 unchanged. Original TU/class/capacity and whole-host specialized EH exactness
 remain separate open questions.
 
-The current canonical owner also supplies real SecondaryScript.cpp /GL context:
-host15696/frame320, packets9C/scratch2A4/cookie328. Its CL decoder key/cached length
-and six ID lookup sites recover; remaining direct-site deltas are float107/106,
-raw-int-value11/10, actor creation3/2 and vector-timer reset2/1. Candidate integer
-index EDI versus native stack, float index EDX versus ECX and EH allocation slot
-EBP-31C versus native EBP-2F4 remain concrete gaps. All195 static selector/call/
-index skeletons, projection roles and0/-1 results agree. The7077-byte interpreter
-support body still has VM ESI/frame134 and is not an acceptance unit. The complete
-11-byte manager adapter alone closes through strict cold one-field replay;
-the large host remains non-exact. All61 affected old exact units pass4,197 bytes,
-with129 current source inputs frozen and only the state header changed among
-the prior37. No full-cohort or behavior-suite rerun is required.
+The current canonical owner supplies real SecondaryScript.cpp and
+SecondaryHostArguments.cpp /GL support: host15840/frame310, packets8C/shared
+spawn-name294/cookie318, EH registration320. Six host argument adapters have
+complete213-byte/71-instruction boundary/source reviews, without leaf exact credit.
+Native supplied-value adapters resolve the supplied value using the current mask;
+integer destination sends every negative reference, including-1, to the current
+VM owner's GlobalIntPointer. Reusing incoming parameters on native integer and
+reference-pop paths restores parameter storage and the integer index stack ABI.
+The pinned VC9/x86 variable shift emits native CL masking without explicit AND31;
+float index is now ECX. Float argument keeps its separate index-bit union.
+All195 selector/call-index skeletons, projection roles and0/-1 results agree.
+Physical body direct calls464/456 still differ: float107/106, int83/82, supplied
+int11/9, actor creator3/2, object creator4/3, missing-animation clear6/4. Host integer
+wrapper state/index ECX/EAX remains swapped versus native EAX/ECX; cleanup is
+EBP-310 versus native EBP-2F4. Run support7057/ESI/frame134 is not primary-TU
+acceptance. Only the11-byte manager adapter retains strict exact credit. The28
+affected old exact units/five families pass1,038 bytes cold; historical61-unit
+header replay remains separate. Whole-owner fields/bytes, FP/control sharing,
+original TU/class/capacity and specialized EH remain open. See the host topic
+for full native/candidate contracts and current private artifact names.
 
 Release66/raw-position97 close through the existing ID value transport. Capturing
 the actual marker pointer before position stores also closes offset132/direct110;

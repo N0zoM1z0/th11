@@ -393,7 +393,7 @@ actual manager-to-state member call visible. The new canonical adapter family
 also includes the existing real SecondaryScript.cpp /GL implementation so the
 large host and its real VM readers can be reviewed together.
 
-The current canonical family keeps SecondaryScript.cpp as real /GL support.
+The first canonical family kept SecondaryScript.cpp as real /GL support.
 The complete host becomes15,696 bytes/320 allocation, with packets9C, scratch2A4
 and cookie328. The132-byte name-to-cookie distance remains. All195 selector
 groups, call/index skeletons, projection roles and return sets still agree, but
@@ -402,11 +402,11 @@ actor creator3/2 and vector-timer reset2/1. ID lookup6/6 is recovered. The real
 reader context also recovers the native CL decoder key and cached length, so the
 earlier byte-key spills/length reload are not current gaps.
 
-The actual optimized reader entries explain a remaining ABI difference: the
+In that earlier context, optimized reader entries explained an ABI difference: the
 candidate integer index is in EDI versus native stack; its float index is in EDX
 versus native ECX. The static audit derives these from each complete PDB-bounded
-callee, rather than changing declarations to encode private registers. The
-current cleanup uses EBP-31C versus native EBP-2F4. The7077-byte RunSecondaryScript
+callee, rather than changing declarations to encode private registers. That
+cleanup used EBP-31C versus native EBP-2F4. The7077-byte RunSecondaryScript
 support contribution still uses VM ESI/frame134, not native EDI/frame120; this is
 context evidence, not primary-TU acceptance or proof of interpreter improvement.
 
@@ -427,3 +427,58 @@ implementations are unchanged.
 The previous37-input freeze differs only at this header; current proof uses the
 new129-input whole-owner source freeze and affected-unit results. No full cohort or broad
 runtime suite is required for this declaration and owner work.
+
+
+## Real argument bodies in the complete host context
+
+The canonical family now includes SecondaryHostArguments.cpp as real /GL support,
+without changing the public stdcall declarations or removing /GL. Direct Ghidra
+and independent PE review cover all six complete adapters:417D80/16,417D90/61,
+417DD0/14,417DE0/16,417DF0/49 and417E30/57. Their213 bytes/71 instructions have
+no foreign interior references; tails and neighboring CC gaps are reviewed.
+These are source dependencies of the large owner, not new exact acceptance units.
+
+The supplied-value adapters test the current instruction mask but resolve the
+supplied value, not a reread of the instruction payload. The float adapter stores
+and reloads through its float32 parameter slot. Integer destination lookup treats
+all negative references, including-1, as a virtual GlobalIntPointer request on the
+current VM's owner; it does not pop. Float destination delegates with index0.
+
+Native int-argument and both reference-pop paths overwrite their incoming
+parameter slots. Natural C++ reuse of those parameters reproduces that storage;
+integer argument underflow preserves the incoming index, reference underflow the
+incoming sentinel. Float argument retains its separate union initialized to the
+index bits. The reference-mask expression uses the variable shift directly:
+pinned VC9/x86 emits the native hardware-masked CL shift without an extra AND31.
+This is pinned x86 codegen evidence, not a portable shift-range guarantee.
+
+With these real dependencies and storage contracts, the complete host measures
+15,840 bytes/frame310. Packet8C, shared spawn/name294, cookie318 and EH registration
+320 recover in the canonical real-VM context. Integer argument index is now on
+the stack and float argument/destination index in ECX, matching native. The
+16-byte host integer adapter still swaps state/index ECX/EAX versus native
+EAX/ECX. Cleanup remains EBP-310 versus native EBP-2F4. Raw int argument144/native146,
+int reference98/100 and float argument179/175 still have instruction differences;
+equal helper extents do not grant exact credit. Run support is7057/ESI/frame134,
+not a public primary-TU acceptance unit or a closed7093-byte interpreter.
+
+All195 selector groups, acyclic call/index skeletons, projection roles and0/-1
+returns still agree. Physical body direct sites are464 native/456 candidate:
+float argument107/106, integer argument83/82, supplied integer11/9, actor creator3/2,
+object creator4/3 and missing-animation clear6/4. Both have two indirect sites and
+one separate GS call. This audit does not prove loop counts, predicates or full
+byte equality. Opcode/cache registers, FP/control scheduling and physical call
+sharing remain work on the full owner. The original decoder capacity is unknown.
+
+The complete11-byte manager adapter retains strict cold one-REL32 zero-difference
+proof. No new exact count is claimed for the helpers or the large host. Recursive
+source contracts select28 affected existing exact units in five families for this
+change; all pass1,038 bytes cold. This replaces neither the prior61-unit header
+proof nor its historical source freeze. Current private evidence uses
+secondary-host-arguments-{boundary-proof,call-audit,current-functions,adapter-proof,
+affected-proof,source-freeze}.json and the canonical linked family artifacts.
+
+Creation-context review also confirms4111C0 receives the script name: the saved
+master pointer at4108FE is a local, while41090E reads the incoming script argument.
+The545-byte default creator boundary still omits its owned five-cell switch table;
+review the complete table ownership before any future creation acceptance.

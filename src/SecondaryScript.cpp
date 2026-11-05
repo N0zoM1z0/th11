@@ -35,7 +35,8 @@ __forceinline unsigned char *Payload(SecondaryInstruction *instruction)
 { return reinterpret_cast<unsigned char *>(instruction) + sizeof(*instruction); }
 __forceinline SecondaryValue *Argument(SecondaryVm *self, int index)
 { return reinterpret_cast<SecondaryValue *>(Payload(self->instruction)) + index; }
-__forceinline unsigned int ReferenceMask(int index) { return 1u << (index & 31); }
+// Pinned VC9/x86 lowers the variable count to the target hardware-masked CL shift.
+__forceinline unsigned int ReferenceMask(int index) { return 1u << index; }
 __forceinline int Add(int a, int b) { return static_cast<int>(static_cast<unsigned int>(a) + b); }
 __forceinline int PopValue(SecondaryStack *stack, char requested, void *output)
 {
@@ -127,41 +128,50 @@ int __stdcall ReadSecondaryIntReference(SecondaryVm *self, int reference)
 {
     if (reference >= 0)
         return *reinterpret_cast<int *>(self->stack.data + self->stack.frame + reference);
-    if (reference != -1) return self->owner->ReadGlobalInt(reference);
-    int result = reference;
-    PopInt(&self->stack, &result);
-    return result;
+    if (reference == -1)
+    {
+        PopInt(&self->stack, &reference);
+        return reference;
+    }
+    return self->owner->ReadGlobalInt(reference);
 }
 float __stdcall ReadSecondaryFloatReference(SecondaryVm *self, float reference)
 {
     if (reference >= 0)
         return *reinterpret_cast<float *>(self->stack.data + self->stack.frame + static_cast<int>(reference));
     if (reference != -1.0f) return self->owner->ReadGlobalFloat(static_cast<int>(reference));
-    float result = reference;
-    PopFloat(&self->stack, &result);
-    return result;
+    PopFloat(&self->stack, &reference);
+    return reference;
 }
 int __stdcall ReadSecondaryIntArgument(SecondaryVm *self, int index)
 {
-    int reference = Argument(self, index)->integer;
-    if (!(self->instruction->references & ReferenceMask(index))) return reference;
-    if (reference >= 0)
-        return *reinterpret_cast<int *>(self->stack.data + self->stack.frame + reference);
-    if (reference != -1) return self->owner->ReadGlobalInt(reference);
-    int result = index;
-    PopInt(&self->stack, &result);
-    return result;
+    if (self->instruction->references & ReferenceMask(index))
+    {
+        int reference = Argument(self, index)->integer;
+        if (reference >= 0)
+            return *reinterpret_cast<int *>(self->stack.data + self->stack.frame + reference);
+        if (reference == -1)
+        {
+            PopInt(&self->stack, &index);
+            return index;
+        }
+        return self->owner->ReadGlobalInt(reference);
+    }
+    return Argument(self, index)->integer;
 }
 float __stdcall ReadSecondaryFloatArgument(SecondaryVm *self, int index)
 {
-    float reference = Argument(self, index)->real;
-    if (!(self->instruction->references & ReferenceMask(index))) return reference;
-    if (reference >= 0)
-        return *reinterpret_cast<float *>(self->stack.data + self->stack.frame + static_cast<int>(reference));
-    if (reference != -1.0f) return self->owner->ReadGlobalFloat(static_cast<int>(reference));
-    SecondaryValue result; result.integer = index;
-    PopFloat(&self->stack, &result.real);
-    return result.real;
+    if (self->instruction->references & ReferenceMask(index))
+    {
+        float reference = Argument(self, index)->real;
+        if (reference >= 0)
+            return *reinterpret_cast<float *>(self->stack.data + self->stack.frame + static_cast<int>(reference));
+        if (reference != -1.0f) return self->owner->ReadGlobalFloat(static_cast<int>(reference));
+        SecondaryValue result; result.integer = index;
+        PopFloat(&self->stack, &result.real);
+        return result.real;
+    }
+    return Argument(self, index)->real;
 }
 int *__stdcall SecondaryIntDestination(SecondaryVm *self)
 {

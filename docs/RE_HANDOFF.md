@@ -7,9 +7,9 @@ bytes/current receipts outrank older notes. All dirty work is ours.
 ## Current exact state
 
 - Original Japanese TH11v1.00a, pinned by `config/target.toml`.
-- 2,136 candidates;534 reviewed boundaries;417 source mappings.
+- 2,136 candidates;540 reviewed boundaries;423 source mappings.
 - 233 exact functions/26,378 bytes:9 normal COFF and224 linked PE.
-- Origins:90 authored,428 indeterminate,14 exclusions,1,604 pending.
+- Origins:90 authored,434 indeterminate,14 exclusions,1,598 pending.
 - VC9 RTM21022/SDK6.0A; direct Ghidra/scripts, no Factory MCP/REA.
 - Commit/push authorized, prefix `gpt-6.1-sol: `.
 - No reconstruction job remains running at this checkpoint.
@@ -42,15 +42,20 @@ member enclosure/local lifetimes recover EH without such a helper/profile change
 
 The complete11-byte adapter has strict cold primary-TU/one-field zero-difference
 proof: secondary-actor-instruction-adapter. Its canonical family includes real
-SecondaryScript.cpp /GL support. Current host15696/frame320 uses packets9C,
-scratch2A4/cookie328; all195 selector groups/call-index skeletons, projection
-roles and returns agree. Body calls464/460 differ at float107/106, raw-int-value
-11/10, actor creator3/2 and vector-timer reset2/1; indirect2/2, GS1/1. Decoder
-CL key/cached length and six lookup sites now recover. Integer index EDI versus
-native stack, float index EDX versus ECX, opcode/cache registers, FP/branches,
-frame/locals and cleanup EBP-31C versus native EBP-2F4 remain concrete gaps.
-The7077-byte interpreter support body still has VM ESI/frame134; no primary-TU
-or exact claim. Whole-host/specialized EH exactness remain open.
+SecondaryScript.cpp and SecondaryHostArguments.cpp /GL support. Current complete
+host15840/frame310 restores packets8C/shared spawn-name294/cookie318/EH320 in the
+real VM context. All195 selector/call-index skeletons/projection roles/returns
+agree; direct body calls464/456 still differ: float107/106, int83/82, supplied int
+11/9, actor creator3/2, object creator4/3 and missing-animation clear6/4. Integer
+argument index is now stack and float index ECX as native. Host integer adapter
+state/index ECX/EAX remains swapped versus native EAX/ECX; cleanup EBP-310 versus
+native EBP-2F4, FP/control and sharing remain. Run support7057/ESI/frame134 is not
+primary-TU acceptance. Six real argument adapters have complete boundary/source
+reviews, not leaf exact credit. Native pop paths reuse incoming parameters;
+float argument retains its index-bit union. Keep natural public ABI and /GL.
+Whole-host/specialized EH exactness and original decoder capacity remain open.
+The28 affected old exact units/five families pass1,038 bytes cold; current private
+proofs/freezes use secondary-host-arguments-* while prior header proof remains.
 
 Earlier scoped member diagnostic15552/frame310 reproduces native packets8C,
 scratch294/cookie318, but lacks the real VM support context.12D/12F790/663 and
@@ -74,13 +79,13 @@ these gaps; keep the public interface and original /GL owners.
 The real nonvirtual state-member declaration changes only SecondaryActorState.hpp
 among the prior37 frozen inputs. All61 old exact units in22 directly affected families
 pass4,197 bytes cold; other36 prior inputs and tool/Oracle sources stay unchanged.
-Use the new129-input owner source freeze and affected-proof artifacts for current contracts.
+Retain that129-input freeze as history; current arguments freeze refreshes the changed reader and adds its new support source.
 
 ## Immediate continuation
 
 | Area | Concrete remaining work |
 | --- | --- |
-| Host dispatcher412E30/16556 | Complete real member body; scoped15552/frame310, current real-VM family15696/frame320; adapter11 exact; body calls464/460 and int-index EDI/stack/float-index EDX/ECX gaps; full-owner fields/bytes and EH; original array bound unknown |
+| Host dispatcher412E30/16556 | Complete real member body; scoped15552/frame310, current real-VM/arguments family15840/frame310; adapter11 exact; calls464/456; host-int state/index swap, FP/control/sharing gaps; full-owner fields/bytes and EH; original array bound unknown |
 | Interpreter45B860/7093 | Main priority: complete7013/5821; fixed120/all89 selectors/60-case order retained; VM ESI versus EDI, unary84 merged push and82/87 shared destination |
 | Collision432A90/546 | Complete source543/257; frame18 versus1C, EBX save/restore placement, sound argument EDX versus native ESI |
 | Movement430290/2896 | Complete source2928/2447 after animation value correction; native call/return/frame contracts agree; register/branch/vector stores remain open |
