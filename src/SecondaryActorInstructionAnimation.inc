@@ -1,7 +1,10 @@
 // Creation/animation portion of the complete host switch. The guarded spawn
 // entries deliberately fall into their corresponding unguarded entries.
-// The containing function supplies the shared arguments/values and angle
-// temporaries used at the observed tail joins.
+// The spawn entries share one lexical scope and packet. Their lifetime ends
+// before the other opcode families, allowing the native scratch-slot reuse.
+{
+SecondaryHostSpawnArguments arguments;
+const SecondaryValue *values;
 case 0x109:
     if (g_SecondaryMaster->Slot(0)) break;
 case 0x100:
@@ -178,6 +181,7 @@ case 0x10e:
     arguments.flags |= 1;
     SpawnActor(instruction, &arguments);
     break;
+}
 }
 case 0x110:
     if (!(self->flags & 0x400000))

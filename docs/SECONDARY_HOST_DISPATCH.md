@@ -2,9 +2,11 @@
 
 The large host dispatcher at412E30 owns16,556 bytes, not the initial15,780-byte
 code-only inventory span. Its complete boundary, tables, control flow and call
-graph are reviewed. Four maintained source fragments implement all154 handled
-opcode values; the original host wrapper, stack-array extent and exact byte proof
-remain open.
+graph are reviewed. `src/SecondaryActorInstructions.cpp` now supplies the complete
+ordinary state-member dispatcher and manager adapter, using four source fragments
+for all154 handled values. A scoped diagnostic naturally reproduces native frame/
+EH and scratch-slot layout; the real VM context still changes register pressure.
+Original array capacity and whole-host exact byte proof remain open.
 The existing7,093-byte RunSecondaryScript reconstruction remains non-exact.
 
 ## Full extent and entry contract
@@ -37,7 +39,7 @@ bypassing that clear. Both reach the same single RET without stack arguments;
 the -1 result pauses RunSecondaryScript's instruction advancement. The earlier
 zero-only return description was incorrect. Ghidra's inferred
 fastcall/void prototype is not the ABI evidence. Ordinary member declarations are
-the prospective source representation; original class identity remains unknown.
+the maintained source representation; original class identity remains unknown.
 
 The native prologue aligns the stack to eight bytes, allocates310, registers an
 exception frame with handler48AA9E and installs security-cookie checks. These are
@@ -300,7 +302,11 @@ using45FD49. Handler48AA9E checks cookies and passes49FE58 to484DAB. This establ
 the mesh new-expression's cleanup role; it does not establish original source
 lifetimes, specialized EH ownership or exact acceptance.
 
-## Combined switch and concrete remaining gaps
+## Earlier combined-switch diagnostics
+
+The fragment/probe sizes above and in this section describe earlier frozen
+contexts. Current source owns its decoder storage and is measured through the
+real member entries below; do not treat old probe hashes as current receipts.
 
 `probes/secondary-host-switch-context.cpp` compiles all four fragments together.
 Its three diagnostic inputs are state, captured instruction and decoder workspace;
@@ -334,12 +340,90 @@ build/probe-ltcg/SecondaryHostRecords, SecondaryHostSwitch and
 SecondaryHostSwitchMesh directories. These are static diagnostics, not runtime
 or product closure.
 
-The dispatcher and its necessary virtual adapter now have reviewed boundaries
-and indeterminate origins. Complete source mappings and exact totals are unchanged.
-The prior27-unit cold proof remains current: all37 receipt source/header/support
-inputs are byte-identical. Recursive canonical contracts select no existing exact
-unit depending on the fragment/header/probe additions. This records checkpoint
-scans86 canonical receipt contracts; all earlier motion/animation source hashes
-and control hashes also stay unchanged. No
-existing source, tool or Oracle implementation changed, so no prior unit is
-cold-replayed here.
+## Complete member source and recovered stack lifetimes
+
+The manager's ordinary virtual ExecuteInstruction returns state.ExecuteInstruction.
+The state member captures owner.current.instruction itself, then executes the full
+154-value switch and the real0/-1 returns. Neither entry accepts a synthetic
+instruction or workspace argument. A nonvirtual member declaration adds no state
+storage or vtable slot. The two complete bodies now have source mappings; original
+class names and TU ownership remain separate unknowns.
+
+The decoder uses a case-local128-byte source array as an explicit capacity
+hypothesis. The target has132 bytes between its observed decoder start and GS
+cookie. Cold VC9 /GL generates that same distance for the128-byte array, without
+added bounds, terminator, padding or a forced frame. This establishes a compatible
+physical layout, not proof of the original array type or declared bound.
+
+Initial ordinary-member compilation has a368 allocation because the shared
+80-byte spawn packet still has function-wide source lifetime. The target reuses
+its294 slot for spawning and decoded names. Giving the spawn cases their real
+shared lexical scope naturally reduces the allocation to310 and reproduces:
+
+- Packet base8C, shared spawn/name base294 and post-push GS cookie318.
+- Eight-byte stack alignment, dual cookie setup and EH registration at320.
+- Manager/state/instruction in ECX/EBX/ESI/EDI at the entry's observed stages.
+- A one-state/no-try FuncInfo and an allocation-delete cleanup for the mesh new.
+- The complete11-byte manager adapter, using the ordinary member call.
+
+This corrects the earlier inference that missing throwing/factory context must
+explain the absent EH in the synthetic switch probes. The ordinary member
+enclosure with real local lifetimes restores EH under the existing /EHsc /GL
+profile; no throwing helper, forced exception frame or compiler-profile change
+is needed. It does not establish why every earlier probe lost EH.
+
+The scoped member diagnostic is15,552 bytes, including the complete776-byte
+dispatch-data tail. It preserves all195 selector groups, all acyclic call/index
+skeletons, projection roles and0/-1 results. Native464/candidate459 body calls
+remain: float reader107/106, raw-int-value reader11/10, actor creator3/2 and ID
+lookup6/4; indirect sites are2/2. Both full bodies also have the GS check.
+Whole-owner raw comparison remains nonzero; this is not a cropped exact lane.
+
+Differences in that scoped context include opcode/cache register selection, the
+decoder's spilled byte keys and length reload, FP scheduling/temporary stores,
+call sharing and the EH cleanup's saved allocation offset: candidate EBP-310
+versus native EBP-2F4. Entry-interval deltas are diagnostic attribution only;
+12D/12F's790 versus663 bytes and the spawn joins are substantial next targets.
+Original array capacity and specialized EH ownership remain unproved.
+
+Private whole-owner evidence uses secondary-host-owner-{scoped-compile,
+scoped-receipt,scoped-call-audit,layout-proof,interval-deltas}.json and
+build/probe-ltcg/SecondaryHostOwner/scoped/. The public owner context keeps the
+actual manager-to-state member call visible. The new canonical adapter family
+also includes the existing real SecondaryScript.cpp /GL implementation so the
+large host and its real VM readers can be reviewed together.
+
+The current canonical family keeps SecondaryScript.cpp as real /GL support.
+The complete host becomes15,696 bytes/320 allocation, with packets9C, scratch2A4
+and cookie328. The132-byte name-to-cookie distance remains. All195 selector
+groups, call/index skeletons, projection roles and return sets still agree, but
+body calls are native464/candidate460: float reader107/106, raw-int-value11/10,
+actor creator3/2 and vector-timer reset2/1. ID lookup6/6 is recovered. The real
+reader context also recovers the native CL decoder key and cached length, so the
+earlier byte-key spills/length reload are not current gaps.
+
+The actual optimized reader entries explain a remaining ABI difference: the
+candidate integer index is in EDI versus native stack; its float index is in EDX
+versus native ECX. The static audit derives these from each complete PDB-bounded
+callee, rather than changing declarations to encode private registers. The
+current cleanup uses EBP-31C versus native EBP-2F4. The7077-byte RunSecondaryScript
+support contribution still uses VM ESI/frame134, not native EDI/frame120; this is
+context evidence, not primary-TU acceptance or proof of interpreter improvement.
+
+Only the complete11-byte manager adapter is accepted as exact: cold canonical
+build, public primary-TU PDB owner agreement, exhaustive sole REL32 replay to the
+separately reviewed state dispatcher and zero full-byte differences. This adds11
+exact bytes, not16,556; the host's EH/static ownership and full byte proof stay
+open. Canonical unit: secondary-actor-instruction-adapter. Private current evidence
+uses secondary-host-owner-{canonical-summary,canonical-call-audit,adapter-proof,
+affected-proof,checkpoint-proof,source-freeze}.json and
+build/match-linked/SecondaryActorInstructions/.
+
+The dispatcher and its adapter retain reviewed boundaries and indeterminate
+origins. Adding the real state-member declaration changes SecondaryActorState.hpp;
+recursive canonical contracts select61 existing exact units in22 compilation
+families for cold replay; all61 pass4,197 bytes. Other source/tool/Oracle
+implementations are unchanged.
+The previous37-input freeze differs only at this header; current proof uses the
+new129-input whole-owner source freeze and affected-unit results. No full cohort or broad
+runtime suite is required for this declaration and owner work.

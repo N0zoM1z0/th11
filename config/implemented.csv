@@ -413,3 +413,5 @@ SceneClearOutside
 ClearSecondaryActorsInRadius
 ClearSecondaryObjectsInRadius
 ClearSecondaryObjects
+ExecuteSecondaryActorInstructionAdapter
+ExecuteSecondaryActorInstruction

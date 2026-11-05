@@ -7,8 +7,8 @@ bytes/current receipts outrank older notes. All dirty work is ours.
 ## Current exact state
 
 - Original Japanese TH11v1.00a, pinned by `config/target.toml`.
-- 2,136 candidates;534 reviewed boundaries;415 source mappings.
-- 232 exact functions/26,367 bytes:9 normal COFF and223 linked PE.
+- 2,136 candidates;534 reviewed boundaries;417 source mappings.
+- 233 exact functions/26,378 bytes:9 normal COFF and224 linked PE.
 - Origins:90 authored,428 indeterminate,14 exclusions,1,604 pending.
 - VC9 RTM21022/SDK6.0A; direct Ghidra/scripts, no Factory MCP/REA.
 - Commit/push authorized, prefix `gpt-6.1-sol: `.
@@ -16,48 +16,48 @@ bytes/current receipts outrank older notes. All dirty work is ours.
 
 Operator priority is now large, difficult functions, not leaf accumulation.
 Main continuation is the complete7,093-byte script interpreter at45B860 and its
-missing16,556-byte host dispatcher at412E30.
+non-exact16,556-byte host dispatcher at412E30.
 
 The host's corrected boundary is15,780 code bytes plus
 540 primary table,195 selectors, one alignment byte and two nested tables/40
 bytes. Full4,003-instruction decode and4,001 reachable Ghidra instructions agree;
 all145 formerly external DATA refs are internal. Native has465 direct calls,
 two callbacks and one RET. Slot494074 reaches the host through412E20/state+103C.
-It accounts for83 int/107 float argument reads absent from the current diagnostic.
-No complete-host source mapping/exact credit is claimed. See [HOST](SECONDARY_HOST_DISPATCH.md).
+It contributes83 int/107 float argument reads, now represented in the full source.
+Complete source mappings now exist; the16556-byte host still has no exact credit. See [HOST](SECONDARY_HOST_DISPATCH.md).
 
-All154 handled opcodes now have natural switch source: animation100..115,
-motion118..133, control140..174 and records190..1C2. The previously suggested
-134..13F/175..18F ranges are defaults. These cover all134 nondefault primary
-targets/15,613 entry-interval bytes; prologue129/epilogue38 complete the code span.
-No native wrapper/source mapping or exact credit is claimed.
+All154 cases/134 nondefault targets now have a complete ordinary member body
+in src/SecondaryActorInstructions.cpp. Manager ExecuteInstruction calls the state
+member, which obtains the captured instruction itself; no synthetic instruction
+or workspace inputs remain in the actual owner. Both have source mappings.
 
-Latest records fragment adds51 values/47 targets/5,830 entry bytes. It asserts
-214-byte records,18 pattern entries,1E4 basic/204 advanced packets and object
-fields. Preserve record-position ordered >0.899999976 gate,1B7's unordered-inclusive
-not-less-than-990 marker, three-bin512/-512 versus five-bin600/200/-200/-600,
-shared pair-reader tails, advanced counter fields40/44 versus44/48, late1B2 opcode
-reread, argument/destination order and integer/float interpolation roundings.
-Cold /GL records probe5568 has all186 direct/2 indirect physical calls, equal
-callee counts/all51 acyclic call/index skeletons and29 targeted static checks.
+A case-local128-byte decoder array is a capacity hypothesis. Cold VC9 /GL yields
+the observed132-byte buffer-to-cookie distance; original declared type/bound is
+still unknown. Ending the shared spawn packet's lexical scope before other
+families reduces the initial member frame368 to native310. Packet8C, shared
+spawn/name294 and cookie318 match. Dual GS cookies, EH registration320, one-state
+FuncInfo and allocation-delete cleanup are now present naturally under /EHsc /GL.
+Do not repeat the prior missing-throwing-helper theory as established: the real
+member enclosure/local lifetimes recover EH without such a helper/profile change.
 
-Combined compile-only switch probe15776 covers all195 selector groups and all
-call/index skeletons, projection roles and0/-1 results. Native464/candidate460
-body calls differ at raw-int-value reader11/10, actor creator3/2 and ID lookup6/4;
-2/2 indirect calls. Full native includes the additional GS call. It has local
-allocation310/EH; candidate2D4/no EH. Diagnostic inputs still include instruction
-and decoder workspace: original name-array capacity and native wrapper remain
-open. Do not invent buffer padding or a throwing helper to force the frame.
+The complete11-byte adapter has strict cold primary-TU/one-field zero-difference
+proof: secondary-actor-instruction-adapter. Its canonical family includes real
+SecondaryScript.cpp /GL support. Current host15696/frame320 uses packets9C,
+scratch2A4/cookie328; all195 selector groups/call-index skeletons, projection
+roles and returns agree. Body calls464/460 differ at float107/106, raw-int-value
+11/10, actor creator3/2 and vector-timer reset2/1; indirect2/2, GS1/1. Decoder
+CL key/cached length and six lookup sites now recover. Integer index EDI versus
+native stack, float index EDX versus ECX, opcode/cache registers, FP/branches,
+frame/locals and cleanup EBP-31C versus native EBP-2F4 remain concrete gaps.
+The7077-byte interpreter support body still has VM ESI/frame134; no primary-TU
+or exact claim. Whole-host/specialized EH exactness remain open.
 
-Native FuncInfo49FE58 has one unwind entry49FE50 ->48AA90, which deletes the
-saved mesh allocation; handler48AA9E performs cookie checks and passes FuncInfo
-to484DAB. Natural1B8 new StageScriptMesh(17,17,0) retains the source obligation.
-A second cold switch context with real StageMesh.cpp /GL gives15772 and the same
-skeletons but still no EH. With only this caller, LTCG specializes the constructor
-to213 bytes/no stack args; native has six call sites/five callers and generic389.
-This is a missing-context finding, not a native ABI declaration. Next: original
-host wrapper/name storage and real constructor/throwing-call context; complete
-whole-owner field/byte diagnostics, without another leaf/probe-count campaign.
+Earlier scoped member diagnostic15552/frame310 reproduces native packets8C,
+scratch294/cookie318, but lacks the real VM support context.12D/12F790/663 and
+spawn-join entry intervals are diagnostic attribution, never cropped acceptance
+units. Synthetic-switch15776/mesh15772 probes and their absent EH are historical.
+Do not retain spilled byte keys/length reload as current gaps or force the earlier
+specialized213-byte constructor ABI onto native generic389/six sites/five callers.
 
 Prior source work corrects arithmetic operand/result storage and angle87 argument
 publication inside that full owner. Actual-caller cold diagnostic is7013/5821
@@ -67,19 +67,20 @@ bytes,60-arm physical order and both RET4 paths remain. No exact credit is added
 See [INTERPRETER](SECONDARY_INTERPRETER_CODEGEN.md).
 
 That SecondaryScript.cpp change's27 affected old exact
-units pass1,027 bytes/22 fields cold; all37 source/header/support hashes stay frozen.
+units pass1,027 bytes/22 fields cold; the current declaration change affects its shared state header only.
 Main VM ESI versus native EDI, unary84's merged negate/push paths and82/87's shared
 float destination remain open. Ordinary member/accessor hypotheses did not solve
 these gaps; keep the public interface and original /GL owners.
-The records/header/probe additions affect none of86 canonical receipt contracts.
-All37 earlier inputs and motion/animation/control hashes stay unchanged; no
-prior cold replay is repeated.
+The real nonvirtual state-member declaration changes only SecondaryActorState.hpp
+among the prior37 frozen inputs. All61 old exact units in22 directly affected families
+pass4,197 bytes cold; other36 prior inputs and tool/Oracle sources stay unchanged.
+Use the new129-input owner source freeze and affected-proof artifacts for current contracts.
 
 ## Immediate continuation
 
 | Area | Concrete remaining work |
 | --- | --- |
-| Host dispatcher412E30/16556 | All154 handled values/134 nondefault targets implemented and jointly compiled; original wrapper/decoder stack capacity, missing EH and constructor context; native464/candidate460 body calls; full owner field/byte work, no native stub |
+| Host dispatcher412E30/16556 | Complete real member body; scoped15552/frame310, current real-VM family15696/frame320; adapter11 exact; body calls464/460 and int-index EDI/stack/float-index EDX/ECX gaps; full-owner fields/bytes and EH; original array bound unknown |
 | Interpreter45B860/7093 | Main priority: complete7013/5821; fixed120/all89 selectors/60-case order retained; VM ESI versus EDI, unary84 merged push and82/87 shared destination |
 | Collision432A90/546 | Complete source543/257; frame18 versus1C, EBX save/restore placement, sound argument EDX versus native ESI |
 | Movement430290/2896 | Complete source2928/2447 after animation value correction; native call/return/frame contracts agree; register/branch/vector stores remain open |
@@ -109,16 +110,17 @@ padding or forced frames. Full table/padding ownership remains mandatory.
   X-push-before-Y-read order and math-before-destination lookup.
 - Typed int-pointer pop leaves7013/5821 unchanged; memcpy bit transport expands
   frame1B0 and gives7381/6120 without fixing either missing call. Both rejected.
-  Reconstruct the real large host context before another isolated probe lattice.
+  Extend the real host/argument-reader context before any isolated interpreter probe.
 - Do not repeat rejected trace ablations/fixed-format/fp:fast, int advance,
   local/signed-pop or split trace-TU probes as untried. Current topic docs retain
   their measured results. Keep wrapped arithmetic and the established /GL owners.
 - Preserve full extents/tables. No padding, forced alignment or private-register
   declarations to close the remaining frame/register/control-flow differences.
 
-`.analysis/secondary-interpreter-tails-affected-proof.json` records27 current cold
-results. Maintained whole-owner audit, per-opcode CFG audit and source freeze use
-that prefix; diagnostic family is
+`.analysis/secondary-interpreter-tails-affected-proof.json` records the earlier27-unit
+checkpoint; its interpreter audit/freeze keep that older prefix. New declaration
+dependencies use secondary-host-owner-affected-proof.json and the129-input owner
+freeze. Historical interpreter diagnostic family is
 build/probe-ltcg/SecondaryInterpreterTails/maintained. Clearing235 and
 position-marker proofs remain unaffected. No full
 cohort, broad behavior or unchanged-Oracle suite ran. Exact claims do not establish

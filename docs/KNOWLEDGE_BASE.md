@@ -204,7 +204,39 @@ no complete host mapping or exact credit follows from opcode coverage. Real
 StageMesh.cpp /GL support gives15772, still no EH, and specializes its sole17/17/0
 caller to a213-byte constructor. Native has six constructor sites/five callers
 and generic389. Preserve this context distinction; do not fake a private ABI or
-add throwing/padding tricks. All earlier source inputs remain unchanged.
+add throwing/padding tricks. Those were workspace-probe observations, superseded
+for current whole-owner measurement by the ordinary member source below.
+
+The real manager/state ExecuteInstruction members now enclose all154 cases in
+SecondaryActorInstructions.cpp. A case-local128-byte decoder array naturally
+has the target132-byte distance to the cookie; its original declared capacity
+is still unproved. Ending the spawn packet's shared lexical scope before other
+families changes the initial member frame368 to native310, placing the basic/
+advanced packets at8C and both spawn/name scratch at294, with cookie318. The
+same /EHsc /GL member build also restores dual-cookie/EH registration and the
+single allocation-delete unwind. No throwing helper/profile change is needed;
+the earlier synthetic probe's absent EH was not a reliable native-source gap.
+Complete member candidate15552 still differs from16556: five missing physical
+body calls, FP/register/branch scheduling, decoder byte-key spills/length reload,
+and cleanup's allocation slot EBP-310 versus native EBP-2F4. All195 selector
+groups/call-index skeletons/projection roles/returns still agree. The manager
+adapter naturally has11 bytes. This header declaration requires only its61
+affected old exact units/22 families to be replayed; other source inputs remain
+unchanged. Original TU/class/capacity and whole-host specialized EH exactness
+remain separate open questions.
+
+The current canonical owner also supplies real SecondaryScript.cpp /GL context:
+host15696/frame320, packets9C/scratch2A4/cookie328. Its CL decoder key/cached length
+and six ID lookup sites recover; remaining direct-site deltas are float107/106,
+raw-int-value11/10, actor creation3/2 and vector-timer reset2/1. Candidate integer
+index EDI versus native stack, float index EDX versus ECX and EH allocation slot
+EBP-31C versus native EBP-2F4 remain concrete gaps. All195 static selector/call/
+index skeletons, projection roles and0/-1 results agree. The7077-byte interpreter
+support body still has VM ESI/frame134 and is not an acceptance unit. The complete
+11-byte manager adapter alone closes through strict cold one-field replay;
+the large host remains non-exact. All61 affected old exact units pass4,197 bytes,
+with129 current source inputs frozen and only the state header changed among
+the prior37. No full-cohort or behavior-suite rerun is required.
 
 Release66/raw-position97 close through the existing ID value transport. Capturing
 the actual marker pointer before position stores also closes offset132/direct110;

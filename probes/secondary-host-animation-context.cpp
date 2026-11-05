@@ -6,8 +6,6 @@ extern "C" void __stdcall SecondaryHostAnimationProbe(SecondaryActorStateView *s
     SecondaryInstruction *instruction)
 {
     unsigned short opcode = instruction->opcode;
-    SecondaryHostSpawnArguments arguments;
-    const SecondaryValue *values;
     AnimationVmView *angleVm;
     int angleIndex;
     switch (opcode)

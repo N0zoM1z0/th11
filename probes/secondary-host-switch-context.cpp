@@ -1,13 +1,11 @@
-// All handled host opcodes in one compile-only switch. The supplied workspace
-// deliberately leaves the native name-array extent and enclosing ABI open.
+// All handled host opcodes in one compile-only switch. The real member entry is
+// in SecondaryActorInstructions.cpp; this probe supplies a captured instruction.
 #include "SecondaryActorInstructionRecords.hpp"
 using namespace SecondaryHostInstructions;
 extern "C" int __stdcall SecondaryHostSwitchProbe(SecondaryActorStateView *self,
-    SecondaryInstruction *instruction, unsigned char *decodedName)
+    SecondaryInstruction *instruction)
 {
     short opcode = instruction->opcode;
-    SecondaryHostSpawnArguments arguments;
-    const SecondaryValue *values;
     AnimationVmView *angleVm;
     int angleIndex;
     SecondaryHostRecord *record;

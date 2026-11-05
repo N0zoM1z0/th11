@@ -414,3 +414,5 @@ SceneClearOutside,0x0040B8A0,function
 ClearSecondaryActorsInRadius,0x00412990,function
 ClearSecondaryObjectsInRadius,0x00424FE0,function
 ClearSecondaryObjects,0x00425040,function
+ExecuteSecondaryActorInstructionAdapter,0x00412E20,function
+ExecuteSecondaryActorInstruction,0x00412E30,function

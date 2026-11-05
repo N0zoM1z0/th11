@@ -52,6 +52,7 @@ struct SecondaryActorSlot
 struct SecondaryActorStateView
 {
     SecondaryActorStateView();
+    int ExecuteInstruction();
     SecondaryMotionView snapshot, world, local, offset;
     float extentX, extentY, extentZ, unknown0dc;
     unsigned int animationIds[10];

@@ -1,5 +1,4 @@
-// Included in the complete host's instruction switch. Spell-name storage is
-// supplied as decodedName: its enclosing native stack-array extent is open.
+// Included in the complete host's instruction switch.
 case 0x140:
     self->extentX = Real(self, 0);
     self->extentY = Real(self, 1);
@@ -150,6 +149,9 @@ case 0x165:
 case 0x166:
 case 0x167:
 {
+    // Capacity hypothesis: native storage starts 132 bytes below its GS cookie.
+    // Original array type/capacity is unproved; no bounds or terminator are added.
+    unsigned char decodedName[128];
     int length = reinterpret_cast<const SecondaryValue *>(instruction)[7].integer;
     const unsigned char *encoded = reinterpret_cast<const unsigned char *>(instruction) + 0x20;
     unsigned char key = 0x77, step = 7;
