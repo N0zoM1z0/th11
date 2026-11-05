@@ -45,11 +45,12 @@ namespace
 __forceinline void PositionVm(AnimationVmView *vm, const CameraVector *position)
 {
     BoundVmView *bound = reinterpret_cast<BoundVmView *>(vm);
+    void *marker = bound->marker018;
     CameraVector &destination = reinterpret_cast<SecondaryActorAnimationView *>(vm)->position;
     destination.x = static_cast<float>(position->x + 32.0 + 192.0);
     destination.y = static_cast<float>(position->y + 16.0);
     destination.z = position->z;
-    if (!bound->marker018)
+    if (!marker)
         for (BoundVmNodeView *node = bound->related; node; node = node->next)
         {
             CameraVector &child = reinterpret_cast<SecondaryActorAnimationView *>(node->vm)->position;

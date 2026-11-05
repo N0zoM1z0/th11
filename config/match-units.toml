@@ -4314,3 +4314,41 @@ linkages = [
   { offset = 6, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x4c3268, addend = 0x0 },
   { offset = 12, type = "REL32", symbol = "?FindAnimationVmById@@YGPAUAnimationVmView@@PAURenderBatchView@@UAnimationVmId@@@Z", target = 0x4561e0, addend = 0x0 },
 ]
+
+[units.position-secondary-animation]
+artifact_kind = "linked-pe"
+source = "src/SecondaryActorAnimation.cpp"
+inputs = ["src/SecondaryActorRuntime.hpp", "src/SecondaryActorState.hpp"]
+support_sources = ["probes/secondary-actor-animation-context.cpp", "src/StageMesh.cpp"]
+output_dir = "build/match-linked/SecondaryActorAnimation"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryActorAnimationProbe@16"
+functions = ["PositionSecondaryAnimation"]
+symbol = "?PositionSecondaryAnimation@@YGXUAnimationVmId@@PBUCameraVector@@@Z"
+target_address = 0x4563a0
+size = 132
+linkages = [
+  { offset = 6, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x4c3268, addend = 0x0 },
+  { offset = 12, type = "REL32", symbol = "?FindAnimationVmById@@YGPAUAnimationVmView@@PAURenderBatchView@@UAnimationVmId@@@Z", target = 0x4561e0, addend = 0x0 },
+  { offset = 28, type = "DIR32", symbol = "__real@4040000000000000", target = 0x497ee8, addend = 0x0 },
+  { offset = 36, type = "DIR32", symbol = "__real@4068000000000000", target = 0x497ea0, addend = 0x0 },
+  { offset = 55, type = "DIR32", symbol = "__real@4030000000000000", target = 0x497ee0, addend = 0x0 },
+]
+
+[units.position-secondary-animation-vm]
+artifact_kind = "linked-pe"
+source = "src/SecondaryActorAnimation.cpp"
+inputs = ["src/SecondaryActorRuntime.hpp", "src/SecondaryActorState.hpp"]
+support_sources = ["probes/secondary-actor-animation-context.cpp", "src/StageMesh.cpp"]
+output_dir = "build/match-linked/SecondaryActorAnimation"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryActorAnimationProbe@16"
+functions = ["PositionSecondaryAnimationVm"]
+symbol = "?PositionSecondaryAnimationVm@@YGXPAUAnimationVmView@@PBUCameraVector@@@Z"
+target_address = 0x456430
+size = 110
+linkages = [
+  { offset = 8, type = "DIR32", symbol = "__real@4040000000000000", target = 0x497ee8, addend = 0x0 },
+  { offset = 16, type = "DIR32", symbol = "__real@4068000000000000", target = 0x497ea0, addend = 0x0 },
+  { offset = 35, type = "DIR32", symbol = "__real@4030000000000000", target = 0x497ee0, addend = 0x0 },
+]

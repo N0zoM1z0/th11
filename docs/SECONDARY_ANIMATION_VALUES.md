@@ -1,6 +1,7 @@
 # Animation ID values and complete VM publication
 
-Release4562E0/66 and raw position456330/97 close their complete native owners with
+All four release/position owners now close their complete native extents.
+Release4562E0/66 and raw position456330/97 use
 the existing four-byte AnimationVmId value object. The three value-taking APIs
 in SecondaryActorRuntime.hpp now retain that object instead of flattening it to
 unsigned int. Existing callers use its normal converting constructor; no adapters,
@@ -11,8 +12,8 @@ The primary source remains /GL. Original C++ class and TU identity remain unknow
 | --- | ---: | --- |
 | ReleaseSecondaryAnimation4562E0 |66 | Exact linked; two fields |
 | PositionSecondaryAnimationRaw456330 |97 | Exact linked; two fields |
-| PositionSecondaryAnimation4563A0 |132 |132/45 masked diagnostic |
-| PositionSecondaryAnimationVm456430 |110 |110/45 masked diagnostic |
+| PositionSecondaryAnimation4563A0 |132 | Exact linked; five fields |
+| PositionSecondaryAnimationVm456430 |110 | Exact linked; three fields |
 
 ## Target observations and source contract
 
@@ -43,36 +44,55 @@ renderer global4C3268, and REL32 at12 binds FindAnimationVmById4561E0. No litera
 payload or other external branch is omitted. Strict cold VC9 builds require current
 source/header/support/tool/producer and PE/MAP/PDB receipts, unique complete public
 primary-TU code ownership, exhaustive field replay and every owned byte equal.
-The two new owners add163 exact bytes/four fields. Normal-COFF and original /GL
+Those two ID-value owners add163 exact bytes/four fields. Normal-COFF and original /GL
 ownership remain separate questions; no established LTCG owner is downgraded.
 
-## Open offset-position owners
+## Early marker capture and complete offset-position owners
 
-The ID change brings offset position to its full132-byte size, with45 masked
-diagnostic differences. Direct VM position stays110/45. Native compares marker18
-before its floating stores; maintained source checks it afterward. The x/y
-operations remain separate double x+32+192 and y+16, with actual z and child-list
-reads preserved. No passing prefix is registered.
+The ID change first brought offset position to its full132-byte size, with45
+masked diagnostic differences; direct VM position stayed110/45. Fresh direct
+Ghidra full reviews confirm both complete contiguous extents, no foreign interior
+entries and one return each. Native compares marker18 before floating stores,
+then branches using the preserved flags after all three stores.
 
-An early bool snapshot emits SETE/test and gives115/96 direct and137/99 wrapper.
+A natural local pointer `void *marker = bound->marker018` before publication,
+followed by `if (!marker)` after it, closes both full functions. The source
+retains the actual read timing and leaves the compiler to schedule CMP and x87
+operations. No flags intrinsics, volatile accesses or ABI declarations are added.
+The x/y operations remain separate double x+32+192 and y+16; actual z and
+child-list input reads remain intact. No passing prefix is registered.
+
+The132-byte wrapper has DIR32 fields at6/28/36/55 and REL32 at12. These bind
+renderer4C3268, lookup4561E0 and the three double literals32/192/16 at
+497EE8/497EA0/497EE0. The110-byte direct owner has only the three literal fields,
+at8/16/35. Complete independent instruction decoding finds43/37 instructions;
+all8 fields are reviewed and all three target/emitted8-byte literal payloads agree.
+
+Earlier bool snapshot emits SETE/test and gives115/96 direct and137/99 wrapper.
 Duplicated parent-publication branches give153/71 and177/73; an early-return form
 gives153/119 and181/122. A unified physical marker/position view leaves110/45 and
-132/45 unchanged, so that view alone does not explain the gap. None is adopted.
-These are compiler experiments, not runtime regressions or original-class evidence.
+132/45 unchanged. A pointer-to-integer snapshot gives111/95 and133/98. None of
+these variants is adopted. The pointer itself preserves the useful source fact;
+original class and TU identity remain unknown.
 
 ## Selected validation
 
-Recursive current receipt inputs select40 affected old units, including the
-seven-byte normal-COFF player callback through its transitive header includes.
-Those and the two new units are cold-replayed; unrelated units and the full cohort
-are not. All42 pass3,263 bytes/120 fields and relocations with frozen maintained
-changes. The earlier movement24-unit, motion/HUD6-unit and attraction summaries
-are refreshed from these current results; older versions are retained privately.
-No broad behavioral or public Oracle/infrastructure suite is run because
-their implementations are unchanged. Private target reviews, variants, field
-audits and selected results live under `.analysis/secondary-animation-values-*`.
+The first ID-value checkpoint cold-replayed40 affected old units and two new
+owners:42 proofs/3,263 bytes/120 fields and relocations. The later marker change
+only touches SecondaryActorAnimation.cpp. Recursive linked/COFF contracts select
+30 affected old units; those and the two new position owners pass32 cold proofs,
+2,602 bytes/104 fields. Both new complete public primary-TU owners pass with
+current source/header/support/tool/producer/PE/MAP/PDB receipts and zero full-byte
+differences. They add242 exact bytes/eight fields.
 
-The changed API also changes unaccepted caller diagnostics. Fresh current cold
-movement context gives2928/2447 (previous2836/2434), controller context remains
-2800/2285, reset becomes2412/1951, and death stays715/423. These are complete
+Maintained source/probe hashes stay frozen during replay. Earlier result summaries
+are refreshed for affected members, with their originals retained privately.
+Unrelated units and the full cohort are not rebuilt. No broad behavioral or public
+Oracle/infrastructure suite is run because their implementations are unchanged.
+Private current target reviews, variants, field audits and selected proofs use
+`.analysis/secondary-position-marker-*`; earlier ID-value evidence retains the
+`.analysis/secondary-animation-values-*` prefix.
+
+Current cold caller diagnostics are movement2928/2447, controller2800/2285,
+reset2428/1965 (previous2412/1951), and death715/423. These are complete
 contributions in their recorded contexts, not new exact credits or runtime claims.
