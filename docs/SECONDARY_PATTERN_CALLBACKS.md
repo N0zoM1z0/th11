@@ -1,5 +1,8 @@
 # Pattern relocation, emitter records and complete callbacks
 
+Later work closes both complete orbit/aim helpers and their real callback
+entries; see [SECONDARY_EMITTER_MOTION](SECONDARY_EMITTER_MOTION.md).
+
 Sixteen new complete source mappings cover1,564 target bytes, including399-byte
 long homing,132-byte gravity and the real spawn callers. Sixteen new complete
 boundary/origin reviews remain indeterminate; ten omitted entries are added.

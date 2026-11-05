@@ -392,3 +392,10 @@ AngleToSecondaryPlayer
 RefreshSecondaryPlayerEmitters
 UpdateSecondaryPlayerCallback
 DrawSecondaryPlayerCallback
+OrbitSecondaryEmitter
+AimSecondaryEmitter
+SecondaryDamageAngleDifference
+SecondaryEmitterOrbitCallback
+SecondaryEmitterAimCallback
+UpdateSecondaryLivesDisplay
+BeginSecondaryPlayerDeath

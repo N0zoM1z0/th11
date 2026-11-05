@@ -1,5 +1,9 @@
 # Secondary player controller
 
+Later motion/death work closes orbit255, aim495, both12-byte callbacks, angle
+difference101 and life HUD144. Death703 now has complete non-exact source;
+see [SECONDARY_EMITTER_MOTION](SECONDARY_EMITTER_MOTION.md).
+
 The complete controller431070/2888 now has maintained source in
 `src/SecondaryPlayerController.cpp`. Its reviewed owner includes2867 code bytes,
 one NOP and five switch entries through431BB7. Current complete source produces

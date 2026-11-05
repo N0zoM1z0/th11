@@ -42,6 +42,8 @@ Older experiments are preserved in the explicitly
 | Event/release | Event70 writes word37C; release66 marks04000000; related-list propagation is real |
 | Program | Base vptr49404C has install/extension callbacks; it is not a destructor table |
 | Actor | Base103C+state163C=2678; real state ctor126 invokes timer/record constructors |
+| Emitter aim | Current movement8A0/8A4 gates remembered direction8AC/8B0; focused polar pairs at1C/24 |
+| Death penalty42F6F0 | Real stack position forwarded through EBX to422560, despite the no-argument decompiler hypothesis |
 
 These are physical views, not recovered original class/header identities.
 Assertions check our declared layout after native review; they are not evidence
@@ -58,6 +60,7 @@ that the target had that layout.
 | Special406510 |268=241 code+3 alignment+six entries |
 | Drop424230 |851=829 code+3 alignment+two entries+11 selectors;840 was still incomplete |
 | Death4327D0 |703, including7 internal alignment bytes beyond sparse696 |
+| Life HUD41A060 |144, including12 internal alignment bytes beyond sparse132; five real incoming entry calls |
 | Interpreter45B860 |7093=6759 code+one NOP+244 table bytes+89 selectors |
 | Factory4108F0 |621=545 code+3 alignment+20 table bytes+53 selectors |
 
@@ -74,6 +77,7 @@ specific retained contexts, not exactness scores or complete-product results.
 | Owner | Last useful diagnostic / next gap |
 | --- | --- |
 | Controller2888 |2800/2285; real normal-COFF callback support preserves stack input/two RET4; frame/vector stores remain open |
+| Death703 |715/423 with independent real HUD/count/fragments and file/script/VM inputs; callee-save placement and emitter-loop layout remain open |
 | Reset2508 |2444/1967; main factory sites1 versus native4 |
 | Publishers118/123 |111/33 and116/47; counter zero check/register allocation |
 | Spawn853 |Real Sound846/733; real-only independent RNG856/690; both remain open |
@@ -94,14 +98,21 @@ specific retained contexts, not exactness scores or complete-product results.
   initialization and wrapped integer operations must follow native code.
 - Actual CIatan2, double sqrt with float result, x87 operand order and snapshot
   publication can affect codegen. Do not invent vector constructors to force ABI.
+- Orbit255 and aim495 now close completely. Retain AngleMath's established normal
+  COFF support: /GL support merges the repeated calls seen in the target.
+  Float3 caller locals, separate signed conversions and component-level Player()
+  reads recover the frame/conversion/global-load sequence naturally. The polar
+  member remains a declaration with a real paired FSINCOS contract.
 
 ## Continuing work and evidence
 
-Controller/reset have complete maintained source and remain non-exact. Movement
-2896, death703, orbit255, aim495 and real clear/drop callees are concrete source
-work. Use real callback/registration evidence for ABI rather than decompiler
-parameter guesses. Gameplay roles and sibling similarity do not prove authored
-versus reused origins; the latest13 reviews remain indeterminate.
+Controller/reset/death have complete maintained source and remain non-exact.
+Movement2896 and real clear/drop callees remain concrete source work. Orbit255,
+aim495, both12-byte callbacks, angle difference101 and life HUD144 close1,019
+bytes with six strict cold primary-TU proofs and35 fields. Use real callback/
+registration evidence for ABI rather than decompiler parameter guesses.
+Gameplay roles and sibling similarity do not prove authored versus reused origins;
+both additional death/HUD reviews remain indeterminate.
 
 Cold-replay only new/changed units and actual receipt dependencies. Cleanup alone
 requires protected-file identity checks, not a full-cohort replay or broad
@@ -130,6 +141,7 @@ are regenerable; result records are retained. See [ARTIFACTS.md](ARTIFACTS.md) f
 | Real pattern file/callers, complete callbacks and containing emitter array | [SECONDARY_PATTERN_CALLBACKS](SECONDARY_PATTERN_CALLBACKS.md) |
 | Complete emitter reset, list directions and factory ownership | [SECONDARY_EMITTER_RESET](SECONDARY_EMITTER_RESET.md) |
 | Complete player controller, real callback contracts and full movement/drop tables | [SECONDARY_PLAYER_CONTROLLER](SECONDARY_PLAYER_CONTROLLER.md) |
+| Exact orbit/aim callbacks, player death and life HUD | [SECONDARY_EMITTER_MOTION](SECONDARY_EMITTER_MOTION.md) |
 | Streaming factories and lifetime ownership | [MUSIC_FACTORIES](MUSIC_FACTORIES.md) |
 | Device setup and buffer recreation | [AUDIO_DEVICE](AUDIO_DEVICE.md) |
 | Streaming buffers, decoder state and fades | [MUSIC_STREAM](MUSIC_STREAM.md) |

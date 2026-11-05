@@ -393,3 +393,10 @@ AngleToSecondaryPlayer,0x00431D90,function
 RefreshSecondaryPlayerEmitters,0x00410610,function
 UpdateSecondaryPlayerCallback,0x00431C50,function
 DrawSecondaryPlayerCallback,0x00431C60,function
+OrbitSecondaryEmitter,0x004336A0,function
+AimSecondaryEmitter,0x004337B0,function
+SecondaryDamageAngleDifference,0x00433BE0,function
+SecondaryEmitterOrbitCallback,0x00433690,function
+SecondaryEmitterAimCallback,0x004337A0,function
+UpdateSecondaryLivesDisplay,0x0041A060,function
+BeginSecondaryPlayerDeath,0x004327D0,function
