@@ -152,12 +152,24 @@ decompiler <= fallback must not be copied blindly. Mutable vector/pair presets,
 mode7/8, mirrored/shortest-path float roundings, centers and every duration store
 remain. A cold /GL compile-only probe and static audit agree on opcode grouping,
 89 physical calls and all per-opcode call/index trace sets. The full16,556-byte
-host and its remaining126 handled values/EH source are still open; no complete
+host and its remaining opcode/EH source are still open; no complete
 source mapping, exact bytes or runtime credit is added. See the host topic.
 Random-direction bound tests differ from sentinel tests: they include unordered
 inputs and use negated greater-than conditions; the player/upper-Y comparisons
 remain ordered. Nine native x87 predicates were checked over all four compare
 relations before freezing the source.
+
+The same large host now also has creation/animation100..115 source:22 more values,
+50/154 handled values total. The80-byte spawn packet preserves signed wrapped
+payload indexing and callback-sensitive snapshots; its shared tails and111/115's
+angle join remain explicit. Projection uses the real camera0 within renderer+204
+and the world/view/projection/viewport argument roles are independently checked.
+Animation replacements preserve repeated reads, hidden-result ID transport and
+late coordinate-mode selection. Native default-script reads are full32-bit;
+decompiler short casts are not copied. Cold /GL probe2804 matches every opcode's
+CFG call/index trace set, but native89/candidate88 sites still differ at raw-int
+reader11/10, lookup6/5 and flag2-clear2/3. Remaining104 handled values and EH source
+are open. No complete owner mapping/exact credit or runtime claim is added.
 
 Release66/raw-position97 close through the existing ID value transport. Capturing
 the actual marker pointer before position stores also closes offset132/direct110;
