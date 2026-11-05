@@ -7,31 +7,38 @@ bytes/current receipts outrank older notes. All dirty work is ours.
 ## Current exact state
 
 - Original Japanese TH11v1.00a, pinned by `config/target.toml`.
-- 2,136 candidates;529 reviewed boundaries;407 source mappings.
+- 2,136 candidates;529 reviewed boundaries;408 source mappings.
 - 229 exact functions/26,132 bytes:9 normal COFF and220 linked PE.
 - Origins:90 authored,423 indeterminate,14 exclusions,1,609 pending.
 - VC9 RTM21022/SDK6.0A; direct Ghidra/scripts, no Factory MCP/REA.
 - Commit/push authorized, prefix `gpt-6.1-sol: `.
 - No reconstruction job remains running at this checkpoint.
 
-Latest continuation closes complete offset position132/direct position110.
+Latest continuation adds complete collision546 source at543/257; all8 direct
+calls/two imported section calls/two returns agree. Stack frame18 versus native1C,
+EBX save placement and sound4 EDX versus ESI remain open. It introduces only new
+source/probe files, selecting zero affected existing exact units. See
+[COLLISION](SECONDARY_COLLISION.md).
+
+The preceding checkpoint closes complete offset position132/direct position110.
 Capturing the actual marker pointer before position stores naturally preserves
 the native early CMP and its flags across x87 writes. No bool materialization,
 volatile access, ABI workaround or extent cropping is used. All8 fields and the
 three target/emitted double constants are independently checked. See
 [ANIMATION_VALUES](SECONDARY_ANIMATION_VALUES.md).
 
-Only SecondaryActorAnimation.cpp changed. Recursive linked/COFF input contracts
-select30 old units; those plus two new complete public primary-TU owners pass32
+At that exact checkpoint only SecondaryActorAnimation.cpp changed. Recursive
+linked/COFF input contracts select30 old units; those plus two new complete public primary-TU owners pass32
 cold proofs/2,602 bytes/104 fields. Source/probe hashes remain frozen. The previous
 ID-value checkpoint's other units are unaffected; affected retained result
-summaries are refreshed, with their originals kept privately. No new mappings,
-boundaries or origin claims are added here.
+summaries are refreshed, with their originals kept privately. Collision adds one
+mapping; boundaries/origin claims are unchanged.
 
 ## Immediate continuation
 
 | Area | Concrete remaining work |
 | --- | --- |
+| Collision432A90/546 | Complete source543/257; frame18 versus1C, EBX save/restore placement, sound argument EDX versus native ESI |
 | Movement430290/2896 | Complete source2928/2447 after animation value correction; native call/return/frame contracts agree; register/branch/vector stores remain open |
 | Horizontal wrap430E50/540 | Complete source499/415; preserve inclusive6800 boundaries, counter8/45 and real sound47/48/reset calls |
 | Death4327D0/703 | Source715/423 in real controller/HUD/Bind context; callee-save placement, global stores and emitter-loop layout |

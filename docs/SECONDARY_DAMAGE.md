@@ -171,3 +171,7 @@ Later complete projectile/homing and special246/385 source, five-ID correction,
 callback stack-contract correction and three new exact math proofs are recorded
 in [SECONDARY_PROJECTILES](SECONDARY_PROJECTILES.md). Damage/collision/sound measurements above belong to the earlier context
 before the expanded shared projectile view.
+
+Later complete546-byte collision-transition source and its current543/257
+diagnostic are recorded in [SECONDARY_COLLISION](SECONDARY_COLLISION.md). The
+earlier source-open collision-transition row has been superseded.

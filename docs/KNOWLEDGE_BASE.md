@@ -78,6 +78,7 @@ specific retained contexts, not exactness scores or complete-product results.
 | Owner | Last useful diagnostic / next gap |
 | --- | --- |
 | Controller2888 |2800/2285; real normal-COFF callback support preserves stack input/two RET4; frame/vector stores remain open |
+| Collision transition546 |543/257; full8 direct calls/two imported section calls/two returns agree; frame/register scheduling remains open |
 | Death703 |715/423 with independent real HUD/count/fragments and file/script/VM inputs; callee-save placement and emitter-loop layout remain open |
 | Death effect229 / penalty102 |228/37 and102/14; native position EBX versus candidate EDI and mode/lifetime store scheduling |
 | Movement2896 |2928/2447 after animation value API change; full22 direct calls/one indirect callback/RET4 agree; frame18 hex; register/branch/vector gaps |
@@ -128,7 +129,9 @@ Release66/raw-position97 close through the existing ID value transport. Capturin
 the actual marker pointer before position stores also closes offset132/direct110;
 all8 new fields and the three double literal payloads are independently checked.
 
-Controller/reset/death/movement have complete maintained source and remain non-exact.
+Controller/reset/death/movement and collision transition546 have complete maintained
+source and remain non-exact. Collision preserves the primary plus32 VMs, section9
+gates, both timers and age/selection branches; source543/257.
 Real clear/drop callees remain concrete source work. Orbit255,
 aim495, both12-byte callbacks, angle difference101 and life HUD144 close1,019
 bytes with six strict cold primary-TU proofs and35 fields. Use real callback/
@@ -165,6 +168,7 @@ are regenerable; result records are retained. See [ARTIFACTS.md](ARTIFACTS.md) f
 | Complete player controller, real callback contracts and full movement/drop tables | [SECONDARY_PLAYER_CONTROLLER](SECONDARY_PLAYER_CONTROLLER.md) |
 | Exact orbit/aim callbacks, player death and life HUD | [SECONDARY_EMITTER_MOTION](SECONDARY_EMITTER_MOTION.md) |
 | Exact VM release/position publication, ID values and marker read timing | [SECONDARY_ANIMATION_VALUES](SECONDARY_ANIMATION_VALUES.md) |
+| Complete collision transition, primary plus32 VMs and timer/spell gates | [SECONDARY_COLLISION](SECONDARY_COLLISION.md) |
 | Complete player movement, callback-slot correction and event setter | [SECONDARY_PLAYER_MOVEMENT](SECONDARY_PLAYER_MOVEMENT.md) |
 | Complete horizontal wrap and exact item attraction | [SECONDARY_PLAYER_WRAP_ITEMS](SECONDARY_PLAYER_WRAP_ITEMS.md) |
 | Streaming factories and lifetime ownership | [MUSIC_FACTORIES](MUSIC_FACTORIES.md) |
