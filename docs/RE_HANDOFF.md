@@ -17,23 +17,24 @@ bytes/current receipts outrank older notes. All dirty work is ours.
 Operator priority is now large, difficult functions, not leaf accumulation.
 Main continuation is the complete7,093-byte script interpreter at45B860.
 
-Latest work restores the interpreter's physical60-case order and typed trace
-format branches. All60 opcode bodies stay unchanged. Through its sole actual
-updater caller, complete7033/5779 now has fixed120, all89 selector bytes and both
-RET4 paths matching the target. Trace/reference call multiplicities agree. Main
-VM ESI versus native EDI and extra push/destination tail sharing remain open.
+Latest work corrects arithmetic operand/result storage and angle87 argument
+publication inside that full owner. Actual-caller cold diagnostic is7013/5821
+(previous7033/5779): full masked differences worsen, while reviewed local storage,
+X-push-before-Y-read and per-opcode tail topology improve. Fixed120, all89 selector
+bytes,60-arm physical order and both RET4 paths remain. No exact credit is added.
 See [INTERPRETER](SECONDARY_INTERPRETER_CODEGEN.md).
 
-Only SecondaryScript.cpp plus a new actual-caller probe changed. Its27 affected
-old exact units pass1,027 bytes/22 fields cold; no unrelated replay. The large
-owner receives no exact credit. Independent-helper context size7093 still aligns
-64 and is not an acceptance result. Source/probe hashes remain frozen.
+Only SecondaryScript.cpp changes in this checkpoint. Its27 affected old exact
+units pass1,027 bytes/22 fields cold; all37 source/header/support hashes stay frozen.
+Main VM ESI versus native EDI, unary84's merged negate/push paths and82/87's shared
+float destination remain open. Ordinary member/accessor hypotheses did not solve
+these gaps; keep the public interface and original /GL owners.
 
 ## Immediate continuation
 
 | Area | Concrete remaining work |
 | --- | --- |
-| Interpreter45B860/7093 | Main priority: complete7033/5779; fixed120/all89 selectors/60-case order recovered; VM ESI versus EDI, extra PushValue and FloatDestination tail sharing |
+| Interpreter45B860/7093 | Main priority: complete7013/5821; fixed120/all89 selectors/60-case order retained; VM ESI versus EDI, unary84 merged push and82/87 shared destination |
 | Collision432A90/546 | Complete source543/257; frame18 versus1C, EBX save/restore placement, sound argument EDX versus native ESI |
 | Movement430290/2896 | Complete source2928/2447 after animation value correction; native call/return/frame contracts agree; register/branch/vector stores remain open |
 | Horizontal wrap430E50/540 | Complete source499/415; preserve inclusive6800 boundaries, counter8/45 and real sound47/48/reset calls |
@@ -56,17 +57,21 @@ padding or forced frames. Full table/padding ownership remains mandatory.
   synthetic Run input changes LTCG alignment; do not treat64 as a double ABI rule.
 - Keep real trace double args and all side effects. Float/int formats resolve
   their values separately; native seven trace calls and reference pairs remain.
-- Extra candidate tails:50 joins integer-comparison push;52/58 share another;
-  82/87 share float destination. Native itself shares comparison tails.
+- Arithmetic50 and52/58 extra sharing is removed; native comparison sharing
+  remains. Logical73/74 each use one push/result slot18. Unary84 still has one
+  push versus native two;82/87 still share float destination. Preserve the angle87
+  X-push-before-Y-read order and math-before-destination lookup.
 - Do not repeat rejected trace ablations/fixed-format/fp:fast, int advance,
   local/signed-pop or split trace-TU probes as untried. Current topic docs retain
   their measured results. Keep wrapped arithmetic and the established /GL owners.
 - Preserve full extents/tables. No padding, forced alignment or private-register
   declarations to close the remaining frame/register/control-flow differences.
 
-`.analysis/secondary-interpreter-hard-affected-proof.json` records27 current cold
-results. Maintained audit/diagnostic, opcode-body hashes and source freeze share
-that prefix. Clearing235 and position-marker proofs remain unaffected. No full
+`.analysis/secondary-interpreter-tails-affected-proof.json` records27 current cold
+results. Maintained whole-owner audit, per-opcode CFG audit and source freeze use
+that prefix; diagnostic family is
+build/probe-ltcg/SecondaryInterpreterTails/maintained. Clearing235 and
+position-marker proofs remain unaffected. No full
 cohort, broad behavior or unchanged-Oracle suite ran. Exact claims do not establish
 original classes/TU partition, native product closure or runtime/port status.
 

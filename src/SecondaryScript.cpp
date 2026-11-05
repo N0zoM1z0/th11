@@ -323,26 +323,36 @@ namespace
 // Each operation owns its operand temporaries, as in the native dispatch arms.
 template<int Op> __forceinline void IntegerOperation(SecondaryStack *stack)
 {
-    int right, left, result;
+    int right, left;
     PopInt(stack, &right);
     PopInt(stack, &left);
-    if (Op == 50) result = Add(left, right);
-    else if (Op == 52) result = static_cast<int>(static_cast<unsigned int>(left) - right);
-    else if (Op == 54) result = static_cast<int>(static_cast<unsigned int>(left) * right);
-    else if (Op == 56) result = left / right;
-    else if (Op == 58) result = left % right;
-    else if (Op == 59) result = left == right;
-    else if (Op == 61) result = left != right;
-    else if (Op == 63) result = left < right;
-    else if (Op == 65) result = left <= right;
-    else if (Op == 67) result = left > right;
-    else if (Op == 69) result = left >= right;
-    else if (Op == 73) result = left || right;
-    else if (Op == 74) result = left && right;
-    else if (Op == 75) result = left ^ right;
-    else if (Op == 76) result = left | right;
-    else result = left & right;
-    PushInt(stack, result);
+    // Native arithmetic pushes the updated left operand; predicates/bitwise
+    // operations publish a distinct result object.
+    if (Op <= 58)
+    {
+        if (Op == 50) left = Add(left, right);
+        else if (Op == 52) left = static_cast<int>(static_cast<unsigned int>(left) - right);
+        else if (Op == 54) left = static_cast<int>(static_cast<unsigned int>(left) * right);
+        else if (Op == 56) left = left / right;
+        else if (Op == 58) left = left % right;
+        PushSecondaryValue(stack, 'i', &left);
+    }
+    else
+    {
+        int result;
+        if (Op == 59) result = left == right;
+        else if (Op == 61) result = left != right;
+        else if (Op == 63) result = left < right;
+        else if (Op == 65) result = left <= right;
+        else if (Op == 67) result = left > right;
+        else if (Op == 69) result = left >= right;
+        else if (Op == 73) result = left || right;
+        else if (Op == 74) result = left && right;
+        else if (Op == 75) result = left ^ right;
+        else if (Op == 76) result = left | right;
+        else result = left & right;
+        PushSecondaryValue(stack, 'i', &result);
+    }
 }
 template<int Op> __forceinline void FloatOperation(SecondaryStack *stack)
 {
@@ -597,7 +607,8 @@ int __stdcall RunSecondaryScript(SecondaryVm *self, float delta)
             case 84:
             {
                 int value; PopInt(&self->stack, &value);
-                PushInt(&self->stack, static_cast<int>(0u - static_cast<unsigned int>(value)));
+                value = static_cast<int>(0u - static_cast<unsigned int>(value));
+                PushSecondaryValue(&self->stack, 'i', &value);
                 break;
             }
             case 85:
@@ -663,9 +674,9 @@ int __stdcall RunSecondaryScript(SecondaryVm *self, float delta)
             {
                 double endX = ReadSecondaryFloatArgument(self, 2);
                 double endY = ReadSecondaryFloatArgument(self, 3);
-                float x = static_cast<float>(endX - ReadSecondaryFloatArgument(self, 0));
-                float y = static_cast<float>(endY - ReadSecondaryFloatArgument(self, 1));
-                float result = SecondaryAngleMath(y, x);
+                float result = SecondaryAngleMath(
+                    static_cast<float>(endY - ReadSecondaryFloatArgument(self, 1)),
+                    static_cast<float>(endX - ReadSecondaryFloatArgument(self, 0)));
                 *SecondaryFloatDestination(self, 0) = result;
                 break;
             }

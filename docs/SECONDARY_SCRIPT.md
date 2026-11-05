@@ -8,11 +8,14 @@ typed pop entry is recovered; all reviewed origins remain indeterminate.
 Subsequent program/selector work and current affected cold proof are recorded
 in [SECONDARY_PROGRAM](SECONDARY_PROGRAM.md).
 Current extension/trace source, diagnostics and affected proof are in
-[SECONDARY_EXTENSION](SECONDARY_EXTENSION.md).
+[SECONDARY_EXTENSION](SECONDARY_EXTENSION.md). The latest large-interpreter
+caller, operand-storage, angle evaluation and affected cold proof are in
+[SECONDARY_INTERPRETER_CODEGEN](SECONDARY_INTERPRETER_CODEGEN.md). Other helper
+diagnostics below retain their recorded independent context.
 
 | Owner | Address | Full bytes | Current source / diagnostic differences |
 | --- | --- | ---: | --- |
-| RunSecondaryScript | 45B860 | 7,093 | 6,993 /5,880; not exact |
+| RunSecondaryScript | 45B860 | 7,093 | 7,013 /5,821; actual-caller context, not exact |
 | EnterSecondaryScriptFrame | 45B610 | 584 | 572 /546 |
 | UpdateSecondaryScripts | 45D420 | 142 | 155 /142 |
 | ReadSecondaryIntArgument | 45D4B0 | 146 | 124 /125 |
@@ -55,8 +58,9 @@ review output is supplemented by a full2,200-limit export ending at the actual
 RET4; no bounded prefix or cropped extent is accepted as a full review.
 
 The source contains normal switches/templates and no table byte payload. Its
-current candidate also owns61 jump cells and89 selectors, but6,993 bytes and5,880
-masked diagnostic differences remain. Matching table counts is not exactness.
+current actual-caller candidate owns61 jump cells and all89 selector bytes agree,
+but7,013 bytes and5,821 masked diagnostic differences remain. Matching table
+counts or selector bytes is not exactness.
 
 ## Physical views and call contracts
 

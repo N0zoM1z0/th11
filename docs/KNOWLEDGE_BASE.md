@@ -90,7 +90,7 @@ specific retained contexts, not exactness scores or complete-product results.
 | Actor state4230 |4161/3261 in full support context;64 calls/3 callbacks/5 returns audited |
 | Damage1579 |1513/1414; full32-region/256-projectile source and corrected64/68 fields |
 | Projectile896 / homing498 |908/765 and493/401 in earlier context; consult topic before reuse |
-| Interpreter7093 |7033/5779 through sole actual caller; native fixed120 and all89 selectors/60-arm layout; register/tail sharing gaps |
+| Interpreter7093 |7013/5821 through sole actual caller; fixed120/all89 selectors/60-arm layout; arithmetic result storage and angle87 evaluation recovered, unary84/float publication/register gaps |
 
 - Scoped reset result temporaries give2556/1977 and six main factory sites versus
   native four. Signed counter with wrapped increments does not close publishers.
@@ -193,7 +193,14 @@ are regenerable; result records are retained. See [ARTIFACTS.md](ARTIFACTS.md) f
 A local-lifetime experiment in the death-effect allocator gives233/41 instead of
 228/37 and is not adopted; the maintained source remains unchanged.
 
-Run7093 now uses the sole actual updater caller and typed format branches: native
-fixed120, all89 selectors and60-arm physical order are recovered at7033/5779.
-The independent helper context still aligns64 despite coincident7093 size. No
-frame/type/ABI trick or trace ablation is adopted; the full owner remains open.
+Run7093 keeps the actual updater caller and typed trace branches. Arithmetic
+50/52/54/56/58 publishes the updated left operand; predicate/bitwise results keep
+a separate object. Native comparison tails remain shared, while extra50 and52/58
+sharing is gone. Logical73/74 each use one push/result slot18. Angle87 now pushes
+rounded X before reading Y, retaining math-before-destination lookup. Full7013/5821
+is worse than prior7033/5779 as a masked diagnostic; local structural evidence
+supports the source change, with no new exact credit. Native fixed120, all89
+selectors/60-arm order and both RET4 paths remain. Missing calls localize to
+unary84's merged converted/raw push and82/87's shared destination. Main VM remains
+ESI versus native EDI. Ordinary member/accessor hypotheses are unproved; no frame,
+ABI or trace workaround is adopted. See the interpreter topic for rejected probes.
