@@ -34,16 +34,19 @@ void __cdecl UnlockMenuPlayerDataEntries()
 int __stdcall ReadMenuKeyboardSnapshot(unsigned char *keys)
 {
     memset(keys, 0, 256);
-    if (!g_KeyboardPollingEnabled) return 0;
-    if (!(g_InputRuntimeFlags & 0x400))
+    if (g_KeyboardPollingEnabled)
     {
-        GetKeyboardState(keys);
-        return 2;
+        if (!(g_InputRuntimeFlags & 0x400))
+        {
+            GetKeyboardState(keys);
+            return 2;
+        }
+        HRESULT result = g_KeyboardDevice->vtable->GetDeviceState(g_KeyboardDevice, 256, keys);
+        if (result == static_cast<HRESULT>(0x8007001e))
+            g_KeyboardDevice->vtable->Acquire(g_KeyboardDevice);
+        else if (result != 0)
+            g_KeyboardDevice->vtable->Acquire(g_KeyboardDevice);
+        return 1;
     }
-    HRESULT result = g_KeyboardDevice->vtable->GetDeviceState(g_KeyboardDevice, 256, keys);
-    if (result == static_cast<HRESULT>(0x8007001e))
-        g_KeyboardDevice->vtable->Acquire(g_KeyboardDevice);
-    else if (result != 0)
-        g_KeyboardDevice->vtable->Acquire(g_KeyboardDevice);
-    return 1;
+    return 0;
 }

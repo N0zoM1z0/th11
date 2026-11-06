@@ -50,7 +50,9 @@
     "probes/resource-file-context.cpp",
     "probes/archive-read-context.cpp",
     "src/MenuPlayerDataRecords.cpp",
-    "src/MenuPlayerDataSupport.cpp"
+    "src/MenuPlayerDataSupport.cpp",
+    "src/MenuPracticeStage.cpp",
+    "src/MenuPracticeStageSupport.cpp"
   ],
   "normal_support_sources": [
     "src/MenuControllerCallbacks.cpp",

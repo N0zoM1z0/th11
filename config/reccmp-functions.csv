@@ -485,3 +485,6 @@ RefreshMenuPlayerDataRecords,0x0043F120,function
 UnlockMenuPlayerDataEntries,0x004393B0,function
 CountMenuSpellsForDifficulty,0x0040BC70,function
 ReadMenuKeyboardSnapshot,0x00458100,function
+StartMenuTransitionOverlay,0x0040FCA0,function
+EnqueueMenuMusicFade,0x0042A270,function
+UpdateMenuPage08,0x0043D6A0,function

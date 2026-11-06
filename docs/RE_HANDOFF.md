@@ -7,9 +7,9 @@ status/diff; current receipts outrank historical notes. All dirty work is ours.
 ## Current exact state
 
 - Original Japanese TH11v1.00a, pinned by config/target.toml; no substituted bytes.
-- 2,140 candidates;604 reviewed boundaries;486 source mappings.
+- 2,140 candidates;607 reviewed boundaries;489 source mappings.
 - 236 exact functions/31,881 bytes:9 normal COFF and227 linked PE.
-- Origins:90 authored,498 indeterminate,14 exclusions,1,538 pending.
+- Origins:90 authored,501 indeterminate,14 exclusions,1,535 pending.
 - VC9 RTM21022/SDK6.0A; direct scripts/ghidra.py, no Factory MCP/REA.
 - Commit/push authorized; prefix `gpt-6.1-sol: `. No heavy job remains running.
 
@@ -35,42 +35,48 @@ No prefix crop/normalization. Selection/history/event source bodies support this
 large owner without leaf acceptance units. QueueMeshEffectSound stays124/native125.
 See CONFIGURATION_AUDIO_MENU.md; old checkpoint counts/freezes are historical.
 
-## Current large owners: player-data2448/750 and music-room2668
+## Current large menu owners: practice1024, player-data2448/750, music2668
 
-MenuPlayerData.cpp owns43E790..43F11F/2448, including the formerly omitted
-four-cell16-byte table:620 instructions/2422 code+10 alignment,64 calls/169
-fields/three RETs. MenuPlayerDataRecords.cpp owns full43F120..43F40D/750:
-233 instructions/747 code+3 alignment, all late searches and GS tail. Source
-keeps its168-byte text buffer/B8 frame, old-count-before-refresh ordering,
-three selectors, ten rows, backend key mapping and full12-step unlock path.
-Required support99/78/101 has source/boundary review, no leaf exact credit.
+New MenuPracticeStage.cpp owns43D6A0..43DA9F/1024, not old1003:285 instructions/
+1003 code, one NOP and five-cell20-byte table;21 calls/79 fields/13 plain RETs.
+Full source covers selection/clamp, unlock check, both digit ladders, cancel and
+transition. Real second458100 caller supplies4C9690 versus player-data4C9BC0.
+Native page tests snapshot zero/nonzero, unlike player-data's explicit2 test.
+Frame10 transition takes480.0f/392.0f and five-argument screen effect; frame40
+fade takes6.0f, not a pointer: FSTP overwrites the just-pushed pointer slot.
+Required81/80 supports are source-present;153-byte direct-position VM factory
+455A70 stays source-open (positionEAX/hidden result stack, direct binding44ACD0).
 
-Initial data context: main2472/2273 differences/168 fields; records715/676/17;
-count78/zero/5 is diagnostic only, unlock99/14/1, snapshot109/99/8. Snapshot
-specializes the sole implemented caller's current-buffer pointer; actual second
-caller page08 at43D6A0 passes buffer4C9690 (ESI at43D833, call43D847), unlike
-page0A buffer4C9BC0. It remains source-open and is concrete next context work.
-ColorsFFFF80/EFEFEF/808080/FFFFFFFF are numeric, not addresses; indexed globals
-need field replay even with an x86 base register. SeeMENU_PLAYER_DATA.md.
+Retained page candidate1044/283 instructions/76 fields/970 full differences.
+Stack menu/RET4 versus EAX/plain RET, return-ID parameter-slot reuse, pressed
+input caching and digit-tail sharing remain. First1060/1005; positive guard/
+negative unlock1060/988; returned clamp value1044/970. Actual member/caller
+model repeats1044/970 exactly and is discarded. See MENU_PRACTICE_STAGE.md.
 
-The new page's typed selection preserves count reloads naturally. Applying its
-physical projection to music-room selection24, with owner-based count stores,
-restores the complete native clamp. Music is now2680/711 instructions/94 fields/
-2416 differences (was2648/2511), with42 calls/six RETs/all16 table bytes. Frame2C
-versus native34, stack versus EAX menu, RET4/plain RET and callee allocation
-remain. All other offsets/view size stay fixed; original class/TU is unproved.
-Scoped typed selection2648/2508 and generalized helper2648/2511 are discarded.
-Keep the meaningful double distance: both native/source spill float delta and
-FABS result, but named double preserves8-byte alignment. SeeMENU_MUSIC_ROOM.md.
+MenuPlayerData.cpp owns43E790..43F11F/2448 including four-cell16-byte table:
+620 instructions/2422 code+10 layout,64 calls/169 fields/three RETs. Complete
+record refresher43F120..43F40D/750 retains168-byte text/B8 frame, GS tail and
+all six calls/17 fields. Source includes old-count-before-refresh, three
+selectors, ten rows,26-key mapping,12-step unlock and >300 timeout. High color
+FFFF80 is EFEFEF+100F91. Indexed global fields count even with a base register.
 
-Public probes/menu-player-data-context.json has46 supports; music-room has43,
-each with the same two normal supports and /GL owners retained. Only MusicRoom
-.cpp/.hpp change among235 prior frozen inputs; no canonical unit depends on
-them. Cold both diagnostic families, not the exact cohort. Current checkpoint
-verifier: `.analysis/verify-menu-player-data-checkpoint.py`; earlier alignment
-receipt/hash assertions are historical. New4 source files/5 mappings, no exact
-credit. Continue with the concrete full-owner ABI/record-layout gaps and real
-missing page08 caller. No heavy job remains after the checkpoint.
+Two real callers restore snapshot101 bytes/ESI/six fields; a positive polling
+guard restores complete zero difference in support, no leaf exact credit.
+Broader player-data is2488/2319/169 (was2472/2273/168), records715/676/17,
+count78/zero/5 and unlock99/14/1. Real context closure is not owner exactness.
+Music remains2680/711 instructions/94 fields/2416 differences, all42 calls/six
+RETs/16 table bytes. Typed selection24 restores its count clamp; named double
+distance preserves8-byte alignment. Frame2C versus34, self stack versusEAX and
+RET4 versusplain RET remain. See MENU_PLAYER_DATA.md and MENU_MUSIC_ROOM.md.
+
+Both public page08/player-data recipes have48 supports, same two normal
+supports and /GL retained. Only MenuPlayerDataSupport.cpp changes among239
+previous source inputs, no accepted dependents; three new files extend to242.
+Current verifier `.analysis/verify-menu-stage-checkpoint.py`; old player-data
+verifier is historical. No new exact unit or native-product/runtime closure.
+Continue full-owner ABI/selection/record gaps. Next substantial missing practice
+owner is43D0B0 (default1496 bytes, still unreviewed): review full extent/tables
+before reconstructing it; do not spend the checkpoint accepting support zeros.
 
 ## Current large owners: joystick2439/908 and assignment200
 

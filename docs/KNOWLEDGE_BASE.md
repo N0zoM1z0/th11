@@ -6,6 +6,33 @@ exact codegen, original provenance and runtime behavior are separate claims.
 Older experiments are preserved in the explicitly
 [historical notes](archive/KNOWLEDGE_BASE_2026-10-30.md).
 
+## Practice stage: real second keyboard caller and complete1024-byte page
+
+Direct Ghidra/reference/table/PE review extends43D6A0's1003-byte code span to
+43DA9F/1024 with one NOP and five-cell20-byte table. Full source has21 physical
+calls,79 native fields and13 plain RET paths. All selection, unlock, key-digit,
+transition and history operations are present; complete candidate1044/970 full
+differences remains non-exact. It caches two native pressed-input reads and one
+saved-selection read, passes menu on stack and reuses that slot for value IDs.
+Returning the clamp value reduces1060 to1044; a real member/caller model repeats
+1044/970 and is discarded. No forced private ABI or padding is introduced.
+
+This actual458100 caller supplies4C9690, unlike player-data4C9BC0. Both real
+callers restore generic ESI output, native101 bytes and six fields. A natural
+positive polling guard restores full support zero, without leaf acceptance.
+The large player-data owner regains its169th field but becomes2488/2319 in the
+broader graph (initial2472/2273); context completeness is not exact closure.
+Page08 tests zero/nonzero for virtual versus scan digits, not player-data's
+explicit return2 test. Preserve that observed difference.
+
+At43DA1F the pushed stage pointer is overwritten by FSTP43DA20;42A270 therefore
+receives float6.0 and ends RET4. Fade queues opcode5/empty text after scale
+handling, including negative/unordered division and a float rounding slot.
+40FCA0 receives480.0/392.0, and4489E0 receives five arguments. Source-open153-byte
+455A70 takes positionEAX plus four stack slots including its hidden value result;
+it directly binds44ACD0 rather than using zero-position initializer456910.
+See [MENU_PRACTICE_STAGE](MENU_PRACTICE_STAGE.md).
+
 ## Player-data page: full2448-byte owner and750-byte record list
 
 Direct Ghidra/reference/neighbor review and PE CFG extend43E790's2432-byte
@@ -20,12 +47,13 @@ The page's three selection objects are24/FC/1D4, displayed rows2AC and ten IDs5C
 Difficulty changes clamp/refresh using the old page count before recomputing it.
 Both keyboard backends and all26 letter mappings,256-byte edge computation,
 12-step sequence and greater-than300 timeout remain. Snapshot458100 has two
-native callers; page08 is still source-open. With only one implemented caller,
-/GL removes its pointer argument and embeds the current buffer in its body,
-explaining source109/native101 and the page's missing buffer-preparation field.
+native callers, both now source-present. The initial one-caller context let
+/GL remove its pointer argument and embed the current buffer, explaining the
+historical109/native101 and the page's missing buffer-preparation field.
 Direct attested43D833/43D847 call-site review confirms the other caller uses
 ESI=4C9690, distinct from page0A's ESI=4C9BC0 at43ECFC/43ED01.
-Use the actual missing caller as next context work, rather than forcing an ABI.
+That real caller is now implemented; keep its context when examining the large
+owner ABI gaps.
 
 Absolute indexed memory operands can have a base register: count78 has five
 fields; the page has169. Candidate PE relocations independently verify all

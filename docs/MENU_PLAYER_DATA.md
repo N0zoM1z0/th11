@@ -100,45 +100,43 @@ operations; the diagnostic has not executed them against game data.
 
 ## Compilation and remaining work
 
-Public `probes/menu-player-data-context.json` keeps the pinned VC9 RTM21022
-/O2 /Ob1 /MT /EHsc /GL profile and the real controller callback route. It has46
-support sources, with the same two established normal supports. Full cold
-receipts bind source, tools, producer and PE/MAP/PDB identity. Unresolved symbols
-are diagnostic data anchors; this executable is not a runnable game product.
-
-Current complete cold diagnostics after correcting the highlight color:
+Public `probes/menu-player-data-context.json` keeps VC9 RTM21022 and the pinned
+/O2 /Ob1 /MT /EHsc /GL profile, real controller callback and two established
+normal supports. It now includes the complete practice-stage caller and its
+required operations, for48 supports. Cold receipts bind sources, tools,
+producer and PE/MAP/PDB identity; unresolved anchors remain diagnostic.
 
 | Function | Native bytes | Source bytes | Full differences | Candidate fields |
 | --- | ---: | ---: | ---: | ---: |
-| Player-data page |2448|2472|2273|168|
+| Player-data page |2448|2488|2319|169|
 | Record refresher |750|715|676|17|
 | Difficulty count, support only |78|78|0|5|
 | Unlock, support only |99|99|14|1|
-| Snapshot, support only |101|109|99|8|
+| Snapshot, support only |101|101|0|6|
 
-The large page has all64 calls,625 instructions/2435 code bytes,21 layout bytes,
+The large page has all64 calls,626 instructions/2440 code bytes,32 layout bytes
 and all16 table bytes. Its stack menu/RET4 and frame8 differ from native EAX/
-plain RET/frameC. The169th native field is output-buffer preparation for the
-snapshot. Only one of its two real callers is currently implemented, so /GL
-specializes its pointer to the global current buffer and removes the argument;
-source snapshot therefore contains two extra buffer addresses. Actual page08
-at43D6A0 remains the next missing caller. Direct attested call-site review shows
-43D833 loads ESI=4C9690 before calling458100 at43D847, whereas page0A loads
-ESI=4C9BC0 at43ECFC before its call43ED01. The distinct output buffers establish
-that the original helper must handle more than the current-buffer constant. Do not force an ABI or add a fake caller.
+plain RET/frameC. Original class/TU and register/branch allocation remain open.
+The record refresher keeps native ECX input, B8 frame, all six calls and17 fields;
+its text/lookup placement and counter addressing remain open. The previous
+separate-record-offset expression731/680 was discarded, not accepted.
 
-The record refresher retains native ECX input, B8 frame, all six calls and17
-fields; text/lookup block placement and register scheduling remain open. A
-separate-record-offset expression gives731 bytes/680 differences and is discarded.
-The78-byte support zero is diagnostic and grants no leaf acceptance credit.
-All previous accepted source inputs remain unchanged, with no affected canonical
-family to rebuild. The new broader family also measures the complete music-room
-owner; it does not inherit exactness from other families.
+The initial46-support context had only one real snapshot caller, so /GL embedded
+the current buffer and removed its argument: page2472/2273/168 fields and
+snapshot109/99/8. Completing the actual second caller page08 restores generic
+ESI output and the page's169th field. Direct attested sites are43D833 loading
+ESI=4C9690 before call43D847 and43ECFC loadingESI=4C9BC0 before call43ED01.
+With both callers, the snapshot first gives101/73/6; replacing its early disabled
+return by the natural positive enabled branch restores101/zero/6. The full
+player-data candidate becomes2488/2319; restored ABI evidence does not imply
+that the large owner is exact. No synthetic caller or private ABI declaration
+is used. See [MENU_PRACTICE_STAGE.md](MENU_PRACTICE_STAGE.md).
 
-The isolated music-room family and this broader player-data family both cold
-reproduce music2680/2416 differences/94 fields after its selection view is typed.
-All235 prior frozen inputs except MenuMusicRoom.cpp/.hpp remain unchanged; four
-new source files extend the freeze to239. Tracking is604 reviewed boundaries,
-486 source mappings and still236 exact/31881 bytes. Reproduction checkpoint:
-`.analysis/verify-menu-player-data-checkpoint.py`. No original class/TU or
-native-product closure is inferred from these source/diagnostic observations.
+Count78 and snapshot101 support zeros grant no leaf acceptance credit. Music
+remains2680/2416/94 in the broader contexts. The only changed source among239
+previous frozen inputs is MenuPlayerDataSupport.cpp; no accepted unit depends
+on it. Three new practice-stage source files extend the freeze to242. Current
+tracking is607 reviewed boundaries,489 mappings and still236 exact/31881 bytes.
+The current verifier is `.analysis/verify-menu-stage-checkpoint.py`; the earlier
+player-data checkpoint remains historical. No runtime or product closure is
+inferred from these source and codegen observations.

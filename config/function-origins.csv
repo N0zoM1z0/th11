@@ -180,7 +180,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0040FBC0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0040FBE0,unknown,SecondaryDamage,indeterminate,unknown,secondary-damage-origin-2026-10-29
 0x0040FC30,unknown,SecondaryDamage,indeterminate,unknown,secondary-damage-origin-2026-10-29
-0x0040FCA0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0040FCA0,unknown,ConfigurationMenu,indeterminate,unknown,menu-practice-stage-origin-2026-11-06
 0x0040FD40,unknown,SecondaryLifetime,indeterminate,unknown,secondary-lifetime-origin-2026-10-29
 0x0040FE30,unknown,SecondaryLifetime,indeterminate,unknown,secondary-lifetime-origin-2026-10-29
 0x0040FE40,unknown,SecondaryLifetime,indeterminate,unknown,secondary-lifetime-origin-2026-10-29
@@ -460,7 +460,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0042A0D0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042A150,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042A240,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0042A270,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0042A270,unknown,ConfigurationMenu,indeterminate,unknown,menu-practice-stage-origin-2026-11-06
 0x0042A300,authored_game,FrameRuntime,authored,high,frame-loop-origin-review-20261023
 0x0042A500,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042A640,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
@@ -637,7 +637,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0043C7C0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0043CBE0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0043D0B0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0043D6A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0043D6A0,unknown,ConfigurationMenu,indeterminate,unknown,menu-practice-stage-origin-2026-11-06
 0x0043DAA0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0043DC50,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0043DD90,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

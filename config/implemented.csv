@@ -484,3 +484,6 @@ RefreshMenuPlayerDataRecords
 UnlockMenuPlayerDataEntries
 CountMenuSpellsForDifficulty
 ReadMenuKeyboardSnapshot
+StartMenuTransitionOverlay
+EnqueueMenuMusicFade
+UpdateMenuPage08

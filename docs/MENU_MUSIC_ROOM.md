@@ -132,9 +132,10 @@ The original nominal class/TU still cannot be inferred from this physical view.
 
 A scoped-pointer variant with the same typed selection gives2648/2508/94 and is
 discarded. Generalizing the old SelectFirst helper alone leaves2648/2511/94;
-that operation alone did not explain the count folding. Both the isolated43-
-support family and the broader46-support player-data family receive current
-cold receipts and complete comparisons for the retained field projection.
+that operation alone did not explain the count folding. The isolated43-support family and the earlier46-support player-data family
+cold-reproduced the retained field projection. The current48-support player-data
+and practice-stage contexts retain the same2680/2416/94 result; see
+[MENU_PRACTICE_STAGE](MENU_PRACTICE_STAGE.md).
 
 A named double y expression also produces2648/2511/94 and alignment8, differing
 from the retained candidate in one SIB byte. This does not prove which original
