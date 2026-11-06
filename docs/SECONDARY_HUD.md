@@ -46,7 +46,8 @@ The complete function maintains:
   selection. The allocation guard, initializer mode5 and draw priority0x43 are observed. The
   0x44-byte allocation has a real StageTimer at30; member construction precedes
   whole-object clearing and flags2. Initializer448A90 now has a complete1168-byte
-  reviewed owner and source, including nine table cells; it remains non-exact.
+  reviewed owner and source, including nine table cells; it passes the canonical
+  linked Oracle with zero differences after54 fields replay.
   See [screen initialization](SCREEN_EFFECT_INITIALIZATION.md).
 - Tracked-ID disappearance and all three update loops of9/2/4 VMs; player
   position gates switch gauge events3/2, with the original null checks.
@@ -88,7 +89,8 @@ hold its ABI. This context is a compiler experiment, not a linked game or runtim
 harness. ExecuteAnimationVm44B4B0 now has a complete12056-byte owner and source;
 HUD calls that existing integer-returning interface. Its full dependency family
 retains HUD4652/frameC/4101 and all27 calls. Screen initializer448A90 now has
-complete source; its1168-byte owner differs65 bytes after54 fields replay. See
+complete source; its1168-byte owner is canonical linked exact after54 fields
+replay. The public cold context retains the same HUD4652/frameC/4101 measurement. See
 [screen initialization](SCREEN_EFFECT_INITIALIZATION.md) and
 [ANIMATION_EXECUTION](ANIMATION_EXECUTION.md).
 

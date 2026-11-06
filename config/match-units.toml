@@ -4419,3 +4419,73 @@ size = 11
 linkages = [
   { offset = 7, type = "REL32", symbol = "?ExecuteInstruction@SecondaryActorStateView@@QAEHXZ", target = 0x412e30, addend = 0x0 },
 ]
+
+[units.initialize-secondary-hud-screen-effect]
+artifact_kind = "linked-pe"
+source = "src/ScreenEffectInitialization.cpp"
+inputs = ["src/SecondaryHud.hpp", "src/ChainRegistration.hpp"]
+support_sources = ["src/SecondaryGameplay.cpp", "src/SecondaryActorInstructions.cpp", "src/SecondaryEclDebug.cpp", "src/SecondaryScript.cpp", "src/SecondaryHostArguments.cpp", "src/SecondaryActorCreation.cpp", "src/SecondaryActorLifetime.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorUpdate.cpp", "src/StageLifecycle.cpp", "src/StageTween.cpp", "src/FrameRuntime.cpp", "src/SecondaryGameplayCallbacks.cpp", "src/SecondaryGameplaySupport.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryDialogueAnimation.cpp", "src/StageMesh.cpp", "src/AnimationSpriteBinding.cpp", "src/FormattedTextureText.cpp", "src/SecondaryDamageSupport.cpp", "src/SecondaryPlayerMovement.cpp", "src/MeshEffects.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryActorCounters.cpp", "src/OutlinedTextureText.cpp", "src/TextTextureDispatch.cpp", "src/TextDrawing.cpp", "src/TextProcessing.cpp", "src/SecondaryDialogue.cpp", "src/SecondaryHudCallbacks.cpp", "probes/screen-effect-initialization-context.cpp", "src/SecondaryHud.cpp", "src/AnimationExecutionArguments.cpp", "src/AnimationExecutionSupport.cpp", "src/AnimationTween.cpp", "src/SecondaryEmitterAnimation.cpp", "src/Random.cpp", "src/AngleMath.cpp", "src/AnimationFan.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationImmediateDraw.cpp", "src/AnimationVmDraw.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp", "src/SecondaryProjectileCallbacks.cpp", "src/AnimationExecution.cpp", "src/ChainRegistration.cpp"]
+output_dir = "build/match-linked/ScreenEffectInitialization"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryHudOwnersProbe@12"
+functions = ["InitializeSecondaryHudScreenEffect"]
+symbol = "?InitializeSecondaryHudScreenEffect@@YGXPAUSecondaryHudScreenEffect@@HHHHH@Z"
+target_address = 0x448a90
+size = 1168
+normal_support_sources = ["src/SecondaryGameplayCallbacks.cpp", "src/SecondaryHudCallbacks.cpp", "probes/screen-effect-initialization-context.cpp"]
+linkages = [
+  { offset = 26, type = "DIR32", local = true, target = 0x448efc },
+  { offset = 33, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x45fce4, addend = 0x0 },
+  { offset = 73, type = "DIR32", symbol = "?ScreenEffectUpdate0@@YIHPAX@Z", target = 0x447f10, addend = 0x0 },
+  { offset = 87, type = "DIR32", symbol = "?ScreenEffectUpdate0@@YIHPAX@Z", target = 0x447f10, addend = 0x0 },
+  { offset = 99, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x45fce4, addend = 0x0 },
+  { offset = 139, type = "DIR32", symbol = "?ScreenEffectUpdate1@@YIHPAX@Z", target = 0x448720, addend = 0x0 },
+  { offset = 153, type = "DIR32", symbol = "?ScreenEffectUpdate1@@YIHPAX@Z", target = 0x448720, addend = 0x0 },
+  { offset = 165, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x45fce4, addend = 0x0 },
+  { offset = 205, type = "DIR32", symbol = "?ScreenEffectUpdate2@@YIHPAX@Z", target = 0x448420, addend = 0x0 },
+  { offset = 216, type = "DIR32", symbol = "?ScreenEffectUpdate2@@YIHPAX@Z", target = 0x448420, addend = 0x0 },
+  { offset = 232, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x45fce4, addend = 0x0 },
+  { offset = 276, type = "DIR32", symbol = "?ScreenEffectUpdate0@@YIHPAX@Z", target = 0x447f10, addend = 0x0 },
+  { offset = 299, type = "REL32", symbol = "?AddToUpdateChain@@YGHPAUChainElement@@H@Z", target = 0x456b70, addend = 0x0 },
+  { offset = 309, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x45fce4, addend = 0x0 },
+  { offset = 349, type = "DIR32", symbol = "?ScreenEffectDraw2@@YIHPAX@Z", target = 0x4484b0, addend = 0x0 },
+  { offset = 363, type = "DIR32", symbol = "?ScreenEffectDraw2@@YIHPAX@Z", target = 0x4484b0, addend = 0x0 },
+  { offset = 375, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x45fce4, addend = 0x0 },
+  { offset = 419, type = "DIR32", symbol = "?ScreenEffectUpdate2@@YIHPAX@Z", target = 0x448420, addend = 0x0 },
+  { offset = 442, type = "REL32", symbol = "?AddToUpdateChain@@YGHPAUChainElement@@H@Z", target = 0x456b70, addend = 0x0 },
+  { offset = 452, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x45fce4, addend = 0x0 },
+  { offset = 492, type = "DIR32", symbol = "?ScreenEffectDraw0@@YIHPAX@Z", target = 0x448390, addend = 0x0 },
+  { offset = 506, type = "DIR32", symbol = "?ScreenEffectDraw0@@YIHPAX@Z", target = 0x448390, addend = 0x0 },
+  { offset = 518, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x45fce4, addend = 0x0 },
+  { offset = 571, type = "DIR32", symbol = "?ScreenEffectUpdate4@@YIHPAX@Z", target = 0x448610, addend = 0x0 },
+  { offset = 585, type = "REL32", symbol = "?AddToUpdateChain@@YGHPAUChainElement@@H@Z", target = 0x456b70, addend = 0x0 },
+  { offset = 595, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x45fce4, addend = 0x0 },
+  { offset = 635, type = "DIR32", symbol = "?ScreenEffectDraw4@@YIHPAX@Z", target = 0x4486c0, addend = 0x0 },
+  { offset = 649, type = "DIR32", symbol = "?ScreenEffectDraw4@@YIHPAX@Z", target = 0x4486c0, addend = 0x0 },
+  { offset = 661, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x45fce4, addend = 0x0 },
+  { offset = 714, type = "DIR32", symbol = "?ScreenEffectUpdate6@@YIHPAX@Z", target = 0x448500, addend = 0x0 },
+  { offset = 728, type = "REL32", symbol = "?AddToUpdateChain@@YGHPAUChainElement@@H@Z", target = 0x456b70, addend = 0x0 },
+  { offset = 738, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x45fce4, addend = 0x0 },
+  { offset = 778, type = "DIR32", symbol = "?ScreenEffectDraw6@@YIHPAX@Z", target = 0x448580, addend = 0x0 },
+  { offset = 792, type = "DIR32", symbol = "?ScreenEffectDraw6@@YIHPAX@Z", target = 0x448580, addend = 0x0 },
+  { offset = 804, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x45fce4, addend = 0x0 },
+  { offset = 857, type = "DIR32", symbol = "?ScreenEffectUpdate6@@YIHPAX@Z", target = 0x448500, addend = 0x0 },
+  { offset = 871, type = "REL32", symbol = "?AddToUpdateChain@@YGHPAUChainElement@@H@Z", target = 0x456b70, addend = 0x0 },
+  { offset = 881, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x45fce4, addend = 0x0 },
+  { offset = 925, type = "DIR32", symbol = "?ScreenEffectDraw7@@YIHPAX@Z", target = 0x4485c0, addend = 0x0 },
+  { offset = 947, type = "REL32", symbol = "?AddToDrawChain@@YGHPAUChainElement@@H@Z", target = 0x456c10, addend = 0x0 },
+  { offset = 959, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x45fce4, addend = 0x0 },
+  { offset = 1003, type = "DIR32", symbol = "?ScreenEffectUpdate8@@YIHPAX@Z", target = 0x448830, addend = 0x0 },
+  { offset = 1026, type = "REL32", symbol = "?AddToUpdateChain@@YGHPAUChainElement@@H@Z", target = 0x456b70, addend = 0x0 },
+  { offset = 1043, type = "DIR32", symbol = "?ScreenEffectCleanup@@YIHPAX@Z", target = 0x4489a0, addend = 0x0 },
+  { offset = 1073, type = "DIR32", symbol = "?g_AnimationTimeScale@@3MA", target = 0x4a7948, addend = 0x0 },
+  { offset = 1132, type = "DIR32", local = true, target = 0x448aae },
+  { offset = 1136, type = "DIR32", local = true, target = 0x448af0 },
+  { offset = 1140, type = "DIR32", local = true, target = 0x448b32 },
+  { offset = 1144, type = "DIR32", local = true, target = 0x448b6e },
+  { offset = 1148, type = "DIR32", local = true, target = 0x448c93 },
+  { offset = 1152, type = "DIR32", local = true, target = 0x448c04 },
+  { offset = 1156, type = "DIR32", local = true, target = 0x448d22 },
+  { offset = 1160, type = "DIR32", local = true, target = 0x448db1 },
+  { offset = 1164, type = "DIR32", local = true, target = 0x448e4c },
+]

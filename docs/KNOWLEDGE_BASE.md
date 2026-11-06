@@ -73,13 +73,19 @@ Six stack words/void/RET18 contradict the five-parameter decompiler hypothesis.
 HUD passes mode5 and draw priority0x43, not initializer kind43. Node priorities
 are update14 and supplied draw priority. Modes1/8 retain draw; default retains
 update. Mode3 sets18=255 before allocation; cleanup4489A0 is attached afterward.
-Full source1168/54 fields/65 differences has the same342 instructions and21
-physical calls (14 new/6 update/1 draw). Five13-byte windows move MOV ESI,EAX
-before four constructor clears instead of after:448AC0/B02/B44/CF2/D81. No exact
-credit. Real node construction recovers the stack-self interface and full size;
+Full source1168/54 fields now passes the canonical cold linked Oracle with zero
+differences, including342 instructions,3 alignment bytes,9 cells and21 physical
+calls (14 new/6 update/1 draw). The last65 differences were five13-byte windows
+moving MOV ESI,EAX before four constructor clears instead of after at
+448AC0/B02/B44/CF2/D81. An inline helper for the three actual link-member writes
+restores all five schedules without extra writes or changed ABI. A ChainNode
+aggregate temporary/assignment instead gives1224 bytes/1142 differences; rejected.
+This source phase/codegen observation does not prove an original helper identity.
+Real node construction recovers the stack-self interface and full size;
 post-allocation manual initialization gave1036/EDI-self/RET14. Native5-before4
 case order and callback/priority-before-ownership initialization reduce150 to65.
-Derived-pointer and ownership-bitfield spellings are identical; do not repeat.
+Derived-pointer and ownership-bitfield spellings were identical; do not repeat.
+Public canonical context retains /GL,47 supports and the real HUD/factory callers.
 Real factory4489E0 has five inputs/EAX pointer-or0/two RET14, complete80/3 fields/
 zero diagnostic differences without an independent leaf unit. Callback entries
 use ECX; bodies and original class/inheritance/TU identities remain open. The

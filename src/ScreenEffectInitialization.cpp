@@ -18,6 +18,12 @@ int __fastcall ScreenEffectCleanup(void *context);
 
 namespace
 {
+__forceinline void InitializeScreenEffectLink(ChainNode *link, ChainElement *element)
+{
+    link->element = element;
+    link->next = 0;
+    link->previous = 0;
+}
 struct ScreenEffectChainElement : ChainElement
 {
     ScreenEffectChainElement()
@@ -27,9 +33,7 @@ struct ScreenEffectChainElement : ChainElement
         auxiliaryCallback = 0;
         priority = 0;
         flags &= ~1u;
-        link.element = this;
-        link.next = 0;
-        link.previous = 0;
+        InitializeScreenEffectLink(&link, this);
     }
 };
 typedef char ScreenEffectChainElementSize[(sizeof(ScreenEffectChainElement) == 0x24) ? 1 : -1];

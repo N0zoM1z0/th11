@@ -1,9 +1,10 @@
 # Complete screen-effect initialization
 
 InitializeSecondaryHudScreenEffect at448A90 now has complete natural C++ for all
-nine modes, registration and state initialization. Its full1168-byte owner is
-non-exact: the cold /GL contribution has65 byte differences after all54 reviewed
-address fields replay. The actual80-byte factory at4489E0 is included as its real
+nine modes, registration and state initialization. Its full1168-byte owner passes
+the canonical linked Oracle: cold /GL primary-TU contribution, complete PE/MAP/PDB
+ownership and all54 reviewed address fields replay with zero byte differences.
+The actual80-byte factory at4489E0 is included as its real
 unknown-mode caller; its zero-difference diagnostic receives no separate leaf
 acceptance unit or exact credit. Both original class/TU origins are indeterminate.
 
@@ -93,12 +94,24 @@ Callback/priority clears before ownership-bit initialization reduced them to65.
 Keeping a derived pointer through callback assignment or spelling ownership as
 a bitfield is byte-identical; those variants are not retained.
 
-All65 differences lie in five13-byte windows beginning at448AC0,448B02,448B44,
-448CF2 and448D81. Target MOV ESI,EAX follows the four callback/priority clears;
-source schedules it before them. The complete1168 bytes and all54 address fields
-are compared, including alignment/table data. Localizing these windows grants
-no masked or partial exact credit. The next work is this constructor scheduling,
-with the whole owner and /GL retained.
+The remaining65 differences occupied five13-byte windows beginning at448AC0,
+448B02,448B44,448CF2 and448D81. Target MOV ESI,EAX followed the four callback/
+priority clears; source scheduled it before them. Factoring the three actual
+link-member writes into InitializeScreenEffectLink and force-inlining it restores
+that ordering at every site. No field, guard, ABI, instruction or padding was
+added. A ChainNode aggregate temporary and assignment instead produced1224
+bytes/1142 full differences and is not retained. These compiler observations do
+not identify the original helper, class or inheritance structure.
+
+The public canonical unit initialize-secondary-hud-screen-effect uses
+src/ScreenEffectInitialization.cpp,47 public support sources and
+probes/screen-effect-initialization-context.cpp. Its entry still reaches the real
+HUD callback and the factory still supplies the unknown-mode initializer call.
+Primary/support /GL ownership and ordinary callback/entry compilation are
+preserved. A fresh cold build and compare-linked-function.py accept the complete
+1168-byte public primary PDB contribution with54 exhaustive fields and zero
+differences, including all alignment and nine table cells. This grants one exact
+unit/1168 bytes. Original TU partition and nominal type identity remain unknown.
 
 The factory reproduces its complete80 bytes after its three call fields replay.
 It still has no independent acceptance unit. HUD retains4652/frameC/4101 full
@@ -110,10 +123,12 @@ default edges for callbacks, priorities, cleanup and copied/reset fields. It use
 symbolic successful allocations and an initially uninitialized timer. It is not
 an execution, allocation-failure, concurrency or multiframe suite, and does not
 prove the callback bodies. No unchanged Oracle infrastructure tests or unrelated
-caller regressions were run. No accepted exact unit depends on the changed HUD
-header; exact counts remain unchanged.
+caller regressions were run. The only affected canonical unit is the new
+initializer; no existing exact unit depends on the changed primary source or
+new context. Totals are234 exact functions/27,546 bytes (9 COFF/225 linked).
 
 Private evidence is screen-initializer-* and screen-effect-factory-* Ghidra
 exports, full target/PDB/field comparisons, mode arguments, mismatch windows and
-cold receipt/source freeze. No executable bytes, decompiler output or databases
-are committed.
+cold receipt/source freeze; current acceptance evidence uses the
+screen-initializer-exact-* prefix. No executable bytes, decompiler output or
+databases are committed.

@@ -8,7 +8,7 @@ receipts outrank historical notes. All dirty work is ours.
 
 - Original Japanese TH11v1.00a, pinned by config/target.toml; no substituted bytes.
 - 2,139 candidates;569 reviewed boundaries;452 source mappings.
-- 233 exact functions/26,378 bytes:9 normal COFF and224 linked PE.
+- 234 exact functions/27,546 bytes:9 normal COFF and225 linked PE.
 - Origins:90 authored,463 indeterminate,14 exclusions,1,572 pending.
 - VC9 RTM21022/SDK6.0A; direct scripts/ghidra.py, no Factory MCP/REA.
 - Commit/push authorized, prefix `gpt-6.1-sol: `; no heavy job remains running.
@@ -16,27 +16,35 @@ receipts outrank historical notes. All dirty work is ours.
 Operator priority is large/difficult owners, not leaf accumulation. Main owners:
 host412E30/16,556, animation44B4B0/12,056, interpreter45B860/7,093,
 dialogue41D380/6,980, HUD41B380/4,716 and gameplay420390/1,149. Native product,
-broad runtime and portability are later phases. No new exact unit this checkpoint.
+broad runtime and portability are later phases. This checkpoint accepts the
+complete1168-byte screen-effect initializer as one linked exact unit.
 
-## Current screen-effect initializer1168
+## Accepted screen-effect initializer1168
 
 448A90 now owns1168=1129 code/342 instructions+3 alignment+9-cell36-byte table,
 ending448F1F before separate448F20. Full source covers all nine modes and reset.
-Cold ScreenEffectInitialization restores stack self/mode/duration/color0/color1/
-draw priority and RET18;1168 bytes/54 fields/65 complete differences. Only five
-13-byte windows differ:448AC0/B02/B44/CF2/D81. Native MOV ESI,EAX follows four
-callback/priority clears; source puts it before them. Keep full extent and /GL.
-Next: resolve that constructor scheduling; no masked/cropped acceptance.
+Canonical cold ScreenEffectInitialization preserves stack self/mode/duration/
+color0/color1/draw priority and RET18;1168 bytes/54 fields/zero differences through
+compare-linked-function.py --unit initialize-secondary-hud-screen-effect. Public
+primary/all47 supports/context, unique full primary PDB owner and current receipts.
 
 Real node construction restores constructor/null branches and stack ABI;
 manually initializing allocated memory gave1036/EDI-self/RET14. Native case5
 precedes4; callback/priority clear order before ownership bit yields65. Derived
-pointer and ownership-bitfield spellings are identical; do not repeat.
+pointer and ownership-bitfield spellings are identical; do not repeat. The last65
+differences in448AC0/B02/B44/CF2/D81 vanish when the three actual link writes use
+an inline helper. A ChainNode aggregate temporary gives1224/1142; rejected.
 Factory4489E0 is complete80/all3 fields/zero diagnostic differences, without an
 independent leaf unit. Callbacks remain declarations; original class/inheritance/
 TU identity is unproved. Mode/default argument replay is static, not runtime.
-HUD retains4652/frameC/4101/all27 calls. Correct old kind43 wording: mode5,
+Current verifier .analysis/verify-screen-initializer-exact-checkpoint.py and
+screen-initializer-exact-source-freeze.json bind182 union inputs. Prior181-input
+verifier/65-difference receipts are historical. Only changed prior input is the
+initializer source; only new union input is the public context. No old exact unit
+is affected. HUD retains4652/frameC/4101/all27 calls. Correct old kind43 wording: mode5,
 draw priority0x43, update priority14 (0xE). Details in SCREEN_EFFECT_INITIALIZATION.md.
+Next: return to the full12056-byte animation interpreter's frame/alignment and
+pair-tween ABI/copy gaps below. Keep priority on difficult complete owners.
 
 ## Complete animation interpreter12056
 
