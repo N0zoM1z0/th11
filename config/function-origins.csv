@@ -126,7 +126,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0040B900,unknown,SecondaryScriptVm,indeterminate,unknown,secondary-script-origin-2026-10-29
 0x0040B930,unknown,AnimationImmediateDraw,indeterminate,unknown,animation-immediate-draw-origin-2026-10-29
 0x0040B9D0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0040B9F0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0040B9F0,unknown,AnimationExecution,indeterminate,unknown,animation-range-origin-2026-11-06
 0x0040BAA0,unknown,SecondaryActorState,indeterminate,unknown,secondary-state-origin-2026-10-29
 0x0040BB10,unknown,SecondaryActorState,indeterminate,unknown,secondary-state-origin-2026-10-29
 0x0040BB50,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

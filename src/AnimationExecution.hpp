@@ -77,8 +77,8 @@ void __stdcall SetAnimationAlphaTween(AnimationVmView *vm, int duration,
 void __stdcall SetAnimationAlpha2Tween(AnimationVmView *vm, int duration,
     unsigned char mode, unsigned char initial, unsigned char target);
 
-// Reviewed input/return boundaries; these dependency bodies remain open.
 float __stdcall AnimationRandomRange(RandomStateView *random, float maximum);
+// Reviewed input/return boundaries; these dependency bodies remain open.
 float __stdcall AnimationRandomSignedRange(RandomStateView *random, float maximum);
 float __stdcall AnimationRandomUnit(RandomStateView *random);
 float __stdcall AnimationRandomSignedUnit(RandomStateView *random);

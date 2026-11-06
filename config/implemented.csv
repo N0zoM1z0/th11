@@ -450,3 +450,4 @@ SetAnimationColorTween
 SetAnimationAlphaTween
 CreateSecondaryHudScreenEffect
 InitializeSecondaryHudScreenEffect
+AnimationRandomRange

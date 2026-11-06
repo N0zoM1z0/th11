@@ -7,17 +7,17 @@ receipts outrank historical notes. All dirty work is ours.
 ## Current exact state
 
 - Original Japanese TH11v1.00a, pinned by config/target.toml; no substituted bytes.
-- 2,139 candidates;569 reviewed boundaries;452 source mappings.
+- 2,139 candidates;570 reviewed boundaries;453 source mappings.
 - 234 exact functions/27,546 bytes:9 normal COFF and225 linked PE.
-- Origins:90 authored,463 indeterminate,14 exclusions,1,572 pending.
+- Origins:90 authored,464 indeterminate,14 exclusions,1,571 pending.
 - VC9 RTM21022/SDK6.0A; direct scripts/ghidra.py, no Factory MCP/REA.
 - Commit/push authorized, prefix `gpt-6.1-sol: `; no heavy job remains running.
 
 Operator priority is large/difficult owners, not leaf accumulation. Main owners:
 host412E30/16,556, animation44B4B0/12,056, interpreter45B860/7,093,
 dialogue41D380/6,980, HUD41B380/4,716 and gameplay420390/1,149. Native product,
-broad runtime and portability are later phases. This checkpoint accepts the
-complete1168-byte screen-effect initializer as one linked exact unit.
+broad runtime and portability are later phases. This checkpoint improves the
+full animation owner to12292 and retains the initializer's existing exact unit.
 
 ## Accepted screen-effect initializer1168
 
@@ -37,11 +37,9 @@ an inline helper. A ChainNode aggregate temporary gives1224/1142; rejected.
 Factory4489E0 is complete80/all3 fields/zero diagnostic differences, without an
 independent leaf unit. Callbacks remain declarations; original class/inheritance/
 TU identity is unproved. Mode/default argument replay is static, not runtime.
-Current verifier .analysis/verify-screen-initializer-exact-checkpoint.py and
-screen-initializer-exact-source-freeze.json bind182 union inputs. Prior181-input
-verifier/65-difference receipts are historical. Only changed prior input is the
-initializer source; only new union input is the public context. No old exact unit
-is affected. HUD retains4652/frameC/4101/all27 calls. Correct old kind43 wording: mode5,
+Prior screen checkpoint verifier/source freeze bind182 union inputs; use the
+new current verifier below after the animation support/header edits. HUD's prior
+measurement4652/frameC/4101/all27 calls remains historical. Correct old kind43 wording: mode5,
 draw priority0x43, update priority14 (0xE). Details in SCREEN_EFFECT_INITIALIZATION.md.
 Next: return to the full12056-byte animation interpreter's frame/alignment and
 pair-tween ABI/copy gaps below. Keep priority on difficult complete owners.
@@ -55,8 +53,8 @@ Eight CC precede separate44E3D0;44E430/44E460 are separate source-open code.
 Native stack VM/frameCC/alignment8/three RET4 return0/0/1. Callback428 nonzero
 returns1 without restoring the overridden time scale. Keep that observed path.
 
-Prior AnimationExecutionOwners was12300/frameE0/no8 alignment/VMEBP versus EDI,
-11742 full differences after407 fields replay. All104 entries retain416 static
+Current AnimationExecutionRangeBody is12292/frameE0/no8 alignment/VMEBP versus EDI,
+11727 full differences after407 fields replay. All104 entries retain416 static
 call/loop/post-update/return skeletons; predicates/operands/loop reentry unproved.
 Calls262/260 differ at RNG4/3 and float destination15/14. Lookup/insertion/malloc
 and float-read counts now agree. Preserve /GL and all owned table bytes.
@@ -81,8 +79,15 @@ ANIMATION_TWEEN_DISPATCH.md and KNOWLEDGE_BASE.md.
 Next: main alignment/frame/VM register, pair buffer home and mode8/ordinary
 copies; instruction40's shared RNG site; instruction7 joining17/27/45/46's float
 write tail. Do not invent padding, double locals or private-register ABI.
-Twelve small direct dependencies have source without independent exact units.
-Polar44EF80/front-draw456020 and random/unary wrappers remain source-open.
+Actual range RNG40B9F0/50 is now in AnimationExecutionSupport.cpp. It restores
+ESI state/one float stack word/RET4 and removes8 bytes/3 instructions from the
+full interpreter. Dependency50/all3 fields/zero diagnostic differences; no leaf
+exact unit. Keep float unsigned conversion and the unit/maximum float rounds.
+Float-write helper17/27/45/46 is byte-identical; RNG40 explicit zero arms restore
+four RNG sites but worsen12312/11787/408 fields; both rejected. Alignment8 has no
+eight-byte ESP/EBP access; that does not establish an original double local.
+Thirteen small direct dependencies have source without independent exact units.
+Polar44EF80/front-draw456020 and other random/unary wrappers remain source-open.
 VM374/377 is primary color/alpha; shared spriteIndex name is a legacy label.
 Player-controller's older void execution prototype was left in its source/header;
 renaming them would affect6/11 exact units, respectively.
@@ -135,11 +140,12 @@ Interpreter6989/native7093 retains120/all89 selectors/two RET4, VM ESI/nativeEDI
 
 ## Checkpoint evidence
 
-Current receipt check: .analysis/verify-screen-initializer-checkpoint.py.
-Current evidence is screen-initializer-* and screen-effect-factory-* full target,
-PDB/field, mode-argument, mismatch-window and source-freeze proofs. Only the
-existing SecondaryHud.hpp changed against179 frozen inputs; new initializer and
-ChainRegistration sources join the family. No accepted exact unit depends on
-that header. Earlier animation/dialogue/parent receipts are historical contexts;
-the prior animation receipt is stale for that header and is not a resume check.
-Tools/Oracle implementations unchanged. Two new mappings/boundaries; no exact unit.
+Current receipt check: .analysis/verify-animation-range-checkpoint.py.
+Current animation-execution-range-body-* evidence covers full main/PDB/407 fields,
+416 static skeletons, range dependency/three fields and four caller-ABI paths.
+animation-random-range-review.* is direct Ghidra; animation-range-screen-* binds
+the one affected canonical initializer cold replay/1168/all54 fields/zero.
+animation-range-source-freeze.json has182 union inputs; changed prior inputs are
+AnimationExecution.hpp and AnimationExecutionSupport.cpp. Earlier animation and
+screen checkpoint verifiers/receipts are historical after those input changes.
+Tools/Oracle implementations unchanged. One new mapping/boundary; no new exact unit.

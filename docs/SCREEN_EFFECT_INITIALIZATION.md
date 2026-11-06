@@ -132,3 +132,9 @@ exports, full target/PDB/field comparisons, mode arguments, mismatch windows and
 cold receipt/source freeze; current acceptance evidence uses the
 screen-initializer-exact-* prefix. No executable bytes, decompiler output or
 databases are committed.
+
+The subsequent range-RNG body/header update affects this canonical context.
+One new cold build still strictly accepts1168/all54 fields/zero; its current
+receipt evidence is animation-range-screen-* and the resume verifier is
+.analysis/verify-animation-range-checkpoint.py. The older source freezes remain
+historical after those two input changes.

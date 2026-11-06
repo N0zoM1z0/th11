@@ -115,26 +115,56 @@ zero guard. These behaviors are not generalized into a new random API policy.
 AnimationExecutionSupport.cpp supplies the actual vector timer reset, related
 node insertion and RGB/alpha/scale setup bodies. Alternate-alpha setup leaves
 its controls untouched, unlike the primary-alpha setup. Scale setup receives
-the whole VM, not a falsely declared tween pointer. These twelve small source
-mappings are direct dependencies of the full12056-byte owner and receive no
-independent leaf acceptance units or exact credit.
+the whole VM, not a falsely declared tween pointer. It now also implements the
+actual range-RNG dependency40B9F0..40BA21/50, whose only target caller is44D550.
+These thirteen small source mappings are direct dependencies of the full12056-
+byte owner and receive no independent leaf acceptance units or exact credit.
+
+Range RNG consumes the state in ESI and one stack float, returning ST0/RET4.
+Natural conventional C++ parameters and real /GL bodies recover that private
+placement without register annotations. The unsigned-to-float conversion uses
+the target's float2^32 correction, followed by double2^-32 scaling, a float unit
+round, multiplication by maximum and a second float round. Combining the last
+two arithmetic stages changes rounding: raw16777217/maximum3 gives3C400000 with
+the target's two rounds versus3C400001 with one. The complete dependency's50
+bytes and three reviewed call/literal fields replay with zero diagnostic
+differences; its support-TU ownership supplies no independent exact acceptance.
 
 Existing tween, angle, random, sprite, fan, ID creation and rendering bodies are
-used in the cold family. Polar44EF80, front-draw factory456020 and the reviewed
-random/unary wrappers still have source-open bodies. Their declarations do not
+used in the cold family. Polar44EF80, front-draw factory456020 and the other
+reviewed random/unary wrappers still have source-open bodies. Their declarations do not
 grant source or exact credit. HUD now calls existing ExecuteAnimationVm rather
 than the older void prototype name for the same target.
 
 ## Complete comparison and remaining gaps
 
-The maintained full cold /GL primary contribution is12300 bytes with frameE0 and
+The maintained full cold /GL primary contribution is12292 bytes with frameE0 and
 stack VM input, but lacks native8-byte stack alignment and uses EBP for VM versus
 EDI. All104 table cells and407 independently reviewed address/table fields
-replay;11742 bytes differ over the complete owner, including length differences.
-The source has3282 reachable instructions/11882 code bytes+2 alignment+416 table.
+replay;11727 bytes differ over the complete owner, including length differences.
+The source has3279 reachable instructions/11876 code bytes+0 alignment+416 table.
 Native/source calls are262/260: integer RNG4/3 and float destination15/14 remain.
 Lookup5/5, related insertion3/3, malloc2/2 and float read78/78 now agree physically.
 These counts grant neither semantic nor exact credit.
+
+The current AnimationExecutionRangeBody family retains all47 public support
+sources, the real HUD/factory callers and /GL. Replacing the range-RNG declaration
+with its actual support body removes a passed state-pointer stack word: ESI
+carries that pointer and only maximum occupies the outgoing stack slot. A
+bounded static ABI check follows scene/text and literal/decoded maximum paths;
+all four place ESI/one word as the target does. Compared with the12300-byte
+baseline, the full interpreter loses8 bytes/3 instructions and its complete
+rebased diagnostic differences fall11742 to11727. Main frame/alignment, pair
+buffer placement and the two call-site merges remain open.
+
+A float-writing helper for17/27/45/46 is byte-identical to the baseline after
+all407 fields replay. Explicit zero assignments in both integer-RNG40 arms
+restore the fourth RNG site but worsen the full owner to12312/11787/408 fields;
+that variant is not retained. Direct Ghidra confirms assignment7 has its own
+destination call while17/27/45/46 share another. The target's8-byte alignment
+does not coincide with any eight-byte ESP/EBP memory operand in the full body;
+that absence does not identify the original local types or justify invented
+double locals. Both rejected source spellings are recorded to avoid repetition.
 
 The former12884-byte contribution spilled a ReadF literal to a temporary before
 loading it again on the direct path. Returning directly from each helper branch
@@ -197,6 +227,11 @@ X/Y float locals are byte-identical for both complete callee and interpreter.
 Thirteen already accepted exact units affected by AnimationTween.hpp/cpp share
 one cold context and all strictly replay with zero differences. No new exact
 unit, source mapping or original-type credit follows from this ABI correction.
+Those pair-header replays are historical. The range-body/header change affects
+only initialize-secondary-hud-screen-effect; one new canonical cold replay
+retains its complete1168 bytes/all54 fields/zero differences. Totals remain234
+exact functions/27,546 bytes; the interpreter and range dependency gain no exact
+credit. The range mapping adds one reviewed boundary and one source mapping.
 
 All104 dispatch entries have equal static per-op call/instruction-loop/post-
 update/return skeletons:416 distinct paths on each side. Constant opcode choices

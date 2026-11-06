@@ -101,7 +101,7 @@ VM374 is packed primary color, with alpha377;378 is alternate color. The older
 AnimationVmView.spriteIndex name at374 is a legacy label, not a sprite identity.
 A nonzero callback428 returns1 without restoring the overridden global time
 scale. The sprite transform42C consumes VM/integer in ECX/EDX, not ghost floats.
-Prior complete-animation context /GL12300/frameE0/11742 full differences retains407 reviewed fields and
+Current complete-animation context /GL12292/frameE0/11727 full differences retains407 reviewed fields and
 all416 static per-op call/loop/post-update/return skeletons, with262/260 physical
 calls. Direct-if ReadF removes literal float spill/reloads; four distinct child
 cases plus reviewed native entry order recover lookup/insertion/malloc counts
@@ -109,8 +109,24 @@ and signed opcode dispatch. Splitting children alone adds112 bytes; rejected.
 Instruction41 selects scene4C2EF8 at44D523 or text4C2F00 at44D543 from flag40000000.
 The prior text-only argument was wrong despite equal static call skeletons.
 Four targeted native/source argument paths now agree; ReadFloat sites78/78.
+The actual50-byte range-RNG dependency40B9F0 removes the extra state stack
+argument: conventional C++ plus real /GL bodies recover ESI state/one float
+stack word/RET4. Four focused selector/decode paths have the same placement.
+Full dependency50/all3 fields/zero diagnostic differences, without a separate
+exact leaf unit. The main interpreter shrinks12300 to12292/3279 instructions,
+11876 code+0 alignment+416 table, still non-exact. Unsigned-to-float conversion
+uses float2^32 correction before double2^-32 scaling. Keep the unit float round
+before multiplying maximum: raw16777217/maximum3 gives3C400000 versus3C400001
+with one combined round. Original class/TU identity remains unproved.
 Remaining site merges are integer random40 (RNG4/3 total) and assignment7 folding
 into the shared17/27/45/46 float-destination tail (15/14 total).
+An inline float-write helper for17/27/45/46 is byte-identical after407 fields;
+explicit zero assignments in both RNG40 arms recover four RNG calls but worsen
+the full owner to12312/11787/408 fields. Neither is retained. The target has no
+eight-byte ESP/EBP memory operand despite its8-byte alignment; do not infer a
+double local from alignment alone. Only the existing1168-byte initializer is
+affected by the retained support/header edits; its one canonical cold replay
+remains exact with all54 fields. Exact totals are unchanged.
 Ring9 divides by float(count-1), not the exact integer:44DCF9 FILD then44DD03
 FSTP float round the denominator before both divisions. A round-to-nearest
 count16777217/numerator1 example differs337FFFFF versus33800000. Explicit float

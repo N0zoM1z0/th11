@@ -82,3 +82,11 @@ void __stdcall SetAnimationScaleTween(AnimationVmView *vm,
     self->target = *target;
     ResetTime(&self->time);
 }
+
+float __stdcall AnimationRandomRange(RandomStateView *random, float maximum)
+{
+    float unit = static_cast<float>(static_cast<float>(RandomNext32(random)) *
+        (1.0 / 4294967296.0));
+    maximum *= unit;
+    return maximum;
+}
