@@ -435,3 +435,16 @@ BindSecondaryDialogueSprite
 FindSecondaryDialogueChild
 UpdateSecondaryHud
 SecondaryHudUpdateCallback
+ResetAnimationVectorTweenTime
+InsertAnimationRelatedNode
+SetAnimationScaleTween
+ReadAnimationFloat
+ReadAnimationInteger
+AnimationFloatDestination
+AnimationIntegerDestination
+SetAnimationUv
+ExecuteAnimationVm
+SetAnimationAlpha2Tween
+SetAnimationColor2Tween
+SetAnimationColorTween
+SetAnimationAlphaTween

@@ -84,8 +84,10 @@ host/actor cycle and existing animation, timer, sprite, sound and text support.
 Only the real HUD/gameplay callbacks and diagnostic entry use ordinary COFF.
 The entry calls the HUD callback; it does not directly call the interpreter to
 hold its ABI. This context is a compiler experiment, not a linked game or runtime
-harness. Missing automatic11640-byte UpdateSecondaryControllerAnimation44B4B0 and screen
-initializer448A90 remain external source gaps.
+harness. ExecuteAnimationVm44B4B0 now has a complete12056-byte owner and source;
+HUD calls that existing integer-returning interface. Its full dependency family
+retains HUD4652/frameC/4101 and all27 calls. Screen initializer448A90 remains
+source-open. See [ANIMATION_EXECUTION](ANIMATION_EXECUTION.md).
 
 Initial class-outside constructor spelling leaves an extra constructor call.
 A normal class-inline definition exposes its observed memset operation and

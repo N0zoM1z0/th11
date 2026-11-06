@@ -42,8 +42,10 @@ body ends at RET immediately before the getter at0x0042B650, without CC padding.
 ## VM reset and script binding
 
 Reset preserves DWORD+0x20 and the12-byte block at+0x3E8 across a0x434-byte
-clear. It restores unit X/Y scale, identity transform, sprite index-1, low
-flags word7, timer fields and nine additional reset DWORDs. Each of two list
+clear. It restores unit X/Y scale, identity transform, packed primary color
+FFFFFFFF, low flags word7, timer fields and nine additional reset DWORDs. The
+interpreter's RGB/alpha writes prove374 is color; the old spriteIndex field name
+in the physical view is a legacy label. Each of two list
 nodes receives a VM-owner self pointer and null next/previous links.
 The preserved block's original semantic type remains unknown; source uses
 an opaque three-word aggregate. The view covers the observed reset span,
@@ -69,8 +71,9 @@ File fields are ID+0, script table+0x11C, texture table+0x120 and disable guard
 +0x124. VM script/file fields occupy+0x39E/+0x3A2/+0x3A4/+0x3A8/+0x3B0;
 timer is+0x5C and flags+0x404. The scale pointer targets float0x004A7948,
 also read by the VM interpreter. Its entry review confirms a stack VM input;
-the caller's PUSH and callee entry agree. The11640-byte interpreter at
-0x0044B4B0 remains a prototype-only dependency with no source or exact credit.
+the caller's PUSH and callee entry agree. The complete interpreter at
+0x0044B4B0 is now reviewed as12056 bytes including its104-cell table, with full
+source and non-exact comparison in [ANIMATION_EXECUTION](ANIMATION_EXECUTION.md).
 
 ## Remaining codegen differences
 

@@ -66,6 +66,24 @@ that the target had that layout.
 
 ## Complete owner boundaries
 
+Animation interpreter44B4B0 owns12056, not the automatic11640 span:11637 reachable
+code/3202 instructions+3 alignment+416 in104 cells for signed opcodes-1..102.
+All104 apparent foreign DATA refs belong to this table; three RET4 return0/0/1,
+with a stack VM and frameCC/alignment8. Complete natural source includes all
+handlers, events/saved return state, nine tweens and closed/open strip generation.
+VM374 is packed primary color, with alpha377;378 is alternate color. The older
+AnimationVmView.spriteIndex name at374 is a legacy label, not a sprite identity.
+A nonzero callback428 returns1 without restoring the overridden global time
+scale. The sprite transform42C consumes VM/integer in ECX/EDX, not ghost floats.
+Current /GL12884/frameE0/12471 full differences retains403 reviewed fields and
+all416 static per-op call/loop/post-update/return skeletons, despite262/257
+physical calls. ReadFloat/RNG/lookup/insertion/malloc lose one physical site each.
+Direct -- versus wrapped subtraction is byte-identical and leaves EDI=-1/ADD.
+Full real dependencies also move dialogue6948 from frame13C/5694 differences to
+native frame140/5357, with all454 fields/252 calls/46 traces retained. No exact
+or original TU claim. See [ANIMATION_EXECUTION](ANIMATION_EXECUTION.md).
+
+
 HUD41B380 owns4716, not the automatic4686 bounding span:4647 reachable code,
 39 internal alignment,2 pre-table alignment and28 stage-table bytes. The seven
 foreign DATA references are its owned cells. Its missed7-byte callback41CFB0
@@ -360,6 +378,7 @@ are regenerable; result records are retained. See [ARTIFACTS.md](ARTIFACTS.md) f
 
 | Work | Evidence and remaining differences |
 | --- | --- |
+| Complete animation interpreter12056, events and all tween/strip paths | [ANIMATION_EXECUTION](ANIMATION_EXECUTION.md) |
 | HUD4716, real dialogue caller and full boss/animation lifecycle | [SECONDARY_HUD](SECONDARY_HUD.md) |
 | Dialogue6980 and complete27-opcode script source | [SECONDARY_DIALOGUE](SECONDARY_DIALOGUE.md) |
 | Gameplay and ECL debug factory callers | [SECONDARY_GAMEPLAY](SECONDARY_GAMEPLAY.md) |

@@ -7,100 +7,106 @@ receipts outrank historical notes. All dirty work is ours.
 ## Current exact state
 
 - Original Japanese TH11v1.00a, pinned by config/target.toml; no substituted bytes.
-- 2,139 candidates;554 reviewed boundaries;437 source mappings.
+- 2,139 candidates;567 reviewed boundaries;450 source mappings.
 - 233 exact functions/26,378 bytes:9 normal COFF and224 linked PE.
-- Origins:90 authored,448 indeterminate,14 exclusions,1,587 pending.
+- Origins:90 authored,461 indeterminate,14 exclusions,1,574 pending.
 - VC9 RTM21022/SDK6.0A; direct scripts/ghidra.py, no Factory MCP/REA.
-- Commit/push authorized, prefix `gpt-6.1-sol: `.
+- Commit/push authorized, prefix `gpt-6.1-sol: `; no heavy job remains running.
 
-Operator priority is large, difficult owners, not leaf accumulation. Current
-owners: host412E30/16,556, interpreter45B860/7,093, dialogue41D380/6,980,
-HUD41B380/4,716 and gameplay420390/1,149. Native product/runtime/port closure
-remain later phases. No new exact unit in this HUD checkpoint.
+Operator priority is large/difficult owners, not leaf accumulation. Main owners:
+host412E30/16,556, animation44B4B0/12,056, interpreter45B860/7,093,
+dialogue41D380/6,980, HUD41B380/4,716 and gameplay420390/1,149. Native product,
+broad runtime and portability are later phases. No new exact unit this checkpoint.
 
-## Complete HUD4716 and actual dialogue caller
+## New complete animation interpreter12056
 
-New SecondaryHud.cpp/header/callback maintain the complete1302-instruction owner:
-4647 code+39 internal alignment+2 pre-table alignment+28 stage-table bytes. All7
-foreign DATA refs belong to its table. Two RET4/EAX1, stack self, alignment8/frameC.
-The automatic4686 extent was incomplete; decompiler ghost float/register inputs
-and eight-byte return are wrong. Missed41CFB0/7 callback has DATA41A442 and CC6/9.
+AnimationExecution.cpp/header/Math/Visual/Update fragments cover all signed
+opcodes-1..102, events/saved returns, nine tween updates, both strip generators,
+callbacks and clocks. Full owner44B4B0..44E3C7=11637 code/3202 instructions+3
+alignment+416 in104 cells. All104 foreign DATA refs are owned;8 CC before44E3D0.
+The following44E3D0/44E430/44E460 are separate source-open code, not more table.
+Native stack VM, frameCC/alignment8, three RET4 return0/0/1. Reject decompiler
+phantom register/float inputs and eight-byte return. Callback428 nonzero returns1
+without restoring the overridden global time scale; retain that path.
 
-All9/2/4 VM loops, gauge bands/geometry, boss timer/ratio/smoothing, stage title/
-ten badge lifecycle, locks/ID publication, dialogue/eight ordered releases,
-indicator thresholds/alpha and inline timers have complete source. Both title
-and badges use portraitFile444C. Dialogue elapsed timer4 is now typed; interpreter
-timers18/2C are distinct. Screen allocation44 has real timer30, observed null guard
-and initializer kind43. Do not omit the sixth initializer argument.
+Cold build/probe-ltcg/AnimationExecutionOwners: complete public primary12884,
+frameE0 without8 alignment, VM EBP versus nativeEDI,403 reviewed fields and12471
+full replay differences. Native/source262/257 physical calls: float read78/77,
+RNG4/3, missing-ID5/4, related insertion3/2 and malloc2/1. All104 entries retain
+416 static acyclic call/instruction-loop/post-update/return skeletons. This
+abstract check does not prove predicates, operands, aliases or loop reentry.
+A direct -- spelling is byte-identical and leaves long-livedEDI=-1/ADD versus
+native DEC; do not repeat it. Floating greater-than is ordered by raw AH masks;
+negated <= is wrong for unordered and was corrected before current receipts.
 
-Current cold build/probe-ltcg/SecondaryHudOwners: 4652/frameC,
-4101 full replay differences,104 reviewed fields and all27 per-callee
-calls. Abstract CFG call/return languages agree across27 product states, keeping
-loops but erasing predicates/counts; both machine returns propagate1. This does
-not prove aliases, arithmetic, branch predicates or runtime behavior. Seven-byte
-callback support replay is zero without independent exact acceptance.
+Real direct dependencies have full natural source, without leaf acceptance:
+read float540 (447+1+92table), int219 (145+3+48table+23selectors), float destination
+124, int destination104, UV52; vector timer52, node insertion23, scale138,
+primary/alternate RGB216/216 and alpha132/118. Alternate alpha and scale setup
+leave controls untouched; scale receiver is whole VM. Source-open bodies include
+polar44EF80, front-draw456020 and reviewed random/unary wrappers. Original nominal
+classes/header/template/TU origins remain indeterminate. VM374/377 is packed
+primary color/alpha; the older spriteIndex label is wrong, but that shared
+header was not changed solely to rename it. See ANIMATION_EXECUTION.md.
 
-Natural class-inline screen constructor restores native memset site. Alpha's FF
-path is distance>=64; unordered reaches conversion. Ordered distance<64 had a
-wrong unordered edge. Natural signed-char cast recovers inline x87 CW/FISTP;
-only two ftol sites remain, both timers. Position/alpha49-instruction sequence
-agrees after branch-address and distance-slot erasure; distance is nativeESP10
-versus sourceESP14, while control-word/result slots are preserved. No cropped
-exact credit. Snapshot life value once before HUD store, as native does.
+Next difficult gaps: complete frame/alignment and temporary lifetimes, VM register,
+physical case layout/opcode cache and five physical call merges. Do not invent
+padding/double locals/register ABI to force them. Preserve /GL and full tables.
+HUD now calls canonical int ExecuteAnimationVm. The older void prototype/caller
+name in player-controller files is still external there; changing that source
+would affect six exact units, and its header eleven. It was not changed here.
 
-Remaining gaps: early self EBX versus nativeEDI; long-lived sourceEDI=-2 mask;
-register/list/store scheduling, flag21 folding, float distance slot14/10 and
-physical state-machine layout. Direct counter reads with per-branch state
-extraction recover memory CMPs but give4812/4264 and extra unrelated HUD reloads;
-rejected. Full initializer448A90 is still source-open;
-automatic1129 code bound omits unreviewed table ownership. The large animation
-updater44B4B0 (automatic11640) is also source-open. These real dependencies and
-complete HUD codegen are concrete next difficult work; do not add fake ABIs or
-extra caller arguments to imitate Ghidra's ghost registers.
+## Dialogue, HUD and shared gameplay
 
-## Dialogue6980 and shared gameplay
+The full new real-dependency family retains dialogue6948 but now frame140/native
+and5357 full differences, improving earlier frame13C/5694. All454 fields,252 calls
+and46 static per-op call/advance/return skeletons remain. No original-TU or exact
+claim. Native owner6980=6780 code+14 alignment+2 pre-table+184 in27/7/7/5 cells;
+1834 instructions,252 calls/28 targets, EAX0/-1/two RET4. All27 opcodes have source.
+Color/hidden-result/store/register/layout gaps remain. Local color cache is byte-
+identical; positive do-while6940/6483 rejected. Physical native order/current>=
+stamp, shared annotation/continue-menu and actual sprite44AB40 are maintained.
+Decoder41 has2 differences; child70 and sprite34/36 support remain zero, no leaf
+acceptance. Scratch4C9A30 capacity remains unknown; retain unchecked accesses.
 
-Dialogue full27 opcodes:6780 code+14 internal alignment+2 pre-table+184 in27/7/7/5
-cells. Full1834 reachable instructions,252 calls/28 targets; no foreign interior
-entry. Frame140, EAX0/-1, two RET4. See SECONDARY_DIALOGUE.md for opcode facts.
-Current real HUD family retains dialogue6948/frame13C/5694 full differences,
-454 fields, all252 per-callee sites and46 acyclic per-op call/advance/return
-skeletons including0/-1. It no longer relies on a direct diagnostic Run call.
-Hidden-result/color-load/store/register/frame gaps remain. A local color cache
-is byte-identical and does not solve push ordering; positive do-while6940/6483
-is rejected. Physical case order/current>=stamp and real shared annotation/
-continue-menu operations are maintained. Sprite44AB40 differs from script binding.
-Decoder41 has2 differences; child70 and sprite34/36 support replays remain zero,
-without leaf acceptance units. Capacity of scratch4C9A30 remains unknown.
+HUD4716=4647 code/1302 instructions+39 alignment+2 pre-table+28 stage cells. Full
+source maintains9/2/4 VM loops, boss/gauges/title/ten badges, locks/publication,
+dialogue/eight releases, indicator/alpha and timers. Callback41CFB0/7 has DATA
+41A442, CC6/9; ordinary COFF supports real /GL stack owner, original TU open.
+Current support4652/frameC/4101 and104 fields/all27 calls remain. Position/alpha49
+forms match only after branch-address/distance-slot erasure (nativeESP10/source14).
+Alpha FF guard is >=64, unordered reaches conversion; signed-char cast naturally
+recovers CW/FISTP. Direct state reads/per-branch extraction4812/4264 rejected.
+Dialogue elapsed4 is separate from18/2C; title/badges use portrait444C. Screen44
+allocation has timer30, real null guard and initializer kind43. Initializer448A90
+is source-open; automatic1129 excludes unreviewed table ownership.
 
-Gameplay uses secondary stage4A8D5C; primary is4A8D60 (initializer/destructor proof).
-Gauge root4A56E0 is shared host selection, fields14/18/timer1C. Current HUD family
-keeps gameplay1135/334/114fields and debug1153/785/78fields. Remaining gameplay:
-redundant stage-null guard, statistics memory ADD and gauge EDI setup/restore.
-Debug count resets/store/GS remain. /Og- gives1629/2325 and is rejected. Real
-callback420840/7 preserves stack owner; original TU split remains unknown.
+Gameplay uses secondary4A8D5C, primary4A8D60; gauge4A56E0 is shared host-selection
+root14/18/timer1C. New family keeps gameplay1135/334/114fields, debug1153/785/78fields.
+Remaining: redundant stage-null guard, statistics memory ADD, gauge EDI setup,
+debug count resets/store/GS. /Og-1629/2325 rejected. Real callback420840/7 preserves
+stack owner; original TU split unknown.
 
-## Host, interpreter and creator gaps
+## Host, script interpreter and creator
 
 Canonical secondary-actor-instruction-adapter keeps /GL; only its11-byte adapter
-is accepted exact. Host16556 has all154 cases/195 selector checks and145 owned
-DATA refs reviewed. Canonical15952/frame328 versus native310; direct sites464/457,
-all3 actor+6 emitter sites retained. Float107/106,int83/82,supplied-int11/9,
-object4/3,missing-animation6/4 remain.12D/12F69 x87 forms agree after memory erasure,
-but pointer selections4/1 and packet/spawn-name/cookie/EH slots still differ.
-Decoder128 is a capacity hypothesis, not proof. Do not repeat physical case
-reorder/ternary/shared-float330 or prior trace/pop/member/accessor/fp:fast probes.
-Creator629/native621 has EBX packet/stack script/RET4 with natural state reference;
-478 full replay differences, state base versus whole actor; ctor706/native699.
-Interpreter6989/native7093 retains frame120/all89 selectors/two RET4, VM ESI versus
-EDI;32/31 pushes and unary84 plus82/87 shared destinations remain. Canonical actor
-state update4083/native4230; broader dialogue/HUD family4091.
+is accepted exact. Host16556 has154 cases/195 selector checks/145 owned DATA refs.
+Canonical15952/frame328 versus native310, sites464/457, all3 actors+6 emitters.
+Remaining float107/106,int83/82,supplied-int11/9,object4/3,missing-animation6/4.
+12D/12F69 x87 forms agree after memory erasure, but pointer selections4/1 and
+packet/spawn-name/cookie/EH slots differ. Decoder128 is a capacity hypothesis.
+Do not repeat physical reorder/ternary/shared-float330 or trace/pop/member/
+accessor/fp:fast probes. Creator629/native621 has EBX packet/stack script/RET4;
+478 full differences, state versus whole-actor base; ctor706/native699.
+Interpreter6989/native7093 retains120/all89 selectors/two RET4, VM ESI/nativeEDI;
+32/31 pushes, unary84 and82/87 shared destinations remain. Canonical actor update
+4083/native4230; broader family4091 remains a separate context.
 
 ## Checkpoint evidence
 
-Private current evidence uses secondary-hud-* (boundary, full replay/CFG/alpha,
-receipt/checkpoint/freeze) and the direct Ghidra exports. Old freezes retained.
-Union freeze164 versus160 changes only SecondaryDialogue.hpp, plus four new HUD
-inputs. No canonical exact unit depends on that changed header; no old exact
-cold replay is required. Tools/Oracle implementations are unchanged. Preserve
-full extents/tables and separate support observations from strict exact credit.
+Current private evidence is animation-execution-* and animation-vm-* direct
+Ghidra exports, full field/CFG/return/target proofs and receipt/source freeze.
+Union freeze180 versus164 changes only SecondaryHud.cpp and adds16 inputs. No
+canonical exact unit depends on that changed source; no old exact replay is
+required. Tools/Oracle implementations unchanged. Old freezes/receipts retained
+as historical contexts. Separate support observations from strict exact credit.

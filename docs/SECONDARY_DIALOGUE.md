@@ -109,6 +109,12 @@ HUD callback, and the HUD calls Run; there is no direct interpreter call in that
 entry. The HUD callback is also normal COFF. This new support comparison grants
 no primary-TU acceptance or original TU-partition claim.
 
+The still fuller animation-execution family retains6948 bytes but changes the
+frame to native140, reducing full replay differences to5357. All454 fields,
+252 calls and46 static per-op traces remain. This is a real-dependency compiler
+observation, not a proven original TU partition or exact acceptance. Earlier
+frame13C/5694 remains a baseline; do not add padding to mimic the frame change.
+
 The first complete normal-C++ candidate left separate marker lookups and
 continue-menu calls. Sharing their actual common operations recovers the native
 physical call counts. A positive guard/do-while variant gives6940/6483 and changes

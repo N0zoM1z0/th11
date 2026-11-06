@@ -132,8 +132,8 @@ int __stdcall UpdateSecondaryHud(SecondaryHudView *self)
         self->tracked = 0;
         self->trackedActive = 0;
     }
-    for (int i = 0; i < 9; ++i) UpdateSecondaryControllerAnimation(&self->primary[i]);
-    for (int i = 0; i < 2; ++i) UpdateSecondaryControllerAnimation(&self->digits[i]);
+    for (int i = 0; i < 9; ++i) ExecuteAnimationVm(&self->primary[i]);
+    for (int i = 0; i < 2; ++i) ExecuteAnimationVm(&self->digits[i]);
     if (!(self->flags & 1))
     {
         if (g_SecondaryActorReferences && g_SecondaryActorReferences->position.y > 416.0 &&
@@ -149,7 +149,7 @@ int __stdcall UpdateSecondaryHud(SecondaryHudView *self)
         for (int i = 0; i < 4; ++i) Event(&self->gauges[i]) = 2;
         self->flags &= ~1u;
     }
-    for (int i = 0; i < 4; ++i) UpdateSecondaryControllerAnimation(&self->gauges[i]);
+    for (int i = 0; i < 4; ++i) ExecuteAnimationVm(&self->gauges[i]);
     int percent = Multiply(g_SecondaryHostSelectionState.gaugeValue014, 100) / 10000;
     if (self->time.current >= 20)
     {
@@ -363,7 +363,7 @@ secondary_hud_dialogue:
             else if (state == 2 && time < 200) { Event(&self->indicator) = 9; self->flags |= 6; }
             else if (state == 3 && time > 200) { Event(&self->indicator) = 10; self->flags &= ~6u; }
         }
-        UpdateSecondaryControllerAnimation(&self->indicator);
+        ExecuteAnimationVm(&self->indicator);
         VmFloat(&self->indicator, 0x3e8) = static_cast<float>(boss->state.world.position.x + 32.0 + 192.0);
         VmFloat(&self->indicator, 0x3ec) = 480.0f;
         float distance = static_cast<float>(fabsf(boss->state.world.position.x - g_SecondaryActorReferences->position.x));

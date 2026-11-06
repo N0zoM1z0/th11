@@ -436,3 +436,16 @@ BindSecondaryDialogueSprite,0x00456740,function
 FindSecondaryDialogueChild,0x00456870,function
 UpdateSecondaryHud,0x0041B380,function
 SecondaryHudUpdateCallback,0x0041CFB0,function
+ResetAnimationVectorTweenTime,0x00405C60,function
+InsertAnimationRelatedNode,0x0040EA10,function
+SetAnimationScaleTween,0x00423120,function
+ReadAnimationFloat,0x0044B080,function
+ReadAnimationInteger,0x0044B2A0,function
+AnimationFloatDestination,0x0044B380,function
+AnimationIntegerDestination,0x0044B400,function
+SetAnimationUv,0x0044B470,function
+ExecuteAnimationVm,0x0044B4B0,function
+SetAnimationAlpha2Tween,0x0044F000,function
+SetAnimationColor2Tween,0x0044F080,function
+SetAnimationColorTween,0x0044F270,function
+SetAnimationAlphaTween,0x0044F400,function
