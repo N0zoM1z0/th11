@@ -36,6 +36,8 @@ source partition and authorship remain unknown for all four owners.
 The physical view uses the existing animation VM, selection and timer layouts.
 The root ID at2C8 retains the existing AnimationVmId value type through factory
 assignment, missing-ID reset and lookup copies; no new constructor is introduced.
+The adjacent2C4 value ID is the primary page root; its secondary file18 and
+root67C now have full target review in [MENU_PRIMARY.md](MENU_PRIMARY.md).
 Settings are signed bytes at existing MainRuntime+1E8/1E9. Applying them writes
 the separate music/effect mirrors and enqueues opcode8/value0/text SetVol.
 The second mirror controls the zero gate, but the attenuation formula actually

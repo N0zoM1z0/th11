@@ -11,15 +11,17 @@ struct ConfigurationAudioMenuView
 {
     unsigned char unknown000[0x14];
     AnimationFileView *file;
-    unsigned int unknown018;
+    AnimationFileView *secondaryFile;
     int page, state;
     SecondaryDebugSelectionView selection;
     unsigned char unknown0fc[0x2b0 - 0xfc];
     StageTimerView time;
-    unsigned int unknown2c4;
+    AnimationVmId primaryVmId;
     AnimationVmId rootVmId;
 };
 
+typedef char ConfigurationMenuSecondaryFileOffset[(offsetof(ConfigurationAudioMenuView, secondaryFile) == 0x18) ? 1 : -1];
+typedef char ConfigurationMenuPrimaryVmOffset[(offsetof(ConfigurationAudioMenuView, primaryVmId) == 0x2c4) ? 1 : -1];
 typedef char ConfigurationMenuPageOffset[(offsetof(ConfigurationAudioMenuView, page) == 0x1c) ? 1 : -1];
 typedef char ConfigurationMenuSelectionOffset[(offsetof(ConfigurationAudioMenuView, selection) == 0x24) ? 1 : -1];
 typedef char ConfigurationMenuTimerOffset[(offsetof(ConfigurationAudioMenuView, time) == 0x2b0) ? 1 : -1];

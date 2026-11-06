@@ -2,7 +2,7 @@
 
 UpdateMenuController at4399B0 has complete natural C++ source in
 src/MenuController.cpp/.hpp. The reviewed owner is1,224 bytes, including all
-sixteen switch cells. Current pinned VC9 /GL output is1,192 bytes and remains
+sixteen switch cells. The isolated VC9 /GL context generated1,192 bytes and remains
 non-exact. All36 physical call sites are present; no new exact unit is claimed.
 
 ## Ownership and real entry
@@ -67,7 +67,7 @@ count<2 preserves the separate paths under VC9, restoring all6 page-set and4
 primary-page-update sites. The retained strcpy also produces the native
 single-increment, destination-minus-source copy loop naturally.
 
-Current complete primary contribution:1,192 bytes/290 instructions/1,125 code,
+Last isolated complete primary contribution:1,192 bytes/290 instructions/1,125 code,
 3 alignment and64 table bytes. Its100 address fields are exhaustively replayed;
 full comparison reports1,138 differing bytes, including the32-byte size gap.
 Target has101 fields: its input-reset and demo-reset stores are physically
@@ -105,6 +105,6 @@ PY
 The receipt binds source, tools, producer and PE/MAP/PDB artifacts. Unresolved
 interfaces are diagnostic data anchors, never runnable replacement functions.
 This image is a compilation context, not a game product. The controller has no
-acceptance manifest entry while full equality is open. No established accepted
-source or tool implementation changes in this checkpoint, so prior exact
-families require receipt verification, not another cold cohort replay.
+acceptance manifest entry while full equality is open. This checkpoint originally changed no accepted source. Later typed-field
+updates for the primary page supersede its old receipt/source freeze; see
+[MENU_PRIMARY.md](MENU_PRIMARY.md) for the current real-page context and gaps.

@@ -466,3 +466,9 @@ MoveSecondaryDebugSelection
 UpdateMenuController
 MenuControllerUpdateCallback
 MarkMenuFileAnimations
+UpdateMenuPage01
+StartMenuAnimation
+StopMenuAnimation
+SignalLockedMenuEntry
+IsMenuExtraUnlocked
+SelectMenuItem

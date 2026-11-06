@@ -7,9 +7,9 @@ status/diff; current receipts outrank historical notes. All dirty work is ours.
 ## Current exact state
 
 - Original Japanese TH11v1.00a, pinned by config/target.toml; no substituted bytes.
-- 2,140 candidates;586 reviewed boundaries;468 source mappings.
+- 2,140 candidates;592 reviewed boundaries;474 source mappings.
 - 236 exact functions/31,881 bytes:9 normal COFF and227 linked PE.
-- Origins:90 authored,480 indeterminate,14 exclusions,1,556 pending.
+- Origins:90 authored,486 indeterminate,14 exclusions,1,550 pending.
 - VC9 RTM21022/SDK6.0A; direct scripts/ghidra.py, no Factory MCP/REA.
 - Commit/push authorized; prefix `gpt-6.1-sol: `. No heavy job remains running.
 
@@ -17,91 +17,72 @@ Operator priority is complete large/difficult owners, not leaf accumulation.
 Native product, broad runtime and portability are later phases. Keep /GL and
 complete owned tables/layout; no cropped or normalized exact credit.
 
-## Accepted audio configuration3836; next caller992
+## Accepted audio3836; caller992 still9
 
-Full natural source is in ConfigurationAudioMenu.cpp/.hpp. Owner43AAD0..43B9CB
-has3777 reachable code/1136 instructions+59 layout (57 LEA bytes and one dead
-short jump), no foreign interior, four following CC. EBX menu/ESI renderer,
-four-byte float scratch/two plain RET. All84 calls:70 lookup,12 bind, enqueue,
-conversion. The effect mirror gates zero, but attenuation reads the music
-mirror; retain five float rounds/two squarings. Twelve digit updates precede
-signed10/100 visibility branches; missing-root traversal and visibility writes
-remain unchecked as native. Settings are existing MainRuntime+1E8/1E9.
+ConfigurationAudioMenu.cpp owns complete43AAD0..43B9CB:3777 code/1136 instructions
++59 layout (57 LEA and dead2-byte jump). All84 calls/110 fields; canonical
+apply-configuration-audio-menu remains cold linked exact3836/zero. Existing
+AnimationVmId value semantics at2C8 and direct signed-byte digit expressions
+recover native loads/IDIV/branch layout. Five float rounds/two squarings remain;
+the second mirror gates zero while attenuation reads the first. No class/TU claim.
 
-The root2C8 field now retains the existing four-byte AnimationVmId through
-factory assignment, reset and lookup copies. This restores native EDX/ECX root
-loads, renderer setup, branch/alignment layout and all1136 instructions. No
-profile change, new constructor or explicit register ABI. The complete cold
-public primary contribution matches3836/110 fields/zero differences through
-compare-linked-function.py --unit apply-configuration-audio-menu. All59 internal
-layout bytes remain. Raw scalar reconstruction gave3836/291; the generic
-remainder spelling gave3948/3438. See CONFIGURATION_AUDIO_MENU.md and knowledge
-base for the compiler findings. Original class/TU identity stays open.
+Caller43A6F0 owns992=969 code/285 instructions+3 alignment+five-cell20-byte table.
+All28 calls/61 fields;9 full differences remain at prologue offsets7..16: EBP
+save/default restoration. Explicit state guard, nested selection, local selection
+pointer, inline value-ID/short-event operation and shared sound11/10 close tail
+are retained. Implicit/default/positive guard variants give639; member model9.
+No prefix crop/normalization. Selection/history/event source bodies support this
+large owner without leaf acceptance units. QueueMeshEffectSound stays124/native125.
+See CONFIGURATION_AUDIO_MENU.md; old checkpoint counts/freezes are historical.
 
-Caller43A6F0..43AACF now has the complete992=969 code/285 instructions+3 alignment
-+five-cell20-byte table at43AABC. All61 fields and all28 calls agree; nine full
-byte differences remain, exclusively in prologue offsets7..16. Native saves EBP
-before the state-range comparison; source saves it after the explicit early
-return and skips its restoration on that default path. All six RET/EAX1 paths
-remain. Do not crop/normalize the prefix or grant exact credit. Exact counts
-stay236/31881; no new leaf acceptance units.
+## Complete primary page1608; current hard gaps
 
-Retained: nested selection assignment, local selection pointer, generic inline
-ID-value/short-event signaling, explicit state-range early return, >=10 exit,
-and actual sound11/10 selector sharing one close tail. Default/implicit/positive
-range spellings give639; member model still9 and is discarded. Slot-pointer/
-index traversal in MeshEffects.cpp restores private ESI sound input. Queue itself
-is124/native125/101 differences; common-manager alias model is not retained.
+43A0A0 now has full MenuPrimary.cpp/.hpp source and complete direct review:
+1521 code/441 instructions+3 alignment+three5/8/8-cell84-byte tables,13 returns,
+70 calls/16 targets. All21 apparent foreign interior refs are owned table DATA;
+eight CC before43A6F0. It implements opening frames70/80, eight-entry input,
+locked-entry exclusions, cancel/confirm and delayed20-frame page transitions.
+Selection5 really queues confirmation sound10 twice; keep it.
 
-New supporting selection/history/event bodies have full target review and source
-mappings. Move459160/121 has40 diagnostic differences; push4590F0 is63/native61/20;
-pop459130/48 and signal/execute456280/95 (all4 fields) are zero diagnostically,
-without leaf acceptance. Real AnimationExecution.cpp restores the signal helper's
-8-byte alignment (former77); arbitrary-input support probe retains the real timer
-period/DI event interfaces. Source/class/TU/runtime claims stay separate.
+Current complete primary output1608/441 instructions/116 fields/all70 calls,
+30 full byte differences:9 EBP save/default bytes,19 bytes scheduling first root
+ID store/secondary ID load,2 bytes swapping fastcall argument preparation. No
+exact credit. Natural Quit sharing fixes the8-byte exit-load difference. An
+implicit switch default gives1596/970 and is discarded. Next work is these three
+codegen regions and the common EBP prologue issue, not a smaller function cohort.
 
-## Complete outer menu controller1224; next exact gaps
+Typed primary ID2C4, secondary root67C and secondary file18 preserve real value/
+pointer fields. Passing secondaryFile directly to the factory restores PUSH EAX0
+before the file load; an extra local forced PUSH0 and shifted following code.
+Normal-COFF selector support restores the difficulty write lost under all-/GL
+visibility and native ECX value/EDX selection. This is a visibility hypothesis,
+not original TU proof; no established /GL owner was downgraded. Selector32/native33
+is non-exact. Other supporting30/80/64-byte results are zero diagnostics only;
+locked-child83 currently98/78 differences. No new leaf acceptance units.
 
-4399B0 now has complete MenuController.cpp/.hpp source:300 native instructions,
-1157 code+3 alignment+16-cell64-byte table through439E77. All apparent interior
-entries are owned table cells; eight CC before439E80. Real missed callback439F10
-is7 bytes, registered by4395E6, and preserves stack menu/RET4 through normal
-support. Adjacent draw owner439E80 owns140, including8 cells; boundary only.
-Marker4564C0 has complete supporting source. No new leaf acceptance units.
+Public probes/menu-primary-context.json has24 supports (callback and selector
+normal), primary/all established owners /GL; build/probe-ltcg/MenuPrimaryOwner.
+New checkpoint: `.analysis/verify-menu-primary-checkpoint.py`; full primary,
+parent and support diagnostics in menu-primary-proof.json and byte regions in
+menu-primary-byte-proof.json. Source freeze218 extends213 with five new public
+inputs; only ConfigurationAudioMenu.hpp and MenuController.hpp changed among
+prior inputs. Only apply-configuration-audio-menu is affected: cold strict3836/
+110/zero replay, no full cohort or runtime suites. See MENU_PRIMARY.md and KB.
 
-Current full /GL primary output1192/290 instructions/1125 code+3 alignment+64
-table;100 fields/1138 full byte differences including32-byte size gap. All36
-physical calls agree after count<=1 preserves the native duplicated selection
-paths (count<2 merged one pair; generic inline select merged two). strcpy
-recovers the single-increment copy loop. Idle/demo placement, merged idle-zero
-store (target101 fields), missing EBX save, scheduling and eleven source-open
-page ABIs remain. No fake private-register declarations. Under this real parent,
-audio apply is3836/110/zero diagnostically; caller remains992/61/9. No new exact
-claim or original-TU explanation. See MENU_CONTROLLER.md.
+## Outer controller1224: real page context changes optimizer decisions
 
-Next substantial work: real primary page43A0A0 (next owner43A6F0; extent still
-unreviewed) supplies EAX menu to four controller calls. Review complete body,
-tables/references/neighbor and reconstruct it before fitting the parent ABI.
-Other page bodies and idle block layout remain open; keep full1224 comparison.
-Public context probes/menu-controller-context.json; output build/probe-ltcg/
-MenuControllerOwner,19 supports, callback normal. Current checkpoint verifier:
-`.analysis/verify-menu-controller-checkpoint.py`. Prior208 frozen inputs are
-unchanged; merged freeze adds five new source inputs. No affected canonical
-exact source, tool changes or routine cohort/runtime replay.
+MenuController.cpp owns complete4399B0..439E77:300 instructions/1157 code+3
+alignment+16-cell64-byte table, two RET4/EAX1 paths. Registered7-byte callback
+439F10 (DATA4395E6) preserves its stack input through normal support. Adjacent
+draw439E80 owns140 including8 table cells; boundary only. Marker4564C0 has source.
 
-Canonical/public context now has15 /GL supports in build/match-linked/
-ConfigurationAudioMenu. Eight directly affected accepted units in five cold
-families pass strict replay, including3836/110/zero. No full cohort or broad
-runtime suites. Previous audio checkpoint: `.analysis/verify-configuration-menu-checkpoint.py`
-(historical inventory counts).
-configuration-menu-canonical-proof.json keeps full main/caller diagnostics;
-configuration-menu-caller-byte-proof.json locates all nine differences;
-configuration-menu-canonical-support-proof.json records support limits.
-configuration-menu-cold-comparisons.json records all eight exact cold results.
-configuration-menu-source-freeze.json freezes208 inputs, versus prior203; only
-ConfigurationAudioMenu.cpp/.hpp and MeshEffects.cpp changed, three new support
-files and two existing dependencies newly frozen. Old verifiers have historical
-counts. Details: CONFIGURATION_AUDIO_MENU.md and KNOWLEDGE_BASE.md.
+The former isolated1192/100 fields/1138 differences retained36 calls. With the
+real primary page, the complete support contribution is1148/96 fields/1165
+full differences; two page-set/update pairs merge again,32/native36 calls. Do
+not present source presence as parent exactness. Ten other page handlers are
+still source-open in this context. Audio3836 is diagnostically zero in this
+context; its992 caller remains9. The prior isolated root receipt/verifier is
+historical after typed-header updates. See MENU_CONTROLLER.md and MENU_PRIMARY.md.
 
 ## Other substantial owners
 

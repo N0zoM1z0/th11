@@ -82,9 +82,46 @@ input zero-extension, scheduling and eleven real page bodies remain open. Do
 not force their private register ABIs merely to improve a diagnostic parent.
 
 Marker78 and callback7 match diagnostically as support only, without leaf units.
-No existing accepted source changes in this checkpoint. The next substantial
-callee is43A0A0, the primary page handler; review its full extent before source
-or exact claims. See [MENU_CONTROLLER.md](MENU_CONTROLLER.md).
+No existing accepted source changes in this checkpoint. The primary page43A0A0 now has complete source and review as described below.
+See [MENU_CONTROLLER.md](MENU_CONTROLLER.md).
+
+## Primary menu: full1608-byte owner and compiler visibility
+
+43A0A0 owns1608=1521 reachable code/441 instructions+3 alignment+84 bytes in
+three5/8/8-cell tables. All21 apparent interior entries are table-owned DATA.
+All70 calls/16 distinct targets and13 return paths have direct complete Ghidra
+and independent PE CFG evidence. State0/1 opens the menu, state2 processes eight
+entries and state4 routes delayed transitions. Selection5 confirms with sound10
+twice; cancel-exit bypasses the confirm root signal. Preserve those paths.
+
+Five real supporting operations provide animation ID creation/closure, locked
+child event1D, six-byte unlock query and a general signed selector. No leaf
+acceptance units are added. The ID array starts2C4: primary root0 and audio root1
+at2C8. Observed secondary file18 and root67C now use real pointer/value-ID fields,
+without changing partial-view offsets/sizes or declaring array capacity.
+
+All-/GL selector visibility removes one native difficulty write around40DF10
+and chooses private EAX value versus native ECX/EDX. An independent normal-COFF
+selector support context restores both caller stores and116 fields, and grows
+primary1600 to1608. This is an opacity/ABI hypothesis, not proof of original TU
+ownership; the selector itself remains32/native33. No established /GL owner
+loses /GL. The primary page and all established linked owners stay /GL.
+
+Using typed fields and passing secondaryFile directly to the factory removes
+a PUSH0 after an extra local load: native reuses lookup EAX0 before loading the
+file. This one-byte scheduling gap had shifted a large part of the otherwise
+complete caller. The full comparison drops483 to38. Sharing an actual Quit label
+before sound11 assignment restores native non-hoisted exit setup and gives30:
+9 EBP save/default bytes,19 bytes scheduling primary-ID store/secondary-ID load,
+and2 bytes swapping normal fastcall argument preparations. All1608 bytes remain;
+all441 instructions/116 fields/70 calls/84 table bytes are accounted for. Implicit
+switch default gives1596/970 differences and is discarded. No exact credit.
+
+The real page re-merges two outer-controller call pairs:1148/native1224,96 fields,
+1165 differences,32/native36 calls. Earlier1192 belonged to the isolated context;
+source presence does not establish parent codegen. Audio3836 remains zero in the
+new context; its992 caller still has9. Only the accepted audio apply unit is
+affected by the two header changes and requires cold replay. See MENU_PRIMARY.md.
 
 ## Target and compilation
 

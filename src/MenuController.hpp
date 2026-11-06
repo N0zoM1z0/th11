@@ -7,7 +7,9 @@
 struct MenuControllerView
 {
     ConfigurationAudioMenuView page;
-    unsigned char unknown2cc[0x5b70 - 0x2cc];
+    unsigned char unknown2cc[0x67c - 0x2cc];
+    AnimationVmId secondaryRootVmId;
+    unsigned char unknown680[0x5b70 - 0x680];
     int musicDelay;
     unsigned int flags;
 };
@@ -31,6 +33,7 @@ struct MenuReplayView
 };
 
 typedef char MenuControllerPageOffset[(offsetof(MenuControllerView, page) == 0) ? 1 : -1];
+typedef char MenuControllerSecondaryVmOffset[(offsetof(MenuControllerView, secondaryRootVmId) == 0x67c) ? 1 : -1];
 typedef char MenuControllerDelayOffset[(offsetof(MenuControllerView, musicDelay) == 0x5b70) ? 1 : -1];
 typedef char MenuControllerFlagsOffset[(offsetof(MenuControllerView, flags) == 0x5b74) ? 1 : -1];
 typedef char MenuReplayHeaderOffset[(offsetof(MenuReplayView, header) == 0x18) ? 1 : -1];

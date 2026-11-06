@@ -467,3 +467,9 @@ MoveSecondaryDebugSelection,0x00459160,function
 UpdateMenuController,0x004399B0,function
 MenuControllerUpdateCallback,0x00439F10,function
 MarkMenuFileAnimations,0x004564C0,function
+UpdateMenuPage01,0x0043A0A0,function
+StartMenuAnimation,0x004391A0,function
+StopMenuAnimation,0x004391C0,function
+SignalLockedMenuEntry,0x00439260,function
+IsMenuExtraUnlocked,0x00439350,function
+SelectMenuItem,0x0040DF10,function
