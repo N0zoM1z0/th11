@@ -127,11 +127,11 @@ than the older void prototype name for the same target.
 
 ## Complete comparison and remaining gaps
 
-The maintained full cold /GL primary contribution is12320 bytes with frameE0 and
+The maintained full cold /GL primary contribution is12292 bytes with frameE0 and
 stack VM input, but lacks native8-byte stack alignment and uses EBP for VM versus
 EDI. All104 table cells and407 independently reviewed address/table fields
-replay;11788 bytes differ over the complete owner, including length differences.
-The source has3288 reachable instructions/11896 code bytes+8 alignment+416 table.
+replay;11744 bytes differ over the complete owner, including length differences.
+The source has3280 reachable instructions/11876 code bytes+0 alignment+416 table.
 Native/source calls are262/260: integer RNG4/3 and float destination15/14 remain.
 Lookup5/5, related insertion3/3, malloc2/2 and float read78/78 now agree physically.
 These counts grant neither semantic nor exact credit.
@@ -151,11 +151,38 @@ Instruction41 also required a semantic correction. Native44D523 selects scene
 state4C2EF8 when VM flag40000000 is set, while44D543 selects text state4C2F00
 otherwise. The old source decoded in both arms but always passed text state.
 Separate complete arms preserve selection before decoding and recover the
-missing physical float read. The corrected owner adds48 bytes, giving12320.
+missing physical float read. That correction added48 bytes, giving the preceding
+12320-byte checkpoint.
 A targeted static argument replay checks both flag values with literal and
 variable payloads, including zero/one ReadAnimationFloat call, against both
 native and source. The old candidate fails the scene-state case. This bounded
 check does not validate the rest of the interpreter's arguments.
+
+The ring9 count also needs a rounded float denominator. At44DCF4 the target
+decrements the integer count, then FILD/FSTP float at44DCF9/44DD03 rounds it before
+both divisions. The earlier source divided directly by the integer. Under
+round-to-nearest, count16777217 with V numerator1 gives old337FFFFF versus target
+33800000, one float ULP apart. The explicit float denominator restores the native
+10-instruction x87 ring setup; the arc13 setup retains its matching12 instructions.
+Those checks rename stack slots and the VM register and grant no exact credit.
+The correction alone gives12336 bytes,16 more than the prior checkpoint.
+
+EmitStripPair now advances its local caller pointer after each vertex. This
+recovers two1C cursor advances per loop (native EBX; source ring EBX/arc ESI)
+and keeps color in a register across the two polar calls, removing the extra
+second-vertex pointer
+and per-iteration color reload. Complete source falls44 bytes to12292,28 below
+the prior checkpoint. Both loops still emit their complete pair counts and the
+ring retains its two closing copies. Nested vector sums alone retain frameE0
+and12336 bytes; no stack reduction follows from just shortening those lifetimes.
+
+A primary-only /Oy- probe gives11688/frameF0 with VM EBX, no8-byte alignment and
+264 calls (float destinations18/native15; RNG3/native4). It does not explain the
+native frame/alignment/VM register and is not adopted. The maintained profile
+remains /O2 /Ob1 /GL. A separate observed ABI gap is the native pair tween's
+hidden result:44DBE5 supplies EBX=ESP+88 before44DBEC and copies through returned
+EAX. Current source instead publishes the eight-byte pair in EAX/EDX. Nominal
+value type and original TU/private-convention ownership remain unproved.
 
 All104 dispatch entries have equal static per-op call/instruction-loop/post-
 update/return skeletons:416 distinct paths on each side. Constant opcode choices
@@ -174,12 +201,15 @@ replay differences versus earlier frame13C/5694; all454 fields,252 calls and46
 static per-op traces remain. This is a compiler observation under a fuller
 context, not proof of original TU ownership or whole-function equality.
 
-Next gaps are the full interpreter frame/alignment, VM register, temporary/vector
-lifetimes and the two remaining physical call merges. Float destinations for
+Next gaps are the full interpreter frame/alignment, VM register, pair-tween
+hidden result, temporary/vector lifetimes and the two remaining call merges.
+Float destinations for
 17/27/45/46 share a native tail; the source also folds7 into it. Integer random40
-shares its RNG call in source but has two physical native sites. Preserve complete extents and /GL; no volatile, fake returns,
+shares its RNG call in source but has two physical native sites. Preserve complete
+extents and /GL; no volatile, fake returns,
 private-register declarations, padding or cropped extents are used.
 
 Private evidence uses animation-vm-update/arguments/operations/math Ghidra
 exports, animation-execution-target-proof and complete owners-function/CFG
-reports, plus the targeted RNG argument proof. Target/decompiler dumps, builds and mutable databases remain private.
+reports, plus the targeted RNG argument and strip-division proofs. Target/
+decompiler dumps, builds and mutable databases remain private.

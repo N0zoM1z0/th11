@@ -29,8 +29,8 @@ Native stack VM, frameCC/alignment8, three RET4 return0/0/1. Reject decompiler
 phantom register/float inputs and eight-byte return. Callback428 nonzero returns1
 without restoring the overridden global time scale; retain that path.
 
-Cold build/probe-ltcg/AnimationExecutionOwners: complete public primary12320,
-frameE0 without8 alignment, VM EBP versus nativeEDI,407 reviewed fields and11788
+Cold build/probe-ltcg/AnimationExecutionOwners: complete public primary12292,
+frameE0 without8 alignment, VM EBP versus nativeEDI,407 reviewed fields and11744
 full replay differences. Native/source262/260 calls: RNG4/3 and float destination
 15/14. All104 entries retain416 static call/loop/post-update/return skeletons;
 these do not prove predicates, operands, aliases or loop reentry. Native returns
@@ -43,6 +43,14 @@ four targeted argument paths pass, and the old candidate fails scene selection.
 Direct -- is byte-identical and leaves EDI=-1/ADD versus DEC; do not repeat.
 Floating greater-than is ordered by raw AH masks, not a negated <=.
 
+Ring9 must divide by float(count-1):44DCF9/44DD03 explicitly round before both
+divisions. Corrected10-op ring and existing12-op arc x87 setups agree after only
+stack/VM naming erasure. EmitStripPair advances each vertex, recovers two1C cursor steps per pair
+and keeps color in a register; precision fix+pointer change saves28 bytes net.
+Nested sums alone do not shrink the frame. /Oy- probe11688/frameF0/VMEBX/no8
+alignment and264 calls is rejected. Native pair tween has EBX hidden result at
+ESP88; current source returns its pair in EAX/EDX. Class/TU origin remains open.
+
 Real direct dependencies have full natural source, without leaf acceptance:
 read float540 (447+1+92table), int219 (145+3+48table+23selectors), float destination
 124, int destination104, UV52; vector timer52, node insertion23, scale138,
@@ -53,8 +61,8 @@ classes/header/template/TU origins remain indeterminate. VM374/377 is packed
 primary color/alpha; the older spriteIndex label is wrong, but that shared
 header was not changed solely to rename it. See ANIMATION_EXECUTION.md.
 
-Next difficult gaps: complete frame/alignment and temporary lifetimes, VM register,
-remaining call merges: integer random40 and float assignment7 joining the
+Next difficult gaps: frame/alignment, temporary lifetimes, VM register, pair
+tween hidden result and remaining call merges: integer random40 and float assignment7 joining the
 17/27/45/46 destination tail. Do not invent
 padding/double locals/register ABI to force them. Preserve /GL and full tables.
 HUD now calls canonical int ExecuteAnimationVm. The older void prototype/caller
@@ -109,10 +117,11 @@ Interpreter6989/native7093 retains120/all89 selectors/two RET4, VM ESI/nativeEDI
 
 ## Checkpoint evidence
 
-Current private evidence is animation-execution-* and animation-vm-* direct
+Current receipt check: .analysis/verify-animation-execution-strip-checkpoint.py.
+Private evidence is animation-execution-* and animation-vm-* direct
 Ghidra exports, complete field/CFG/return/target proofs and receipt/source freeze.
-The codegen checkpoint changes only AnimationExecution.cpp and its case fragments
-from the180-input freeze; no accepted exact unit depends on them. Cold replay
-covers this changed owner only. Old HUD/dialogue/parent receipts remain historical
-support contexts; no unrelated caller replay or unchanged Oracle tests required.
+This checkpoint changes only AnimationExecution.cpp and Update.inc against the
+179-input freeze; no accepted exact unit depends on them. Cold replay covers
+this changed owner only. Earlier HUD/dialogue/parent receipts remain historical
+support contexts. No unrelated caller replay or unchanged Oracle tests required.
 Tools/Oracle implementations unchanged. No new exact unit or source mapping.

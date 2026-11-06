@@ -85,7 +85,7 @@ __forceinline void InlineUv(AnimationFloatPair *output, const CameraVector *poin
     if (output->x < 0.0f) output->x = 0.0f;
     if (output->y < 0.0f) output->y = 0.0f;
 }
-__forceinline void PlaceStripPair(AnimationExecutionView *self, RenderVertex *vertex,
+__forceinline void EmitStripPair(AnimationExecutionView *self, RenderVertex *&vertex,
     unsigned int color, float angle, float v)
 {
     vertex[0].color = color;
@@ -95,23 +95,23 @@ __forceinline void PlaceStripPair(AnimationExecutionView *self, RenderVertex *ve
     reinterpret_cast<AnimationExecutionPolarPoint *>(&vertex[0])->Set(angle,
         static_cast<float>(self->scale.x * 0.5 + self->scale.y));
     vertex[0].z = 0.0f;
-    CameraVector offset = Sum(self->position, self->otherPosition);
-    CameraVector world = Sum(offset, self->translation);
+    CameraVector world = Sum(Sum(self->position, self->otherPosition), self->translation);
     vertex[0].x = vertex[0].x + world.x;
     vertex[0].y = world.y + vertex[0].y;
     vertex[0].z = static_cast<float>(world.z + 0.0);
-    vertex[1].color = color;
-    vertex[1].rhw = 1.0f;
-    vertex[1].u = self->uOffset + self->uv[1].x;
-    vertex[1].v = v + self->vOffset;
-    reinterpret_cast<AnimationExecutionPolarPoint *>(&vertex[1])->Set(angle,
+    ++vertex;
+    vertex[0].color = color;
+    vertex[0].rhw = 1.0f;
+    vertex[0].u = self->uOffset + self->uv[1].x;
+    vertex[0].v = v + self->vOffset;
+    reinterpret_cast<AnimationExecutionPolarPoint *>(&vertex[0])->Set(angle,
         static_cast<float>(self->scale.y - self->scale.x * 0.5));
-    vertex[1].z = 0.0f;
-    offset = Sum(self->otherPosition, self->position);
-    world = Sum(offset, self->translation);
-    vertex[1].x = vertex[1].x + world.x;
-    vertex[1].y = world.y + vertex[1].y;
-    vertex[1].z = static_cast<float>(world.z + 0.0);
+    vertex[0].z = 0.0f;
+    CameraVector secondWorld = Sum(Sum(self->otherPosition, self->position), self->translation);
+    vertex[0].x = vertex[0].x + secondWorld.x;
+    vertex[0].y = secondWorld.y + vertex[0].y;
+    vertex[0].z = static_cast<float>(secondWorld.z + 0.0);
+    ++vertex;
 }
 }
 

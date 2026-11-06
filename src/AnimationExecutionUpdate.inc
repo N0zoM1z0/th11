@@ -82,15 +82,15 @@
     {
         float angle = self->rotation.z;
         int count = Subtract(self->integerVariables[0], 1);
-        float angleStep = static_cast<float>(6.2831854820251465 / count);
+        float denominator = static_cast<float>(count);
+        float angleStep = static_cast<float>(6.2831854820251465 / denominator);
         float v = 0.0f;
-        float vStep = static_cast<float>(self->integerVariables[1]) / count;
+        float vStep = static_cast<float>(self->integerVariables[1]) / denominator;
         unsigned int color = (self->flags & 0x8000) ? self->color2 : self->color;
         RenderVertex *vertex = self->vertices;
         for (int left = count; left > 0; --left)
         {
-            PlaceStripPair(self, vertex, color, angle, v);
-            vertex += 2;
+            EmitStripPair(self, vertex, color, angle, v);
             v = vStep + v;
             angle = AddAngles(angle, angleStep);
         }
@@ -111,8 +111,7 @@
         RenderVertex *vertex = self->vertices;
         for (int left = self->integerVariables[0]; left > 0; --left)
         {
-            PlaceStripPair(self, vertex, color, angle, v);
-            vertex += 2;
+            EmitStripPair(self, vertex, color, angle, v);
             v = vStep + v;
             angle = AddAngles(angle, angleStep);
         }
