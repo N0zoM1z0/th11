@@ -190,6 +190,32 @@ native frame140/5357, with all454 fields/252 calls/46 traces retained. No exact
 or original TU claim. See [ANIMATION_EXECUTION](ANIMATION_EXECUTION.md).
 
 
+HUD drawing41C660 owns2378:564 instructions/2372 code plus six-byte no-op LEA,
+not a truncated sparse Ghidra body. All27 calls/eight targets, one EAX1/RET,
+GS/alignment64/frame78 and sole ECX-to-ESI callback41CFD0/10 are reviewed.
+Complete source now gives2343/559 instructions/frame74,135 fields and2162 full
+differences, with all27 call targets in native order. The position value model
+restores temporary/DWORD copies and runtime Y+7; an array spelling folds135.0f,
+which is absent from target data. All variants already aligned64; constructor
+identity is unproved. The combined printf site consumes signed32/double100/
+eight-byte outgoing double with no float round; decompiler omitted varargs.
+Marker minimum retains boss on unordered comparison. Time decoder41A250/151
+has two real outputs and checksum over signed decimal divisions; candidate167/
+160 remains open. Callback source tail5 versus native10 moves ESI save/copy
+inside the parent; preserve complete owner/ABI rather than force registers.
+The actual rectangle447F70/499 has157 instructions and14 fields, all canonical
+primary-TU /GL cold-replayed with zero differences. Reverse3..0 RHW/color
+initialization closes eight displacement differences; all vertex writes are
+real. It flushes, draws two untextured triangle-strip primitives, invalidates
+six cache fields and restores four texture-stage settings. Device fields use
+runtime base4C3280 plus8, not an already offset base plus8 again. Existing183
+frozen inputs are unchanged; only this new499-byte exact unit is cold-replayed.
+Details in [SECONDARY_HUD_DRAW](SECONDARY_HUD_DRAW.md).
+
+Animation strip component accumulation gives12404/frameE0/11893 differences;
+shorter value scopes are complete12296-byte/407-field identical. Neither solves
+the main frame and neither is retained. Keep attention on substantial owners.
+
 HUD41B380 owns4716, not the automatic4686 bounding span:4647 reachable code,
 39 internal alignment,2 pre-table alignment and28 stage-table bytes. The seven
 foreign DATA references are its owned cells. Its missed7-byte callback41CFB0

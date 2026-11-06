@@ -452,3 +452,7 @@ SetAnimationAlphaTween,0x0044F400,function
 CreateSecondaryHudScreenEffect,0x004489E0,function
 InitializeSecondaryHudScreenEffect,0x00448A90,function
 AnimationRandomRange,0x0040B9F0,function
+DrawSecondaryHud,0x0041C660,function
+DecodeSecondaryHudBestTime,0x0041A250,function
+SecondaryHudDrawCallback,0x0041CFD0,function
+DrawHudSolidRectangle,0x00447F70,function

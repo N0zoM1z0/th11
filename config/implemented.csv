@@ -451,3 +451,7 @@ SetAnimationAlphaTween
 CreateSecondaryHudScreenEffect
 InitializeSecondaryHudScreenEffect
 AnimationRandomRange
+DrawSecondaryHud
+DecodeSecondaryHudBestTime
+SecondaryHudDrawCallback
+DrawHudSolidRectangle

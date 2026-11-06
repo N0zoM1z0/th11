@@ -7,17 +7,17 @@ receipts outrank historical notes. All dirty work is ours.
 ## Current exact state
 
 - Original Japanese TH11v1.00a, pinned by config/target.toml; no substituted bytes.
-- 2,139 candidates;570 reviewed boundaries;453 source mappings.
-- 234 exact functions/27,546 bytes:9 normal COFF and225 linked PE.
-- Origins:90 authored,464 indeterminate,14 exclusions,1,571 pending.
+- 2,139 candidates;574 reviewed boundaries;457 source mappings.
+- 235 exact functions/28,045 bytes:9 normal COFF and226 linked PE.
+- Origins:90 authored,468 indeterminate,14 exclusions,1,567 pending.
 - VC9 RTM21022/SDK6.0A; direct scripts/ghidra.py, no Factory MCP/REA.
 - Commit/push authorized, prefix `gpt-6.1-sol: `; no heavy job remains running.
 
 Operator priority is large/difficult owners, not leaf accumulation. Main owners:
 host412E30/16,556, animation44B4B0/12,056, interpreter45B860/7,093,
 dialogue41D380/6,980, HUD41B380/4,716 and gameplay420390/1,149. Native product,
-broad runtime and portability are later phases. Current work recovers the
-integer XYZ tween frame40 and the main interpreter's byte-stack color accesses.
+broad runtime and portability are later phases. Current work adds complete
+HUD drawing2378 and closes its actual499-byte rectangle dependency.
 
 ## Accepted screen-effect initializer1168
 
@@ -109,6 +109,23 @@ VM374/377 is primary color/alpha; shared spriteIndex name is a legacy label.
 Player-controller's older void execution prototype was left in its source/header;
 renaming them would affect6/11 exact units, respectively.
 
+## Complete HUD drawing2378
+
+41C660..41CFA9 owns2372 code/564 instructions plus six-byte no-op LEA, no table
+or foreign interior. Native ESI/EAX1/RET, GS/alignment64/frame78;27 calls/eight
+targets and registered callback41CFD0/10. Full source covers bonus/spell/best time,
+boss bars, score/power/value and conditional digit clock. Primary2343/559
+instructions/frame74/135 fields/2162 full differences retains native call order.
+Source moves ESI save/copy inside owner and makes callback tail5; both post-save
+frames0x80. Position values restore three-word copies/runtime Y+7; array2250
+folds absent135.0f. All variants already align64; nominal constructor/TU unknown.
+Decoder151 candidate167/160 stays open; signed checksum/two outputs maintained.
+Rectangle447F70/499/157 instructions is canonical primary-TU /GL exact after14
+fields. Reverse3..0 RHW/color stores close eight differences in real geometry.
+Next: parent/callback register-save partition, temporary homes/format scheduling,
+decoder output ABI. Main strip AddTo12404/E0 and identical narrower scopes are
+rejected. Details in SECONDARY_HUD_DRAW.md; prior183 frozen inputs unchanged.
+
 ## Dialogue, HUD and shared gameplay
 
 The full new real-dependency family retains dialogue6948 but now frame140/native
@@ -157,13 +174,11 @@ Interpreter6989/native7093 retains120/all89 selectors/two RET4, VM ESI/nativeEDI
 
 ## Checkpoint evidence
 
-Current receipt check: .analysis/verify-int-vector-value-checkpoint.py.
-int-vector-value-public-* binds the full main/four tweens, integer XYZ nineteen
-fields/six returns/four operand paths and both actual color consumers. Static
-main CFG retains416 traces; no broad runtime suite was run. Canonical reports
-and int-vector-value-canonical-replays.* bind fourteen existing exact replays
-in two cold families. Fresh direct Ghidra: int-vector-current-review.*,
-int-vector-current-full-disassembly.* and int-vector-color-call-review.*.
-int-vector-value-source-freeze.json freezes183 union inputs; only prior
-AnimationTween.cpp/hpp changed. Older checkpoint verifiers are historical.
-Tools/Oracles unchanged; no new mappings, boundaries or exact units.
+Current receipt check: .analysis/verify-secondary-hud-draw-checkpoint.py.
+secondary-hud-draw-complete-* binds full parent/decoder/rectangle/callback and
+combined vararg widths; secondary-hud-rectangle-canonical-* binds the new499-byte
+strict exact primary owner. Target: secondary-hud-draw-review/full/dependencies.*.
+secondary-hud-draw-source-freeze.json freezes191 inputs; all prior183 unchanged.
+Only the new rectangle canonical unit is cold-replayed; no broad caller/runtime
+suite. Prior int-vector-value-* receipts still bind unchanged animation code.
+Tools/Oracles unchanged; four mappings/boundaries and one499-byte exact unit added.

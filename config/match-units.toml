@@ -4489,3 +4489,33 @@ linkages = [
   { offset = 1160, type = "DIR32", local = true, target = 0x448db1 },
   { offset = 1164, type = "DIR32", local = true, target = 0x448e4c },
 ]
+
+[units.draw-hud-solid-rectangle]
+artifact_kind = "linked-pe"
+source = "src/SecondaryHudDrawSupport.cpp"
+inputs = ["src/SecondaryHudDraw.hpp", "src/SecondaryHud.hpp"]
+support_sources = ["src/SecondaryHudDraw.cpp", "src/AsciiFormatting.cpp", "src/AsciiAppend.cpp", "src/StageMesh.cpp", "src/RenderBatch.cpp", "src/AnimationVmDraw.cpp", "src/AnimationImmediateDraw.cpp", "probes/secondary-hud-draw-context.cpp"]
+normal_support_sources = ["probes/secondary-hud-draw-context.cpp"]
+output_dir = "build/match-linked/SecondaryHudRectangle"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryHudDrawProbe@4"
+functions = ["DrawHudSolidRectangle"]
+symbol = "?DrawHudSolidRectangle@@YGXPBMI@Z"
+target_address = 0x447f70
+size = 499
+linkages = [
+  { offset = 6, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x4c3268, addend = 0x0 },
+  { offset = 11, type = "REL32", symbol = "?FlushRenderBatch@@YGXPAURenderBatchView@@@Z", target = 0x44fd10, addend = 0x0 },
+  { offset = 162, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 241, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 262, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 282, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 302, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 322, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 340, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 367, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x4c3268, addend = 0x0 },
+  { offset = 413, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 432, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 453, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 474, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+]

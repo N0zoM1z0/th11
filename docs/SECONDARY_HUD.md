@@ -130,3 +130,11 @@ Private evidence uses secondary-hud-update boundary/review/disassembly exports,
 secondary-hud-owners full-function/field/diff reports, secondary-hud-dialogue
 and parents comparisons, and the current source/dependency freeze. Experiments
 and target/decompiler dumps remain private.
+
+## Drawing owner
+
+The separate complete2,378-byte drawing owner41C660 now has maintained source.
+Its full2,343-byte candidate retains all27 calls and135 fields, with2,162 full
+differences. The actual499-byte rectangle dependency is canonical linked exact;
+time decoding and callback register placement remain open. See
+[SECONDARY_HUD_DRAW](SECONDARY_HUD_DRAW.md).
