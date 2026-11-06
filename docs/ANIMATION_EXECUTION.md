@@ -217,13 +217,17 @@ EAX/EDX. The maintained two-component value constructor writes the actual X/Y
 components; nominal class/constructor identity and original TU remain hypotheses.
 See ANIMATION_TWEEN_DISPATCH.md for the complete673-byte callee and six returns.
 
-The source pair callee is644/frame30 versus native673/frame28, with597 complete
-byte differences after its four reviewed fields replay. Six paths each fill both
-buffer words and return the buffer pointer. A mode17 initial-value snapshot
-restores four observed copy instructions; mode7/17 arithmetic paths have23/35
-instructions on each side, while mode8 is93/90 and ordinary mode38/34. Float
-rounding-store counts2/4/19/7 agree, without proving their operand graphs. Separate
-X/Y float locals are byte-identical for both complete callee and interpreter.
+The source pair callee is now673/frame28 versus native673/frame28, with359
+complete byte differences after its four reviewed fields replay. Six paths each
+fill both buffer words and return the buffer pointer. Named final pair values
+restore the observed temporary-to-result DWORD copies; four independent float
+coefficients recover the frame. Target/source7/17/8/ordinary paths have
+23/35/93/38 versus23/35/92/38 instructions and2/4/19/7 float-round stores.
+A bounded operand trace agrees only after commutative add/multiply normalization;
+strict order still differs in17/8. It grants no floating exception/status or
+full-function semantic proof. The first Hermite coefficient now squares t-1
+before multiplying by t+t+1, as directly reviewed in all four interpolation
+bodies. Separate X/Y float locals were byte-identical in the earlier value model.
 Thirteen already accepted exact units affected by AnimationTween.hpp/cpp share
 one cold context and all strictly replay with zero differences. No new exact
 unit, source mapping or original-type credit follows from this ABI correction.
@@ -232,6 +236,11 @@ only initialize-secondary-hud-screen-effect; one new canonical cold replay
 retains its complete1168 bytes/all54 fields/zero differences. Totals remain234
 exact functions/27,546 bytes; the interpreter and range dependency gain no exact
 credit. The range mapping adds one reviewed boundary and one source mapping.
+The subsequent Hermite/pair-value change affects only AnimationTween.cpp. Its
+fourteen existing exact units receive two new canonical cold-family replays;
+all remain zero. The full interpreter stays byte-identical after407 fields replay.
+See ANIMATION_TWEEN_DISPATCH.md for all four whole-body diagnostics and rejected
+copy-constructor, aggregate-result, cached-duration and operand-order probes.
 
 All104 dispatch entries have equal static per-op call/instruction-loop/post-
 update/return skeletons:416 distinct paths on each side. Constant opcode choices

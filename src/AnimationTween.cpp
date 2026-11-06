@@ -29,7 +29,7 @@ __forceinline HermiteWeights Hermite(float progress)
 {
     double t = progress;
     HermiteWeights result = {
-        static_cast<float>((t + t + 1.0) * (t - 1.0) * (t - 1.0)),
+        static_cast<float>((t - 1.0) * (t - 1.0) * (t + t + 1.0)),
         static_cast<float>(t * t * (3.0 - (t + t))),
         static_cast<float>((1.0 - t) * (1.0 - t) * t),
         static_cast<float>((t - 1.0) * t * t)};
@@ -172,12 +172,19 @@ AnimationFloatPair __stdcall StepAnimationFloatPairTween(AnimationFloatPairTween
     }
     if (self->mode == 8)
     {
-        HermiteWeights weights = Hermite(self->time.fraction / duration);
-        return Add(Add(Add(Scale(self->initial, weights.a), Scale(self->target, weights.b)),
-            Scale(self->control1, weights.c)), Scale(self->control2, weights.d));
+        float progress = self->time.fraction / duration;
+        double t = progress;
+        float a = static_cast<float>((t - 1.0) * (t - 1.0) * (t + t + 1.0));
+        float b = static_cast<float>(t * t * (3.0 - (t + t)));
+        float c = static_cast<float>((1.0 - t) * (1.0 - t) * t);
+        float d = static_cast<float>((t - 1.0) * t * t);
+        AnimationFloatPair result = Add(Add(Add(Scale(self->initial, a), Scale(self->target, b)),
+            Scale(self->control1, c)), Scale(self->control2, d));
+        return result;
     }
     float factor = AnimationFloatPairTweenFactor(self);
-    return Add(Scale(Subtract(self->target, self->initial), factor), self->initial);
+    AnimationFloatPair result = Add(Scale(Subtract(self->target, self->initial), factor), self->initial);
+    return result;
 }
 
 float __stdcall StepAnimationFloatScalarTween(AnimationFloatScalarTween *self)

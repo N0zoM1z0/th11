@@ -138,3 +138,7 @@ One new cold build still strictly accepts1168/all54 fields/zero; its current
 receipt evidence is animation-range-screen-* and the resume verifier is
 .analysis/verify-animation-range-checkpoint.py. The older source freezes remain
 historical after those two input changes.
+After the subsequent AnimationTween.cpp update, the current resume verifier is
+.analysis/verify-animation-hermite-pair-checkpoint.py; the initializer is one of
+fourteen existing exact units in two newly cold-replayed canonical families.
+Its full1168-byte owner and all54 fields still replay with zero differences.

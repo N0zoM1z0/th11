@@ -14,16 +14,20 @@ function was created and no maintained inventory was regenerated away.
 
 | Function | Address | Target bytes | Recorded candidate / diagnostic differences |
 | --- | --- | ---: | --- |
-| StepAnimationIntVectorTween | 44E4B0 | 768 | 768 /345 |
-| StepAnimationIntScalarTween | 44E7C0 | 332 | 321 /263 |
-| StepAnimationFloatPairTween | 44E910 | 673 | 644 /597; current complete-animation context |
-| StepAnimationFloatScalarTween | 44EBD0 | 331 | 326 /269 |
+| StepAnimationIntVectorTween | 44E4B0 | 768 | 768 /348 |
+| StepAnimationIntScalarTween | 44E7C0 | 332 | 321 /283 |
+| StepAnimationFloatPairTween | 44E910 | 673 | 673 /359 |
+| StepAnimationFloatScalarTween | 44EBD0 | 331 | 326 /282 |
 | UpdateAnimationRenderer | 455480 | 221 | 231 /180 |
 | UpdateOtherAnimationRenderer | 455560 | 249 | 232 /193 |
 | DrawAnimationRendererLayer | 455660 | 127 | Exact;9 fields |
 | AllocateSceneAnimationVm | 4569C0 | 177 | Exact;5 fields |
 | ResetAnimationScalarTweenTime | 44ED80 | 52 | Exact;1 field |
 | Four interpolation factors | 44EDD0 /44EE00 /44EE30 /44EE60 | 39 each | Exact;1 field each |
+
+The first four rows use the current canonical AnimationTween primary context;
+their large bodies remain diagnostic, without acceptance units. Other historical
+compiler contexts are distinguished below.
 
 ## Interpolation types and arithmetic
 
@@ -51,7 +55,7 @@ position/velocity mutations are distinct from ordinary interpolation.
 Mode8 uses rounded float progress `time.fraction / duration`. With double `t`
 promoted from that value, four coefficients round individually to float:
 
-- initial: `(2*t + 1) * (t - 1) * (t - 1)`;
+- initial: `((t - 1) * (t - 1)) * (t + t + 1)`;
 - target: `t*t * (3 - 2*t)`;
 - control1: `(1 - t) * (1 - t) * t`;
 - control2: `(t - 1) * t*t`.
@@ -125,29 +129,76 @@ It models a value type; it does not prove the original nominal math class,
 constructor API or TU partition. The original diagnostics for other rows above
 retain their separate interpolation/renderer contexts.
 
-Complete source is644/frame30 versus target673/frame28. All four address fields
-(timer advance, time-scale pointer, double3 and pair factor) replay;597 full
-bytes differ. The same644/597 is reproduced in the complete animation family
-and the canonical AnimationTween primary context. Mode17 now snapshots initial
+Complete source is now673/frame28 versus target673/frame28. All four address
+fields (timer advance, time-scale pointer, double3 and pair factor) replay;359
+full bytes still differ. The same673/359 is reproduced in the complete animation
+family and the canonical AnimationTween primary context. Mode17 snapshots initial
 before adding control2, retaining the observed four copy instructions. Before
 that snapshot the value model was628/614. The preceding POD in the complete
 animation family was615/593, with a different result ABI; its smaller byte count
 was not a complete reconstruction.
 
 Static arithmetic paths for modes7/17/8/ordinary contain target23/35/93/38 versus
-source23/35/90/34 instructions. Corresponding float-round stores are2/4/19/7 on
-both sides. These counts and the six result-write paths do not prove operand
-identity, x87 order or rounding equivalence. Separate X/Y locals before pair
-construction give exactly the same complete bytes as the direct value model;
-repeating that spelling is unhelpful. Remaining gaps include mode8/ordinary
-copy elimination, frame30 versus28, and register/x87 scheduling.
+source23/35/92/38 instructions. Corresponding float-round stores are2/4/19/7 on
+both sides. A bounded operand trace now follows fields, temporary stores and
+the result buffer through these four paths. Graphs agree only after commutative
+add/multiply operand normalization; strict order still differs in17/8. This is
+not an exceptional-value/status or full-function semantic proof. Separate X/Y
+locals before pair construction were byte-identical in the earlier value model;
+repeating that spelling is unhelpful.
 
-The animation caller remains non-exact at12300/frameE0/11742 complete differences,
+The animation caller remains non-exact at12292/frameE0/11727 complete differences,
 with407 fields and416 static opcode traces. It uses the correct EDI/EBX/EAX
 callee contract but buffers the pair atESP+B0 versus native88. Its frame/alignment
 and VM register remain open. The thirteen accepted factor/duration/scalar-setting
 units affected by the shared header/source have one common cold compilation;
 all thirteen strict full-field replays remain exact. They receive no new credit.
+
+## Hermite grouping and pair temporary lifetimes
+
+Fresh direct Ghidra reviews and bounded x87 operand traces establish the first
+coefficient's multiplication grouping in all four complete interpolation bodies:
+square t-1 first, then multiply by t+t+1. The old left-associated expression
+multiplied the factor by one delta before the second delta. Matching float-store
+counts had not detected this operand-tree difference. The shared helper now
+uses the reviewed grouping; the other three coefficients keep their formulas.
+
+The pair path uses four separate float coefficients and a named final pair for
+both mode8 and ordinary interpolation. These are actual arithmetic values: the
+rounded progress and promoted t are the same calculations previously inside
+Hermite. A named pair restores the observed float temporary followed by DWORD
+copies to the result buffer. Keeping independent coefficients instead of the
+aggregate recovers the native28-byte frame and all local homes in that path.
+No new class constructor, ABI declaration, padding or instruction is introduced.
+These compiler observations do not identify the original math class or TU.
+
+| Full-animation context | Prior source bytes / differences | Current source bytes / differences |
+| --- | ---: | ---: |
+| Integer XYZ768 | 768 /353 | 768 /348 |
+| Integer scalar332 | 329 /282 | 329 /286 |
+| Float pair673 | 644 /597 | 673 /359 |
+| Float scalar331 | 332 /279 | 332 /280 |
+
+All complete bodies and fields remain in each comparison. The shared grouping
+is retained from operand evidence even where the whole-byte diagnostic worsens.
+The complete12292-byte interpreter is byte-identical to the prior candidate
+after all407 fields replay; its pair result buffer remainsB0 versus native88.
+
+Rejected probes: an explicit field-copy constructor gives648/569 but adds four
+float-round stores to each of modes7/17, failing to reproduce their2/4 stores.
+Named results with aggregate coefficients give674/frame30/625; separate
+coefficients recover673/frame28/359. Using cached duration gives640/599 and
+drops a target stack store. Reversing coefficient-B operands with a direct-field
+completion comparison gives675/627 and retains the extra duration-register copy.
+These variants receive no partial or masked credit.
+
+Remaining pair gaps are the post-advance EAX-to-ECX duration copy, mode17's
+control2-X add operand order, and mode8's doubling/subtraction/product scheduling.
+Full extent,221 instructions, six complete result returns and frame28 now agree;
+359 differing bytes still prevent acceptance. Fourteen existing exact units
+affected by AnimationTween.cpp are cold-replayed in two families: thirteen in
+AnimationTween and the1168-byte screen initializer. No new exact unit or source
+mapping is added; totals remain234 exact functions/27,546 bytes.
 
 ## Renderer update and layer traversal
 
@@ -172,10 +223,10 @@ layer clamp. All three functions independently test runtime flags8000 at entry
 and exit, entering/leaving critical section9 and updating its byte depth.
 They return chain status1.
 
-Both update candidates lack native8-byte stack realignment. The opaque
-11,640-byte interpreter remains source-open, and no alignment padding, false
-signature or fabricated interpreter body is used to force their frames. The
-actual interpreter's full reconstruction remains substantial future work.
+The earlier update contexts lacked native8-byte stack realignment while the
+interpreter was opaque. Its complete12056-byte owner now has maintained source;
+the current full-family candidate still lacks native alignment. Renderer-update
+closure and the interpreter's remaining frame/register gaps stay non-exact.
 
 ## Pool allocation and physical fields
 

@@ -16,8 +16,8 @@ receipts outrank historical notes. All dirty work is ours.
 Operator priority is large/difficult owners, not leaf accumulation. Main owners:
 host412E30/16,556, animation44B4B0/12,056, interpreter45B860/7,093,
 dialogue41D380/6,980, HUD41B380/4,716 and gameplay420390/1,149. Native product,
-broad runtime and portability are later phases. This checkpoint improves the
-full animation owner to12292 and retains the initializer's existing exact unit.
+broad runtime and portability are later phases. This checkpoint recovers the
+pair callee's full673-byte size/frame28 and corrects Hermite operand grouping.
 
 ## Accepted screen-effect initializer1168
 
@@ -28,18 +28,12 @@ color0/color1/draw priority and RET18;1168 bytes/54 fields/zero differences thro
 compare-linked-function.py --unit initialize-secondary-hud-screen-effect. Public
 primary/all47 supports/context, unique full primary PDB owner and current receipts.
 
-Real node construction restores constructor/null branches and stack ABI;
-manually initializing allocated memory gave1036/EDI-self/RET14. Native case5
-precedes4; callback/priority clear order before ownership bit yields65. Derived
-pointer and ownership-bitfield spellings are identical; do not repeat. The last65
-differences in448AC0/B02/B44/CF2/D81 vanish when the three actual link writes use
-an inline helper. A ChainNode aggregate temporary gives1224/1142; rejected.
 Factory4489E0 is complete80/all3 fields/zero diagnostic differences, without an
 independent leaf unit. Callbacks remain declarations; original class/inheritance/
 TU identity is unproved. Mode/default argument replay is static, not runtime.
-Prior screen checkpoint verifier/source freeze bind182 union inputs; use the
-new current verifier below after the animation support/header edits. HUD's prior
-measurement4652/frameC/4101/all27 calls remains historical. Correct old kind43 wording: mode5,
+Initializer construction history/rejected spellings are in its detailed doc.
+Use the current verifier below after the tween-source change. HUD's prior
+measurement4652/frameC/4101/all27 calls is historical. Correct old kind43 wording: mode5,
 draw priority0x43, update priority14 (0xE). Details in SCREEN_EFFECT_INITIALIZATION.md.
 Next: return to the full12056-byte animation interpreter's frame/alignment and
 pair-tween ABI/copy gaps below. Keep priority on difficult complete owners.
@@ -59,12 +53,22 @@ call/loop/post-update/return skeletons; predicates/operands/loop reentry unprove
 Calls262/260 differ at RNG4/3 and float destination15/14. Lookup/insertion/malloc
 and float-read counts now agree. Preserve /GL and all owned table bytes.
 
-Pair value now recovers EDI tween/EBX hidden result/EAX pointer. Native caller
-buffer88 versus sourceB0 and main frame remain open. Full pair is native673/
-frame28 versus source644/frame30/597 differences after4 fields. Six returns fill
-both words. Mode17 initial snapshot restores4 copies; mode8/ordinary have93/38
-native versus90/34 source instructions. Round-store counts match, not operands.
-Nominal class/constructor/TU identity remains a hypothesis; no new exact credit.
+Pair now has complete673/frame28/359 differences after4 fields in the public
+primary tween and full-animation contexts. Both have221 instructions and six
+returns filling both words/EAX pointer, with EDI tween/EBX result. Named results
+restore DWORD return copies; separate coefficient floats recover stack homes.
+Four native Hermite first-coefficient trees square t-1 before multiplying by
+t+t+1; shared/helper pair source now follows that grouping. Target/source modes
+7/17/8/ordinary:23/35/93/38 versus23/35/92/38, float-round stores2/4/19/7 equal.
+Bounded operand graphs agree only after commutative add/multiply normalization;
+strict order differs17/8, no exceptional-value/status/full-gate proof. Nominal
+class/header/TU identity remains a hypothesis. No new exact credit.
+Remaining pair gaps: post-advance EAX-to-ECX duration copy,17 control2-X add
+order,8 doubling/second-coefficient/product scheduling. Caller bufferB0/native88
+and main frame remain open. Keep the complete extent, /GL and real constructors.
+Rejected: copy ctor648/569 adds four round stores per7/17; aggregate named return
+674/frame30/625; earlier cached duration640/599 drops a target store;
+operand-order/direct-field comparison675/627. Details in tween doc.
 
 Retained: direct-if ReadF removes literal spills; reviewed native case order with
 four child cases restores signed dispatch; instruction41 correctly selects scene
@@ -140,12 +144,13 @@ Interpreter6989/native7093 retains120/all89 selectors/two RET4, VM ESI/nativeEDI
 
 ## Checkpoint evidence
 
-Current receipt check: .analysis/verify-animation-range-checkpoint.py.
-Current animation-execution-range-body-* evidence covers full main/PDB/407 fields,
-416 static skeletons, range dependency/three fields and four caller-ABI paths.
-animation-random-range-review.* is direct Ghidra; animation-range-screen-* binds
-the one affected canonical initializer cold replay/1168/all54 fields/zero.
-animation-range-source-freeze.json has182 union inputs; changed prior inputs are
-AnimationExecution.hpp and AnimationExecutionSupport.cpp. Earlier animation and
-screen checkpoint verifiers/receipts are historical after those input changes.
-Tools/Oracle implementations unchanged. One new mapping/boundary; no new exact unit.
+Current receipt check: .analysis/verify-animation-hermite-pair-checkpoint.py.
+animation-hermite-pair-public-* binds the full main/four tween bodies, pair's
+four fields/six returns/four operand paths and four corrected coefficient trees.
+animation-hermite-pair-canonical-* and canonical-replays.* bind fourteen exact
+replays in two cold families. Fresh Ghidra: animation-pair-copy-review.* and
+animation-hermite-group-review.*. animation-hermite-pair-source-freeze.json
+freezes183 union inputs; only prior AnimationTween.cpp changed. The existing
+probes/animation-tween-context.cpp is newly included in this union. Older range/screen
+checkpoint verifiers are historical after that change. Tools/Oracles unchanged.
+No new mappings, boundaries or exact units;234 exact/27,546 bytes remains.

@@ -139,12 +139,29 @@ fill both words through EBX and return that pointer; EDI is the tween. Its only
 Ghidra caller is animation44B4B0/call44DBEC. A two-component value constructor
 naturally recovers this ABI; class/constructor identity remains a hypothesis.
 Caller bufferB0 versus native88 and main frameE0/no8 alignment remain. Complete
-pair644/frame30/597 differences versus native673/frame28 retains four fields.
-Mode17 initial snapshot restores four copies. Modes7/17/8/ordinary have target
-23/35/93/38 versus source23/35/90/34 instructions, with matching2/4/19/7 float-round
-stores; those counts do not prove operands. Separate X/Y locals are byte-identical.
-All13 affected accepted units share one cold context and strictly replay exact.
-This checkpoint adds no exact credit.
+pair now673/frame28/359 differences versus native673/frame28 retains four fields
+and221 instructions/six full hidden-result returns in both public-primary tween
+and full-animation contexts. Named results restore the final temporary/DWORD
+return copies; four separate float coefficients remove the aggregate's extra
+eight-byte stack home. The progress/promotion arithmetic is unchanged.
+Modes7/17/8/ordinary have target23/35/93/38 versus source23/35/92/38 instructions,
+with matching2/4/19/7 float-round stores. Bounded field/x87/rounding graphs agree
+only after commutative add/multiply normalization; strict order differs in17/8.
+No exceptional-value/status or full timer-gate semantic proof follows.
+All four target tween bodies first square t-1, then multiply by t+t+1 for the
+first Hermite coefficient. The former left-associated factor/delta/delta source
+had the wrong operand tree despite matching store counts. Shared Hermite and
+pair locals now retain the reviewed grouping. No original class/TU is inferred.
+Rejected: field-copy constructor648/569 adds four float-round stores to each of
+modes7/17; named results with aggregate coefficients674/frame30/625; earlier
+cached-duration640/599 drops a target stack store; operand-order/direct-field
+comparison675/627 keeps the extra duration-register move. Separate X/Y locals
+were byte-identical in the earlier value model.
+Only AnimationTween.cpp changed against the182-input range checkpoint. Fourteen
+affected accepted units strictly cold-replay in two families, with no new credit.
+The current183-input union also freezes the existing canonical tween probe.
+Remaining pair gaps: duration EAX-to-ECX copy,17's control2-X add order,8's
+doubling/second-coefficient/product scheduling. Keep the complete673 bytes.
 Direct -- versus wrapped subtraction is byte-identical and leaves EDI=-1/ADD.
 Full real dependencies also move dialogue6948 from frame13C/5694 differences to
 native frame140/5357, with all454 fields/252 calls/46 traces retained. No exact
