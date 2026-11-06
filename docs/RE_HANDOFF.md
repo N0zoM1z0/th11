@@ -7,9 +7,9 @@ status/diff; current receipts outrank historical notes. All dirty work is ours.
 ## Current exact state
 
 - Original Japanese TH11v1.00a, pinned by config/target.toml; no substituted bytes.
-- 2,140 candidates;592 reviewed boundaries;474 source mappings.
+- 2,140 candidates;595 reviewed boundaries;477 source mappings.
 - 236 exact functions/31,881 bytes:9 normal COFF and227 linked PE.
-- Origins:90 authored,486 indeterminate,14 exclusions,1,550 pending.
+- Origins:90 authored,489 indeterminate,14 exclusions,1,547 pending.
 - VC9 RTM21022/SDK6.0A; direct scripts/ghidra.py, no Factory MCP/REA.
 - Commit/push authorized; prefix `gpt-6.1-sol: `. No heavy job remains running.
 
@@ -35,54 +35,67 @@ No prefix crop/normalization. Selection/history/event source bodies support this
 large owner without leaf acceptance units. QueueMeshEffectSound stays124/native125.
 See CONFIGURATION_AUDIO_MENU.md; old checkpoint counts/freezes are historical.
 
-## Complete primary page1608; current hard gaps
+## Current large owners: joystick2439/908 and assignment200
 
-43A0A0 now has full MenuPrimary.cpp/.hpp source and complete direct review:
-1521 code/441 instructions+3 alignment+three5/8/8-cell84-byte tables,13 returns,
-70 calls/16 targets. All21 apparent foreign interior refs are owned table DATA;
-eight CC before43A6F0. It implements opening frames70/80, eight-entry input,
-locked-entry exclusions, cancel/confirm and delayed20-frame page transitions.
-Selection5 really queues confirmation sound10 twice; keep it.
+MenuJoystickDisplay.cpp owns full43BD60..43C6E6:2439 reachable code/752
+instructions, no table/foreign interior, one RET and tail JMP44AB40 at43C62A.
+Keep all20 late success blocks after the tail site.59 ordinary calls=40 lookup/
+19 bind; the last binding is a tail transfer. Main43B9D0 owns908=885 code/216
+instructions+3 alignment+five-cell20-byte table through43BD5B. Assignment43C6F0
+owns200/48 instructions and five ordered conflict checks. Complete direct
+Ghidra/reference/neighbor/PE CFG proof for all three, no leaf acceptance units.
 
-Current complete primary output1608/441 instructions/116 fields/all70 calls,
-30 full byte differences:9 EBP save/default bytes,19 bytes scheduling first root
-ID store/secondary ID load,2 bytes swapping fastcall argument preparation. No
-exact credit. Natural Quit sharing fixes the8-byte exit-load difference. An
-implicit switch default gives1596/970 and is discarded. Next work is these three
-codegen regions and the common EBP prologue issue, not a smaller function cohort.
+The actual ID2CC and staged five shorts59C4..59CC now have typed fields with
+unchanged offsets/size. Reuses existing joystick binding view and real polling
+body. Twenty tens/ones writes in two script groups; direct signed-short /10
+uses multiply while %10 uses IDIV. The page scans0..30 and stops at the first
+pressed button; reload uses current bindings. Confirm/cancel and delayed page3
+history restoration are complete. No broad runtime or hardware harness.
 
-Typed primary ID2C4, secondary root67C and secondary file18 preserve real value/
-pointer fields. Passing secondaryFile directly to the factory restores PUSH EAX0
-before the file load; an extra local forced PUSH0 and shifted following code.
-Normal-COFF selector support restores the difficulty write lost under all-/GL
-visibility and native ECX value/EDX selection. This is a visibility hypothesis,
-not original TU proof; no established /GL owner was downgraded. Selector32/native33
-is non-exact. Other supporting30/80/64-byte results are zero diagnostics only;
-locked-child83 currently98/78 differences. No new leaf acceptance units.
+Important shared correction: full389-byte BindAnimationSprite44AB40 loads a
+QWORD at497F50 whose value is1/256, not0.5. Both source transform scales now use
+*(1.0/256.0), replacing0.5f. All11 affected exact units in8 cold families pass
+strict replay. No tool/Oracle implementation change or full cohort replay.
+The binding body itself remains non-exact (canonical audio context388/native389,
+293 differences after one coefficient field). No new exact credit.
 
-Public probes/menu-primary-context.json has24 supports (callback and selector
-normal), primary/all established owners /GL; build/probe-ltcg/MenuPrimaryOwner.
-New checkpoint: `.analysis/verify-menu-primary-checkpoint.py`; full primary,
-parent and support diagnostics in menu-primary-proof.json and byte regions in
-menu-primary-byte-proof.json. Source freeze218 extends213 with five new public
-inputs; only ConfigurationAudioMenu.hpp and MenuController.hpp changed among
-prior inputs. Only apply-configuration-audio-menu is affected: cold strict3836/
-110/zero replay, no full cohort or runtime suites. See MENU_PRIMARY.md and KB.
+First display candidate2592/native2439/61 fields/2328 differences has file on
+stack at every bind and no final tail. Void/status result, UI unity TU, file
+member-method and real ASCII caller experiments do not fix it and are discarded.
+Page908/62 fields/833 differences and assignment199/native200/2 fields/200
+differences remain non-exact. The new primary support is1604/116 fields/1320;
+audio apply3900/110 fields/3525 and caller992/61 fields/823 in this graph.
+Canonical audio still3836/110/zero and caller992/61/9 after its cold replay.
+The new real page restores36 outer-controller calls, but parent1188/native1224
+still has1149 differences. Native requires EDX file/plain RET while the new
+binder context passes file on stack/RET4. Next work: actual binder389 float/
+UV/matrix store scheduling and the caller/private-argument context; do not force
+register ABIs or crop late blocks. See MENU_JOYSTICK.md and knowledge base.
 
-## Outer controller1224: real page context changes optimizer decisions
+Public probes/menu-joystick-context.json has28 supports, callback and selector
+normal; all new/established linked owners keep /GL. Output build/probe-ltcg/
+MenuJoystickOwner. New checkpoint `.analysis/verify-menu-joystick-checkpoint.py`;
+menu-joystick-proof.json keeps full owner/parent diagnostics, and
+menu-joystick-cold-comparisons.json holds11 strict results. New freeze224 extends
+218: only AnimationSpriteBinding.cpp and MenuController.hpp changed; four new
+joystick source files and existing JoystickButtons.cpp/.hpp are newly frozen.
 
-MenuController.cpp owns complete4399B0..439E77:300 instructions/1157 code+3
-alignment+16-cell64-byte table, two RET4/EAX1 paths. Registered7-byte callback
-439F10 (DATA4395E6) preserves its stack input through normal support. Adjacent
-draw439E80 owns140 including8 table cells; boundary only. Marker4564C0 has source.
+## Earlier isolated primary1608/30; current context must be remeasured
 
-The former isolated1192/100 fields/1138 differences retained36 calls. With the
-real primary page, the complete support contribution is1148/96 fields/1165
-full differences; two page-set/update pairs merge again,32/native36 calls. Do
-not present source presence as parent exactness. Ten other page handlers are
-still source-open in this context. Audio3836 is diagnostically zero in this
-context; its992 caller remains9. The prior isolated root receipt/verifier is
-historical after typed-header updates. See MENU_CONTROLLER.md and MENU_PRIMARY.md.
+MenuPrimary.cpp still covers the complete1608-byte native owner/441 instructions,70 calls,
+116 fields and three5/8/8-cell84-byte tables. At e3c2d76 the isolated context
+had30 differences:9 EBP save/default bytes,19 ID-store/load scheduling,2 fastcall
+argument preparation. Its old receipt/verifier is historical after current
+header/binder changes. The joystick graph changes shared callee interfaces and
+primary output; use fresh diagnostics, not the isolated30 as current equality.
+Pointer/reference selection aliases, ID locals, scalar/address spellings and
+/GS- do not improve that baseline. Source/profile are retained. See MENU_PRIMARY.md.
+
+Outer4399B0 remains complete1224 including16 cells/two RET4 paths. The missed
+7-byte callback439F10 and marker4564C0 are supporting source; adjacent draw439E80
+owns140 including8 cells, boundary only. Nine other page handlers remain
+source-open in the current graph. Original class/TU and native-product closure
+are unproved; full-game goal remains active.
 
 ## Other substantial owners
 

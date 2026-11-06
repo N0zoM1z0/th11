@@ -1,0 +1,60 @@
+{
+  "artifact_kind": "linked-pe",
+  "source": "src/MenuJoystickDisplay.cpp",
+  "inputs": [
+    "src/MenuJoystick.hpp"
+  ],
+  "support_sources": [
+    "src/ConfigurationAudioMenu.cpp",
+    "src/SoundQueue.cpp",
+    "src/MusicStream.cpp",
+    "probes/sound-queue-context.cpp",
+    "src/StageMesh.cpp",
+    "probes/stage-mesh-context.cpp",
+    "src/AnimationSpriteBinding.cpp",
+    "src/AnimationVmFactory.cpp",
+    "src/SecondaryPlayerMovement.cpp",
+    "src/SecondaryDamageSupport.cpp",
+    "src/MeshEffects.cpp",
+    "src/ConfigurationMenuSelection.cpp",
+    "src/ConfigurationMenuAnimation.cpp",
+    "probes/configuration-menu-support-context.cpp",
+    "src/AnimationExecution.cpp",
+    "src/MenuControllerSupport.cpp",
+    "src/MenuControllerCallbacks.cpp",
+    "probes/menu-controller-context.cpp",
+    "src/SecondaryActorAnimation.cpp",
+    "src/MenuController.cpp",
+    "src/MenuPrimarySupport.cpp",
+    "src/StageTween.cpp",
+    "probes/menu-primary-support-context.cpp",
+    "src/MenuPrimarySelection.cpp",
+    "src/MenuPrimary.cpp",
+    "src/MenuJoystick.cpp",
+    "src/MenuJoystickAssignment.cpp",
+    "src/JoystickButtons.cpp"
+  ],
+  "normal_support_sources": [
+    "src/MenuControllerCallbacks.cpp",
+    "src/MenuPrimarySelection.cpp"
+  ],
+  "output_dir": "build/probe-ltcg/MenuJoystickOwner",
+  "profile": [
+    "/TP",
+    "/O2",
+    "/Ob1",
+    "/Gy",
+    "/MT",
+    "/Isrc",
+    "/EHsc",
+    "/GL"
+  ],
+  "entry": "MenuControllerProbe@4",
+  "functions": [
+    "ApplyMenuJoystickBindings"
+  ],
+  "symbol": "?ApplyMenuJoystickBindings@@YGXPAUMenuControllerView@@@Z",
+  "target_address": 4439392,
+  "size": 2439,
+  "linkages": []
+}

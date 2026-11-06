@@ -472,3 +472,6 @@ StopMenuAnimation
 SignalLockedMenuEntry
 IsMenuExtraUnlocked
 SelectMenuItem
+ApplyMenuJoystickBindings
+UpdateMenuPage04
+AssignMenuJoystickButton

@@ -7,9 +7,12 @@
 struct MenuControllerView
 {
     ConfigurationAudioMenuView page;
-    unsigned char unknown2cc[0x67c - 0x2cc];
+    AnimationVmId joystickRootVmId;
+    unsigned char unknown2d0[0x67c - 0x2d0];
     AnimationVmId secondaryRootVmId;
-    unsigned char unknown680[0x5b70 - 0x680];
+    unsigned char unknown680[0x59c4 - 0x680];
+    short joystickBindings[5];
+    unsigned char unknown59ce[0x5b70 - 0x59ce];
     int musicDelay;
     unsigned int flags;
 };
@@ -33,6 +36,8 @@ struct MenuReplayView
 };
 
 typedef char MenuControllerPageOffset[(offsetof(MenuControllerView, page) == 0) ? 1 : -1];
+typedef char MenuControllerJoystickVmOffset[(offsetof(MenuControllerView, joystickRootVmId) == 0x2cc) ? 1 : -1];
+typedef char MenuControllerJoystickBindingsOffset[(offsetof(MenuControllerView, joystickBindings) == 0x59c4) ? 1 : -1];
 typedef char MenuControllerSecondaryVmOffset[(offsetof(MenuControllerView, secondaryRootVmId) == 0x67c) ? 1 : -1];
 typedef char MenuControllerDelayOffset[(offsetof(MenuControllerView, musicDelay) == 0x5b70) ? 1 : -1];
 typedef char MenuControllerFlagsOffset[(offsetof(MenuControllerView, flags) == 0x5b74) ? 1 : -1];

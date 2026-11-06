@@ -139,3 +139,10 @@ receipt define diagnostic extents. The shared field-type correction changes two 
 established exact unit is directly affected and receives a cold strict replay.
 Canonical manifests and tool implementations are unchanged; no broad cohort
 replay or runtime suite is used.
+
+Later joystick reconstruction adds the real page04 and its2439-byte display
+body. That graph changes the shared binding interface and primary-page output;
+the isolated30-difference receipt is historical after the current menu header
+and sprite-scale correction. See [MENU_JOYSTICK.md](MENU_JOYSTICK.md) for current
+context and cold proof. None of the six follow-up pointer/reference/local/scalar/
+address-/GS- probes improves the isolated baseline, and none is retained.

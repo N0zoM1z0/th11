@@ -123,6 +123,47 @@ source presence does not establish parent codegen. Audio3836 remains zero in the
 new context; its992 caller still has9. Only the accepted audio apply unit is
 affected by the two header changes and requires cold replay. See MENU_PRIMARY.md.
 
+## Joystick menu: complete3547 bytes and corrected sprite scale
+
+The908-byte joystick page43B9D0 owns885 code/216 instructions+3 alignment and
+five-cell20-byte table43BD48..43BD5B. All five apparent foreign interior entries
+are owned DATA cells. The substantial display43BD60 owns all2439 bytes/752
+instructions, including20 late child-success blocks and the RET at43C6E6. Its
+59 ordinary calls are40 VM lookups/19 binds;43C62A tail-jumps to44AB40 for the
+last binding. Do not end the owner at that tail jump. Assignment43C6F0 owns200
+bytes/48 instructions, five ordered conflict tests and one shared return.
+
+Natural source covers all20 digit writes, state/input/delay/history paths,
+five staged signed shorts59C4..59CC and the value ID at2CC. It reuses actual
+JoystickBindingsView and PollJoystickButtons. The first pressed index0..30 is
+used; index31 is not scanned. Reload uses current global bindings, not invented
+factory defaults. Confirm commits the18-byte binding view to MainRuntime+1CC;
+cancel on selection6 reloads/discards. No runtime/hardware matrix is required.
+
+Fresh full binder389 review exposes an earlier source error:497F50 is the double
+1/256, not0.5. Width/height transform scale now uses *(1.0/256.0) instead of0.5f.
+That value and precision are independently decoded from the original PE and its
+QWORD load. It is a correction to the reconstruction, not a game bug or a claim
+that callers establish callee correctness. All11 directly affected exact units
+in8 cold families retain zero differences; no full cohort replay.
+
+Display source is initially2592/native2439 after61 fields, with2328 full
+differences. A stack file argument at every bind and missing final tail change
+its code/alignment layout. Void tail spelling, computed status return, audio/
+display unity, a normal file member-method model and a real ASCII caller do not
+restore native EDX file. None is retained as a source ABI or TU claim. Canonical
+audio's binder is388/native389/293 differences after the coefficient field;
+its complete389-byte body remains open despite the correct coefficient.
+
+The new real page restores all36 outer-controller call sites, but the complete
+parent remains1188/native1224/1149 differences. The new graph also perturbs the
+primary page's earlier isolated1608/30 result. Context and callee ABI matter;
+do not borrow the old result as current whole-menu equality. Six bounded primary
+probes at baseline e3c2d76 are negative: shared selection pointer/reference remove
+an address calculation, a separate ID local worsens scheduling, scalar/address
+spellings and /GS- stay30. No existing source/profile change is retained from them.
+See MENU_JOYSTICK.md for full target/source/compiler distinctions and next gaps.
+
 ## Target and compilation
 
 - Only original Japanese TH11 1.00a, SHA-256

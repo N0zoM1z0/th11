@@ -64,8 +64,8 @@ int __stdcall BindAnimationSprite(AnimationDocumentView *file, int sprite, Anima
     self->height = self->sprite->height;
     Identity(self->transform);
     Identity(self->textureTransform);
-    self->transform._11 = self->width * 0.5f;
-    self->transform._22 = self->height * 0.5f;
+    self->transform._11 = self->width * (1.0 / 256.0);
+    self->transform._22 = self->height * (1.0 / 256.0);
     self->textureTransform._11 = self->width / self->sprite->textureWidth * self->sprite->scaleX;
     self->textureTransform._22 = self->height / self->sprite->textureHeight * self->sprite->scaleY;
     self->savedTransform = self->transform;

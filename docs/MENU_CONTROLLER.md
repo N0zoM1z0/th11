@@ -108,3 +108,8 @@ This image is a compilation context, not a game product. The controller has no
 acceptance manifest entry while full equality is open. This checkpoint originally changed no accepted source. Later typed-field
 updates for the primary page supersede its old receipt/source freeze; see
 [MENU_PRIMARY.md](MENU_PRIMARY.md) for the current real-page context and gaps.
+
+The joystick context now supplies page04 as well as the primary page and restores
+all36 physical parent calls, but its1188-byte contribution remains non-exact.
+The previous isolated/primary-only receipts are historical after the typed fields
+and shared coefficient correction. See [MENU_JOYSTICK.md](MENU_JOYSTICK.md).
