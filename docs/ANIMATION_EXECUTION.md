@@ -127,13 +127,35 @@ than the older void prototype name for the same target.
 
 ## Complete comparison and remaining gaps
 
-The maintained full cold /GL primary contribution is12884 bytes with frameE0 and stack
-VM input, but lacks native8-byte stack alignment and uses EBP for VM versus EDI.
-All104 table cells and403 independently reviewed address/table fields replay;
-12471 bytes differ over the complete owner, including the length difference.
-There are262 native versus257 source call sites. Physical decreases are float
-read78/77, RNG4/3, missing-ID lookup5/4, related-node insertion3/2 and malloc2/1.
-They are not missing instruction implementations or accepted byte matches.
+The maintained full cold /GL primary contribution is12320 bytes with frameE0 and
+stack VM input, but lacks native8-byte stack alignment and uses EBP for VM versus
+EDI. All104 table cells and407 independently reviewed address/table fields
+replay;11788 bytes differ over the complete owner, including length differences.
+The source has3288 reachable instructions/11896 code bytes+8 alignment+416 table.
+Native/source calls are262/260: integer RNG4/3 and float destination15/14 remain.
+Lookup5/5, related insertion3/3, malloc2/2 and float read78/78 now agree physically.
+These counts grant neither semantic nor exact credit.
+
+The former12884-byte contribution spilled a ReadF literal to a temporary before
+loading it again on the direct path. Returning directly from each helper branch
+removes that unnecessary round trip:12272 bytes before the RNG correction,
+versus12884. A bounded inspection found55 old EBX-payload load/store/reload
+triples and none after the change; that pattern count does not account for every
+removed instruction. Separating the four child cases alone costs112 bytes and
+is rejected. Keeping them separate in reviewed native entry order restores the
+single signed opcode dispatch, the three factory/allocation site counts above,
+and the12272-byte size. The handlers now live together in
+AnimationExecutionInstructions.inc; related fallthrough labels remain atomic.
+
+Instruction41 also required a semantic correction. Native44D523 selects scene
+state4C2EF8 when VM flag40000000 is set, while44D543 selects text state4C2F00
+otherwise. The old source decoded in both arms but always passed text state.
+Separate complete arms preserve selection before decoding and recover the
+missing physical float read. The corrected owner adds48 bytes, giving12320.
+A targeted static argument replay checks both flag values with literal and
+variable payloads, including zero/one ReadAnimationFloat call, against both
+native and source. The old candidate fails the scene-state case. This bounded
+check does not validate the rest of the interpreter's arguments.
 
 All104 dispatch entries have equal static per-op call/instruction-loop/post-
 update/return skeletons:416 distinct paths on each side. Constant opcode choices
@@ -145,17 +167,19 @@ A direct predecrement spelling for instruction5 is byte-identical to the
 wrapped subtraction helper: it still uses a long-livedEDI=-1 and memory ADD
 versus native DEC. Repeating that spelling probe does not resolve the gap.
 
-The real dependency family also retains HUD4652/frameC/4101 differences and all
-27 calls. Dialogue stays6948 bytes but now has native frame140, with5357 full
+At the previous complete-source checkpoint, the real dependency family gave
+HUD4652/frameC/4101 differences and all27 calls. Dialogue was6948 bytes with
+native frame140 and5357 full
 replay differences versus earlier frame13C/5694; all454 fields,252 calls and46
 static per-op traces remain. This is a compiler observation under a fuller
 context, not proof of original TU ownership or whole-function equality.
 
-Next gaps are the full interpreter frame/alignment, VM register, physical case
-layout, source opcode caching, temporary/vector lifetimes and the five physical
-call merges. Preserve complete extents and /GL; no volatile, fake returns,
+Next gaps are the full interpreter frame/alignment, VM register, temporary/vector
+lifetimes and the two remaining physical call merges. Float destinations for
+17/27/45/46 share a native tail; the source also folds7 into it. Integer random40
+shares its RNG call in source but has two physical native sites. Preserve complete extents and /GL; no volatile, fake returns,
 private-register declarations, padding or cropped extents are used.
 
 Private evidence uses animation-vm-update/arguments/operations/math Ghidra
 exports, animation-execution-target-proof and complete owners-function/CFG
-reports. Target/decompiler dumps, builds and mutable databases remain private.
+reports, plus the targeted RNG argument proof. Target/decompiler dumps, builds and mutable databases remain private.

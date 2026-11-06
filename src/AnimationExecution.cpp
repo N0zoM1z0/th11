@@ -27,8 +27,9 @@ __forceinline int ReadI(AnimationVmView *vm, AnimationInstruction *instruction, 
 }
 __forceinline float ReadF(AnimationVmView *vm, AnimationInstruction *instruction, int index)
 {
-    float value = Floats(instruction)[index];
-    return (instruction->variables & (1u << index)) ? ReadAnimationFloat(vm, value) : value;
+    if (instruction->variables & (1u << index))
+        return ReadAnimationFloat(vm, Floats(instruction)[index]);
+    return Floats(instruction)[index];
 }
 __forceinline int *IntegerDestination(AnimationVmView *vm, AnimationInstruction *instruction)
 {
@@ -129,42 +130,7 @@ int __stdcall ExecuteAnimationVm(AnimationVmView *vm)
         if (instruction->frame > self->time.current) break;
         switch (instruction->opcode)
         {
-        case 4:
-            SetStageTimer(&self->time, Words(instruction)[1]);
-            self->instruction = reinterpret_cast<AnimationInstruction *>(self->scriptStart + Words(instruction)[0]);
-            continue;
-        case 5:
-        {
-            int *value = IntegerDestination(vm, instruction);
-            --*value;
-            if (ReadI(vm, instruction, 0) > 0)
-            {
-                SetStageTimer(&self->time, Words(instruction)[2]);
-                self->instruction = reinterpret_cast<AnimationInstruction *>(self->scriptStart + Words(instruction)[1]);
-                continue;
-            }
-            break;
-        }
-        case 69:
-            self->flags &= ~1u;
-            // Continue through the same event/pause operation as instruction63.
-        case 63:
-            if (self->event) goto animation_event;
-            self->flags |= 0x1000;
-            goto animation_pause;
-        case 81:
-            self->time = self->savedTime;
-            self->instruction = self->savedInstruction;
-            continue;
-#include "AnimationExecutionMath.inc"
-#include "AnimationExecutionVisual.inc"
-        case -1:
-        case 1:
-            self->flags &= ~1u;
-        case 2:
-            self->instruction = 0;
-            g_AnimationTimeScale = savedScale;
-            return 1;
+#include "AnimationExecutionInstructions.inc"
         default:
             break;
         }

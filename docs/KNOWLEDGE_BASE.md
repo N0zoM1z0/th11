@@ -75,9 +75,16 @@ VM374 is packed primary color, with alpha377;378 is alternate color. The older
 AnimationVmView.spriteIndex name at374 is a legacy label, not a sprite identity.
 A nonzero callback428 returns1 without restoring the overridden global time
 scale. The sprite transform42C consumes VM/integer in ECX/EDX, not ghost floats.
-Current /GL12884/frameE0/12471 full differences retains403 reviewed fields and
-all416 static per-op call/loop/post-update/return skeletons, despite262/257
-physical calls. ReadFloat/RNG/lookup/insertion/malloc lose one physical site each.
+Current /GL12320/frameE0/11788 full differences retains407 reviewed fields and
+all416 static per-op call/loop/post-update/return skeletons, with262/260 physical
+calls. Direct-if ReadF removes literal float spill/reloads; four distinct child
+cases plus reviewed native entry order recover lookup/insertion/malloc counts
+and signed opcode dispatch. Splitting children alone adds112 bytes; rejected.
+Instruction41 selects scene4C2EF8 at44D523 or text4C2F00 at44D543 from flag40000000.
+The prior text-only argument was wrong despite equal static call skeletons.
+Four targeted native/source argument paths now agree; ReadFloat sites78/78.
+Remaining site merges are integer random40 (RNG4/3 total) and assignment7 folding
+into the shared17/27/45/46 float-destination tail (15/14 total).
 Direct -- versus wrapped subtraction is byte-identical and leaves EDI=-1/ADD.
 Full real dependencies also move dialogue6948 from frame13C/5694 differences to
 native frame140/5357, with all454 fields/252 calls/46 traces retained. No exact

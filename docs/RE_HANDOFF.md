@@ -20,7 +20,7 @@ broad runtime and portability are later phases. No new exact unit this checkpoin
 
 ## New complete animation interpreter12056
 
-AnimationExecution.cpp/header/Math/Visual/Update fragments cover all signed
+AnimationExecution.cpp/header/Instructions/Update fragments cover all signed
 opcodes-1..102, events/saved returns, nine tween updates, both strip generators,
 callbacks and clocks. Full owner44B4B0..44E3C7=11637 code/3202 instructions+3
 alignment+416 in104 cells. All104 foreign DATA refs are owned;8 CC before44E3D0.
@@ -29,15 +29,19 @@ Native stack VM, frameCC/alignment8, three RET4 return0/0/1. Reject decompiler
 phantom register/float inputs and eight-byte return. Callback428 nonzero returns1
 without restoring the overridden global time scale; retain that path.
 
-Cold build/probe-ltcg/AnimationExecutionOwners: complete public primary12884,
-frameE0 without8 alignment, VM EBP versus nativeEDI,403 reviewed fields and12471
-full replay differences. Native/source262/257 physical calls: float read78/77,
-RNG4/3, missing-ID5/4, related insertion3/2 and malloc2/1. All104 entries retain
-416 static acyclic call/instruction-loop/post-update/return skeletons. This
-abstract check does not prove predicates, operands, aliases or loop reentry.
-A direct -- spelling is byte-identical and leaves long-livedEDI=-1/ADD versus
-native DEC; do not repeat it. Floating greater-than is ordered by raw AH masks;
-negated <= is wrong for unordered and was corrected before current receipts.
+Cold build/probe-ltcg/AnimationExecutionOwners: complete public primary12320,
+frameE0 without8 alignment, VM EBP versus nativeEDI,407 reviewed fields and11788
+full replay differences. Native/source262/260 calls: RNG4/3 and float destination
+15/14. All104 entries retain416 static call/loop/post-update/return skeletons;
+these do not prove predicates, operands, aliases or loop reentry. Native returns
+0/0/1 retained. Direct-if ReadF removes literal spill/reloads; reviewed native
+case order with four distinct child cases recovers signed dispatch and lookup,
+insertion,malloc counts. Split children alone adds112 bytes and is rejected.
+Instruction41 was incorrectly text-only: flag40000000 selects scene4C2EF8 at
+44D523 versus text4C2F00 at44D543. Corrected full arms restore78/78 float reads;
+four targeted argument paths pass, and the old candidate fails scene selection.
+Direct -- is byte-identical and leaves EDI=-1/ADD versus DEC; do not repeat.
+Floating greater-than is ordered by raw AH masks, not a negated <=.
 
 Real direct dependencies have full natural source, without leaf acceptance:
 read float540 (447+1+92table), int219 (145+3+48table+23selectors), float destination
@@ -50,7 +54,8 @@ primary color/alpha; the older spriteIndex label is wrong, but that shared
 header was not changed solely to rename it. See ANIMATION_EXECUTION.md.
 
 Next difficult gaps: complete frame/alignment and temporary lifetimes, VM register,
-physical case layout/opcode cache and five physical call merges. Do not invent
+remaining call merges: integer random40 and float assignment7 joining the
+17/27/45/46 destination tail. Do not invent
 padding/double locals/register ABI to force them. Preserve /GL and full tables.
 HUD now calls canonical int ExecuteAnimationVm. The older void prototype/caller
 name in player-controller files is still external there; changing that source
@@ -105,8 +110,9 @@ Interpreter6989/native7093 retains120/all89 selectors/two RET4, VM ESI/nativeEDI
 ## Checkpoint evidence
 
 Current private evidence is animation-execution-* and animation-vm-* direct
-Ghidra exports, full field/CFG/return/target proofs and receipt/source freeze.
-Union freeze180 versus164 changes only SecondaryHud.cpp and adds16 inputs. No
-canonical exact unit depends on that changed source; no old exact replay is
-required. Tools/Oracle implementations unchanged. Old freezes/receipts retained
-as historical contexts. Separate support observations from strict exact credit.
+Ghidra exports, complete field/CFG/return/target proofs and receipt/source freeze.
+The codegen checkpoint changes only AnimationExecution.cpp and its case fragments
+from the180-input freeze; no accepted exact unit depends on them. Cold replay
+covers this changed owner only. Old HUD/dialogue/parent receipts remain historical
+support contexts; no unrelated caller replay or unchanged Oracle tests required.
+Tools/Oracle implementations unchanged. No new exact unit or source mapping.
