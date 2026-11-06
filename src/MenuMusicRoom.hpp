@@ -7,7 +7,9 @@
 // independently observed neighboring fields; the parser does not clamp counts.
 struct MenuMusicRoomView
 {
-    unsigned char unknown000[0x60c];
+    unsigned char unknown000[0x24];
+    SecondaryDebugSelectionView selection;
+    unsigned char unknown0fc[0x60c - 0xfc];
     AnimationVmId trackVmIds[20];
     AnimationVmId commentVmIds[8];
     AnimationVmId secondaryRootVmId;
@@ -20,6 +22,7 @@ struct MenuMusicRoomView
     unsigned char *textBuffer;
 };
 
+typedef char MenuMusicSelectionOffset[(offsetof(MenuMusicRoomView, selection) == 0x24) ? 1 : -1];
 typedef char MenuMusicTrackIdsOffset[(offsetof(MenuMusicRoomView, trackVmIds) == 0x60c) ? 1 : -1];
 typedef char MenuMusicCommentIdsOffset[(offsetof(MenuMusicRoomView, commentVmIds) == 0x65c) ? 1 : -1];
 typedef char MenuMusicCountOffset[(offsetof(MenuMusicRoomView, trackCount) == 0x680) ? 1 : -1];

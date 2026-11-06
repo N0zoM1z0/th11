@@ -96,7 +96,7 @@ argument choice is resolved, but it does not explain the whole-owner gap.
 
 | Complete contribution | Native bytes | Source bytes | Full differing bytes | Replayed fields |
 | --- | ---: | ---: | ---: | ---: |
-| Music-room primary, current double-local candidate |2668|2648|2511|94|
+| Music-room primary, current typed-selection candidate |2668|2680|2416|94|
 | Required skip reader, support only |59|59|0|0|
 | Required copy reader, support only |89|90|79|0|
 | Required position tween, support only |223|213|193|4|
@@ -105,38 +105,56 @@ A used `double distance = fabs(delta)` now retains the library result type,
 while the input delta remains float. Pinned VC9 emits the same native sequence
 of DWORD delta store/reload, FABS, DWORD absolute-value store/reload, float40
 comparison and parity branch. Nevertheless the nominal double local changes
-stack alignment: current primary has698 instructions/2624 reachable bytes,
+stack alignment: that earlier primary had698 instructions/2624 reachable bytes,
 8 layout bytes and all16 table bytes, with `AND ESP,-8` and frame2C. Native has
 708/2641,11 layout and frame34. The length gap narrows84 to20 bytes, but the full
 byte difference count increases2506 to2511: this is structural evidence, not an
 overall byte improvement or exact acceptance.
 
-The changed allocation also restores the second renderer-global load. All94
-field destinations now have the same external destination multiplicities as
-the target, including all42 calls. Six RET4 paths remain instead of the native
-plain RETs; the menu still arrives on the stack rather than EAX. The first
-selection remains constant-folded where native reloads count and keeps the
-clamp. These are the next full-owner gaps.
+That allocation restores the second renderer-global load. All94 field
+destinations have the native external destination multiplicities, including
+all42 calls. Six RET4 paths and a stack menu argument remain instead of the
+native plain RET/EAX argument. The initial count clamp was still folded in
+that version.
+
+The player-data page supplied a useful independent comparison: its typed,
+owner-based selection stores naturally preserve the native count reload.
+MenuMusicRoomView now types the already observed selection at24, leaving every
+subsequent offset and total view size unchanged. The pointer comes from this
+view and both count writes go through its owner. Pinned VC9 now preserves the
+complete count reload/zero/negative/positive clamp without volatile fields or
+artificial accesses. Current whole owner is2680 bytes/711 instructions/2650
+reachable bytes,14 layout bytes and all16 table bytes, with94 replayed fields
+and2416 full differences. The size gap is12 bytes, down from20; full differences
+drop95 from2511. This remains non-exact. Frame2C/native34, stack/native EAX menu,
+RET4/plain RET, early pointer placement and private callee arguments remain open.
+The original nominal class/TU still cannot be inferred from this physical view.
+
+A scoped-pointer variant with the same typed selection gives2648/2508/94 and is
+discarded. Generalizing the old SelectFirst helper alone leaves2648/2511/94;
+that operation alone did not explain the count folding. Both the isolated43-
+support family and the broader46-support player-data family receive current
+cold receipts and complete comparisons for the retained field projection.
 
 A named double y expression also produces2648/2511/94 and alignment8, differing
 from the retained candidate in one SIB byte. This does not prove which original
 local had double type. Direct `fabs(delta)` comparison restores the old unaligned
 2584/2506/93 result. Ordinary inline, definition-after-use and a genuine member
-owner produce exactly the same2648 replay as the retained candidate; scoped
+owner produce the same2648 replay as that earlier double-local candidate; scoped
 selection instead gives2632/2539. A real controller/page unity context and a five-source menu unity context
 (controller, primary page/support, music page/support) also replay identically
-to the retained candidate. These variants are discarded. An attempted
+to that earlier candidate. These variants are discarded. An attempted
 cross-TU inline-only split failed to emit its helper and did not link; it is not
 a valid codegen comparison. Scalar/control-pointer and memcpy support variants
 do not change the large owner and are not retained. Scalar copies introduce
 x87 loads/stores instead of native raw word copies; memcpy restores six global
 reads but gives229/native223 and214 differences in that support body.
 
-Only MenuMusicRoom.cpp changes among the235 previous frozen inputs; no accepted
-unit includes it. The complete43-support family is cold rebuilt, with current
-source/tool/producer/artifact receipts and independent exhaustive field replay.
-No accepted family requires a replay for this isolated change. Checkpoint proof
-is `.analysis/verify-menu-music-alignment-checkpoint.py`.
+MenuMusicRoom.cpp and MenuMusicRoom.hpp change among the235 frozen inputs at
+740cce1; no accepted unit depends on them. The two affected diagnostic families
+are cold rebuilt with current receipts. Checkpoint proof is now
+`.analysis/verify-menu-player-data-checkpoint.py`; the previous alignment
+checkpoint's type hashes and2648 measurement are historical.
 
 The copy reader chooses EAX cursor/ECX count instead of ECX/EDI; the tween keeps
 its VM on the stack and coalesces six native global component reads into three.

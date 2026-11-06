@@ -48,7 +48,7 @@ the statistics write. Page0 marks four cached renderer files, signals/clears the
 cached ASCII overlay ID, restores selection/difficulty and routes entry modes
 into the shared primary, extra or replay page blocks. All sixteen page selectors
 and the shared audio-reset routes are implemented. The current graph supplies primary, audio, joystick and music-room bodies;
-eight other page handlers remain source-open ordinary declarations; their observed private register inputs
+seven other page handlers remain source-open ordinary declarations; their observed private register inputs
 are recorded separately and are not forced into the source ABI.
 
 The timer copies current to previous, uses a fast increment only between the
@@ -118,3 +118,8 @@ The music-room context also supplies the complete2668-byte page0D owner at
 4408F0, including its previously omitted16-byte table. Its three required
 parser/tween bodies add no leaf acceptance units. See
 [MENU_MUSIC_ROOM.md](MENU_MUSIC_ROOM.md) for current cold codegen gaps.
+
+The player-data context supplies the full2448-byte page0A owner and750-byte
+record refresher, alongside the current typed-selection music-room candidate.
+See [MENU_PLAYER_DATA.md](MENU_PLAYER_DATA.md); canonical exactness is separate
+from these broader linked diagnostics.

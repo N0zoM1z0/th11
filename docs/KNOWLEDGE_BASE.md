@@ -6,6 +6,36 @@ exact codegen, original provenance and runtime behavior are separate claims.
 Older experiments are preserved in the explicitly
 [historical notes](archive/KNOWLEDGE_BASE_2026-10-30.md).
 
+## Player-data page: full2448-byte owner and750-byte record list
+
+Direct Ghidra/reference/neighbor review and PE CFG extend43E790's2432-byte
+default through43F11F, including all four table cells:620 instructions/2422 code,
+10 layout and16 table bytes,64 calls/169 address fields/three RETs. Adjacent
+43F120 owns750 including233 instructions/747 code,3 layout, all late VM searches
+and the GS tail. Its168-byte text region and B8 frame are preserved by source.
+Three required operations99/78/101 have complete sources, no leaf acceptance.
+Count78 naturally unrolls five-way and replays zero in support, not exact credit.
+
+The page's three selection objects are24/FC/1D4, displayed rows2AC and ten IDs5CC.
+Difficulty changes clamp/refresh using the old page count before recomputing it.
+Both keyboard backends and all26 letter mappings,256-byte edge computation,
+12-step sequence and greater-than300 timeout remain. Snapshot458100 has two
+native callers; page08 is still source-open. With only one implemented caller,
+/GL removes its pointer argument and embeds the current buffer in its body,
+explaining source109/native101 and the page's missing buffer-preparation field.
+Direct attested43D833/43D847 call-site review confirms the other caller uses
+ESI=4C9690, distinct from page0A's ESI=4C9BC0 at43ECFC/43ED01.
+Use the actual missing caller as next context work, rather than forcing an ABI.
+
+Absolute indexed memory operands can have a base register: count78 has five
+fields; the page has169. Candidate PE relocations independently verify all
+fields. Do not omit indexed keyboard/table fields or treat RGB integers as
+pointers. Visible high color is00FFFF80 = EFEFEF+100F91; an initial0100FF80 source
+arithmetic error was corrected before retention. Name copy/padding remains
+unbounded and physical text capacity is not inferred from the record gap.
+Initial source diagnostics are page2472/2273 differences/168 fields and record
+715/676/17. See [MENU_PLAYER_DATA.md](MENU_PLAYER_DATA.md) for current cold proof.
+
 ## Music room: complete2668-byte owner, including the missed table
 
 Direct Ghidra/reference/neighbor review and original-PE CFG extend4408F0's
@@ -44,6 +74,17 @@ Scalar/control-pointer/memcpy changes to required tween support do not change
 the large owner; scalar copies emit FPU operations rather than raw word copies.
 These alternatives are discarded. The public /GL profile and all prior accepted
 inputs stay unchanged. See [MENU_MUSIC_ROOM.md](MENU_MUSIC_ROOM.md) for cold proof.
+
+The player-data owner's natural count reload suggested a further physical-view
+correction. Music-room selection24 is now typed in MenuMusicRoomView and both
+count writes use that owner. This restores its native full clamp and produces
+2680/711 instructions/94 fields/2416 differences (previous2648/2511), without
+volatile fields, padding or a new calling convention. The whole body remains
+non-exact; frame2C/native34, stack/native EAX input and callee allocation remain.
+General helper alone has no effect, while typed/scoped selection is2648/2508
+and discarded. A float decompiler stack slot does not establish nominal local
+or owner class identity. Both diagnostic families are cold rebuilt; no accepted
+source input or exact count changes.
 
 The shared sprite binder's cached-pointer/shared UV helper/public-inline
 variants all generated388/306 differences in the audio context and394/348

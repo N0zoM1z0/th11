@@ -130,7 +130,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0040BAA0,unknown,SecondaryActorState,indeterminate,unknown,secondary-state-origin-2026-10-29
 0x0040BB10,unknown,SecondaryActorState,indeterminate,unknown,secondary-state-origin-2026-10-29
 0x0040BB50,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0040BC70,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0040BC70,unknown,ConfigurationMenu,indeterminate,unknown,menu-player-data-origin-2026-11-06
 0x0040BD00,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0040BE20,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0040BE50,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
@@ -619,7 +619,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00439230,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00439260,unknown,ConfigurationMenu,indeterminate,unknown,menu-primary-origin-2026-11-06
 0x00439350,unknown,ConfigurationMenu,indeterminate,unknown,menu-primary-origin-2026-11-06
-0x004393B0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x004393B0,unknown,ConfigurationMenu,indeterminate,unknown,menu-player-data-origin-2026-11-06
 0x00439420,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004395A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004396C0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
@@ -642,8 +642,8 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0043DC50,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0043DD90,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0043E2F0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0043E790,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0043F120,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0043E790,unknown,ConfigurationMenu,indeterminate,unknown,menu-player-data-origin-2026-11-06
+0x0043F120,unknown,ConfigurationMenu,indeterminate,unknown,menu-player-data-origin-2026-11-06
 0x0043F410,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0043F6B0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0043FC50,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
@@ -970,7 +970,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00457270,authored_game,InputState,authored,high,input-backend-target-review-2026-10-23
 0x004575A0,authored_game,InputState,authored,high,joystick-buttons-input-config-2026-10-23
 0x004576B0,authored_game,InputState,authored,high,input-backend-target-review-2026-10-23
-0x00458100,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00458100,unknown,ConfigurationMenu,indeterminate,unknown,menu-player-data-origin-2026-11-06
 0x00458170,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004581C0,unknown,ByteCipher,review,unknown,byte-cipher-origin-open-2026-10-23
 0x004582E0,unknown,ByteCipher,review,unknown,byte-cipher-origin-open-2026-10-23

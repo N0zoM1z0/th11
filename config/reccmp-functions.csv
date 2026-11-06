@@ -480,3 +480,8 @@ UpdateMenuPage0D,0x004408F0,function
 SkipMenuMusicLine,0x00441360,function
 CopyMenuMusicLine,0x004413A0,function
 TweenMenuMusicPosition,0x00441400,function
+UpdateMenuPage0A,0x0043E790,function
+RefreshMenuPlayerDataRecords,0x0043F120,function
+UnlockMenuPlayerDataEntries,0x004393B0,function
+CountMenuSpellsForDifficulty,0x0040BC70,function
+ReadMenuKeyboardSnapshot,0x00458100,function

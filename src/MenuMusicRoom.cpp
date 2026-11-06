@@ -66,13 +66,13 @@ __forceinline void RefreshComment(MenuControllerView *self, MenuMusicRoomView *m
 int __stdcall UpdateMenuPage0D(MenuControllerView *self)
 {
     MenuMusicRoomView *music = reinterpret_cast<MenuMusicRoomView *>(self);
-    SecondaryDebugSelectionView *selection = &self->page.selection;
+    SecondaryDebugSelectionView *selection = &music->selection;
     switch (self->page.state)
     {
     case 0:
         if (self->page.time.current == 1)
         {
-            selection->count = 6;
+            music->selection.count = 6;
             SelectFirst(selection);
             if (!FindAnimationVmById(g_RenderBatch, MenuAnimationId(self, 0x5d)))
             {
@@ -108,7 +108,7 @@ int __stdcall UpdateMenuPage0D(MenuControllerView *self)
                     title += 0x42;
                 }
             }
-            selection->count = trackCount;
+            music->selection.count = trackCount;
             SelectFirst(selection);
             music->trackCount = trackCount;
             music->firstVisibleTrack = 0;
