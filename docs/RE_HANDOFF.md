@@ -7,9 +7,9 @@ receipts outrank historical notes. All dirty work is ours.
 ## Current exact state
 
 - Original Japanese TH11v1.00a, pinned by config/target.toml; no substituted bytes.
-- 2,139 candidates;567 reviewed boundaries;450 source mappings.
+- 2,139 candidates;569 reviewed boundaries;452 source mappings.
 - 233 exact functions/26,378 bytes:9 normal COFF and224 linked PE.
-- Origins:90 authored,461 indeterminate,14 exclusions,1,574 pending.
+- Origins:90 authored,463 indeterminate,14 exclusions,1,572 pending.
 - VC9 RTM21022/SDK6.0A; direct scripts/ghidra.py, no Factory MCP/REA.
 - Commit/push authorized, prefix `gpt-6.1-sol: `; no heavy job remains running.
 
@@ -17,6 +17,26 @@ Operator priority is large/difficult owners, not leaf accumulation. Main owners:
 host412E30/16,556, animation44B4B0/12,056, interpreter45B860/7,093,
 dialogue41D380/6,980, HUD41B380/4,716 and gameplay420390/1,149. Native product,
 broad runtime and portability are later phases. No new exact unit this checkpoint.
+
+## Current screen-effect initializer1168
+
+448A90 now owns1168=1129 code/342 instructions+3 alignment+9-cell36-byte table,
+ending448F1F before separate448F20. Full source covers all nine modes and reset.
+Cold ScreenEffectInitialization restores stack self/mode/duration/color0/color1/
+draw priority and RET18;1168 bytes/54 fields/65 complete differences. Only five
+13-byte windows differ:448AC0/B02/B44/CF2/D81. Native MOV ESI,EAX follows four
+callback/priority clears; source puts it before them. Keep full extent and /GL.
+Next: resolve that constructor scheduling; no masked/cropped acceptance.
+
+Real node construction restores constructor/null branches and stack ABI;
+manually initializing allocated memory gave1036/EDI-self/RET14. Native case5
+precedes4; callback/priority clear order before ownership bit yields65. Derived
+pointer and ownership-bitfield spellings are identical; do not repeat.
+Factory4489E0 is complete80/all3 fields/zero diagnostic differences, without an
+independent leaf unit. Callbacks remain declarations; original class/inheritance/
+TU identity is unproved. Mode/default argument replay is static, not runtime.
+HUD retains4652/frameC/4101/all27 calls. Correct old kind43 wording: mode5,
+draw priority0x43, update priority14 (0xE). Details in SCREEN_EFFECT_INITIALIZATION.md.
 
 ## Complete animation interpreter12056
 
@@ -27,7 +47,7 @@ Eight CC precede separate44E3D0;44E430/44E460 are separate source-open code.
 Native stack VM/frameCC/alignment8/three RET4 return0/0/1. Callback428 nonzero
 returns1 without restoring the overridden time scale. Keep that observed path.
 
-Cold AnimationExecutionOwners is12300/frameE0/no8 alignment/VMEBP versus EDI,
+Prior AnimationExecutionOwners was12300/frameE0/no8 alignment/VMEBP versus EDI,
 11742 full differences after407 fields replay. All104 entries retain416 static
 call/loop/post-update/return skeletons; predicates/operands/loop reentry unproved.
 Calls262/260 differ at RNG4/3 and float destination15/14. Lookup/insertion/malloc
@@ -81,8 +101,8 @@ forms match only after branch-address/distance-slot erasure (nativeESP10/source1
 Alpha FF guard is >=64, unordered reaches conversion; signed-char cast naturally
 recovers CW/FISTP. Direct state reads/per-branch extraction4812/4264 rejected.
 Dialogue elapsed4 is separate from18/2C; title/badges use portrait444C. Screen44
-allocation has timer30, real null guard and initializer kind43. Initializer448A90
-is source-open; automatic1129 excludes unreviewed table ownership.
+allocation has timer30 and a real null guard. Initializer mode5/draw priority0x43
+now has the complete1168-byte source described above.
 
 Gameplay uses secondary4A8D5C, primary4A8D60; gauge4A56E0 is shared host-selection
 root14/18/timer1C. New family keeps gameplay1135/334/114fields, debug1153/785/78fields.
@@ -107,13 +127,11 @@ Interpreter6989/native7093 retains120/all89 selectors/two RET4, VM ESI/nativeEDI
 
 ## Checkpoint evidence
 
-Current receipt check: .analysis/verify-animation-execution-pair-checkpoint.py.
-Private evidence is animation-execution-* and animation-vm-* direct
-Ghidra exports, complete field/CFG/return/target proofs and receipt/source freeze.
-This checkpoint changes AnimationTween.hpp/cpp and Instructions.inc against the
-179-input freeze. All13 affected accepted units share one cold context and pass
-strict full replay. Full animation family is separately cold rebuilt. Earlier
-HUD/dialogue/parent receipts remain historical support contexts; no unrelated
-caller replay or unchanged Oracle tests required. Tools/Oracles unchanged.
-No new exact unit or source mapping. Pair six-return/phase/caller proofs are
-animation-execution-owners-pair-* and animation-pair-return/callers Ghidra exports.
+Current receipt check: .analysis/verify-screen-initializer-checkpoint.py.
+Current evidence is screen-initializer-* and screen-effect-factory-* full target,
+PDB/field, mode-argument, mismatch-window and source-freeze proofs. Only the
+existing SecondaryHud.hpp changed against179 frozen inputs; new initializer and
+ChainRegistration sources join the family. No accepted exact unit depends on
+that header. Earlier animation/dialogue/parent receipts are historical contexts;
+the prior animation receipt is stale for that header and is not a resume check.
+Tools/Oracle implementations unchanged. Two new mappings/boundaries; no exact unit.

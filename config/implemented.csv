@@ -448,3 +448,5 @@ SetAnimationAlpha2Tween
 SetAnimationColor2Tween
 SetAnimationColorTween
 SetAnimationAlphaTween
+CreateSecondaryHudScreenEffect
+InitializeSecondaryHudScreenEffect

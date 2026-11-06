@@ -449,3 +449,5 @@ SetAnimationAlpha2Tween,0x0044F000,function
 SetAnimationColor2Tween,0x0044F080,function
 SetAnimationColorTween,0x0044F270,function
 SetAnimationAlphaTween,0x0044F400,function
+CreateSecondaryHudScreenEffect,0x004489E0,function
+InitializeSecondaryHudScreenEffect,0x00448A90,function

@@ -66,6 +66,26 @@ that the target had that layout.
 
 ## Complete owner boundaries
 
+Screen initializer448A90 owns1168, not1129:342 instructions/1129 code+3 alignment
+and9 cells/36 bytes at448EFC, ending448F1F immediately before separate448F20.
+All9 foreign DATA edges are owned; the table has only its own jump reference.
+Six stack words/void/RET18 contradict the five-parameter decompiler hypothesis.
+HUD passes mode5 and draw priority0x43, not initializer kind43. Node priorities
+are update14 and supplied draw priority. Modes1/8 retain draw; default retains
+update. Mode3 sets18=255 before allocation; cleanup4489A0 is attached afterward.
+Full source1168/54 fields/65 differences has the same342 instructions and21
+physical calls (14 new/6 update/1 draw). Five13-byte windows move MOV ESI,EAX
+before four constructor clears instead of after:448AC0/B02/B44/CF2/D81. No exact
+credit. Real node construction recovers the stack-self interface and full size;
+post-allocation manual initialization gave1036/EDI-self/RET14. Native5-before4
+case order and callback/priority-before-ownership initialization reduce150 to65.
+Derived-pointer and ownership-bitfield spellings are identical; do not repeat.
+Real factory4489E0 has five inputs/EAX pointer-or0/two RET14, complete80/3 fields/
+zero diagnostic differences without an independent leaf unit. Callback entries
+use ECX; bodies and original class/inheritance/TU identities remain open. The
+existing raw chain removal permits the same allocation address to be freed.
+See [screen initialization](SCREEN_EFFECT_INITIALIZATION.md).
+
 Animation interpreter44B4B0 owns12056, not the automatic11640 span:11637 reachable
 code/3202 instructions+3 alignment+416 in104 cells for signed opcodes-1..102.
 All104 apparent foreign DATA refs belong to this table; three RET4 return0/0/1,
@@ -75,7 +95,7 @@ VM374 is packed primary color, with alpha377;378 is alternate color. The older
 AnimationVmView.spriteIndex name at374 is a legacy label, not a sprite identity.
 A nonzero callback428 returns1 without restoring the overridden global time
 scale. The sprite transform42C consumes VM/integer in ECX/EDX, not ghost floats.
-Current /GL12300/frameE0/11742 full differences retains407 reviewed fields and
+Prior complete-animation context /GL12300/frameE0/11742 full differences retains407 reviewed fields and
 all416 static per-op call/loop/post-update/return skeletons, with262/260 physical
 calls. Direct-if ReadF removes literal float spill/reloads; four distinct child
 cases plus reviewed native entry order recover lookup/insertion/malloc counts

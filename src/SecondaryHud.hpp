@@ -1,5 +1,6 @@
 #pragma once
 #include "SecondaryDialogue.hpp"
+#include "Chain.hpp"
 #include <string.h>
 
 // Observed fields of the HUD passed to 41B380; original class/size are open.
@@ -28,11 +29,16 @@ struct SecondaryHudView
 };
 
 // The 0x44-byte screen-effect allocation and its timer are observed at both
-// 4489E0 and this caller. The 448A90 initializer remains source-open.
+// 4489E0 and this caller; field names below are physical observations.
 struct SecondaryHudScreenEffect
 {
     unsigned int flags;
-    unsigned char unknown004[0x30 - 4];
+    unsigned int unknown004;
+    ChainElement *update, *draw;
+    int mode;
+    unsigned int unknown014, value018;
+    int duration;
+    unsigned int color0, color1, value028, unknown02c;
     StageTimerView time;
     SecondaryHudScreenEffect()
     {
@@ -41,7 +47,10 @@ struct SecondaryHudScreenEffect
     }
 };
 void __stdcall InitializeSecondaryHudScreenEffect(SecondaryHudScreenEffect *self,
-    int mode, int duration, int color0, int color1, int kind);
+    int mode, int duration, int color0, int color1, int drawPriority);
+
+SecondaryHudScreenEffect *__stdcall CreateSecondaryHudScreenEffect(
+    int mode, int duration, int color0, int color1, int drawPriority);
 
 int __stdcall UpdateSecondaryHud(SecondaryHudView *self);
 int __fastcall SecondaryHudUpdateCallback(SecondaryHudView *self);
@@ -57,3 +66,6 @@ typedef char SecondaryHudDialogueOffset[(offsetof(SecondaryHudView, dialogue) ==
 typedef char SecondaryHudPortraitOffset[(offsetof(SecondaryHudView, portraitFile) == 0x444c) ? 1 : -1];
 typedef char SecondaryHudClearFrameOffset[(offsetof(SecondaryHudView, clearFrame) == 0x4454) ? 1 : -1];
 typedef char SecondaryHudScreenSize[(sizeof(SecondaryHudScreenEffect) == 0x44) ? 1 : -1];
+
+typedef char SecondaryHudScreenUpdateOffset[(offsetof(SecondaryHudScreenEffect, update) == 8) ? 1 : -1];
+typedef char SecondaryHudScreenTimeOffset[(offsetof(SecondaryHudScreenEffect, time) == 0x30) ? 1 : -1];

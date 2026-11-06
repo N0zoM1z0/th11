@@ -767,8 +767,8 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x004486C0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00448720,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004489A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x004489E0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00448A90,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x004489E0,unknown,ScreenEffect,indeterminate,unknown,screen-effect-origin-2026-11-06
+0x00448A90,unknown,ScreenEffect,indeterminate,unknown,screen-effect-origin-2026-11-06
 0x00448F20,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00448FF0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00449050,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

@@ -43,10 +43,11 @@ are physical views, not a recovered allocation size or original array types.
 The complete function maintains:
 
 - Transition timer and clear-frame180 screen effect, then frame380 menu/runtime
-  selection. Both allocation guard and initializer kind43 are observed. The
+  selection. The allocation guard, initializer mode5 and draw priority0x43 are observed. The
   0x44-byte allocation has a real StageTimer at30; member construction precedes
-  whole-object clearing and flags2. Initializer448A90 remains source-open; its automatic1129-byte code bound
-  is not a complete reviewed owner.
+  whole-object clearing and flags2. Initializer448A90 now has a complete1168-byte
+  reviewed owner and source, including nine table cells; it remains non-exact.
+  See [screen initialization](SCREEN_EFFECT_INITIALIZATION.md).
 - Tracked-ID disappearance and all three update loops of9/2/4 VMs; player
   position gates switch gauge events3/2, with the original null checks.
 - Wrapped signed gauge percentage, all four event bands7..10 after timer20,
@@ -86,8 +87,10 @@ The entry calls the HUD callback; it does not directly call the interpreter to
 hold its ABI. This context is a compiler experiment, not a linked game or runtime
 harness. ExecuteAnimationVm44B4B0 now has a complete12056-byte owner and source;
 HUD calls that existing integer-returning interface. Its full dependency family
-retains HUD4652/frameC/4101 and all27 calls. Screen initializer448A90 remains
-source-open. See [ANIMATION_EXECUTION](ANIMATION_EXECUTION.md).
+retains HUD4652/frameC/4101 and all27 calls. Screen initializer448A90 now has
+complete source; its1168-byte owner differs65 bytes after54 fields replay. See
+[screen initialization](SCREEN_EFFECT_INITIALIZATION.md) and
+[ANIMATION_EXECUTION](ANIMATION_EXECUTION.md).
 
 Initial class-outside constructor spelling leaves an extra constructor call.
 A normal class-inline definition exposes its observed memset operation and
