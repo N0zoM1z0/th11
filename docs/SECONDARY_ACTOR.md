@@ -15,7 +15,7 @@ proof/gaps are recorded in [SECONDARY_ACTOR_STATE](SECONDARY_ACTOR_STATE.md).
 | --- | --- | ---: | --- |
 | SecondaryActorStateConstructor | 410440 | 126 | Exact;1 field |
 | SecondaryActorConstructor | 4111C0 | 699 | Source706/442 diagnostic differences |
-| CreateSecondaryHostActor | 4108F0 | 621 | Complete source625 in current host/actor cycle; ABI/bytes open |
+| CreateSecondaryHostActor | 4108F0 | 621 | Complete source629; EBX packet/RET4 restored; full bytes open |
 | SecondaryActorDestructor | 411480 | 384 | Source390/327; EH acceptance open |
 | SecondaryActorDeletingDestructor | 410420 | 31 | Generated30/20; aliases/ABI open |
 | DetachSecondaryActor | 410B60 | 82 | Source79/74 |
@@ -168,12 +168,13 @@ attested direct Ghidra code/constructor review and independent full PE/selector
 replay agree with the existing reviewed boundary.
 
 The canonical host family supplies real creation, lifetime, animation, state
-update and script implementations under /GL. Creation is625/native621 as support;
-its arguments remain stack/RET8 versus native EBX spawn arguments plus stack
-script/RET4. Constructor706/native699 and all full-byte differences remain open.
-An earlier context has equal621-byte extent but503 differing rebased bytes;
-current625 has545 differences. These are complete diagnostics, not cropped or
-primary-TU acceptance. No exact credit is added. Four other native caller sites
-in three owners remain outside this diagnostic context. See
-[SECONDARY_HOST_DISPATCH](SECONDARY_HOST_DISPATCH.md) for current whole-host,
-floating-storage and interpreter context evidence.
+update and script implementations under /GL. A natural state-subobject reference
+now restores EBX spawn arguments and stack script/RET4. Complete source629/native621
+still differs478 replayed bytes, versus prior625/545 with stack arguments/RET8.
+Source retains a state base where native uses the whole-actor base. Constructor
+706/native699 and full bytes remain open; no private ABI declaration is used.
+An earlier equal621 extent still differs503 bytes. These are complete diagnostics,
+not primary-TU acceptance, and add no creator exact credit. Both larger callers
+40D600/1212 and420390/1149 have complete source;418460/189 remains source-open.
+See [SECONDARY_HOST_DISPATCH](SECONDARY_HOST_DISPATCH.md) for whole-host evidence
+and [SECONDARY_GAMEPLAY](SECONDARY_GAMEPLAY.md) for the real caller/helper context.

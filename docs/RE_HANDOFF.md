@@ -1,117 +1,100 @@
 # Agent handoff
 
 Work in `/home/pentester/coding/codex_ida/th11-reconstruction/th11`; outer folder
-is not Git. Read AGENTS.md, this file, workflow/Oracles and relevant source/rows.
-Target/current receipts outrank historical notes. All dirty work is ours.
+is not Git. Read AGENTS.md, workflow/Oracles and relevant source/rows. Current
+receipts outrank historical notes. All dirty work is ours.
 
 ## Current exact state
 
 - Original Japanese TH11v1.00a, pinned by config/target.toml; no substituted bytes.
-- 2,138 candidates;544 reviewed boundaries;427 source mappings.
+- 2,138 candidates;547 reviewed boundaries;430 source mappings.
 - 233 exact functions/26,378 bytes:9 normal COFF and224 linked PE.
-- Origins:90 authored,438 indeterminate,14 exclusions,1,596 pending.
+- Origins:90 authored,441 indeterminate,14 exclusions,1,593 pending.
 - VC9 RTM21022/SDK6.0A; direct scripts/ghidra.py, no Factory MCP/REA.
-- Commit/push authorized, prefix `gpt-6.1-sol: `.
-- No reconstruction job remains running at this checkpoint.
+- Commit/push authorized, prefix `gpt-6.1-sol: `; no job remains running.
 
-Operator priority is large, difficult functions, not leaf accumulation. Main work
-is the complete16,556-byte host412E30 and7,093-byte interpreter45B860.
+Operator priority is large, difficult functions, not leaf accumulation. Current
+focus: host412E30/16,556, interpreter45B860/7,093 and gameplay420390/1,149.
 
-## Complete host and real creation/update cycle
+## Complete host and actor cycle
 
-The host owns15780 code bytes plus540 primary table,195 selectors,1 alignment
-and40 nested-table bytes. Full4003 decoded/4001 reachable instructions, all145
-owned DATA refs and all154 handled values/134 nondefault targets are reviewed.
-Slot494074 enters through412E20/state+103C. Ordinary manager/state members enclose
-the complete switch in SecondaryActorInstructions.cpp and four case fragments.
-Only the complete11-byte manager adapter has strict exact credit; canonical unit
-secondary-actor-instruction-adapter keeps /GL and all owned extents.
+Host owns15780 code,540 primary table,195 selectors,1 alignment and40 nested-table
+bytes. All4003 decoded/4001 reachable instructions,145 owned DATA refs and154
+handled values/134 targets are reviewed. Slot494074 enters through412E20/state+103C.
+Only the11-byte manager adapter has strict exact credit; canonical unit
+secondary-actor-instruction-adapter retains /GL and complete owned extents.
 
-The family now includes real SecondaryScript/HostArguments and actor creation,
-lifetime, animation and state-update support. New SecondaryActorCreation.cpp
-implements the complete621-byte factory4108F0, including its20-byte table and53
-selectors. Ordinary new2678/constructor, payload/timer/difficulty/flags, state
-update and both intrusive-list paths remain; no invented allocation-failure guard.
-Current factory625/RET8 stack arguments differs from native621/RET4 with EBX spawn
-arguments and stack script; constructor706/native699. Earlier equal621 extent
-still differs503 rebased bytes; current625 differs545. No creator exact credit.
+Canonical family supplies real script/argument/creation/lifetime/animation/state
+update source. A natural state-subobject reference in SecondaryActorCreation.cpp
+restores native EBX packet, stack script and RET4. Full creator629/native621 still
+differs478 replayed bytes, versus prior625/545 with RET8. Source keeps a state base
+where native keeps whole-actor base; constructor706/native699 remains non-exact.
+No forced ABI/allocation guard. Six native sites across three owners have source;
+418460/189 remains source-open.
 
-12D/12F now selects motion/three tween pointers before reads, then stages each
-target Y/X before its initial pair. All69 x87 operations/widths/register forms
-agree after memory-address erasure, versus prior57. This does not prove stack
-aliases/slots, predicates, original vector classes or full bytes. Current whole
-host15904/frame328 has packetA4/shared spawn-name2AC/cookie330/EH338; native has
-8C/294/318/320 and310 allocation. Cleanup EBP-328 versus native EBP-2F4 remains.
-Do not drop these floating stages to preserve the older compatible310 frame.
-The case-local128-byte decoder remains a capacity hypothesis;132-byte cookie
-distance persists. Never invent padding, volatile, constructors or private ABI.
+Canonical host15952/frame328; mixed gameplay family15936. PacketsA4, shared
+spawn/name2AC, cookie330/EH338 and cleanup EBP-328 still differ from native
+8C/294/318/320 and EBP-2F4. Decoder128 is a capacity hypothesis;132-byte cookie
+distance is not a bound. Do not resize storage to fit the frame.
 
-All195 selector groups/call-index skeletons/projection roles/0-and-minus1 returns
-agree. Direct body sites464/455 still differ: float107/106, int83/82, supplied
-int11/9, actor3/2, object4/3, missing-animation6/4 and emitter6/5. Indirect2/2 and
-GS1/1 remain. Four native pointer-selection comparisons collapse to one; preset
-reloads, register allocation, stack storage, FP/control and EH remain work.
-The12D/12F757/native790 entry intervals are diagnostic only, never acceptance units.
+All195 selector/call-index/projection/return checks pass. Body direct sites now
+464/457, versus prior455. All three actor and six emitter sites survive; remaining
+float107/106, int83/82, supplied-int11/9, object4/3, missing-animation6/4. Indirect2/2
+and GS1/1. The69 x87 operations/widths/register forms in12D/12F still match after
+memory erasure; four native pointer-selection comparisons collapse to one. Slots,
+aliases, predicates, preset reloads and full bytes remain open. Native-order case
+reordering and if/ternary forms do not fix sharing; shared float workers worsen
+frame330 and are rejected. Keep recovered FP staging despite the older310 frame.
 
-Real state-update support restores Run's fixed120 frame: complete6989/native7093,
-VM ESI versus EDI. All89 selectors, physical case groups and both RET4 agree.
-Native32/source31 push sites, unary84 merged paths and82/87 shared destination
-remain. State-update support4083/native4230 also remains non-exact. Neither gets
-primary-TU acceptance from this family. Historical actual-caller7013/5821 is a
-separate diagnostic context, not the current contribution.
+Interpreter6989/native7093 retains frame120, all89 selectors/physical groups and
+both RET4. VM ESI versus EDI; native32/source31 pushes, unary84 merged paths and
+82/87 shared destination remain. Canonical state update4083/native4230; mixed
+family4079. No support-owner primary acceptance. Do not repeat trace/pop/member/
+accessor ablations, fp:fast or synthetic mesh213 (real generic389/six sites).
 
-Only one old exact unit is affected; fresh cold11-byte/one-field replay passes.
-Headers/tools/Oracles and other exact units are unchanged. Current private proofs
-use secondary-host-pairs-* and secondary-interpreter-tails-host-pairs-cfg.json.
-The132-input union freeze changes the motion fragment and adds creation/update;
-older28-unit reader and61-unit header proofs/freezes remain historical.
+## Complete gameplay/debug and real dependencies
 
-## New complete factory callers
+Full source: gameplay420390/1149, debug40D600/1212 and callback420840/7. Normal
+COFF callback plus /GL main preserves stack owner/frame54/four RET4; original
+TU/GL split remains unproved. Earlier all-/GL opaque-helper context1135/frame50
+uses a register owner. Thread entry40D4F0/10 has boundary/prototype only; nominal
+callback API and forwarded inputs remain open.
 
-Gameplay420390/1149 and ECL debug40D600/1212 now have full source in
-SecondaryGameplay.cpp/SecondaryEclDebug.cpp with additional physical views in
-SecondaryGameplay.hpp. A normal COFF real callback420840/7 plus /GL main body
-preserves stack owner, frame54 and four RET4; the split is a hypothesis, not
-original TU proof. Debug preserves frame19C/GS. Current complete candidates are
-1151/930 and1153/744 replayed byte differences, with115/78 reviewed fields;
-62/41 call-site counts and183/26 acyclic call/return skeletons agree. No exact
-credit. Their separate cold family is build/probe-ltcg/SecondaryGameplayOwners;
-the canonical host family and132 protected inputs are unchanged (current union
-freeze143), so no old exact
-unit is affected. Source now covers six of seven native factory sites in three
-owners;418460/189 remains source-open.
+Cold build/probe-ltcg/SecondaryGameplayDependencies gives gameplay1135/334 full
+differing bytes and debug1153/785, versus prior1151/930 and1153/744. All114/78
+reviewed fields replay;62/41 call counts and183/26 static acyclic call/return
+traces agree. Debug comparison worsens despite restored helper inputs. No exact
+credit; skeletons and size do not prove semantics or full equality.
 
-Ghidra missed the7-byte callback and the10-byte thread entry40D4F0. Both complete
-spans/refs/neighbors are independently reviewed. Thread entry has no explicit local argument
-reads, EAX0/RET and only an external declaration; nominal thread API remains
-unknown. Debug keeps two ANSI scans/unconditional FindClose, three D8 selectors,
-pressed/released distinction, teardown/start and life10000 spawning. Do not add
-allocation guards or crop native count-reset blocks folded by the current source.
-See [GAMEPLAY](SECONDARY_GAMEPLAY.md) and secondary-gameplay-owners-* private proofs.
+SecondaryGameplaySupport.cpp supplies real30-byte pause/mode bodies and complete
+212-byte gauge logic. Pause/mode naturally recover EAX and EAX/ECX roles and equal
+complete support bytes; no leaf units added. Gauge254 folds its sole settings
+input into globals versus native EDI; ordinary member spelling does not help.
+FP operand forms and opaque timer-add input differ. Public settings view declares
+observed fields14/18/timer1C only.
+
+Gameplay has three remaining normalized instruction regions: redundant stage-null
+check, statistics memory ADD versus register increment/store, gauge EDI setup/
+restore. Direct-global delete, reference/structured statistics and positive outer
+guard variants do not recover the sequence and are rejected. Debug count-reset
+folding/register/store/GS remain. Never add volatile, inert guards, fake ABI,
+constructors or padding. See SECONDARY_GAMEPLAY.md for complete source evidence.
+
+Only old exact unit secondary-actor-instruction-adapter is affected: fresh cold
+family and strict11-byte/one-field proof have zero differences. Tools/Oracles and
+other exact units are unchanged. New union freeze145 versus previous143 changes
+only Creation.cpp and Gameplay.hpp, adding Support.cpp and StageDrawing.hpp.
+Current private proofs use secondary-gameplay-dependencies-*; older freezes are
+preserved. All195 host checks and69-operation FP proof were refreshed.
 
 ## Next substantial work
 
-- Host12D/12F: retain the recovered69-operation FP stages; recover native pointer
-  selection/storage/preset reloads without fake frames or ABI declarations.
-- Gameplay/debug: recover EBX packet and shared pause/mode/gauge helper ABI;
-  return1 sharing, redundant stage-null test, statistics stores and count-reset
-  codegen remain. Both whole functions now have complete source/proofs; do not
-  redo their full target review as untried work.
-- Full host: recover missing physical call sites and all byte/field/EH ownership.
-- Interpreter: VM EDI, unary84's two push paths and82/87's separate destinations;
-  preserve wrapped arithmetic, trace side effects and angle87 X-publication order.
+- Gameplay: actual gauge owner/caller compilation context, then statistics store
+  and redundant delete lowering; no fake caller or private ABI declarations.
+- Host12D/12F: retain FP staging; recover pointer selection/storage/preset reloads
+  and missing sites across the complete owner.
+- Interpreter: VM EDI, unary84's separate pushes and82/87 destination ownership.
 
-Do not repeat full native-order case reordering as an untried fix: extra sharing
-persists. Separate if/ternary pointer choices compile identically; two manually
-shared float workers worsen frame330 and were rejected. Preserve actual owners
-and /GL. Do not revive prior trace ablations, typed-pop/member/accessor probes,
-fp:fast, synthetic mesh213 specialization or missing-throwing-helper theories as
-established solutions. Original mesh context has generic389/six sites/five callers.
-
-Other maintained large non-exact owners include movement2896, controller2888,
-reset2508, damage1579, projectile896 and death703; topic docs retain their full
-measurements. Follow [KNOWLEDGE_BASE](KNOWLEDGE_BASE.md) and
-[HOST](SECONDARY_HOST_DISPATCH.md)/[INTERPRETER](SECONDARY_INTERPRETER_CODEGEN.md).
-Cold replay only changed exact units and actual dependencies; broad behavior,
-full-cohort replays and unchanged-Oracle tests are not routine requirements.
-Native product/runtime/port closure and original TU/class identity remain separate.
+Keep complete extents and /GL. Cold-replay only changed exact units/dependencies;
+update tracking and commit. Broad runtime/product closure/porting are later.
+Follow KNOWLEDGE_BASE.md and the host/interpreter/gameplay topic documents.

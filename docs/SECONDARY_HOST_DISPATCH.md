@@ -501,11 +501,13 @@ The canonical host family now also supplies the existing real actor lifetime,
 animation and state-update implementations under /GL. This closes the observed
 host -> creation -> state update -> script update/interpreter -> virtual host
 call cycle inside the diagnostic link. It is not native product closure or proof
-of original TU partition. The current creation contribution is625/native621:
-source stack arguments/RET8 versus native EBX spawn arguments, stack script and
-RET4; constructor706/native699. Earlier opaque state-update support gives621
+of original TU partition. The current creation contribution is629/native621:
+a natural state-subobject reference restores native EBX spawn arguments and stack
+script/RET4; constructor706/native699. Source still uses a state base where native
+keeps the whole-actor base. Earlier opaque state-update support gives621
 bytes but503 differing full rebased bytes. Equal extents do not prove exactness.
-Current full creation rebasing differs545 bytes; no creator exact credit follows.
+Current full creation rebasing differs478 bytes, versus prior625/545 with RET8;
+no creator exact credit follows.
 The native factory also has four other caller sites in three owners. The two
 larger owners40D600/1212 and420390/1149 now have full source and a separate mixed
 compiler context;418460/189 remains source-open. See
@@ -524,7 +526,7 @@ has57. This comparison deliberately does not prove memory aliases, stack slots,
 predicates, original vector classes or full bytes. No constructor, volatile,
 forced ABI or padding is introduced to obtain it.
 
-The complete current host is15,904 bytes/frame328, not exact. PacketsA4, shared
+The complete current canonical host is15,952 bytes/frame328, not exact. PacketsA4, shared
 spawn/name2AC, cookie330 and EH registration338 differ from native8C/294/318/320;
 cleanup is EBP-328 versus native EBP-2F4. The128-byte decoder capacity remains a
 hypothesis; its132-byte cookie distance persists. The earlier310 frame was
@@ -538,9 +540,10 @@ working floats worsen the frame to330 and are not retained. A private reordering
 of all154 cases by native physical entry also leaves the excess sharing unresolved.
 
 All195 selector groups, acyclic call/index skeletons, projection roles and return
-sets continue to agree. Physical body direct sites are464/455: float107/106,
-integer83/82, supplied integer11/9, actor creator3/2, object creator4/3,
-missing-animation clear6/4 and emitter creation6/5. Indirect2/2 and GS1/1 remain.
+sets continue to agree. Physical body direct sites are464/457, versus prior455: float107/106,
+integer83/82, supplied integer11/9, object creator4/3 and missing-animation
+clear6/4 remain different. All three actor creator and all six emitter sites
+now agree after the factory ABI recovery. Indirect2/2 and GS1/1 remain.
 These structural checks do not establish complete semantics or byte equality.
 
 Real state-update support restores RunSecondaryScript's fixed120 frame in the
@@ -551,10 +554,12 @@ state-update support contribution is still non-exact against4230. Neither suppor
 contribution has primary-TU acceptance in this family.
 
 Only secondary-actor-instruction-adapter is affected among existing exact units;
-its complete11 bytes/one REL32 still pass a fresh cold family replay. The other
-sources, headers, tools and Oracles are unchanged. Source mappings rise by one;
-exact totals do not change. The current132-input union freeze changes the motion
-fragment and adds creation/state-update inputs; prior freezes remain historical.
-Private evidence uses secondary-host-pairs-{canonical-functions,canonical-call-audit,
-detail-proof,creation-proof,interpreter-diagnostic,adapter-proof,source-freeze}.json,
-secondary-interpreter-tails-host-pairs-cfg.json and the canonical linked family.
+its complete11 bytes/one REL32 pass fresh cold family replay with zero differences.
+Tools/Oracles and other exact units are unchanged. The gameplay dependency union
+freeze now145 changes Creation.cpp and Gameplay.hpp versus prior143, adding
+Support.cpp and StageDrawing.hpp. The older132-input motion/actor freeze remains
+historical. No new exact units are added. Current private evidence uses
+secondary-gameplay-dependencies-{canonical-functions,canonical-creator-proof,
+host-call-audit,host-site-owners,host-detail-proof,checkpoint-proof,source-freeze}
+and adapter-build/compare logs. Prior secondary-host-pairs-* proofs retain the
+motion/source history. See SECONDARY_GAMEPLAY.md for the separate mixed family.

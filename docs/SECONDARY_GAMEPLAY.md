@@ -7,8 +7,8 @@ LTCG ownership, native product closure and runtime behavior remain separate.
 
 | Owner | Target extent | Current complete candidate | Status |
 | --- | --- | --- | --- |
-| UpdateSecondaryGameplay | 420390/1149 | 1151;930 differing replayed bytes | Source, non-exact |
-| UpdateSecondaryEclDebug | 40D600/1212 | 1153;744 differing replayed bytes | Source, non-exact |
+| UpdateSecondaryGameplay | 420390/1149 | 1135;334 differing replayed bytes | Source, non-exact |
+| UpdateSecondaryEclDebug | 40D600/1212 | 1153;785 differing replayed bytes | Source, non-exact |
 | SecondaryGameplayUpdateCallback | 420840/7 | Normal callback has7-byte shape | Source; no leaf acceptance unit |
 | LoadSecondaryDebugScript entry | 40D4F0/10 | Prototype only | Reviewed boundary; source still open |
 
@@ -65,6 +65,31 @@ worker7F0 reuse the existing MainRuntime root. Other existing global views are
 reused where their target identities agree; new unknown chain/selection views
 retain observed offsets without claiming original classes or capacities.
 
+## Real dependencies of the complete owners
+
+SecondaryGameplaySupport.cpp supplies the guarded pause40CFA0/30 and runtime
+mode40DEA0/30 bodies. Full direct Ghidra/PE reviews cover all10/6 instructions,
+seven real callers each, all returns and neighbors, with no foreign interior
+references or owned data. The pause helper ORs2 into nullable update/draw chain
+flags; runtime flags590 bit2000 chooses forced mode2 or the requested mode558.
+Ordinary conventional C++ declarations under /GL recover native EAX and EAX/ECX
+inputs. Both complete support bodies have equal raw30-byte instruction sequences
+in this context; neither receives independent exact acceptance or a leaf unit.
+
+The same file implements complete gauge420A70/212:66 instructions, one RET, one
+call459210, one real caller420390 and12 following CC bytes. It reads player Y at
+880, compares ordered64/80/128 thresholds, raises value014 by5000 up to10000 or
+by16/12/9 thereafter, and otherwise subtracts30 with a signed zero floor. When
+timer.current20 is nonpositive it also decays value018, then decrements timer1C,
+caps014 at13000 and018 at014. Wrapped arithmetic follows native32-bit operations.
+The settings view declares only these observed fields.
+
+Its current full contribution is254 bytes. VC9 folds the unique constant settings
+argument into global addresses; native still passes EDI. An ordinary member
+hypothesis produces the same folding, so the maintained source keeps the simpler
+free function. FP operand widths/order and the opaque AddStageTimer input also
+remain different. This is complete source presence, not exact codegen.
+
 ## Complete ECL debug source
 
 SecondaryEclDebug.cpp retains states0/1/4 and the other states' normal return1.
@@ -95,36 +120,48 @@ and existing stage lifecycle/tween/thread implementations under /GL. Only the
 real callback and the synthetic diagnostic entry use normal COFF. This is a
 non-runnable compiler context, not the game or a behavioral harness.
 
-Every candidate is measured over its complete PDB contribution. Gameplay replays
-115 reviewed call/global/literal fields and debug78, with no cropped interval.
-All62/41 call-site counts agree. Static acyclic call/return skeletons agree on
-183 gameplay and26 debug traces; loop reentry is recorded and omitted. These
-checks do not prove predicates, memory aliases, iteration counts or byte equality.
-Size proximity is not exactness: complete replay still differs930/744 bytes.
+Every candidate is measured over its complete PDB contribution. The cold current
+family is build/probe-ltcg/SecondaryGameplayDependencies. Gameplay replays114
+reviewed call/global/literal fields and debug78, with no cropped interval. All
+62/41 call-site counts agree. Static acyclic call/return skeletons agree on183
+and26 traces; loop reentry is recorded and omitted. These checks do not prove
+predicates, memory aliases, iteration counts or byte equality. Full replay gives
+1135/334 and1153/785, versus the prior1151/930 and1153/744. Debug's complete byte
+comparison becomes worse in this context despite restored real helper inputs.
 
-Concrete gameplay gaps include the factory's EBX packet versus source stack
-argument. Native EBX then holds the packet pointer, so later zero arguments use
-immediates and common continuation clears EBX; source keeps EBX0. Shared pause,
-runtime-mode and gauge helpers also still have incomplete source/ABI context.
-The redundant stage-null test, shared return1 placement, statistics memory ADD
-versus register increment/store and register scheduling remain different.
+A natural reference to the factory's state subobject restores EBX spawn packet,
+stack script and RET4 without a private ABI declaration. In the large gameplay
+caller this restores immediate-zero staging and the common EBX-clearing
+continuation. Real pause/mode bodies recover their native caller register setup.
+After address/branch erasure, gameplay instruction differences now remain in
+three regions: the missing second stage-null test, statistics register increment
+and store instead of memory ADD, and the gauge's folded settings input instead
+of native EDI setup/restoration. This erasure is diagnostic, never exact credit.
+Direct-global deletion, an integer reference and a structured statistics row do
+not recover the target sequence and are not adopted. Positive outer-guard
+restructuring is also not retained.
 
 Debug's3/1-count reset branches remain in native code while VC9 folds them in the
-current natural source. Private helper registers, field/store scheduling and GS
-layout still differ. Do not add volatile, dummy calls, padding, fabricated
-constructors or false ABI declarations to preserve those bytes.
+current natural source. Helper registers, field/store scheduling and GS layout
+still differ. Do not add volatile, dummy calls, padding, fabricated constructors
+or false ABI declarations to preserve those bytes.
 
-Factory source now covers six native sites across three callers, including the
-three host paths and these two complete owners;418460/189 remains source-open.
-Optimized host sharing still reduces its physical site count. The factory remains
-625/stack arguments/RET8 versus native621/EBX packet/stack script/RET4 in this
-context. Host15904/frame328 and interpreter6989/frame120 remain unchanged support
-observations with no acceptance in this family.
+Factory source covers six native sites across three callers;418460/189 remains
+source-open. Its current full contribution is629/native621 with478 differing
+replayed bytes, versus prior625/545. Native and source now agree on input/return
+cleanup, but source retains a state base versus native whole-actor base. All
+three host creator sites and all six emitter sites are now physically retained.
+Canonical host15952/frame328 has457/native464 body direct sites; the separate
+mixed family has host15936 and state update4079, versus canonical4083. Interpreter
+6989/frame120 remains unchanged. None of these support owners receives primary-TU
+acceptance in the family.
 
-The current union freeze covers143 inputs. The prior132 frozen inputs and all
-existing canonical contexts are unchanged;
-no old exact unit needs cold replay. Only the new whole-owner compiler context
-is built and reviewed. No Oracle implementation or broad runtime suite changed.
-Private evidence uses secondary-gameplay-{boundary-proof,owners-functions,
-owners-function-proof,owners-cfg-proof,owners-bindings,source-freeze}.json,
-secondary-gameplay-full-disassembly.txt and the two explicit entry-span reviews.
+The current union freeze covers145 inputs. Compared with the previous143, only
+SecondaryActorCreation.cpp and SecondaryGameplay.hpp changed; support source and
+StageDrawing.hpp are added inputs. Only the existing adapter exact unit is
+affected, and its fresh canonical cold family/strict11-byte one-field comparison
+passes with zero differences. Tools/Oracles and other exact units are unchanged.
+Private evidence uses secondary-gameplay-dependencies-{functions,function-proof,
+cfg-proof,bindings,source-freeze,checkpoint-proof,support-proof,creator-proof,
+canonical-creator-proof,host-call-audit,host-detail-proof}.json and the shared-ABI
+and gauge full-span Ghidra/PE reviews. No broad runtime suite is required.

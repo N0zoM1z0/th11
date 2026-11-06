@@ -426,3 +426,6 @@ CreateSecondaryHostActor,0x004108F0,function
 UpdateSecondaryEclDebug,0x0040D600,function
 UpdateSecondaryGameplay,0x00420390,function
 SecondaryGameplayUpdateCallback,0x00420840,function
+PauseSecondaryGameplayObject,0x0040CFA0,function
+SetSecondaryGameplayRuntimeMode,0x0040DEA0,function
+UpdateSecondaryGameplayGauges,0x00420A70,function

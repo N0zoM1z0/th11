@@ -141,7 +141,7 @@ address,span_end,state,confidence,evidence_id,notes
 0x0040C650,0x0040CD40,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
 0x0040CD60,0x0040CEAE,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
 0x0040CEB0,0x0040CEE2,reviewed,high,secondary-state-boundary-2026-10-29,"Complete51-byte owner independently decoded, all flow/returns/real neighbors/incoming refs reviewed. No tables or foreign interior entries. docs/SECONDARY_ACTOR_STATE.md."
-0x0040CFA0,0x0040CFBD,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
+0x0040CFA0,0x0040CFBD,reviewed,high,secondary-gameplay-dependencies-boundary-2026-11-06,Complete30-byte code; all branches/returns and seven real callers reviewed; no owned data. No foreign interior references or escaping branches. Direct Ghidra and full PE decode agree. docs/SECONDARY_GAMEPLAY.md.
 0x0040CFE0,0x0040D032,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
 0x0040D040,0x0040D058,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
 0x0040D0C0,0x0040D188,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
@@ -153,7 +153,7 @@ address,span_end,state,confidence,evidence_id,notes
 0x0040DAC0,0x0040DDB8,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
 0x0040DDE0,0x0040DDE9,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
 0x0040DE10,0x0040DE98,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
-0x0040DEA0,0x0040DEBD,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
+0x0040DEA0,0x0040DEBD,reviewed,high,secondary-gameplay-dependencies-boundary-2026-11-06,Complete30-byte code; all branches/returns and seven real callers reviewed; no owned data. No foreign interior references or escaping branches. Direct Ghidra and full PE decode agree. docs/SECONDARY_GAMEPLAY.md.
 0x0040DF10,0x0040DF30,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
 0x0040E0A0,0x0040E18D,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
 0x0040E190,0x0040E23F,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
@@ -347,7 +347,7 @@ address,span_end,state,confidence,evidence_id,notes
 0x00420950,0x004209A3,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
 0x004209B0,0x004209FC,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
 0x00420A00,0x00420A61,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
-0x00420A70,0x00420B43,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
+0x00420A70,0x00420B43,reviewed,high,secondary-gameplay-dependencies-boundary-2026-11-06,"Complete212-byte code/66 instructions, one call459210 and one RET; one caller420390;12 following CC bytes. No foreign interior references or escaping branches. Direct Ghidra and full PE decode agree. docs/SECONDARY_GAMEPLAY.md."
 0x00420B80,0x00420B95,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
 0x00420BA0,0x00420BB5,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
 0x00420D80,0x00420E08,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."

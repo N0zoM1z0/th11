@@ -57,7 +57,8 @@ includes540 primary table bytes,195 selectors, one alignment byte and two nested
 five-cell tables/40 bytes. All145 Ghidra external-to-code DATA refs become internal;
 4,001 reachable instructions plus two alignment instructions account for the full
 code. Its494074 virtual slot adjusts manager+103C through412E20. Origins remain
-indeterminate; neither owner has a complete maintained implementation or exact credit. See
+indeterminate; the complete host source remains non-exact, while its11-byte adapter
+has strict linked credit. See
 [HOST_DISPATCH](SECONDARY_HOST_DISPATCH.md).
 
 | Owner | Reviewed complete extent |
@@ -79,6 +80,25 @@ owned tables.43 alleged refs in4355E0..43562F are based renderer displacements;
 49353C's alleged435246 pointer is ASCII FRC. Inspect actual operands/data.
 
 ## Current compiler findings
+
+A natural reference to the actor's state subobject in the complete621-byte factory
+restores native EBX spawn arguments and stack script/RET4 under /GL. This also
+restores downstream gameplay zero-argument staging and common continuation code;
+private register roles can depend on ordinary source expression ownership. The
+factory still uses a state base where native code keeps the whole-actor base,
+so restored calling convention does not imply full equality.
+
+The two real30-byte gameplay pause/mode dependencies restore native EAX and
+EAX/ECX input roles without private calling-convention declarations. This removes
+most instruction differences in the complete1149-byte gameplay owner. They remain
+support observations, with no new leaf acceptance units. The complete212-byte
+height/gauge helper exposes a further context gap: VC9 folds its sole constant
+settings argument into global accesses, while native code retains EDI. Ordinary
+member spelling does not prevent this. Direct-global stage deletion, an integer
+reference and a structured statistics row do not recover the redundant null test
+or native memory ADD; these private candidates are not adopted. Never invent
+volatile fields, dummy barriers or padding to preserve those instructions.
+
 
 The values below are full source size / normalized diagnostic differences in
 specific retained contexts, not exactness scores or complete-product results.

@@ -425,3 +425,6 @@ CreateSecondaryHostActor
 UpdateSecondaryEclDebug
 UpdateSecondaryGameplay
 SecondaryGameplayUpdateCallback
+PauseSecondaryGameplayObject
+SetSecondaryGameplayRuntimeMode
+UpdateSecondaryGameplayGauges
