@@ -25,17 +25,25 @@ values were read independently from the original PE. Copying a line consumes
 CR/LF runs and preserves the original unbounded strcpy and count access order.
 
 Required59/89/223-byte readers/tween have full source/boundary mappings but no
-leaf acceptance units. Before the real loader body was added, source2584 had
-all42 calls/six returns/four cells, yet2506 full differences and93 fields.
-The native EAX menu/aligned34 frame differs from source stack menu/frame20;
-first-selection folding and private callee argument choices remain concrete
-gaps. Adding the real loader and generic callers restores filename-in-EAX,
-but leaves the full2584/2506/93 result unchanged. The missing field is the
-native second renderer-global read in the two-list lookup. The copy reader
-chooses different cursor/count registers; the tween coalesces the six global
-component reads into three and leaves VM on the stack. New canonical exactness
-is not claimed. See [MENU_MUSIC_ROOM.md](MENU_MUSIC_ROOM.md)
-for the current cold context and measurements.
+leaf acceptance units. The initial source2584/677 instructions/93 fields has all42 calls, six returns
+and four cells but2506 full differences. A named `double distance = fabs(delta)`
+now generates2648/698/94, restores8-byte stack alignment and the second renderer
+read, while both delta and FABS result still have native DWORD spills. Native
+frame34 versus source2C, EAX menu versus stack menu and the constant-folded first
+selection remain. All external field destination multiplicities agree, but full
+differences rise to2511; no overall byte improvement or exactness is claimed.
+
+Stack float stores do not prove a C++ local had float type. A named double y
+variant has the same2648/2511/94 result and differs in one SIB byte. The original
+local identity is unresolved. Direct fabs comparison gives the old unaligned
+2584 result. Scoped selection is2632/2539; ordinary inline, late definition and
+real member owner replay identically to the retained double-distance candidate.
+Controller/page unity and a five-source menu unity context also replay
+identically; grouping these maintained callers/callees does not fix the ABI.
+Scalar/control-pointer/memcpy changes to required tween support do not change
+the large owner; scalar copies emit FPU operations rather than raw word copies.
+These alternatives are discarded. The public /GL profile and all prior accepted
+inputs stay unchanged. See [MENU_MUSIC_ROOM.md](MENU_MUSIC_ROOM.md) for cold proof.
 
 The shared sprite binder's cached-pointer/shared UV helper/public-inline
 variants all generated388/306 differences in the audio context and394/348

@@ -45,18 +45,23 @@ acceptance units. The old2650-byte boundary missed terminal alignment/table:
 All parser, scroll, paced comments, unheard-track warning, playback and exit
 paths are maintained. Position is VM3DC, tween VM90, mutable controls4C326C.
 
-Cold source2584/677 instructions/93 fields has all42 calls/six returns/four
-cells but2506 full differences. Native EAX menu/aligned34 frame versus stack
-menu/frame20, folded first selection and cached renderer read remain open.
-Public probes/menu-music-room-context.json has43 supports/two established normal
-supports, with real loader/generic callers restoring filename-in-EAX. Copy
-reader90/native89/79 differences; tween213/native223/193 differences (coalesced
-controls and stack VM). Skip59/zero is diagnostic support only. No exact credit.
-All224 prior frozen inputs remain unchanged; existing canonical receipts stay
-current. New `.analysis/verify-menu-music-checkpoint.py` checks receipts, full
-PDB extents/field replay, Ghidra bytes and source freeze. Next work stays on this
-complete large owner, especially caller/register/frame and selection aliasing.
-SeeMENU_MUSIC_ROOM.md; no heavy job remains.
+Current double-distance candidate is2648/698 instructions/94 fields, with all
+42 calls/six returns/four cells, but2511 full differences (previous2584/2506/93).
+Native and source both spill delta and FABS result as floats; the real double
+local nevertheless restores8-byte stack alignment. Source frame2C/native34,
+stack menu/native EAX, RET4/native plain RET and folded first selection remain.
+All external field destination multiplicities now agree, including the second
+renderer read. No exact credit; original double-local identity is unproved.
+
+Public probes/menu-music-room-context.json keeps43 supports/two established
+normal supports. Only MenuMusicRoom.cpp changes among235 prior frozen inputs;
+no canonical unit depends on it. Cold proof: `.analysis/verify-menu-music-alignment-checkpoint.py`.
+Direct fabs loses alignment; scoped selection, inline/late definition/member
+owner, controller/five-source unity and scalar/memcpy tween probes do not close
+the whole-owner gaps and are discarded. Next work stays on this complete large
+owner and the caller/private
+argument/selection context. Support readers/tween remain59/0,90/79,213/193
+(source size/differences), diagnostic only. SeeMENU_MUSIC_ROOM.md; no heavy job remains.
 
 ## Current large owners: joystick2439/908 and assignment200
 

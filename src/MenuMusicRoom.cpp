@@ -187,7 +187,7 @@ int __stdcall UpdateMenuPage0D(MenuControllerView *self)
                 SetTrackVisibility(music, vm, track);
                 if (track == selection->current) position.x = static_cast<float>(position.x - 4.0);
                 float delta = MusicPosition(vm)->y - position.y;
-                float distance = static_cast<float>(fabs(delta));
+                double distance = fabs(delta);
                 if (distance < 40.0f) TweenMenuMusicPosition(vm, &position, MusicPosition(vm));
                 else *MusicPosition(vm) = position;
                 if (track == selection->current) position.x = static_cast<float>(position.x + 4.0);

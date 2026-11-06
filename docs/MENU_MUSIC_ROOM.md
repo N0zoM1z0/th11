@@ -89,23 +89,55 @@ That restores42 calls/six returns and the complete four-cell table, producing
 2584 bytes/677 instructions/93 fields and2506 full differences. The missing
 native field is a second renderer-global read in the inlined two-list lookup;
 source caches that pointer. Filename still used a stack argument because the
-loader body was absent. The final43-support context includes its existing real source and canonical
+loader body was absent. The initial43-support context includes its existing real source and canonical
 supporting callers. This restores filename-in-EAX at the loader call, while
 full size/difference/field counts remain2584/2506/93. Thus the specific loader
 argument choice is resolved, but it does not explain the whole-owner gap.
 
 | Complete contribution | Native bytes | Source bytes | Full differing bytes | Replayed fields |
 | --- | ---: | ---: | ---: | ---: |
-| Music-room primary |2668|2584|2506|93|
+| Music-room primary, current double-local candidate |2668|2648|2511|94|
 | Required skip reader, support only |59|59|0|0|
 | Required copy reader, support only |89|90|79|0|
 | Required position tween, support only |223|213|193|4|
 
-The final primary has677 reachable instructions/2555 code bytes,13 layout bytes
-and all16 table bytes. It has the same42 physical calls and six returns, but
-uses a stack menu argument and RET4 instead of native EAX/plain RET. Its frame
-is20 without the native8-byte alignment/34 frame. The first selection is folded
-to a constant, whereas native reloads count and preserves the general clamp.
+A used `double distance = fabs(delta)` now retains the library result type,
+while the input delta remains float. Pinned VC9 emits the same native sequence
+of DWORD delta store/reload, FABS, DWORD absolute-value store/reload, float40
+comparison and parity branch. Nevertheless the nominal double local changes
+stack alignment: current primary has698 instructions/2624 reachable bytes,
+8 layout bytes and all16 table bytes, with `AND ESP,-8` and frame2C. Native has
+708/2641,11 layout and frame34. The length gap narrows84 to20 bytes, but the full
+byte difference count increases2506 to2511: this is structural evidence, not an
+overall byte improvement or exact acceptance.
+
+The changed allocation also restores the second renderer-global load. All94
+field destinations now have the same external destination multiplicities as
+the target, including all42 calls. Six RET4 paths remain instead of the native
+plain RETs; the menu still arrives on the stack rather than EAX. The first
+selection remains constant-folded where native reloads count and keeps the
+clamp. These are the next full-owner gaps.
+
+A named double y expression also produces2648/2511/94 and alignment8, differing
+from the retained candidate in one SIB byte. This does not prove which original
+local had double type. Direct `fabs(delta)` comparison restores the old unaligned
+2584/2506/93 result. Ordinary inline, definition-after-use and a genuine member
+owner produce exactly the same2648 replay as the retained candidate; scoped
+selection instead gives2632/2539. A real controller/page unity context and a five-source menu unity context
+(controller, primary page/support, music page/support) also replay identically
+to the retained candidate. These variants are discarded. An attempted
+cross-TU inline-only split failed to emit its helper and did not link; it is not
+a valid codegen comparison. Scalar/control-pointer and memcpy support variants
+do not change the large owner and are not retained. Scalar copies introduce
+x87 loads/stores instead of native raw word copies; memcpy restores six global
+reads but gives229/native223 and214 differences in that support body.
+
+Only MenuMusicRoom.cpp changes among the235 previous frozen inputs; no accepted
+unit includes it. The complete43-support family is cold rebuilt, with current
+source/tool/producer/artifact receipts and independent exhaustive field replay.
+No accepted family requires a replay for this isolated change. Checkpoint proof
+is `.analysis/verify-menu-music-alignment-checkpoint.py`.
+
 The copy reader chooses EAX cursor/ECX count instead of ECX/EDI; the tween keeps
 its VM on the stack and coalesces six native global component reads into three.
 These concrete allocation/aliasing gaps remain open. All source fields agree
