@@ -434,3 +434,5 @@ DecodeSecondaryDialogueText,0x0041EED0,function
 ChangeSecondaryDialogueSprite,0x004566D0,function
 BindSecondaryDialogueSprite,0x00456740,function
 FindSecondaryDialogueChild,0x00456870,function
+UpdateSecondaryHud,0x0041B380,function
+SecondaryHudUpdateCallback,0x0041CFB0,function

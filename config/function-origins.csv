@@ -316,9 +316,10 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0041AFC0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0041B2A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0041B360,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0041B380,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0041B380,unknown,SecondaryHud,indeterminate,unknown,secondary-hud-origin-2026-11-06
 0x0041C5F0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0041C660,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0041CFB0,unknown,SecondaryHud,indeterminate,unknown,secondary-hud-origin-2026-11-06
 0x0041CFC0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0041CFD0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0041CFE0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

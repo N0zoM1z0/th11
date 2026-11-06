@@ -66,6 +66,21 @@ that the target had that layout.
 
 ## Complete owner boundaries
 
+HUD41B380 owns4716, not the automatic4686 bounding span:4647 reachable code,
+39 internal alignment,2 pre-table alignment and28 stage-table bytes. The seven
+foreign DATA references are its owned cells. Its missed7-byte callback41CFB0
+passes ECX to a stack-self/EAX1/two-RET4 entry; decompiler phantom float/register
+inputs are not APIs. Complete source covers all VM/boss/dialogue/locking paths.
+It proves dialogue elapsed timer4 and portraitFile444C for both titles/badges.
+Alpha uses an inline signed-char conversion and the native unordered threshold
+edge; replacing its FF guard with ordered distance<64 changes that edge.
+Position/alpha49 instructions agree after only branch-address/distance-slot
+erasure; distance remainsESP10/native versus14/source, without exact credit.
+Direct per-branch counter/state spelling gives native memory CMPs but worsens
+whole-owner4652/4101 to4812/4264 by changing register lifetimes; rejected.
+See [HUD](SECONDARY_HUD.md).
+
+
 Dialogue41D380 owns6980, not its automatic6794 bounding extent:6780 reachable
 code,14 internal alignment,2 pre-table alignment and184 bytes in27/7/7/5-cell
 tables. All46 apparent foreign DATA references are owned. Its252 calls include
@@ -345,6 +360,7 @@ are regenerable; result records are retained. See [ARTIFACTS.md](ARTIFACTS.md) f
 
 | Work | Evidence and remaining differences |
 | --- | --- |
+| HUD4716, real dialogue caller and full boss/animation lifecycle | [SECONDARY_HUD](SECONDARY_HUD.md) |
 | Dialogue6980 and complete27-opcode script source | [SECONDARY_DIALOGUE](SECONDARY_DIALOGUE.md) |
 | Gameplay and ECL debug factory callers | [SECONDARY_GAMEPLAY](SECONDARY_GAMEPLAY.md) |
 | Mesh and effects | [STAGE_MESH](STAGE_MESH.md), [MESH_EFFECTS](MESH_EFFECTS.md), [VM factory](ANIMATION_VM_FACTORY.md) |

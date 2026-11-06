@@ -14,7 +14,7 @@ struct SecondaryDialogueInstruction
 struct SecondaryDialogueView
 {
     int mode;
-    unsigned char unknown004[0x18 - 4];
+    StageTimerView elapsed;
     StageTimerView time, wait;
     unsigned int player, opponent, panel, text0, text1, annotation0, annotation1, boss;
     unsigned int unknown060;
@@ -49,6 +49,7 @@ int __stdcall SecondaryDialogueClearValue(SecondaryHostSelectionState *state);
 int __stdcall FadeSecondaryDialogueAudio(float duration);
 
 typedef char SecondaryDialogueInstructionSize[(sizeof(SecondaryDialogueInstruction) == 4) ? 1 : -1];
+typedef char SecondaryDialogueElapsedOffset[(offsetof(SecondaryDialogueView, elapsed) == 4) ? 1 : -1];
 typedef char SecondaryDialogueTimeOffset[(offsetof(SecondaryDialogueView, time) == 0x18) ? 1 : -1];
 typedef char SecondaryDialogueWaitOffset[(offsetof(SecondaryDialogueView, wait) == 0x2c) ? 1 : -1];
 typedef char SecondaryDialogueTextOffset[(offsetof(SecondaryDialogueView, text0) == 0x4c) ? 1 : -1];

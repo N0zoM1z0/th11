@@ -23,10 +23,12 @@ All46 apparent foreign DATA references are owned switch cells. No foreign
 interior entry remains. The next function begins41EED0 after12 CC bytes. All252
 direct call sites/28 callees and both RET4 paths are reviewed. The physical
 argument is the stack dialogue pointer; frame140 and EAX0/-1 returns are observed.
-The single actual caller is the still source-open4686-byte HUD owner41B380,
-calling at41BF18. Its complete boundary/source is a separate task.
+The single actual caller is the complete4716-byte HUD owner41B380,
+calling at41BF18. Its seven-cell table and real callback are now reviewed and
+maintained; see [SECONDARY_HUD](SECONDARY_HUD.md).
 
-The partial view retains mode0, timer18, wait timer2C, animation IDs40..5C,
+The partial view retains mode0, HUD-driven elapsed timer4, interpreter timer18,
+wait timer2C, animation IDs40..5C,
 instruction64, three position vectors68..8B, delay8C, flags90, line94,
 initialization98, speaker9C and colorsA0. These are observed spans, not proof of
 an original allocation size or original C++ array types. Instruction headers are
@@ -100,6 +102,12 @@ call/advance/return skeletons agree, including return0 versus return-1. The chec
 omits loop reentry and does not prove predicates, operand identities or aliases.
 All454 independently reviewed address/table fields replay over the complete PDB
 owner;5694 bytes still differ. This is non-exact, despite the nearby size.
+
+The fresh complete HUD family retains6948/5694, all454 fields and the same252
+calls/46 traces after typing elapsed timer4. Its diagnostic entry calls the real
+HUD callback, and the HUD calls Run; there is no direct interpreter call in that
+entry. The HUD callback is also normal COFF. This new support comparison grants
+no primary-TU acceptance or original TU-partition claim.
 
 The first complete normal-C++ candidate left separate marker lookups and
 continue-menu calls. Sharing their actual common operations recovers the native

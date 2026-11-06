@@ -433,3 +433,5 @@ DecodeSecondaryDialogueText
 ChangeSecondaryDialogueSprite
 BindSecondaryDialogueSprite
 FindSecondaryDialogueChild
+UpdateSecondaryHud
+SecondaryHudUpdateCallback
