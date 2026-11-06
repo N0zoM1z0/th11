@@ -6,6 +6,33 @@ exact codegen, original provenance and runtime behavior are separate claims.
 Older experiments are preserved in the explicitly
 [historical notes](archive/KNOWLEDGE_BASE_2026-10-30.md).
 
+## Character selection: complete1228-byte owner and natural history ABI
+
+Direct Ghidra/full-span/table/PE review establishes43CBE0..43D0AB/1228:338
+instructions/1180 code,27 skipped alignment bytes+NOP, five-cell20-byte table,
+32 calls/13 callees/60 fields/eight RET4s. Sparse Ghidra body1180 and bounding
+1207 both omit owned bytes. The previous page05 has five cells43CBCC..43CBDF,
+directly meeting page06 without a CC gap. Four CC follow page06.
+
+Source preserves Extra exclusion only when all three partner bits are clear,
+four child-event trees in6/6/1/1 order, and the delayed character/partner state.
+Changed character selects0 and clears saved partner without changing the live
+partner global. Unchanged character clamps then publishes the raw saved value.
+The existing void history push naturally preserves EAX into subsequent selection
+accesses under /GL. Caller reuse alone is not proof of a return-this API.
+
+Candidate1224/707 differences/59 fields has native frame0, all32 calls/eight
+RET4s/table, but menu/selector EBX/EBP are reversed and close caches one native
+character reload. Child finder script remains stack/nativeEBX. Typed physical
+IDs1256/1197 introduce frame8; shared selector1200/1140 corrects register roles
+but hoists the pointer before the guard. Case-bound pointer/owner-read variants
+replay identically to initial; shared+owner also equals shared. A69-source real
+HUD/dialogue/gameplay/debug context replays all13 owners identically to initial53;
+it adds no evidence for this ABI gap. All private controls are discarded.
+The12 earlier owners also match the previous52-support partner context exactly
+as complete diagnostic contributions, not new exact units. See
+[MENU_CHARACTER_SELECTION](MENU_CHARACTER_SELECTION.md).
+
 ## Partner selection: complete1516-byte page and concrete ABI gaps
 
 Direct Ghidra/full-span/reference/table/PE review extends43D0B0's1496-byte code

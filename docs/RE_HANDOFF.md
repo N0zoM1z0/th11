@@ -7,9 +7,9 @@ status/diff; current receipts outrank historical notes. All dirty work is ours.
 ## Current exact state
 
 - Original Japanese TH11v1.00a, pinned by config/target.toml; no substituted bytes.
-- 2,140 candidates;609 reviewed boundaries;491 source mappings.
+- 2,140 candidates;610 reviewed boundaries;492 source mappings.
 - 236 exact functions/31,881 bytes:9 normal COFF and227 linked PE.
-- Origins:90 authored,503 indeterminate,14 exclusions,1,533 pending.
+- Origins:90 authored,504 indeterminate,14 exclusions,1,532 pending.
 - VC9 RTM21022/SDK6.0A; direct scripts/ghidra.py, no Factory MCP/REA.
 - Commit/push authorized; prefix `gpt-6.1-sol: `. No heavy job remains running.
 
@@ -34,6 +34,25 @@ are retained. Implicit/default/positive guard variants give639; member model9.
 No prefix crop/normalization. Selection/history/event source bodies support this
 large owner without leaf acceptance units. QueueMeshEffectSound stays124/native125.
 See CONFIGURATION_AUDIO_MENU.md; old checkpoint counts/freezes are historical.
+
+## Current character-selection owner1228
+
+New MenuCharacterSelection.cpp owns43CBE0..43D0AB/1228:338 instructions/1180 code,
+28 layout (27 skipped loop alignment+final NOP), five-cell20-byte table,32 calls/
+13 callees/60 fields/eight RET4s. Source retains two-character Extra exclusions,
+left/right input, ordered77+/79+/78-/7A- child events6/6/1/1, delayed partner
+entry, saved-value quirks and cancel. Changed character clears selector/saved
+partner only; unchanged stores the captured raw saved partner after clamp.
+Push remains void; natural /GL preserves EAX selection without a fake return.
+
+Retained1224/340 instructions/59 fields/707 full differences has correct frame0,
+32 calls/eight RET4s/table. EBX menu/EBP selector reverse native EBP/EBX; child
+script stack/nativeEBX and close's cached character reload remain. Typed IDs
+1256/1197 add frame8; shared pointer1200/1140 hoists its address before guard;
+case-bound pointer and owner reads reproduce baseline. All are discarded.
+Real HUD69-source context also replays all13 owners identically to retained53.
+Previous12 owners remain byte-identical to52-source partner context. See
+MENU_CHARACTER_SELECTION.md; do not repeat these negative models.
 
 ## Current large menu owners: partner1516, practice1024, data2448/750, music2668
 
@@ -91,12 +110,14 @@ RET4 versusplain RET remain. See MENU_PLAYER_DATA.md and MENU_MUSIC_ROOM.md.
 Both public page08/player-data recipes retain48 supports, same two normal
 supports and /GL retained.
 The new partner recipe has52 supports and the same two normal menu supports.
-All242 earlier source inputs remain unchanged; three new files extend to245.
-Current verifier `.analysis/verify-menu-partner-checkpoint.py`; stage/player-data
-verifiers are historical. Both48-support receipts remain valid. No new exact
-unit or native-product/runtime closure. Next substantial missing owner43CBE0:
-default1207 remains unreviewed, with neighbor table43D098..43D0AB outside that
-old extent; review complete flow/owned table before reconstructing page06.
+The character recipe has53 supports with the same two normal menu supports.
+All245 prior source inputs remain unchanged; two new files extend to247.
+Current verifier `.analysis/verify-menu-character-checkpoint.py`; prior menu
+verifiers are historical. Older52/48-support receipts remain valid. No new exact
+unit or native-product/runtime closure. Next substantial missing owner43C7C0:
+default1034 remains unreviewed; jump43C7EA owns five cells43CBCC..43CBDF ending
+immediately before page06. Review full flow and the inferred1056-byte owner
+before reconstructing page05. No preceding four-CC gap exists at page06.
 
 ## Current large owners: joystick2439/908 and assignment200
 
