@@ -497,3 +497,8 @@ UpdatePauseMenu,0x0042C8D0,function
 ResumePauseMenu,0x0042C880,function
 SignalPauseMenuChild,0x0042F380,function
 DeletePauseMenuReplay,0x00435FC0,function
+UpdatePauseContinueMenu,0x0042D9D0,function
+CommitPauseMenuScore,0x0042BA20,function
+ClosePauseContinueMenu,0x0042D7F0,function
+ShowPauseMenuAnimationTree,0x00456610,function
+CreateDefaultSecondaryDrawAnimationVmId,0x00455D80,function

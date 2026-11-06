@@ -496,3 +496,8 @@ UpdatePauseMenu
 ResumePauseMenu
 SignalPauseMenuChild
 DeletePauseMenuReplay
+UpdatePauseContinueMenu
+CommitPauseMenuScore
+ClosePauseContinueMenu
+ShowPauseMenuAnimationTree
+CreateDefaultSecondaryDrawAnimationVmId

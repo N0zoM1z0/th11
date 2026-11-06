@@ -480,7 +480,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0042B7F0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042B8D0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042B8E0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0042BA20,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0042BA20,unknown,PauseMenu,indeterminate,unknown,pause-continue-menu-origin-2026-11-06
 0x0042BA80,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042BBF0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042BC60,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
@@ -496,9 +496,9 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0042C8D0,unknown,PauseMenu,indeterminate,unknown,pause-menu-origin-2026-11-06
 0x0042D560,unknown,SecondaryPlayerController,indeterminate,unknown,secondary-controller-callee-origin-2026-10-29
 0x0042D6B0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0042D7F0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0042D850,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0042D9D0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0042D7F0,unknown,PauseMenu,indeterminate,unknown,pause-continue-menu-origin-2026-11-06
+0x0042D850,unknown,PauseMenu,indeterminate,unknown,pause-continue-menu-origin-2026-11-06
+0x0042D9D0,unknown,PauseMenu,indeterminate,unknown,pause-continue-menu-origin-2026-11-06
 0x0042E6B0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042F380,unknown,PauseMenu,indeterminate,unknown,pause-menu-origin-2026-11-06
 0x0042F400,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
@@ -935,7 +935,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00455BC0,unknown,SecondaryEmitterAnimation,indeterminate,unknown,secondary-emitter-factory-origin-2026-10-29
 0x00455C30,unknown,SecondaryEmitterAnimation,indeterminate,unknown,secondary-emitter-factory-origin-2026-10-29
 0x00455CD0,unknown,SecondaryEmitterAnimation,indeterminate,unknown,secondary-emitter-factory-origin-2026-10-29
-0x00455D80,unknown,SecondaryEmitterAnimation,indeterminate,unknown,secondary-emitter-factory-origin-2026-10-29
+0x00455D80,unknown,SecondaryEmitterAnimation,indeterminate,unknown,pause-continue-menu-origin-2026-11-06
 0x00455DF0,unknown,SecondaryEmitterAnimation,indeterminate,unknown,secondary-emitter-factory-origin-2026-10-29
 0x00455E60,unknown,SecondaryEmitterAnimation,indeterminate,unknown,secondary-emitter-factory-origin-2026-10-29
 0x00455F00,unknown,SecondaryEmitterAnimation,indeterminate,unknown,secondary-emitter-factory-origin-2026-10-29
@@ -950,7 +950,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00456430,unknown,SecondaryActorState,indeterminate,unknown,secondary-state-origin-2026-10-29
 0x004564C0,unknown,ConfigurationMenu,indeterminate,unknown,menu-controller-origin-2026-11-06
 0x00456520,unknown,SecondaryActorState,indeterminate,unknown,secondary-state-origin-2026-10-29
-0x00456610,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00456610,unknown,PauseMenu,indeterminate,unknown,pause-continue-menu-origin-2026-11-06
 0x00456650,unknown,ConfigurationMenu,indeterminate,unknown,menu-partner-selection-origin-2026-11-06
 0x004566D0,unknown,SecondaryDialogue,indeterminate,unknown,secondary-dialogue-origin-2026-11-06
 0x00456740,unknown,SecondaryDialogue,indeterminate,unknown,secondary-dialogue-origin-2026-11-06
