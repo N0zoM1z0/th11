@@ -456,3 +456,7 @@ DrawSecondaryHud,0x0041C660,function
 DecodeSecondaryHudBestTime,0x0041A250,function
 SecondaryHudDrawCallback,0x0041CFD0,function
 DrawHudSolidRectangle,0x00447F70,function
+SetConfigurationMenuPage,0x004390E0,function
+SetConfigurationMenuState,0x00439140,function
+UpdateConfigurationAudioMenu,0x0043A6F0,function
+ApplyConfigurationAudioMenu,0x0043AAD0,function

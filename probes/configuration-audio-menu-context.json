@@ -1,0 +1,43 @@
+{
+  "artifact_kind": "linked-pe",
+  "source": "src/ConfigurationAudioMenu.cpp",
+  "inputs": [
+    "src/ConfigurationAudioMenu.hpp"
+  ],
+  "support_sources": [
+    "src/SoundQueue.cpp",
+    "src/MusicStream.cpp",
+    "probes/sound-queue-context.cpp",
+    "src/StageMesh.cpp",
+    "probes/stage-mesh-context.cpp",
+    "src/AnimationSpriteBinding.cpp",
+    "src/AnimationVmFactory.cpp",
+    "probes/configuration-audio-menu-context.cpp",
+    "src/SecondaryPlayerMovement.cpp",
+    "src/SecondaryDamageSupport.cpp",
+    "src/MeshEffects.cpp"
+  ],
+  "normal_support_sources": [],
+  "output_dir": "build/probe-ltcg/ConfigurationAudioMenu",
+  "profile": [
+    "/TP",
+    "/O2",
+    "/Ob1",
+    "/Gy",
+    "/MT",
+    "/Isrc",
+    "/EHsc",
+    "/GL"
+  ],
+  "entry": "ConfigurationAudioMenuProbe@4",
+  "functions": [
+    "ApplyConfigurationAudioMenu",
+    "UpdateConfigurationAudioMenu",
+    "SetConfigurationMenuState",
+    "SetConfigurationMenuPage"
+  ],
+  "symbol": "?ApplyConfigurationAudioMenu@@YGXPAUConfigurationAudioMenuView@@@Z",
+  "target_address": 4434640,
+  "size": 3836,
+  "linkages": []
+}

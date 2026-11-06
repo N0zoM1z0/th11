@@ -1,0 +1,122 @@
+# Complete configuration audio menu
+
+The audio settings owner43AAD0 has complete natural C++ source for all3,836
+bytes. Its state/input caller43A6F0 has complete source for the992-byte owner,
+including all five dispatch cells. Both remain non-exact. The two shared state
+setters are supporting source, with no separate leaf acceptance units.
+
+## Target ownership and actual interfaces
+
+Direct mapped-text-attested Ghidra review and independent complete PE CFG
+establish43AAD0..43B9CB:1,136 reachable instructions/3,777 code bytes and59
+internal layout bytes. Those59 contain57 bytes of no-op LEAs and one unreachable
+two-byte jump to the following loop header; all remain in the comparison.
+There is no table or foreign interior entry. Four CC separate43B9D0. The owner
+receives the menu in EBX, saves EBP/ESI/EDI, uses four bytes of float scratch and
+has two plain RET paths. Its four call targets have84 physical sites:
+70 VM lookups,12 sprite binds, one sound enqueue and one float-to-integer helper.
+
+The caller owns43A6F0..43AACF=969 code bytes/285 instructions, three bytes of
+no-op alignment and20 bytes in the five-cell table at43AABC. Every apparent
+foreign DATA reference is one of these owned cells; no other foreign interior
+entry remains. The next owner starts immediately at43AAD0. Native input is EAX,
+with six plain RET paths returning1. The maintained conventional C++ signatures
+leave private register allocation to the real /GL compiler.
+
+State setter439140 owns82 bytes/16 instructions and page setter4390E0 owns85
+bytes/17 instructions. Each has one plain RET, no table or foreign interior
+entry, and following CC. Inputs are EAX menu/ECX state or page. Both reset the
+real timer at2B0, including its lazy initialization and previous=-1. The page
+setter additionally clears state20 and writes page1C. Original nominal class,
+source partition and authorship remain unknown for all four owners.
+
+## Complete source operations
+
+The physical view uses the existing animation VM, selection and timer layouts.
+Settings are signed bytes at existing MainRuntime+1E8/1E9. Applying them writes
+the separate music/effect mirrors and enqueues opcode8/value0/text SetVol.
+The second mirror controls the zero gate, but the attenuation formula actually
+reads the first mirror. Its five float-round stores and two squarings give a
+fourth-power curve before the double-5000 multiplication and integer cast.
+This observed cross-setting behavior is retained, without asserting the other
+consumers of the separate4C9170 scalar.
+
+The renderer is cached once. Every digit first looks up the root, clears a
+missing root ID, traverses its draw node by signed16-bit script, then performs
+the second lookup even for ID0. The original unchecked root traversal remains.
+Each digit setting is read after lookup and its sprite bind is child-guarded.
+
+| Setting | Low-palette children | High-palette children | Sprite bases |
+| --- | --- | --- | --- |
+| Music |1D,1E,1F|21,22,23|2A,34|
+| Effects |25,26,27|29,2A,2B|2A,34|
+
+Each triplet uses hundreds, tens and units in that order. Afterwards the two
+leading positions in both palettes are hidden below10, only hundreds are hidden
+below100, and all are shown otherwise. These visibility writes have no invented
+null guard. Actual shared tails account for70 lookup calls rather than72.
+
+The caller covers opening delays, five-item selection and repeats, cancel-to-back,
+periodic sound preview, signed-byte increments/decrements in steps of5, default
+100/80/0 reset, both closing-animation paths, delayed page transitions, and
+selection stack push/pop. The close-to-back path is shared by cancel and confirm.
+The reviewed selection and signal/execute callees remain source-open dependencies;
+their private register assignments are not expressed as fake public ABIs.
+
+## Compiler findings and current comparison
+
+The full public /GL primary candidate is3,836 bytes:3,781 code bytes/1,137
+instructions and55 layout bytes, with all110 fields replayed and291 full byte
+differences. Target/source retain the same84 physical calls and four-byte float
+scratch, EBX menu, cached ESI renderer and two plain RET paths. Remaining gaps
+are root-ID load registers (native EDX/ECX versus EAX), one renderer setup and
+local branch/alignment layout. The eight IDIV sequences and quartic x87 phase
+are recovered without register or stack erasure.
+
+The caller is948=915 code/271 instructions+13 layout+20 table, with all61 fields
+and932 full differences. All28 call sites/twelve targets agree in count; EAX
+input and six plain RETs are recovered. Open selection/signal dependencies still
+prevent their native private argument allocation from being recovered. The two
+support setters have zero diagnostic differences after their one field each,
+without new exact credit. A parent-ID pointer helper and an explicit child-ID
+local retain the same complete size, instruction count and291-byte difference
+count; they do not resolve the remaining register/layout gap.
+
+A generic digit divisor followed by a separate integer remainder loses the
+original byte-expression optimization context. The complete3948-byte candidate
+had eight extra multiply-based remainder sequences. Direct byte expressions for
+hundreds, tens and units recover all eight native IDIV10 sequences. A focused
+pinned VC9 COFF experiment independently shows signed-char %10 and byte /10%10
+use IDIV, while unrestricted int %10 uses multiply/subtract. This experiment is
+compiler evidence only; it grants no normal-COFF credit to the /GL owner.
+
+Returning the actual child-ID value object restores native late success blocks;
+an initially zeroed scalar result instead produced1190 instructions. A remainder
+wrapper does not improve the complete candidate and is not retained. Explicit
+inline close logic and a common back label recover the caller's two physical
+lookup sites and all call counts. A direct general-input /GL probe lets its EAX
+input/plain RET arise naturally; taking its address in a normal stdcall function
+pointer would force stack input/RET4 and is not the target's observed interface.
+
+## Reproduction and evidence limits
+
+The public compile-only context is probes/configuration-audio-menu-context.json.
+It includes all real /GL source dependencies and an arbitrary-input probe. It is
+not a game executable or a canonical exact unit. From the repository root:
+
+```sh
+scripts/repo-python - <<'PYTHON'
+import importlib.util, json
+from pathlib import Path
+spec = importlib.util.spec_from_file_location('builder', 'scripts/build-match-unit.py')
+builder = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(builder)
+builder.build(json.loads(Path('probes/configuration-audio-menu-context.json').read_text()))
+PYTHON
+```
+
+All four new functions are compared as complete primary-TU PDB contributions. The diagnostic
+replays every call/global/string/literal and owned table address field, retaining
+all other bytes, branches and layout. No masked, cropped, instruction-normalized,
+behavioral, native-product or original-TU equality is claimed. Prior exact source
+inputs are unchanged, so no accepted cohort replay is required for this addition.

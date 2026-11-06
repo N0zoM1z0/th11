@@ -6,6 +6,32 @@ exact codegen, original provenance and runtime behavior are separate claims.
 Older experiments are preserved in the explicitly
 [historical notes](archive/KNOWLEDGE_BASE_2026-10-30.md).
 
+## Audio configuration menu: direct byte expressions affect VC9 remainder
+
+Complete43AAD0 owns3836 bytes (3777 reachable code plus59 internal layout),
+not merely its first basic blocks. Its caller43A6F0 owns992=969 code+3 alignment
++20 bytes in all five switch cells; the default Ghidra extent omits23 bytes.
+The apply owner has70 VM lookups,12 binds, enqueue and conversion. Its second
+volume mirror gates zero, but the quartic attenuation reads the first mirror;
+retain all five float-round stores and both squarings.
+
+VC9 RTM/O2 emits IDIV10 for direct signed-byte %10 and byte /10%10. A generic
+inlined divisor followed by a separate int remainder instead strength-reduces
+all eight remainder sites to multiply/subtract. Literal byte expressions recover
+the native eight IDIVs and reduce the complete candidate3948/3438 differences
+to3836/291 after all110 address fields. The complete code and layout remain in
+that comparison. Child-ID value returns restore late success blocks; zero-
+initialized scalar accumulation changes the loop layout. A remainder wrapper,
+parent-ID pointer helper and explicit ID local do not resolve the final gap.
+
+The caller now has all28 calls in count, EAX input/plain RET and both inlined
+close lookups, but remains948/native992 and932 full differences. A normal
+stdcall function-pointer address escape forces stack input/RET4; a direct /GL
+arbitrary-input probe recovers the actual private interface. The supporting
+82/85-byte timer setters have zero diagnostic differences, with no independent
+leaf acceptance units. Original classes/TU and open selection/signal private
+ABI remain unresolved. See [CONFIGURATION_AUDIO_MENU.md](CONFIGURATION_AUDIO_MENU.md).
+
 ## Target and compilation
 
 - Only original Japanese TH11 1.00a, SHA-256

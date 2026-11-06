@@ -455,3 +455,7 @@ DrawSecondaryHud
 DecodeSecondaryHudBestTime
 SecondaryHudDrawCallback
 DrawHudSolidRectangle
+SetConfigurationMenuPage
+SetConfigurationMenuState
+UpdateConfigurationAudioMenu
+ApplyConfigurationAudioMenu

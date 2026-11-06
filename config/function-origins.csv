@@ -612,8 +612,8 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00438E70,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004390B0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004390D0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x004390E0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00439140,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x004390E0,unknown,ConfigurationMenu,indeterminate,unknown,configuration-audio-menu-origin-2026-11-06
+0x00439140,unknown,ConfigurationMenu,indeterminate,unknown,configuration-audio-menu-origin-2026-11-06
 0x004391A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004391C0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00439230,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
@@ -628,8 +628,8 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x004399B0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00439E80,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0043A0A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0043A6F0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0043AAD0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0043A6F0,unknown,ConfigurationMenu,indeterminate,unknown,configuration-audio-menu-origin-2026-11-06
+0x0043AAD0,unknown,ConfigurationMenu,indeterminate,unknown,configuration-audio-menu-origin-2026-11-06
 0x0043B9D0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0043BD60,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0043C6F0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
