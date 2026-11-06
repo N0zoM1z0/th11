@@ -15,7 +15,10 @@ struct SecondaryHostControlHud
 };
 struct SecondaryHostSelectionState
 {
-    unsigned char unknown000[0x50];
+    unsigned char unknown000[0x14];
+    int gaugeValue014, gaugeValue018;
+    StageTimerView gaugeTime;
+    unsigned char unknown030[0x50 - 0x30];
     int selection, unknown054, value058;
 };
 extern SecondaryHostSelectionState g_SecondaryHostSelectionState;

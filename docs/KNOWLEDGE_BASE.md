@@ -26,6 +26,20 @@ Older experiments are preserved in the explicitly
 
 ## Layout and ABI corrections
 
+Gameplay's stage pointer is4A8D5C, the existing g_StageSecondary. Native initializer
+4024C0 publishes g_StagePrimary at4A8D60; destructor402740 tests/clears60 and then5C.
+Do not rebind the primary symbol to5C merely to compare one caller. The gameplay
+source now uses the correct secondary pointer and retains the established stage
+identities across owners.
+
+The gauge/settings root4A56E0 is the existing host selection state. Its observed
+value14/18 and timer1C belong in that shared physical view; no separate settings
+global is needed. Gauge's459210 dependency is the already implemented
+OffsetSecondaryTimer, not another helper. Reusing it restores real ESI timer
+input while the unique gauge pointer still folds into global accesses. Other legacy scalar aliases do not
+establish a closed original global-data layout or native product.
+
+
 | Area | Current native observation |
 | --- | --- |
 | Projectile6C | Acceleration64, descriptor pointer68; old parameters64 was wrong |
@@ -51,6 +65,14 @@ Assertions check our declared layout after native review; they are not evidence
 that the target had that layout.
 
 ## Complete owner boundaries
+
+Dialogue41D380 owns6980, not its automatic6794 bounding extent:6780 reachable
+code,14 internal alignment,2 pre-table alignment and184 bytes in27/7/7/5-cell
+tables. All46 apparent foreign DATA references are owned. Its252 calls include
+60 child-ID and54 explicit-document sprite bindings. Full natural C++ covers all
+27 opcodes; sprite binding44AB40 is distinct from script binding44ACD0/44ADA0.
+See [DIALOGUE](SECONDARY_DIALOGUE.md) for complete source and codegen evidence.
+
 
 Actor host412E30 is16,556 bytes, not its initial15,780 code-only span. Full ownership
 includes540 primary table bytes,195 selectors, one alignment byte and two nested
@@ -92,10 +114,11 @@ The two real30-byte gameplay pause/mode dependencies restore native EAX and
 EAX/ECX input roles without private calling-convention declarations. This removes
 most instruction differences in the complete1149-byte gameplay owner. They remain
 support observations, with no new leaf acceptance units. The complete212-byte
-height/gauge helper exposes a further context gap: VC9 folds its sole constant
+height/gauge helper still exposes a further context gap: VC9 folds its sole constant
 settings argument into global accesses, while native code retains EDI. Ordinary
-member spelling does not prevent this. Direct-global stage deletion, an integer
-reference and a structured statistics row do not recover the redundant null test
+member spelling does not prevent this. Disabling global optimization (/Og-) makes gameplay1629/frameCC and debug2325,
+and is rejected. Direct-global stage deletion, an integer reference and a
+structured statistics row do not recover the redundant null test
 or native memory ADD; these private candidates are not adopted. Never invent
 volatile fields, dummy barriers or padding to preserve those instructions.
 
@@ -322,6 +345,7 @@ are regenerable; result records are retained. See [ARTIFACTS.md](ARTIFACTS.md) f
 
 | Work | Evidence and remaining differences |
 | --- | --- |
+| Dialogue6980 and complete27-opcode script source | [SECONDARY_DIALOGUE](SECONDARY_DIALOGUE.md) |
 | Gameplay and ECL debug factory callers | [SECONDARY_GAMEPLAY](SECONDARY_GAMEPLAY.md) |
 | Mesh and effects | [STAGE_MESH](STAGE_MESH.md), [MESH_EFFECTS](MESH_EFFECTS.md), [VM factory](ANIMATION_VM_FACTORY.md) |
 | Stage interpreter and interpolation | [STAGE_SCRIPT](STAGE_SCRIPT.md), [STAGE_TWEEN](STAGE_TWEEN.md), [STAGE_EASING](STAGE_EASING.md) |

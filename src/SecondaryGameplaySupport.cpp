@@ -1,5 +1,4 @@
 #include "SecondaryGameplay.hpp"
-#include "StageDrawing.hpp"
 
 void __stdcall PauseSecondaryGameplayObject(void *object)
 {
@@ -15,47 +14,47 @@ void __stdcall SetSecondaryGameplayRuntimeMode(MainRuntimeView *runtime, int mod
     else value = 2;
 }
 
-void __stdcall UpdateSecondaryGameplayGauges(SecondaryGameplaySettingsView *self)
+void __stdcall UpdateSecondaryGameplayGauges(SecondaryHostSelectionState *self)
 {
     using SecondaryHostInstructions::AddInteger;
     if (64.0f > g_SecondaryActorReferences->position.y)
     {
-        if (self->value014 < 10000)
+        if (self->gaugeValue014 < 10000)
         {
-            self->value014 = AddInteger(self->value014, 5000);
-            if (self->value014 >= 10000) self->value014 = 10000;
+            self->gaugeValue014 = AddInteger(self->gaugeValue014, 5000);
+            if (self->gaugeValue014 >= 10000) self->gaugeValue014 = 10000;
         }
-        else self->value014 = AddInteger(self->value014, 16);
+        else self->gaugeValue014 = AddInteger(self->gaugeValue014, 16);
     }
     else if (80.0f > g_SecondaryActorReferences->position.y)
     {
-        if (self->value014 < 10000)
+        if (self->gaugeValue014 < 10000)
         {
-            self->value014 = AddInteger(self->value014, 5000);
-            if (self->value014 >= 10000) self->value014 = 10000;
+            self->gaugeValue014 = AddInteger(self->gaugeValue014, 5000);
+            if (self->gaugeValue014 >= 10000) self->gaugeValue014 = 10000;
         }
-        else self->value014 = AddInteger(self->value014, 12);
+        else self->gaugeValue014 = AddInteger(self->gaugeValue014, 12);
     }
     else if (128.0f > g_SecondaryActorReferences->position.y)
     {
-        if (self->value014 < 10000)
+        if (self->gaugeValue014 < 10000)
         {
-            self->value014 = AddInteger(self->value014, 5000);
-            if (self->value014 >= 10000) self->value014 = 10000;
+            self->gaugeValue014 = AddInteger(self->gaugeValue014, 5000);
+            if (self->gaugeValue014 >= 10000) self->gaugeValue014 = 10000;
         }
-        else self->value014 = AddInteger(self->value014, 9);
+        else self->gaugeValue014 = AddInteger(self->gaugeValue014, 9);
     }
     else
     {
-        self->value014 = AddInteger(self->value014, -30);
-        if (self->value014 < 0) self->value014 = 0;
+        self->gaugeValue014 = AddInteger(self->gaugeValue014, -30);
+        if (self->gaugeValue014 < 0) self->gaugeValue014 = 0;
     }
-    if (self->time.current <= 0)
+    if (self->gaugeTime.current <= 0)
     {
-        self->value018 = AddInteger(self->value018, -30);
-        if (self->value018 < 0) self->value018 = 0;
+        self->gaugeValue018 = AddInteger(self->gaugeValue018, -30);
+        if (self->gaugeValue018 < 0) self->gaugeValue018 = 0;
     }
-    AddStageTimer(&self->time, -1.0f);
-    if (self->value014 >= 13000) self->value014 = 13000;
-    if (self->value018 >= self->value014) self->value018 = self->value014;
+    OffsetSecondaryTimer(&self->gaugeTime, -1.0f);
+    if (self->gaugeValue014 >= 13000) self->gaugeValue014 = 13000;
+    if (self->gaugeValue018 >= self->gaugeValue014) self->gaugeValue018 = self->gaugeValue014;
 }

@@ -428,3 +428,8 @@ SecondaryGameplayUpdateCallback
 PauseSecondaryGameplayObject
 SetSecondaryGameplayRuntimeMode
 UpdateSecondaryGameplayGauges
+RunSecondaryDialogue
+DecodeSecondaryDialogueText
+ChangeSecondaryDialogueSprite
+BindSecondaryDialogueSprite
+FindSecondaryDialogueChild

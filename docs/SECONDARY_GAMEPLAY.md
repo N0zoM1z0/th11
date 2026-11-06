@@ -82,13 +82,18 @@ call459210, one real caller420390 and12 following CC bytes. It reads player Y at
 by16/12/9 thereafter, and otherwise subtracts30 with a signed zero floor. When
 timer.current20 is nonpositive it also decays value018, then decrements timer1C,
 caps014 at13000 and018 at014. Wrapped arithmetic follows native32-bit operations.
-The settings view declares only these observed fields.
+These observed fields share the existing SecondaryHostSelectionState root4A56E0;
+the duplicate gameplay-settings global/view is removed. The native gameplay stage
+pointer is4A8D5C, so source uses g_StageSecondary. Initializer4024C0 publishes
+g_StagePrimary at4A8D60 and destructor402740 clears60 then5C; those identities are
+kept consistent across owners.
 
-Its current full contribution is254 bytes. VC9 folds the unique constant settings
+Its current full contribution is257 bytes with the actual timer/motion source. VC9 folds the unique constant settings
 argument into global addresses; native still passes EDI. An ordinary member
 hypothesis produces the same folding, so the maintained source keeps the simpler
-free function. FP operand widths/order and the opaque AddStageTimer input also
-remain different. This is complete source presence, not exact codegen.
+free function. OffsetSecondaryTimer459210 is already implemented in SecondaryActorMotion.cpp;
+reusing it restores native ESI timer input. FP operand widths/order remain
+different. This is complete source presence, not exact codegen.
 
 ## Complete ECL debug source
 
@@ -121,7 +126,8 @@ real callback and the synthetic diagnostic entry use normal COFF. This is a
 non-runnable compiler context, not the game or a behavioral harness.
 
 Every candidate is measured over its complete PDB contribution. The cold current
-family is build/probe-ltcg/SecondaryGameplayDependencies. Gameplay replays114
+family is build/probe-ltcg/SecondaryGameplaySharedState; the broader dialogue
+family reproduces the same gameplay/debug sizes and differences. Gameplay replays114
 reviewed call/global/literal fields and debug78, with no cropped interval. All
 62/41 call-site counts agree. Static acyclic call/return skeletons agree on183
 and26 traces; loop reentry is recorded and omitted. These checks do not prove
@@ -156,12 +162,10 @@ mixed family has host15936 and state update4079, versus canonical4083. Interpret
 6989/frame120 remains unchanged. None of these support owners receives primary-TU
 acceptance in the family.
 
-The current union freeze covers145 inputs. Compared with the previous143, only
-SecondaryActorCreation.cpp and SecondaryGameplay.hpp changed; support source and
-StageDrawing.hpp are added inputs. Only the existing adapter exact unit is
-affected, and its fresh canonical cold family/strict11-byte one-field comparison
-passes with zero differences. Tools/Oracles and other exact units are unchanged.
-Private evidence uses secondary-gameplay-dependencies-{functions,function-proof,
-cfg-proof,bindings,source-freeze,checkpoint-proof,support-proof,creator-proof,
-canonical-creator-proof,host-call-audit,host-detail-proof}.json and the shared-ABI
-and gauge full-span Ghidra/PE reviews. No broad runtime suite is required.
+The prior145-input freeze is retained. This checkpoint changes the shared control
+view and the three gameplay source/header files, then adds complete dialogue
+source and real support dependencies. Only the existing adapter exact unit is
+affected; its fresh canonical cold11-byte/one-REL32 proof still has zero differences.
+Tools/Oracles and other exact units are unchanged. Source/receipt union details
+and the new substantial owner are recorded in SECONDARY_DIALOGUE.md and the
+current secondary-dialogue-* private proofs. No broad runtime suite is required.

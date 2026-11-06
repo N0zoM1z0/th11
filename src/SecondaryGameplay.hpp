@@ -33,13 +33,6 @@ struct SecondaryGameplaySelectionView
     unsigned char unknown000[0x34];
     int value;
 };
-struct SecondaryGameplaySettingsView
-{
-    unsigned char unknown000[0x14];
-    int value014, value018;
-    StageTimerView time;
-};
-extern SecondaryGameplaySettingsView g_SecondaryGameplaySettings;
 extern SecondaryGameplaySelectionView *g_SecondaryGameplaySelectionEC8;
 extern SecondaryGameplayChainsView *g_SecondaryGameplayChainsD74, *g_SecondaryGameplayChainsEC0;
 extern unsigned char *g_SecondaryGameplayStatistics;
@@ -74,10 +67,10 @@ void __cdecl AdvanceSecondaryGameplayExtraAudio();
 void __cdecl ClearSecondaryGameplayAsciiOverlay();
 void __stdcall SetSecondaryGameplayRuntimeMode(MainRuntimeView *runtime, int mode);
 void __cdecl UpdateSecondaryGameplayHud();
-void __stdcall UpdateSecondaryGameplayGauges(SecondaryGameplaySettingsView *settings);
+void __stdcall UpdateSecondaryGameplayGauges(SecondaryHostSelectionState *settings);
 
-typedef char SecondaryGameplayGaugeValueOffset[(offsetof(SecondaryGameplaySettingsView, value014) == 0x14) ? 1 : -1];
-typedef char SecondaryGameplayGaugeTimerOffset[(offsetof(SecondaryGameplaySettingsView, time) == 0x1c) ? 1 : -1];
+typedef char SecondaryGameplayGaugeValueOffset[(offsetof(SecondaryHostSelectionState, gaugeValue014) == 0x14) ? 1 : -1];
+typedef char SecondaryGameplayGaugeTimerOffset[(offsetof(SecondaryHostSelectionState, gaugeTime) == 0x1c) ? 1 : -1];
 typedef char SecondaryGameplayTimeOffset[(offsetof(SecondaryGameplayView, time) == 0x10) ? 1 : -1];
 typedef char SecondaryGameplayFlagsOffset[(offsetof(SecondaryGameplayView, flags) == 0x60) ? 1 : -1];
 typedef char SecondaryGameplayHudFlagsOffset[(offsetof(SecondaryGameplayHudView, flags) == 0x4420) ? 1 : -1];

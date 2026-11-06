@@ -26,7 +26,7 @@ int __stdcall UpdateSecondaryGameplay(SecondaryGameplayView *self)
             return 1;
         }
         ResetSecondaryGameplayStage();
-        if (g_StagePrimary)
+        if (g_StageSecondary)
         {
             StartSecondaryGameplayStageTransition();
             ResetSecondaryGameplayStageTimer();
@@ -111,7 +111,7 @@ int __stdcall UpdateSecondaryGameplay(SecondaryGameplayView *self)
         SetStageTimer(&self->time, 0);
     }
     if (self->time.current == 5) g_SecondaryGameplayAudioState = 2;
-    StageResourceView *stage = g_StagePrimary;
+    StageResourceView *stage = g_StageSecondary;
     if (stage && (stage->flags2ff0 & 8)) delete stage;
     if (self->flags & 4)
     {
@@ -142,7 +142,7 @@ int __stdcall UpdateSecondaryGameplay(SecondaryGameplayView *self)
         if (*record < 215999999) ++*record;
     }
     if (!Hud()->dialogue && self->time.current >= 90)
-        UpdateSecondaryGameplayGauges(&g_SecondaryGameplaySettings);
+        UpdateSecondaryGameplayGauges(&g_SecondaryHostSelectionState);
     ++g_SecondaryGameplayFrame0;
     ++g_SecondaryGameplayFrame1;
     AdvanceStageTimer(&self->time);
