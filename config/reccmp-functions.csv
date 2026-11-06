@@ -488,3 +488,5 @@ ReadMenuKeyboardSnapshot,0x00458100,function
 StartMenuTransitionOverlay,0x0040FCA0,function
 EnqueueMenuMusicFade,0x0042A270,function
 UpdateMenuPage08,0x0043D6A0,function
+UpdateMenuPage07,0x0043D0B0,function
+HideMenuAnimationTree,0x00456650,function

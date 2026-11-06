@@ -7,9 +7,9 @@ status/diff; current receipts outrank historical notes. All dirty work is ours.
 ## Current exact state
 
 - Original Japanese TH11v1.00a, pinned by config/target.toml; no substituted bytes.
-- 2,140 candidates;607 reviewed boundaries;489 source mappings.
+- 2,140 candidates;609 reviewed boundaries;491 source mappings.
 - 236 exact functions/31,881 bytes:9 normal COFF and227 linked PE.
-- Origins:90 authored,501 indeterminate,14 exclusions,1,535 pending.
+- Origins:90 authored,503 indeterminate,14 exclusions,1,533 pending.
 - VC9 RTM21022/SDK6.0A; direct scripts/ghidra.py, no Factory MCP/REA.
 - Commit/push authorized; prefix `gpt-6.1-sol: `. No heavy job remains running.
 
@@ -35,7 +35,24 @@ No prefix crop/normalization. Selection/history/event source bodies support this
 large owner without leaf acceptance units. QueueMeshEffectSound stays124/native125.
 See CONFIGURATION_AUDIO_MENU.md; old checkpoint counts/freezes are historical.
 
-## Current large menu owners: practice1024, player-data2448/750, music2668
+## Current large menu owners: partner1516, practice1024, data2448/750, music2668
+
+New MenuPartnerSelection.cpp owns43D0B0..43D69B/1516, not old1496:392 reachable
+instructions/1496 code+five-cell20-byte table;38 calls/93 fields/six RET4s.
+Complete Extra exclusions (no new reset), record visibility, child events,
+normal/practice transition and cancel/history paths are present. Frame10 practice
+entry has a frame40 fallback. Runtime558=7 precedes float6 fade; page08 reverses
+that ordering. Required hide-tree456650/64 naturally replays zero in support.
+Candidate1480/397 instructions/85 fields/1440 differences has stack input/RET4
+correct but frame8/native0 and six character/two difficulty reads cached.
+Child finder456870 is76/41 with script stack/RET4 instead of nativeEBX/plainRET;
+ESI parent/EDI result agree. The actual6980-byte dialogue owner restores
+previous-store-before-input ordering (16 bytes change, full statistics stay1480/1440) and two pressed fields
+in page08:1056/981/78 versus prior1044/970/76. The66-support gameplay/debug union
+replays identically to the retained52-support context for all twelve owners.
+Typed exclusion storage repeats the initial51-support code and is discarded.
+The child finder remains76/41; old dialogue70/zero is context-specific. See
+MENU_PARTNER_SELECTION.md.
 
 New MenuPracticeStage.cpp owns43D6A0..43DA9F/1024, not old1003:285 instructions/
 1003 code, one NOP and five-cell20-byte table;21 calls/79 fields/13 plain RETs.
@@ -47,7 +64,8 @@ fade takes6.0f, not a pointer: FSTP overwrites the just-pushed pointer slot.
 Required81/80 supports are source-present;153-byte direct-position VM factory
 455A70 stays source-open (positionEAX/hidden result stack, direct binding44ACD0).
 
-Retained page candidate1044/283 instructions/76 fields/970 full differences.
+The48-support page candidate is1044/283 instructions/76 fields/970 differences;
+the new52-support partner context gives1056/285/78/981.
 Stack menu/RET4 versus EAX/plain RET, return-ID parameter-slot reuse, pressed
 input caching and digit-tail sharing remain. First1060/1005; positive guard/
 negative unlock1060/988; returned clamp value1044/970. Actual member/caller
@@ -64,19 +82,21 @@ Two real callers restore snapshot101 bytes/ESI/six fields; a positive polling
 guard restores complete zero difference in support, no leaf exact credit.
 Broader player-data is2488/2319/169 (was2472/2273/168), records715/676/17,
 count78/zero/5 and unlock99/14/1. Real context closure is not owner exactness.
-Music remains2680/711 instructions/94 fields/2416 differences, all42 calls/six
+Music is2680/711 instructions/94 fields/2416 differences in the48-support family
+and2417 in the52-support partner context (one SIB byte); all42 calls/six
 RETs/16 table bytes. Typed selection24 restores its count clamp; named double
 distance preserves8-byte alignment. Frame2C versus34, self stack versusEAX and
 RET4 versusplain RET remain. See MENU_PLAYER_DATA.md and MENU_MUSIC_ROOM.md.
 
-Both public page08/player-data recipes have48 supports, same two normal
-supports and /GL retained. Only MenuPlayerDataSupport.cpp changes among239
-previous source inputs, no accepted dependents; three new files extend to242.
-Current verifier `.analysis/verify-menu-stage-checkpoint.py`; old player-data
-verifier is historical. No new exact unit or native-product/runtime closure.
-Continue full-owner ABI/selection/record gaps. Next substantial missing practice
-owner is43D0B0 (default1496 bytes, still unreviewed): review full extent/tables
-before reconstructing it; do not spend the checkpoint accepting support zeros.
+Both public page08/player-data recipes retain48 supports, same two normal
+supports and /GL retained.
+The new partner recipe has52 supports and the same two normal menu supports.
+All242 earlier source inputs remain unchanged; three new files extend to245.
+Current verifier `.analysis/verify-menu-partner-checkpoint.py`; stage/player-data
+verifiers are historical. Both48-support receipts remain valid. No new exact
+unit or native-product/runtime closure. Next substantial missing owner43CBE0:
+default1207 remains unreviewed, with neighbor table43D098..43D0AB outside that
+old extent; review complete flow/owned table before reconstructing page06.
 
 ## Current large owners: joystick2439/908 and assignment200
 

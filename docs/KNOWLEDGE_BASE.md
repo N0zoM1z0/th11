@@ -6,6 +6,35 @@ exact codegen, original provenance and runtime behavior are separate claims.
 Older experiments are preserved in the explicitly
 [historical notes](archive/KNOWLEDGE_BASE_2026-10-30.md).
 
+## Partner selection: complete1516-byte page and concrete ABI gaps
+
+Direct Ghidra/full-span/reference/table/PE review extends43D0B0's1496-byte code
+span through43D69B/1516, including all five table cells. Full source has392
+native instructions,38 physical calls to16 targets,93 fields and six RET4s.
+It handles Extra exclusions without a new reset, three zero-counter indicators,
+selection and child events, normal/practice transitions and delayed return.
+Native input is one stack menu, unlike page08 EAX. Frame10 practice entry has
+a separate frame40 fallback; both remain. Normal entry sets runtime558=7 before
+float6.0 fade, unlike page08's post-call store. The four-byte padding before
+page07 follows page06's own table43D098..43D0AB; do not assign that table to07.
+
+Candidate1480/397 instructions/85 fields/1440 full differences preserves all
+calls/six RET4s/20 table bytes, but has frame8/native0. Six character and two
+difficulty reloads are cached. Existing child finder456870 becomes76/41 with
+script stack/RET4 instead of native EBX/plain RET; ESI parent/EDI result agree.
+The actual6980-byte dialogue caller restores copy-previous-before-input
+ordering (16 changed replayed bytes, same1480/1440 statistics) and two pressed
+fields in page08:1056/981/78 versus old1044/970/76. The full66-support gameplay/
+debug union is byte-identical to this52-support context for all twelve inspected
+owners and adds no improvement. The child finder stays76/41; old dialogue-family
+70-byte support zero is context-specific, not transferable exact credit.
+A typed exclusion-storage variant replays identically to the initial51-support
+context and is discarded. Required64-byte hide-tree support naturally replays
+zero, no leaf acceptance.
+Flat2DDF2 indexing already produces native1E94C+F4A6 address splitting; this is
+not evidence for an original nested record. See
+[MENU_PARTNER_SELECTION](MENU_PARTNER_SELECTION.md).
+
 ## Practice stage: real second keyboard caller and complete1024-byte page
 
 Direct Ghidra/reference/table/PE review extends43D6A0's1003-byte code span to
