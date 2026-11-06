@@ -476,3 +476,7 @@ SelectMenuItem,0x0040DF10,function
 ApplyMenuJoystickBindings,0x0043BD60,function
 UpdateMenuPage04,0x0043B9D0,function
 AssignMenuJoystickButton,0x0043C6F0,function
+UpdateMenuPage0D,0x004408F0,function
+SkipMenuMusicLine,0x00441360,function
+CopyMenuMusicLine,0x004413A0,function
+TweenMenuMusicPosition,0x00441400,function

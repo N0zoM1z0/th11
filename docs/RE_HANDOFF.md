@@ -7,9 +7,9 @@ status/diff; current receipts outrank historical notes. All dirty work is ours.
 ## Current exact state
 
 - Original Japanese TH11v1.00a, pinned by config/target.toml; no substituted bytes.
-- 2,140 candidates;595 reviewed boundaries;477 source mappings.
+- 2,140 candidates;599 reviewed boundaries;481 source mappings.
 - 236 exact functions/31,881 bytes:9 normal COFF and227 linked PE.
-- Origins:90 authored,489 indeterminate,14 exclusions,1,547 pending.
+- Origins:90 authored,493 indeterminate,14 exclusions,1,543 pending.
 - VC9 RTM21022/SDK6.0A; direct scripts/ghidra.py, no Factory MCP/REA.
 - Commit/push authorized; prefix `gpt-6.1-sol: `. No heavy job remains running.
 
@@ -34,6 +34,29 @@ are retained. Implicit/default/positive guard variants give639; member model9.
 No prefix crop/normalization. Selection/history/event source bodies support this
 large owner without leaf acceptance units. QueueMeshEffectSound stays124/native125.
 See CONFIGURATION_AUDIO_MENU.md; old checkpoint counts/freezes are historical.
+
+## Current large focus: music-room2668
+
+Full4408F0..44135B owner now has natural source inMenuMusicRoom.cpp/.hpp and
+three required readers/tween inMenuMusicRoomSupport.cpp (59/89/223), no leaf
+acceptance units. The old2650-byte boundary missed terminal alignment/table:
+708 instructions/2641 reachable code+11 layout+four-cell16-byte table. Six RETs,
+42 calls and94 genuine address fields; RGB constants are not addresses.
+All parser, scroll, paced comments, unheard-track warning, playback and exit
+paths are maintained. Position is VM3DC, tween VM90, mutable controls4C326C.
+
+Cold source2584/677 instructions/93 fields has all42 calls/six returns/four
+cells but2506 full differences. Native EAX menu/aligned34 frame versus stack
+menu/frame20, folded first selection and cached renderer read remain open.
+Public probes/menu-music-room-context.json has43 supports/two established normal
+supports, with real loader/generic callers restoring filename-in-EAX. Copy
+reader90/native89/79 differences; tween213/native223/193 differences (coalesced
+controls and stack VM). Skip59/zero is diagnostic support only. No exact credit.
+All224 prior frozen inputs remain unchanged; existing canonical receipts stay
+current. New `.analysis/verify-menu-music-checkpoint.py` checks receipts, full
+PDB extents/field replay, Ghidra bytes and source freeze. Next work stays on this
+complete large owner, especially caller/register/frame and selection aliasing.
+SeeMENU_MUSIC_ROOM.md; no heavy job remains.
 
 ## Current large owners: joystick2439/908 and assignment200
 
@@ -68,9 +91,9 @@ audio apply3900/110 fields/3525 and caller992/61 fields/823 in this graph.
 Canonical audio still3836/110/zero and caller992/61/9 after its cold replay.
 The new real page restores36 outer-controller calls, but parent1188/native1224
 still has1149 differences. Native requires EDX file/plain RET while the new
-binder context passes file on stack/RET4. Next work: actual binder389 float/
-UV/matrix store scheduling and the caller/private-argument context; do not force
-register ABIs or crop late blocks. See MENU_JOYSTICK.md and knowledge base.
+binder context passes file on stack/RET4. Binder389 float/UV/matrix store scheduling and caller/private arguments remain
+open. Cached-pointer/shared-UV/public-inline variants did not improve either
+context and are discarded. Do not force ABIs or crop late blocks. See MENU_JOYSTICK.md and knowledge base.
 
 Public probes/menu-joystick-context.json has28 supports, callback and selector
 normal; all new/established linked owners keep /GL. Output build/probe-ltcg/
@@ -93,7 +116,7 @@ Pointer/reference selection aliases, ID locals, scalar/address spellings and
 
 Outer4399B0 remains complete1224 including16 cells/two RET4 paths. The missed
 7-byte callback439F10 and marker4564C0 are supporting source; adjacent draw439E80
-owns140 including8 cells, boundary only. Nine other page handlers remain
+owns140 including8 cells, boundary only. Eight other page handlers remain
 source-open in the current graph. Original class/TU and native-product closure
 are unproved; full-game goal remains active.
 

@@ -475,3 +475,7 @@ SelectMenuItem
 ApplyMenuJoystickBindings
 UpdateMenuPage04
 AssignMenuJoystickButton
+UpdateMenuPage0D
+SkipMenuMusicLine
+CopyMenuMusicLine
+TweenMenuMusicPosition

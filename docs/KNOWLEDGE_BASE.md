@@ -6,6 +6,42 @@ exact codegen, original provenance and runtime behavior are separate claims.
 Older experiments are preserved in the explicitly
 [historical notes](archive/KNOWLEDGE_BASE_2026-10-30.md).
 
+## Music room: complete2668-byte owner, including the missed table
+
+Direct Ghidra/reference/neighbor review and original-PE CFG extend4408F0's
+old2650-byte default to2668 through44135B:2641 reachable code/708 instructions,
+11 layout bytes, four-cell16-byte table and six plain RET/EAX0 paths. Menu
+input is EAX. All42 calls and94 genuine address fields are inventoried; six
+RGB immediates must not be treated as pointers. The four interior references
+are owned table DATA cells. Do not compare only through the final RET.
+
+Complete source now handles the musiccmt parser, two-row opening batches,
+ten-row scrolling, eight comments refreshed on even frames, warning/second
+confirmation for unheard tracks, playback, cancellation and delayed title
+music restoration. Mutable tween controls at4C326C are copied twice; VM90
+holds the duration4/mode0 tween and VM3DC the position. Do not reuse the
+secondary-actor position3E8 view. Double96/20/4 constants and float constants64.0/40.0
+values were read independently from the original PE. Copying a line consumes
+CR/LF runs and preserves the original unbounded strcpy and count access order.
+
+Required59/89/223-byte readers/tween have full source/boundary mappings but no
+leaf acceptance units. Before the real loader body was added, source2584 had
+all42 calls/six returns/four cells, yet2506 full differences and93 fields.
+The native EAX menu/aligned34 frame differs from source stack menu/frame20;
+first-selection folding and private callee argument choices remain concrete
+gaps. Adding the real loader and generic callers restores filename-in-EAX,
+but leaves the full2584/2506/93 result unchanged. The missing field is the
+native second renderer-global read in the two-list lookup. The copy reader
+chooses different cursor/count registers; the tween coalesces the six global
+component reads into three and leaves VM on the stack. New canonical exactness
+is not claimed. See [MENU_MUSIC_ROOM.md](MENU_MUSIC_ROOM.md)
+for the current cold context and measurements.
+
+The shared sprite binder's cached-pointer/shared UV helper/public-inline
+variants all generated388/306 differences in the audio context and394/348
+in the joystick context, worse than retained388/293 and394/347. All four
+variants were discarded; none changed accepted source or supplied exact credit.
+
 ## Audio configuration: value IDs restore the complete3836-byte owner
 
 Complete43AAD0 owns3836=3777 reachable code/1136 instructions+59 internal
