@@ -107,3 +107,8 @@ valid. `.analysis/verify-menu-difficulty-checkpoint.py` verifies target identity
 Ghidra spans and tables, source/receipt contracts, exhaustive fields and full
 comparison/equivalence. Tracking:612 reviewed boundaries,494 mappings,
 236 exact/31881 bytes. No exact credit or native-product closure is added.
+
+Subsequent pause checkpoint:42C8D0 now has a complete reviewed3212-byte source
+owner.42D9D0/42E6B0 remain source-open. See [PAUSE_MENU](PAUSE_MENU.md) for the
+current caller inventory; the counts and experiments above describe this topic's
+earlier checkpoint.

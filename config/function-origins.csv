@@ -492,15 +492,15 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0042C150,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042C620,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042C760,unknown,SecondaryPlayerController,indeterminate,unknown,secondary-controller-callee-origin-2026-10-29
-0x0042C880,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0042C8D0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0042C880,unknown,PauseMenu,indeterminate,unknown,pause-menu-origin-2026-11-06
+0x0042C8D0,unknown,PauseMenu,indeterminate,unknown,pause-menu-origin-2026-11-06
 0x0042D560,unknown,SecondaryPlayerController,indeterminate,unknown,secondary-controller-callee-origin-2026-10-29
 0x0042D6B0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042D7F0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042D850,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042D9D0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042E6B0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0042F380,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0042F380,unknown,PauseMenu,indeterminate,unknown,pause-menu-origin-2026-11-06
 0x0042F400,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042F480,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042F540,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
@@ -581,7 +581,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00435C50,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00435E00,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00435EF0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00435FC0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00435FC0,unknown,PauseMenu,indeterminate,unknown,pause-menu-origin-2026-11-06
 0x00435FE0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00436190,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00436330,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

@@ -493,3 +493,7 @@ HideMenuAnimationTree,0x00456650,function
 UpdateMenuPage06,0x0043CBE0,function
 UpdateMenuPage05,0x0043C7C0,function
 ExecuteMenuAnimationEvent3,0x00439230,function
+UpdatePauseMenu,0x0042C8D0,function
+ResumePauseMenu,0x0042C880,function
+SignalPauseMenuChild,0x0042F380,function
+DeletePauseMenuReplay,0x00435FC0,function

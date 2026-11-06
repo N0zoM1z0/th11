@@ -6,6 +6,44 @@ exact codegen, original provenance and runtime behavior are separate claims.
 Older experiments are preserved in the explicitly
 [historical notes](archive/KNOWLEDGE_BASE_2026-10-30.md).
 
+## Pause3212: real missing child-finder caller, replay metadata and editor
+
+Direct Ghidra/full-span/reference/table/caller/PE review extends42C8D0 from
+3154 to3212 bytes, ending42D55B:859 instructions/3147 code+9 layout+56 table,
+101 calls/20 targets/164 fields/14 RET4 GS paths/frame68. The seven-byte skipped
+span and final MOV EDI,EDI remain owned;42CF3F NOP is reachable. Ten-cell state
+and four-cell selection tables account for all14 apparent interior entries.
+
+Complete source retains independent confirm/shortcut/cancel ordering, old-count
+keyboard clamp,25 slots and91-key/eight-character editing. Timestamp0C and
+stage68 belong to the active replay header; existing difficulty64 is distinct.
+Keep the header-pointer address captured across `_time64`, and read current stage
+after that call. Full-name insertion replaces character7; delete at cursor0
+returns before cancel; save queues44 then deletes/writes/reloads. Transient14
+and the replay-cancel path's two timer resets are observable stores, not repairs.
+
+Candidate3084/160 fields/3039 full differences retains101 calls/14 RET4s/GS checks/
+56 table bytes. Natural inline clamps restore the single native40DF10 call.
+Local frame68/cookie64 agree; EBX save partition still differs across the guard.
+Four native address-field occurrences are absent: session4A8E88, active replay
+4A8EB8, character-string base4951E8 and runtime base4C3280. Caching, branch
+sharing and callee argument specialization remain separate open questions. Required
+resume72 and deletion18 replay zero in support only, with no leaf exact credit;
+event6 tree70 has7 register-byte differences. Child finder76/41 still uses
+stack script/RET4 instead of native EBX/plain RET.
+
+An inline wrapper reused one hidden child-result slot across seven calls,
+producing frame4C/3041 differences. Seven direct call expressions naturally
+restore seven slots, frame68/cookie64 and3039 differences. Their result addresses
+coincide with native after accounting for the actual extra script push; this is
+stack/dataflow evidence, never a normalized byte-exact claim. No inert locals
+or padding are introduced. Earlier15 sibling bodies replay identically.
+
+This supplies seven actual native child-finder call sites missing from the
+previous HUD/gameplay/debug unions. The other actual callers42D9D0/42E6B0
+(default3141/3179) remain source-open/unreviewed. Full replay writer436420/1856
+also remains source-open. See [PAUSE_MENU](PAUSE_MENU.md).
+
 ## Difficulty selection1056 and missing large child-finder callers
 
 Direct Ghidra/full-span/reference/table/PE review establishes43C7C0..43CBDF:
@@ -30,11 +68,11 @@ identically; prior13 owners also remain identical. Captured transition value
 1036/60 fields/977 removes the extra field but worsens complete comparison;
 discarded. Required helper21 has one SIB difference, not accepted exact.
 
-Correction to earlier graph assumptions: actual callers42C8D0/42D9D0/42E6B0
-have no maintained source/PDB contribution; their default3154/3141/3179 extents
+At the difficulty checkpoint, actual callers42C8D0/42D9D0/42E6B0
+had no maintained source/PDB contribution; their default3154/3141/3179 extents
 remain unreviewed. SecondaryActorInstructions.cpp and broader diagnostic support
-unions do not supply them. These missing large owners take priority over further
-menu-local alias experiments. See [MENU_DIFFICULTY_SELECTION](MENU_DIFFICULTY_SELECTION.md).
+unions do not supply them. The later pause checkpoint above supplies42C8D0; the other two take priority
+over further menu-local alias experiments. See [MENU_DIFFICULTY_SELECTION](MENU_DIFFICULTY_SELECTION.md).
 
 ## Character selection: complete1228-byte owner and natural history ABI
 

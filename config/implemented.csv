@@ -492,3 +492,7 @@ HideMenuAnimationTree
 UpdateMenuPage06
 UpdateMenuPage05
 ExecuteMenuAnimationEvent3
+UpdatePauseMenu
+ResumePauseMenu
+SignalPauseMenuChild
+DeletePauseMenuReplay
