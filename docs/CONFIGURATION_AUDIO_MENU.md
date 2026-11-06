@@ -2,8 +2,9 @@
 
 The audio settings owner43AAD0 has complete natural C++ source for all3,836
 bytes. Its state/input caller43A6F0 has complete source for the992-byte owner,
-including all five dispatch cells. Both remain non-exact. The two shared state
-setters are supporting source, with no separate leaf acceptance units.
+including all five dispatch cells. The3,836-byte apply owner is canonical
+linked exact; the caller remains non-exact. The two shared state setters are
+supporting source, with no separate leaf acceptance units.
 
 ## Target ownership and actual interfaces
 
@@ -33,6 +34,8 @@ source partition and authorship remain unknown for all four owners.
 ## Complete source operations
 
 The physical view uses the existing animation VM, selection and timer layouts.
+The root ID at2C8 retains the existing AnimationVmId value type through factory
+assignment, missing-ID reset and lookup copies; no new constructor is introduced.
 Settings are signed bytes at existing MainRuntime+1E8/1E9. Applying them writes
 the separate music/effect mirrors and enqueues opcode8/value0/text SetVol.
 The second mirror controls the zero gate, but the attenuation formula actually
@@ -65,22 +68,30 @@ their private register assignments are not expressed as fake public ABIs.
 
 ## Compiler findings and current comparison
 
-The full public /GL primary candidate is3,836 bytes:3,781 code bytes/1,137
-instructions and55 layout bytes, with all110 fields replayed and291 full byte
-differences. Target/source retain the same84 physical calls and four-byte float
-scratch, EBX menu, cached ESI renderer and two plain RET paths. Remaining gaps
-are root-ID load registers (native EDX/ECX versus EAX), one renderer setup and
-local branch/alignment layout. The eight IDIV sequences and quartic x87 phase
-are recovered without register or stack erasure.
+The complete public /GL primary contribution now matches all3,836 bytes:
+3,777 reachable code bytes/1,136 instructions and59 internal layout bytes.
+All110 independently inventoried address fields replay with zero differences
+through compare-linked-function.py --unit apply-configuration-audio-menu.
+Cold family receipts and PE/MAP/PDB identity agree on the unique complete
+primary source.ltcg.obj owner. The84 calls, four-byte float scratch, EBX menu,
+cached ESI renderer, both plain RET paths and all internal layout bytes remain.
+
+The former unsigned root field required reconstructing an ID from its scalar
+value on each lookup. That source emitted EAX loads, hoisted a renderer setup
+and gave3,836 bytes/1,137 instructions/291 differences. Storing the ID as the
+existing four-byte AnimationVmId and copying that value restores every native
+EDX/ECX load and the exact branch/alignment layout. No register declaration,
+inert storage, target instruction bytes or profile change is involved. This
+compiler result does not establish the original menu class or TU identity.
 
 The caller is948=915 code/271 instructions+13 layout+20 table, with all61 fields
-and932 full differences. All28 call sites/twelve targets agree in count; EAX
+and933 full differences. All28 call sites/twelve targets agree in count; EAX
 input and six plain RETs are recovered. Open selection/signal dependencies still
 prevent their native private argument allocation from being recovered. The two
 support setters have zero diagnostic differences after their one field each,
-without new exact credit. A parent-ID pointer helper and an explicit child-ID
-local retain the same complete size, instruction count and291-byte difference
-count; they do not resolve the remaining register/layout gap.
+without new exact credit. Before the value-field change, a parent-ID pointer
+helper and explicit child-ID local retained the291-difference result. The
+remaining caller work is selection/event ABI, stores and register/layout gaps.
 
 A generic digit divisor followed by a separate integer remainder loses the
 original byte-expression optimization context. The complete3948-byte candidate
@@ -101,22 +112,21 @@ pointer would force stack input/RET4 and is not the target's observed interface.
 ## Reproduction and evidence limits
 
 The public compile-only context is probes/configuration-audio-menu-context.json.
-It includes all real /GL source dependencies and an arbitrary-input probe. It is
-not a game executable or a canonical exact unit. From the repository root:
+It shares the canonical unit's source/profile/support/entry/output contract and
+includes all real /GL source dependencies plus an arbitrary-input probe. The
+authoritative110-field acceptance list is in config/match-units.toml. This
+diagnostic image is not a game executable. From the repository root:
 
 ```sh
-scripts/repo-python - <<'PYTHON'
-import importlib.util, json
-from pathlib import Path
-spec = importlib.util.spec_from_file_location('builder', 'scripts/build-match-unit.py')
-builder = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(builder)
-builder.build(json.loads(Path('probes/configuration-audio-menu-context.json').read_text()))
-PYTHON
+scripts/repo-python scripts/build-match-unit.py --unit apply-configuration-audio-menu
+scripts/repo-python scripts/compare-linked-function.py --unit apply-configuration-audio-menu
 ```
 
-All four new functions are compared as complete primary-TU PDB contributions. The diagnostic
-replays every call/global/string/literal and owned table address field, retaining
-all other bytes, branches and layout. No masked, cropped, instruction-normalized,
-behavioral, native-product or original-TU equality is claimed. Prior exact source
-inputs are unchanged, so no accepted cohort replay is required for this addition.
+All four menu functions are compared as complete primary-TU PDB contributions.
+The main owner is accepted only by the strict linked Oracle; caller/support
+diagnostics grant no additional exact credit. Every call/global/string/literal
+and owned table field is inventoried, with all other bytes and layout retained.
+Behavioral, native-product, original data ownership and original-TU equality
+remain separate. Only ConfigurationAudioMenu.cpp/.hpp change in the prior203
+frozen inputs; no previous accepted unit depends on them. This checkpoint adds
+one3,836-byte exact unit, with no prior-cohort replay or new leaf acceptance.

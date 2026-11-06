@@ -18,7 +18,7 @@
     "src/MeshEffects.cpp"
   ],
   "normal_support_sources": [],
-  "output_dir": "build/probe-ltcg/ConfigurationAudioMenu",
+  "output_dir": "build/match-linked/ConfigurationAudioMenu",
   "profile": [
     "/TP",
     "/O2",
@@ -38,6 +38,5 @@
   ],
   "symbol": "?ApplyConfigurationAudioMenu@@YGXPAUConfigurationAudioMenuView@@@Z",
   "target_address": 4434640,
-  "size": 3836,
-  "linkages": []
+  "size": 3836
 }

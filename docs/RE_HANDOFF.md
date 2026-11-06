@@ -8,7 +8,7 @@ status/diff; current receipts outrank historical notes. All dirty work is ours.
 
 - Original Japanese TH11v1.00a, pinned by config/target.toml; no substituted bytes.
 - 2,139 candidates;578 reviewed boundaries;461 source mappings.
-- 235 exact functions/28,045 bytes:9 normal COFF and226 linked PE.
+- 236 exact functions/31,881 bytes:9 normal COFF and227 linked PE.
 - Origins:90 authored,472 indeterminate,14 exclusions,1,563 pending.
 - VC9 RTM21022/SDK6.0A; direct scripts/ghidra.py, no Factory MCP/REA.
 - Commit/push authorized; prefix `gpt-6.1-sol: `. No heavy job remains running.
@@ -17,7 +17,7 @@ Operator priority is complete large/difficult owners, not leaf accumulation.
 Native product, broad runtime and portability are later phases. Keep /GL and
 complete owned tables/layout; no cropped or normalized exact credit.
 
-## Current focus: audio configuration3836 and caller992
+## Accepted audio configuration3836; next caller992
 
 Full natural source is in ConfigurationAudioMenu.cpp/.hpp. Owner43AAD0..43B9CB
 has3777 reachable code/1136 instructions+59 layout (57 LEA bytes and one dead
@@ -28,38 +28,42 @@ mirror; retain five float rounds/two squarings. Twelve digit updates precede
 signed10/100 visibility branches; missing-root traversal and visibility writes
 remain unchecked as native. Settings are existing MainRuntime+1E8/1E9.
 
-Current complete public /GL primary contribution is3836=3781 code/1137
-instructions+55 layout, all110 fields and291 full differences. Direct signed-byte
-hundreds/tens/units expressions restore all eight native IDIV10 sequences;
-generic divisor then int remainder grows3948/3438. Zero-initialized scalar child
-IDs change loop shape; real ID value returns restore late success blocks.
-Remaining: root-ID loads use EAX versus native EDX/ECX, one EDX renderer setup is
-hoisted, and branch/alignment layout differs. Pointer-helper/explicit-ID-local
-and remainder-wrapper hypotheses do not resolve this gap. The quartic x87 phase
-matches with register/stack operands retained. No main exact claim.
+The root2C8 field now retains the existing four-byte AnimationVmId through
+factory assignment, reset and lookup copies. This restores native EDX/ECX root
+loads, renderer setup, branch/alignment layout and all1136 instructions. No
+profile change, new constructor or explicit register ABI. The complete cold
+public primary contribution matches3836/110 fields/zero differences through
+compare-linked-function.py --unit apply-configuration-audio-menu. All59 internal
+layout bytes remain. Raw scalar reconstruction gave3836/291; the generic
+remainder spelling gave3948/3438. See CONFIGURATION_AUDIO_MENU.md and knowledge
+base for the compiler findings. Original class/TU identity stays open.
 
 Caller43A6F0..43AACF owns992=969 code/285 instructions+3 alignment+five-cell20-byte
 table at43AABC. All five apparent foreign DATA refs are owned cells; next owner
 starts immediately. Complete state/input source includes adjustments, preview,
 defaults, opening/closing delays and page/selection transitions. Current948=915
-code/271 instructions+13 layout+20 table; all61 fields and932 full differences.
+code/271 instructions+13 layout+20 table; all61 fields and933 full differences.
 All28 calls agree in count. Direct general-input /GL probe recovers EAX input
 and six plain RETs; normal stdcall address escape forces wrong stack/RET4.
 Two inline close lookups and a shared back label recover the native call counts.
 Open MoveSecondaryDebugSelection459160/121, signal/execute456280/95 and stack
 push4590F0/61/pop459130/48 still have declarations, not invented private ABIs.
-Next: main register/layout gap, then caller's selection/event ABI and stores.
+Next: caller's selection/event ABI and stores; keep the accepted callee exact.
 
 State82/page85 setters are supporting complete source, both zero diagnostic
 differences after one scale field, with no independent leaf acceptance units.
 Original class/TU/authorship remain unresolved. Public recipe:
 probes/configuration-audio-menu-context.json; details CONFIGURATION_AUDIO_MENU.md.
-Checkpoint: `.analysis/verify-configuration-audio-checkpoint.py`; full proof is
-configuration-audio-public-proof.json. Native inventory, complete direct Ghidra
-and table references are configuration-audio-* and large-43aad0-*.
-configuration-audio-source-freeze.json freezes203 inputs; prior193 unchanged.
-Four mappings/4995 owned bytes/four boundary reviews added, no new exact units
-or affected prior exact replays. No broad execution suites were run.
+Checkpoint: `.analysis/verify-configuration-audio-exact-checkpoint.py`.
+configuration-audio-canonical-comparison.json is the strict3836/110/zero result;
+configuration-audio-canonical-proof.json also keeps full caller/support diagnostics.
+Canonical/public output is build/match-linked/ConfigurationAudioMenu. Fresh native
+inventory/direct Ghidra/table evidence remains configuration-audio-* and
+large-43aad0-*. configuration-audio-exact-source-freeze.json freezes203 inputs;
+only ConfigurationAudioMenu.cpp/.hpp changed from the prior203-input freeze.
+One large3836-byte exact unit added; no new mappings/review counts, no previous
+exact-unit dependencies changed and no leaf acceptance units added. No broad
+execution suites were run. The old checkpoint verifier has historical counts.
 
 ## Other substantial owners
 

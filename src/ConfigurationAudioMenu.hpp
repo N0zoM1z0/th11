@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AnimationVm.hpp"
+#include "AnimationVmId.hpp"
 #include "SecondaryGameplay.hpp"
 #include "StageResource.hpp"
 
@@ -16,7 +17,7 @@ struct ConfigurationAudioMenuView
     unsigned char unknown0fc[0x2b0 - 0xfc];
     StageTimerView time;
     unsigned int unknown2c4;
-    unsigned int rootVmId;
+    AnimationVmId rootVmId;
 };
 
 typedef char ConfigurationMenuPageOffset[(offsetof(ConfigurationAudioMenuView, page) == 0x1c) ? 1 : -1];

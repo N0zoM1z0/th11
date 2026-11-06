@@ -16,11 +16,11 @@ __forceinline signed char &Setting(unsigned int index)
     return reinterpret_cast<signed char *>(&g_MainRuntime)[0x1e8 + index];
 }
 
-__forceinline AnimationVmId ChildId(unsigned int *parentId,
+__forceinline AnimationVmId ChildId(AnimationVmId *parentId,
     RenderBatchView *renderer, int script)
 {
-    AnimationVmView *parent = FindAnimationVmById(renderer, AnimationVmId(*parentId));
-    if (!parent) *parentId = 0;
+    AnimationVmView *parent = FindAnimationVmById(renderer, *parentId);
+    if (!parent) *parentId = AnimationVmId(0);
     for (AnimationVmNode *node = &parent->drawNode; node; node = node->next)
         if (static_cast<short>(node->vm->scriptId) == script)
             return AnimationVmId(node->vm->unknown000);
@@ -68,7 +68,7 @@ __forceinline void Select(SecondaryDebugSelectionView *selection, int value)
 
 __forceinline void Close(ConfigurationAudioMenuView *self, int sound)
 {
-    AnimationVmView *vm = FindAnimationVmById(g_RenderBatch, AnimationVmId(self->rootVmId));
+    AnimationVmView *vm = FindAnimationVmById(g_RenderBatch, self->rootVmId);
     if (vm)
     {
         reinterpret_cast<SecondaryActorAnimationView *>(vm)->event = 6;
@@ -164,7 +164,7 @@ int __stdcall UpdateConfigurationAudioMenu(ConfigurationAudioMenuView *self)
     case 0:
         self->selection.count = 5;
         Select(&self->selection, 0);
-        self->rootVmId = CreateAnimationVmId(self->file, 1, 0x16).value;
+        self->rootVmId = CreateAnimationVmId(self->file, 1, 0x16);
         ApplyConfigurationAudioMenu(self);
         SetConfigurationMenuState(self, 1);
         // Fall through to the opening animation delay.
@@ -172,8 +172,8 @@ int __stdcall UpdateConfigurationAudioMenu(ConfigurationAudioMenuView *self)
         if (self->time.current > 6)
         {
             SetConfigurationMenuState(self, 2);
-            SignalAndExecuteConfigurationAnimation(AnimationVmId(self->rootVmId), 3);
-            SignalSecondaryAnimationEvent(AnimationVmId(self->rootVmId),
+            SignalAndExecuteConfigurationAnimation(self->rootVmId, 3);
+            SignalSecondaryAnimationEvent(self->rootVmId,
                 static_cast<short>(self->selection.current + 0x11));
         }
         break;
@@ -186,8 +186,8 @@ int __stdcall UpdateConfigurationAudioMenu(ConfigurationAudioMenuView *self)
         if (self->selection.previous != self->selection.current)
         {
             QueueMeshEffectSound(12);
-            SignalAndExecuteConfigurationAnimation(AnimationVmId(self->rootVmId), 3);
-            SignalSecondaryAnimationEvent(AnimationVmId(self->rootVmId),
+            SignalAndExecuteConfigurationAnimation(self->rootVmId, 3);
+            SignalSecondaryAnimationEvent(self->rootVmId,
                 static_cast<short>(self->selection.current + 7));
         }
         if (g_InputState.pressed & 0x102)
@@ -195,8 +195,8 @@ int __stdcall UpdateConfigurationAudioMenu(ConfigurationAudioMenuView *self)
             if (self->selection.current == 4) goto CloseBack;
             QueueMeshEffectSound(11);
             Select(&self->selection, 4);
-            SignalAndExecuteConfigurationAnimation(AnimationVmId(self->rootVmId), 3);
-            SignalSecondaryAnimationEvent(AnimationVmId(self->rootVmId),
+            SignalAndExecuteConfigurationAnimation(self->rootVmId, 3);
+            SignalSecondaryAnimationEvent(self->rootVmId,
                 static_cast<short>(self->selection.current + 7));
             return 1;
         }
