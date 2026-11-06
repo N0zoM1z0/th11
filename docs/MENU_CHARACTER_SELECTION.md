@@ -127,6 +127,7 @@ boundaries,492 mappings and236 exact/31881 bytes. Source coverage and complete
 comparison evidence do not claim byte equality or native-product closure.
 
 Subsequent pause checkpoint:42C8D0 now has a complete reviewed3212-byte source
-owner.42D9D0/42E6B0 remain source-open. See [PAUSE_MENU](PAUSE_MENU.md) for the
+owner.42D9D0 was subsequently reconstructed as a3192-byte continuation owner;
+42E6B0 remains source-open. See [PAUSE_CONTINUE_MENU](PAUSE_CONTINUE_MENU.md) for the
 current caller inventory; the counts and experiments above describe this topic's
 earlier checkpoint.

@@ -92,12 +92,13 @@ fields and ten CC. It sends event6 to root and related VMs when marker18 is0.
 - 435FC0/18 guards null, destroys replay contents435C50, then invokes operator
   delete45FD49. It is not a direct free. Two calls/fields, fourteen CC.
 
-The other real large child-finder callers42D9D0/42E6B0 remain source-open, with
-unreviewed default3141/3179-byte extents. This owner closes one actual missing
-caller, not the whole call graph. Original TU, nominal classes, private ABI,
+At the pause checkpoint,42D9D0/42E6B0 still lacked source. The later
+[continuation checkpoint](PAUSE_CONTINUE_MENU.md) supplies42D9D0/3192;42E6B0
+remains source-open with an unreviewed3179-byte default. The call graph remains
+incomplete. Original TU, nominal classes, private ABI,
 native-product closure and runtime behavior remain unproved.
 
-## Current compiler evidence
+## Pause-checkpoint compiler evidence
 
 The public59-support recipe retains VC9 RTM21022, /O2 /Ob1 /MT /EHsc /GL and
 both established normal menu supports. Its independent compile-only entry takes
@@ -126,9 +127,10 @@ large callers still lack source.
 
 All250 prior frozen inputs remain unchanged; four new source/probe files extend
 the freeze to254. No canonical unit is affected and no exact unit is added.
-The older menu family receipts remain valid. Current verifier:
-`.analysis/verify-pause-menu-checkpoint.py`. Tracking:616 reviewed boundaries,
-498 source mappings,236 exact/31881 bytes. Source and complete diagnostic replay
+The older menu family receipts remain valid. Historical verifier:
+`.analysis/verify-pause-menu-checkpoint.py` asserts the old616/498 checkpoint.
+Use the latest verifier and current counts in [RE_HANDOFF](RE_HANDOFF.md).
+That checkpoint had236 exact/31881 bytes. Source and complete diagnostic replay
 remain distinct from exactness, native-product closure and runtime behavior.
 
 The return-temporary control is concrete: an inline `SignalChild` wrapper reused

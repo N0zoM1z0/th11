@@ -50,6 +50,7 @@ The Windows i386 production build, full runtime and portability are open.
 
 | Current area | Details |
 | --- | --- |
+| Pause, continue/game-over and replay/record-name editing | [pause3212](docs/PAUSE_MENU.md), [continuation3192](docs/PAUSE_CONTINUE_MENU.md) |
 | Renderer quad construction/submission | [quads](docs/ANIMATION_QUAD.md), [submission](docs/ANIMATION_VM_DRAW.md), [projection/fog](docs/ANIMATION_PROJECTED_QUAD.md), [immediate modes](docs/ANIMATION_IMMEDIATE_DRAW.md) |
 | Secondary script interpreter, stack and threads | [script evidence](docs/SECONDARY_SCRIPT.md) |
 | Secondary program installation and context selection | [program evidence](docs/SECONDARY_PROGRAM.md) |
