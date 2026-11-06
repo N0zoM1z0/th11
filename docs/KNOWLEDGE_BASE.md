@@ -49,10 +49,42 @@ retained source; switch/implicit/positive defaults give639, and a member model
 still gives9. No prefix normalization or fake register ABI is accepted.
 
 Original caller4399B0 receives its menu on the stack into EBP and passes EAX=EBP
-to43A6F0. Its default1160 span excludes sixteen selector cells beginning439E38;
-review the complete owner/context next. No class/TU explanation is proved yet.
-Supporting movement/history/event bodies add source presence, with zero48/95
-results only diagnostic. See [CONFIGURATION_AUDIO_MENU.md](CONFIGURATION_AUDIO_MENU.md).
+to43A6F0. Its complete1224-byte owner now has full source, including16 selector
+cells at439E38. The real controller context leaves all nine audio differences
+unchanged; caller context alone does not resolve EBP save placement. Supporting
+movement/history/event bodies add source presence, with zero48/95 results only
+diagnostic. See [CONFIGURATION_AUDIO_MENU.md](CONFIGURATION_AUDIO_MENU.md).
+
+## Menu controller: full1224-byte owner and real callback
+
+Direct complete Ghidra/PE CFG establishes4399B0..439E77:1157 code/300 instructions,
+3 alignment and16-cell64-byte table. Default1160 omitted the table. The next draw
+dispatcher439E80 similarly owns140=105 code+3 alignment+8-cell32-byte table. All
+apparent foreign interior references are owned table cells. Missed callback
+439F10..439F16 is PUSH ECX/CALL4399B0/RET, DATA-registered at4395E6. The four CC
+before it follow the draw table, not another code tail. Normal callback support
+keeps the parent's real stack/RET4 input without altering an established /GL TU.
+
+Natural full source covers idle demo loading, music delay, all16 selectors and
+timer paths. Replay helper435C50 destroys contents before free; it does not apply
+the replay. Entry-mode global4C3250 must not alias audio state4C3E00. Timer lower
+bound497F28 is double(promoted float0.99), not decimal double0.99; the native
+slow path rounds its sum to float before integer conversion.
+
+VC9 count<2 versus count<=1 has a substantial control-flow consequence here:
+the former merges a page-set/page-update pair, while the latter preserves all36
+native call sites. Generic inline selection merges two pairs and is discarded.
+Natural strcpy recovers the destination-minus-source, one-increment byte loop.
+Current1192/290 instructions/100 fields remains1138 full byte differences versus
+1224/300/101, including the32-byte size gap. The missing field is the separate
+idle-zero store; source currently shares it. EBX save/use, idle block placement,
+input zero-extension, scheduling and eleven real page bodies remain open. Do
+not force their private register ABIs merely to improve a diagnostic parent.
+
+Marker78 and callback7 match diagnostically as support only, without leaf units.
+No existing accepted source changes in this checkpoint. The next substantial
+callee is43A0A0, the primary page handler; review its full extent before source
+or exact claims. See [MENU_CONTROLLER.md](MENU_CONTROLLER.md).
 
 ## Target and compilation
 

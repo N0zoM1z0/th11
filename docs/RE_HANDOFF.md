@@ -7,9 +7,9 @@ status/diff; current receipts outrank historical notes. All dirty work is ours.
 ## Current exact state
 
 - Original Japanese TH11v1.00a, pinned by config/target.toml; no substituted bytes.
-- 2,139 candidates;582 reviewed boundaries;465 source mappings.
+- 2,140 candidates;586 reviewed boundaries;468 source mappings.
 - 236 exact functions/31,881 bytes:9 normal COFF and227 linked PE.
-- Origins:90 authored,476 indeterminate,14 exclusions,1,559 pending.
+- Origins:90 authored,480 indeterminate,14 exclusions,1,556 pending.
 - VC9 RTM21022/SDK6.0A; direct scripts/ghidra.py, no Factory MCP/REA.
 - Commit/push authorized; prefix `gpt-6.1-sol: `. No heavy job remains running.
 
@@ -60,16 +60,40 @@ without leaf acceptance. Real AnimationExecution.cpp restores the signal helper'
 8-byte alignment (former77); arbitrary-input support probe retains the real timer
 period/DI event interfaces. Source/class/TU/runtime claims stay separate.
 
-Next large owner:4399B0, the sole audio caller, receives a stack menu in EBP and
-calls with EAX=EBP while keeping EBP live. Fresh review is configuration-menu-owner-
-review.*; initial1160 span omits16 selector cells at439E38. Review full flow,
-references/table/neighbor and reconstruct this real owner/context next; no boundary
-credit or explanation of the remaining EBP save placement is established yet.
+## Complete outer menu controller1224; next exact gaps
+
+4399B0 now has complete MenuController.cpp/.hpp source:300 native instructions,
+1157 code+3 alignment+16-cell64-byte table through439E77. All apparent interior
+entries are owned table cells; eight CC before439E80. Real missed callback439F10
+is7 bytes, registered by4395E6, and preserves stack menu/RET4 through normal
+support. Adjacent draw owner439E80 owns140, including8 cells; boundary only.
+Marker4564C0 has complete supporting source. No new leaf acceptance units.
+
+Current full /GL primary output1192/290 instructions/1125 code+3 alignment+64
+table;100 fields/1138 full byte differences including32-byte size gap. All36
+physical calls agree after count<=1 preserves the native duplicated selection
+paths (count<2 merged one pair; generic inline select merged two). strcpy
+recovers the single-increment copy loop. Idle/demo placement, merged idle-zero
+store (target101 fields), missing EBX save, scheduling and eleven source-open
+page ABIs remain. No fake private-register declarations. Under this real parent,
+audio apply is3836/110/zero diagnostically; caller remains992/61/9. No new exact
+claim or original-TU explanation. See MENU_CONTROLLER.md.
+
+Next substantial work: real primary page43A0A0 (next owner43A6F0; extent still
+unreviewed) supplies EAX menu to four controller calls. Review complete body,
+tables/references/neighbor and reconstruct it before fitting the parent ABI.
+Other page bodies and idle block layout remain open; keep full1224 comparison.
+Public context probes/menu-controller-context.json; output build/probe-ltcg/
+MenuControllerOwner,19 supports, callback normal. Current checkpoint verifier:
+`.analysis/verify-menu-controller-checkpoint.py`. Prior208 frozen inputs are
+unchanged; merged freeze adds five new source inputs. No affected canonical
+exact source, tool changes or routine cohort/runtime replay.
 
 Canonical/public context now has15 /GL supports in build/match-linked/
 ConfigurationAudioMenu. Eight directly affected accepted units in five cold
 families pass strict replay, including3836/110/zero. No full cohort or broad
-runtime suites. New checkpoint: `.analysis/verify-configuration-menu-checkpoint.py`.
+runtime suites. Previous audio checkpoint: `.analysis/verify-configuration-menu-checkpoint.py`
+(historical inventory counts).
 configuration-menu-canonical-proof.json keeps full main/caller diagnostics;
 configuration-menu-caller-byte-proof.json locates all nine differences;
 configuration-menu-canonical-support-proof.json records support limits.

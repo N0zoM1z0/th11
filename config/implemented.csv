@@ -463,3 +463,6 @@ SignalAndExecuteConfigurationAnimation
 PushConfigurationSelection
 PopConfigurationSelection
 MoveSecondaryDebugSelection
+UpdateMenuController
+MenuControllerUpdateCallback
+MarkMenuFileAnimations

@@ -102,9 +102,10 @@ model also leaves nine differences and is not retained.
 
 The two state setters remain zero only diagnostically after one field each,
 without new exact credit. The caller's sole original owner4399B0 passes its
-stack menu from EBP into EAX and keeps EBP live. That complete owner and its
-sixteen post-body selector cells are the next context to review; no original
-TU or register-save explanation is established by the synthetic probe.
+stack menu from EBP into EAX and keeps EBP live. That complete1,224-byte owner
+and its sixteen selector cells now have full source and real callback context;
+the audio caller still has the same nine differences. The parent alone does not
+explain register-save placement. See [MENU_CONTROLLER.md](MENU_CONTROLLER.md).
 
 ## Required shared operations
 
