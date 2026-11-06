@@ -14,7 +14,7 @@ function was created and no maintained inventory was regenerated away.
 
 | Function | Address | Target bytes | Recorded candidate / diagnostic differences |
 | --- | --- | ---: | --- |
-| StepAnimationIntVectorTween | 44E4B0 | 768 | 768 /348 |
+| StepAnimationIntVectorTween | 44E4B0 | 768 | 768 /339 |
 | StepAnimationIntScalarTween | 44E7C0 | 332 | 321 /283 |
 | StepAnimationFloatPairTween | 44E910 | 673 | 673 /359 |
 | StepAnimationFloatScalarTween | 44EBD0 | 331 | 326 /282 |
@@ -90,10 +90,11 @@ four coefficients as a real float aggregate reduced differences further to345.
 That aggregate expresses the independently observed coefficient rounding; it
 adds no inert code or padding.
 
-The candidate still uses a48-byte local frame instead of native40, different
-completion copies/epilogues, value-store scheduling and x87 scheduling. Equal
-length does not close any part of the full owner. Scalar/pair diagnostics in
-the table likewise retain all instructions through their final RET or actual
+That historical aggregate candidate used frame0x48 instead of native0x40. The
+current integer value constructor and independent coefficients recover frame40
+as described below; completion copies/epilogues and scheduling still differ.
+Equal length and frame do not close any part of the full owner. Scalar/pair
+diagnostics in the table likewise retain all instructions through their final RET or actual
 float-to-int tail jump, not a prefix chosen to fit a comparator.
 
 A four-output-reference coefficient helper gave integer scalar323/268, float
@@ -147,7 +148,7 @@ not an exceptional-value/status or full-function semantic proof. Separate X/Y
 locals before pair construction were byte-identical in the earlier value model;
 repeating that spelling is unhelpful.
 
-The animation caller remains non-exact at12292/frameE0/11727 complete differences,
+The animation caller remains non-exact at12296/frameE0/11741 complete differences,
 with407 fields and416 static opcode traces. It uses the correct EDI/EBX/EAX
 callee contract but buffers the pair atESP+B0 versus native88. Its frame/alignment
 and VM register remain open. The thirteen accepted factor/duration/scalar-setting
@@ -199,6 +200,55 @@ Full extent,221 instructions, six complete result returns and frame28 now agree;
 affected by AnimationTween.cpp are cold-replayed in two families: thirteen in
 AnimationTween and the1168-byte screen initializer. No new exact unit or source
 mapping is added; totals remain234 exact functions/27,546 bytes.
+
+## Integer XYZ value and actual color consumers
+
+Fresh direct Ghidra retains44E4B0..44E7AF:768 bytes/274 instructions, no table
+or foreign interior entry; the following four-byte getter is separate. EAX
+supplies the tween, EBX supplies12-byte output storage, and all six returns
+write all three words and return the storage pointer in EAX. Both native color
+calls44DB94/44DC50 pass EBX=ESP+24 and read three BYTEs directly from that
+stack temporary, in Z/Y/X order, before publishing primary/alternate RGB.
+
+The maintained integer value now has a three-component constructor assigning
+its actual X/Y/Z fields. Add/Subtract/Scale construct their actual results;
+no default/copy constructor or layout/ABI annotation is added. Mode8 uses four
+independent rounded coefficients, with the same progress/promotion/formulas.
+This combination recovers frame40 from48 while retaining768 bytes/274
+instructions. All19 fields replay with339 full differences, down from348,
+in both the public full-animation and canonical tween contexts. A constructor
+alone gives370 differences; independent coefficients alone give frame50/336.
+Neither isolated result is retained. Nominal class, constructor API and original
+TU remain hypotheses; layout stays12 bytes and tween4C.
+
+A bounded static trace covers7/17/8/ordinary arithmetic after the timer gate.
+All12 mode8 float-to-int arguments and their X/Y/Z conversion sequence agree
+strictly; the ordinary path has three agreeing arguments. Output graphs agree
+using only modular32-bit integer-addition reordering/flattening; no floating
+commutation is required. Completion traversal checks all six full-buffer
+returns. Factor/conversion operations remain opaque, self/result are disjoint,
+and timer/status/exception/alias/full-runtime semantics are not established.
+
+The two actual interpreter consumers now also read BYTEs directly from their
+stack result, replacing DWORD reads through returned EAX. Their buffer is28
+versus native24 and byte-register allocation differs. The full owner grows
+12292 to12296 bytes, differences11727 to11741 after407 fields; ring/arc x87
+add ordering and alignment code also change. FrameE0/VMEBP/no8 alignment,
+262/260 calls and all416 static opcode skeletons remain. The target-backed
+callee frame and consumer access forms motivate this retained type model;
+the whole-byte diagnostic is not monotonically improved. No exact credit.
+
+Other complete probes rejected: explicit weighted vectors and returning stored
+initial are byte-identical to their respective coefficient baselines; output-
+reference coefficients give frame48/507, or frame38/535 with the constructor.
+For the pair, reversing timer-helper arguments or scalar/component multiplication
+is fully byte-identical after four fields; direct helper results give677/551,
+and 2.0*t gives673/367 with a changed ordinary-Y operand order. These probes
+do not resolve the main alignment/frame or pair temporary-home gap.
+
+The current source/header change cold-replays the same fourteen existing exact
+units in two canonical families, all zero differences. Source mappings,
+reviewed boundaries and234 exact functions/27,546 bytes are unchanged.
 
 ## Renderer update and layer traversal
 

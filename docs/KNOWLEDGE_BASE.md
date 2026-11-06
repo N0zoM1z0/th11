@@ -101,7 +101,7 @@ VM374 is packed primary color, with alpha377;378 is alternate color. The older
 AnimationVmView.spriteIndex name at374 is a legacy label, not a sprite identity.
 A nonzero callback428 returns1 without restoring the overridden global time
 scale. The sprite transform42C consumes VM/integer in ECX/EDX, not ghost floats.
-Current complete-animation context /GL12292/frameE0/11727 full differences retains407 reviewed fields and
+Current complete-animation context /GL12296/frameE0/11741 full differences retains407 reviewed fields and
 all416 static per-op call/loop/post-update/return skeletons, with262/260 physical
 calls. Direct-if ReadF removes literal float spill/reloads; four distinct child
 cases plus reviewed native entry order recover lookup/insertion/malloc counts
@@ -113,7 +113,7 @@ The actual50-byte range-RNG dependency40B9F0 removes the extra state stack
 argument: conventional C++ plus real /GL bodies recover ESI state/one float
 stack word/RET4. Four focused selector/decode paths have the same placement.
 Full dependency50/all3 fields/zero diagnostic differences, without a separate
-exact leaf unit. The main interpreter shrinks12300 to12292/3279 instructions,
+exact leaf unit. At that range checkpoint the main shrinks12300 to12292/3279 instructions,
 11876 code+0 alignment+416 table, still non-exact. Unsigned-to-float conversion
 uses float2^32 correction before double2^-32 scaling. Keep the unit float round
 before multiplying maximum: raw16777217/maximum3 gives3C400000 versus3C400001
@@ -162,6 +162,28 @@ affected accepted units strictly cold-replay in two families, with no new credit
 The current183-input union also freezes the existing canonical tween probe.
 Remaining pair gaps: duration EAX-to-ECX copy,17's control2-X add order,8's
 doubling/second-coefficient/product scheduling. Keep the complete673 bytes.
+Integer XYZ44E4B0 now retains768/274 instructions and frame40 versus prior48,
+with339 full differences after19 fields in canonical tween and full-animation
+contexts (prior348). A real three-component constructor plus independent
+coefficients recovers both that frame and the two main color consumers
+44DB94/44DC50 reading three BYTEs directly from stack storage. The earlier
+POD consumer used DWORD loads through EAX. Hidden result12/EBX/EAX pointer
+already existed; this is a member-access/lifetime observation, not a newly
+recovered integer return ABI. Constructor alone gives768/40/370; independent
+coefficients alone768/50/336; out-reference coefficients with constructor give
+768/38/535. Keep the combined target-backed model, not the smallest diagnostic.
+All six returns fill three words. Bounded post-gate graphs agree after integer
+modular-add reorder only, with strict agreement of all12 mode8 and3 ordinary
+conversion arguments and their order; floating commutation is unnecessary.
+Opaque factor/conversion, disjoint buffers and unproved timer/status/alias
+semantics limit the trace. No original class/TU or exact credit. The main
+becomes12296/3278 instructions/11878 code+2 alignment+416 table,11741 full
+differences, versus12292/11727. Ring/arc x87 addition order also changes; the
+consumer observation does not imply byte-identical unaffected paths. FrameE0,
+VMEBP/no8 alignment,262/260 calls and416 static opcode skeletons remain.
+The same fourteen existing exact units cold-replay in two canonical families;
+only AnimationTween.cpp/hpp change in the prior183 frozen source inputs.
+
 Direct -- versus wrapped subtraction is byte-identical and leaves EDI=-1/ADD.
 Full real dependencies also move dialogue6948 from frame13C/5694 differences to
 native frame140/5357, with all454 fields/252 calls/46 traces retained. No exact

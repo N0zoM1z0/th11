@@ -2,7 +2,11 @@
 
 #include "StageTween.hpp"
 
-struct AnimationIntVector { int x, y, z; };
+struct AnimationIntVector
+{
+    int x, y, z;
+    AnimationIntVector(int xValue, int yValue, int zValue) : x(xValue), y(yValue), z(zValue) {}
+};
 // Two-component value; reviewed hidden-result contract at44E910/44DBEC.
 struct AnimationFloatPair
 {

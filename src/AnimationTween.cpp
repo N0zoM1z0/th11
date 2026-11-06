@@ -37,18 +37,18 @@ __forceinline HermiteWeights Hermite(float progress)
 }
 __forceinline AnimationIntVector Add(const AnimationIntVector &left, const AnimationIntVector &right)
 {
-    AnimationIntVector result = {AddInt(left.x, right.x), AddInt(left.y, right.y), AddInt(left.z, right.z)};
+    AnimationIntVector result(AddInt(left.x, right.x), AddInt(left.y, right.y), AddInt(left.z, right.z));
     return result;
 }
 __forceinline AnimationIntVector Subtract(const AnimationIntVector &left, const AnimationIntVector &right)
 {
-    AnimationIntVector result = {SubtractInt(left.x, right.x), SubtractInt(left.y, right.y), SubtractInt(left.z, right.z)};
+    AnimationIntVector result(SubtractInt(left.x, right.x), SubtractInt(left.y, right.y), SubtractInt(left.z, right.z));
     return result;
 }
 __forceinline AnimationIntVector Scale(const AnimationIntVector &value, float scale)
 {
-    AnimationIntVector result = {static_cast<int>(value.x * scale),
-        static_cast<int>(value.y * scale), static_cast<int>(value.z * scale)};
+    AnimationIntVector result(static_cast<int>(value.x * scale),
+        static_cast<int>(value.y * scale), static_cast<int>(value.z * scale));
     return result;
 }
 __forceinline AnimationFloatPair Add(const AnimationFloatPair &left, const AnimationFloatPair &right)
@@ -100,9 +100,14 @@ AnimationIntVector __stdcall StepAnimationIntVectorTween(AnimationIntVectorTween
     }
     if (self->mode == 8)
     {
-        HermiteWeights weights = Hermite(self->time.fraction / duration);
-        return Add(Add(Add(Scale(self->initial, weights.a), Scale(self->target, weights.b)),
-            Scale(self->control1, weights.c)), Scale(self->control2, weights.d));
+        float progress = self->time.fraction / duration;
+        double t = progress;
+        float a = static_cast<float>((t - 1.0) * (t - 1.0) * (t + t + 1.0));
+        float b = static_cast<float>(t * t * (3.0 - (t + t)));
+        float c = static_cast<float>((1.0 - t) * (1.0 - t) * t);
+        float d = static_cast<float>((t - 1.0) * t * t);
+        return Add(Add(Add(Scale(self->initial, a), Scale(self->target, b)),
+            Scale(self->control1, c)), Scale(self->control2, d));
     }
     float factor = AnimationIntVectorTweenFactor(self);
     return Add(Scale(Subtract(self->target, self->initial), factor), self->initial);

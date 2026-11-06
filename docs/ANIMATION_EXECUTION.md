@@ -138,23 +138,23 @@ than the older void prototype name for the same target.
 
 ## Complete comparison and remaining gaps
 
-The maintained full cold /GL primary contribution is12292 bytes with frameE0 and
+The maintained full cold /GL primary contribution is12296 bytes with frameE0 and
 stack VM input, but lacks native8-byte stack alignment and uses EBP for VM versus
 EDI. All104 table cells and407 independently reviewed address/table fields
-replay;11727 bytes differ over the complete owner, including length differences.
-The source has3279 reachable instructions/11876 code bytes+0 alignment+416 table.
+replay;11741 bytes differ over the complete owner, including length differences.
+The source has3278 reachable instructions/11878 code bytes+2 alignment+416 table.
 Native/source calls are262/260: integer RNG4/3 and float destination15/14 remain.
 Lookup5/5, related insertion3/3, malloc2/2 and float read78/78 now agree physically.
 These counts grant neither semantic nor exact credit.
 
-The current AnimationExecutionRangeBody family retains all47 public support
+The current IntVectorValueOwners family retains all47 public support
 sources, the real HUD/factory callers and /GL. Replacing the range-RNG declaration
 with its actual support body removes a passed state-pointer stack word: ESI
 carries that pointer and only maximum occupies the outgoing stack slot. A
 bounded static ABI check follows scene/text and literal/decoded maximum paths;
-all four place ESI/one word as the target does. Compared with the12300-byte
-baseline, the full interpreter loses8 bytes/3 instructions and its complete
-rebased diagnostic differences fall11742 to11727. Main frame/alignment, pair
+all four place ESI/one word as the target does. At that range checkpoint,
+compared with the12300-byte baseline, the interpreter loses8 bytes/3 instructions
+and its complete rebased diagnostic differences fall11742 to11727. Main frame/alignment, pair
 buffer placement and the two call-site merges remain open.
 
 A float-writing helper for17/27/45/46 is byte-identical to the baseline after
@@ -238,9 +238,22 @@ exact functions/27,546 bytes; the interpreter and range dependency gain no exact
 credit. The range mapping adds one reviewed boundary and one source mapping.
 The subsequent Hermite/pair-value change affects only AnimationTween.cpp. Its
 fourteen existing exact units receive two new canonical cold-family replays;
-all remain zero. The full interpreter stays byte-identical after407 fields replay.
+all remain zero. At that Hermite/pair checkpoint the full interpreter stays
+byte-identical after407 fields replay.
 See ANIMATION_TWEEN_DISPATCH.md for all four whole-body diagnostics and rejected
 copy-constructor, aggregate-result, cached-duration and operand-order probes.
+
+The subsequent integer XYZ constructor/independent-coefficient change recovers
+the callee768/frame40/339 complete differences. Its two actual color consumers
+44DB94/44DC50 now read three BYTEs directly from the result stack temporary,
+in Z/Y/X order, matching native access width/location and publication order.
+Previously they loaded DWORDs through returned EAX. EAX tween/EBX output/EAX
+result-pointer contract is unchanged; caller buffer28/native24 and byte-register
+allocation differ. The full interpreter grows12292 to12296, differences11727
+to11741 after407 fields, including changed ring/arc x87 add order and alignment
+code. This target-backed value model improves specific callee/caller evidence
+without establishing whole-owner equality or original class/TU. The same fourteen
+affected exact units cold-replay in two families, all zero differences.
 
 All104 dispatch entries have equal static per-op call/instruction-loop/post-
 update/return skeletons:416 distinct paths on each side. Constant opcode choices

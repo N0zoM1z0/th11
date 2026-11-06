@@ -16,8 +16,8 @@ receipts outrank historical notes. All dirty work is ours.
 Operator priority is large/difficult owners, not leaf accumulation. Main owners:
 host412E30/16,556, animation44B4B0/12,056, interpreter45B860/7,093,
 dialogue41D380/6,980, HUD41B380/4,716 and gameplay420390/1,149. Native product,
-broad runtime and portability are later phases. This checkpoint recovers the
-pair callee's full673-byte size/frame28 and corrects Hermite operand grouping.
+broad runtime and portability are later phases. Current work recovers the
+integer XYZ tween frame40 and the main interpreter's byte-stack color accesses.
 
 ## Accepted screen-effect initializer1168
 
@@ -47,11 +47,24 @@ Eight CC precede separate44E3D0;44E430/44E460 are separate source-open code.
 Native stack VM/frameCC/alignment8/three RET4 return0/0/1. Callback428 nonzero
 returns1 without restoring the overridden time scale. Keep that observed path.
 
-Current AnimationExecutionRangeBody is12292/frameE0/no8 alignment/VMEBP versus EDI,
-11727 full differences after407 fields replay. All104 entries retain416 static
+Current IntVectorValueOwners is12296/frameE0/no8 alignment/VMEBP versus EDI,
+11741 full differences after407 fields replay. All104 entries retain416 static
 call/loop/post-update/return skeletons; predicates/operands/loop reentry unproved.
 Calls262/260 differ at RNG4/3 and float destination15/14. Lookup/insertion/malloc
 and float-read counts now agree. Preserve /GL and all owned table bytes.
+
+Integer XYZ now has complete768/frame40/339 differences after19 fields,
+274 instructions in public-full-animation and canonical tween contexts. A real
+three-component value constructor plus independent mode8 coefficients recover
+frame40 from48 (prior348 differences). Both color consumers now read three
+BYTEs directly from stack temporary in Z/Y/X order, as native; source buffer28
+versus native24 and byte registers differ. Main grows4 bytes/14 differences;
+ring/arc x87 add order/alignment code also change. All six integer returns fill
+three words/EAX pointer. Post-gate bounded operand graphs require only modular
+integer-add normalization; all12 mode8 and3 ordinary conversion arguments/order
+agree strictly. Opaque factor/conversion, disjoint-buffer and status/timer/alias
+limits remain. Nominal class/TU unknown; no new exact credit. Next: main frame/
+alignment and vector-temporary homes, integer completion/store scheduling.
 
 Pair now has complete673/frame28/359 differences after4 fields in the public
 primary tween and full-animation contexts. Both have221 instructions and six
@@ -144,13 +157,13 @@ Interpreter6989/native7093 retains120/all89 selectors/two RET4, VM ESI/nativeEDI
 
 ## Checkpoint evidence
 
-Current receipt check: .analysis/verify-animation-hermite-pair-checkpoint.py.
-animation-hermite-pair-public-* binds the full main/four tween bodies, pair's
-four fields/six returns/four operand paths and four corrected coefficient trees.
-animation-hermite-pair-canonical-* and canonical-replays.* bind fourteen exact
-replays in two cold families. Fresh Ghidra: animation-pair-copy-review.* and
-animation-hermite-group-review.*. animation-hermite-pair-source-freeze.json
-freezes183 union inputs; only prior AnimationTween.cpp changed. The existing
-probes/animation-tween-context.cpp is newly included in this union. Older range/screen
-checkpoint verifiers are historical after that change. Tools/Oracles unchanged.
-No new mappings, boundaries or exact units;234 exact/27,546 bytes remains.
+Current receipt check: .analysis/verify-int-vector-value-checkpoint.py.
+int-vector-value-public-* binds the full main/four tweens, integer XYZ nineteen
+fields/six returns/four operand paths and both actual color consumers. Static
+main CFG retains416 traces; no broad runtime suite was run. Canonical reports
+and int-vector-value-canonical-replays.* bind fourteen existing exact replays
+in two cold families. Fresh direct Ghidra: int-vector-current-review.*,
+int-vector-current-full-disassembly.* and int-vector-color-call-review.*.
+int-vector-value-source-freeze.json freezes183 union inputs; only prior
+AnimationTween.cpp/hpp changed. Older checkpoint verifiers are historical.
+Tools/Oracles unchanged; no new mappings, boundaries or exact units.
