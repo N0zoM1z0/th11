@@ -56,11 +56,12 @@ void __stdcall QueueMeshEffectSound(int sound)
 {
     int value = g_MeshEffectSoundRecords[sound].value;
     int index;
-    for (index = 0; index < 12; ++index)
+    int *slot = g_MeshEffectSoundQueue.slots;
+    for (index = 0; index < 12; ++index, ++slot)
     {
-        if (g_MeshEffectSoundQueue.slots[index] < 0)
+        if (*slot < 0)
             break;
-        if (g_MeshEffectSoundQueue.slots[index] == sound)
+        if (*slot == sound)
         {
             int count = g_MeshEffectSoundQueue.pending[index];
             if (count < 128)

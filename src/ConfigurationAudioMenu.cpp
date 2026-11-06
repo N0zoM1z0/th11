@@ -61,24 +61,22 @@ __forceinline void Show(ConfigurationAudioMenuView *self, RenderBatchView *rende
 
 __forceinline void Select(SecondaryDebugSelectionView *selection, int value)
 {
-    if (!selection->count) selection->current = value;
-    else if (selection->count <= value) selection->current = selection->count - 1;
+    if (selection->count)
+        selection->current = selection->count <= value ? selection->count - 1 : value;
     else selection->current = value;
 }
 
-__forceinline void Close(ConfigurationAudioMenuView *self, int sound)
+__forceinline void SignalClose(AnimationVmId id, short event)
 {
-    AnimationVmView *vm = FindAnimationVmById(g_RenderBatch, self->rootVmId);
+    AnimationVmView *vm = FindAnimationVmById(g_RenderBatch, id);
     if (vm)
     {
-        reinterpret_cast<SecondaryActorAnimationView *>(vm)->event = 6;
+        reinterpret_cast<SecondaryActorAnimationView *>(vm)->event = event;
         BoundVmView *bound = reinterpret_cast<BoundVmView *>(vm);
         if (!bound->marker018)
             for (BoundVmNodeView *node = bound->related; node; node = node->next)
-                reinterpret_cast<SecondaryActorAnimationView *>(node->vm)->event = 6;
+                reinterpret_cast<SecondaryActorAnimationView *>(node->vm)->event = event;
     }
-    QueueMeshEffectSound(sound);
-    SetConfigurationMenuState(self, 4);
 }
 }
 
@@ -159,6 +157,8 @@ void __stdcall SetConfigurationMenuPage(ConfigurationAudioMenuView *self, int pa
 
 int __stdcall UpdateConfigurationAudioMenu(ConfigurationAudioMenuView *self)
 {
+    if (static_cast<unsigned int>(self->state) > 4) return 1;
+    int closingSound;
     switch (self->state)
     {
     case 0:
@@ -178,34 +178,36 @@ int __stdcall UpdateConfigurationAudioMenu(ConfigurationAudioMenuView *self)
         }
         break;
     case 2:
-        self->selection.previous = self->selection.current;
+    {
+        SecondaryDebugSelectionView *selection = &self->selection;
+        selection->previous = selection->current;
         if ((g_InputState.pressed & 0x10) || (g_InputState.repeat & 0x10))
-            MoveSecondaryDebugSelection(&self->selection, -1);
+            MoveSecondaryDebugSelection(selection, -1);
         if ((g_InputState.pressed & 0x20) || (g_InputState.repeat & 0x20))
-            MoveSecondaryDebugSelection(&self->selection, 1);
-        if (self->selection.previous != self->selection.current)
+            MoveSecondaryDebugSelection(selection, 1);
+        if (selection->previous != selection->current)
         {
             QueueMeshEffectSound(12);
             SignalAndExecuteConfigurationAnimation(self->rootVmId, 3);
             SignalSecondaryAnimationEvent(self->rootVmId,
-                static_cast<short>(self->selection.current + 7));
+                static_cast<short>(selection->current + 7));
         }
         if (g_InputState.pressed & 0x102)
         {
-            if (self->selection.current == 4) goto CloseBack;
+            if (selection->current == 4) goto CloseBack;
             QueueMeshEffectSound(11);
-            Select(&self->selection, 4);
+            Select(selection, 4);
             SignalAndExecuteConfigurationAnimation(self->rootVmId, 3);
             SignalSecondaryAnimationEvent(self->rootVmId,
-                static_cast<short>(self->selection.current + 7));
+                static_cast<short>(selection->current + 7));
             return 1;
         }
-        if (self->selection.current == 1 &&
+        if (selection->current == 1 &&
             reinterpret_cast<SecondaryDamageTimerView *>(&self->time)->Elapsed(60))
             QueueMeshEffectSound(4);
         if ((g_InputState.pressed & 0x40) || (g_InputState.repeat & 0x40))
         {
-            switch (self->selection.current)
+            switch (selection->current)
             {
             case 0:
                 if (Setting(0) < 5) Setting(0) = 0; else Setting(0) -= 5;
@@ -219,7 +221,7 @@ int __stdcall UpdateConfigurationAudioMenu(ConfigurationAudioMenuView *self)
         }
         if ((g_InputState.pressed & 0x80) || (g_InputState.repeat & 0x80))
         {
-            switch (self->selection.current)
+            switch (selection->current)
             {
             case 0:
                 Setting(0) += 5;
@@ -235,12 +237,13 @@ int __stdcall UpdateConfigurationAudioMenu(ConfigurationAudioMenuView *self)
         }
         if (g_InputState.pressed & 0x80001)
         {
-            switch (self->selection.current)
+            switch (selection->current)
             {
             case 4:
             CloseBack:
-                Close(self, 11);
-                return 1;
+                SignalClose(self->rootVmId, 6);
+                closingSound = 11;
+                goto FinishClose;
             case 3:
                 Setting(0) = 100;
                 Setting(1) = 80;
@@ -248,14 +251,21 @@ int __stdcall UpdateConfigurationAudioMenu(ConfigurationAudioMenuView *self)
                 ApplyConfigurationAudioMenu(self);
                 QueueMeshEffectSound(10);
                 return 1;
-            case 2: Close(self, 10); return 1;
+            case 2:
+                SignalClose(self->rootVmId, 6);
+                closingSound = 10;
+            FinishClose:
+                QueueMeshEffectSound(closingSound);
+                SetConfigurationMenuState(self, 4);
+                return 1;
             }
         }
         break;
+    }
     case 3:
         break;
     case 4:
-        if (self->time.current > 9)
+        if (self->time.current >= 10)
         {
             switch (self->selection.current)
             {

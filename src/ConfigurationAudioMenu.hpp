@@ -33,8 +33,8 @@ int __stdcall UpdateConfigurationAudioMenu(ConfigurationAudioMenuView *self);
 void __stdcall SetConfigurationMenuState(ConfigurationAudioMenuView *self, int state);
 void __stdcall SetConfigurationMenuPage(ConfigurationAudioMenuView *self, int page);
 
-// Reviewed source-open boundaries. Their private LTCG register assignments are
-// observations, not expressed as invented public calling conventions here.
+// Reviewed shared operations, defined in the menu selection/animation sources.
+// Private register allocation is left to the real /GL compiler.
 void __stdcall PushConfigurationSelection(SecondaryDebugSelectionView *selection);
 void __stdcall PopConfigurationSelection(SecondaryDebugSelectionView *selection);
 void __stdcall SignalAndExecuteConfigurationAnimation(AnimationVmId id, short event);

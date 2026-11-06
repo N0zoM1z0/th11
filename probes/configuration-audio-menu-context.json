@@ -15,7 +15,11 @@
     "probes/configuration-audio-menu-context.cpp",
     "src/SecondaryPlayerMovement.cpp",
     "src/SecondaryDamageSupport.cpp",
-    "src/MeshEffects.cpp"
+    "src/MeshEffects.cpp",
+    "src/ConfigurationMenuSelection.cpp",
+    "src/ConfigurationMenuAnimation.cpp",
+    "probes/configuration-menu-support-context.cpp",
+    "src/AnimationExecution.cpp"
   ],
   "normal_support_sources": [],
   "output_dir": "build/match-linked/ConfigurationAudioMenu",

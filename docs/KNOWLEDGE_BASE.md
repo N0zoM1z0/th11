@@ -32,12 +32,27 @@ value returns restore late success blocks; zero-initialized scalar accumulation
 changes loop layout. A remainder wrapper and parent-ID pointer/local changes
 alone do not resolve the final291 differences.
 
-Caller948/native992 retains all28 calls, EAX input/plain RET and both inlined
-close lookups, but still has933 full differences after61 fields. A normal
-stdcall function-pointer escape forces stack/RET4; a direct /GL arbitrary-input
-probe recovers the private interface. Supporting82/85 setters remain zero
-only diagnostically, with no independent leaf units. Canonical unit:
-apply-configuration-audio-menu. See [CONFIGURATION_AUDIO_MENU.md](CONFIGURATION_AUDIO_MENU.md).
+The audio caller now has992 bytes/285 instructions/969 code+3 alignment+20 table,
+all61 fields and nine full differences, down from948/933. Real selection bodies
+restore EAX/stack amount; an arbitrary-input probe retains ECX/stack timer period
+instead of folding60. The real12056-byte interpreter body restores the signal/
+execute dependency's native8-byte alignment and complete95/4 fields/zero
+support result. No interpreter or leaf acceptance follows from that diagnostic.
+
+A nested conditional selection assignment, local selection pointer, shared
+sound11/10 close tail and value-ID/short-event inline operation recover the
+native stores/registers/layout. Explicit pointer/index traversal of sound slots
+restores private ESI sound input; indexed access chose EDX in the minimal context.
+The queue remains124/native125. All remaining nine caller differences concern
+EBP save/default-return placement. An explicit state-range early return is the
+retained source; switch/implicit/positive defaults give639, and a member model
+still gives9. No prefix normalization or fake register ABI is accepted.
+
+Original caller4399B0 receives its menu on the stack into EBP and passes EAX=EBP
+to43A6F0. Its default1160 span excludes sixteen selector cells beginning439E38;
+review the complete owner/context next. No class/TU explanation is proved yet.
+Supporting movement/history/event bodies add source presence, with zero48/95
+results only diagnostic. See [CONFIGURATION_AUDIO_MENU.md](CONFIGURATION_AUDIO_MENU.md).
 
 ## Target and compilation
 

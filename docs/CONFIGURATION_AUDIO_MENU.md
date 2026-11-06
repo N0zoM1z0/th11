@@ -63,8 +63,8 @@ The caller covers opening delays, five-item selection and repeats, cancel-to-bac
 periodic sound preview, signed-byte increments/decrements in steps of5, default
 100/80/0 reset, both closing-animation paths, delayed page transitions, and
 selection stack push/pop. The close-to-back path is shared by cancel and confirm.
-The reviewed selection and signal/execute callees remain source-open dependencies;
-their private register assignments are not expressed as fake public ABIs.
+The selection and signal/execute operations now have supporting source bodies.
+Their private register assignments arise from ordinary C++ under /GL linking.
 
 ## Compiler findings and current comparison
 
@@ -84,14 +84,58 @@ EDX/ECX load and the exact branch/alignment layout. No register declaration,
 inert storage, target instruction bytes or profile change is involved. This
 compiler result does not establish the original menu class or TU identity.
 
-The caller is948=915 code/271 instructions+13 layout+20 table, with all61 fields
-and933 full differences. All28 call sites/twelve targets agree in count; EAX
-input and six plain RETs are recovered. Open selection/signal dependencies still
-prevent their native private argument allocation from being recovered. The two
-support setters have zero diagnostic differences after their one field each,
-without new exact credit. Before the value-field change, a parent-ID pointer
-helper and explicit child-ID local retained the291-difference result. The
-remaining caller work is selection/event ABI, stores and register/layout gaps.
+The caller now has the complete native992-byte shape:969 reachable code bytes/
+285 instructions, three-byte no-op alignment and all five table cells/20 bytes.
+All61 fields replay with nine full byte differences. The28 calls and six plain
+RET paths remain. Only EBP save/default-path restoration differs: native saves
+EBP before the state-range comparison; the candidate saves it after the explicit
+out-of-range return. No prefix is cropped or normalized for acceptance.
+
+A nested conditional selection assignment restores both count-zero and clamped
+stores. A local selection view restores EBP-relative previous/current accesses.
+The two close paths select sound11/10 and share their actual sound/state-reset
+tail. An inline ID-value/short-event operation recovers both copies' event/root
+registers. The final ten-frame comparison is >=10, matching the native spelling.
+An explicit range return gives nine differences; switch-default, implicit or
+positive-range spellings give639 in the same complete extent. A member-function
+model also leaves nine differences and is not retained.
+
+The two state setters remain zero only diagnostically after one field each,
+without new exact credit. The caller's sole original owner4399B0 passes its
+stack menu from EBP into EAX and keeps EBP live. That complete owner and its
+sixteen post-body selector cells are the next context to review; no original
+TU or register-save explanation is established by the synthetic probe.
+
+## Required shared operations
+
+ConfigurationMenuSelection.cpp supplies the real movement/history operations:
+
+| Operation | Target bytes | Current support bytes/differences | Observed interface |
+| --- | ---: | --- | --- |
+| MoveSecondaryDebugSelection459160 |121|121 /40|EAX selection, stack amount, RET4|
+| PushConfigurationSelection4590F0 |61|63 /20|EAX selection, RET|
+| PopConfigurationSelection459130 |48|48 /0|EAX selection, RET|
+| SignalAndExecuteConfigurationAnimation456280 |95|95 /0 after4 fields|DI event, stack ID, RET4|
+
+The physical selection storage retains16-entry histories at0C/4C, depth8C,
+exclusions90, wrap flagD0 and exclusion lengthD4. Movement wraps/clamps then
+retries exclusions; nonpositive count leaves current unchanged. Push caps depth
+at15 after writing, while pop decrements before loading. Those observed details
+are retained without added escape/bounds behavior. All four full boundaries,
+references and adjacent bytes have fresh mapped-text-attested Ghidra review.
+
+The animation operation executes the root before reading/traversing its related
+list, then signals/executes each child when marker18 is zero. Its source changes
+77 to95 bytes with zero diagnostic differences when the real12056-byte
+interpreter body is present: the actual callee restores the native8-byte caller
+alignment. Interpreter exactness and runtime closure are not inferred.
+
+The compile-only arbitrary-input support probe prevents period60, event3 and
+sound constants from specializing their shared interfaces. Timer ECX/stack
+period is retained. Explicit slot-pointer/index traversal in QueueMeshEffectSound
+restores its native ESI parameter, replacing EDX in the minimal indexed context.
+The complete queue itself remains124/native125 and non-exact. The zero48/95-byte
+support contributions receive no independent leaf acceptance units.
 
 A generic digit divisor followed by a separate integer remainder loses the
 original byte-expression optimization context. The complete3948-byte candidate
@@ -113,7 +157,7 @@ pointer would force stack input/RET4 and is not the target's observed interface.
 
 The public compile-only context is probes/configuration-audio-menu-context.json.
 It shares the canonical unit's source/profile/support/entry/output contract and
-includes all real /GL source dependencies plus an arbitrary-input probe. The
+includes the selected real /GL implementations plus arbitrary-input probes. The
 authoritative110-field acceptance list is in config/match-units.toml. This
 diagnostic image is not a game executable. From the repository root:
 
@@ -127,6 +171,8 @@ The main owner is accepted only by the strict linked Oracle; caller/support
 diagnostics grant no additional exact credit. Every call/global/string/literal
 and owned table field is inventoried, with all other bytes and layout retained.
 Behavioral, native-product, original data ownership and original-TU equality
-remain separate. Only ConfigurationAudioMenu.cpp/.hpp change in the prior203
-frozen inputs; no previous accepted unit depends on them. This checkpoint adds
-one3,836-byte exact unit, with no prior-cohort replay or new leaf acceptance.
+remain separate. The current update changes
+ConfigurationAudioMenu.cpp/.hpp and MeshEffects.cpp within the prior203 frozen
+inputs, adding the three public support files. Only eight directly affected
+accepted units in five compilation families are cold-replayed; no full cohort
+or broad runtime suites are required. No new leaf acceptance units are added.

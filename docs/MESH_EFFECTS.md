@@ -118,3 +118,13 @@ Only the directly affected `update-mesh-effect-spell-state` and
 `square-mesh-vm-callback` exact units were cold-replayed for this source change;
 both remain exact. The complete998-byte initializer was inspected from the same
 cold output; no full-cohort replay or behavioral regression suite was run.
+
+## Sound traversal in the audio-menu context
+
+The sound-slot scan now advances both its integer index and actual slot pointer.
+This follows the native pointer traversal and recovers private ESI sound input
+in the audio-menu /GL context; the former indexed spelling selected EDX. That
+interface restores the real menu's sound/event register flow. The complete queue
+remains124/native125 bytes, with101 field-rebased diagnostic differences in the
+current menu context; no new queue exact unit is claimed. Only directly affected
+canonical compilation families are cold-replayed after this source change.

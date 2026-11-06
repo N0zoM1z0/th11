@@ -7,9 +7,9 @@ status/diff; current receipts outrank historical notes. All dirty work is ours.
 ## Current exact state
 
 - Original Japanese TH11v1.00a, pinned by config/target.toml; no substituted bytes.
-- 2,139 candidates;578 reviewed boundaries;461 source mappings.
+- 2,139 candidates;582 reviewed boundaries;465 source mappings.
 - 236 exact functions/31,881 bytes:9 normal COFF and227 linked PE.
-- Origins:90 authored,472 indeterminate,14 exclusions,1,563 pending.
+- Origins:90 authored,476 indeterminate,14 exclusions,1,559 pending.
 - VC9 RTM21022/SDK6.0A; direct scripts/ghidra.py, no Factory MCP/REA.
 - Commit/push authorized; prefix `gpt-6.1-sol: `. No heavy job remains running.
 
@@ -38,34 +38,51 @@ layout bytes remain. Raw scalar reconstruction gave3836/291; the generic
 remainder spelling gave3948/3438. See CONFIGURATION_AUDIO_MENU.md and knowledge
 base for the compiler findings. Original class/TU identity stays open.
 
-Caller43A6F0..43AACF owns992=969 code/285 instructions+3 alignment+five-cell20-byte
-table at43AABC. All five apparent foreign DATA refs are owned cells; next owner
-starts immediately. Complete state/input source includes adjustments, preview,
-defaults, opening/closing delays and page/selection transitions. Current948=915
-code/271 instructions+13 layout+20 table; all61 fields and933 full differences.
-All28 calls agree in count. Direct general-input /GL probe recovers EAX input
-and six plain RETs; normal stdcall address escape forces wrong stack/RET4.
-Two inline close lookups and a shared back label recover the native call counts.
-Open MoveSecondaryDebugSelection459160/121, signal/execute456280/95 and stack
-push4590F0/61/pop459130/48 still have declarations, not invented private ABIs.
-Next: caller's selection/event ABI and stores; keep the accepted callee exact.
+Caller43A6F0..43AACF now has the complete992=969 code/285 instructions+3 alignment
++five-cell20-byte table at43AABC. All61 fields and all28 calls agree; nine full
+byte differences remain, exclusively in prologue offsets7..16. Native saves EBP
+before the state-range comparison; source saves it after the explicit early
+return and skips its restoration on that default path. All six RET/EAX1 paths
+remain. Do not crop/normalize the prefix or grant exact credit. Exact counts
+stay236/31881; no new leaf acceptance units.
 
-State82/page85 setters are supporting complete source, both zero diagnostic
-differences after one scale field, with no independent leaf acceptance units.
-Original class/TU/authorship remain unresolved. Public recipe:
-probes/configuration-audio-menu-context.json; details CONFIGURATION_AUDIO_MENU.md.
-Checkpoint: `.analysis/verify-configuration-audio-exact-checkpoint.py`.
-configuration-audio-canonical-comparison.json is the strict3836/110/zero result;
-configuration-audio-canonical-proof.json also keeps full caller/support diagnostics.
-Canonical/public output is build/match-linked/ConfigurationAudioMenu. Fresh native
-inventory/direct Ghidra/table evidence remains configuration-audio-* and
-large-43aad0-*. configuration-audio-exact-source-freeze.json freezes203 inputs;
-only ConfigurationAudioMenu.cpp/.hpp changed from the prior203-input freeze.
-One large3836-byte exact unit added; no new mappings/review counts, no previous
-exact-unit dependencies changed and no leaf acceptance units added. No broad
-execution suites were run. The old checkpoint verifier has historical counts.
+Retained: nested selection assignment, local selection pointer, generic inline
+ID-value/short-event signaling, explicit state-range early return, >=10 exit,
+and actual sound11/10 selector sharing one close tail. Default/implicit/positive
+range spellings give639; member model still9 and is discarded. Slot-pointer/
+index traversal in MeshEffects.cpp restores private ESI sound input. Queue itself
+is124/native125/101 differences; common-manager alias model is not retained.
+
+New supporting selection/history/event bodies have full target review and source
+mappings. Move459160/121 has40 diagnostic differences; push4590F0 is63/native61/20;
+pop459130/48 and signal/execute456280/95 (all4 fields) are zero diagnostically,
+without leaf acceptance. Real AnimationExecution.cpp restores the signal helper's
+8-byte alignment (former77); arbitrary-input support probe retains the real timer
+period/DI event interfaces. Source/class/TU/runtime claims stay separate.
+
+Next large owner:4399B0, the sole audio caller, receives a stack menu in EBP and
+calls with EAX=EBP while keeping EBP live. Fresh review is configuration-menu-owner-
+review.*; initial1160 span omits16 selector cells at439E38. Review full flow,
+references/table/neighbor and reconstruct this real owner/context next; no boundary
+credit or explanation of the remaining EBP save placement is established yet.
+
+Canonical/public context now has15 /GL supports in build/match-linked/
+ConfigurationAudioMenu. Eight directly affected accepted units in five cold
+families pass strict replay, including3836/110/zero. No full cohort or broad
+runtime suites. New checkpoint: `.analysis/verify-configuration-menu-checkpoint.py`.
+configuration-menu-canonical-proof.json keeps full main/caller diagnostics;
+configuration-menu-caller-byte-proof.json locates all nine differences;
+configuration-menu-canonical-support-proof.json records support limits.
+configuration-menu-cold-comparisons.json records all eight exact cold results.
+configuration-menu-source-freeze.json freezes208 inputs, versus prior203; only
+ConfigurationAudioMenu.cpp/.hpp and MeshEffects.cpp changed, three new support
+files and two existing dependencies newly frozen. Old verifiers have historical
+counts. Details: CONFIGURATION_AUDIO_MENU.md and KNOWLEDGE_BASE.md.
 
 ## Other substantial owners
+
+These are last diagnostic measurements. Contexts including MeshEffects.cpp need
+refreshed receipts when resumed; do not replay their full diagnostic cohort here.
 
 - Animation44B4B0/12056: all104 signed opcodes have source, complete416-byte
   table,262 native calls. Current12296/frameE0 versus nativeCC,11741 differences

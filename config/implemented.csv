@@ -459,3 +459,7 @@ SetConfigurationMenuPage
 SetConfigurationMenuState
 UpdateConfigurationAudioMenu
 ApplyConfigurationAudioMenu
+SignalAndExecuteConfigurationAnimation
+PushConfigurationSelection
+PopConfigurationSelection
+MoveSecondaryDebugSelection
