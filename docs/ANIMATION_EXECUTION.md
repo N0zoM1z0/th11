@@ -127,11 +127,11 @@ than the older void prototype name for the same target.
 
 ## Complete comparison and remaining gaps
 
-The maintained full cold /GL primary contribution is12292 bytes with frameE0 and
+The maintained full cold /GL primary contribution is12300 bytes with frameE0 and
 stack VM input, but lacks native8-byte stack alignment and uses EBP for VM versus
 EDI. All104 table cells and407 independently reviewed address/table fields
-replay;11744 bytes differ over the complete owner, including length differences.
-The source has3280 reachable instructions/11876 code bytes+0 alignment+416 table.
+replay;11742 bytes differ over the complete owner, including length differences.
+The source has3282 reachable instructions/11882 code bytes+2 alignment+416 table.
 Native/source calls are262/260: integer RNG4/3 and float destination15/14 remain.
 Lookup5/5, related insertion3/3, malloc2/2 and float read78/78 now agree physically.
 These counts grant neither semantic nor exact credit.
@@ -171,18 +171,32 @@ EmitStripPair now advances its local caller pointer after each vertex. This
 recovers two1C cursor advances per loop (native EBX; source ring EBX/arc ESI)
 and keeps color in a register across the two polar calls, removing the extra
 second-vertex pointer
-and per-iteration color reload. Complete source falls44 bytes to12292,28 below
-the prior checkpoint. Both loops still emit their complete pair counts and the
+and per-iteration color reload. That checkpoint fell44 bytes to12292,28 below
+its preceding version; the subsequent pair-value ABI adds8 bytes. Both loops still emit their complete pair counts and the
 ring retains its two closing copies. Nested vector sums alone retain frameE0
 and12336 bytes; no stack reduction follows from just shortening those lifetimes.
 
 A primary-only /Oy- probe gives11688/frameF0 with VM EBX, no8-byte alignment and
 264 calls (float destinations18/native15; RNG3/native4). It does not explain the
 native frame/alignment/VM register and is not adopted. The maintained profile
-remains /O2 /Ob1 /GL. A separate observed ABI gap is the native pair tween's
-hidden result:44DBE5 supplies EBX=ESP+88 before44DBEC and copies through returned
-EAX. Current source instead publishes the eight-byte pair in EAX/EDX. Nominal
-value type and original TU/private-convention ownership remain unproved.
+remains /O2 /Ob1 /GL. The native pair tween's hidden result is now recovered:
+44DBE5 supplies EBX=ESP+88 before44DBEC and copies through returned EAX; current
+natural C++ likewise passes EBX and returns the pointer in EAX, with EDI tween.
+Its result buffer is still ESP+B0. The earlier POD pair returned bits through
+EAX/EDX. The maintained two-component value constructor writes the actual X/Y
+components; nominal class/constructor identity and original TU remain hypotheses.
+See ANIMATION_TWEEN_DISPATCH.md for the complete673-byte callee and six returns.
+
+The source pair callee is644/frame30 versus native673/frame28, with597 complete
+byte differences after its four reviewed fields replay. Six paths each fill both
+buffer words and return the buffer pointer. A mode17 initial-value snapshot
+restores four observed copy instructions; mode7/17 arithmetic paths have23/35
+instructions on each side, while mode8 is93/90 and ordinary mode38/34. Float
+rounding-store counts2/4/19/7 agree, without proving their operand graphs. Separate
+X/Y float locals are byte-identical for both complete callee and interpreter.
+Thirteen already accepted exact units affected by AnimationTween.hpp/cpp share
+one cold context and all strictly replay with zero differences. No new exact
+unit, source mapping or original-type credit follows from this ABI correction.
 
 All104 dispatch entries have equal static per-op call/instruction-loop/post-
 update/return skeletons:416 distinct paths on each side. Constant opcode choices
@@ -202,7 +216,7 @@ static per-op traces remain. This is a compiler observation under a fuller
 context, not proof of original TU ownership or whole-function equality.
 
 Next gaps are the full interpreter frame/alignment, VM register, pair-tween
-hidden result, temporary/vector lifetimes and the two remaining call merges.
+result-buffer home, temporary/vector lifetimes and the two remaining call merges.
 Float destinations for
 17/27/45/46 share a native tail; the source also folds7 into it. Integer random40
 shares its RNG call in source but has two physical native sites. Preserve complete

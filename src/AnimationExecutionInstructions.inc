@@ -386,7 +386,7 @@
         case 60:
         {
             float y = ReadF(vm, instruction, 3);
-            AnimationFloatPair target = {ReadF(vm, instruction, 2), y};
+            AnimationFloatPair target(ReadF(vm, instruction, 2), y);
             int duration = ReadI(vm, instruction, 0);
             SetAnimationScaleTween(vm, &target, &self->scale, duration, static_cast<unsigned char>(Words(instruction)[1]));
             self->flags |= 8;

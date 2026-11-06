@@ -53,17 +53,17 @@ __forceinline AnimationIntVector Scale(const AnimationIntVector &value, float sc
 }
 __forceinline AnimationFloatPair Add(const AnimationFloatPair &left, const AnimationFloatPair &right)
 {
-    AnimationFloatPair result = {left.x + right.x, left.y + right.y};
+    AnimationFloatPair result(left.x + right.x, left.y + right.y);
     return result;
 }
 __forceinline AnimationFloatPair Subtract(const AnimationFloatPair &left, const AnimationFloatPair &right)
 {
-    AnimationFloatPair result = {left.x - right.x, left.y - right.y};
+    AnimationFloatPair result(left.x - right.x, left.y - right.y);
     return result;
 }
 __forceinline AnimationFloatPair Scale(const AnimationFloatPair &value, float scale)
 {
-    AnimationFloatPair result = {value.x * scale, value.y * scale};
+    AnimationFloatPair result(value.x * scale, value.y * scale);
     return result;
 }
 }
@@ -165,7 +165,8 @@ AnimationFloatPair __stdcall StepAnimationFloatPairTween(AnimationFloatPairTween
     }
     if (self->mode == 17)
     {
-        self->initial = Add(self->initial, self->control2);
+        AnimationFloatPair previous = self->initial;
+        self->initial = Add(previous, self->control2);
         self->control2 = Add(self->control2, self->target);
         return self->initial;
     }

@@ -3,7 +3,13 @@
 #include "StageTween.hpp"
 
 struct AnimationIntVector { int x, y, z; };
-struct AnimationFloatPair { float x, y; };
+// Two-component value; reviewed hidden-result contract at44E910/44DBEC.
+struct AnimationFloatPair
+{
+    float x, y;
+    AnimationFloatPair(float xValue, float yValue) : x(xValue), y(yValue) {}
+};
+typedef char AnimationFloatPairSize[(sizeof(AnimationFloatPair) == 8) ? 1 : -1];
 struct AnimationIntVectorTween
 {
     AnimationIntVector initial, target, control1, control2;

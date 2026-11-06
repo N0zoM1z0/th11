@@ -18,56 +18,46 @@ host412E30/16,556, animation44B4B0/12,056, interpreter45B860/7,093,
 dialogue41D380/6,980, HUD41B380/4,716 and gameplay420390/1,149. Native product,
 broad runtime and portability are later phases. No new exact unit this checkpoint.
 
-## New complete animation interpreter12056
+## Complete animation interpreter12056
 
-AnimationExecution.cpp/header/Instructions/Update fragments cover all signed
-opcodes-1..102, events/saved returns, nine tween updates, both strip generators,
-callbacks and clocks. Full owner44B4B0..44E3C7=11637 code/3202 instructions+3
-alignment+416 in104 cells. All104 foreign DATA refs are owned;8 CC before44E3D0.
-The following44E3D0/44E430/44E460 are separate source-open code, not more table.
-Native stack VM, frameCC/alignment8, three RET4 return0/0/1. Reject decompiler
-phantom register/float inputs and eight-byte return. Callback428 nonzero returns1
-without restoring the overridden global time scale; retain that path.
+All104 signed opcodes-1..102, events/saved returns, nine tweens and both strips
+have full natural source. Owner44B4B0..44E3C7=11637 code/3202 instructions+3
+alignment+416 table bytes; all104 foreign DATA refs owned, no foreign interior.
+Eight CC precede separate44E3D0;44E430/44E460 are separate source-open code.
+Native stack VM/frameCC/alignment8/three RET4 return0/0/1. Callback428 nonzero
+returns1 without restoring the overridden time scale. Keep that observed path.
 
-Cold build/probe-ltcg/AnimationExecutionOwners: complete public primary12292,
-frameE0 without8 alignment, VM EBP versus nativeEDI,407 reviewed fields and11744
-full replay differences. Native/source262/260 calls: RNG4/3 and float destination
-15/14. All104 entries retain416 static call/loop/post-update/return skeletons;
-these do not prove predicates, operands, aliases or loop reentry. Native returns
-0/0/1 retained. Direct-if ReadF removes literal spill/reloads; reviewed native
-case order with four distinct child cases recovers signed dispatch and lookup,
-insertion,malloc counts. Split children alone adds112 bytes and is rejected.
-Instruction41 was incorrectly text-only: flag40000000 selects scene4C2EF8 at
-44D523 versus text4C2F00 at44D543. Corrected full arms restore78/78 float reads;
-four targeted argument paths pass, and the old candidate fails scene selection.
-Direct -- is byte-identical and leaves EDI=-1/ADD versus DEC; do not repeat.
-Floating greater-than is ordered by raw AH masks, not a negated <=.
+Cold AnimationExecutionOwners is12300/frameE0/no8 alignment/VMEBP versus EDI,
+11742 full differences after407 fields replay. All104 entries retain416 static
+call/loop/post-update/return skeletons; predicates/operands/loop reentry unproved.
+Calls262/260 differ at RNG4/3 and float destination15/14. Lookup/insertion/malloc
+and float-read counts now agree. Preserve /GL and all owned table bytes.
 
-Ring9 must divide by float(count-1):44DCF9/44DD03 explicitly round before both
-divisions. Corrected10-op ring and existing12-op arc x87 setups agree after only
-stack/VM naming erasure. EmitStripPair advances each vertex, recovers two1C cursor steps per pair
-and keeps color in a register; precision fix+pointer change saves28 bytes net.
-Nested sums alone do not shrink the frame. /Oy- probe11688/frameF0/VMEBX/no8
-alignment and264 calls is rejected. Native pair tween has EBX hidden result at
-ESP88; current source returns its pair in EAX/EDX. Class/TU origin remains open.
+Pair value now recovers EDI tween/EBX hidden result/EAX pointer. Native caller
+buffer88 versus sourceB0 and main frame remain open. Full pair is native673/
+frame28 versus source644/frame30/597 differences after4 fields. Six returns fill
+both words. Mode17 initial snapshot restores4 copies; mode8/ordinary have93/38
+native versus90/34 source instructions. Round-store counts match, not operands.
+Nominal class/constructor/TU identity remains a hypothesis; no new exact credit.
 
-Real direct dependencies have full natural source, without leaf acceptance:
-read float540 (447+1+92table), int219 (145+3+48table+23selectors), float destination
-124, int destination104, UV52; vector timer52, node insertion23, scale138,
-primary/alternate RGB216/216 and alpha132/118. Alternate alpha and scale setup
-leave controls untouched; scale receiver is whole VM. Source-open bodies include
-polar44EF80, front-draw456020 and reviewed random/unary wrappers. Original nominal
-classes/header/template/TU origins remain indeterminate. VM374/377 is packed
-primary color/alpha; the older spriteIndex label is wrong, but that shared
-header was not changed solely to rename it. See ANIMATION_EXECUTION.md.
+Retained: direct-if ReadF removes literal spills; reviewed native case order with
+four child cases restores signed dispatch; instruction41 correctly selects scene
+or text RNG from bit40000000. Ring9 must round count-1 to float before dividing;
+ring/arc10/12-op setups agree after slot/register naming erasure. EmitStripPair
+advances each vertex and keeps color in a register. Floating > is ordered.
+Do not repeat: direct -- is identical; split children alone costs112 bytes;
+nested sums leave frameE0; /Oy- givesF0/VMEBX/no8 alignment/264 calls; separate
+pair X/Y locals are identical. Details/evidence in ANIMATION_EXECUTION.md,
+ANIMATION_TWEEN_DISPATCH.md and KNOWLEDGE_BASE.md.
 
-Next difficult gaps: frame/alignment, temporary lifetimes, VM register, pair
-tween hidden result and remaining call merges: integer random40 and float assignment7 joining the
-17/27/45/46 destination tail. Do not invent
-padding/double locals/register ABI to force them. Preserve /GL and full tables.
-HUD now calls canonical int ExecuteAnimationVm. The older void prototype/caller
-name in player-controller files is still external there; changing that source
-would affect six exact units, and its header eleven. It was not changed here.
+Next: main alignment/frame/VM register, pair buffer home and mode8/ordinary
+copies; instruction40's shared RNG site; instruction7 joining17/27/45/46's float
+write tail. Do not invent padding, double locals or private-register ABI.
+Twelve small direct dependencies have source without independent exact units.
+Polar44EF80/front-draw456020 and random/unary wrappers remain source-open.
+VM374/377 is primary color/alpha; shared spriteIndex name is a legacy label.
+Player-controller's older void execution prototype was left in its source/header;
+renaming them would affect6/11 exact units, respectively.
 
 ## Dialogue, HUD and shared gameplay
 
@@ -117,11 +107,13 @@ Interpreter6989/native7093 retains120/all89 selectors/two RET4, VM ESI/nativeEDI
 
 ## Checkpoint evidence
 
-Current receipt check: .analysis/verify-animation-execution-strip-checkpoint.py.
+Current receipt check: .analysis/verify-animation-execution-pair-checkpoint.py.
 Private evidence is animation-execution-* and animation-vm-* direct
 Ghidra exports, complete field/CFG/return/target proofs and receipt/source freeze.
-This checkpoint changes only AnimationExecution.cpp and Update.inc against the
-179-input freeze; no accepted exact unit depends on them. Cold replay covers
-this changed owner only. Earlier HUD/dialogue/parent receipts remain historical
-support contexts. No unrelated caller replay or unchanged Oracle tests required.
-Tools/Oracle implementations unchanged. No new exact unit or source mapping.
+This checkpoint changes AnimationTween.hpp/cpp and Instructions.inc against the
+179-input freeze. All13 affected accepted units share one cold context and pass
+strict full replay. Full animation family is separately cold rebuilt. Earlier
+HUD/dialogue/parent receipts remain historical support contexts; no unrelated
+caller replay or unchanged Oracle tests required. Tools/Oracles unchanged.
+No new exact unit or source mapping. Pair six-return/phase/caller proofs are
+animation-execution-owners-pair-* and animation-pair-return/callers Ghidra exports.

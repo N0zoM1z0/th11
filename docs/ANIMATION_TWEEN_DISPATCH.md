@@ -12,11 +12,11 @@ indeterminate: interpolation, scalar field access and engine roles do not prove
 original authorship or distinguish templates/headers/reused code. No Ghidra
 function was created and no maintained inventory was regenerated away.
 
-| Function | Address | Target bytes | Current candidate / diagnostic differences |
+| Function | Address | Target bytes | Recorded candidate / diagnostic differences |
 | --- | --- | ---: | --- |
 | StepAnimationIntVectorTween | 44E4B0 | 768 | 768 /345 |
 | StepAnimationIntScalarTween | 44E7C0 | 332 | 321 /263 |
-| StepAnimationFloatPairTween | 44E910 | 673 | 615 /581 |
+| StepAnimationFloatPairTween | 44E910 | 673 | 644 /597; current complete-animation context |
 | StepAnimationFloatScalarTween | 44EBD0 | 331 | 326 /269 |
 | UpdateAnimationRenderer | 455480 | 221 | 231 /180 |
 | UpdateOtherAnimationRenderer | 455560 | 249 | 232 /193 |
@@ -106,6 +106,48 @@ and all four39-byte bodies. No ABI declaration was falsified to remove the
 push. Similarly, real AnimationImmediateDraw support replaces two stack pushes
 with the native private register call and closes layer draw127; the opaque
 context was125 bytes with32 differences.
+
+## Pair value and hidden-result ABI checkpoint
+
+Fresh full direct Ghidra review retains the complete673-byte pair owner,221
+instructions, six returns, no foreign interior entry and15 CC bytes before the
+next owner. A fresh caller query finds only ExecuteAnimationVm44B4B0; the actual
+call is44DBEC. Native EDI receives the tween and EBX receives caller storage;
+each of the six paths writes both DWORDs to that buffer and returns its pointer
+in EAX. The physical two-float value remains eight bytes, with four value slots
+and the same timer/duration/mode offsets.
+
+The earlier POD pair compiled to an EAX/EDX bit result. The maintained pair now
+has a two-component constructor that initializes X/Y from its arguments, and
+helpers construct their actual arithmetic results through it. This naturally
+recovers the reviewed hidden-result interface under the existing /GL profile.
+It models a value type; it does not prove the original nominal math class,
+constructor API or TU partition. The original diagnostics for other rows above
+retain their separate interpolation/renderer contexts.
+
+Complete source is644/frame30 versus target673/frame28. All four address fields
+(timer advance, time-scale pointer, double3 and pair factor) replay;597 full
+bytes differ. The same644/597 is reproduced in the complete animation family
+and the canonical AnimationTween primary context. Mode17 now snapshots initial
+before adding control2, retaining the observed four copy instructions. Before
+that snapshot the value model was628/614. The preceding POD in the complete
+animation family was615/593, with a different result ABI; its smaller byte count
+was not a complete reconstruction.
+
+Static arithmetic paths for modes7/17/8/ordinary contain target23/35/93/38 versus
+source23/35/90/34 instructions. Corresponding float-round stores are2/4/19/7 on
+both sides. These counts and the six result-write paths do not prove operand
+identity, x87 order or rounding equivalence. Separate X/Y locals before pair
+construction give exactly the same complete bytes as the direct value model;
+repeating that spelling is unhelpful. Remaining gaps include mode8/ordinary
+copy elimination, frame30 versus28, and register/x87 scheduling.
+
+The animation caller remains non-exact at12300/frameE0/11742 complete differences,
+with407 fields and416 static opcode traces. It uses the correct EDI/EBX/EAX
+callee contract but buffers the pair atESP+B0 versus native88. Its frame/alignment
+and VM register remain open. The thirteen accepted factor/duration/scalar-setting
+units affected by the shared header/source have one common cold compilation;
+all thirteen strict full-field replays remain exact. They receive no new credit.
 
 ## Renderer update and layer traversal
 

@@ -75,7 +75,7 @@ VM374 is packed primary color, with alpha377;378 is alternate color. The older
 AnimationVmView.spriteIndex name at374 is a legacy label, not a sprite identity.
 A nonzero callback428 returns1 without restoring the overridden global time
 scale. The sprite transform42C consumes VM/integer in ECX/EDX, not ghost floats.
-Current /GL12292/frameE0/11744 full differences retains407 reviewed fields and
+Current /GL12300/frameE0/11742 full differences retains407 reviewed fields and
 all416 static per-op call/loop/post-update/return skeletons, with262/260 physical
 calls. Direct-if ReadF removes literal float spill/reloads; four distinct child
 cases plus reviewed native entry order recover lookup/insertion/malloc counts
@@ -92,9 +92,17 @@ denominator matches the native10-op x87 setup; arc13 retains12 matching ops.
 Correction alone adds16 bytes; per-vertex pointer advancement then removes44,
 restoring two1C cursor steps per loop and keeping color in a register. Nested sums alone do
 not shrink frameE0. /Oy- gives11688/frameF0/VMEBX/no8 alignment, with264 calls and
-18 float destinations versus15 native; not adopted. Native pair tween uses
-EBX hidden buffer atESP88 and returns its pointer, whereas current /GL source
-returns eight bytes through EAX/EDX. Nominal class/TU origin remains open.
+18 float destinations versus15 native; not adopted. Pair tween44E910's six returns
+fill both words through EBX and return that pointer; EDI is the tween. Its only
+Ghidra caller is animation44B4B0/call44DBEC. A two-component value constructor
+naturally recovers this ABI; class/constructor identity remains a hypothesis.
+Caller bufferB0 versus native88 and main frameE0/no8 alignment remain. Complete
+pair644/frame30/597 differences versus native673/frame28 retains four fields.
+Mode17 initial snapshot restores four copies. Modes7/17/8/ordinary have target
+23/35/93/38 versus source23/35/90/34 instructions, with matching2/4/19/7 float-round
+stores; those counts do not prove operands. Separate X/Y locals are byte-identical.
+All13 affected accepted units share one cold context and strictly replay exact.
+This checkpoint adds no exact credit.
 Direct -- versus wrapped subtraction is byte-identical and leaves EDI=-1/ADD.
 Full real dependencies also move dialogue6948 from frame13C/5694 differences to
 native frame140/5357, with all454 fields/252 calls/46 traces retained. No exact
