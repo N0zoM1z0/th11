@@ -616,7 +616,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00439140,unknown,ConfigurationMenu,indeterminate,unknown,configuration-audio-menu-origin-2026-11-06
 0x004391A0,unknown,ConfigurationMenu,indeterminate,unknown,menu-primary-origin-2026-11-06
 0x004391C0,unknown,ConfigurationMenu,indeterminate,unknown,menu-primary-origin-2026-11-06
-0x00439230,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00439230,unknown,ConfigurationMenu,indeterminate,unknown,menu-difficulty-selection-origin-2026-11-06
 0x00439260,unknown,ConfigurationMenu,indeterminate,unknown,menu-primary-origin-2026-11-06
 0x00439350,unknown,ConfigurationMenu,indeterminate,unknown,menu-primary-origin-2026-11-06
 0x004393B0,unknown,ConfigurationMenu,indeterminate,unknown,menu-player-data-origin-2026-11-06
@@ -634,7 +634,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0043B9D0,unknown,ConfigurationMenu,indeterminate,unknown,menu-joystick-origin-2026-11-06
 0x0043BD60,unknown,ConfigurationMenu,indeterminate,unknown,menu-joystick-origin-2026-11-06
 0x0043C6F0,unknown,ConfigurationMenu,indeterminate,unknown,menu-joystick-origin-2026-11-06
-0x0043C7C0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0043C7C0,unknown,ConfigurationMenu,indeterminate,unknown,menu-difficulty-selection-origin-2026-11-06
 0x0043CBE0,unknown,ConfigurationMenu,indeterminate,unknown,menu-character-selection-origin-2026-11-06
 0x0043D0B0,unknown,ConfigurationMenu,indeterminate,unknown,menu-partner-selection-origin-2026-11-06
 0x0043D6A0,unknown,ConfigurationMenu,indeterminate,unknown,menu-practice-stage-origin-2026-11-06

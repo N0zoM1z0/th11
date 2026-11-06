@@ -6,6 +6,36 @@ exact codegen, original provenance and runtime behavior are separate claims.
 Older experiments are preserved in the explicitly
 [historical notes](archive/KNOWLEDGE_BASE_2026-10-30.md).
 
+## Difficulty selection1056 and missing large child-finder callers
+
+Direct Ghidra/full-span/reference/table/PE review establishes43C7C0..43CBDF:
+1026 reachable code/298 instructions+10 layout+five-cell20-byte table,34 calls,
+61 fields/five RET4s/frame4. Late43CAE8..CAEC remains owned. Previous assignment
+has eight trailing CC, while page06 follows the table immediately. Required
+439230..439244/21 executes indexed event3 and has11 trailing CC; no leaf credit.
+
+Page05 captures script75/76 from current difficulty before the guard and before
+initialization publishes the preferred difficulty. Navigation does not publish
+the selected value. Normal confirm calls the shared child finder; Extra inlines
+signed script6F search with the captured renderer. Native normal lookup reloads
+the renderer. Close's Extra path reads menu58E8, whose meaning remains open;
+4070E0 footer signaling does not clear its ID. Raw saved character is published
+after the existing clamp, as in page06's saved-partner behavior.
+
+Candidate1044/61 fields/967 full differences retains34 calls/five RET4s/table/
+frame4. Native EBP menu/EBX script/ECX difficulty becomes EBX/EBP/ESI; source
+caches one renderer load and adds one difficulty load despite equal field count.
+Ternary script and71-support HUD/gameplay/debug probes replay all15 bodies
+identically; prior13 owners also remain identical. Captured transition value
+1036/60 fields/977 removes the extra field but worsens complete comparison;
+discarded. Required helper21 has one SIB difference, not accepted exact.
+
+Correction to earlier graph assumptions: actual callers42C8D0/42D9D0/42E6B0
+have no maintained source/PDB contribution; their default3154/3141/3179 extents
+remain unreviewed. SecondaryActorInstructions.cpp and broader diagnostic support
+unions do not supply them. These missing large owners take priority over further
+menu-local alias experiments. See [MENU_DIFFICULTY_SELECTION](MENU_DIFFICULTY_SELECTION.md).
+
 ## Character selection: complete1228-byte owner and natural history ABI
 
 Direct Ghidra/full-span/table/PE review establishes43CBE0..43D0AB/1228:338

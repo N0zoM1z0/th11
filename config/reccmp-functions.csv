@@ -491,3 +491,5 @@ UpdateMenuPage08,0x0043D6A0,function
 UpdateMenuPage07,0x0043D0B0,function
 HideMenuAnimationTree,0x00456650,function
 UpdateMenuPage06,0x0043CBE0,function
+UpdateMenuPage05,0x0043C7C0,function
+ExecuteMenuAnimationEvent3,0x00439230,function

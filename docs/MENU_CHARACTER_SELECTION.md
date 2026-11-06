@@ -115,7 +115,9 @@ from the earlier gameplay-only union. All13 inspected contributions are still
 byte-identical to the53-support baseline after exhaustive field replay. This
 larger context is not retained, and the result does not prove original TU or
 nominal class ownership. The shared child finder stays76/41 with script stack
-input; the remaining page05 caller still has no maintained body.
+input. At this checkpoint page05 had no maintained body. The actual native
+42C8D0/42D9D0/42E6B0 callers also remain source-open; linking the existing
+ActorInstructions/HUD/gameplay/debug sources does not implement those owners.
 
 All245 previous source inputs remain unchanged; the two new files extend the
 freeze to247. No accepted canonical unit is affected and no exact unit is added.

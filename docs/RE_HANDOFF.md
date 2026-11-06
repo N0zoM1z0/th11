@@ -7,9 +7,9 @@ status/diff; current receipts outrank historical notes. All dirty work is ours.
 ## Current exact state
 
 - Original Japanese TH11v1.00a, pinned by config/target.toml; no substituted bytes.
-- 2,140 candidates;610 reviewed boundaries;492 source mappings.
+- 2,140 candidates;612 reviewed boundaries;494 source mappings.
 - 236 exact functions/31,881 bytes:9 normal COFF and227 linked PE.
-- Origins:90 authored,504 indeterminate,14 exclusions,1,532 pending.
+- Origins:90 authored,506 indeterminate,14 exclusions,1,530 pending.
 - VC9 RTM21022/SDK6.0A; direct scripts/ghidra.py, no Factory MCP/REA.
 - Commit/push authorized; prefix `gpt-6.1-sol: `. No heavy job remains running.
 
@@ -111,13 +111,34 @@ Both public page08/player-data recipes retain48 supports, same two normal
 supports and /GL retained.
 The new partner recipe has52 supports and the same two normal menu supports.
 The character recipe has53 supports with the same two normal menu supports.
-All245 prior source inputs remain unchanged; two new files extend to247.
-Current verifier `.analysis/verify-menu-character-checkpoint.py`; prior menu
-verifiers are historical. Older52/48-support receipts remain valid. No new exact
-unit or native-product/runtime closure. Next substantial missing owner43C7C0:
-default1034 remains unreviewed; jump43C7EA owns five cells43CBCC..43CBDF ending
-immediately before page06. Review full flow and the inferred1056-byte owner
-before reconstructing page05. No preceding four-CC gap exists at page06.
+All247 prior source inputs remain unchanged; three difficulty files extend to250.
+Current verifier `.analysis/verify-menu-difficulty-checkpoint.py`; older menu
+receipts remain valid. No new exact unit or native-product/runtime closure.
+
+## Difficulty selection1056 and next missing large callers
+
+MenuDifficultySelection.cpp owns43C7C0..43CBDF/1056:298 instructions/1026 code,
+10 layout and five-cell20-byte table. All34 calls/61 fields/five RET4s, frame4.
+The late43CAE8 block belongs to this owner; page06 immediately follows its table.
+Source captures75/76 before the state guard, preserves normal/Extra child paths,
+delayed publication and cancel's observed58E8 field. Footer4070E0 does not clear
+its ID. Required439230/21 event3 operation is support only, no leaf exact unit.
+
+Public55-support candidate1044/61 fields/967 differences keeps all calls/table,
+RET4/frame4. EBX menu/EBP script/ESI difficulty versus native EBP/EBX/ECX;
+source caches one renderer reload and adds one difficulty reload. Helper21 has
+one SIB byte difference. Ternary script and71-support HUD/gameplay/debug context
+replay all15 bodies identically. Captured transition value1036/60 fields/977
+removes the extra difficulty field but worsens the full comparison; discarded.
+Previous13 sibling bodies remain byte-identical after exhaustive field replay.
+See MENU_DIFFICULTY_SELECTION.md.
+
+Important correction:42C8D0/42D9D0/42E6B0 are actual child-finder callers with no
+maintained source. Existing SecondaryActorInstructions.cpp/HUD/gameplay/debug
+sources do not implement them; broad diagnostic contexts do not close this
+call graph. Their default3154/3141/3179-byte boundaries are still unreviewed.
+Next: review and reconstruct42C8D0 in full, then the other two large owners.
+Do not repeat local menu aliases or force the shared helper's register ABI.
 
 ## Current large owners: joystick2439/908 and assignment200
 
