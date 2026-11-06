@@ -1,18 +1,18 @@
 # Immediate animation drawing and mode dispatch
 
 `src/AnimationImmediateDraw.cpp` adds nine complete source mappings covering
-3,363 recorded target code bytes, including the1,036-byte world draw,
+3,422 reviewed target owner bytes, including the1,036-byte world draw,
 572-byte world-state setup and546-byte projected fog path. Four functions
 have new complete cold exact proofs: two224-byte draw functions and two258-byte
 UV updates, totaling964 bytes. The larger owners remain non-exact.
 
 Nine additional boundary/origin reviews cover eight engine/math owners and
 one verified D3DX import thunk. Engine/math origins remain indeterminate;
-the six-byte import thunk is an exclusion. The217-byte dispatcher was already
-reviewed and now acquires source. Its fourteen table entries remain separately
-reviewed data, not additional new function reviews.
+the six-byte import thunk is an exclusion. The dispatcher now has a reviewed
+complete276-byte owner:217 code+3 alignment+14 cells/56 bytes. Its former217-byte
+code-only boundary is superseded; the existing review count is unchanged.
 
-| Owner | Address | Target code bytes | Current state |
+| Owner | Address | Target owned bytes | Current state |
 | --- | --- | ---: | --- |
 | AnimationExtentMagnitude | 40B930 | 28 | Source; candidate17 /28 diagnostic differences |
 | ApplyAnimationVmWorldState | 44F4B0 | 572 | Source; candidate580 /411 |
@@ -22,7 +22,16 @@ reviewed data, not additional new function reviews.
 | UpdateStripVertexUv | 4518C0 | 258 | Exact; no address fields |
 | DrawAnimationVertexStrip | 451A00 | 224 | Exact;7 reviewed fields |
 | DrawAnimationVertexFan | 451E10 | 224 | Exact;10 reviewed fields |
-| DrawAnimationVmByMode | 451EF0 | 217 | Source; candidate272 /115 |
+| DrawAnimationVmByMode | 451EF0 | 276 | Source; general-input candidate276 /220, all26 fields |
+
+The complete dispatcher bound451EF0..452003 includes its three-byte no-op LEA
+and fourteen owned table cells. All14 apparent foreign DATA refs come from
+that table; twelve CC precede452010. Independent full PE CFG/table/neighbor
+review supplements the mapped-text-attested Ghidra code/table references.
+Current general renderer-input /GL support gives276=219 code+1 alignment+56
+table, with26 complete field bindings and220 full differences. Earlier272/115
+code-only diagnostics do not establish full-owner equality. See
+[HUD drawing](SECONDARY_HUD_DRAW.md) for the caller/context evidence.
 
 ## World drawing
 

@@ -193,8 +193,15 @@ or original TU claim. See [ANIMATION_EXECUTION](ANIMATION_EXECUTION.md).
 HUD drawing41C660 owns2378:564 instructions/2372 code plus six-byte no-op LEA,
 not a truncated sparse Ghidra body. All27 calls/eight targets, one EAX1/RET,
 GS/alignment64/frame78 and sole ECX-to-ESI callback41CFD0/10 are reviewed.
-Complete source now gives2343/559 instructions/frame74,135 fields and2162 full
-differences, with all27 call targets in native order. The position value model
+Current full primary source gives2395/569 instructions/frame74,141 fields and
+2236 full differences, with all27 call targets in native order. Explicit score
+branches recover the native38-instruction format/copy sequence and both5C
+loads; minimal-context full source changes2343/2162/135 fields to2357/2161/136.
+The minimal context folds renderer parameters into global-dependent callees,
+losing three EDX lookup and two ECX drawing loads. Existing general-input mesh/
+layer probe bodies plus real layer/factory source restore all five loads; lookup79
+is zero diagnostic differences, without new credit. Parent field count reaches
+native141; original TU is not inferred from a diagnostic link context. The position value model
 restores temporary/DWORD copies and runtime Y+7; an array spelling folds135.0f,
 which is absent from target data. All variants already aligned64; constructor
 identity is unproved. The combined printf site consumes signed32/double100/
@@ -209,7 +216,15 @@ initialization closes eight displacement differences; all vertex writes are
 real. It flushes, draws two untextured triangle-strip primitives, invalidates
 six cache fields and restores four texture-stage settings. Device fields use
 runtime base4C3280 plus8, not an already offset base plus8 again. Existing183
-frozen inputs are unchanged; only this new499-byte exact unit is cold-replayed.
+frozen inputs are unchanged. The score/context update changes only HUD draw
+source within the prior191-input union; two existing probe bodies bring it to193.
+Only the existing499-byte unit needs a cold replay and remains exact. Drawing
+member models, explicit decoder-owner parameters and direct signed point
+subtraction are full2357-byte/136-field identical; none is retained. Dispatcher
+451EF0 now owns276=217 code+3 alignment+56 table, candidate276/220/all26 fields.
+Query452010 owns108=89 code+3 alignment+16 table. Their owned14/four DATA cells
+and following12/four CC are independently reviewed; earlier code-only217/89
+bounds grant no exact credit.
 Details in [SECONDARY_HUD_DRAW](SECONDARY_HUD_DRAW.md).
 
 Animation strip component accumulation gives12404/frameE0/11893 differences;

@@ -157,10 +157,16 @@ int __stdcall DrawSecondaryHud(SecondaryHudView *self)
         score = record < current ? current : record;
         lastDigit = 0;
     }
-    AsciiManagerPrint(ascii, position, score < 100000000 ? " %.8d%d" : "%.9d%d", score, lastDigit);
+    if (score >= 100000000)
+        AsciiManagerPrint(ascii, position, "%.9d%d", score, lastDigit);
+    else
+        AsciiManagerPrint(ascii, position, " %.8d%d", score, lastDigit);
     position = HudTextPosition(508.0f, 72.0f, 0.0f);
     score = HudInteger(self, 0x43e4);
-    AsciiManagerPrint(Ascii(), position, score < 100000000 ? " %.8d%d" : "%.9d%d", score, StateInteger(0x5c));
+    if (score >= 100000000)
+        AsciiManagerPrint(Ascii(), position, "%.9d%d", score, StateInteger(0x5c));
+    else
+        AsciiManagerPrint(Ascii(), position, " %.8d%d", score, StateInteger(0x5c));
     position = HudTextPosition(520.0f, 128.0f, 0.0f);
     AsciiManagerPrint(Ascii(), position, "%d.", StateInteger(8) / StateInteger(0x6c));
     ascii = Ascii();

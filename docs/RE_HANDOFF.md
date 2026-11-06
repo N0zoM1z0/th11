@@ -16,8 +16,8 @@ receipts outrank historical notes. All dirty work is ours.
 Operator priority is large/difficult owners, not leaf accumulation. Main owners:
 host412E30/16,556, animation44B4B0/12,056, interpreter45B860/7,093,
 dialogue41D380/6,980, HUD41B380/4,716 and gameplay420390/1,149. Native product,
-broad runtime and portability are later phases. Current work adds complete
-HUD drawing2378 and closes its actual499-byte rectangle dependency.
+broad runtime and portability are later phases. Current work recovers HUD
+score-format branches/renderer inputs and complete adjacent selector ownership.
 
 ## Accepted screen-effect initializer1168
 
@@ -114,16 +114,22 @@ renaming them would affect6/11 exact units, respectively.
 41C660..41CFA9 owns2372 code/564 instructions plus six-byte no-op LEA, no table
 or foreign interior. Native ESI/EAX1/RET, GS/alignment64/frame78;27 calls/eight
 targets and registered callback41CFD0/10. Full source covers bonus/spell/best time,
-boss bars, score/power/value and conditional digit clock. Primary2343/559
-instructions/frame74/135 fields/2162 full differences retains native call order.
+boss bars, score/power/value and conditional digit clock. Primary2395/569
+instructions/frame74/141 fields/2236 full differences retains native call order.
+Explicit score branches recover the native38-op sequence and both5C reads.
+General-input mesh/layer callers restore five EDX/ECX renderer loads; lookup79
+is zero diagnostic difference without new credit. Minimal context2357/2161
+folds those inputs and has136 fields; retain the reviewed native interface.
 Source moves ESI save/copy inside owner and makes callback tail5; both post-save
 frames0x80. Position values restore three-word copies/runtime Y+7; array2250
 folds absent135.0f. All variants already align64; nominal constructor/TU unknown.
 Decoder151 candidate167/160 stays open; signed checksum/two outputs maintained.
 Rectangle447F70/499/157 instructions is canonical primary-TU /GL exact after14
 fields. Reverse3..0 RHW/color stores close eight differences in real geometry.
-Next: parent/callback register-save partition, temporary homes/format scheduling,
-decoder output ABI. Main strip AddTo12404/E0 and identical narrower scopes are
+Dispatcher451EF0 owns276=217 code+3 alignment+56 table, candidate276/220/26
+fields. Query452010 owns108=89 code+3 alignment+16 table. Both former code-only
+bounds are superseded; no exact credit. Next: parent/callback register-save
+partition and decoder output ABI. Main strip AddTo12404/E0 and identical narrower scopes are
 rejected. Details in SECONDARY_HUD_DRAW.md; prior183 frozen inputs unchanged.
 
 ## Dialogue, HUD and shared gameplay
@@ -174,11 +180,13 @@ Interpreter6989/native7093 retains120/all89 selectors/two RET4, VM ESI/nativeEDI
 
 ## Checkpoint evidence
 
-Current receipt check: .analysis/verify-secondary-hud-draw-checkpoint.py.
-secondary-hud-draw-complete-* binds full parent/decoder/rectangle/callback and
-combined vararg widths; secondary-hud-rectangle-canonical-* binds the new499-byte
-strict exact primary owner. Target: secondary-hud-draw-review/full/dependencies.*.
-secondary-hud-draw-source-freeze.json freezes191 inputs; all prior183 unchanged.
-Only the new rectangle canonical unit is cold-replayed; no broad caller/runtime
-suite. Prior int-vector-value-* receipts still bind unchanged animation code.
-Tools/Oracles unchanged; four mappings/boundaries and one499-byte exact unit added.
+Current receipt check: .analysis/verify-hud-score-renderer-checkpoint.py.
+hud-score-renderer-public-* binds parent141 fields, score38-op sequence, five
+renderer inputs, complete lookup/dispatcher, rectangle and combined varargs.
+hud-score-renderer-canonical-* binds the sole affected499-byte cold exact unit.
+Fresh Ghidra: hud-score-branches-review.*, hud-renderer-dependency-review.*,
+hud-renderer-table-refs.* and hud-mode-quad-full-review/table-refs.*.
+hud-score-renderer-source-freeze.json freezes193 inputs; only HUD draw source
+changes within prior191, two existing probes newly frozen. No new mappings,
+review/exact counts or Oracle changes; two extents gain78 owned data/alignment
+bytes. Broad runtime/product closure deferred. Prior unchanged receipts persist.

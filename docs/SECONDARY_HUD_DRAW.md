@@ -89,11 +89,11 @@ TU or complete-game link claim follows from this diagnostic family.
 
 ## Whole-owner code generation
 
-The maintained public primary HUD family contains eight public support files;
-only the function-pointer entry is ordinary COFF. The full candidate is2,343
-bytes/559 instructions, GS/alignment64/frame74, all27 calls in native order and
-135 exhaustive call/global/literal/string fields. Full replay leaves2,162 byte
-differences. The native frame78 plus two saved registers and source74 plus three
+The maintained public primary HUD family contains twelve public support files;
+only the unchanged function-pointer entry is ordinary COFF. The full candidate
+is2,395 bytes:569 instructions/2,389 code bytes plus six alignment bytes,
+GS/alignment64/frame74, all27 calls in native order and141 exhaustive call/
+global/literal/string fields. Full replay leaves2,236 byte differences. The native frame78 plus two saved registers and source74 plus three
 both reserve0x80 bytes after saves; source still spills the incoming HUD pointer.
 The native callback preserves ESI outside the owner; the candidate moves that
 save/copy inside and generates a five-byte tail callback. Temporary homes,
@@ -104,19 +104,63 @@ three floats and ordinary temporary assignment restores observed three-word
 copies and runtime Y adjustments. The initial array spelling gave2,250 bytes
 and folded the Y+7 computations to135.0f, a literal absent from the target. The
 value spelling gives2,341 bytes with all135 fields bound; adding the real
-rectangle body gives the maintained2,343/2,162 result. All variants already had
+rectangle body gives the preceding2,343/2,162 result. All variants already had
 64-byte alignment: it is not evidence uniquely identifying this constructor.
 Nominal vector/constructor API and original header/TU remain hypotheses.
 
-Earlier full-animation probes in this checkpoint also rule out two stack-frame
+## Score branches and renderer inputs
+
+Two explicit score-format branches now match the native38-instruction operand
+sequence, including both physical settings5C trailing-digit reads and the
+three-word position assignment between prints. Only branch/call addresses and
+independently reviewed field addresses are named in that diagnostic; register
+and stack operands remain. The former ternary format spelling has35 instructions
+and one5C read in this region. This focused sequence is not an acceptance extent.
+The minimal-context full owner changes2343/135 fields/2162 differences to
+2357/136 fields/2161; all27 calls remain.
+
+That minimal context also specialized both renderer parameters to g_RenderBatch.
+Its lookup grew79 to86 bytes and the HUD lost all three EDX lookup setup loads
+and both ECX drawing setup loads. Adding the existing general-input stage-mesh
+and renderer-layer probe bodies, with real layer/factory implementations,
+retains those parameters without changing the entry or declaring private ABI.
+All five target loads are recovered; the complete lookup79 has zero diagnostic
+differences, without new credit. The parent gains five fields, reaching the
+target141 count and the current2395/2236 full result. This context change also
+changes padding/register scheduling; whole-byte differences are not monotonic.
+Original TU ownership and native integration remain unproved.
+
+DrawAnimationVmByMode451EF0 owns276 bytes, including217 code, three no-op
+alignment bytes and all14 table cells/56 bytes through452003. The Ghidra body
+excludes the table; all14 apparent foreign DATA refs are actually owned cells.
+The complete general-input candidate is276=219 code+1 alignment+56 table,
+with26 reviewed call/tail/table fields and220 full differences. Twelve CC
+separate it from the next owner. The adjacent BuildAnimationVmModeQuad452010
+similarly owns108=89 code/39 instructions+3 alignment+4 cells/16 bytes, ending
+45207B before four CC. Neither former code-only boundary earns exact credit.
+
+Explicit spell-owner parameters, a member-function drawing model and direct
+signed points subtraction are each complete2357-byte/136-field identical in
+the minimal context. These hypotheses do not resolve the decoder ABI or parent
+register-save partition and are not retained. An unused export declaration
+also leaves the full general-input result identical; the public entry is unchanged.
+Only SecondaryHudDraw.cpp changes within the prior191 frozen inputs; the two
+existing probe bodies newly enter the193-input union. The499-byte rectangle
+is the sole affected accepted unit and retains zero differences after one
+canonical cold-family replay. No new mappings, boundary review counts or exact
+units are added. The two corrected spans add78 owned alignment/table bytes.
+
+Earlier full-animation probes also rule out two stack-frame
 spellings: explicit component accumulation expands12,296 to12,404 while keeping
 frameE0; narrower strip-value scopes are fully byte-identical after407 fields.
-Those changes are not retained. The prior183 frozen source inputs remain
-unchanged; only the new rectangle unit needs a canonical cold replay. No broad
+Those changes are not retained. The earlier183 frozen source inputs remain
+unchanged; no broad
 behavior, null/failure, caller or multiframe suite is used.
 
 Private current evidence: secondary-hud-draw-review/full/dependencies.*, complete
 function/support/vararg proofs, secondary-hud-rectangle-canonical-comparison.json
-and verify-secondary-hud-draw-checkpoint.py. Counts become457 mappings,574
-reviewed boundaries and235 exact functions/28,045 bytes. Four source mappings
-cover3,038 native bytes;499 of those bytes receive new exact credit.
+and verify-hud-score-renderer-checkpoint.py. Current public-family reports use
+hud-score-renderer-public-*; the canonical receipt remains the rectangle family.
+Counts stay457 mappings,574 reviewed boundaries and235 exact functions/28,045
+bytes. The preceding checkpoint added four mappings/3,038 native bytes, including
+the499-byte exact rectangle dependency.

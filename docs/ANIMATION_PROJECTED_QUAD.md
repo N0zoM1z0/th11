@@ -1,8 +1,8 @@
 # Projected quads and software fog
 
 `src/AnimationProjectedQuad.cpp` adds seven complete source mappings covering
-1,896 target bytes. The two larger owners are the792-byte projected-coordinate
-builder and794-byte software-fog submission. All seven remain non-exact.
+1,915 reviewed target owner bytes. The two larger owners are the792-byte
+projected-coordinate builder and794-byte software-fog submission. All seven remain non-exact.
 Fourteen additional boundary/origin reviews cover nine engine/math owners and
 five independently identified D3DX import thunks. The nine engine/math origins
 remain indeterminate; the five import thunks are exclusions.
@@ -16,8 +16,8 @@ remain indeterminate; the five import thunks are exclusions.
 | DrawFoggedBillboardAnimationVm | 450B00 | 794 | Complete source; non-exact |
 | BuildProjectedAnimationVmQuad | 450E20 | 792 | Complete source; non-exact |
 | DrawProjectedAnimationVm | 451140 | 46 | Complete source; non-exact |
-| DrawAnimationVmByMode | 451EF0 | 217 | Source added in subsequent immediate-mode checkpoint |
-| BuildAnimationVmModeQuad | 452010 | 89 | Complete source; non-exact |
+| DrawAnimationVmByMode | 451EF0 | 276 | Complete code/alignment/14-cell owner; non-exact |
+| BuildAnimationVmModeQuad | 452010 | 108 | Complete code/alignment/4-cell owner; non-exact |
 
 ## Matrix cache and projection
 
@@ -42,7 +42,7 @@ The46-byte draw wrapper builds, submits flag0, then resets all four RHW cells
 to1 even when submission culled. The33-byte billboard wrapper returns-1 on
 construction failure and otherwise returns submission's status. Adaptive
 unrounded drawing chooses the unrounded builder for either zero angle and the
-actual rotated boundary for nonzero/NaN, then always submits flag0. The89-byte
+actual rotated boundary for nonzero/NaN, then always submits flag0. The108-byte
 coordinate query instead selects solely by mode:0 floor,1 rotated,2/3 unrounded,
 and no writes for other modes.
 
@@ -76,17 +76,21 @@ fog, camera and renderer offsets. They do not claim original class layouts.
 
 ## Boundaries and origin evidence
 
-All nine complete spans independently decode to their recorded sizes and RET
-tails. Ghidra queries attest the complete mapped target text. The976-byte
+All code portions independently decode through their recorded terminal
+instructions; owned alignment and table data are reconciled separately. Ghidra
+queries attest the complete mapped target text. The976-byte
 owner has295 instructions: an explicit full-span query supplements the
 default250-instruction review limit. It ends immediately before450AD0.
 
-The217-byte dispatcher owns a separately reviewed14-entry table at451FCC
-through452003; modes9/C/D share one destination and modeA shares the default.
-The89-byte query has four entries at45206C..45207B, with modes2/3 sharing a
-destination. These tables explain all14/four external interior data
-references. Alignment/table bytes are separate from the code extents. Neither
-function borrows neighboring bytes or earns exact credit.
+The complete dispatcher owns276=217 code+3 alignment+14 cells/56 bytes through
+452003; modes9/C/D share one destination and modeA shares the default. The
+complete query owns108=89 code/39 instructions+3 alignment+4 cells/16 bytes
+through45207B, with modes2/3 sharing a destination. These tables explain all14/
+four apparent foreign DATA references. Three-byte no-op LEAs precede both tables;
+twelve/four following CC bytes precede452010/452080. Full mapped-text-attested
+Ghidra references and independent PE CFG/table/padding/neighbor review supersede
+the former code-only217/89 boundaries. Code, alignment and table bytes remain
+separate counts within each full owner; neither function earns exact credit.
 
 | Six-byte import thunk | IAT slot | Original PE import name |
 | --- | --- | --- |
@@ -126,12 +130,13 @@ The maintained source uses the ordinary /O2 /Ob1 /GL diagnostic profile.
 | DrawFoggedBillboardAnimationVm | 795 /666 |
 | BuildProjectedAnimationVmQuad | 779 /666 |
 | DrawProjectedAnimationVm | 48 /24 |
-| BuildAnimationVmModeQuad | 124 /90 |
+| BuildAnimationVmModeQuad | 124 /90; historical code-only comparison |
 
 Initial full diagnostics: `build/probe-ltcg/projected-quad/distance-lifetime/diagnostic.json`
 and `.analysis/projected-quad-distance-lifetime.log`. These positional byte
-differences include shifts from different entry sequences; neither equal
-length nor a small aligned region establishes whole-function equality.
+differences include shifts from different entry sequences. The query row used
+its former89-byte code boundary and is superseded by the108-byte full owner;
+neither equal length nor a small aligned region establishes whole-function equality.
 
 The976-byte billboard and571-byte rotated bodies use paired FSINCOS with float
 result stores. VC9 /O2 /Oi probes of float/double sin/cos calls invoke CRT
