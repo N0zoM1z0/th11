@@ -1,5 +1,7 @@
 # 東方地霊殿 ～ Subterranean Animism
 
+Agent workflow: follow the highest-priority requirements in [AGENTS.md](AGENTS.md). Use affected exact checks and searchable Markdown knowledge; ordinary notes do not require full CI or replay.
+
 <p align="center">
   <img src="resources/progress.svg" alt="TH11 reconstruction progress">
 </p>

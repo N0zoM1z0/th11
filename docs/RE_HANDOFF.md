@@ -1,5 +1,11 @@
 # Agent handoff —2026-11-06
 
+> Current workflow: follow the **Highest priority** section in `AGENTS.md`.
+> Prefer affected exact comparisons and useful Markdown knowledge. Ordinary
+> notes do not require full CI, native replay or document-hash/pin refreshes.
+> Older broad validation instructions apply only when their impact is relevant.
+
+
 The operator ended the reconstruction goal and requested cleanup for handoff.
 The latest draft is saved below; no compiler or Ghidra job remains running.
 When reconstruction is resumed, prioritize complete large/difficult functions.
