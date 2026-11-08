@@ -74,3 +74,13 @@ changes, not for every reconstructed function or documentation edit.
 Keep `docs/RE_HANDOFF.md` concise: current exact state, concrete codegen gaps and
 next work. Record useful target/compiler findings in `docs/KNOWLEDGE_BASE.md`;
 do not expand routine handoffs into behavioral-test reports.
+
+## Shared Factory runtime
+
+Follow [the shared tools instructions](docs/SHARED_TOOLS.md). Ghidra/JDK and
+Wine executables are shared through Factory; repository scripts also work
+without MCP. Use `scripts/shared_runtime.py` and the existing compiler/analysis
+frontends. Keep this game's prefix, analyzer project, Java home/cache, target
+and compiler profile isolated. Do not install duplicate tools or inherit
+another game's `WINEPREFIX`. This shared-runtime procedure supersedes older
+per-repository installation instructions; pinned versions/hashes still apply.

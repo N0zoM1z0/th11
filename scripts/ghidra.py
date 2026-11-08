@@ -3,6 +3,8 @@
 
 from __future__ import annotations
 
+from shared_runtime import command as shared_command
+
 import argparse
 import hashlib
 import csv
@@ -250,7 +252,7 @@ def run_headless(
         "flock", "--close", str(ROOT / ".tools" / "heavy-tool.lock"),
         "nice", "-n", "10",
         "taskset", "--cpu-list", str(min(os.sched_getaffinity(0))),
-        str(analyzer),
+        *shared_command("ghidra"),
         str(PROJECT_DIR),
         PROJECT_NAME,
         *arguments,
