@@ -176,12 +176,3 @@ retain full zero replay after this context change. Only these two affected old
 owners plus the three new sound units were cold-replayed:5 units total,757
 bytes/33 fields. No full cohort, broad behavior suite or infrastructure tests
 were run; infrastructure is unchanged.
-
-Private evidence: `anm-binding-large-full-review.txt` (the initial location-based
-name predates audio identification), `anm-binding-neighbors-review.txt`,
-`audio-queue-helper-review.txt`, `audio-queue-table-references.txt` and their full
-mapped-text attestations; `sound-queue-independent-review.json` and
-`sound-queue-independent-bindings.json`; baseline/locked-callback/shared-busy/
-shared-pointer/scoped-shared-read compiler logs; `renderer-dispatch-real-reclaim.log`;
-`sound-queue-and-renderer-affected-cold.log`. Target bytes, decompiler hypotheses,
-tools, build artifacts and mutable Ghidra data remain private.

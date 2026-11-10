@@ -85,9 +85,3 @@ previous32 position-marker cold proofs remain current and are not repeated.
 Source/probe hashes stay frozen after the maintained cold diagnostic and call
 audit. Tracking/progress and diff whitespace checks pass. No full cohort, broad
 runtime suite or public Oracle/infrastructure tests are run for unchanged tools.
-
-Private complete reviews, compiler variants, source freeze and call audit use
-.analysis/secondary-collision-transition-*; diagnostic artifact families use
-build/probe-ltcg/SecondaryCollisionTransition/. No game bytes, decompiler output,
-compiler payload or diagnostic image is committed. Native product/port closure
-remains later work.

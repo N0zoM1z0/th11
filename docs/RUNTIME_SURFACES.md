@@ -108,8 +108,5 @@ Only these two new units were replayed. All previous27 canonical source/header
 inputs remain intact. The new views are not native allocations; full resource,
 animation interpreter and game-product/runtime ownership remain open.
 
-Private evidence: `.analysis/runtime-surfaces-review.txt`,
-`animation-bind-review.txt`, `animation-reset.c`, `animation-run-entry.txt`,
-`runtime-surfaces-adjacent-getter.txt`, `runtime-surfaces-*-linked.json` and
-`runtime-surfaces-cold-replay.log`. Canonical families are under ignored
-`build/match-linked/AnimationVm` and `build/match-linked/RuntimeSurfaces`.
+Canonical families are `build/match-linked/AnimationVm` and
+`build/match-linked/RuntimeSurfaces`.

@@ -106,10 +106,4 @@ gives233. Neither closes the native307/226 extents. Public frame source and
 all previous canonical contexts remain unchanged; do not repeat these exact
 full-dependency variants without new evidence.
 
-Private evidence: `.analysis/render-state-reset-review.txt`,
-`render-state-reset-tail.txt`, `render-state-linked.json`,
-`renderer-texture-reset-review.txt`, `renderer-textures-linked.json` and
-the two focused cold-replay logs. Caller results are in
-`frame-loop-full-reset-*` and `frame-loop-full-float-fast-*`.
-Compiler profile remains pinned VC9 RTM
-`/TP /O2 /Ob1 /Gy /MT /Isrc /GL`.
+Compiler profile remains VC9 RTM `/TP /O2 /Ob1 /Gy /MT /Isrc /GL`.

@@ -140,21 +140,13 @@ The six complete contributions have unique public primary-TU ownership and pass
 current source/header/support/tool/producer/PE/MAP/PDB receipts, exhaustive field
 replay and every byte. Source was frozen before cold building three contexts.
 
-`.analysis/secondary-actor-affected-cold.log` passes only the six new units.
+The six new units passed affected cold replay.
 Actual prior receipt dependencies intersect no changed source/header; no old
 unit or full cohort was replayed. The first comparison ran before new source
 mapping registration and correctly rejected the missing reviewed owner. After
 registration, those unchanged cold artifacts/current receipts passed all six
 comparisons; no redundant rebuild was needed. Build/Oracle tools are unchanged,
 so no broad runtime or infrastructure suite ran.
-
-Private evidence includes actor source-context/decompile, motion/status and
-construction-context reviews, independent24-owner CFG/hash/return/table records,
-six independent bindings, member/ordered/stack/output compiler experiments,
-final full-contribution diagnostics and selected cold receipts. Original bytes,
-decompiler output, tools and build artifacts remain private. Native product,
-runtime, portability and the active reconstruction goal remain open.
-
 
 ## Complete factory source in the large host context
 

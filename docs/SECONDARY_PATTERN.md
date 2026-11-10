@@ -147,12 +147,7 @@ on all eight direct calls and the one callback; source merges its return paths
 into one RET8 while target has two. No exact or runtime spawn claim follows.
 No full cohort or routine behavioral suite is run.
 
-Private evidence lives under.analysis/secondary-pattern-* and
-build/probe-ltcg/SecondaryPattern, SecondaryIntegerPair and the affected families.
-Native bytes, tool payloads, binaries, objects and decompiler output stay private.
-Canonical artifacts live under build/match-linked. Experimental binaries are
-regenerable and may have been pruned; diagnostic text is retained.
-Runtime/product/port work remains later.
+Canonical contexts are declared in `config/match-units.toml`.
 
 Later full caller/callback source, period/phase fields, containing emitter array,
 44 false-reference classifications and that checkpoint's18-unit cold proof are recorded

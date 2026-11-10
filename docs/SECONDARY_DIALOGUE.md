@@ -124,11 +124,6 @@ with current time on the left recovers both native comparison forms and gives
 the maintained6948/5694 result. No inert padding, extra null
 tests, volatile fields, fabricated returns or private ABI declarations are used.
 
-Private evidence: secondary-dialogue-{boundary-proof,helper-boundary-proof,
-functions,owners-function-proof,owners-instructions.diff}, the full direct Ghidra
-exports, support-proof/checkpoint-proof/source-freeze,
-verify-secondary-dialogue-target.py and audit-secondary-dialogue.py. The160-input
-union changes four of the prior145 inputs and adds15. Only the old adapter exact
-unit is affected; its cold11-byte/one-field replay still has zero differences.
-The source-open HUD caller and full byte/codegen differences remain substantial
-next work; there is no native-product/runtime/port closure claim.
+The dialogue context changed four prior inputs and added15. Only the earlier
+adapter exact unit was affected; its cold11-byte/one-field replay remained zero.
+The source-open HUD caller and complete byte/codegen differences remain next work.

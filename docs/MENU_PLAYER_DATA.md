@@ -132,11 +132,6 @@ player-data candidate becomes2488/2319; restored ABI evidence does not imply
 that the large owner is exact. No synthetic caller or private ABI declaration
 is used. See [MENU_PRACTICE_STAGE.md](MENU_PRACTICE_STAGE.md).
 
-Count78 and snapshot101 support zeros grant no leaf acceptance credit. Music
-remains2680/2416/94 in the broader contexts. The only changed source among239
-previous frozen inputs is MenuPlayerDataSupport.cpp; no accepted unit depends
-on it. Three new practice-stage source files extend the freeze to242. Current
-tracking is607 reviewed boundaries,489 mappings and still236 exact/31881 bytes.
-The current verifier is `.analysis/verify-menu-stage-checkpoint.py`; the earlier
-player-data checkpoint remains historical. No runtime or product closure is
-inferred from these source and codegen observations.
+Count78 and snapshot101 replaying zero in support add no independent exact
+credit. Music measured2680/2416/94 in the broader context. No accepted unit
+depends on the changed MenuPlayerDataSupport.cpp.

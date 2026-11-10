@@ -124,7 +124,7 @@ source and a corrected four-input call; see
 [Archive decompression](ARCHIVE_DECOMPRESSION.md). Actual production TU
 partition and complete native archive/stream closure remain open.
 
-Private evidence and reproduction:
+Reproduction:
 
 ```bash
 scripts/repo-python scripts/ghidra.py query .analysis/file-load-review.txt review \
@@ -137,6 +137,5 @@ scripts/repo-python scripts/replay-exact-units.py \
   --unit load-resource-file --unit write-whole-file --unit find-archive-entry
 ```
 
-Bounded failed contexts are saved under `.analysis/archive-read-*` and
-`.analysis/resource-file-*`. Final loader, writer and lookup receipts live in
-their separate ignored `build/match-linked/` directories.
+Loader, writer and lookup canonical receipts use separate
+`build/match-linked/` contexts declared in `config/match-units.toml`.

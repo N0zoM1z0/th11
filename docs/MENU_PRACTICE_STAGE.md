@@ -116,8 +116,5 @@ Player-data now contains its formerly missing169th field, but the complete page
 changes2472/2273 to2488/2319 in the more complete caller graph; that larger owner
 remains open. Music stays2680/2416, and record formatting stays715/676.
 
-Both public page08 and player-data recipes contain48 supports and independently
-cold-reproduce this evidence. The accepted236-function manifest is unchanged;
-only the snapshot source changes among239 previous source inputs, and it has
-no accepted canonical dependents. Three new source files extend the freeze to242.
-The checkpoint verifier is `.analysis/verify-menu-stage-checkpoint.py`.
+The public page08 and player-data recipes use48 supports and independently
+reproduced these results. No canonical exact dependency changed.

@@ -125,13 +125,8 @@ independent acceptance units. The shared child finder remains76/native70 with
 41 differences and script stack/RET4 versus native EBX/plain RET. Two real
 large callers still lack source.
 
-All250 prior frozen inputs remain unchanged; four new source/probe files extend
-the freeze to254. No canonical unit is affected and no exact unit is added.
-The older menu family receipts remain valid. Historical verifier:
-`.analysis/verify-pause-menu-checkpoint.py` asserts the old616/498 checkpoint.
-Use the latest verifier and current counts in [RE_HANDOFF](RE_HANDOFF.md).
-That checkpoint had236 exact/31881 bytes. Source and complete diagnostic replay
-remain distinct from exactness, native-product closure and runtime behavior.
+No canonical exact dependency changed. Use the public pause recipe and the
+current work in [RE_HANDOFF](RE_HANDOFF.md) when resuming.
 
 The return-temporary control is concrete: an inline `SignalChild` wrapper reused
 one hidden result slot for all seven calls, producing frame4C/3041 differences.

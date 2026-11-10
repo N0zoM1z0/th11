@@ -14,12 +14,8 @@ postloading. The actual texture/sprite/script decoder is 0x004545A0.
 
 All four entries, branches, return tails, incoming/interior references and
 adjacent instructions/padding were reviewed. There are no external interior
-references or embedded tables. The decoder's full explicit span includes nine
-internal alignment bytes omitted from Ghidra's sparse 802-address body. Its
-complete extent is retained. Private review artifacts are
-`.analysis/animation-chunk-review.txt`, `animation-decode-review.txt`,
-`animation-decode-full-span.txt`, `animation-sprite-full-span.txt` and
-`animation-texture-contracts.txt`.
+references or embedded tables. The decoder owns nine internal alignment bytes
+omitted from Ghidra's sparse 802-address body; preserve its complete extent.
 
 ## Physical views and loading order
 

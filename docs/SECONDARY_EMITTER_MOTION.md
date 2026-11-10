@@ -101,10 +101,8 @@ Two additional boundary/origin reviews cover246 bytes/74 instructions/two RET4:
   a real source declaration at that checkpoint. Its complete source is now
   present as described below.
 
-Both new origins remain indeterminate. Private complete instruction/flow reviews,
-compiler variants, field/payload checks and selected cold results live under
-`.analysis/secondary-emitter-motion-*` and `.analysis/secondary-death-*`;
-canonical artifacts live in `build/match-linked`.
+Both new origins remain indeterminate. Canonical artifacts are in
+`build/match-linked`.
 
 ## Complete death-effect caller chain
 
@@ -137,5 +135,4 @@ end-pointer loops712/481, and field iterators721/443. Swapping score/lives updat
 leaves each result unchanged. None replaces the maintained715/423 death source;
 life HUD stays144/0 in every probe. These are compiler diagnostics, not cold
 exact proofs or runtime tests. Earlier canonical sources/headers/contexts are
-unchanged, so no existing exact unit needs a cold replay. Private evidence is in
-`.analysis/secondary-death-effect-*` and `secondary-death-variants.log`.
+unchanged, so no existing exact unit needs a cold replay.

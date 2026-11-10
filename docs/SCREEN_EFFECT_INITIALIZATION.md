@@ -127,18 +127,6 @@ caller regressions were run. The only affected canonical unit is the new
 initializer; no existing exact unit depends on the changed primary source or
 new context. Totals are234 exact functions/27,546 bytes (9 COFF/225 linked).
 
-Private evidence is screen-initializer-* and screen-effect-factory-* Ghidra
-exports, full target/PDB/field comparisons, mode arguments, mismatch windows and
-cold receipt/source freeze; current acceptance evidence uses the
-screen-initializer-exact-* prefix. No executable bytes, decompiler output or
-databases are committed.
-
-The subsequent range-RNG body/header update affects this canonical context.
-One new cold build still strictly accepts1168/all54 fields/zero; its current
-receipt evidence is animation-range-screen-* and the resume verifier is
-.analysis/verify-animation-range-checkpoint.py. The older source freezes remain
-historical after those two input changes.
-After the subsequent AnimationTween.cpp update, the current resume verifier is
-.analysis/verify-int-vector-value-checkpoint.py; the initializer is one of
-fourteen existing exact units in two newly cold-replayed canonical families.
-Its full1168-byte owner and all54 fields still replay with zero differences.
+The range-RNG and AnimationTween.cpp updates were checked in affected canonical
+contexts. The complete1168-byte initializer and all54 fields replayed with zero
+differences. Rebuild `initialize-secondary-hud-screen-effect` for new work.

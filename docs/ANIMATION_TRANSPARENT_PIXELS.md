@@ -31,12 +31,9 @@ RET/CC, following thirteen CC bytes and the next code at0x00453A60 were checked.
 That next entry is absent from the provisional inventory and has not been
 mapped or credited; the padding/gap must not be absorbed into this function.
 
-Private evidence is retained in `.analysis/animation-transparent-review.txt`,
-`animation-transparent-disassembly.txt`, `animation-transparent-code-span.txt`,
-`animation-transparent-table-refs.txt` and
-`animation-transparent-owned-tail-refs.txt`. Ghidra's default decompilation has
-incorrect COM prototypes/stack recovery; its vertical-neighbor expressions
-must not override the signed pitch/division instructions.
+Ghidra's default decompilation has incorrect COM prototypes/stack recovery;
+its vertical-neighbor expressions must not override the signed pitch/division
+instructions.
 
 ## Surface and pixel behavior
 

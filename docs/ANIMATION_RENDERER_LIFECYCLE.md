@@ -151,7 +151,7 @@ established. Empty constructors are only a hypothesis, so no invented identity
 wrapper or class is counted as source. Their generic pattern also cannot prove
 compiler, header, reused-library or game origin.
 
-## Proof scope and private evidence
+## Proof scope
 
 Cold families are `build/match-linked/AnimationRendererLifecycle` and
 `build/match-linked/AnimationPixelHelpers`. Only the five new units were
@@ -162,15 +162,3 @@ no old exact cohort, infrastructure suite or broad behavior harness was run.
 Aggregate state is93 exact functions/17,731 bytes,2,038 candidates,222 reviewed
 boundaries and179 source mappings. Authored90, reviewed-indeterminate123,
 excluded7 and pending1,818 are separate origin counts.
-
-Private evidence includes `renderer-constructor-full-review.txt`,
-`vm-following-effects-review.txt`, `renderer-delete-vm-review.txt`,
-`renderer-chain-callbacks-review.txt`, `renderer-value-gaps-review.txt`,
-`renderer-tail-gap-review.txt`, `texture-pixel-helper-gap-review.txt` and their
-full mapped-text attestation logs. Independent partition/binding receipts are
-`renderer-callback-boundaries.json` and `renderer-exact-independent-bindings.json`.
-Current diagnostics are `renderer-lifecycle-direct-fields.log` and
-`pixel-helpers-current.log`; baseline/typed-snapshot probes retain rejected
-hypotheses. `renderer-pixel-five-cold.log` records full cold acceptance. Target
-bytes, decompiler hypotheses, compiler payloads and mutable Ghidra data remain
-private.

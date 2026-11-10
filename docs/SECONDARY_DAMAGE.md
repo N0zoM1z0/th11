@@ -161,11 +161,7 @@ source/shared headers are unchanged. Only the four new canonical units are cold
 replayed, all passing after the final source freeze. No full cohort, broad runtime
 suite or infrastructure regression is run for these source changes.
 
-Private evidence remains under.analysis/secondary-damage-* and
-build/probe-ltcg/SecondaryDamage*/. Canonical artifacts live in
-build/match-linked/SecondaryDamageSupport/. Native bytes, binaries, objects,
-compiler payloads and decompiler dumps are not committed. Runtime/product and
-portability closure remain later work.
+Canonical artifacts are in `build/match-linked/SecondaryDamageSupport/`.
 
 Later complete projectile/homing and special246/385 source, five-ID correction,
 callback stack-contract correction and three new exact math proofs are recorded

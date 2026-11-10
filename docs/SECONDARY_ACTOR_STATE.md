@@ -122,20 +122,13 @@ at10/32/40 to4A56E4; count DIR32 at2/14 to4A5754. All14 fields and every byte pa
 unique public primary-TU ownership, current source/header/support/tool/producer/
 PE/MAP/PDB receipts and exhaustive replay.
 
-`.analysis/secondary-state-affected-cold.log` passes7 new+7 directly affected prior
-units across seven contexts. Actual receipt dependencies select the old actor
+Cold replay passed7 new and7 directly affected prior units across seven contexts. Actual receipt dependencies select the old actor
 lifetime/thread/pair families and ordinary12-byte adapter. Common script/stage/renderer headers are
 unchanged; no full cohort or unrelated family replay. The first13-unit pass preceded correction of the declaration header
 comment that still called state source-open. Because receipts bind complete
 header hashes, that correction requires the final14-unit selected replay; no
 old receipt is relabeled. Source froze again before those cold builds. Oracle/build tools are unchanged; no broad
 behavior or infrastructure suite ran.
-
-Private evidence includes full state/dependency/sound/effect reviews, complete
-damage export, independent21-owner CFG/hash/return records, full call audit,
-seven binding recipes, source-freeze record, compiler variants, refreshed open
-diagnostics and selected cold receipts. Native bytes/decompiler/tool/build
-artifacts stay private. Product/runtime/port closure and the active goal stay open.
 
 Later complete damage1579/collision244/sound148 source, the124-byte special
 dispatcher correction and four new exact helper proofs are recorded in

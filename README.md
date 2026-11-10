@@ -115,6 +115,11 @@ only affected exact units, and commit meaningful progress. Broad behavioral,
 fault-injection, randomized/multiframe and caller regression suites are not
 routine prerequisites. Native product/runtime and portability work are deferred.
 
+Public CI is `python3 scripts/ci.py`: it checks the complete checkout's syntax,
+ledgers, build declarations and private-artifact exclusions with no game or
+private toolchain. Run comparator tests when their implementation changes;
+`--full` explicitly selects both public Oracle suites.
+
 ## Project map
 
 - [`AGENTS.md`](AGENTS.md) — session recovery and evidence rules.

@@ -118,19 +118,11 @@ instruction codegen remains a gap. See ANIMATION_VM_DRAW.md for the evidence.
 
 ## Reproduction
 
-Private target evidence: `.analysis/quad-render-review.txt`,
-`quad-helpers-review.txt`, `quad-positions-native.asm`, `quad-draw-native.asm`,
-`quad-owners-review.json` and their direct-Ghidra attestation logs. Floor
-callee hypotheses remain private `quad-floor-callee.c`.
-
-Compiler diagnostic records remain under `build/probe-ltcg/animation-quad`.
-Rebuild current units through `config/match-units.toml`; retired private drivers
-and code copies are removed.
+Rebuild current units through `config/match-units.toml`.
 Source profiles stay VC9 RTM `/TP /O2 /Ob1 /Gy /MT /Isrc /EHsc /GL`.
 `probes/animation-quad-context.cpp` supplies independent owners, corners,
 colors and floor input, with real `RenderBatch.cpp` support. The linked image
 is a diagnostic context, not the game.
-
 
 ## Current exact and compiler evidence
 
@@ -151,8 +143,5 @@ closes the gaps without modifying either helper or introducing padding,
 explicit alignment or ABI tricks. The state contribution remains348/216
 against368; shared blend-call blocks and register/filter scheduling are open.
 
-Latest cold log: `.analysis/vm-draw-six-cold.log`. The old narrow-context
-compiler findings remain private `animation-quad-*.log` and
-`animation-quad-final-diagnostic.json`; they are historical context, not the
-current exact state. [VM submission](ANIMATION_VM_DRAW.md) records the current
-proofs and the still non-exact1,112-byte submission owner.
+[VM submission](ANIMATION_VM_DRAW.md) records the current exact units and the
+still non-exact1,112-byte submission owner.

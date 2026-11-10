@@ -31,17 +31,12 @@ The target adds no argument validation. A positive block size and enough
 copied bytes for every processed block are caller requirements. The source
 preserves the observed arithmetic and limit handling.
 
-Focused private execution diagnostics used Unicorn 1.0.2 to execute each
-original body and its freshly compiled VC9 candidate with their respective
-ABIs. The target malloc, memcpy and free entries and the candidate's COFF
-calls used the same deterministic shims. Each function passed 692 cases:
-block sizes 4, 5, 7, 8, 16, 32, 64; empty/small/odd/tail-boundary and larger
-buffers up to 1,024 bytes; zero, one-block, two-block and full limits;
-successful and failed allocation. Buffers, return pointers, ABI stack
-cleanup, and allocation/copy/free events agreed; guard bytes stayed intact.
-The recorded results remain in `.analysis/byte-cipher-behavior.json`; the
-retired execution driver is removed. These cases are historical observations,
-not a required continuation suite.
+Historical Unicorn1.0.2 diagnostics executed each native body and its compiled
+VC9 candidate with their respective ABIs and deterministic malloc/memcpy/free
+shims. Each passed692 cases covering block sizes4..64, tail boundaries, buffers
+up to1,024 bytes, limits and allocation failure. Buffers, return pointers, stack
+cleanup and allocation/copy/free events agreed. Exact acceptance uses the
+complete byte comparison; these execution cases are not a continuation suite.
 
 These diagnostics cover the stated inputs and shimmed library calls. They do
 not establish exact code generation, a complete native product, or completion

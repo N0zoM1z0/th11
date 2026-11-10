@@ -107,12 +107,9 @@ differences in the current canonical family. Sampling is explicit and the
 conversion/rounding/scaling helper remains natural C++. Four samples still
 perturb the four row X values in their original order.
 
-Current evidence is `.analysis/column-promoted-diagnostic.json`, read from the
-cold-rebuilt MeshEffects family. An earlier sampling-order probe independently reached the same result; its
-diagnostic record is retained and the unused code copy is removed.
-This is a codegen improvement, not exact credit. The remaining differences
-include a20-byte versus native24-byte local frame and positioned-ID
-argument/return placement. Initializer EH ownership remains open.
+The promoted-expression and sampling-order probes independently reached this
+codegen result. Remaining gaps include a20-byte versus native24-byte local frame
+and positioned-ID argument/return placement. Initializer EH ownership is open.
 
 Only the directly affected `update-mesh-effect-spell-state` and
 `square-mesh-vm-callback` exact units were cold-replayed for this source change;

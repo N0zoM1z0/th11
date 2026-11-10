@@ -61,9 +61,11 @@ def main() -> int:
     with (ROOT / 'config/tools.lock.toml').open('rb') as stream:
         lock = tomllib.load(stream)['ntlm_auth']
     destination = ROOT / str(lock['selection'])
-    destination.resolve().relative_to((ROOT / '.tools').resolve())
     if destination.is_symlink():
-        raise ValueError('refusing to replace a symlinked NTLM runtime tree')
+        verify(destination.resolve(strict=True), lock)
+        print('shared ntlm_auth and runtime tree OK; selected installation unchanged')
+        return 0
+    destination.resolve().relative_to((ROOT / '.tools').resolve())
     if args.check:
         verify(destination, lock)
         print('private ntlm_auth and runtime tree OK')

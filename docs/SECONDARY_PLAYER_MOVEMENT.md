@@ -63,12 +63,6 @@ all branches/neighbors and no foreign interior entry. The stack ID and SI event
 word are actual inputs. It writes VM37C and propagates to related nodes when
 marker18 is zero, without clearing the ID. Origin remains indeterminate.
 
-Private evidence includes full fresh direct Ghidra movement/helper exports,
-the independent event decode and callback-address arithmetic, complete linked
-compiler diagnostics and selected cold replay under `.analysis/secondary-movement-*`
-and `.analysis/secondary-player-movement-*`. No runtime harness or broad behavioral
-suite is required or run for these codegen/layout questions.
-
 ## Compiler checkpoints
 
 The first complete movement source emits2724 bytes with2421 masked diagnostic
@@ -107,7 +101,7 @@ current receipt inputs. The complete previous six motion/HUD proofs retain their
 full extents and all13 literal uses/92 bytes after this correction. No full cohort
 or public Oracle/infrastructure suite is replayed.
 Together with the new helper proof,24 selected units pass1,992 bytes/84 fields
-and relocations. `.analysis/secondary-movement-final-proof.json` records all results.
+and relocations.
 
 Later [animation-value work](SECONDARY_ANIMATION_VALUES.md) makes release66 and
 raw position97 exact and updates the current movement contribution to2928/2447.

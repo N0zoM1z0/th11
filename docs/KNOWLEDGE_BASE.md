@@ -1,9 +1,8 @@
 # TH11 working knowledge
 
 Use [RE_HANDOFF](RE_HANDOFF.md) for the next action and [PROGRESS](PROGRESS.md)
-for generated ledger counts. The detailed prior notes are preserved in the
-[2026-11-06 historical snapshot](archive/KNOWLEDGE_BASE_2026-11-06.md). Its
-candidate metrics belong to the named contexts; they are not universal results.
+for generated ledger counts. Topic notes below retain the target findings,
+compiler observations and useful failed approaches.
 
 ## Evidence and recovery
 
@@ -18,9 +17,8 @@ candidate metrics belong to the named contexts; they are not universal results.
 - /GL stays with established owners. Public primary-TU acceptance requires cold
   receipts, full PE/MAP/PDB contribution identity, exhaustive fields and zero
   complete differences. Do not encode private registers or add inert storage.
-- [ARTIFACTS](ARTIFACTS.md) identifies retained caches and removed experiments.
-  Private historical verifiers may require retired outputs or assert old counts;
-  use the latest verifier named in the handoff.
+- Rebuild affected exact contexts through `config/match-units.toml`. Cache
+  retention is described in [ARTIFACTS](ARTIFACTS.md).
 
 ## Latest continuation menu3192
 
@@ -45,7 +43,7 @@ Existing ActorInstructions/HUD/gameplay sources do not implement these owners.
 ## Pause3212 and returned-ID lifetimes
 
 42C8D0 owns3212 bytes, including both tables. All101 calls,164 native fields,
-14 GS/RET4 paths and native frame68 were reviewed. Retained59-support candidate
+14 GS/RET4 paths and native frame68 were reviewed. The59-support candidate
 3084/160 fields/3039 differences has frame68/cookie64. Seven direct child-query
 expressions recover seven real hidden result slots; an inline wrapper reused
 one slot and produced frame4C. Account for the actual source script push when
@@ -74,9 +72,19 @@ register ABI. See [PAUSE_MENU](PAUSE_MENU.md).
 - Normal/practice transitions use480/392 and a five-argument screen effect.
   Fade is float6.0; its FSTP replaces a pushed pointer slot. Partner writes
   runtime558=7 before fade; practice writes it afterward.
-- MenuController and MenuPrimary cached receipts are stale as of this handoff.
-  Their old numbers, including the isolated primary30 differences, are historical.
-  Cold-build their declared context before a new measurement.
+- MenuController and MenuPrimary measurements, including the isolated primary30
+  differences, belong to historical contexts. Cold-build their public recipes
+  before a new measurement.
+
+## Trimmed VC9 environment
+
+VC9 RTM21022 works without its installation Git database, ATL/MFC, CRT sources,
+64-bit tools/libraries, managed/debug CRT libraries or unused SDK tools. The
+retained x86 compiler, SDK headers/libraries and runtime passed normal C/C++, /GL,
+resource and MAP/PDB link smoke. Temporary cold builds fully matched FileExists141,
+sprite UV81 and screen-effect initialization1168, including all68 fields.
+Factory's NTLM helper and complete dependency tree match the existing lock and
+can be shared; keep the TH11 Wine prefix independent.
 
 ## Other large source owners
 

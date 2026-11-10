@@ -151,11 +151,8 @@ do not change the large owner and are not retained. Scalar copies introduce
 x87 loads/stores instead of native raw word copies; memcpy restores six global
 reads but gives229/native223 and214 differences in that support body.
 
-MenuMusicRoom.cpp and MenuMusicRoom.hpp change among the235 frozen inputs at
-740cce1; no accepted unit depends on them. The two affected diagnostic families
-are cold rebuilt with current receipts. Checkpoint proof is now
-`.analysis/verify-menu-player-data-checkpoint.py`; the previous alignment
-checkpoint's type hashes and2648 measurement are historical.
+MenuMusicRoom.cpp/.hpp changed for this context; no accepted unit depends on
+them. Rebuild the public music-room recipe before measuring again.
 
 The copy reader chooses EAX cursor/ECX count instead of ECX/EDI; the tween keeps
 its VM on the stack and coalesces six native global component reads into three.

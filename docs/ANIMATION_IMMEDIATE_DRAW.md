@@ -163,13 +163,6 @@ ownership and a complete native product remain open. The subsequent
 [fan review](ANIMATION_FAN.md) recovers three additional draw owners from the
 gap451AE0..451E0F and three other missing entries, with six new exact proofs.
 
-Private logs: `.analysis/immediate-draw-ten-cold.log` and
-`immediate-draw-current.log`; complete current diagnostics in
-`immediate-draw-current/diagnostic.json`. Target reviews:
-`vm-remaining-modes-review.txt`, `vm-world-quad-full-span-review.txt`,
-`vm-immediate-helpers-review.txt` and their full mapped-text attestations;
-`immediate-draw-independent-review.json` and `immediate-draw-exact-items.json`.
-Compiler probes compare baseline/natural loops, blend-pair/red-temporary,
-matrix lifetimes and restricted caller graphs. The blend-pair and caller-graph
-variants did not close the world-state/private-ABI gaps. Private target text,
-decompiler hypotheses, compiler payloads and databases remain uncommitted.
+Compiler probes of natural loops, blend-pair/red-temporary expressions, matrix
+lifetimes and restricted caller graphs did not close the world-state/private-ABI
+gaps. The findings above and maintained source retain the useful results.

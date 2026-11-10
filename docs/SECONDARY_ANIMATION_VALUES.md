@@ -85,13 +85,9 @@ only touches SecondaryActorAnimation.cpp. Recursive linked/COFF contracts select
 current source/header/support/tool/producer/PE/MAP/PDB receipts and zero full-byte
 differences. They add242 exact bytes/eight fields.
 
-Maintained source/probe hashes stay frozen during replay. Earlier result summaries
-are refreshed for affected members, with their originals retained privately.
+Maintained source/probe hashes stay frozen during replay.
 Unrelated units and the full cohort are not rebuilt. No broad behavioral or public
 Oracle/infrastructure suite is run because their implementations are unchanged.
-Private current target reviews, variants, field audits and selected proofs use
-`.analysis/secondary-position-marker-*`; earlier ID-value evidence retains the
-`.analysis/secondary-animation-values-*` prefix.
 
 Current cold caller diagnostics are movement2928/2447, controller2800/2285,
 reset2428/1965 (previous2412/1951), and death715/423. These are complete

@@ -110,10 +110,5 @@ prevent the optimizer from specializing all helpers to this initializer's
 constant arguments. The image is a diagnostic link context, not a runnable
 game. Profiles remain VC9 RTM `/TP /O2 /Ob1 /Gy /MT /Isrc /EHsc /GL`.
 
-Private target evidence: `.analysis/ascii-entry-review.txt`,
-`ascii-deps-review.txt`, `ascii-draw-callback-review.txt`,
-`ascii-overlay-callback-review.txt`, `ascii-bind-review.txt` and their attestation
-logs. Compiler records remain in `ascii-lifecycle-probe*.log`; the retired
-private driver is removed. Canonical receipt/output location is
-`build/match-linked/AsciiLifecycle`. Diagnostic differences alone grant no
-exact credit. Only affected units are cold-replayed.
+Canonical receipts and outputs are in `build/match-linked/AsciiLifecycle`.
+Cold-replay selected units through `config/match-units.toml`.

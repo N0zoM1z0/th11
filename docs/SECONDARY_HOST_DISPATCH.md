@@ -171,19 +171,9 @@ no padding, forced ABI or diagnostic slice is used to close them.
 
 ## Evidence and status
 
-Private evidence is .analysis/secondary-host-dispatch-boundary-audit.json,
-secondary-host-dispatch-complete.txt, secondary-host-getters-review.txt and their
-mapped-text-attested Ghidra logs. The audit accounts for full ownership, sparse
-alignment, every table/selector, reachable instruction, branch and call site.
-Private decompiler output is a hypothesis for subsequent source work only.
-Current motion evidence uses secondary-host-motion-{compile,call-audit,
-call-traces,predicates,dependency-audit}.json, the complete Ghidra motion/helper/vector-reset
-reviews and build/probe-ltcg/SecondaryHostMotion/. Source hashes stay frozen
-through the final cold compile and its static audit.
-Creation/animation evidence uses secondary-host-animation-{compile,call-audit,
-arm-ranges,dependency-audit}.json and its fresh mapped-text-attested complete
-Ghidra caller/callee reviews, plus build/probe-ltcg/SecondaryHostAnimation/.
-The compile-only probes remain separate from complete-owner acceptance.
+The reviewed owner includes sparse alignment, every table/selector, reachable
+instruction, branch and call site. Compiler experiments above remain separate
+from complete-owner acceptance.
 
 ## Control and effects inside the same owner
 
@@ -238,10 +228,6 @@ counts/strides and decoder byte arithmetic are checked separately. Return sets
 and24 targeted target/compiler details also pass static checks. This does not
 prove every predicate, full semantic equivalence or complete-owner byte equality.
 There is no runtime harness or added leaf implementation/exact credit.
-
-Private evidence uses secondary-host-control-{compile,call-audit,detail-proof,
-arm-ranges,dependency-audit}.json, the attested direct Ghidra contract review and
-build/probe-ltcg/SecondaryHostControl/. Frozen inputs identify the final compile.
 
 ## Records, parameter packets and the remaining cases
 
@@ -333,13 +319,6 @@ arguments. Native has six constructor call sites in five callers and a generic
 native constructor ABI. More real context is needed; do not encode those private
 register choices in declarations or manufacture throwing helpers.
 
-Private evidence uses secondary-host-records-{compile,call-audit,detail-proof,
-arm-ranges,dependency-audit}.json; secondary-host-switch[-mesh]-{compile,call-audit}
-.json; fresh mapped-text-attested record/helper/EH Ghidra exports and the matching
-build/probe-ltcg/SecondaryHostRecords, SecondaryHostSwitch and
-SecondaryHostSwitchMesh directories. These are static diagnostics, not runtime
-or product closure.
-
 ## Complete member source and recovered stack lifetimes
 
 The manager's ordinary virtual ExecuteInstruction returns state.ExecuteInstruction.
@@ -386,12 +365,9 @@ versus native EBP-2F4. Entry-interval deltas are diagnostic attribution only;
 12D/12F's790 versus663 bytes and the spawn joins are substantial next targets.
 Original array capacity and specialized EH ownership remain unproved.
 
-Private whole-owner evidence uses secondary-host-owner-{scoped-compile,
-scoped-receipt,scoped-call-audit,layout-proof,interval-deltas}.json and
-build/probe-ltcg/SecondaryHostOwner/scoped/. The public owner context keeps the
-actual manager-to-state member call visible. The new canonical adapter family
-also includes the existing real SecondaryScript.cpp /GL implementation so the
-large host and its real VM readers can be reviewed together.
+The public owner context keeps the actual manager-to-state member call visible.
+The canonical adapter family includes the real SecondaryScript.cpp /GL
+implementation so the host and its VM readers can be reviewed together.
 
 The first canonical family kept SecondaryScript.cpp as real /GL support.
 The complete host becomes15,696 bytes/320 allocation, with packets9C, scratch2A4
@@ -414,10 +390,8 @@ Only the complete11-byte manager adapter is accepted as exact: cold canonical
 build, public primary-TU PDB owner agreement, exhaustive sole REL32 replay to the
 separately reviewed state dispatcher and zero full-byte differences. This adds11
 exact bytes, not16,556; the host's EH/static ownership and full byte proof stay
-open. Canonical unit: secondary-actor-instruction-adapter. Private current evidence
-uses secondary-host-owner-{canonical-summary,canonical-call-audit,adapter-proof,
-affected-proof,checkpoint-proof,source-freeze}.json and
-build/match-linked/SecondaryActorInstructions/.
+open. Canonical unit: secondary-actor-instruction-adapter, with artifacts in
+`build/match-linked/SecondaryActorInstructions/`.
 
 The dispatcher and its adapter retain reviewed boundaries and indeterminate
 origins. Adding the real state-member declaration changes SecondaryActorState.hpp;
@@ -427,7 +401,6 @@ implementations are unchanged.
 The previous37-input freeze differs only at this header; current proof uses the
 new129-input whole-owner source freeze and affected-unit results. No full cohort or broad
 runtime suite is required for this declaration and owner work.
-
 
 ## Real argument bodies in the complete host context
 
@@ -470,20 +443,16 @@ one separate GS call. This audit does not prove loop counts, predicates or full
 byte equality. Opcode/cache registers, FP/control scheduling and physical call
 sharing remain work on the full owner. The original decoder capacity is unknown.
 
-The complete11-byte manager adapter retains strict cold one-REL32 zero-difference
-proof. No new exact count is claimed for the helpers or the large host. Recursive
-source contracts select28 affected existing exact units in five families for this
-change; all pass1,038 bytes cold. This replaces neither the prior61-unit header
-proof nor its historical source freeze. Current private evidence uses
-secondary-host-arguments-{boundary-proof,call-audit,current-functions,adapter-proof,
-affected-proof,source-freeze}.json and the canonical linked family artifacts.
+The complete11-byte manager adapter passed cold one-REL32 zero-difference
+comparison. Recursive source contracts selected28 affected existing exact units
+in five families; all1,038 bytes passed. Helpers and the large host gained no
+exact credit.
 
 Creation-context review also confirms4111C0 receives the script name: the saved
 master pointer at4108FE is a local, while41090E reads the incoming script argument.
 The default Ghidra creator body still reports545 code bytes; its already reviewed
 public621-byte boundary includes3 alignment bytes,20 table bytes and53 selectors.
 Use that complete ownership for all creation diagnostics and future acceptance.
-
 
 ## Complete creation source and six-vector staging
 
@@ -553,13 +522,7 @@ unary84's merged paths and82/87's shared float destination remain. The4083-byte
 state-update support contribution is still non-exact against4230. Neither support
 contribution has primary-TU acceptance in this family.
 
-Only secondary-actor-instruction-adapter is affected among existing exact units;
-its complete11 bytes/one REL32 pass fresh cold family replay with zero differences.
-Tools/Oracles and other exact units are unchanged. The gameplay dependency union
-freeze now145 changes Creation.cpp and Gameplay.hpp versus prior143, adding
-Support.cpp and StageDrawing.hpp. The older132-input motion/actor freeze remains
-historical. No new exact units are added. Current private evidence uses
-secondary-gameplay-dependencies-{canonical-functions,canonical-creator-proof,
-host-call-audit,host-site-owners,host-detail-proof,checkpoint-proof,source-freeze}
-and adapter-build/compare logs. Prior secondary-host-pairs-* proofs retain the
-motion/source history. See SECONDARY_GAMEPLAY.md for the separate mixed family.
+Only secondary-actor-instruction-adapter was affected among earlier exact
+units; its complete11 bytes/one REL32 passed cold replay with zero differences.
+The gameplay context changed Creation.cpp/Gameplay.hpp and added Support.cpp
+and StageDrawing.hpp. See [SECONDARY_GAMEPLAY](SECONDARY_GAMEPLAY.md).

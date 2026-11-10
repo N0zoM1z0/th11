@@ -145,9 +145,3 @@ remain visible in the diagnostic family, retaining its real private filename
 convention. An indexed version224 and early-guard pointer version247 differed;
 nested-success variants251 still differ in register saves, frame size and
 publication scheduling. Do not repeat these shapes without new evidence.
-
-Private evidence: `.analysis/font-startup-review.txt`,
-`text-surface-release-review.txt`, `text-surface-create-full-span.txt`,
-`text-surface-*-linked.json`, `text-resources-cold-replay.log` and
-`executable-checksum-*`. Full native product/runtime closure, semantic
-reconstruction and portability remain later open gates.

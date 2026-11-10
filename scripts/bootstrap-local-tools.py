@@ -29,9 +29,12 @@ def main() -> int:
     if not checkout.exists():
         subprocess.run(['nice', '-n', '10', 'git', 'clone', '--no-checkout', tool['repository'], str(checkout)], check=True)
         subprocess.run(['git', '-C', str(checkout), 'checkout', '--detach', tool['commit']], check=True)
-    commit = subprocess.check_output(['git', '-C', str(checkout), 'rev-parse', 'HEAD'], text=True).strip()
-    if commit != tool['commit']:
-        raise ValueError('existing compiler checkout differs from locked commit')
+    # Trimmed payloads need no Git object database; the verifier below checks
+    # the actual compiler components against the lock in either layout.
+    if (checkout / '.git').exists():
+        commit = subprocess.check_output(['git', '-C', str(checkout), 'rev-parse', 'HEAD'], text=True).strip()
+        if commit != tool['commit']:
+            raise ValueError('existing compiler checkout differs from locked commit')
     subprocess.run([str(ROOT / 'scripts/repo-python'), str(ROOT / 'scripts/bootstrap-ntlm-auth.py')], cwd=ROOT, check=True)
     subprocess.run([str(ROOT / 'scripts/repo-python'), str(ROOT / 'scripts/verify-analysis-tools.py')], cwd=ROOT, check=True)
     subprocess.run([str(ROOT / 'scripts/repo-python'), str(ROOT / 'scripts/verify-toolchain.py'), '--check'], cwd=ROOT, check=True)

@@ -136,10 +136,3 @@ Removing the diagnostic entry's extra direct Read/Refill calls changed no larger
 owner code, both before and after actual factory/lifetime support; that hypothesis
 is rejected. Canonical diagnostic roots stay intact. Refill569/504, read160/177,
 notification544/421, reset-position220/160 and play132/18 still require work.
-
-Private evidence: music-factory-lifetimes-review.txt and complete mapped-text
-attestation; music-after-gap-review.txt/xrefs.txt; music-factory-independent-review.json;
-full-lifetimes/member-factories/explicit-factory-locals and native-caller probes;
-music-lifetime-four-provisional-bindings.json and current two-owner bindings;
-failed33-owner and final31-owner cold logs. Native bytes, decompiler hypotheses,
-compiler payloads and PE/MAP/PDB artifacts remain private.

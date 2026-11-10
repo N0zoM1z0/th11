@@ -143,20 +143,12 @@ Full interpreter7093 remains6993/5880. Splitting real/integer trace calls gives
 and still64. None is adopted. Canonical trace arguments, source/profile and full
 61-cell/89-selector shape remain; no alignment/type trick closes the large owner.
 
-`.analysis/secondary-lifetime-affected-cold.log` passes12 new plus16 directly
-affected prior units across five contexts. Actual receipt dependencies select
+Cold replay passed12 new and16 directly affected prior units across five contexts. Actual receipt dependencies select
 those prior units; no unrelated unit or full cohort replay. All246 new bytes
 and eight independently bound fields pass complete unique public primary-TU
 ownership, current source/header/support/tool/producer/PE/MAP/PDB receipts and
 zero full-byte differences. Source froze before cold builds. Build/Oracle tools
 are unchanged; no broad behavior or infrastructure suite ran.
-
-Private evidence includes host-lifetime/core/large/default/master reviews,
-full large-owner export, missing program/accessor/adapter/EH spans, independent
-full38-span/CFG/vtable/FuncInfo/field decoding, lifetime/inline/frozen/default/
-counter/adapter diagnostics, rejected trace variants and affected cold receipts.
-Original bytes/decompiler/tool/build artifacts stay private. Native product,
-runtime and portability closure remain open.
 
 Later actual-caller and typed-trace work supersedes the interpreter alignment
 blocker above: fixed120 and native dispatch layout are recovered in the current

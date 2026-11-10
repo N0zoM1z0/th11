@@ -48,13 +48,9 @@ fixed-nearest assumption or floor substitution is introduced. The current
 source still calls the CRT routine instead of reproducing the native inline
 FRNDINT codegen, so the submission function earns no exact credit.
 
-A small pinned-VC9 console check links the real CRT and calls `_frnd` on
-+1.5/-1.5 in four x87 modes. Results are nearest2/-2, down1/-2, up2/-1 and
-chop1/-1. Each mode remains unchanged across the calls. This resolves the
-specific C ABI/rounding-mode question; it is not a game/runtime regression
-suite or a general floating-point equivalence claim. Private evidence:
-`.analysis/frnd-library/identity.json`, `abi-check.log`. Unused check code/drivers were removed; their result records
-remain. Compiler/library payloads and extracted objects stay private.
+A pinned-VC9 console check linked the real CRT and called `_frnd` on +1.5/-1.5
+in four x87 modes: nearest2/-2, down1/-2, up2/-1 and chop1/-1. Each mode remained
+unchanged across calls. This resolves the C ABI/rounding-mode question.
 
 ## Submission order and unordered comparisons
 
@@ -132,19 +128,15 @@ The unrotated frame and the opaque rotated callee's private register behavior
 remain concrete wrapper gaps. Submission still differs in CRT call/inlining,
 frame and operand scheduling; complete source is not byte equality.
 
-Canonical artifacts: `build/match-linked/AnimationQuad` and
-`build/match-linked/AnimationVmDraw`. Cold log: `.analysis/vm-draw-six-cold.log`.
-Other private evidence: `frnd-contract-review.txt`,
-`quad-unsnapped-rotated-review.txt`, `quad-dispatch-callees.c` and attestation
-logs; `animation-vm-draw-*.log` compiler probes; complete current diagnostics
-`vm-draw-final-diagnostic.json`. No copied CRT or target code is committed.
+Canonical artifacts are `build/match-linked/AnimationQuad` and
+`build/match-linked/AnimationVmDraw`; rebuild selected units through
+`config/match-units.toml`.
 
 The subsequent [projection/fog review](ANIMATION_PROJECTED_QUAD.md) supplies
 seven more source mappings, reviews the complete976-byte billboard owner and
 records the precise/fast sin-cos and rejected `_frnd` intrinsic experiments.
 Those new diagnostic families do not replace the canonical receipts above.
 
-The [immediate-mode caller audit](ANIMATION_IMMEDIATE_DRAW.md) subsequently
-establishes int status returns for the three draw wrappers. The54-byte unit's
-decorated symbol now reflects that return type; all six affected units retain
-complete exact proofs in `.analysis/immediate-draw-ten-cold.log`.
+The [immediate-mode caller audit](ANIMATION_IMMEDIATE_DRAW.md) establishes int
+status returns for the three draw wrappers. The54-byte unit's decorated symbol
+reflects that return type; all six affected units passed full exact replay.

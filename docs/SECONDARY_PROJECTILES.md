@@ -173,9 +173,5 @@ gate ran before source/boundary registration; after recording the reviewed owner
 the three new units pass using those same cold receipts. Old owners had already
 passed; no recompilation or full-cohort replay is needed.
 
-Private evidence: .analysis/secondary-projectile-final-proof.json, full23-owner
-independent PE records, complete call audit, variant logs and atan2 COFF/CodeView
-records. Compiler artifacts remain in build. No native bytes, vendor objects,
-binaries or decompiler dumps are committed. Existing damage1513/1414 is the last
-measurement before this expanded header/real-special-helper context; it is not
-silently presented as a newly replayed caller. Runtime/product/port work remains later.
+Damage1513/1414 is the last measurement before the expanded header and real
+special-helper context; it is not a newly replayed caller.

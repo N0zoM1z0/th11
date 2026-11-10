@@ -279,8 +279,3 @@ Float destinations for
 shares its RNG call in source but has two physical native sites. Preserve complete
 extents and /GL; no volatile, fake returns,
 private-register declarations, padding or cropped extents are used.
-
-Private evidence uses animation-vm-update/arguments/operations/math Ghidra
-exports, animation-execution-target-proof and complete owners-function/CFG
-reports, plus the targeted RNG argument and strip-division proofs. Target/
-decompiler dumps, builds and mutable databases remain private.

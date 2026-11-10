@@ -134,7 +134,7 @@ does not fix alignment. A controlled /fp:fast probe also retains64 and gives
 The remaining EBP/stack/register/rounding context is open, not papered over by
 changing types or declaring alignment.
 
-All84 selected units pass `.analysis/secondary-extension-affected-cold.log`:
+All84 selected units passed cold replay:
 five new complete unique public primary-TU contributions/340 bytes/ten fields,
 and79 affected prior owners. Current source/header/support/tool/producer and
 PE/MAP/PDB receipts, full ownership, exhaustive replay and every byte pass.
@@ -144,15 +144,6 @@ by the AnimationDocument.hpp trace declaration and script/program changes,
 plus five new units. No unrelated unit or full cohort is selected. The compared
 infrastructure is unchanged; broad behavior and infrastructure suites are not
 checkpoint prerequisites.
-
-Private evidence includes secondary-extension-loaders-review, secondary-host-gaps-review,
-secondary-program-accessor-constructor-review, secondary-program-constructor-review,
-animation-trace-context-review and secondary-trace-owner-review (mapped-text-attested);
-independent full spans/vtable/ten fields; full-source, animation-trace,
-animation-ellipsis, explicit-offset and inline-offset diagnostics; trace ablation,
-body/fixed-format/no-double and fp:fast probes; current affected cold receipts.
-Original bytes, decompiler output, compiler payloads and build artifacts stay
-private. Native product, runtime and portability remain open.
 
 Later actual-caller and typed-trace work supersedes the interpreter alignment
 blocker above: fixed120 and native dispatch layout are recovered in the current

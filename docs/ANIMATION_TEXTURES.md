@@ -1,14 +1,10 @@
 # Animation texture creation
 
-The four constructors called by DecodeAnimationChunk now have complete maintained
-source in `AnimationTexture.cpp`. Direct hash-attested Ghidra review covers all
-control flow, caller arguments, COM slots, incoming/interior references, RET tails
-and adjacent padding. Each target body is contiguous, with no embedded tables or
-external interior references. The private artifacts are
-`.analysis/animation-texture-create-review.txt`,
-`animation-file-texture-full-span.txt` and `animation-texture-create.c`.
-Default decompilation has incorrect D3DX prototypes and removes real blocks;
-the instruction review and ABI-correct SDK declarations take precedence.
+The four constructors called by DecodeAnimationChunk have complete maintained
+source in `AnimationTexture.cpp`. Reviewed bodies are contiguous, with no
+embedded tables or external interior references. Default decompilation has
+incorrect D3DX prototypes and removes real blocks; the instruction review and
+ABI-correct SDK declarations take precedence.
 
 | Function | Complete target span | Current source bytes | State |
 | --- | --- | ---: | --- |

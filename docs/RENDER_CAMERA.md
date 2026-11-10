@@ -117,10 +117,5 @@ changed source/header. Existing MainRuntime and D3D headers remain intact.
 Full frame dispatch, presentation/recovery, native renderer ownership and
 complete-game runtime validation remain open.
 
-Private evidence is in `.analysis/frame-loop-dependencies-review.txt`,
-`frame-loop-dependencies.c`, `camera-caller-review.txt`,
-`camera-math-bindings.txt`, `render-camera-*-linked.json` and
-`render-camera-cold-replay.log`. The perspective review/full diagnostic is in
-`camera-explicit-review.txt` and `perspective-camera-full-replay.json`.
-Canonical families live in ignored
-`build/match-linked/Camera` and `build/match-linked/RenderBatch`.
+Canonical families are `build/match-linked/Camera` and
+`build/match-linked/RenderBatch`.

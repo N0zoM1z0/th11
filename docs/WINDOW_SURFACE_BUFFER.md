@@ -121,9 +121,3 @@ and write-path register selection remain open. Explicit free stdcall inputs
 and /EHsc retain those same results. A direct-pitch version gives201/201 but
 removes the observed cached pitch; a nested-success flow gives212/212. None
 is exact. Avoid repeating these contexts without new target evidence.
-
-Private evidence is retained in `.analysis/window-texture-transfer-review.txt`,
-`window-registration-context.txt`, `main-window-*-linked.json`,
-`main-window-cold-replay.log`, and the `surface-buffer-*` probe families.
-Full native game build/runtime, semantic reconstruction and portability gates
-remain open.

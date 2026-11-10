@@ -59,7 +59,4 @@ field. All three owners pass235 bytes/six fields. Recursive input contracts sele
 zero affected prior units: only new source/header/probe files are introduced.
 No full cohort, broad runtime or unchanged-infrastructure suite is run.
 
-Private reviews, variants, source freeze, final diagnostics and cold proof use
-.analysis/secondary-clearing-*; canonical artifacts use
-build/match-linked/SecondaryClearing/. Native product/runtime/port closure remains
-open. Further work prioritizes large, difficult owners over accumulating leaves.
+Canonical artifacts are in `build/match-linked/SecondaryClearing/`.

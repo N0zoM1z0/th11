@@ -127,8 +127,5 @@ selection-storage variant is byte-identical to the initial51-support candidate
 for all twelve inspected owners and is discarded. No ABI/stack workaround is
 introduced to fit the older support result.
 
-All242 earlier frozen source inputs remain unchanged, including the reused
-shared child finder; three new files extend the freeze to245. No accepted unit
-is affected and no exact unit is added. The two older48-support public menu
-receipts remain valid. Current checkpoint verifier:
-`.analysis/verify-menu-partner-checkpoint.py`.
+No accepted unit depends on the added source. Rebuild the public
+partner-selection recipe for a new measurement.

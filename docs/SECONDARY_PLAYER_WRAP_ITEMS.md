@@ -65,8 +65,6 @@ PE/MAP/PDB receipts agree. Independent native decoding finds exactly two DIR32
 fields: offset1 binds4A8E90 and offset8 binds4A8EB4. Both replay exhaustively with
 every remaining byte equal. Original TU partition and /GL ownership remain open.
 
-Only the new unit is cold-replayed; previous canonical sources, headers and
-contexts do not depend on these new files. No full cohort, runtime harness or
-Oracle/infrastructure suite is run. Private reviews, compiler variants, complete
-diagnostics and final proof are retained under `.analysis/secondary-wrap-items-*`;
-canonical artifacts are in `build/match-linked/SecondaryPlayerWrapItems`.
+The new unit alone was cold-replayed: earlier canonical inputs do not depend
+on these files. Canonical artifacts are in
+`build/match-linked/SecondaryPlayerWrapItems`.

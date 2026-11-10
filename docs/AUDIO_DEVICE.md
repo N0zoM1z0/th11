@@ -122,10 +122,3 @@ Cold scope is exactly9 new plus20 affected old MusicStream/SoundQueue units:
 declared, including the new SoundDevice.hpp. No unrelated family, full cohort,
 broad behavior suite or infrastructure tests are required; infrastructure is
 unchanged. Whole-game linking/runtime and original TU/data ownership remain open.
-
-Private evidence: audio-device-full-review.txt and its full mapped-text
-attestation; audio-device-prefix-gaps.txt; audio-device-prefix-xrefs.txt;
-audio-device-independent-review.json; audio-device-independent-bindings.json;
-BYTE/member-read/branch/resume/refill probes; and
-`audio-device-twenty-nine-affected-cold.log`. Target/decompiler output,
-tool payloads and PE/MAP/PDB artifacts remain private.

@@ -129,8 +129,5 @@ Device-state reset778 and renderer texture recreation162 now have exact
 proofs; preparation135 remains two bytes different. Full-dependency caller
 diagnostics remain non-exact. See [`RENDER_STATE_RESET.md`](RENDER_STATE_RESET.md).
 
-Private evidence: `.analysis/frame-timing-review.txt`, `frame-timing.c`,
-`frame-loop-dependencies-review.txt`, `frame-presentation-callee-entries.txt`,
-`frame-real-caller-entry.txt`, `frame-loop-*-linked.json` and
-`frame-runtime-cold-replay.log`. Native frame/device/resource ownership and
-whole-game runtime closure remain open.
+Native frame/device/resource ownership and whole-game runtime closure remain
+open.

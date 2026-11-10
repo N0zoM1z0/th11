@@ -119,12 +119,8 @@ input. At this checkpoint page05 had no maintained body. The actual native
 42C8D0/42D9D0/42E6B0 callers also remain source-open; linking the existing
 ActorInstructions/HUD/gameplay/debug sources does not implement those owners.
 
-All245 previous source inputs remain unchanged; the two new files extend the
-freeze to247. No accepted canonical unit is affected and no exact unit is added.
-The older52/48-support menu receipts remain valid. Checkpoint verifier:
-`.analysis/verify-menu-character-checkpoint.py`. Tracking is610 reviewed
-boundaries,492 mappings and236 exact/31881 bytes. Source coverage and complete
-comparison evidence do not claim byte equality or native-product closure.
+No canonical exact dependency changed. Rebuild the public character-selection
+recipe before a new measurement.
 
 Subsequent pause checkpoint:42C8D0 now has a complete reviewed3212-byte source
 owner.42D9D0 was subsequently reconstructed as a3192-byte continuation owner;

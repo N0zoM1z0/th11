@@ -150,7 +150,7 @@ member displacements: independent native decoding checks the nonzero base and
 matching displacement at every source instruction. The additional49353C ->435246
 claim is the literal ASCII FRC in neighboring pointer/label records. These are
 neither foreign entries nor grounds to discard complete native owners. Ghidra DB
-memory remains unchanged; the independent classifications stay in private evidence.
+memory remains unchanged.
 
 A fresh complete call audit checks19 source owners, including spawn and the two
 existing emitter helpers: every direct-call target/multiplicity and indirect-call
@@ -170,8 +170,4 @@ payloads independently agree across28 bytes. Source hashes remain frozen through
 final compilation. No full cohort, broad behavior
 suite or Oracle/infrastructure regression is run for these source changes.
 
-Private evidence: .analysis/secondary-pattern-caller-*, full reset/caller exports,
-three explicit callback/timer spans, the aim callback span,44 false-xref records,
-variant sources/logs and build/probe-ltcg diagnostics. Canonical proof artifacts
-live in build/match-linked. Native bytes, vendor objects, tools and decompiler
-output are not committed. Product/runtime/port closure remains later.
+Canonical contexts are declared in `config/match-units.toml`.

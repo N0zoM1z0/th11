@@ -125,9 +125,8 @@ and existing stage lifecycle/tween/thread implementations under /GL. Only the
 real callback and the synthetic diagnostic entry use normal COFF. This is a
 non-runnable compiler context, not the game or a behavioral harness.
 
-Every candidate is measured over its complete PDB contribution. The cold current
-family is build/probe-ltcg/SecondaryGameplaySharedState; the broader dialogue
-family reproduces the same gameplay/debug sizes and differences. Gameplay replays114
+Every candidate is measured over its complete PDB contribution. The shared-state and broader dialogue contexts reproduced the same
+gameplay/debug sizes and differences. Gameplay replays114
 reviewed call/global/literal fields and debug78, with no cropped interval. All
 62/41 call-site counts agree. Static acyclic call/return skeletons agree on183
 and26 traces; loop reentry is recorded and omitted. These checks do not prove
@@ -162,10 +161,7 @@ mixed family has host15936 and state update4079, versus canonical4083. Interpret
 6989/frame120 remains unchanged. None of these support owners receives primary-TU
 acceptance in the family.
 
-The prior145-input freeze is retained. This checkpoint changes the shared control
-view and the three gameplay source/header files, then adds complete dialogue
-source and real support dependencies. Only the existing adapter exact unit is
-affected; its fresh canonical cold11-byte/one-REL32 proof still has zero differences.
-Tools/Oracles and other exact units are unchanged. Source/receipt union details
-and the new substantial owner are recorded in SECONDARY_DIALOGUE.md and the
-current secondary-dialogue-* private proofs. No broad runtime suite is required.
+The shared control view and gameplay source/header changes, followed by the
+real dialogue context, affected only the existing adapter exact unit. Its fresh
+canonical11-byte/one-REL32 proof still had zero differences. See
+[SECONDARY_DIALOGUE](SECONDARY_DIALOGUE.md) for the substantial caller.

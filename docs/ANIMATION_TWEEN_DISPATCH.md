@@ -327,16 +327,3 @@ header changed, the two directly affected old units (buffer487/reclaim273)
 were also cold-replayed, retaining760 bytes and29 fields. The17-unit selection
 contains only15 new and these two affected old owners. No full cohort or broad
 behavior suite was run; Oracle/build infrastructure is unchanged.
-
-Private target evidence: `animation-tween-review.txt`,
-`int-vector-tween-full-review.txt`, `animation-tween-small-gap-review.txt`,
-`animation-int-vector-duration-review.txt`, `animation-pair-duration-review.txt`,
-`renderer-dispatch-review.txt` and their full mapped-text attestations.
-Independent receipts: `animation-tween-dispatch-independent-extents.json` and
-`animation-tween-dispatch-independent-bindings.json`. Compiler probes include
-`animation-tween-baseline.log`, `animation-tween-natural-copies.log`,
-`animation-tween-coefficient-aggregate.log`, `renderer-dispatch-baseline.log`
-and `renderer-dispatch-real-draw-owner.log`. Acceptance is recorded in
-`animation-tween-dispatch-affected-cold.log`; private PE/MAP/PDB/receipts remain
-under the corresponding canonical build directories. Target dumps, decompiler
-hypotheses and tool payloads remain private.

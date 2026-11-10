@@ -132,11 +132,9 @@ The maintained source uses the ordinary /O2 /Ob1 /GL diagnostic profile.
 | DrawProjectedAnimationVm | 48 /24 |
 | BuildAnimationVmModeQuad | 124 /90; historical code-only comparison |
 
-Initial full diagnostics: `build/probe-ltcg/projected-quad/distance-lifetime/diagnostic.json`
-and `.analysis/projected-quad-distance-lifetime.log`. These positional byte
-differences include shifts from different entry sequences. The query row used
-its former89-byte code boundary and is superseded by the108-byte full owner;
-neither equal length nor a small aligned region establishes whole-function equality.
+These positional byte differences include shifts from different entry
+sequences. The query row used its former89-byte code boundary and is superseded
+by the108-byte full owner.
 
 The976-byte billboard and571-byte rotated bodies use paired FSINCOS with float
 result stores. VC9 /O2 /Oi probes of float/double sin/cos calls invoke CRT
@@ -149,15 +147,6 @@ For the1,112-byte submission body, a direct `#pragma intrinsic(_frnd)` probe
 produces VC9 warning C4163 and retains the real CRT call. This does not resolve
 its inline FRNDINT gap. No target instruction bytes or replacement trigonometric
 approximations were introduced.
-
-Private evidence: `vm-draw-more-review.txt`, `vm-rotation-neighbors-review.txt`,
-`billboard-full-span-review.txt` and their attestation logs;
-`projected-quad-independent-review.json`; `projected-d3dx-boundaries-review.txt`
-and `projected-d3dx-import-proof.json`; `square-root-callee-entry-review.txt`;
-`math-pair-precise.asm`, `math-pair-fast.asm` and `frnd-intrinsic.cpp`.
-Current probe artifacts/logs are under `build/probe-ltcg/projected-quad` and
-`.analysis/projected-quad-*.log`. Compiler payloads, extracted math objects,
-target text and decompiler hypotheses remain private.
 
 At the initial projected checkpoint no existing canonical family changed, so
 no old exact unit or full cohort was cold-replayed. Its seven mappings were

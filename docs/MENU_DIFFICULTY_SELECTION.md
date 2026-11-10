@@ -101,12 +101,8 @@ A natural captured transition value eliminates the extra difficulty load but
 gives1036 bytes/60 fields/977 differences; it changes only page05 and is discarded.
 No synthetic register/volatile/ABI workaround is adopted.
 
-All247 prior frozen inputs are unchanged; three new files extend the freeze to250.
-No canonical exact unit is affected. The older53/52/48-support receipts remain
-valid. `.analysis/verify-menu-difficulty-checkpoint.py` verifies target identity,
-Ghidra spans and tables, source/receipt contracts, exhaustive fields and full
-comparison/equivalence. Tracking:612 reviewed boundaries,494 mappings,
-236 exact/31881 bytes. No exact credit or native-product closure is added.
+No canonical exact dependency changed. The public difficulty-selection recipe
+reproduces this diagnostic context.
 
 Subsequent pause checkpoint:42C8D0 now has a complete reviewed3212-byte source
 owner.42D9D0 was subsequently reconstructed as a3192-byte continuation owner;

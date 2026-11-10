@@ -126,11 +126,6 @@ register flag comparisons, list/store scheduling and distance slot14/10. Full
 byte equality remains the criterion; size and matching call graphs grant no
 exact credit.
 
-Private evidence uses secondary-hud-update boundary/review/disassembly exports,
-secondary-hud-owners full-function/field/diff reports, secondary-hud-dialogue
-and parents comparisons, and the current source/dependency freeze. Experiments
-and target/decompiler dumps remain private.
-
 ## Drawing owner
 
 The separate complete2,378-byte drawing owner41C660 now has maintained source.

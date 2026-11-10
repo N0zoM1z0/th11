@@ -26,11 +26,8 @@ is indeterminate: wrappers cannot be attributed to hand-written source versus
 compiler-generated adapters from instructions alone. Other new lifecycle rows
 have reviewed game-specific stage/VM ownership and initialization integration.
 
-Private evidence: `.analysis/stage-initialize-review.txt`,
-`stage-vm-review.txt`, `stage-update-entry.txt`, the three
-`stage-*-callback-span.txt` files, `stage-vector-helper-review.txt` and
-`stage-lifecycle.c`. Default decompiler signatures omit the initializer's
-filename and some real callback inputs; complete instructions take precedence.
+Default decompiler signatures omit the initializer's filename and some real
+callback inputs; complete instructions take precedence.
 
 ## Physical view and constructors
 
@@ -122,7 +119,6 @@ extents and all bytes agree after exhaustive replay. The four float constant
 contents were separately checked against the target. Callback proofs use
 StageCallbacks.cpp as primary, not a borrowed support-TU owner. Earlier45 exact
 contexts were unchanged and were not replayed.
-
 
 Constructor/destructor/factory EH and specialized-owner gaps remain open.
 The older loader contexts remain non-exact:297/434/131 source bytes. The new

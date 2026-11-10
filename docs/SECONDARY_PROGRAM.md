@@ -123,12 +123,9 @@ source/exact credit. Net inventory change is+3 missing entries-1 false split:
 
 ## Affected proof and related compiler findings
 
-At the installation checkpoint, source/header/support/tool/producer and PE/MAP/PDB receipts passed
-`.analysis/secondary-program-affected-cold.log`: exactly three new program units
-and nine affected prior secondary-script units. These are complete unique public
-primary-TU contributions. All69 new bytes agree after exhaustive replay of the
-two independently bound fields; the old296 exact bytes remain valid. No other
-family or full cohort was replayed. Comparison/build infrastructure is unchanged.
+The installation checkpoint replayed three new program units and nine affected
+secondary-script units. All69 new bytes agree after exhaustive replay of two
+fields; the prior296 exact bytes also passed. No unrelated family was rebuilt.
 
 The shared typed-pop conversion now follows native non-float-first branching.
 Its full83-byte candidate drops27 differences to2, both the register SUB4 versus
@@ -142,14 +139,3 @@ could change rounding; it is rejected. Double temporaries remain in source.
 The real-trace source now gives6993/5880. Current trace-context experiments and
 the updated affected cold receipt supersede those earlier diagnostics; see
 [SECONDARY_EXTENSION](SECONDARY_EXTENSION.md).
-
-Private evidence: secondary-program-effects-review, secondary-program-callers-review,
-secondary-manager-create-caller-full, secondary-context-gaps-review,
-secondary-restart-gap-review, secondary-program-extension-review and
-secondary-extension-full-review (all mapped-text-attested); independent full-span,
-vtable/import and exhaustive field reviews; current pop-order dispatch/selector
-shape verification; native-contract, full-contract,
-string-order and default-callback diagnostics; pop-order, member-pop-end and
-float-temporary probes; current affected cold receipts. Target instruction bytes,
-decompiler hypotheses, tool payloads and build artifacts remain private. Native
-product, runtime and portability closure are still open.

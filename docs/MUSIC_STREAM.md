@@ -204,13 +204,3 @@ exactly17 new plus these three affected owners:20 units,1,638 bytes/45 fields.
 No unrelated exact cohort, broad behavior suite or infrastructure test ran.
 Infrastructure is unchanged; original TU/data ownership and native product
 closure remain separate open work.
-
-Private evidence includes `music-stream-full-review.txt`,
-`music-buffer-interface-gap-review.txt`, `music-fade-gaps-review.txt`,
-`music-decoder-gaps-review.txt`, `music-parent-lifetimes-review.txt` and their
-full mapped-text attestations; `music-stream-independent-review.json`,
-`music-stream-independent-bindings.json`, `music-stream-com-protocol-reference.json`;
-baseline/member-refill/virtual-buffer/automatic-inline probes;
-`sound-queue-stream-owner.log`; `music-stream-twenty-affected-cold.log`.
-Decompiler hypotheses, target bytes, tool payloads and PE/MAP/PDB artifacts
-remain private.

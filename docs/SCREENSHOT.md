@@ -88,8 +88,5 @@ runtime closure remains open. Current capture/hotkey diagnostic families use the
 actual `LogBuffer.cpp` as /GL support and `FileSystem.cpp` as normal-COFF
 support; unchanged canonical FileExists was not replayed.
 
-Private evidence: `.analysis/screenshot-rng-review.txt`,
-`screenshot-dependencies-review.txt`, `frame-timing-review.txt`,
-`screenshot-flow-linked.json`, `screenshot-caller-linked.json`,
-`screenshot-hotkey-caller-linked.json`. Public compiler contexts remain under
-`probes/screenshot-context.cpp` and `probes/screenshot-hotkey-context.cpp`.
+Public compiler contexts are `probes/screenshot-context.cpp` and
+`probes/screenshot-hotkey-context.cpp`.

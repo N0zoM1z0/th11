@@ -99,12 +99,6 @@ does not change dimensions, matrices or the signed16 marker.
 
 ## Private reproduction evidence
 
-Target review files are `.analysis/ascii-drawing-review-next.txt`,
-`ascii-draw-code-review.txt`, `ascii-draw-native.asm`,
-`ascii-draw-table-review.json` and their direct-Ghidra attestation logs.
-Renderer dependency hypotheses are private `ascii-render-deps-next.c`.
-Initial/full diagnostic records are retained under
-`build/probe-ltcg/ascii-drawing`; private driver/code copies are removed.
 Current exact contexts are declared in `config/match-units.toml`.
 
 `probes/ascii-drawing-context.cpp` supplies independent manager/mode, sprite,
@@ -149,7 +143,4 @@ rounding mode through the verified CRT primitive. See
 opaque renderer calls; no caller-wide replay is required merely because the
 dependency acquired source.
 
-Proof logs: `.analysis/ascii-drawing-seven-cold.log` and
-`ascii-drawing-final-four-cold.log`. Complete current main-function diagnostics:
-`.analysis/ascii-draw-final-diagnostic.json`. Source presence and masked
-similarity never grant the main function exact credit.
+The main drawing function remains non-exact.

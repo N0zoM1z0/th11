@@ -132,10 +132,6 @@ public primary-TU ownership and zero byte differences. Maintained source/header/
 support hashes remain frozen through those builds and the separate actual-caller
 cold diagnostic. No unrelated unit or full cohort is replayed.
 
-Current private evidence uses .analysis/secondary-interpreter-tails-* and
-build/probe-ltcg/SecondaryInterpreterTails/maintained/. Earlier caller/trace
-evidence remains under the hard prefix. The maintained audit covers the complete
-owner, tables, all direct targets/multiplicities, callback and returns; a separate
-per-opcode CFG audit distinguishes native sharing from extra candidate sharing.
-No broad behavioral or unchanged-Oracle/infrastructure suite is run. Original types/TU,
-whole-game product/runtime and portability closure remain separate open questions.
+The reviewed complete owner includes all tables, direct targets/multiplicities,
+callbacks and returns. Per-opcode CFG analysis distinguishes native sharing
+from extra candidate sharing. Original types and TU ownership remain open.

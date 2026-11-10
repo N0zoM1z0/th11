@@ -179,23 +179,8 @@ bounded by RET and CC neighbors with no interior entry. Custom script roles,
 format magic and generic math/stack wrappers do not establish original game,
 header or library authorship. All28 origins remain indeterminate.
 
-Canonical new family `build/match-linked/SecondaryScript` accepts exactly nine
-complete unique public primary-TU contributions /296 bytes. Every body has zero
-address fields; exhaustive decoding confirms an empty field list, and every
-actual byte agrees. Current source/header/tool/producer/PE/MAP/PDB receipts and
-full ownership initially passed `.analysis/secondary-script-nine-cold.log`.
-After the current header/inline changes all nine pass again in
-`.analysis/secondary-program-affected-cold.log`, together with three new program
-units. The current trace declaration/body changes have a wider affected receipt
-set, recorded in [SECONDARY_EXTENSION](SECONDARY_EXTENSION.md). No full cohort, broad behavior
-harness or infrastructure tests ran;
-comparison/build infrastructure is unchanged. Whole-game runtime and port stages
-remain open.
-
-Private evidence includes interpreter owner/full-code exports and complete
-mapped-text attestations, full support/math reviews, missing-pop span,
-secondary-vm-independent-review.json, secondary-vm-independent-tables.json,
-full argument-reference export (the initial80-reference view was truncated),
-typed/grouped/per-operation/member/distinct/profile probes and current cold
-receipts. Original instruction/table bytes, decompiler hypotheses, tool payloads
-and PE/MAP/PDB artifacts remain private.
+The canonical `build/match-linked/SecondaryScript` family contains nine complete
+public primary-TU contributions/296 bytes. Exhaustive decoding finds no address
+fields; every byte agrees. All nine passed replay after the header/inline
+changes. Wider trace-declaration dependencies are recorded in
+[SECONDARY_EXTENSION](SECONDARY_EXTENSION.md).

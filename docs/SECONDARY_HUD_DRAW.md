@@ -157,10 +157,6 @@ Those changes are not retained. The earlier183 frozen source inputs remain
 unchanged; no broad
 behavior, null/failure, caller or multiframe suite is used.
 
-Private current evidence: secondary-hud-draw-review/full/dependencies.*, complete
-function/support/vararg proofs, secondary-hud-rectangle-canonical-comparison.json
-and verify-hud-score-renderer-checkpoint.py. Current public-family reports use
-hud-score-renderer-public-*; the canonical receipt remains the rectangle family.
-Counts stay457 mappings,574 reviewed boundaries and235 exact functions/28,045
-bytes. The preceding checkpoint added four mappings/3,038 native bytes, including
-the499-byte exact rectangle dependency.
+The canonical exact dependency is the499-byte rectangle family. The larger
+HUD score renderer remains non-exact; its public recipe retains the full caller
+context.

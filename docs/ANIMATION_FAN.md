@@ -144,13 +144,3 @@ A separate private world-draw experiment reversed logical source parameter
 order consistently in definitions/callers. It left the1,036-byte target's
 candidate unchanged at1,038 bytes/750 diagnostic differences. That hypothesis
 was rejected; no world-draw interface change was committed.
-
-Private evidence: `vm-buffer-gap-full-review.txt`, `vm-query-gap-full-review.txt`,
-`vm-fan-effects-review.txt`, `vm-fan-draw-callback-review.txt`,
-`vm-buffer-draw-review.txt` and their complete mapped-text attestations;
-`animation-fan-independent-review.json`, `animation-fan-exact-items.json`;
-`animation-fan-six-cold.log`; complete canonical diagnostics in
-`animation-fan-current/diagnostic.json` and `animation-fan-current.log`.
-Baseline/float-conversion compiler probes and `world-vm-first.log` record the
-experiments. Decompiler hypotheses, target text, compiler payloads and the
-mutable Ghidra database remain private.
