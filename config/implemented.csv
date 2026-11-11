@@ -563,3 +563,5 @@ FlushScreenshotResources
 CopyAnimationTextureSurface
 AnimationRendererUpdatePriority26
 AnimationRendererUpdatePriority08
+ClearSecondaryProgramBrowserFiles
+UpdateSecondaryProgramBrowser

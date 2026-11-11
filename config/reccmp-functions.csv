@@ -564,3 +564,5 @@ FlushScreenshotResources,0x00445460,function
 CopyAnimationTextureSurface,0x00454EC0,function
 AnimationRendererUpdatePriority26,0x00455120,function
 AnimationRendererUpdatePriority08,0x00455130,function
+ClearSecondaryProgramBrowserFiles,0x00438570,function
+UpdateSecondaryProgramBrowser,0x00438AC0,function
