@@ -284,3 +284,13 @@ differs (EDI vs EAX for non-exact AdvanceAnimationDocument4544C0/212).
 This scanner remains **non-exact**; the neighboring 51-byte slot
 release remains strict canonical exact. See
 [ANIMATION_DOCUMENT_SLOTS](ANIMATION_DOCUMENT_SLOTS.md).
+
+
+Animation chunk decoding at4545A0/811 is now a **cold linked-PE
+exact 811/811-byte boss function**, with all 15 independently reviewed
+DIR32/REL32 fields replayed and nine owned alignment bytes.
+The natural `script[i].offset` loop and the native sprite
+fileIndex/texture/textureIndex assignment order eliminate all ten
+previous code differences. The 149-byte StoreAnimationSprite is
+separately exact, while AdvanceAnimationDocument4544C0/212 remains
+non-exact. See [ANIMATION_CHUNKS](ANIMATION_CHUNKS.md).

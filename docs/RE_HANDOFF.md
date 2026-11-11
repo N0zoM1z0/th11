@@ -31,13 +31,16 @@ Canonical source, ledgers and build/comparison scripts are unchanged.
 
 ## Next reconstruction work
 
-The large DecodeAnimationChunk owner4545A0/811 now naturally
-matches the original complete 811-byte /GL extent with only **five**
-non-field byte mismatches, all in sprite texture/file-index store
-scheduling. Using `script[i].offset` removed the prior five
-script-loop instruction-order differences. The 149-byte
-StoreAnimationSprite remains strict cold exact after rebuilding.
-See ANIMATION_CHUNKS.md; the 811-byte decoder is still non-exact.
+The large `DecodeAnimationChunk` owner4545A0/811 is now
+**strict cold linked-PE exact 811/811** with 15 reviewed
+bindings (eight DIR32 and seven REL32), complete original
+nine-byte alignment, and full source/support/toolchain/PE/MAP/PDB
+receipts. Natural `script[i].offset` and
+fileIndex/texture/textureIndex initialization order restored all
+ten formerly mismatched code bytes; no ABI spoofing or opcode
+patches. The separately exact 149-byte StoreAnimationSprite is
+still an independently protected unit. The 212-byte advance owner
+remains non-exact. See ANIMATION_CHUNKS.md.
 
 Animation slot release4549A0/51 is now **cold linked exact 51/51**
 with two reviewed REL32 fields (document destroy4549E0, operator

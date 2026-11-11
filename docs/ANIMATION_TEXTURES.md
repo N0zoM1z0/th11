@@ -79,8 +79,11 @@ sprite assignment order reduce the decoder from the former629-byte candidate
 to the complete811 bytes with10 unequal diagnostic positions. Replacing
 the pointer-increment script loop with indexed `script[i].offset` has
 subsequently eliminated all five script-loop entry differences, leaving
-**811 bytes with only five non-field sprite setup differences**. It remains non-exact: no register,
-instruction-order or byte normalization grants credit.
+**811 bytes with only five non-field sprite setup differences**.
+Those remaining five were subsequently eliminated by restoring the
+natural fileIndex/texture/textureIndex initialization order. The
+decoder now has independent canonical cold linked-PE **811/811
+exact** credit with 15 reviewed fields; see ANIMATION_CHUNKS.md.
 
 Bounded alternate source contexts are retained privately: opaque helpers gave
 629 bytes; real constructors with an extra decoder caller gave663; restricting

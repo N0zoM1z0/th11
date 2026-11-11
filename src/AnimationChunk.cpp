@@ -124,8 +124,8 @@ int __stdcall DecodeAnimationChunk(AnimationDocumentView *file, int textureIndex
         const AnimationChunkSpriteView *rectangle =
             reinterpret_cast<const AnimationChunkSpriteView *>(base + *offset);
         AnimationSpriteView sprite;
-        sprite.texture = file->textures + textureIndex;
         sprite.fileIndex = file->index;
+        sprite.texture = file->textures + textureIndex;
         sprite.textureIndex = textureIndex;
         sprite.scaleX = static_cast<float>(description.Width) / chunk->width;
         sprite.scaleY = static_cast<float>(description.Height) / chunk->height;
