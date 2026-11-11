@@ -55,20 +55,31 @@ or manager objects, and leaves the actual `CreateSecondaryManager` owner at
 
 ## Focused codegen and next questions
 
-Pinned VC9 `/O2 /Ob1 /Gy /MT /EHsc` normal COFF generates **855 bytes** for
-the browser and 93 for cleanup. In a narrow genuine-source `/GL` diagnostic
+Pinned VC9 `/O2 /Ob1 /Gy /MT /EHsc` normal COFF initially generated
+**855 bytes** for the browser and 93 for cleanup. In a narrow genuine-source `/GL` diagnostic
 with a compile-only independent callback, the browser is **859 bytes/249
 instructions/22 calls**, versus native **934/267/22**; cleanup is **87
 bytes/30 instructions**, versus native **83/29**. Including the real menu
 selection and gameplay-support TUs changes browser codegen to 843 bytes,
-with the same 22 call sites. No profile has earned exact credit.
+with the same 22 call sites. These browser candidates remain non-exact.
+
+For the 83-byte cleanup, introducing the naturally reused local
+`char *filename = self->filenames[i]` before the null test changes the
+original linked 87-byte form to the native **83 bytes/29 instructions**.
+Strict cold Oracle `secondary-program-browser-clear` independently compiles
+that source, verifies complete primary-TU PE/MAP/PDB ownership and current
+compiler/producer receipts, exhaustively binds the two `_free` REL32 calls
+at native offsets `0x1C` and `0x3D` to `0x45FC3B`, and replays **zero byte
+differences**. See `.analysis/secondary-browser-clear-strict-proof-20261111.log`
+and `build/match-linked/SecondaryProgramBrowserClear/`. No full cohort was
+cold-replayed.
 
 The most concrete browser gap is the initialization of the three embedded
 selections: native code dynamically reloads each saved count and branches
 through the zero/negative/positive rule, even immediately after the count
 stores, while the current source's generic helper lets VC9 constant-fold
-some of those branches. The native cleanup's ESI register ownership also
-remains to be restored under an appropriate producer. Further work should
+some of those branches. The cleanup's ESI register ownership is restored by the genuine browser caller
+under VC9 `/GL`. Further work should
 restore those normal source dataflow boundaries and preserve the true manager
 construction ABI, rather than padding byte spans or masking mismatches.
 

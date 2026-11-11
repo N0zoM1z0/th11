@@ -145,8 +145,8 @@ the updated affected cold receipt supersede those earlier diagnostics; see
 The previously source-open **934-byte** `UpdateSecondaryProgramBrowser`
 (`0x438AC0`) and its **83-byte** file-list destructor (`0x438570`) now have
 maintained C++ in `SecondaryProgramBrowser.cpp`, with an independently checked
-physical state/selection layout. Both compile in VC9 COFF and `/GL`; the
-scoped `/GL` browser retains all 22 native call sites, but differs in length
-and instructions, so neither owner is exact. The complete state branches,
+physical state/selection layout. Both compile in VC9 COFF and `/GL`; the scoped `/GL` browser retains all
+22 native calls but remains non-exact. The separate filename cleanup is now
+**83/83 strict linked-PE exact**, with both native CRT free calls bound. The complete state branches,
 filename allocation, input-bit semantics and script-manager dependency are
 detailed in [SECONDARY_PROGRAM_BROWSER](SECONDARY_PROGRAM_BROWSER.md).

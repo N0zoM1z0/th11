@@ -365,3 +365,11 @@ selection setup reloads the count and emits dynamic zero/negative/positive
 branching after setting each count; our inlined initialization folds away
 constant cases. No exact status is claimed. See
 [SECONDARY_PROGRAM_BROWSER](SECONDARY_PROGRAM_BROWSER.md).
+
+
+The 83-byte filename cleanup `ClearSecondaryProgramBrowserFiles` at438570 is
+now strict VC9 /GL exact. A saved `char *filename` local before the null test
+restores native MOV/TEST/PUSH rather than CMP-memory/LEA/MOV; both original
+CRT free calls at 45FC3B are independently bound. The larger934-byte ECL
+browser retains its 859-byte /22-call diagnostic and remains non-exact.
+See [SECONDARY_PROGRAM_BROWSER](SECONDARY_PROGRAM_BROWSER.md).

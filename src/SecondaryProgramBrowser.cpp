@@ -37,9 +37,10 @@ void __stdcall ClearSecondaryProgramBrowserFiles(SecondaryProgramBrowserView *se
     {
         for (int i = 0; i < self->fileCount; ++i)
         {
-            if (self->filenames[i])
+            char *filename = self->filenames[i];
+            if (filename)
             {
-                free(self->filenames[i]);
+                free(filename);
                 self->filenames[i] = 0;
             }
         }

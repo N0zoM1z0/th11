@@ -5386,3 +5386,23 @@ size = 7
 linkages = [
   { offset = 3, type = "REL32", symbol = "?UpdateOtherAnimationRenderer@@YGHPAUAnimationRenderer@@@Z", target = 0x00455560 },
 ]
+
+# Original 83-byte secondary program browser file-list cleanup. Native caller
+# in the same TU supplies the ESI private argument naturally; the external
+# probe keeps browser input independent without manufacturing ABI registers.
+[units.secondary-program-browser-clear]
+artifact_kind = "linked-pe"
+source = "src/SecondaryProgramBrowser.cpp"
+inputs = ["src/SecondaryProgramBrowser.hpp", "src/SecondaryGameplay.hpp", "src/SecondaryScript.hpp", "src/InputBackend.hpp"]
+support_sources = ["probes/secondary-program-browser-context.cpp"]
+output_dir = "build/match-linked/SecondaryProgramBrowserClear"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryProgramBrowserProbe@4"
+functions = ["ClearSecondaryProgramBrowserFiles"]
+symbol = "?ClearSecondaryProgramBrowserFiles@@YGXPAUSecondaryProgramBrowserView@@@Z"
+target_address = 0x00438570
+size = 83
+linkages = [
+  { offset = 0x1C, type = "REL32", symbol = "_free", target = 0x0045FC3B },
+  { offset = 0x3D, type = "REL32", symbol = "_free", target = 0x0045FC3B },
+]
