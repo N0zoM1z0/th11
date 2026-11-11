@@ -78,6 +78,31 @@ Private evidence: `.analysis/gameover-cfg-review-20261111.py`,
 `.analysis/gameover-coff-compare-20261111.json` and
 `build/probe-ltcg/PauseGameOverContext/`.
 
+### State 21 branch-local selection reset (2026-11-11)
+
+The original states 21 practice and regular routes each set the three-option
+selection count, wrap flag, and initial cursor before their common root event.
+Keeping these operations *inside each branch*, rather than hoisting them
+after the join, produces more faithful VC9 codegen without changing the
+state machine or call targets.
+
+The complete normal-COFF body improves **3068 -> 3116 bytes**, with
+relocation-masked diagnostic comparable matches **171/2592 -> 254/2592**
+and unchanged 154 relocations. A focused `/GL` link with the real
+`MeshEffects.cpp` sound helper and existing score/record support produces
+**3180/3208 bytes**, versus 3116 with that same support context before
+the source change and 3060 in the earlier six-TU context. It retains
+**88/88 call sites, 14/14 returns and 7/7 owned dispatch entries**.
+A wider `/GL` context adding timer and selection helpers instead reduced
+the function and removed call/return sites; it was not adopted.
+
+The remaining **28-byte size difference** still requires full code/data
+field reconciliation; size proximity does not establish exactness.
+Local diagnostics: `.analysis/gameover-state21-source-linked.log`,
+`.analysis/gameover-main-after-branches-coff-compare.json`, and
+`build/probe-ltcg/GameOverSoundOnly/`. Next focus: case 21's private
+factory result/lifetime and case 25's keyboard/record-name path.
+
 Next focus: preserve the full state20..26 graph while reducing register
 allocation/stack/result-identity differences against the 3208-byte owner.
 Do not run unrelated cold replay cohorts to compare this function.

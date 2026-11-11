@@ -101,6 +101,10 @@ void __stdcall UpdatePauseGameOverMenu(PauseContinueMenuView *owner)
             self->root = CreateDefaultSecondaryDrawAnimationVmId(owner->file,
                 0x68 - (self->saveMode != 0));
             self->state = 22;
+            // Keep the native practice and regular selection resets distinct.
+            self->selection.count = 3;
+            self->selection.wrapEnabled = 1;
+            Choose(0, &self->selection);
         }
         else
         {
@@ -115,10 +119,10 @@ void __stdcall UpdatePauseGameOverMenu(PauseContinueMenuView *owner)
             self->root = CreateDefaultSecondaryDrawAnimationVmId(owner->file, 0x62);
             // This path rejoins the ordinary continuation state handler.
             self->state = 14;
+            self->selection.count = 3;
+            self->selection.wrapEnabled = 1;
+            Choose(0, &self->selection);
         }
-        self->selection.count = 3;
-        self->selection.wrapEnabled = 1;
-        Choose(0, &self->selection);
         ClearSecondaryProjectileHit(&self->root.value);
         SignalChoice(self);
         break;
@@ -356,6 +360,7 @@ FinishRecordName:
             self->root = CreateDefaultSecondaryDrawAnimationVmId(owner->file, 0x67);
             ShowPauseMenuAnimationTree(self->root);
             self->state = 22;
+            // Keep the native practice and regular selection resets distinct.
             self->selection.count = 3;
             self->selection.wrapEnabled = 1;
             Choose(0, &self->selection);
