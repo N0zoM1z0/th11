@@ -12,10 +12,22 @@ __forceinline void InitializeSelection(SecondaryDebugSelectionView *selection, i
 {
     selection->count = count;
     selection->wrapEnabled = 1;
-    // This is the native zero/negative-count choice, not a bounds clamp.
-    if (count == 0) selection->current = 0;
-    else if (count < 1) selection->current = count - 1;
-    else selection->current = 0;
+    // The native owner re-reads the stored count and retains distinct
+    // zero, positive and negative paths even for literal callers (3/1).
+    // Keep a single observed memory read rather than folding the prior store.
+    const int currentCount = *reinterpret_cast<volatile const int *>(&selection->count);
+    if (currentCount == 0)
+    {
+        selection->current = 0;
+        return;
+    }
+    if (currentCount > 0)
+    {
+        selection->current = 0;
+        return;
+    }
+    // The original DEC wraps on INT_MIN, so use defined unsigned subtraction.
+    selection->current = static_cast<int>(static_cast<unsigned int>(currentCount) - 1u);
 }
 
 __forceinline void Navigate(SecondaryDebugSelectionView *selection,

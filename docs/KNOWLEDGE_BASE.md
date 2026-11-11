@@ -360,10 +360,10 @@ See `ANIMATION_RENDERER_LIFECYCLE.md`.
 The secondary ECL program browser at438AC0/934 and its 438570/83 filename
 cleanup now have source and reviewed physical selection fields. The native
 934-byte state machine has267 instructions/22 calls; a focused VC9 /GL
-independent-caller family gives859/249/22. Its key codegen gap is that native
-selection setup reloads the count and emits dynamic zero/negative/positive
-branching after setting each count; our inlined initialization folds away
-constant cases. No exact status is claimed. See
+independent-caller family gives859/249/22. That selection-init gap is now partially closed: a native-aligned
+post-store count reload and three-way split reconstruct the full267 native
+instructions in a scoped912/934-byte VC9 /GL candidate. The large browser
+still has hundreds of byte differences and remains NON-EXACT. See
 [SECONDARY_PROGRAM_BROWSER](SECONDARY_PROGRAM_BROWSER.md).
 
 
@@ -381,4 +381,13 @@ exact 8/8 with one reviewed REL32, independent of the still non-exact 277-byte
 `LoadSecondaryProgramSelection` body. The bigger934-byte browser has been
 corrected to register this callback. The separate83-byte filename cleanup
 remains exact after a scoped cold recheck. See
+[SECONDARY_PROGRAM_BROWSER](SECONDARY_PROGRAM_BROWSER.md).
+
+
+The 934-byte ECL browser now uses the actual post-store selection count
+reload and separate zero/positive/negative initializer branches. Its real
+VC9 /GL narrow body grows from859/249 instructions to912/267, equal to
+all267 native decoded instructions while retaining22/22 calls. It is not
+byte exact (659 nonfield diagnostic differences). The shared83-byte file
+cleanup stays strict exact after a scoped cold replay. See
 [SECONDARY_PROGRAM_BROWSER](SECONDARY_PROGRAM_BROWSER.md).

@@ -74,14 +74,10 @@ differences**. See `.analysis/secondary-browser-clear-strict-proof-20261111.log`
 and `build/match-linked/SecondaryProgramBrowserClear/`. No full cohort was
 cold-replayed.
 
-The most concrete browser gap is the initialization of the three embedded
-selections: native code dynamically reloads each saved count and branches
-through the zero/negative/positive rule, even immediately after the count
-stores, while the current source's generic helper lets VC9 constant-fold
-some of those branches. The cleanup's ESI register ownership is restored by the genuine browser caller
-under VC9 `/GL`. Further work should
-restore those normal source dataflow boundaries and preserve the true manager
-construction ABI, rather than padding byte spans or masking mismatches.
+The selection-count initialization previously folded away branches even
+though native code reloads object fields after writing them. The scoped
+codegen restoration below addresses this gap, while the overall browser
+and manager ABI remain non-exact.
 
 Private diagnostic recipe and result context:
 `.analysis/probe-secondary-program-browser.py`,
@@ -129,3 +125,32 @@ cold-rechecked in the same scoped run after the shared header/caller edits
 and remains **83/83 exact**. Evidence:
 `.analysis/secondary-loader-two-scoped-exact-20261111.log` and
 `build/match-linked/SecondaryProgramLoadThread/`. No full cohort replay.
+
+## Selection-count control-flow restoration (2026-11-11)
+
+The complete 934-byte `UpdateSecondaryProgramBrowser` owner now retains the
+native post-store **count reload** in its three menu-selection initializers.
+The existing helper had passed the literal counts `3`, `count`, `1`, allowing
+VC9 /GL to fold the zero/positive/negative branches. The maintained C++
+reads the just-stored physical field through a volatile-qualified view
+(once per initializer) and spells distinct zero, positive, and negative
+paths. The negative DEC is expressed through defined unsigned subtraction
+so the original 32-bit wrap does not become a signed-overflow assumption.
+These are actual selection state operations, not padding or ABI shims.
+
+Scoped pinned VC9 `/GL` against the real native extent now yields **912/934
+bytes**, **267/267 decoded instructions**, and **22/22 call sites**. Before
+this change the same narrow producer yielded 859 bytes, 249 instructions
+and 22 calls. The 53 additional bytes and 18 restored instructions recover
+previously lost codegen paths. The owner remains strictly **non-exact**:
+659 non-address-field positional byte differences remain, as do branch-layout
+and register-selection differences. The real menu selection support context
+produces a separate 896-byte diagnostic and must not be mistaken for proof.
+
+The affected-only exact cold replay of `secondary-program-browser-clear` also
+passed **83/83**, two CRT free bindings and **zero byte differences** after
+the shared source change; no unrelated or full-cohort cold build ran.
+Diagnostics: `.analysis/secondary-program-browser-restored-count-20261111.log`,
+`.analysis/try-browser-selection-count-codegen-20261111.py`,
+`.analysis/try-browser-branch-early-return-20261111.py`,
+and `.analysis/secondary-program-browser-leaf-recheck-20261111.log`.

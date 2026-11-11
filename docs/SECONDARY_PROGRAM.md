@@ -160,3 +160,11 @@ newly source-present but non-exact **277-byte** `LoadSecondaryProgramSelection`
 uses the actual registered callback rather than the unrelated debug-loader
 function. See [SECONDARY_PROGRAM_BROWSER](SECONDARY_PROGRAM_BROWSER.md) for
 physical state fields, compiler comparisons and unresolved loader ABI.
+
+
+The current browser source now re-reads the three selection `count` fields
+after stores and keeps separate zero/positive/negative paths. Focused VC9
+`/GL` improves **859/934 (249/267 instructions)** to **912/934
+(267/267 instructions)** with all22 native calls retained. It remains
+non-exact; the separately exact83-byte cleanup was cold-replayed after
+this local edit. See [SECONDARY_PROGRAM_BROWSER](SECONDARY_PROGRAM_BROWSER.md).
