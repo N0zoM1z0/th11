@@ -181,3 +181,26 @@ non-runnable diagnostic, not a reconstructed full executable.
 Evidence is under `.analysis/decode-animation-chunk-strict-*.json`,
 `.analysis/decode-animation-chunk-strict-cold-build.log` and
 `build/match-linked/AnimationChunkDecode/`.
+
+
+## Scoped dependency rechecks after the 811-byte exact owner
+
+After the final sprite-header field-order change, only directly affected
+strict units were cold-rebuilt and compared, not the whole cold cohort.
+The following maintain their independent exact byte proofs:
+`create-animation-embedded-texture` **287/287, 10 fields**,
+`create-animation-empty-texture` **67/67, 5 fields**,
+`create-animation-render-target` **69/69, 5 fields**, and
+`store-animation-sprite` **149/149, no fields**.
+Private receipts:
+`.analysis/create-animation-*-decoder-exact-proof.json` and
+`.analysis/store-animation-sprite-final-boss-proof.json`.
+
+The remaining 212-byte `AdvanceAnimationDocument` was also exercised
+in its sole native scan caller context. Changing its decoded-state
+`bool` to a 32-bit integer produced a **215-byte** private /GL
+contribution instead of the previous 212, and did not change the
+scanning caller's private EAX receiver (native EDI). Source variable
+reordering and extra natural dynamic callers gave the same result.
+Those variants are kept only under `.analysis/advance-document-*`;
+the maintained advance source was not changed.

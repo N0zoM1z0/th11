@@ -31,6 +31,14 @@ Canonical source, ledgers and build/comparison scripts are unchanged.
 
 ## Next reconstruction work
 
+The new decoder exact checkpoint also reran only its four directly
+affected sprite/texture exact units (149/287/67/69 bytes): all
+still exact after cold rebuild. The separate document scanner4548D0
+still links 135 bytes with one EAX/EDI ModRM difference, and scoped
+`bool`-to-`int` decoded-state trials for Advance4544C0
+grew its PDB extent 212->215 without fixing that caller.
+See ANIMATION_CHUNKS.md and ANIMATION_DOCUMENT_SLOTS.md.
+
 The large `DecodeAnimationChunk` owner4545A0/811 is now
 **strict cold linked-PE exact 811/811** with 15 reviewed
 bindings (eight DIR32 and seven REL32), complete original

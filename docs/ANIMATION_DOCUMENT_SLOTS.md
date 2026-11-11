@@ -91,3 +91,18 @@ source. Private comparisons and codegen variants:
 `.analysis/animation-slot-advance-abi-links.log`,
 `.analysis/animation-slot-add-advance-probes.log` and
 `build/probe-ltcg/AnimationDocumentSlots/`.
+
+
+## Downstream ABI probe following decoder exact
+
+Recompiling the sole 135-byte scanner under a limited /GL context
+after `DecodeAnimationChunk` became independently exact retained
+the full **135-byte / three-call / two-return** scan, but still
+used EAX instead of the native EDI for the private parameter to the
+212-byte `AdvanceAnimationDocument`. The 811-byte decoder is exact
+under its own six-support-TU producer context; with the narrower
+scanner producer context it is a different PDB contribution and
+cannot be claimed exact merely by reusing the same source.
+The scanner remains non-exact with the single previously reviewed
+register ModRM difference.
+Evidence: `.analysis/animation-slot-after-decoder-boss-linked.log`.
