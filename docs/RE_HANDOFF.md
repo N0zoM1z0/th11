@@ -31,6 +31,15 @@ Canonical source, ledgers and build/comparison scripts are unchanged.
 
 ## Next reconstruction work
 
+Controller initialization owner42F8A0/1557 now has compiled full
+source in SecondaryPlayerInitialization.cpp: pinned normal COFF1492/40
+fields and narrow /GL1479/13 calls/2 returns versus native1557/13/2.
+Six direct support TUs yield1520/14 calls/3 returns, still non-exact.
+The child42F580/286 stays cold-linked exact. Next recover the
+constructor4301B0/152 and native private register allocation. See
+[SECONDARY_PLAYER_INITIALIZATION](SECONDARY_PLAYER_INITIALIZATION.md).
+
+
 Dialogue phase query42F540/27 is strict normal-COFF exact.
 Controller animation pair reset42F580/286 now also has strict linked-PE
 **exact 286/286** with one g_RenderBatch DIR32 field and the natural

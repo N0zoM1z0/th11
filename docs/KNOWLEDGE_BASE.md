@@ -187,3 +187,9 @@ complete cold linked-PE exactness (286/286, one reviewed global DIR32)
 from a naturally compiled 304-byte controller reset caller.
 Parent42FEC0/304 also has compiled source but remains non-exact
 (319-byte linked draft); see [SECONDARY_PLAYER_ANIMATION_RESET](SECONDARY_PLAYER_ANIMATION_RESET.md).
+
+Controller initializer42F8A0/1557 now has full VC9-compiled source,
+13 native calls/2 returns in the narrow linked context; both narrow1479
+and helper-linked1520 remain non-exact. Refer to
+[SECONDARY_PLAYER_INITIALIZATION](SECONDARY_PLAYER_INITIALIZATION.md)
+for caller and codegen gaps.

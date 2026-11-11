@@ -520,3 +520,4 @@ CapturePauseOverlayFromVm
 IsSecondaryDialogueStateFlag2Set
 ResetSecondaryPlayerAnimationPairs
 ResetSecondaryPlayerControllerState
+InitializeSecondaryPlayerController

@@ -521,3 +521,4 @@ CapturePauseOverlayFromVm,0x0042F480,function
 IsSecondaryDialogueStateFlag2Set,0x0042F540,function
 ResetSecondaryPlayerAnimationPairs,0x0042F580,function
 ResetSecondaryPlayerControllerState,0x0042FEC0,function
+InitializeSecondaryPlayerController,0x0042F8A0,function
