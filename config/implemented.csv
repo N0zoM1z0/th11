@@ -568,3 +568,6 @@ UpdateSecondaryProgramBrowser
 LoadSecondaryProgramSelection
 SecondaryProgramBrowserLoadThread
 CreateSecondaryManager
+DrawSecondaryProgramBrowser
+SecondaryProgramBrowserDrawCallback
+SecondaryProgramBrowserStorageSize

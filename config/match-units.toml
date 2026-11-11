@@ -5446,3 +5446,19 @@ linkages = [
   { offset = 22, type = "DIR32", symbol = "??_7SecondaryManager@@6B@", target = 0x00494058 },
   { offset = 54, type = "REL32", symbol = "?FindSecondarySubroutine@@YGPAUSecondaryInstruction@@PAUSecondaryProgramView@@PBD@Z", target = 0x0045DB10 },
 ]
+
+# Six-byte size getter immediately after the browser's draw-chain adapter.
+# Its complete native owner is a MOV EAX, 0x5B94 followed by RET; no fields.
+[units.secondary-program-browser-storage-size]
+artifact_kind = "linked-pe"
+source = "src/SecondaryProgramBrowserCallbacks.cpp"
+inputs = ["src/SecondaryProgramBrowser.hpp", "src/SecondaryGameplay.hpp"]
+support_sources = ["src/SecondaryProgramBrowserDraw.cpp", "probes/secondary-browser-callbacks-probe.cpp"]
+output_dir = "build/match-linked/SecondaryProgramBrowserStorageSize"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryProgramBrowserCallbacksProbe@8"
+functions = ["SecondaryProgramBrowserStorageSize"]
+symbol = "?SecondaryProgramBrowserStorageSize@@YAIXZ"
+target_address = 0x004390D0
+size = 6
+linkages = []

@@ -614,9 +614,9 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00438900,unknown,SecondaryScriptVm,indeterminate,unknown,secondary-program-load-thread-origin-20261111
 0x00438910,unknown,SecondaryScriptVm,indeterminate,unknown,secondary-program-origin-2026-10-29
 0x00438AC0,unknown,SecondaryScriptVm,indeterminate,unknown,secondary-program-origin-2026-10-29
-0x00438E70,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x004390B0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x004390D0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00438E70,unknown,SecondaryScriptVm,indeterminate,unknown,secondary-browser-ascii-display-origin-20261111
+0x004390B0,unknown,SecondaryScriptVm,indeterminate,unknown,secondary-browser-ascii-display-origin-20261111
+0x004390D0,unknown,SecondaryScriptVm,indeterminate,unknown,secondary-browser-ascii-display-origin-20261111
 0x004390E0,unknown,ConfigurationMenu,indeterminate,unknown,configuration-audio-menu-origin-2026-11-06
 0x00439140,unknown,ConfigurationMenu,indeterminate,unknown,configuration-audio-menu-origin-2026-11-06
 0x004391A0,unknown,ConfigurationMenu,indeterminate,unknown,menu-primary-origin-2026-11-06

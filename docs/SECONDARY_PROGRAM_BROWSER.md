@@ -215,3 +215,40 @@ Both directly affected strict owners, the **83-byte** filename cleanup and
 with zero differences. Compare
 `.analysis/secondary-browser-mode4-real-context-20261111.log` and
 `.analysis/secondary-browser-mode4-affected-exact-20261111.log`.
+
+## ASCII overlay boss and neighboring callbacks (2026-11-11)
+
+The complete `0x438E70..0x439093` **548-byte, 130-instruction** ECL browser
+ASCII overlay now has natural C++ in `SecondaryProgramBrowserDraw.cpp`. A direct
+Ghidra decompile and independent complete PE/Capstone decode agree on its 11
+calls, three returns and contiguous reviewed extent. It appends the `Spt Test`
+header, draws filename/ECL state, `Quit` and a category arrow for state 1,
+prints the loading filename in state 2, or the two converted position fields
+in state 3. The actual AsciiManager color is set for loading and position
+lines and restored to white. The arrow Y is category*10+16. The source uses
+the existing browser layout and `AsciiManagerPrint` rather than a mock draw.
+
+The scoped pinned VC9 `/GL` owner compiles to **504/548 bytes with all 11
+native calls** when the ASCII print function is an external dependency.
+Including `AsciiFormatting.cpp` and `AsciiAppend.cpp` in a different genuine
+support context changes optimization to **445/548 bytes and 10 calls**. Both
+are diagnostic contexts and non-exact; do not conflate their owners.
+The native `0x4390B0..0x4390B9` draw adapter is a separate 10-byte
+PUSH-ESI / MOV-ESI,ECX / CALL / POP-ESI / RET owner. Its maintained C++ in
+`SecondaryProgramBrowserCallbacks.cpp` currently generates a seven-byte
+call/return in a narrow context or a five-byte tail jump with the full draw
+body visible. Its private ESI forwarding is still open.
+
+The adjacent `0x4390D0..0x4390D5` storage-size getter returns `0x5B94`.
+It is now **6/6 canonical exact**: the complete two-instruction MOV EAX,
+0x5B94 / RET naturally compiles under the real draw callback source
+context. The strict linked-PE unit `secondary-program-browser-storage-size`
+has an independent full primary-TU PDB/MAP/PE contribution, zero address
+fields, current source/tool/producer receipts and **zero differing bytes**.
+Its neighboring larger callers remain separate. All **four directly affected
+exact units** (getter, filename cleanup, loader callback, manager factory)
+passed affected-only cold replay, recorded in
+`.analysis/secondary-browser-display-affected-exact-20261111.log`. The
+complete drawing diagnostic lives at
+`.analysis/probe-secondary-browser-draw-20261111.py` and
+`build/probe-ltcg/SecondaryProgramBrowserDraw-*`.

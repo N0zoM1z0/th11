@@ -418,3 +418,13 @@ under the real browser/debug caller+manager producer: 915/259 instructions
 becomes928/262 with22 original calls, and positional nonfield differences
 drop629 to412. Both exact browser dependents, the83-byte cleanup and77-byte
 manager factory, cold replay unchanged. See `SECONDARY_PROGRAM_BROWSER.md`.
+
+The 548-byte secondary ECL browser ASCII overlay at438E70 and adjacent
+10-byte draw-chain adapter at4390B0 now have natural C++ sources. The overlay
+contains130 complete instructions, 11 calls and three returns, rendering
+file/ECL/quit/position state via the existing AsciiManager. Narrow VC9 /GL
+produces504 bytes/11 calls; compiling actual ASCII print dependencies changes
+that context to445 bytes/10 calls. Neither is exact. The distinct size getter
+at4390D0 returns0x5B94 and is **6/6 strict exact** with no fields. The
+header-dependent83-byte cleanup, 8-byte loader callback and77-byte manager
+factory all rechecked exact. See `SECONDARY_PROGRAM_BROWSER.md`.

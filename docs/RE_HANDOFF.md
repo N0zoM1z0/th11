@@ -20,8 +20,8 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - [Generated progress](PROGRESS.md) and
   `config/{functions,function-boundaries,function-origins,matches}.csv`
   determine names, origins, reviewed extents and exact status.
-  At this checkpoint: **280 canonical exact**, **570 source-present**,
-  **653 reviewed boundaries**. Refresh with
+  At this checkpoint: **281 canonical exact**, **573 source-present**,
+  **656 reviewed boundaries**. Refresh with
   `scripts/repo-python scripts/progress.py`, not manual totals.
 - An exact owner requires the entire original function, source/tool
   receipts, exhaustive reviewed field rebinding and **zero differing
@@ -53,6 +53,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 | --- | --- | --- |
 | **77-byte** `CreateSecondaryManager` `0x45DB90` — `SecondaryProgramManagerFactory.cpp` | **77/77 strict exact**; 3 reviewed fields, native VM stack-zero order | Accepted cold PE/MAP/PDB proof; **28** affected shared-header/browser exact units replayed with zero differences. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
 | **277-byte** `LoadSecondaryProgramSelection` `0x438910` and **8-byte** callback `0x438900` | Full real-resource `/GL` **277/277 bytes, 81/81 instructions, 8 calls**, still 18 nonfield bytes different; thread **8/8 strict exact** | Fix constructor vptr-store placement and result/index register allocation; preserve exact resource loader and callback. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
+| **548-byte** `DrawSecondaryProgramBrowser` `0x438E70`, **10-byte** draw adapter `0x4390B0`, **6-byte** size getter `0x4390D0` | Full ASCII overlay C++ now source-present; narrow `/GL` **504/548, 11/11 calls**; real ASCII callee causes 445/548/10-call variant. Six-byte storage-size getter **strict exact**; ten-byte adapter non-exact | Restore private ESI receiver/ASCII callee lifetimes, preserve exact size getter. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
 | **934-byte** `UpdateSecondaryProgramBrowser` `0x438AC0` + **83-byte** cleanup `0x438570` | Native selection count reload; state-4 independent manager deletion test recovered. Real debug/menu/factory `/GL` **928/934 bytes, 262/267 instructions, 22/22 calls**, still non-exact; exact cleanup 83/83 | Resolve input/register scheduling and state0 initialization. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
 | **976-byte** `BuildBillboardAnimationVmQuad` `0x450700` — `AnimationBillboardQuad.cpp` | Full C++ now source-present; linked real billboard producer **927/976**, normal COFF 939 | Paired x87 `FSINCOS` and float spill/rounding lifetime; non-exact. [Billboard](ANIMATION_PROJECTED_QUAD.md) |
 | **313-byte** `CopyAnimationTextureSurface` `0x454EC0` + **48-byte** `FlushScreenshotResources` `0x445460` | Both now source-present; real parent recovers child private EAX/ECX, focused **312/313** child and **58/48** parent | Backbuffer-to-texture copy direction corrected; RECT stack slots and last texture reload remain non-exact. [Surface queue](ANIMATION_SURFACE_COPY.md) |

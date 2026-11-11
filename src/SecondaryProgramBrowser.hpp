@@ -39,6 +39,7 @@ typedef char BrowserLoadedDataOffset[(offsetof(SecondaryProgramBrowserView, load
 
 void __stdcall ClearSecondaryProgramBrowserFiles(SecondaryProgramBrowserView *self);
 int __fastcall UpdateSecondaryProgramBrowser(SecondaryProgramBrowserView *self);
+int __stdcall DrawSecondaryProgramBrowser(SecondaryProgramBrowserView *self);
 
 // Fully reconstructed 77-byte factory at 0x0045DB90: separate exact owner.
 SecondaryManager *__stdcall CreateSecondaryManager(

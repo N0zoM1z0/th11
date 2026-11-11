@@ -569,3 +569,6 @@ UpdateSecondaryProgramBrowser,0x00438AC0,function
 LoadSecondaryProgramSelection,0x00438910,function
 SecondaryProgramBrowserLoadThread,0x00438900,function
 CreateSecondaryManager,0x0045DB90,function
+DrawSecondaryProgramBrowser,0x00438E70,function
+SecondaryProgramBrowserDrawCallback,0x004390B0,function
+SecondaryProgramBrowserStorageSize,0x004390D0,function
