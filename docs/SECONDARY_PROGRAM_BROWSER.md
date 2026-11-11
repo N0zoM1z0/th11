@@ -190,3 +190,28 @@ or browser callback/factory source have passed selected-only cold replay with
 **zero final byte differences**. The exactness log is
 `.analysis/secondary-manager-shared-header-exact-20261111.log`. The neighboring 934-byte
 browser and 277-byte deferred loader retain their own non-exact status.
+
+## Restored manager-lifetime double check (2026-11-11)
+
+The native state-4 flow keeps two separate manager tests around VM
+completion. The earlier source guarded the deleting destructor only inside
+the first manager-null check, allowing VC9 to collapse the second test. It
+now snapshots `manager` to check the current instruction, but reads the
+browser's `manager` member again before deleting it. This is the native
+state transition, not a fake guard or a patched branch.
+
+With the real `SecondaryProgramManagerFactory.cpp`,
+`SecondaryScript.cpp`, menu selection and ECL-debug caller visible, the
+complete pinned VC9 `/GL` browser improves from **915 bytes / 259
+instructions / 629 nonfield positional differences** to **928 bytes / 262
+instructions / 412 differences**, retaining **22/22 native calls**. The
+first state-4 branch path now has the native instruction boundaries and
+both null checks; relative jump distances still differ because later
+paths remain non-exact. The older narrower 912/934 producer is a separate
+context and does not supersede this genuine-caller result.
+
+Both directly affected strict owners, the **83-byte** filename cleanup and
+**77-byte** manager factory, passed affected-only cold PE/MAP/PDB replay
+with zero differences. Compare
+`.analysis/secondary-browser-mode4-real-context-20261111.log` and
+`.analysis/secondary-browser-mode4-affected-exact-20261111.log`.

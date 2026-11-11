@@ -147,12 +147,14 @@ int __fastcall UpdateSecondaryProgramBrowser(SecondaryProgramBrowserView *self)
         break;
     case 4:
         UpdateSecondaryScripts(self->manager, 1.0f);
+        // The native owner tests the current manager twice: the first
+        // snapshot controls whether the script is still running, while the
+        // field is independently checked again before virtual deletion.
+        SecondaryManager *manager = self->manager;
+        if (manager && manager->current->instruction)
+            break;
         if (self->manager)
-        {
-            if (self->manager->current->instruction)
-                break;
             delete self->manager;
-        }
         self->manager = 0;
         self->state = 1;
         break;

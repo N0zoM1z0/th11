@@ -409,3 +409,12 @@ VC9 /GL producer. Its two embedded `SecondaryVm` stack-zero stores require
 `stack.top=0; stack.frame=0;` in that order; the previous chain assignment
 reversed the two writes. The full distinct factory is cold linked exact;
 see `SECONDARY_PROGRAM_BROWSER.md`.
+
+
+Mode4 of the 934-byte browser has a second native manager-null check after
+script completion, not merely a delete nested under the earlier guard. A
+natural local snapshot plus independently reread manager field restores it
+under the real browser/debug caller+manager producer: 915/259 instructions
+becomes928/262 with22 original calls, and positional nonfield differences
+drop629 to412. Both exact browser dependents, the83-byte cleanup and77-byte
+manager factory, cold replay unchanged. See `SECONDARY_PROGRAM_BROWSER.md`.
