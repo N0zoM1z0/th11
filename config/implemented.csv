@@ -512,3 +512,4 @@ SpliceReplayCompressionNode
 ReplaceReplayCompressionNode
 FindReplayCompressionPredecessor
 CompressReplayData
+UpdatePauseGameOverMenu

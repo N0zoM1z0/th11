@@ -59,7 +59,11 @@ A focused five-TU VC9 /GL link gives encoder760/native795,
 tree matcher414/native416, replacement134/native134 (nonexact), deletion
 87/native79 and reset52/native52. See REPLAY_WRITING.md for field gaps;
 this is diagnostic, not exact. No unrelated cold cohort needed.
-The other native child-finder caller42E6B0 retains an unreviewed3179-byte default. Do not substitute unrelated
+The other child-finder caller42E6B0 now has a **reviewed complete3208-byte**
+owner with the seven-entry jump table and VC9-compiled source in
+src/PauseGameOverMenu.cpp. Focused six-TU /GL generates3060/native3208
+bytes,88/88 calls and14/14 returns; it remains non-exact. See
+[PAUSE_GAME_OVER_MENU](PAUSE_GAME_OVER_MENU.md). Do not rebuild unrelated
 HUD/gameplay/ActorInstructions sources.
 
 ## Checks

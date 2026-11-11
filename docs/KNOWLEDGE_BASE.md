@@ -39,8 +39,12 @@ inspected contributions stay byte-identical. No exact unit was added. Required
 close92/show64 replay zero only in support; score33 and factory105 remain open.
 See [PAUSE_CONTINUE_MENU](PAUSE_CONTINUE_MENU.md).
 
-The last missing actual child-finder caller42E6B0 retains an unreviewed3179-byte
-default. PreparePauseContinueRecords42D850/380 and its insertion callee42BA80/365
+The formerly missing game-over child-finder caller42E6B0 has a fully
+reviewed3208-byte owner including a seven-entry switch table, and VC9-compiled
+state20..26 source. Targeted linked candidate3060/native3208 has88/88 calls
+and14/14 returns; still nonexact. See
+[PAUSE_GAME_OVER_MENU](PAUSE_GAME_OVER_MENU.md).
+PreparePauseContinueRecords42D850/380 and its insertion callee42BA80/365
 now have maintained VC9-compiled source; the normal-COFF diagnostic sizes are
 387/232 respectively, neither exact. The insertion percentage uses target
 double100.0 at497E50; the preparer rechecks stage7 after insertion.
