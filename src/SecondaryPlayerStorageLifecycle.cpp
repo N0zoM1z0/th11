@@ -93,8 +93,8 @@ SecondaryPlayerControllerView *__stdcall ConstructSecondaryPlayerStorage(
     owner->auxiliaryTime.flags &= ~1u;
 
     // The original contains two calls per emitter to the generic
-    // eight-element vector constructor helper at 004021A0. Its invoked
-    // callbacks (004021D0 and 00433F00) are both identity constructors,
+    // seven-element (8-byte stride) constructor helper at 004021A0.
+    // Its invoked callbacks (004021D0 and 00433F00) are identity constructors,
     // and thus have no element field writes.
     for (int i = 0; i < 256; ++i)
     {

@@ -31,6 +31,14 @@ Canonical source, ledgers and build/comparison scripts are unchanged.
 
 ## Next reconstruction work
 
+Two additional cold VC9 exact three-byte identity constructors
+at4021D0 and433F00 (zero relocations) are used by the storage
+constructor's two seven-element arrays. A behavioral bug in
+the 1557-byte initializer was fixed: the second collision extent
+now reads the SAME original 4A7AB0 table as the pattern configuration
+instead of the incorrect 4A7AC0 focus table; normal COFF bytes and
+complete exact status remain unchanged. See SECONDARY_PLAYER_INITIALIZATION.md.
+
 Controller initialization owner42F8A0/1557 now has compiled full
 source in SecondaryPlayerInitialization.cpp: pinned normal COFF1492/40
 fields and narrow /GL1479/13 calls/2 returns versus native1557/13/2.

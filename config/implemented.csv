@@ -524,3 +524,5 @@ InitializeSecondaryPlayerController
 CreateSecondaryPlayerController
 ConstructSecondaryPlayerStorage
 DestructSecondaryPlayerStorage
+PlayerEmitterPolarPair::PlayerEmitterPolarPair
+PlayerEmitterOffsetPair::PlayerEmitterOffsetPair

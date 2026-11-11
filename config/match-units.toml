@@ -4753,3 +4753,31 @@ size = 286
 linkages = [
   { offset = 9, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x004C3268 },
 ]
+
+# Native player storage vector-constructor callback, original 004021D0.
+# Complete three-byte thiscall identity constructor: MOV EAX, ECX / RET.
+[units.secondary-player-polar-pair-constructor]
+artifact_kind = "coff"
+source = "src/SecondaryPlayerEmitterPairConstructors.cpp"
+inputs = []
+object = "build/match/SecondaryPlayerPolarPairCtor.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["PlayerEmitterPolarPair::PlayerEmitterPolarPair"]
+symbol = "??0PlayerEmitterPolarPair@@QAE@XZ"
+target_address = 0x004021D0
+size = 3
+relocations = []
+
+# Distinct vector-constructor callback at 00433F00. No Ghidra function
+# definition; the native caller embeds its original address as function data.
+[units.secondary-player-offset-pair-constructor]
+artifact_kind = "coff"
+source = "src/SecondaryPlayerEmitterPairConstructors.cpp"
+inputs = []
+object = "build/match/SecondaryPlayerOffsetPairCtor.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["PlayerEmitterOffsetPair::PlayerEmitterOffsetPair"]
+symbol = "??0PlayerEmitterOffsetPair@@QAE@XZ"
+target_address = 0x00433F00
+size = 3
+relocations = []

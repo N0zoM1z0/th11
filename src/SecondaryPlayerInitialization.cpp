@@ -167,7 +167,10 @@ int __stdcall InitializeSecondaryPlayerController(SecondaryDamageReferencesView 
     owner->halfSize.x = static_cast<float>(preset->normal * 0.5);
     owner->halfSize.y = owner->halfSize.x;
     owner->halfSize.z = 5.0f;
-    owner->size.x = static_cast<float>(g_SecondaryPlayerHalfSizeY[character] * 0.5);
+    // The original initializes preset->diagonal from table 004A7AB0 and
+    // reloads that SAME table for the second collision extent at 0042FB50.
+    // The focus/Y table is 004A7AC0 and must not be substituted here.
+    owner->size.x = static_cast<float>(g_SecondaryPlayerHalfSizeZ[character] * 0.5);
     owner->size.y = owner->size.x;
     owner->size.z = 5.0f;
     owner->otherSize.x = static_cast<float>(g_SecondaryPlayerHalfDepth[character] * 0.5);

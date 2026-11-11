@@ -525,3 +525,5 @@ InitializeSecondaryPlayerController,0x0042F8A0,function
 CreateSecondaryPlayerController,0x004301B0,function
 ConstructSecondaryPlayerStorage,0x0042F760,function
 DestructSecondaryPlayerStorage,0x00430010,function
+PlayerEmitterPolarPair::PlayerEmitterPolarPair,0x004021D0,function
+PlayerEmitterOffsetPair::PlayerEmitterOffsetPair,0x00433F00,function

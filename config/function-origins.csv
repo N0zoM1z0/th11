@@ -17,6 +17,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00401FD0,authored_game,AnimationVm,authored,high,runtime-surfaces-animation-origin-review-20261023
 0x00402170,authored_game,StageLifecycle,authored,high,stage-lifecycle-origin-20261028
 0x004021A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x004021D0,unknown,SecondaryPlayerController,review,unknown,player-storage-polar-identity-2026-11-11-origin-open
 0x00402270,authored_game,StageLifecycle,authored,high,stage-lifecycle-origin-20261028
 0x00402300,authored_game,VmBindings,authored,high,stage-resource-origin-20261024
 0x004023F0,authored_game,StageLifecycle,authored,high,stage-lifecycle-origin-20261028
@@ -549,6 +550,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00433E50,unknown,SecondaryPattern,indeterminate,unknown,secondary-pattern-origin-2026-10-29
 0x00433E90,unknown,SecondaryPattern,indeterminate,unknown,secondary-pattern-origin-2026-10-29
 0x00433EA0,unknown,SecondaryPattern,indeterminate,unknown,secondary-pattern-origin-2026-10-29
+0x00433F00,unknown,SecondaryPlayerController,review,unknown,player-storage-offset-identity-2026-11-11-origin-open
 0x00433F10,unknown,SecondaryPattern,indeterminate,unknown,secondary-pattern-origin-2026-10-29
 0x00433F30,unknown,SecondaryPattern,indeterminate,unknown,secondary-pattern-origin-2026-10-29
 0x00433F40,unknown,SecondaryPattern,indeterminate,unknown,secondary-pattern-origin-2026-10-29

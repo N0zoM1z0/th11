@@ -71,9 +71,12 @@ The original storage constructor at `42F760..42F86F` has 272 bytes,
 Its two embedded 0x434-byte VM objects are initialized through
 `StageEmbeddedVm::StageEmbeddedVm`, an independently exact native
 constructor at `402270`. The native vector-construction iterator
-`4021A0` visits two eight-element arrays in each of eight emitter
+`4021A0` visits two **seven-element 8-byte-stride arrays** in each of eight emitter
 records; the callback bodies `4021D0` and `433F00` are identity-only
-constructors with no field writes. The remaining work clears the
+constructors with no field writes. They now have independently tracked
+cold normal-COFF exact source in `src/SecondaryPlayerEmitterPairConstructors.cpp`:
+both **3/3 bytes**, zero relocations. Their tentative C++ type names
+do not establish original class or translation-unit identity. The remaining work clears the
 flags of 256, eight and 33 records, resets the 0x8D24-byte storage,
 and publishes the singleton. Maintained source in
 `src/SecondaryPlayerStorageLifecycle.cpp` compiles to 255 bytes
@@ -93,3 +96,35 @@ Evidence: `.analysis/player-storage-lifecycle-review-20261111.txt`,
 `.analysis/player-lifecycle-ConstructSecondaryPlayerStorage-coff-compare.json`,
 `.analysis/player-lifecycle-DestructSecondaryPlayerStorage-coff-compare.json`,
 `.analysis/secondary-player-lifecycle-factory-link.log`.
+
+
+## Collision extent table correction and identity constructors (2026-11-11)
+
+Original native instructions at `0042FAF2` and `0042FB50` both read the
+**same** character-indexed table at `0x004A7AB0`: once to set the pattern
+configuration's diagonal/extent field, then again to compute the second
+collision-bounds half-size. Earlier source instead used the *focus*
+table at `0x004A7AC0` for that second calculation. The maintained
+initializer now uses `g_SecondaryPlayerHalfSizeZ[character]`, the same
+abstract source table used by the first store. This is an actual
+data-flow/behavior correction, **not a code-size match claim**. The
+pinned VC9 normal COFF remains 1492 bytes with 40 fields; full
+1557-byte original exactness is still open and the current unresolved
+symbol names require independent address bindings.
+
+The native generic array iterator at `0x4021A0` receives a count of
+**7**, an 8-byte stride, and callbacks at `0x4021D0` (first array)
+and `0x433F00` (second array). The two callbacks are not separately
+identified as functions by default Ghidra analysis, but the original PE
+contains distinct complete three-byte `MOV EAX, ECX; RET` bodies and
+direct callback-pointer references at `0x42F7ED` / `0x42F801`. The
+out-of-line empty C++ constructors in
+`src/SecondaryPlayerEmitterPairConstructors.cpp` reproduce both
+**3/3 bytes** in independently cold-built, strict VC9 normal-COFF
+Oracle units with no relocations:
+
+- `secondary-player-polar-pair-constructor` (physical `0x4021D0`)
+- `secondary-player-offset-pair-constructor` (physical `0x433F00`)
+
+These exact leaf proofs do not imply that the 272-byte containing
+constructor or 1557-byte initialization main is exact.

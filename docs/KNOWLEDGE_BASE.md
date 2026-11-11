@@ -193,3 +193,12 @@ Controller initializer42F8A0/1557 now has full VC9-compiled source,
 and helper-linked1520 remain non-exact. Refer to
 [SECONDARY_PLAYER_INITIALIZATION](SECONDARY_PLAYER_INITIALIZATION.md)
 for caller and codegen gaps.
+
+
+The player storage constructor's native vector-loop callbacks
+at4021D0 and433F00 are now distinct **3/3-byte cold normal-COFF exact**
+owners with zero fields; each is an identity-only ECX-to-EAX constructor.
+The initializer42F8A0/1557 also has a source-level data-flow correction:
+the second collision extent reads table4A7AB0, not focus table4A7AC0.
+The large initializer and storage constructor remain non-exact;
+see [SECONDARY_PLAYER_INITIALIZATION](SECONDARY_PLAYER_INITIALIZATION.md).
