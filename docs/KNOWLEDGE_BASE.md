@@ -475,3 +475,12 @@ with separate optional locks -> raw ECL -> program -> manager -> ANM slots6/5
 16 calls) with external dependencies or372/439 (91 instructions, 16 calls)
 with real helper TUs; EH and ESI receiver ABI remain open. See
 `SECONDARY_PROGRAM_BROWSER.md`.
+
+
+The browser destructor438710/439 now expresses the nontrivial worker-member
+lifetime as a scoped C++ destructor, not a manual final call. A separate
+independent call probe that lets its stdcall function address escape restores
+original SEH entry and RET4 rather than producing a specialized ECX/RET.
+The real 16-call producer now yields448/439 bytes and118/116 instructions,
+still non-exact (233 non-address-field positional differences). See
+`SECONDARY_PROGRAM_BROWSER.md`.

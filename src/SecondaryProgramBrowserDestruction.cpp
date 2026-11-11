@@ -11,6 +11,19 @@ extern const unsigned int g_SecondaryBrowserWorkerVtable[];
 
 namespace
 {
+// The native browser has an owned ThreadInf member, not a plain worker
+// pointer. Its destructor must also run during exception unwinding; keeping
+// this C++ local lifetime restores the original SEH frame naturally.
+struct BrowserWorkerGuard
+{
+    RuntimeThreadView *worker;
+    ~BrowserWorkerGuard()
+    {
+        worker->unknown00 = reinterpret_cast<unsigned int>(g_SecondaryBrowserWorkerVtable);
+        StopRuntimeThread(worker);
+    }
+};
+
 struct ScopedBrowserChainLock
 {
     ScopedBrowserChainLock()
@@ -61,6 +74,7 @@ __forceinline void ReleaseBrowserAnimation(int index)
 // slots and worker. The primary-TU EH/private register match remains open.
 void __stdcall DestroySecondaryProgramBrowser(SecondaryProgramBrowserView *self)
 {
+    BrowserWorkerGuard worker = { &self->worker };
     ClearSecondaryProgramBrowserFiles(self);
     RemoveBrowserChain(self->updateChain);
     RemoveBrowserChain(self->drawChain);
@@ -82,6 +96,5 @@ void __stdcall DestroySecondaryProgramBrowser(SecondaryProgramBrowserView *self)
     ReleaseBrowserAnimation(6);
     ReleaseBrowserAnimation(5);
     g_SecondaryProgramBrowser = 0;
-    self->worker.unknown00 = reinterpret_cast<unsigned int>(g_SecondaryBrowserWorkerVtable);
-    StopRuntimeThread(&self->worker);
+
 }

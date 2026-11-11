@@ -382,3 +382,29 @@ remain unresolved. Logs/recipe:
 `.analysis/probe-secondary-browser-destructor-20261111.py`.
 The neighboring 142-byte storage constructor and 173-byte registration
 remain separately strict exact and are not modified by this source-only work.
+
+## 439-byte browser worker EH-lifetime restoration (2026-11-11)
+
+The previous natural browser destructor explicitly stopped the worker at the
+end of the function, but the native 439-byte owner has a nontrivial member
+destructor and an SEH frame. It now uses a scoped `BrowserWorkerGuard` whose
+C++ destructor restores the observed worker table pointer and invokes
+`StopRuntimeThread`. This preserves worker cleanup through normal return and
+exceptional unwinding, without adding hand-written SEH or dummy instructions.
+
+In the narrow direct-caller `/GL` producer, the candidate improves from
+**458/439 bytes, 114/116 instructions** to **445/439, 119/116**, retaining
+all **16/16 native calls**. A separate independent indirect-call producer
+lets the genuine `__stdcall` browser pointer escape through a caller-provided
+function-pointer slot, avoiding an over-specialized ECX receiver: the
+canonical current source then generates **448/439 bytes, 118/116
+instructions, 16/16 calls** with the original SEH entry shape and terminal
+`RET 4`. Its positional non-address-field mismatch count is **233**.
+The original caller and this independent ABI-retaining diagnostic are not
+equivalent, and this function remains **source-present, non-exact**. The
+remaining gaps include program destructor inlining, two animation document
+release calls, and several register lifetime decisions.
+
+Evidence: `.analysis/probe-secondary-browser-destructor-lifetime-20261111.py`,
+`.analysis/probe-secondary-browser-destructor-indirect-20261111.py`, and
+`build/probe-ltcg/SecondaryBrowserDestructor-maintained-*`.
