@@ -47,8 +47,10 @@ REPLAY_WRITING.md and PAUSE_CONTINUE_MENU.md. Compression tree reset
 4428D0/52 has a cold-pinned exact normal-COFF unit with four replayed
 relocations. Tree search442910/416 also has compiled source in
 src/ReplayCompressionSearch.cpp; normal COFF416/19 fields/270 of340
-comparable bytes, nonexact. Continue with compressor main4423A0
-and test linked /GL codegen with the new nonexact node helpers\nin src/ReplayCompressionTreeOps.cpp (four original owners79/80/134/49).\nNo unrelated cold cohort needed. The other native child-finder
+comparable bytes, nonexact. Continue narrowing the native-vs-VC9 codegen on compressor main
+4423A0, then test a focused linked /GL context with the non-exact
+node helpers in src/ReplayCompressionTreeOps.cpp (owners79/80/134/49).
+No unrelated cold cohort needed. The other native child-finder
 caller42E6B0 retains an unreviewed3179-byte default. Do not substitute unrelated
 HUD/gameplay/ActorInstructions sources.
 

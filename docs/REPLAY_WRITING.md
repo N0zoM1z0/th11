@@ -128,7 +128,8 @@ Every function compiles with the pinned VC9 /O2 toolchain; every full
 normal-COFF comparison is non-exact. The natural source follows the
 native tree operations without inventing ABI parameters. These four
 functions complete the source dependencies of the 416-byte search
-function, but not yet the main 795-byte compressor. All candidate
+function. Together with the 795-byte encoder below, the main call chain
+now has maintained source but not a reconstructed /GL link. All candidate
 objects and complete diagnostics remain ignored under `build/`
 and `.analysis/`.
 
@@ -147,7 +148,10 @@ match length minus three. The tree search uses an 18-byte match cap. As the
 read cursor advances, it removes the outgoing window position, preserves
 the tree and refills the circular buffer. End-of-stream emits a 0-bit
 selector and 13 zeros; the original emits only completed output bytes,
-without a forced partial-byte flush. A zero-length allocation retains
+without a forced partial-byte flush. The native input paths at 4423F4 and
+442619 zero-extend a byte before comparing it with -1. Those comparisons
+cannot recognize a 0xFF input byte; the maintained source therefore
+retains 0xFF data instead of inventing a byte-sentinel termination rule. A zero-length allocation retains
 the original allocation-failure semantics; no new safety guards were added.
 
 VC9 normal-COFF source trials (complete function owner, non-exact):
