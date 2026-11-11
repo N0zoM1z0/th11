@@ -5480,3 +5480,22 @@ size = 5
 linkages = [
   { offset = 1, type = "REL32", symbol = "?UpdateSecondaryProgramBrowser@@YIHPAUSecondaryProgramBrowserView@@@Z", target = 0x00438AC0 },
 ]
+
+# The browser's original update/draw chain registration supplies the natural
+# ESI receiver lifetime for the complete 10-byte draw callback; the full
+# 548-byte draw owner is a distinct compiled support TU, not an injected stub.
+[units.secondary-program-browser-draw-callback]
+artifact_kind = "linked-pe"
+source = "src/SecondaryProgramBrowserCallbacks.cpp"
+inputs = ["src/SecondaryProgramBrowser.hpp", "src/ChainRegistration.hpp", "src/Chain.hpp"]
+support_sources = ["src/SecondaryProgramBrowserRegistration.cpp", "src/SecondaryProgramBrowserDraw.cpp", "probes/secondary-browser-callbacks-probe.cpp"]
+output_dir = "build/match-linked/SecondaryProgramBrowserDrawCallback"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryProgramBrowserCallbacksProbe@8"
+functions = ["SecondaryProgramBrowserDrawCallback"]
+symbol = "?SecondaryProgramBrowserDrawCallback@@YIHPAUSecondaryProgramBrowserView@@@Z"
+target_address = 0x004390B0
+size = 10
+linkages = [
+  { offset = 4, type = "REL32", symbol = "?DrawSecondaryProgramBrowser@@YGHPAUSecondaryProgramBrowserView@@@Z", target = 0x00438E70 },
+]

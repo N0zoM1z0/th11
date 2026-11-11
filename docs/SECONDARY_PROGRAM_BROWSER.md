@@ -279,3 +279,43 @@ same affected-only run rechecked the six-byte storage-size getter, also
 exact; see `.analysis/secondary-browser-update-callback-exact-20261111.log`.
 The separate ten-byte draw adapter still needs its distinct ESI receiver
 in the genuine registration context and is not yet exact.
+
+## Exact ten-byte draw callback and reconstructed chain registration (2026-11-11)
+
+The previously open `0x4390B0` draw callback now reproduces **all 10 native
+bytes** under the genuine source producer: `PUSH ESI`, `MOV ESI,ECX`, `CALL
+0x438E70`, `POP ESI`, `RET`. The real browser chain-registration source and
+the distinct 548-byte ASCII draw owner make VC9 `/GL` select the native
+private browser-in-ESI convention naturally. A narrow callback probe had
+emitted seven bytes, while the draw body alone produced a five-byte JMP.
+The strict linked `secondary-program-browser-draw-callback` unit verifies a
+unique complete primary-TU PE/MAP/PDB owner, an independently reviewed REL32
+CALL at offset `+4`, current tool/producer receipts and **zero byte
+differences**. Both neighboring exact 5-byte update and 6-byte size callbacks
+also passed affected-only cold replay.
+
+That producer is now maintained in `SecondaryProgramBrowserRegistration.cpp`.
+The newly inventoried **173-byte** owner at `0x438660..0x43870C` allocates
+one 36-byte update-chain element and another draw-chain element, initializes
+their nodes, registers priorities **5** and **44**, and stores them at
+browser offsets `+8` and `+C`. It binds the original update callback
+`0x4390A0` and draw callback `0x4390B0`, invoking `AddToUpdateChain`
+`0x456B70` and `AddToDrawChain` `0x456C10`. Full original PE/Capstone review
+finds 60 instructions, four calls and a final RET4, with CC separating its
+entry and neighbors; Ghidra did not autodefine this native owner. Natural
+VC9 `/GL` currently produces **159/173 bytes** with the narrow dependency
+context or **153/173 bytes** with real chain implementations. The full
+registration owner is source-present but not exact; its own register-lifetime
+and allocation-codegen questions remain open.
+
+Diagnostic source is `.analysis/try-secondary-browser-registration-20261111.py`
+and `.analysis/probe-secondary-browser-update-callback-20261111.py`; the
+strict callback proof is retained in
+`.analysis/secondary-browser-draw-callback-exact-20261111.log`.
+
+The shared browser view now names the actual update and draw chain pointers
+at offsets `+8` and `+C`, without changing other field offsets. The six
+existing affected exact owners that consume these headers or callback TUs
+were cold-recompiled together as a selected family, all with zero byte
+differences. See
+`.analysis/secondary-browser-registration-affected-exact-20261111.log`.

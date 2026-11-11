@@ -20,8 +20,8 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - [Generated progress](PROGRESS.md) and
   `config/{functions,function-boundaries,function-origins,matches}.csv`
   determine names, origins, reviewed extents and exact status.
-  At this checkpoint: **282 canonical exact**, **574 source-present**,
-  **657 reviewed boundaries**. Refresh with
+  At this checkpoint: **283 canonical exact**, **575 source-present**,
+  **658 reviewed boundaries**. Refresh with
   `scripts/repo-python scripts/progress.py`, not manual totals.
 - An exact owner requires the entire original function, source/tool
   receipts, exhaustive reviewed field rebinding and **zero differing
@@ -54,7 +54,8 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 | **77-byte** `CreateSecondaryManager` `0x45DB90` — `SecondaryProgramManagerFactory.cpp` | **77/77 strict exact**; 3 reviewed fields, native VM stack-zero order | Accepted cold PE/MAP/PDB proof; **28** affected shared-header/browser exact units replayed with zero differences. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
 | **277-byte** `LoadSecondaryProgramSelection` `0x438910` and **8-byte** callback `0x438900` | Full real-resource `/GL` **277/277 bytes, 81/81 instructions, 8 calls**, still 18 nonfield bytes different; thread **8/8 strict exact** | Fix constructor vptr-store placement and result/index register allocation; preserve exact resource loader and callback. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
 | **5-byte** `SecondaryProgramBrowserUpdateCallback` `0x4390A0` | Newly inventoried real registered update-chain entry; **5/5 strict exact**, one REL32 tail JMP to 934-byte browser update | Protected by cold PE/MAP/PDB owner proof; related six-byte getter also rechecked exact. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
-| **548-byte** `DrawSecondaryProgramBrowser` `0x438E70`, **10-byte** adapter `0x4390B0`, **6-byte** getter `0x4390D0` | Natural ASCII singleton reload recovers ESI receiver and **526/548 bytes, 123/130 instructions, 11/11 calls** under real ASCII dependencies; 262 nonfield differences; getter **6/6 exact** | Restore later menu-state branch/register scheduling; ten-byte adapter still collapses to tail JMP. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
+| **548-byte** `DrawSecondaryProgramBrowser` `0x438E70`, **10-byte** adapter `0x4390B0`, **6-byte** getter `0x4390D0` | Natural ASCII singleton reload produces **526/548, 11/11 calls**, still non-exact; **10/10 draw adapter strict exact** under real browser-chain registration, **6/6 getter exact** | Improve 548-byte draw mode switching and x87/register schedules; protect both exact leaves. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
+| **173-byte** `RegisterSecondaryProgramBrowserChains` `0x438660` | Full update/draw registration C++ now source-present with both native callback addresses and four calls; scoped **159/173** (narrow) or **153/173** (real chain source), still non-exact | Recover the original EBP/ESI chain element lifetime and allocation codegen. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
 | **934-byte** `UpdateSecondaryProgramBrowser` `0x438AC0` + **83-byte** cleanup `0x438570` | Native selection count reload; state-4 independent manager deletion test recovered. Real debug/menu/factory `/GL` **928/934 bytes, 262/267 instructions, 22/22 calls**, still non-exact; exact cleanup 83/83 | Resolve input/register scheduling and state0 initialization. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
 | **976-byte** `BuildBillboardAnimationVmQuad` `0x450700` — `AnimationBillboardQuad.cpp` | Full C++ now source-present; linked real billboard producer **927/976**, normal COFF 939 | Paired x87 `FSINCOS` and float spill/rounding lifetime; non-exact. [Billboard](ANIMATION_PROJECTED_QUAD.md) |
 | **313-byte** `CopyAnimationTextureSurface` `0x454EC0` + **48-byte** `FlushScreenshotResources` `0x445460` | Both now source-present; real parent recovers child private EAX/ECX, focused **312/313** child and **58/48** parent | Backbuffer-to-texture copy direction corrected; RECT stack slots and last texture reload remain non-exact. [Surface queue](ANIMATION_SURFACE_COPY.md) |

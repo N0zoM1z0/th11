@@ -572,3 +572,4 @@ DrawSecondaryProgramBrowser
 SecondaryProgramBrowserDrawCallback
 SecondaryProgramBrowserStorageSize
 SecondaryProgramBrowserUpdateCallback
+RegisterSecondaryProgramBrowserChains

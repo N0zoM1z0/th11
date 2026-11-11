@@ -447,3 +447,11 @@ The real registration stores its address at4386A2. With the maintained
 body is strict linked-PE exact with the sole REL32 at+1; the neighboring
 six-byte size getter independently rechecks exact. See
 `SECONDARY_PROGRAM_BROWSER.md`.
+
+The browser draw callback4390B0 is now fully **10-byte exact**. Natural
+`PUSH ESI/MOV ESI,ECX/CALL 438E70/POP ESI/RET` appears only when the real
+update/draw-chain registration producer at438660 and the large ASCII drawing
+owner are visible together to VC9 /GL. The registration itself is now
+source-present at173 bytes, native four calls; its initial 159-byte candidate
+is non-exact. It registers priority5 callback4390A0 and priority44 callback
+4390B0. See `SECONDARY_PROGRAM_BROWSER.md`.

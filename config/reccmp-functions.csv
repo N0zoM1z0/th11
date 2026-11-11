@@ -573,3 +573,4 @@ DrawSecondaryProgramBrowser,0x00438E70,function
 SecondaryProgramBrowserDrawCallback,0x004390B0,function
 SecondaryProgramBrowserStorageSize,0x004390D0,function
 SecondaryProgramBrowserUpdateCallback,0x004390A0,function
+RegisterSecondaryProgramBrowserChains,0x00438660,function

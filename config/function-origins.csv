@@ -610,6 +610,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x004380D0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00438440,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00438570,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00438660,unknown,SecondaryScriptVm,indeterminate,unknown,secondary-browser-chain-registration-origin-20261111
 0x00438710,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00438900,unknown,SecondaryScriptVm,indeterminate,unknown,secondary-program-load-thread-origin-20261111
 0x00438910,unknown,SecondaryScriptVm,indeterminate,unknown,secondary-program-origin-2026-10-29

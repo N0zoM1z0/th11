@@ -6,9 +6,11 @@
 
 // Observed native TH11 ECL browser fields. These offsets describe the real
 // physical storage without assuming the original class name or ownership.
+struct ChainElement;
 struct SecondaryProgramBrowserView
 {
-    unsigned char unknown000[0x10];
+    unsigned char unknown000[0x08];
+    ChainElement *updateChain, *drawChain;
     RuntimeThreadView worker;
     unsigned int unknown02c;
     int state;
@@ -25,6 +27,8 @@ struct SecondaryProgramBrowserView
     SecondaryManager *manager;
     unsigned char *loadedData;
 };
+typedef char BrowserUpdateChainOffset[(offsetof(SecondaryProgramBrowserView, updateChain) == 0x08) ? 1 : -1];
+typedef char BrowserDrawChainOffset[(offsetof(SecondaryProgramBrowserView, drawChain) == 0x0c) ? 1 : -1];
 typedef char BrowserStateOffset[(offsetof(SecondaryProgramBrowserView, state) == 0x30) ? 1 : -1];
 typedef char BrowserFilesOffset[(offsetof(SecondaryProgramBrowserView, filenames) == 0x34) ? 1 : -1];
 typedef char BrowserCategoriesOffset[(offsetof(SecondaryProgramBrowserView, category) == 0x3c) ? 1 : -1];
@@ -39,6 +43,7 @@ typedef char BrowserLoadedDataOffset[(offsetof(SecondaryProgramBrowserView, load
 
 void __stdcall ClearSecondaryProgramBrowserFiles(SecondaryProgramBrowserView *self);
 int __fastcall UpdateSecondaryProgramBrowser(SecondaryProgramBrowserView *self);
+int __stdcall RegisterSecondaryProgramBrowserChains(SecondaryProgramBrowserView *self);
 int __stdcall DrawSecondaryProgramBrowser(SecondaryProgramBrowserView *self);
 
 // Fully reconstructed 77-byte factory at 0x0045DB90: separate exact owner.
