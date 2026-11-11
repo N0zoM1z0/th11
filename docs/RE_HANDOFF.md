@@ -12,14 +12,14 @@ VC9 RTM21022/SDK6.0A is the observed compiler candidate; original TU ownership
 remains open. Exact counts come from [PROGRESS](PROGRESS.md); findings and topic
 links are in [KNOWLEDGE_BASE](KNOWLEDGE_BASE.md).
 
-The latest source draft is `src/PauseContinueMenu.cpp/.hpp`, reviewed at
-42D9D0..42E647/3192 bytes. It covers states12..19, practice score, replay mode0,
-record-name editing and runtime transitions. It remains non-exact: the
-63-support public context produces3048 bytes/158 fields/2770 full differences.
-Frame58/cookie54 and48 table bytes agree. Factory sites are3/native2, event3
-sites1/native2, selection events4/native5 and GS/RET4 paths14/native15.
-Investigate call sharing, object lifetimes and layout allocation. See
-[PAUSE_CONTINUE_MENU](PAUSE_CONTINUE_MENU.md).
+The continue menu owner at42D9D0..42E647/3192 bytes now merges its case13
+factory call after practice/record branches, as the native control flow does.
+The focused63-support VC9 /GL replay yields3112 bytes/160 fields/15 returns
+versus native3192/162/15, with **no call-count differences**; its frame54
+still differs from native58 and2797 full bytes differ. The earlier3048-byte
+draft had158 fields,14 returns and four call-count gaps. A second layout with
+two explicit result objects recovered frame58 but regressed call/return parity,
+so it was rejected. See [PAUSE_CONTINUE_MENU](PAUSE_CONTINUE_MENU.md).
 
 Rebuild with `probes/pause-continue-menu-context.json`; its output is
 `build/probe-ltcg/PauseContinueMenuOwner`. The latest local build/audit helpers,

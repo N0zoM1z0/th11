@@ -93,7 +93,6 @@ void __stdcall UpdatePauseContinueMenu(PauseContinueMenuView *owner)
             unsigned int stage = static_cast<unsigned int>(g_SecondaryActorDifficulty) * 6u + g_StageVariant;
             int *record = reinterpret_cast<int *>(g_SecondaryGameplayStatistics + character * 0x68d4u + stage * 8u + 0x5a4);
             if (*record < CurrentScore()) *record = CurrentScore();
-            self->root = CreateDefaultSecondaryDrawAnimationVmId(owner->file, 0x62);
         }
         else
         {
@@ -105,8 +104,9 @@ void __stdcall UpdatePauseContinueMenu(PauseContinueMenuView *owner)
                 HideMenuAnimationTree(self->root);
                 return;
             }
-            self->root = CreateDefaultSecondaryDrawAnimationVmId(owner->file, 0x62);
         }
+        // Native case 13 has one factory call shared by the two branches.
+        self->root = CreateDefaultSecondaryDrawAnimationVmId(owner->file, 0x62);
         self->state = 14;
         self->selection.count = 4;
         self->selection.wrapEnabled = 1;

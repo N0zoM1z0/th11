@@ -133,3 +133,35 @@ The preparer is called from the 3192-byte continuation owner at 42D9D0
 and from 42E6B0. The insertion callee is also used by 43F802.
 Future work: investigate /GL codegen and the 1856-byte replay writer
 436420 without expanding to unrelated full-build validation.
+
+## Case-13 shared factory codegen experiment (2026-11-11)
+
+Native 42DA94..42DB55 has a common animation factory call at 42DB3F.
+The practice branch jumps to 42DB36 after its score update; the normal
+branch prepares the record and either exits early or falls through.
+Both then create script 62 before initializing state 14. Previously
+the source called the factory separately in those branches, with a
+third call in state 18. Moving the state-13 call after the branch
+retains the same ordering and early return while matching the native
+total of **two** factory call sites.
+
+Focused VC9 /GL compilation and complete public-primary-TU diagnostic:
+
+| Draft | Source bytes | Fields | Full differing bytes | Returns | Frame | Missing call-count parity |
+| --- | ---: | ---: | ---: | ---: | --- | --- |
+| Pre-change (Nov 6) | 3048 | 158 | 2770 | 14 | 58 | four call families |
+| Shared call (retained) | 3112 | 160 | 2797 | 15 | 54 | **none** |
+| Shared call, two explicit local IDs (discarded) | 3016 | 157 | 2799 | 14 | 58 | three call families |
+| Native | 3192 | 162 | 0 | 15 | 58 | none |
+
+The target selects distinct hidden-result storage at ESP+20 or ESP+14
+before the common call; the simple shared expression recovers call/return
+structure but drops one stack slot. Explicit local return IDs bring the
+frame back to 58 yet worsen call alignment (missing one each of the
+cookie-check, projectile-clear and selection-signal calls). Neither
+candidate is exact; the larger raw difference count after changing the
+control flow is recorded rather than suppressed. The first is retained
+because its call graph and returns match the native owner, and the
+second experiment demonstrates why blindly adding locals is not enough.
+The next meaningful issue is reproducing the two branch-dependent result
+lifetimes without sacrificing the common call.

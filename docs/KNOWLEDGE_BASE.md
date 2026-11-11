@@ -28,9 +28,13 @@ Source covers states12..19, practice-score updates, replay mode0 save, separate
 record-name writes and delayed runtime transition. The record-name and practice
 score formulas differ; timestamp0C/stage68 must not alias difficulty64.
 
-Current63-support diagnostic:3048 bytes/158 fields/2770 full differences,
-frame58/cookie54 correct. Factory sites3/native2, event3 sites1/native2,
-selection-event sites4/native5 and GS/return paths14/native15 remain. Old19
+Historical63-support draft:3048 bytes/158 fields/2770 differences, frame58,
+14/15 returns and four call-site gaps. After merging the case13 factory the
+targeted63-support owner is3112 bytes/160 fields/2797 differences, with15/15
+returns and no call-count gaps. Frame54 now differs from native58. Keeping
+two explicit result objects restored frame58 but regressed to14 returns and
+three call-count gaps (3016 bytes/157 fields/2799 differences), so it was
+reverted. The factory-merging source is retained for its closer call graph. Old19
 inspected contributions stay byte-identical. No exact unit was added. Required
 close92/show64 replay zero only in support; score33 and factory105 remain open.
 See [PAUSE_CONTINUE_MENU](PAUSE_CONTINUE_MENU.md).
