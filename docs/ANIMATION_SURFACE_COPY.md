@@ -64,3 +64,40 @@ The parent callback itself is normal-COFF **46/48** and focused `/GL`
 preserve this difference. These are diagnostic results, not canonical exact
 match units. No executable byte patches, artificial padding or fake ABI
 were used. Strict exactness awaits complete instruction/field agreement.
+
+## Short-lived dirty-texture table reload (2026-11-11)
+
+After `D3DXLoadSurfaceFromSurface` succeeds, the maintained copy owner
+now reloads the current `AnimationDocumentTextureView *textures` table
+from the indexed document into a short-lived local before calling the
+texture's virtual `AddDirtyRect(nullptr)`. This preserves the native
+backbuffer-to-texture direction, independent read after the opaque transfer,
+all RECT source/destination fields and the original COM release order;
+it does not cache the texture across D3D calls.
+
+The tracked **scoped, real-parent** producer is now
+`scripts/repo-python scripts/probe-animation-surface-copy.py`, with ordinary
+source caller `probes/animation-surface-copy-real-context.cpp`, real
+`AnimationSurfaceDispatch.cpp`, `RenderBatch.cpp` and `ScreenshotHotkey.cpp`.
+It compiles pinned VC9 `/O2 /Ob1 /Gy /MT /EHsc /GL`, checks the complete
+source.ltcg.obj PDB/MAP/PE code contribution and compares to the original
+mapped text. The current **NON-EXACT** owner is **311/313 bytes,
+112/113 decoded instructions, 8/8 calls, three candidate address fields,
+46 positional non-address-field differences in the overlapping span**.
+The earlier chained texture expression generated **312/313 bytes and
+113/113 instructions** but 55 positional nonfield differences. The current
+source reduces that positional mismatch count by nine, while still missing
+one native instruction and two bytes; neither result is accepted exact.
+
+Natural local-texture, entry-reference, pointer-to-texture and index-order
+variants were independently compared but either retained 51+ differences
+or disturbed the earlier codegen. They are retained as ignored experiment
+receipts under `.analysis/probe-surface-table-aliasing-20261111.py`.
+The remaining gap begins after the D3DX transfer: the original performs
+`MOV ECX, [EAX+EDX*4]` before its redundant `LEA` and saves the texture
+object in EAX before dispatch. The current VC9 register assignment uses
+EDX for that texture and removes one instruction. This is a precise
+unresolved codegen difference, not a license to add fake loads or patches.
+The four-record producer remains source-present, non-exact at 58/48 bytes.
+Log: `.analysis/animation-surface-copy-tracked-20261111.log`. No full
+cold replay was run for this diagnostic.

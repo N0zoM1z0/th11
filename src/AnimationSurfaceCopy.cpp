@@ -41,7 +41,13 @@ void __stdcall CopyAnimationTextureSurface(RenderBatchView *renderer,
     rects.destination.bottom = command->destinationY + command->destinationHeight;
     if (D3DXLoadSurfaceFromSurface(textureSurface, 0, &rects.destination,
         backBuffer, 0, &rects.sourceRect, 2, 0) == D3D_OK)
-        slots->files[command->documentIndex]->textures[command->textureIndex].texture->AddDirtyRect(0);
+    {
+        // The native owner re-reads the current file and its texture table
+        // after the opaque D3DX transfer; the table is a short-lived local.
+        AnimationDocumentTextureView *textures =
+            slots->files[command->documentIndex]->textures;
+        textures[command->textureIndex].texture->AddDirtyRect(0);
+    }
     textureSurface->Release();
     backBuffer->Release();
 }

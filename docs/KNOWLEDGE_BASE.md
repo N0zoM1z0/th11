@@ -513,3 +513,12 @@ tracked `scripts/probe-secondary-browser-mode-thread.py` reproduces the
 large browser at928/934 bytes and262/267 instructions (all22 calls), with
 nonfield mismatches reduced from412 to173. That browser remains non-exact.
 See `SECONDARY_PROGRAM_BROWSER.md`.
+
+The 313-byte `CopyAnimationTextureSurface` owner now uses a short-lived
+texture-table lookup only after a successful backbuffer-to-texture D3DX
+copy, preserving every COM/RECT direction and release. Its real parent plus
+screenshot producer (`scripts/probe-animation-surface-copy.py`) creates a
+311/313-byte 112/113-instruction candidate with all8 native calls and46
+positional nonfield differences, vs the old312-byte/55-difference candidate.
+The missing instruction is in the final indexed texture AddDirtyRect setup;
+this remains non-exact. See `ANIMATION_SURFACE_COPY.md`.
