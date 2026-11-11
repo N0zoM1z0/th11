@@ -20,7 +20,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - [Generated progress](PROGRESS.md) and
   `config/{functions,function-boundaries,function-origins,matches}.csv`
   determine names, origins, reviewed extents and exact status.
-  At this checkpoint: **270 canonical exact**, **555 source-present**,
+  At this checkpoint: **275 canonical exact**, **560 source-present**,
   **649 reviewed boundaries**. Refresh with
   `scripts/repo-python scripts/progress.py`, not manual totals.
 - An exact owner requires the entire original function, source/tool
@@ -35,10 +35,10 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   render target **69**, document cleanup **243** (eight fields),
   menu file VM marker **78**, and indexed slot release **51**.
   They retain separate `config/match-units.toml` contracts.
-- The 22 ordinary animation renderer draw-priority callbacks have **327/327
-  exact bytes**, 22 independently reviewed REL32 call fields, and strict cold
-  PE/MAP/PDB proof under the real constructor producer. Their larger stateful
-  priority neighbors are still open. See [renderer lifecycle](ANIMATION_RENDERER_LIFECYCLE.md).
+- All 27 registered animation renderer draw-priority callbacks now have **780/780
+  exact bytes**. The 22 ordinary callbacks use 22 REL32 call fields; five
+  stateful wrappers add 453 bytes and 43 reviewed DIR32/REL32 fields. All
+  passed scoped cold PE/MAP/PDB proof under real constructor/camera source. See [renderer lifecycle](ANIMATION_RENDERER_LIFECYCLE.md).
 - Player animation-pair reset `0x42F580` is **286/286 exact**;
   the player dialogue query `0x42F540` is **27/27 exact**;
   two array element constructors are **3/3 exact** each.
@@ -49,7 +49,6 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 | Native owner / current source | Current scoped result | Next concrete question |
 | --- | --- | --- |
 | **571-byte** `BuildRotatedAnimationVmQuad` `0x4503D0` — `AnimationVmRotation.cpp` | Natural source added; VC9 COFF **609/571** with separate sin/cos calls, `/GL` compiles | Restore native paired `FSINCOS` and owner/register context. [VM draw](ANIMATION_VM_DRAW.md) |
-| **133-byte** renderer priority 62 and **126-byte** priority 10 | Source remains open; 22 ordinary priority wrappers newly exact | Reconstruct the stateful camera/device wrappers from reviewed native flows. [Renderer](ANIMATION_RENDERER_LIFECYCLE.md) |
 | **221-byte** `LoadAnimationChunkSource` `0x4543E0` — `AnimationChunk.cpp` | With real `BeginLoadAnimationDocument` producer: **221 bytes, six calls, two RET4**; 12 reviewed address fields; only two non-field SIB selector bytes at `0xB3/0xBD` differ | Natural ECX/EDX array-address codegen. Earlier pointer/reference trials regressed to 212 bytes; eight later ordinary array/offset variants preserve 221 but retain both SIB differences. [Chunks](ANIMATION_CHUNKS.md) |
 | **212-byte** `AdvanceAnimationDocument` `0x4544C0` — `AnimationChunk.cpp` | Narrow decoder context: **211 bytes**; native file input uses EDI | Resolve native private register ABI; the dependent **135-byte** `UpdateAnimationDocumentSlots` at `0x4548D0` now links to **135 bytes, three calls, two returns**, with only **one non-field byte at 0x70** (EAX vs EDI). Byte-to-int decoded-state trials regressed. [Slots](ANIMATION_DOCUMENT_SLOTS.md) |
 | **3192-byte** `UpdatePauseContinueMenu` `0x42D9D0` — `PauseContinueMenu.cpp` | 63-support `/GL` **3172/3192**; 88/88 calls, 15/15 returns; stack `0x54` vs native `0x58` | State 13 factory-result lifetime and private ABI. Private helper `.analysis/build-pause-continue-menu.py`. [Continue](PAUSE_CONTINUE_MENU.md) |
@@ -59,9 +58,10 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 | **415-byte** player destructor `0x430010` and **272-byte** constructor `0x42F760` — `SecondaryPlayerStorageLifecycle.cpp` | Destructor **435/415**, 12 native calls, one RET4, three direct frees; constructor **278/272**, five calls, one RET4 | Destructor EH/locks; constructor array/VM ABI. 33-byte vector iterator has source but is **non-exact**. [Player](SECONDARY_PLAYER_INITIALIZATION.md) |
 | Replay writer **1856 bytes** `0x436420` / compressor **795 bytes** `0x4423A0` | Writer focused `/GL` **1765**, 46 calls; compressor focused `/GL` **760** | Original file/segment ownership and dictionary ABI. [Replay](REPLAY_WRITING.md) |
 
-Newly accepted renderer-priority leaves: 22 exact callbacks, 327 bytes, all
-with one real dispatcher REL32. See `AnimationRendererPriority.cpp`; only
-this family was cold-replayed at the checkpoint.
+Newly accepted renderer-priority callbacks: 27 exact owners, 780 bytes
+(22 simple callbacks + 5 stateful camera/device callbacks). Both linked
+families were cold-replayed individually, not the whole cohort. See
+`AnimationRendererPriority.cpp` and `AnimationRendererStatePriority.cpp`.
 
 Other protected exact leaves: replay dictionary reset `0x4428D0`
 (52 bytes), predecessor `0x442BE0` (49 bytes), pause overlay queue

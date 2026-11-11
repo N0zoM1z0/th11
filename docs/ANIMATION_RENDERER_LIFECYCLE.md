@@ -172,7 +172,8 @@ They forward a renderer context and **dense draw layer**, not their public
 registration priority, to `DrawAnimationRendererLayer` at `0x455660`.
 For example, priority 04 draws layer 0, priority 39 draws layer 18, priority
 49 draws layer 21, and priority 61 draws layer 24. The larger stateful
-priorities 10, 40, 48, 62, and 63 are separate owners and remain open.
+priorities 10, 40, 48, 62, and 63 are separate owners recovered in the
+following checkpoint.
 
 The genuine `AnimationRenderer` constructor registers these callback symbols.
 Using that registration context and the real renderer dispatcher as distinct
@@ -191,3 +192,38 @@ exhaustive call-field replay, and **zero final byte differences**. This adds
 and `.analysis/renderer-priority-cold-proof-20261111.log`. No unrelated unit
 or whole-program cold replay was run. This proves the complete individual
 callbacks, not the construction of the full runnable game.
+
+## Exact stateful renderer-priority callbacks (2026-11-11)
+
+Five additional full owners now have natural source in
+`src/AnimationRendererStatePriority.cpp` and strictly **exact** complete
+linked-PE proofs. Unlike simple layer forwarding they select one of three
+0x118-spaced runtime camera slots, set the current camera pointer at +54C,
+call the existing exactly reconstructed `ApplyCamera` at 42A810, and apply
+the D3D viewport before storing camera index +550.
+
+| Priority | Native entry / bytes | Recovered stateful behavior | Reviewed code fields |
+| --- | --- | --- | ---: |
+| 10 | 455170 / 126 | Stage camera +434, index 2, conditionally flush/disable fog cache +990, draw layer 3 | 12 |
+| 40 | 455320 / 46 | Clear camera +51C/+520 and batch +B0/+B4 XY offsets, draw layer 19 | 4 |
+| 48 | 455350 / 74 | Screen camera +31C, index 1, draw layer 20 | 7 |
+| 63 | 4553A0 / 74 | Screen camera +31C, index 1, draw layer 29 | 7 |
+| 62 | 4553F0 / 133 | Alternate camera +204, index 0, draw layer 30, restore screen camera +31C/index 1 while preserving first draw result | 13 |
+
+The actual constructor registration, camera source `src/Camera.cpp`,
+batch flush source `src/RenderBatch.cpp`, and renderer dispatcher were
+linked as separate supports under pinned VC9 `/GL`. The five complete
+public-primary-TU PE/MAP/PDB contributions match their target extents;
+all **43 independently reviewed DIR32/REL32 fields** resolve to their
+actual camera/globals/device source references, are rebound to the native
+target, and leave **zero differing bytes**. The natural C++ reproduces even
+the 46-byte callback's shared `FLDZ` stores and 133-byte callback's
+register-preserved return value without inline machine-code insertion.
+
+This second affected-only cold replay added **453 exact code bytes**.
+Evidence: `config/match-units.toml`,
+`build/match-linked/AnimationRendererStatePriority/`, and the private
+`.analysis/renderer-state-priority-cold-proof-20261111.log`. Combined with
+the preceding 22 callbacks, **all 27 registered draw-priority callbacks
+now have 780 target bytes strictly exact**. The independently reviewed
+renderer update callbacks at 455120 and 455130 are not part of this claim.

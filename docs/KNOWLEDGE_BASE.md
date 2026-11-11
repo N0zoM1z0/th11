@@ -310,7 +310,7 @@ selected dense layer in EAX and call dispatcher455660. Ordinary COFF
 collapses the wrappers to 9 bytes, but the real producer reconstructs
 12/15 bytes exactly, with one independently reviewed REL32 field per
 callback and zero remaining byte differences under strict cold replay.
-The five stateful priorities (10, 40, 48, 62 and 63) remain open.
+The five stateful priorities are now independently exact (see below).
 See [ANIMATION_RENDERER_LIFECYCLE](ANIMATION_RENDERER_LIFECYCLE.md).
 
 The 221-byte animation source loader4543E0 remains non-exact after eight
@@ -319,3 +319,14 @@ all preserve the full221-byte producer body but still select SIB0A rather
 than native SIB11 at offsets B3/BD. Those alternatives are isolated in
 `.analysis/try-animation-load-sib-20261111.py` and must not replace the
 separately exact 811-byte decoder.
+
+Five renderer-priority stateful callbacks 455170/126, 455320/46,
+455350/74, 4553A0/74 and 4553F0/133 become strict linked exact under
+the real constructor, existing exact ApplyCamera and batch-flush code.
+All 43 DIR32/REL32 fields bind the runtime's three cameras at root
++204/+31C/+434, active pointer+54C, index+550, fog cache+990,
+renderer offsets, and the existing camera/layer dispatcher functions.
+The 133-byte priority-62 owner restores screen camera after drawing
+the alternate layer and retains the first draw result. No full-cohort
+cold replay was needed. See
+[ANIMATION_RENDERER_LIFECYCLE](ANIMATION_RENDERER_LIFECYCLE.md).
