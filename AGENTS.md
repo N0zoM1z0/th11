@@ -60,7 +60,9 @@ Verify target/toolchain identity once on resume. Refresh tracking and progress
 at checkpoints; existing dirty work is ours and should be continued.
 
 The operator requests **direct Ghidra**, without REA. Use `scripts/ghidra.py`.
-Invoke local tools/scripts directly; do not route work through Factory MCP.
+Run repository scripts directly from an available shell; if access is through
+Factory MCP, invoke the same scripts in its repository shell rather than
+switching decompiler APIs or inventing an alternate verification path.
 Ghidra defaults to one CPU affinity, one analysis worker, 768 MiB maximum Java
 heap, and nice 10. Java/native overhead is additional to heap. Serialize Ghidra
 jobs and Wine/compiler jobs; do not raise resource defaults without a measured
@@ -111,7 +113,7 @@ in `.tools/`, and the mutable private database in `ghidra-project/`. Never
 commit game executables/data/archives, compiler payloads, decompiler output,
 Ghidra databases, credentials, or local private endpoints.
 
-Use commits prefixed `gpt-6.1-sol: `. The operator authorized a public GitHub
+Use commits prefixed `gpt-web: `. The operator authorized a public GitHub
 repository and pushes for this project. Save meaningful progress promptly.
 Cold-replay only changed exact units and directly affected dependencies. Update
 tracking/generated progress and run `git diff --check`; do not replay the full

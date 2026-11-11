@@ -4718,24 +4718,6 @@ relocations = [
   { offset = 1, type = "DIR32", symbol = "?g_SecondaryDialogueSession@@3PAUSecondaryDialogueSessionView@@A", target = 0x004A8E88 },
 ]
 
-# Complete 286-byte controller animation-pair cleanup, specialized by its
-# real source-present controller-reset caller under VC9 /GL. One pointer field.
-[units.reset-secondary-player-animation-pairs]
-artifact_kind = "linked-pe"
-source = "src/SecondaryPlayerAnimationReset.cpp"
-inputs = ["src/SecondaryPlayerController.hpp"]
-support_sources = ["probes/secondary-player-animation-reset-context.cpp"]
-output_dir = "build/match-linked/SecondaryPlayerAnimationReset"
-profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
-entry = "SecondaryPlayerResetProbe@0"
-functions = ["ResetSecondaryPlayerAnimationPairs"]
-symbol = "?ResetSecondaryPlayerAnimationPairs@@YGXPAUSecondaryPlayerControllerView@@@Z"
-target_address = 0x0042F580
-size = 286
-linkages = [
-  { offset = 9, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x004C3268 },
-]
-
 # Complete 286-byte controller animation reset, including the three-byte
 # loop alignment. Its real 304-byte source caller supplies EBX naturally.
 [units.secondary-player-animation-pairs-reset]

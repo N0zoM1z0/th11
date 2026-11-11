@@ -56,12 +56,13 @@ individual input tests, animation ID side effects and early returns.
 
 ## Focused compiler diagnostics
 
-The pinned VC9 normal-COFF `/O2 /Ob1 /Gy /MT /EHsc` source generates
-3068 bytes with 154 relocation fields. A separate, non-runnable,
-scope-limited six-TU VC9 `/GL` linked context compiles only this owner,
+The **initial** pinned VC9 normal-COFF `/O2 /Ob1 /Gy /MT /EHsc`
+source generated 3068 bytes with 154 relocation fields. An earlier,
+non-runnable six-TU VC9 `/GL` linked context compiled this owner,
 score/record preparation, pause/continue support and the game-over probe.
-Its complete primary PDB contribution is **3060 bytes**, against native
-**3208 bytes**. Independent instruction inventory confirms exact
+That historical primary PDB contribution was **3060 bytes** against
+native **3208 bytes**; later state-21 and keyboard-codegen changes
+superseded this baseline (see the measurements below). Independent instruction inventory confirms exact
 **88/88 call-site counts**, **26/26 callee identities**, **14/14 RET4
 sites**, the 7-entry switch-table shape and a 0x58 stack frame.
 

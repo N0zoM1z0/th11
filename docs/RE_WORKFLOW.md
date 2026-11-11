@@ -24,7 +24,7 @@ For each coherent subsystem:
    independently of its masked diagnostic. Configure a canonical unit only when
    its complete zero-difference replay is reproducible.
 5. Cold-replay affected canonical units, update ledgers/generated progress,
-   check the diff, and make a concise `gpt-6.1-sol: ...` checkpoint.
+   check the diff, and make a concise `gpt-web: ...` checkpoint.
 
 Broad behavior tests, null/allocation-failure matrices, randomized/multiframe
 execution and caller regressions are not part of this loop. Use focused

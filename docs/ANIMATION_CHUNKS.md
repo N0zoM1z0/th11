@@ -115,12 +115,14 @@ D3DSURFACE_DESC is32 bytes/eight DWORDs, including MultiSampleQuality before
 Width and Height. Earlier seven-DWORD fixtures do not establish dimensions;
 strict byte proofs are independent of those fixtures.
 
-Next useful work includes the medium stage initializer and EH destruction,
-alongside the remaining pixel/file and 212-byte document advance gaps;
-the decoder's exactness is independently established. The
-background dispatcher at0x004548D0 also needs its own
-source and review: its destruction path writes through a slot after clearing
-it, an observed failure path that must not be silently repaired.
+Open animation work includes the 221-byte external source loader and
+212-byte document advance function, plus the separately reviewed
+135-byte document-slot scanner at 0x004548D0. That scanner now has
+maintained C++ in `AnimationDocumentSlotsLifecycle.cpp`; the source
+preserves the native unchecked slot reload after deletion. Its
+scoped 135-byte candidate still differs by one EAX/EDI register-selector
+byte, and is **non-exact**. See
+[ANIMATION_DOCUMENT_SLOTS](ANIMATION_DOCUMENT_SLOTS.md).
 
 
 ## Indexed script records, 811-byte owner (2026-11-11)
@@ -137,12 +139,12 @@ indexed form `script[i].offset` and increments only the loop index. In a
 focused six-support-TU VC9 `/GL` link with the lower texture
 constructors and sprite helper, the complete primary-TU decoder is still
 **811/811 bytes** with eight calls, three returns, and nine owned internal
-alignment bytes. All five formerly mismatched script-loop instruction
-bytes now agree; **only five non-address bytes at offsets
-`0x1E8/0x1F2/0x1F6/0x1FA/0x202`** remain, corresponding to sprite
-texture/file-index register and store scheduling. Address/call displacement
-fields remain diagnostic and are not counted as code equality. This is
-**not exact**.
+alignment bytes. At this **intermediate** checkpoint, the five script-loop differences
+disappeared and five sprite store bytes remained (offsets
+`0x1E8/0x1F2/0x1F6/0x1FA/0x202`). The subsequent source change below
+eliminated those too; the complete 811-byte function is now **strict
+exact**. These historical masked diagnostics do not themselves
+confer the accepted status.
 
 The distinct strict `store-animation-sprite` unit was rebuilt and
 recompared after the decoder edit: **149/149 exact**, no fields.
