@@ -39,6 +39,13 @@ now reads the SAME original 4A7AB0 table as the pattern configuration
 instead of the incorrect 4A7AC0 focus table; normal COFF bytes and
 complete exact status remain unchanged. See SECONDARY_PLAYER_INITIALIZATION.md.
 
+The controller initializer42F8A0/1557 now places the extent before
+the position in all four maximum-corner C++ expressions. This restores
+11/12 native FADD operand sequences in the focused /GL code (versus
+1/12), while preserving 1479 bytes, 13 calls and two returns.
+The remaining first-component duplicate is optimizer-dependent;
+the owner remains non-exact. See SECONDARY_PLAYER_INITIALIZATION.md.
+
 Controller initialization owner42F8A0/1557 now has compiled full
 source in SecondaryPlayerInitialization.cpp: pinned normal COFF1492/40
 fields and narrow /GL1479/13 calls/2 returns versus native1557/13/2.

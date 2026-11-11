@@ -165,3 +165,28 @@ shared array-constructor helper. Local experiments:
 `.analysis/player-storage-vector-ctor-v1-compare.json`,
 `.analysis/player-storage-vector-variant-linked.log`,
 `.analysis/player-storage-vector-noinline-linked.log`.
+
+
+## Maximum-corner floating operand order (2026-11-11)
+
+The original 1557-byte initializer contains **12 FADD instructions** to
+build maximum corners for four overlapping three-component boxes, each
+loading the extent before adding the position. In the previously
+maintained code, VC9 generally loaded the position first. Reversing
+the four natural `Plus` call argument orders in
+`src/SecondaryPlayerInitialization.cpp` retains all geometry values
+but restores **11 of the 12 native FADD operand sequences**, compared
+with just one matching sequence before the edit. The residual FADD
+is the X component of the final duplicate full maximum; it appears
+subject to the optimizer's common-expression scheduling.
+
+The focused original-toolchain `/GL` link produces the same
+**1479/1557** bytes, **13/13 calls**, **2/2 returns**. Normal COFF
+remains 1492 bytes, and the relocation-masked comparable-byte
+agreement moves 58/1397 -> 60/1397. Alternate natural C++ attempts
+(copy-then-add, a separate final vector, scalar assignments and
+statement reorder) either introduce unnecessary stack copies or
+reduce the FADD ordering match, so were not adopted. They are kept
+only as ignored evidence in `.analysis/player-init-plus-*` and
+`.analysis/player-init-swap-plus-args-linked.log`. The owner remains
+**non-exact**; no broader cold exact cohort was rerun.

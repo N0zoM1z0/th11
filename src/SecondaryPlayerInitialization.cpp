@@ -177,14 +177,16 @@ int __stdcall InitializeSecondaryPlayerController(SecondaryDamageReferencesView 
     owner->otherSize.y = owner->otherSize.x;
     owner->otherSize.z = 5.0f;
 
+    // The original evaluates the extent before the position in the
+    // maximum-corner FADDs; keep that source operand order across all four.
     owner->minimum = Minus(owner->position, owner->halfSize);
-    owner->maximum = Plus(owner->position, owner->halfSize);
+    owner->maximum = Plus(owner->halfSize, owner->position);
     owner->scaledMinimum = Minus(owner->position, owner->size);
-    owner->scaledMaximum = Plus(owner->position, owner->size);
+    owner->scaledMaximum = Plus(owner->size, owner->position);
     owner->otherMinimum = Minus(owner->position, owner->otherSize);
-    owner->otherMaximum = Plus(owner->position, owner->otherSize);
+    owner->otherMaximum = Plus(owner->otherSize, owner->position);
     owner->fullMinimum = Minus(owner->position, owner->otherSize);
-    owner->fullMaximum = Plus(owner->position, owner->otherSize);
+    owner->fullMaximum = Plus(owner->otherSize, owner->position);
 
     ResetInitialPlayerTime(&owner->stateTime, 0);
     owner->stateTime.previous = -1;
