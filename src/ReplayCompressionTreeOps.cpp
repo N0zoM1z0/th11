@@ -22,11 +22,11 @@ void __stdcall SpliceReplayCompressionNode(int node, int replacement)
 // 00442BE0: rightmost successor from the left subtree.
 int __stdcall FindReplayCompressionPredecessor(int node)
 {
-    int current = g_ReplayCompressionNodes[node].left;
-    for (int right = g_ReplayCompressionNodes[current].right; right;
-         right = g_ReplayCompressionNodes[current].right)
-        current = right;
-    return current;
+    ReplayCompressionNode *tree = g_ReplayCompressionNodes;
+    int cursor = tree[node].left;
+    while (tree[cursor].right)
+        cursor = tree[cursor].right;
+    return cursor;
 }
 
 // 00442B50: transfer both children and the parent link to replacement.

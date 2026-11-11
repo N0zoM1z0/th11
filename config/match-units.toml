@@ -4664,3 +4664,24 @@ relocations = [
   { offset = 23, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8 },
   { offset = 44, type = "DIR32", symbol = "?g_ReplayCompressionWindow@@3PAEA", target = 0x004C0EE8 },
 ]
+
+# The full original 49-byte owner includes six native alignment bytes.
+# The scoped /GL C++ tree/encoder context naturally reproduces its private
+# EAX receiver and all three node-table fields; other tree functions remain open.
+[units.replay-compression-predecessor]
+artifact_kind = "linked-pe"
+source = "src/ReplayCompressionTreeOps.cpp"
+inputs = []
+support_sources = ["src/ReplayCompressionEncoder.cpp", "src/ReplayCompressionSearch.cpp", "src/ReplayCompressionTree.cpp", "probes/replay-compression-context.cpp"]
+output_dir = "build/match-linked/ReplayCompressionPredecessor"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "ReplayCompressionProbe@12"
+functions = ["FindReplayCompressionPredecessor"]
+symbol = "?FindReplayCompressionPredecessor@@YGHH@Z"
+target_address = 0x00442BE0
+size = 49
+linkages = [
+  { offset = 6, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8, addend = 4 },
+  { offset = 16, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8, addend = 8 },
+  { offset = 40, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8, addend = 8 },
+]

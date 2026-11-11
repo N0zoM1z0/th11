@@ -123,9 +123,14 @@ Source code deliberately uses normal typed parameters instead.
 | ReplaceReplayCompressionNode | 134 | 144 | 14 |
 | FindReplayCompressionPredecessor | 49 | 51 | 3 |
 
-Every function compiles with the pinned VC9 /O2 toolchain; every full
-normal-COFF comparison is non-exact. The natural source follows the
-native tree operations without inventing ABI parameters. These four
+All four operations compile with the pinned VC9 /O2 toolchain; none
+matches as a normal COFF function. A scoped VC9 /GL build of the tree
+predecessor now **reproduces all 49 native bytes exactly** in a complete
+primary-TU PDB contribution. Cold source/tool/build receipts and all three
+independently reviewed DIR32 fields pass the strict linked Oracle
+(unit `replay-compression-predecessor`). The natural C++ loop restores the
+native EAX receiver and plain RET without lying about the declared ABI.
+The other three node-edit helpers remain non-exact. These four
 functions complete the source dependencies of the 416-byte search
 function. Together with the 795-byte encoder below, the main call chain
 now has maintained source but not a reconstructed /GL link. All candidate

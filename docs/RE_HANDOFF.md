@@ -53,6 +53,8 @@ src/ReplayCompressionSearch.cpp; normal COFF416/19 fields/270 of340
 comparable bytes, nonexact. Continue narrowing the native-vs-VC9 codegen on compressor main
 4423A0, then test a focused linked /GL context with the non-exact
 node helpers in src/ReplayCompressionTreeOps.cpp (owners79/80/134/49).
+The predecessor442BE0/49 is now **cold-pinned linked exact** with three
+independent DIR32 field replays; the other three tree edits remain nonexact.
 A focused five-TU VC9 /GL link gives encoder760/native795,
 tree matcher414/native416, replacement134/native134 (nonexact), deletion
 87/native79 and reset52/native52. See REPLAY_WRITING.md for field gaps;

@@ -50,7 +50,8 @@ Replay writer436420/1856 and allocator437300/150 have VC9-compiled source,
 but neither is exact. The scoped writer link now generates1765 bytes with
 46/46 native call sites; the chunk constructor uses operator new and the
 unconditional generic doubly linked-list insertion. ABI remains open. The adjacent compression dictionary reset4428D0/52 is
-now full normal-COFF exact with four reviewed fields. The adjacent
+full normal-COFF exact with four reviewed fields, and predecessor442BE0/49
+is now cold linked-PE exact with three reviewed node fields. The adjacent
 416-byte tree matcher442910 has compiled source (same-length but nonexact
 normal-COFF candidate); its four node splice/delete/replace/predecessor
 helpers now also have compiled but nonexact source. Focused five-TU
