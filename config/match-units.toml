@@ -5624,3 +5624,19 @@ linkages = [
   { offset = 4, type = "REL32", symbol = "?StopRuntimeThread@@YGXPAURuntimeThreadView@@@Z", target = 0x00459430 },
   { offset = 0x2A, type = "REL32", symbol = "__beginthreadex", target = 0x0046184B },
 ]
+
+# Real dynamic mode users keep the native private EAX runtime/ECX mode ABI;
+# the complete nontrivial 30-byte helper has no address/relocation fields.
+[units.set-secondary-gameplay-runtime-mode]
+artifact_kind = "linked-pe"
+source = "src/SecondaryGameplaySupport.cpp"
+inputs = ["src/SecondaryGameplay.hpp", "src/MainRuntime.hpp"]
+support_sources = ["probes/secondary-gameplay-mode-dynamic-context.cpp"]
+output_dir = "build/match-linked/SecondaryGameplayRuntimeMode"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryGameplayModeGenericProbe@16"
+functions = ["SetSecondaryGameplayRuntimeMode"]
+symbol = "?SetSecondaryGameplayRuntimeMode@@YGXPAUMainRuntimeView@@H@Z"
+target_address = 0x0040DEA0
+size = 30
+linkages = []

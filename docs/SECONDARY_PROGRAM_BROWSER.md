@@ -462,3 +462,39 @@ REL32 fields: call at `+4` to `StopRuntimeThread` `0x459430`, and call at
 `.analysis/start-secondary-debug-thread-strict-20261111.log`. This also
 identifies the genuine callee for the larger non-exact 934-byte browser
 state machine without manufacturing register arguments.
+
+## Real mode and worker producers for the 934-byte browser (2026-11-11)
+
+State 2 of `UpdateSecondaryProgramBrowser` invokes the real
+`SetSecondaryGameplayRuntimeMode` owner at `0x40DEA0`. Its source was already
+present in `src/SecondaryGameplaySupport.cpp`, but the browser's literal
+mode 3 allowed VC9 `/GL` to specialize away native register setup. A real
+independent dynamic-mode caller, now tracked as
+`probes/secondary-gameplay-mode-dynamic-context.cpp`, keeps this 30-byte
+helper generic with the private **EAX runtime / ECX mode** convention.
+The complete 30-byte owner (6 instructions, 2 returns, no relocation fields)
+passes its separate `set-secondary-gameplay-runtime-mode` strict cold oracle:
+**30/30 exact, zero differences**; receipt
+`.analysis/secondary-gameplay-mode-strict-20261111.log`.
+
+The genuinely reconstructed 56-byte `StartSecondaryDebugThread` and
+101-byte `StopRuntimeThread` are also visible as real dependencies of the
+934-byte browser. With both dynamic mode and worker callers, the compiler
+restores state-2 `LEA ECX,[EDI+3]; MOV EAX,runtime; CALL` and state-1
+`LEA EAX,worker; MOV EDI,callback; CALL`. The fully scoped browser remains
+**non-exact** at **928/934 bytes, 262/267 instructions and 22/22 calls**,
+but positional non-address-field differences fall from **412** (without
+both true producers) to **173**. The remaining five-instruction gap begins
+in state-0 selection reset code around `+0x2E0`, where the native control
+flow retains distinct zero, positive and negative branches. Merely
+reordering the three equivalent `if`/`goto` branches did not restore them;
+those unsuccessful probes were not applied to canonical source.
+
+Reproduce this scoped, NON-FULL producer diagnostic with
+`scripts/repo-python scripts/probe-secondary-browser-mode-thread.py`, which
+uses the actual pinned VC9 `/GL` TUs, the two tracked independent callers,
+and verified native target bytes. Recorded result:
+`.analysis/browser-mode-thread-tracked-20261111.log`. Its linked image
+also confirms **83/83** filename cleanup, **56/56** worker-start,
+**101/101** worker-stop, and **30/30** mode-setting bodies remain exact.
+Only the 934-byte update owner itself remains non-exact.

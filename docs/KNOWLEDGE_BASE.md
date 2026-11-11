@@ -503,3 +503,13 @@ Its actual ABI passes worker in EAX, callback in EDI, context on stack, and
 returns with RET4; two reviewed REL32 calls go to StopRuntimeThread459430
 and CRT __beginthreadex46184B. It is the real thread-start dependency of
 934-byte ECL browser update. See `SECONDARY_PROGRAM_BROWSER.md`.
+
+The 30-byte six-instruction `SetSecondaryGameplayRuntimeMode` helper at40DEA0
+is now **strict exact** with no relocations. Its actual generic EAX runtime,
+ECX mode ABI requires an independent dynamic-mode user; literal mode3 in
+the 934-byte ECL browser would otherwise be specialized away by VC9 /GL.
+When combined with real 56-byte worker-start and 101-byte stop sources,
+tracked `scripts/probe-secondary-browser-mode-thread.py` reproduces the
+large browser at928/934 bytes and262/267 instructions (all22 calls), with
+nonfield mismatches reduced from412 to173. That browser remains non-exact.
+See `SECONDARY_PROGRAM_BROWSER.md`.

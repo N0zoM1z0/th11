@@ -165,3 +165,17 @@ The shared control view and gameplay source/header changes, followed by the
 real dialogue context, affected only the existing adapter exact unit. Its fresh
 canonical11-byte/one-REL32 proof still had zero differences. See
 [SECONDARY_DIALOGUE](SECONDARY_DIALOGUE.md) for the substantial caller.
+## Strict exact runtime mode setter (2026-11-11)
+
+`SetSecondaryGameplayRuntimeMode` at `0x40DEA0` now has an independent
+pinned VC9 `/GL` cold linked-PE **30/30 strict exact** proof. The entire
+six-instruction function chooses either the caller's requested mode at
+runtime `+0x558` or forced mode 2 when flags `+0x590` contain `0x2000`.
+Its natural source remains in `src/SecondaryGameplaySupport.cpp` and the
+new tracked `probes/secondary-gameplay-mode-dynamic-context.cpp` preserves
+native EAX/ECX arguments without fabricated register casts. PDB/MAP/PE
+proof has **zero address fields and zero differences**. See the
+`set-secondary-gameplay-runtime-mode` unit and
+`.analysis/secondary-gameplay-mode-strict-20261111.log`.
+This same dynamic producer restores the correct literal-mode call lowering
+in the 934-byte ECL browser owner, which is still non-exact.
