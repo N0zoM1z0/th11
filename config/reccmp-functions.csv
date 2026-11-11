@@ -523,3 +523,5 @@ ResetSecondaryPlayerAnimationPairs,0x0042F580,function
 ResetSecondaryPlayerControllerState,0x0042FEC0,function
 InitializeSecondaryPlayerController,0x0042F8A0,function
 CreateSecondaryPlayerController,0x004301B0,function
+ConstructSecondaryPlayerStorage,0x0042F760,function
+DestructSecondaryPlayerStorage,0x00430010,function

@@ -37,8 +37,11 @@ fields and narrow /GL1479/13 calls/2 returns versus native1557/13/2.
 Six direct support TUs yield1520/14 calls/3 returns, still non-exact.
 The child42F580/286 stays cold-linked exact. The constructor factory4301B0/152 now also has compiled source
 (ordinary COFF67, scoped /GL66, five calls/two returns) but the native
-SEH prologue is missing; its 272-byte storage constructor and 415-byte
-destructor are still open. Next recover their natural lifetime code and
+SEH prologue is missing; both lifecycle dependencies also have compiled source in
+SecondaryPlayerStorageLifecycle.cpp. Constructor42F760/272 is
+normal COFF255/scoped /GL236, destructor430010/415 normal COFF371/
+/GL357, both non-exact. Continue EH/lifetime ABI recovery, without
+unrelated cold replay. Next recover their natural lifetime code and
 original private register allocation. See
 [SECONDARY_PLAYER_INITIALIZATION](SECONDARY_PLAYER_INITIALIZATION.md).
 

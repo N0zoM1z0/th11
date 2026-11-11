@@ -63,3 +63,33 @@ initializer did not change the latter's earlier 1479-byte narrow
 `.analysis/secondary-player-constructor-review-20261111.txt`,
 `.analysis/secondary-player-factory-coff-compare.json` and
 `.analysis/secondary-player-init-with-factory.log`.
+
+## Storage constructor and destructor, source-present
+
+The original storage constructor at `42F760..42F86F` has 272 bytes,
+71 instructions, five native calls and one RET4 with EH cleanup.
+Its two embedded 0x434-byte VM objects are initialized through
+`StageEmbeddedVm::StageEmbeddedVm`, an independently exact native
+constructor at `402270`. The native vector-construction iterator
+`4021A0` visits two eight-element arrays in each of eight emitter
+records; the callback bodies `4021D0` and `433F00` are identity-only
+constructors with no field writes. The remaining work clears the
+flags of 256, eight and 33 records, resets the 0x8D24-byte storage,
+and publishes the singleton. Maintained source in
+`src/SecondaryPlayerStorageLifecycle.cpp` compiles to 255 bytes
+in normal COFF and 236 bytes in a local factory /GL link, non-exact.
+
+The matched destructor-shaped native owner at
+`430010..4301AE` occupies 415 bytes /103 instructions and makes
+12 physical calls. Maintained source in the same TU reconstructs
+both update/draw chain removals with optional runtime locks, conditional
+animation document disposal or retention, pending pattern ownership
+handoff, and two backing-buffer frees. Normal COFF produces 371 bytes
+and factory-scoped /GL produces 357 bytes and 12 calls, but two
+synthetic returns instead of the native single RET4; it is non-exact.
+The native C++ EH and original class lifecycle are still unresolved.
+Neither helper modifies the already exact 286-byte animation-pair reset.
+Evidence: `.analysis/player-storage-lifecycle-review-20261111.txt`,
+`.analysis/player-lifecycle-ConstructSecondaryPlayerStorage-coff-compare.json`,
+`.analysis/player-lifecycle-DestructSecondaryPlayerStorage-coff-compare.json`,
+`.analysis/secondary-player-lifecycle-factory-link.log`.

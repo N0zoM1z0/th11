@@ -508,10 +508,10 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0042F540,unknown,SecondaryDialogue,review,unknown,secondary-dialogue-state-flag2-origin-open-2026-11-11
 0x0042F580,unknown,SecondaryPlayerController,review,unknown,secondary-controller-animation-reset-origin-open-2026-11-11
 0x0042F6F0,unknown,SecondaryPlayerController,indeterminate,unknown,secondary-emitter-motion-death-origin-2026-11-05
-0x0042F760,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0042F760,unknown,SecondaryPlayerController,review,unknown,secondary-player-storage-constructor-origin-open-2026-11-11
 0x0042F8A0,unknown,SecondaryPlayerController,review,unknown,secondary-player-initialize-main-origin-open-2026-11-11
 0x0042FEC0,unknown,SecondaryPlayerController,review,unknown,secondary-controller-state-reset-origin-open-2026-11-11
-0x00430010,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00430010,unknown,SecondaryPlayerController,review,unknown,secondary-player-storage-destructor-origin-open-2026-11-11
 0x004301B0,unknown,SecondaryPlayerController,review,unknown,secondary-player-factory-origin-open-2026-11-11
 0x00430270,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00430290,unknown,SecondaryPlayerController,indeterminate,unknown,secondary-controller-callee-origin-2026-10-29
