@@ -14,7 +14,7 @@ links are in [KNOWLEDGE_BASE](KNOWLEDGE_BASE.md).
 
 The continue menu owner at42D9D0..42E647/3192 bytes now merges its case13
 factory call after practice/record branches, as the native control flow does.
-The focused63-support VC9 /GL replay yields3112 bytes/160 fields/15 returns
+The pre-keyboard-edit 63-support VC9 /GL replay yielded3112 bytes/160 fields/15 returns
 versus native3192/162/15, with **no call-count differences**; its frame54
 still differs from native58 and2797 full bytes differ. The earlier3048-byte
 draft had158 fields,14 returns and four call-count gaps. A second layout with
@@ -28,6 +28,13 @@ native reviews, comparison records and checkpoint verifier remain in
 Canonical source, ledgers and build/comparison scripts are unchanged.
 
 ## Next reconstruction work
+
+The normal pause42C8D0 and continue42D9D0 owners now use native-style
+constant-multiply signed keyboard remainder: pause 4 IMUL/0 IDIV,
+continue 10 IMUL/0 IDIV. Narrow /GL probes give pause3244->3276/native3212
+(length regression) and continue3032->3096/native3192; old large-support
+figures predate this change. Both non-exact. See PAUSE_MENU.md and
+PAUSE_CONTINUE_MENU.md.
 
 Prioritize substantial complete owners and their byte-level gaps. The pause
 owner42C8D0/3212 remains3084/160 fields/3039 differences. Seven direct child-query

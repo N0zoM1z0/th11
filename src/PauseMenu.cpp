@@ -305,9 +305,19 @@ void __stdcall UpdatePauseMenu(PauseMenuView *self)
         if ((g_InputState.pressed & 0x20) || (g_InputState.repeat & 0x20))
             MoveSecondaryDebugSelection(keyboard, 13);
         if ((g_InputState.pressed & 0x40) || (g_InputState.repeat & 0x40))
-            MoveSecondaryDebugSelection(keyboard, keyboard->current % 13 == 0 ? 12 : -1);
+        {
+            int current = keyboard->current;
+            // Use the native VC9 constant-multiply signed remainder form.
+        int remainder = current - (current / 13) * 13;
+            MoveSecondaryDebugSelection(keyboard, remainder == 0 ? 12 : -1);
+        }
         if ((g_InputState.pressed & 0x80) || (g_InputState.repeat & 0x80))
-            MoveSecondaryDebugSelection(keyboard, keyboard->current % 13 == 12 ? -12 : 1);
+        {
+            int current = keyboard->current;
+            // Use the native VC9 constant-multiply signed remainder form.
+        int remainder = current - (current / 13) * 13;
+            MoveSecondaryDebugSelection(keyboard, remainder == 12 ? -12 : 1);
+        }
         if (keyboard->previous != keyboard->current) QueueMeshEffectSound(12);
         if (g_InputState.pressed & 0x80001)
         {

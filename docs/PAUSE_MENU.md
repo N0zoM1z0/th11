@@ -141,3 +141,16 @@ The retained public-path cold build reproduces the direct-expression result.
 All15 previously inspected menu/support owners remain byte-identical to the
 difficulty checkpoint after exhaustive field replay. The new large caller does
 not resolve the shared child finder's script-register gap on its own.
+
+## Keyboard signed remainder (2026-11-11)
+
+The native 3212-byte pause owner uses four IMUL and zero IDIV instructions,
+including the 13-column keyboard. An equivalent signed expression,
+`current - (current / 13) * 13`, restores those exact instruction categories
+where direct `current % 13` compiled to two IDIV. The local normal COFF changes
+from 3256 to 3284 bytes, and a narrow sound/menu /GL probe from 3244 to
+3276 bytes: this increases the length gap against native 3212 even though
+the arithmetic instructions now agree. The earlier 3084-byte large-support
+link predates this source revision; no exactness is claimed. Targeted evidence:
+`.analysis/PauseMenu-quotient-compare.json` and
+`.analysis/pause-keyboard-focused.log`.

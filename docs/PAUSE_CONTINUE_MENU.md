@@ -165,3 +165,16 @@ because its call graph and returns match the native owner, and the
 second experiment demonstrates why blindly adding locals is not enough.
 The next meaningful issue is reproducing the two branch-dependent result
 lifetimes without sacrificing the common call.
+
+## Keyboard signed remainder (2026-11-11)
+
+Native 3192-byte continuation owner has 10 IMUL and zero IDIV instructions.
+Four keyboard remainder tests compiled to IDIV with direct `% 13`, whereas
+the mathematically equivalent quotient/remainder form generates native-style
+IMUL constants. The normal-COFF candidate moves from 2988 to 3048 bytes,
+with the same 158 relocations; non-field byte matches from 134/2560 to
+139/2560. In a narrow /GL context with the real sound helper and record
+dependencies, size moves from 3032 to 3096 against native3192. That smaller
+context has 85 calls and 14 returns versus native 88/15; the prior 63-support
+3112-byte/15-return result belongs to pre-edit source and was not rerun.
+No exactness credit. Evidence: `.analysis/continue-keyboard-focused.log`.
