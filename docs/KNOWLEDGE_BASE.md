@@ -273,3 +273,14 @@ delete45FD49. Its neighboring 32-slot scanner4548D0/135 has source
 but is non-exact (115-byte scoped /GL), with the original unchecked
 pending-destroy reload retained. See
 [ANIMATION_DOCUMENT_SLOTS](ANIMATION_DOCUMENT_SLOTS.md).
+
+
+The animation-document slot scanner4548D0/135 is now a focused
+VC9 /GL **135/135-byte**, 50-instruction, 3-call/2-return complete
+candidate. Its ordinary C++ restores the signed lower index check,
+nonvolatile busy memory comparison and renderer-index reload; after
+one DIR32 and three REL32 native fields only **one instruction byte**
+differs (EDI vs EAX for non-exact AdvanceAnimationDocument4544C0/212).
+This scanner remains **non-exact**; the neighboring 51-byte slot
+release remains strict canonical exact. See
+[ANIMATION_DOCUMENT_SLOTS](ANIMATION_DOCUMENT_SLOTS.md).

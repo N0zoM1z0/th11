@@ -47,6 +47,14 @@ frees) and one RET4**. Normal COFF446; remains non-exact.
 The 272-byte storage constructor keeps the previous COFF271 layout.
 See SECONDARY_PLAYER_INITIALIZATION.md.
 
+Document slot scanner4548D0/135 now produces a full native-length
+135-byte primary /GL contribution with three calls/two returns;
+one non-field byte remains at offset70 because the 212-byte
+AdvanceAnimationDocument callee still accepts EAX instead of
+native EDI. Do not claim exact; the independent 51-byte
+FreeAnimationDocumentSlot remains strict cold exact after rebuilding.
+See ANIMATION_DOCUMENT_SLOTS.md.
+
 Registered menu update callback439F10/7 is now canonical cold
 normal-COFF **exact 7/7**, one REL32 to the 1224-byte menu owner4399B0.
 Its source stays in MenuControllerCallbacks.cpp, and the complete

@@ -18,9 +18,10 @@ The pinned native body reloads the slot after destruction and clears
 its pending flag **without introducing a new null check**. The source
 retains this observed path; its apparently unsafe behavior is an open
 original-runtime question rather than grounds for modifying the native
-control flow. The complete scan is **source-present but non-exact**:
-pinned VC9 ordinary COFF and focused `/GL` each generate 115 bytes,
-versus native 135, retaining the three calls and two returns.
+control flow. The complete scan remains **source-present, non-exact**.
+The initial candidate was 115 bytes in both ordinary COFF and focused
+`/GL`; focused codegen has now recovered the complete **135-byte**
+native shape as described below.
 
 The 51-byte indexed release contains 14 instructions, two calls and one
 plain return. The native receiver resides in EBX and unsigned slot
@@ -51,3 +52,42 @@ Scoped private evidence:
 `.analysis/animation-document-slots-context.log`,
 `.analysis/animation-document-slot-free-cold-proof.json`,
 and `build/match-linked/AnimationDocumentSlotFree/`.
+
+
+## Scan control-flow recovery (2026-11-11)
+
+The initial 115-byte focused `/GL` contribution omitted native
+loop-helper's signed lower bound and selected a synthetic volatile
+load/test for the busy status. It also passed the cached slot pointer
+to `AdvanceAnimationDocument` rather than reloading the file by its
+index from the saved renderer.
+
+The maintained C++ now keeps the renderer base separately, explicitly
+preserves the native signed nonnegative **and** unsigned upper-bound
+checks on the inlined slot deletion, reads physical busy+124 as an
+ordinary memory test, and independently reloads the indexed slot for
+the busy call. This is all normal C++ state-machine logic, not
+inserted machine code.
+
+In the five-support-TU VC9 `/GL` context, the complete primary PDB
+owner now generates **135 bytes / 50 instructions, three calls and
+two returns** against native **135 / 50 / three / two**. One reviewed
+DIR32 renderer field at offset5 and three native REL32 call fields
+at offsets2F/37/77 account for 10 of 11 raw unequal bytes. The
+remaining **single non-field byte at offset70** is the ModRM
+register selector on the busy-path file reload: the original writes
+EDI for the private callee, while the current linked
+`AdvanceAnimationDocument` source accepts EAX. A separate normal
+advance caller and multiple equivalent local return spellings
+did not change that register assignment. No exact credit is
+claimed for the scan or the currently non-exact 212-byte advance
+callee.
+
+The neighboring accepted `animation-document-slot-free` remains
+independently proven exact (51/51 bytes with two REL32 fields),
+including after a new **scope-only cold build** of the revised
+source. Private comparisons and codegen variants:
+`.analysis/animation-slot-native-branch-links.log`,
+`.analysis/animation-slot-advance-abi-links.log`,
+`.analysis/animation-slot-add-advance-probes.log` and
+`build/probe-ltcg/AnimationDocumentSlots/`.

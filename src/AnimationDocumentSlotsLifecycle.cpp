@@ -36,8 +36,11 @@ void __stdcall FreeAnimationDocumentSlot(RenderBatchView *renderer,
 // completion/teardown. The original has one caller at 00429067.
 int __cdecl UpdateAnimationDocumentSlots()
 {
+    // Preserve the renderer base separately. Native VC9 saves this pointer
+    // to a local slot, then reloads it for the busy-document advance path.
+    RenderBatchView *renderer = g_RenderBatch;
     AnimationDocumentSlotsView *slots =
-        reinterpret_cast<AnimationDocumentSlotsView *>(g_RenderBatch);
+        reinterpret_cast<AnimationDocumentSlotsView *>(renderer);
 
     for (unsigned int i = 0; i < 32; ++i)
     {
@@ -50,7 +53,9 @@ int __cdecl UpdateAnimationDocumentSlots()
         {
             // The native inlined destruction path checks the slot bounds
             // independently, even though this loop uses 0..31.
-            if (i < 32)
+            // The native inlined slot bounds check has BOTH the signed
+            // nonnegative test and the unsigned 32-slot upper bound.
+            if (static_cast<int>(i) >= 0 && i < 32)
             {
                 DestroyAnimationDocument(file);
                 ::operator delete(*slot);
@@ -60,9 +65,14 @@ int __cdecl UpdateAnimationDocumentSlots()
             // a new guard. In native code the pointer may already be null.
             (*slot)->pendingDestroy = 0;
         }
-        else if (file->busy)
+        // This source view declares busy volatile, but the native scan
+        // performs one ordinary in-memory compare at physical +0x124.
+        // Avoid a synthetic load+test pair from the shared volatile view.
+        else if (*const_cast<int *>(&file->busy))
         {
-            return (AdvanceAnimationDocument(*slot) != 0) - 1;
+            AnimationDocumentSlotsView *fresh =
+                reinterpret_cast<AnimationDocumentSlotsView *>(renderer);
+            return (AdvanceAnimationDocument(fresh->files[i]) != 0) - 1;
         }
     }
     return 0;
