@@ -481,7 +481,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0042B8D0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042B8E0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042BA20,unknown,PauseMenu,indeterminate,unknown,pause-continue-menu-origin-2026-11-06
-0x0042BA80,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0042BA80,unknown,PauseMenu,indeterminate,unknown,pause-record-insertion-origin-2026-11-11
 0x0042BBF0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042BC60,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042BD90,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

@@ -36,8 +36,12 @@ produced frame4C. Preserve independent input tests and metadata stage68 versus
 difficulty64. The shared child finder stays76/native70/41 with an unresolved
 register/stack ABI difference. See [PAUSE_MENU](PAUSE_MENU.md).
 
-PreparePauseContinueRecords42D850/380 is boundary-reviewed but source-open;
-insertion42BA80 and writer436420/1856 remain open. The other native child-finder
+PreparePauseContinueRecords42D850/380 and InsertPauseContinueScore42BA80/365
+now have VC9-compiled source in src/PauseContinueRecords.cpp and
+src/PauseRecordInsertion.cpp. Full normal-COFF diagnostic sizes are387/232;
+they are not exact. The insertion coefficient uses100.0, and the stage7/saved
+run branch is rechecked after insertion. Writer436420/1856 remains source-open.
+See PAUSE_CONTINUE_MENU.md. The other native child-finder
 caller42E6B0 retains an unreviewed3179-byte default. Do not substitute unrelated
 HUD/gameplay/ActorInstructions sources.
 

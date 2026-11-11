@@ -36,8 +36,11 @@ close92/show64 replay zero only in support; score33 and factory105 remain open.
 See [PAUSE_CONTINUE_MENU](PAUSE_CONTINUE_MENU.md).
 
 The last missing actual child-finder caller42E6B0 retains an unreviewed3179-byte
-default. PreparePauseContinueRecords42D850/380 has a reviewed boundary but no
-source. Its insertion callee42BA80 and replay writer436420/1856 remain open.
+default. PreparePauseContinueRecords42D850/380 and its insertion callee42BA80/365
+now have maintained VC9-compiled source; the normal-COFF diagnostic sizes are
+387/232 respectively, neither exact. The insertion percentage uses target
+double100.0 at497E50; the preparer rechecks stage7 after insertion.
+Replay writer436420/1856 remains source-open.
 Existing ActorInstructions/HUD/gameplay sources do not implement these owners.
 
 ## Pause3212 and returned-ID lifetimes

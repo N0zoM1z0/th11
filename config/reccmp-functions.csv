@@ -498,6 +498,8 @@ ResumePauseMenu,0x0042C880,function
 SignalPauseMenuChild,0x0042F380,function
 DeletePauseMenuReplay,0x00435FC0,function
 UpdatePauseContinueMenu,0x0042D9D0,function
+InsertPauseContinueScore,0x0042BA80,function
+PreparePauseContinueRecords,0x0042D850,function
 CommitPauseMenuScore,0x0042BA20,function
 ClosePauseContinueMenu,0x0042D7F0,function
 ShowPauseMenuAnimationTree,0x00456610,function

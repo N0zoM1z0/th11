@@ -96,3 +96,40 @@ boundary-reviewed but source-open; its insertion callee42BA80 and writer436420/
 1856 also remain open. The last missing large child-finder caller42E6B0 still
 has its unreviewed default3179-byte boundary. Original class/TU, whole product,
 runtime and portability are unproved.
+
+## Record preparation and high-score insertion (2026-11-11)
+
+The previously open owners at 42D850..42D9CB (380 bytes) and
+42BA80..42BBEC (365 bytes) now have maintained source in
+src/PauseContinueRecords.cpp and src/PauseRecordInsertion.cpp. Both
+compile with the pinned VC9 compiler. Full normal-COFF diagnostics
+produce 387 and 232 bytes respectively, versus the native 380 and 365.
+Neither is exact. Their original translation-unit/LTCG ownership is
+unproven.
+
+The preparer has two distinct stage-7/save-mode tests, before **and**
+after calling score insertion. The first temporarily sets the current
+and remembered stage to 8 and the selected stage-data pointer to
+g_MenuStageSelections + 0x40. The second does **not** unconditionally
+reverse that change: only if stage is again 7 does it select the table
+base and store both stage values as 7. A negative insertion rank marks
+unknown1f8 and returns. Success sets up a 25-item selector and a 91-key
+editor, copies the remembered name, steps the keyboard left unless that
+name is eight spaces and finds the last nonspace cursor position.
+
+Insertion compares scores as signed integers and puts the new score
+before the first entry whose score is no greater. It moves the suffix
+toward the end in **28-byte** records and returns -1 if the score does
+not qualify. New entries store the current score, stage and shot type,
+a 64-bit wall-clock timestamp, nine bytes of the default eight-space
+name (including NUL), and the completion percentage calculated from
+two doubles at offsets 24 and 2C of the live timing object. Original
+target bytes at 497E50 encode double **100.0**; the formula is
+100.0 minus the ratio of those times multiplied by 100.0. The shot
+type and timing pointer are kept as descriptively named but still
+nominally unknown globals at 4A573C and 4A8D80.
+
+The preparer is called from the 3192-byte continuation owner at 42D9D0
+and from 42E6B0. The insertion callee is also used by 43F802.
+Future work: investigate /GL codegen and the 1856-byte replay writer
+436420 without expanding to unrelated full-build validation.
