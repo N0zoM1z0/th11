@@ -519,3 +519,5 @@ PauseSelectionComparisonView::IsSmaller,0x0042F350,function
 QueuePauseOverlayRectangle,0x0042F400,function
 CapturePauseOverlayFromVm,0x0042F480,function
 IsSecondaryDialogueStateFlag2Set,0x0042F540,function
+ResetSecondaryPlayerAnimationPairs,0x0042F580,function
+ResetSecondaryPlayerControllerState,0x0042FEC0,function

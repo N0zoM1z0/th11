@@ -518,3 +518,5 @@ PauseSelectionComparisonView::IsSmaller
 QueuePauseOverlayRectangle
 CapturePauseOverlayFromVm
 IsSecondaryDialogueStateFlag2Set
+ResetSecondaryPlayerAnimationPairs
+ResetSecondaryPlayerControllerState

@@ -181,3 +181,9 @@ claims. Rebuild a selected context before quoting a new candidate metric.
 | Text | [TEXT_RESOURCES](TEXT_RESOURCES.md), [TEXT_DRAWING_COMPOSITE](TEXT_DRAWING_COMPOSITE.md), [OUTLINED_TEXT](OUTLINED_TEXT.md), [FORMATTED_TEXTURE_TEXT](FORMATTED_TEXTURE_TEXT.md) |
 | File/archive | [RESOURCE_FILES](RESOURCE_FILES.md), [SHARED_FILE](SHARED_FILE.md), [ARCHIVE_DECOMPRESSION](ARCHIVE_DECOMPRESSION.md) |
 | Callbacks, input, frame and startup | [CALLBACK_CHAIN](CALLBACK_CHAIN.md), [INPUT_POLLING](INPUT_POLLING.md), [FRAME_LOOP](FRAME_LOOP.md), [STARTUP_WINDOW](STARTUP_WINDOW.md) |
+
+The player controller's eight-pair VM reset42F580/286 now has
+complete cold linked-PE exactness (286/286, one reviewed global DIR32)
+from a naturally compiled 304-byte controller reset caller.
+Parent42FEC0/304 also has compiled source but remains non-exact
+(319-byte linked draft); see [SECONDARY_PLAYER_ANIMATION_RESET](SECONDARY_PLAYER_ANIMATION_RESET.md).

@@ -31,10 +31,13 @@ Canonical source, ledgers and build/comparison scripts are unchanged.
 
 ## Next reconstruction work
 
-Dialog phase query42F540/27 is new strict normal-COFF exact with one
-reviewed DIR32 field, in SecondaryDialogueStateQuery.cpp. Nearby
-42F580/286 is the next source-open cleanup owner, with eight
-VM-identifier pairs and no native callees; review underway.
+Dialogue phase query42F540/27 is strict normal-COFF exact.
+Controller animation pair reset42F580/286 now also has strict linked-PE
+**exact 286/286** with one g_RenderBatch DIR32 field and the natural
+EBX argument recovered from caller42FEC0/304. Both have C++ source.
+The 304-byte controller restart caller is source-present but
+**non-exact**, initially linked319/native304. See
+[SECONDARY_PLAYER_ANIMATION_RESET](SECONDARY_PLAYER_ANIMATION_RESET.md).
 
 
 The normal pause42C8D0 and continue42D9D0 owners now use native-style
