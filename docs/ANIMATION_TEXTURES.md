@@ -76,9 +76,10 @@ the native decoder's112-byte frame without stack realignment. Recovering the
 real20-byte sprite and eight-byte script record types, restoring per-branch
 texture-entry evaluation and the later table reload, and retaining the observed
 sprite assignment order reduce the decoder from the former629-byte candidate
-to the complete811 bytes with10 unequal diagnostic positions. Five positions
-come from register/store scheduling in sprite setup and five from reordered
-independent script-loop entry instructions. It remains non-exact: no register,
+to the complete811 bytes with10 unequal diagnostic positions. Replacing
+the pointer-increment script loop with indexed `script[i].offset` has
+subsequently eliminated all five script-loop entry differences, leaving
+**811 bytes with only five non-field sprite setup differences**. It remains non-exact: no register,
 instruction-order or byte normalization grants credit.
 
 Bounded alternate source contexts are retained privately: opaque helpers gave

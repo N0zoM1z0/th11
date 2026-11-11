@@ -139,7 +139,9 @@ int __stdcall DecodeAnimationChunk(AnimationDocumentView *file, int textureIndex
     }
     const AnimationChunkScriptView *script =
         reinterpret_cast<const AnimationChunkScriptView *>(offset);
-    for (int i = 0; i < chunk->scriptCount; ++i, ++script)
-        file->scripts[scriptIndex + i] = base + script->offset;
+    // The original script table uses the indexed record offset; expressing
+    // this directly preserves VC9's two shifts before the first record load.
+    for (int i = 0; i < chunk->scriptCount; ++i)
+        file->scripts[scriptIndex + i] = base + script[i].offset;
     return 1;
 }

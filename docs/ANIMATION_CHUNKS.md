@@ -9,7 +9,7 @@ postloading. The actual texture/sprite/script decoder is 0x004545A0.
 | --- | --- | ---: | --- |
 | LoadAnimationChunkSource | 0x004543E0..0x004544BC, 221 bytes | 209 | source, non-exact |
 | AdvanceAnimationDocument | 0x004544C0..0x00454593, 212 bytes | 211 | source, non-exact |
-| DecodeAnimationChunk | 0x004545A0..0x004548CA, 811 bytes | 811 | source, non-exact, 10 diagnostic differences |
+| DecodeAnimationChunk | 0x004545A0..0x004548CA, 811 bytes | 811 | source, non-exact, 5 diagnostic differences |
 | StoreAnimationSprite | 0x00454B10..0x00454BA4, 149 bytes | 149 | canonical linked-PE exact |
 
 All four entries, branches, return tails, incoming/interior references and
@@ -102,10 +102,11 @@ address-field diagnostics find156,161 and735 unequal positions, including
 length differences; these are not exactness claims. The opaque lower helper
 and error logger contracts leave private-register/frame context unresolved.
 StoreAnimationSprite independently produced the same149 raw bytes in that
-family. The current constructor family produces209/147,211/118 and811/10
+family. The previous constructor family produced209/147,211/118 and811/10
 byte counts/unequal diagnostic positions; its known lower helper contracts,
-typed records and observed field/table evaluation order restore most of the
-decoder's native context. No artificial ABI, padding or executable patch was used.
+typed records and observed field/table evaluation order restored most of the
+decoder's native context. The current script-indexed decoder further reduces
+the last of these figures to **811/5**, without changing the native extent. No artificial ABI, padding or executable patch was used.
 
 D3DSURFACE_DESC is32 bytes/eight DWORDs, including MultiSampleQuality before
 Width and Height. Earlier seven-DWORD fixtures do not establish dimensions;
@@ -116,3 +117,32 @@ alongside the documented remaining pixel/file/decoder codegen gaps. The
 background dispatcher at0x004548D0 also needs its own
 source and review: its destruction path writes through a slot after clearing
 it, an observed failure path that must not be silently repaired.
+
+
+## Indexed script records, 811-byte owner (2026-11-11)
+
+The decoder's final script loop originally advanced a typed record pointer
+in the `for` increment and accessed `script->offset`. That source was
+semantically correct but made VC9 schedule the script-record initial pointer
+LEA between two independent `ADD EAX,EAX` operations. In the original
+executable both doubling operations precede the LEA at offsets
+`0x2F2..0x2F8`.
+
+The maintained `src/AnimationChunk.cpp` now uses the equally natural
+indexed form `script[i].offset` and increments only the loop index. In a
+focused six-support-TU VC9 `/GL` link with the lower texture
+constructors and sprite helper, the complete primary-TU decoder is still
+**811/811 bytes** with eight calls, three returns, and nine owned internal
+alignment bytes. All five formerly mismatched script-loop instruction
+bytes now agree; **only five non-address bytes at offsets
+`0x1E8/0x1F2/0x1F6/0x1FA/0x202`** remain, corresponding to sprite
+texture/file-index register and store scheduling. Address/call displacement
+fields remain diagnostic and are not counted as code equality. This is
+**not exact**.
+
+The distinct strict `store-animation-sprite` unit was rebuilt and
+recompared after the decoder edit: **149/149 exact**, no fields.
+Private focused receipts:
+`.analysis/animation-decoder-script-index-linked-build.log`,
+`.analysis/decoder-script-script-int-index.cpp`, and
+`build/probe-ltcg/AnimationDecoderFocused/`.
