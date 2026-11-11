@@ -522,3 +522,13 @@ screenshot producer (`scripts/probe-animation-surface-copy.py`) creates a
 positional nonfield differences, vs the old312-byte/55-difference candidate.
 The missing instruction is in the final indexed texture AddDirtyRect setup;
 this remains non-exact. See `ANIMATION_SURFACE_COPY.md`.
+
+
+The 135-byte `UpdateAnimationDocumentSlots` scan at4548D0 is now **strict
+exact**. Its formerly lone ModRM byte +70 (EAX versus target EDI) is
+naturally recovered when the real 811-byte decoder dependency TUs are
+linked alongside the scanner and `AdvanceAnimationDocument`. All135 bytes,
+50 instructions, three calls, two returns, and four native DIR32/REL32
+fields now match, independently cold accepted. This proves the non-exact
+212-byte advance callee's private EDI input without asserting that callee
+is exact. See `ANIMATION_DOCUMENT_SLOTS.md`.

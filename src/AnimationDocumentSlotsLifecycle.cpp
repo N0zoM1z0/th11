@@ -38,6 +38,8 @@ int __cdecl UpdateAnimationDocumentSlots()
 {
     // Preserve the renderer base separately. Native VC9 saves this pointer
     // to a local slot, then reloads it for the busy-document advance path.
+    // The EDI reload is exact only with the genuine decoder/texture family
+    // supplying AdvanceAnimationDocument's real private LTCG call contract.
     RenderBatchView *renderer = g_RenderBatch;
     AnimationDocumentSlotsView *slots =
         reinterpret_cast<AnimationDocumentSlotsView *>(renderer);

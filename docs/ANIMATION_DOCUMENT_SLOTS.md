@@ -106,3 +106,39 @@ cannot be claimed exact merely by reusing the same source.
 The scanner remains non-exact with the single previously reviewed
 register ModRM difference.
 Evidence: `.analysis/animation-slot-after-decoder-boss-linked.log`.
+
+
+## Strict exact 135-byte scan via real decoder producer (2026-11-12)
+
+The earlier narrow scanner link left one non-relocation ModRM byte at
+`+0x70` (`MOV EAX,[EDX+EBX*4+...]` instead of the native
+`MOV EDI,[EDX+EBX*4+...]`). The underlying issue was **not** the
+scanner's final return spelling: its `AdvanceAnimationDocument` callee
+was being over-specialized because the compiler could not see the actual
+811-byte `DecodeAnimationChunk` producer family. The real decoder uses
+six support translation units for texture conversion, transparent pixels,
+sprites, diagnostics and resource loading.
+
+Linking those actual sources with the existing native slot owner,
+`AnimationChunk.cpp`, the real document cleanup, menu marker and dynamic
+renderer/index caller naturally restores the EDI private argument ABI.
+Now the complete **135/135-byte, 50/50-instruction, 3/3-call, 2-return**
+`UpdateAnimationDocumentSlots` body is **canonical strict exact**. Its
+four independently reviewed fields are renderer DIR32 `+0x05 -> 0x4C3268`
+and three REL32 calls to `DestroyAnimationDocument`
+`+0x2F -> 0x4549E0`, C++ `operator delete` `+0x37 -> 0x45FD49`,
+and `AdvanceAnimationDocument` `+0x77 -> 0x4544C0`. There are **zero
+remaining differences** in a fresh, fully owned PDB/MAP/PE contribution.
+Source and codegen retain the native unchecked slot load after deletion;
+no extra guards, register shims, custom machine bytes or padding were added.
+
+The proof unit is `animation-document-slot-update` in
+`config/match-units.toml`; acceptance receipt:
+`.analysis/animation-document-slot-update-strict-20261112.log`.
+The exact dependent 811-byte decoder and 51-byte indexed release also
+compile with **zero differences** under the same diagnostic producer
+(`.analysis/probe-slot-real-decoder-20261111.py`). The separate 212-byte
+`AdvanceAnimationDocument` now compiles to **211/212 bytes** with genuine
+decoder support; that callee remains **non-exact**, despite the scanner's
+strict acceptance. Historical one-byte ABI diagnostic above is superseded.
+No full cold replay was run.
