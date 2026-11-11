@@ -30,7 +30,7 @@ struct SecondaryVm
     int unknown1018;
     BYTE difficulty, unknown101d[3];
     unsigned int flags;
-    SecondaryVm() { stack.top = stack.frame = 0; }
+    SecondaryVm() { stack.top = 0; stack.frame = 0; }
 };
 struct SecondaryThread
 {

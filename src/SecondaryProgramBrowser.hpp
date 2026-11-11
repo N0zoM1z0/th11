@@ -40,8 +40,8 @@ typedef char BrowserLoadedDataOffset[(offsetof(SecondaryProgramBrowserView, load
 void __stdcall ClearSecondaryProgramBrowserFiles(SecondaryProgramBrowserView *self);
 int __fastcall UpdateSecondaryProgramBrowser(SecondaryProgramBrowserView *self);
 
-// Independently observed owner at 0x0045DB90, not yet reconstructed here.
-SecondaryManager *__stdcall CreateSecondaryProgramBrowserManager(
+// Fully reconstructed 77-byte factory at 0x0045DB90: separate exact owner.
+SecondaryManager *__stdcall CreateSecondaryManager(
     SecondaryProgramView *program, const char *subroutineName);
 
 // Native ECL browser loader and dedicated thread callback at 438910/438900.

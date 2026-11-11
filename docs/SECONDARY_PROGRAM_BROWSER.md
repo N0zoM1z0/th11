@@ -167,3 +167,26 @@ Diagnostics: `.analysis/secondary-program-browser-restored-count-20261111.log`,
 `.analysis/try-browser-selection-count-codegen-20261111.py`,
 `.analysis/try-browser-branch-early-return-20261111.py`,
 and `.analysis/secondary-program-browser-leaf-recheck-20261111.log`.
+
+## Exact 77-byte manager factory (2026-11-11)
+
+The browser's factory at `0x45DB90..0x45DBDC` is now natural C++ in
+`SecondaryProgramManagerFactory.cpp`. It allocates the real 0x103C-byte
+`SecondaryManager`, initializes the embedded VM stack fields, publishes the
+program at `+0x102C`, resolves the selected subroutine and stores the
+initial instruction and time through `current`. Under the real browser and
+`SecondaryScript.cpp` `/GL` producer the complete function is **77/77
+bytes exact**. Its three fields are `operator new` REL32 at `+7` to
+`0x45FCE4`, manager vtable DIR32 at `+22` to `0x494058`, and
+`FindSecondarySubroutine` REL32 at `+54` to `0x45DB10`. The cold-linked
+PE/MAP/PDB primary owner and all three bindings replay with zero differences;
+see `create-secondary-manager` and
+`.analysis/secondary-manager-factory-strict-20261111.log`.
+
+The shared `SecondaryVm` constructor now writes `stack.top` then
+`stack.frame` as two normal assignments, matching the native ordered zero
+stores. **All 28 affected exact units** that consume the changed shared header
+or browser callback/factory source have passed selected-only cold replay with
+**zero final byte differences**. The exactness log is
+`.analysis/secondary-manager-shared-header-exact-20261111.log`. The neighboring 934-byte
+browser and 277-byte deferred loader retain their own non-exact status.

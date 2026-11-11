@@ -20,7 +20,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - [Generated progress](PROGRESS.md) and
   `config/{functions,function-boundaries,function-origins,matches}.csv`
   determine names, origins, reviewed extents and exact status.
-  At this checkpoint: **279 canonical exact**, **569 source-present**,
+  At this checkpoint: **280 canonical exact**, **570 source-present**,
   **653 reviewed boundaries**. Refresh with
   `scripts/repo-python scripts/progress.py`, not manual totals.
 - An exact owner requires the entire original function, source/tool
@@ -51,6 +51,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 
 | Native owner / current source | Current scoped result | Next concrete question |
 | --- | --- | --- |
+| **77-byte** `CreateSecondaryManager` `0x45DB90` — `SecondaryProgramManagerFactory.cpp` | **77/77 strict exact**; 3 reviewed fields, native VM stack-zero order | Accepted cold PE/MAP/PDB proof; **28** affected shared-header/browser exact units replayed with zero differences. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
 | **277-byte** `LoadSecondaryProgramSelection` `0x438910` and **8-byte** callback `0x438900` | Full real-resource `/GL` **277/277 bytes, 81/81 instructions, 8 calls**, still 18 nonfield bytes different; thread **8/8 strict exact** | Fix constructor vptr-store placement and result/index register allocation; preserve exact resource loader and callback. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
 | **934-byte** `UpdateSecondaryProgramBrowser` `0x438AC0` + **83-byte** cleanup `0x438570` — `SecondaryProgramBrowser.cpp` | Post-store selection reload restores `/GL` **912/934 bytes, 267/267 instructions, 22/22 calls**; browser still non-exact; child cleanup **83/83 strict exact** | Resolve branch layout, native register choices and manager ABI; protect the exact cleanup. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
 | **976-byte** `BuildBillboardAnimationVmQuad` `0x450700` — `AnimationBillboardQuad.cpp` | Full C++ now source-present; linked real billboard producer **927/976**, normal COFF 939 | Paired x87 `FSINCOS` and float spill/rounding lifetime; non-exact. [Billboard](ANIMATION_PROJECTED_QUAD.md) |

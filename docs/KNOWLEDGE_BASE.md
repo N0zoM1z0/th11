@@ -402,3 +402,10 @@ mostly the ordering of constructor vptr write and the final EBX/ECX index
 register allocation. Resource loader466/466 remains exact and the separately
 accepted 8-byte thread caller still passes a scoped strict cold replay.
 See [SECONDARY_PROGRAM_BROWSER](SECONDARY_PROGRAM_BROWSER.md).
+
+The `SecondaryManager` 77-byte factory at45DB90 now reproduces every native
+instruction and three reviewed fields in a real browser+`SecondaryScript`
+VC9 /GL producer. Its two embedded `SecondaryVm` stack-zero stores require
+`stack.top=0; stack.frame=0;` in that order; the previous chain assignment
+reversed the two writes. The full distinct factory is cold linked exact;
+see `SECONDARY_PROGRAM_BROWSER.md`.

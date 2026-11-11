@@ -5425,3 +5425,24 @@ size = 8
 linkages = [
   { offset = 1, type = "REL32", symbol = "?LoadSecondaryProgramSelection@@YAHXZ", target = 0x00438910 },
 ]
+
+# The actual ECL browser TU naturally passes the program in EDI, while the
+# actual secondary script TU recovers the private EAX/stack lookup convention.
+# The constructor's two distinct scalar initializations reproduce native order.
+[units.create-secondary-manager]
+artifact_kind = "linked-pe"
+source = "src/SecondaryProgramManagerFactory.cpp"
+inputs = ["src/SecondaryProgramBrowser.hpp", "src/SecondaryScript.hpp"]
+support_sources = ["src/SecondaryProgramBrowser.cpp", "src/SecondaryScript.cpp", "probes/secondary-manager-factory-context.cpp"]
+output_dir = "build/match-linked/SecondaryManagerFactory"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryManagerFactoryProbe@8"
+functions = ["CreateSecondaryManager"]
+symbol = "?CreateSecondaryManager@@YGPAUSecondaryManager@@PAUSecondaryProgramView@@PBD@Z"
+target_address = 0x0045DB90
+size = 77
+linkages = [
+  { offset = 7, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x0045FCE4 },
+  { offset = 22, type = "DIR32", symbol = "??_7SecondaryManager@@6B@", target = 0x00494058 },
+  { offset = 54, type = "REL32", symbol = "?FindSecondarySubroutine@@YGPAUSecondaryInstruction@@PAUSecondaryProgramView@@PBD@Z", target = 0x0045DB10 },
+]

@@ -134,7 +134,7 @@ int __fastcall UpdateSecondaryProgramBrowser(SecondaryProgramBrowserView *self)
                     }
                     const char *name = self->program->subroutines[
                         self->subroutineSelection.current].name;
-                    self->manager = CreateSecondaryProgramBrowserManager(self->program, name);
+                    self->manager = CreateSecondaryManager(self->program, name);
                     self->state = 4;
                 }
             }
