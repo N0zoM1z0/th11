@@ -20,8 +20,8 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - [Generated progress](PROGRESS.md) and
   `config/{functions,function-boundaries,function-origins,matches}.csv`
   determine names, origins, reviewed extents and exact status.
-  At this checkpoint: **284 canonical exact**, **575 source-present**,
-  **658 reviewed boundaries**. Refresh with
+  At this checkpoint: **285 canonical exact**, **576 source-present**,
+  **659 reviewed boundaries**. Refresh with
   `scripts/repo-python scripts/progress.py`, not manual totals.
 - An exact owner requires the entire original function, source/tool
   receipts, exhaustive reviewed field rebinding and **zero differing
@@ -55,6 +55,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 | **277-byte** `LoadSecondaryProgramSelection` `0x438910` and **8-byte** callback `0x438900` | Full real-resource `/GL` **277/277 bytes, 81/81 instructions, 8 calls**, still 18 nonfield bytes different; thread **8/8 strict exact** | Fix constructor vptr-store placement and result/index register allocation; preserve exact resource loader and callback. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
 | **5-byte** `SecondaryProgramBrowserUpdateCallback` `0x4390A0` | Newly inventoried real registered update-chain entry; **5/5 strict exact**, one REL32 tail JMP to 934-byte browser update | Protected by cold PE/MAP/PDB owner proof; related six-byte getter also rechecked exact. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
 | **548-byte** `DrawSecondaryProgramBrowser` `0x438E70`, **10-byte** adapter `0x4390B0`, **6-byte** getter `0x4390D0` | Natural ASCII singleton reload produces **526/548, 11/11 calls**, still non-exact; **10/10 draw adapter strict exact** under real browser-chain registration, **6/6 getter exact** | Improve 548-byte draw mode switching and x87/register schedules; protect both exact leaves. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
+| **142-byte** `ConstructSecondaryProgramBrowserStorage` `0x4385D0` | **142/142 strict exact**, 32 instructions, one memset call, three reviewed fields; sets worker/selection fields, clears 0x2E4 browser and publishes singleton | Keep original worker-vtable pointer as observed external data. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
 | **173-byte** `RegisterSecondaryProgramBrowserChains` `0x438660` | **173/173 strict exact**, 60 instructions, four calls, six reviewed fields. Dynamic-priority generic chain caller restores natural EBP/EBX/ESI owner ABI and two ordered node-field zero stores. | Keep proof with the independently exact 10-byte draw callback; pursue larger 548/934-byte owners. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
 | **934-byte** `UpdateSecondaryProgramBrowser` `0x438AC0` + **83-byte** cleanup `0x438570` | Native selection count reload; state-4 independent manager deletion test recovered. Real debug/menu/factory `/GL` **928/934 bytes, 262/267 instructions, 22/22 calls**, still non-exact; exact cleanup 83/83 | Resolve input/register scheduling and state0 initialization. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
 | **976-byte** `BuildBillboardAnimationVmQuad` `0x450700` — `AnimationBillboardQuad.cpp` | Full C++ now source-present; linked real billboard producer **927/976**, normal COFF 939 | Paired x87 `FSINCOS` and float spill/rounding lifetime; non-exact. [Billboard](ANIMATION_PROJECTED_QUAD.md) |

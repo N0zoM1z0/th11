@@ -333,3 +333,28 @@ existing affected exact owners that consume these headers or callback TUs
 were cold-recompiled together as a selected family, all with zero byte
 differences. See
 `.analysis/secondary-browser-registration-affected-exact-20261111.log`.
+
+## Exact 142-byte browser storage constructor (2026-11-11)
+
+The separate native owner at `0x4385D0..0x43865D`, which Ghidra initially
+omitted, is now reconstructed in `SecondaryProgramBrowserStorage.cpp`.
+It initializes the worker at `+0x10`, three physical menu selections and
+their original 999/count and wrap fields, clears the full **0x2E4-byte**
+browser with `memset`, sets its primary flag bit 2 and publishes
+`g_SecondaryProgramBrowser`. The original worker data/vtable pointer at
+`0x4978D0` is represented as an external observed data dependency; the
+unrecovered original C++ virtual class is not guessed.
+
+The complete **142-byte, 32-instruction, one-call** owner has now passed
+strict cold VC9 `/GL` comparison under the ordinary independent browser
+construction producer, without a custom register declaration. Three
+reviewed address fields bind the worker data at `0x4978D0` (DIR32 +5),
+`memset` at `0x46A720` (REL32 +0x7B), and the browser singleton at
+`0x4A8EC4` (DIR32 +0x87). The independent full primary-TU PE/MAP/PDB
+contribution and all original bytes replay with **zero differences**.
+The target's function ends in a plain RET at `0x43865D`; two CC bytes
+separate the neighboring independently exact 173-byte chain registration
+at `0x438660`. The canonical unit is
+`secondary-program-browser-storage-constructor`; evidence is
+`.analysis/secondary-browser-storage-constructor-strict-20261111.log`.
+No whole-program cold replay was run.

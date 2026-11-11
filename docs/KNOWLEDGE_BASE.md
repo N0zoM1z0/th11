@@ -458,3 +458,11 @@ caller was present; linking that caller naturally restores native EBP/EBX/ESI
 ABI. Splitting `link.next=0; link.previous=0;` repairs the two remaining
 constructor store-order differences. It binds priority5 callback4390A0 and
 priority44 callback4390B0. See `SECONDARY_PROGRAM_BROWSER.md`.
+
+The Ghidra-missed ECL browser storage constructor4385D0..43865D is now
+**142/142 strict exact** in natural VC9 /GL C++. Its 32 instructions preserve
+the worker initializers, three selector initializers and final 0x2E4-byte
+memset/global publication order. All three fields (worker table4978D0,
+memset46A720, browser singleton4A8EC4) replay exactly. It directly precedes
+the independently exact 173-byte chain registration. See
+`SECONDARY_PROGRAM_BROWSER.md`.
