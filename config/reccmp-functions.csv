@@ -507,3 +507,4 @@ CreateDefaultSecondaryDrawAnimationVmId,0x00455D80,function
 WritePauseMenuReplay,0x00436420,function
 AppendReplayWriteSegment,0x00437300,function
 ResetReplayCompressionTree,0x004428D0,function
+FindReplayCompressionMatch,0x00442910,function

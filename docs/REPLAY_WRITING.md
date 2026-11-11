@@ -81,3 +81,26 @@ and resolve caller-specific stream state, then compare
 the affected writer context without replaying the unrelated cohort.
 Private recovery evidence is in `.analysis/replay-writer-*`
 and `.analysis/replay-deps-*`.
+
+## Compression match search (00442910)
+
+The 416-byte longest-prefix tree search is now maintained in
+`src/ReplayCompressionSearch.cpp`. The search compares circular 8-KiB
+window positions in explicitly unrolled groups of six until at most
+18 bytes have been compared. It records the best matching source position,
+walks the left/right children according to the signed byte difference,
+inserts a new node when a child is missing, and calls the node-replacement
+helper at `442B50` when the longest match reaches 18 bytes.
+
+The direct target review establishes a contiguous 416-byte owner with
+113 instructions, three RET4 exits, one node replacement call,
+no interior foreign entry and no table. A conventional VC9 normal-COFF
+source with a simple inner character loop produces 247 bytes. Restoring
+the explicit six-comparison structure produces **416 bytes** and
+270/340 matching relocation-masked diagnostic bytes with 19 fields.
+This is **not exact**: the native optimized /GL ABI passes the position
+in EDX and one output pointer on the stack, whereas the faithful
+ordinary source declaration uses two stack arguments. Do not falsify
+its ABI to make the normal COFF probe match. The next meaningful test is
+a focused linked /GL compilation with the genuine compressor caller and
+tree helpers once they have source.

@@ -506,3 +506,4 @@ CreateDefaultSecondaryDrawAnimationVmId
 WritePauseMenuReplay
 AppendReplayWriteSegment
 ResetReplayCompressionTree
+FindReplayCompressionMatch
