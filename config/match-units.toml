@@ -4824,3 +4824,20 @@ linkages = [
   { offset = 0xCB, type = "REL32", symbol = "_free", target = 0x0045FC3B },
   { offset = 0xE4, type = "REL32", symbol = "_free", target = 0x0045FC3B },
 ]
+
+# The genuine menu-controller registered callback at 439F10..439F16,
+# absent from Ghidra's initial function inventory. The existing source
+# emits its complete normal-COFF seven-byte PUSH ECX/CALL/RET owner.
+[units.menu-controller-update-callback]
+artifact_kind = "coff"
+source = "src/MenuControllerCallbacks.cpp"
+inputs = ["src/MenuController.hpp"]
+object = "build/match/MenuControllerUpdateCallback.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["MenuControllerUpdateCallback"]
+symbol = "?MenuControllerUpdateCallback@@YIHPAUMenuControllerView@@@Z"
+target_address = 0x00439F10
+size = 7
+relocations = [
+  { offset = 2, type = "REL32", symbol = "?UpdateMenuController@@YGHPAUMenuControllerView@@@Z", target = 0x004399B0 },
+]

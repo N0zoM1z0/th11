@@ -31,6 +31,11 @@ Canonical source, ledgers and build/comparison scripts are unchanged.
 
 ## Next reconstruction work
 
+Registered menu update callback439F10/7 is now canonical cold
+normal-COFF **exact 7/7**, one REL32 to the 1224-byte menu owner4399B0.
+Its source stays in MenuControllerCallbacks.cpp, and the complete
+menu owner itself remains non-exact. See MENU_CONTROLLER.md.
+
 Document cleanup4549E0/243 is now **cold linked-PE exact 243/243**
 with eight independently reviewed fields (one renderer DIR32,
 marker REL32 and six free REL32), native8 calls/one return and

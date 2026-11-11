@@ -76,10 +76,13 @@ block placement, input zero-extension, EBX save/use, register scheduling and
 source-open page ABIs remain concrete gaps. Equal call counts are structural
 evidence and do not imply byte equality.
 
-The 78-byte marker `MarkMenuFileAnimations` now has a strict independent
-cold linked-PE **78/78 exact** unit (`menu-mark-file-animations`) using
-the actual menu-controller caller; the seven-byte callback remains
-a support diagnostic without a separate acceptance unit. Under this real controller context,
+The 78-byte marker `MarkMenuFileAnimations` is strict cold
+linked-PE **78/78 exact** (`menu-mark-file-animations`). The registered
+seven-byte `MenuControllerUpdateCallback` at 439F10 is now also
+**7/7 exact** under the independent normal-COFF unit
+`menu-controller-update-callback`, replaying its sole REL32 field at
+offset2 to the reviewed menu owner4399B0. Neither leaf proves
+that the full 1224-byte menu owner is exact. Under this real controller context,
 the audio apply owner remains3,836/110 fields/zero diagnostically; its992-byte
 caller still has the same9 prologue differences after61 fields. The real upper
 caller therefore does not by itself explain that EBP save placement. Canonical
