@@ -20,7 +20,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - [Generated progress](PROGRESS.md) and
   `config/{functions,function-boundaries,function-origins,matches}.csv`
   determine names, origins, reviewed extents and exact status.
-  At this checkpoint: **275 canonical exact**, **563 source-present**,
+  At this checkpoint: **277 canonical exact**, **565 source-present**,
   **651 reviewed boundaries**. Refresh with
   `scripts/repo-python scripts/progress.py`, not manual totals.
 - An exact owner requires the entire original function, source/tool
@@ -39,6 +39,9 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   exact bytes**. The 22 ordinary callbacks use 22 REL32 call fields; five
   stateful wrappers add 453 bytes and 43 reviewed DIR32/REL32 fields. All
   passed scoped cold PE/MAP/PDB proof under real constructor/camera source. See [renderer lifecycle](ANIMATION_RENDERER_LIFECYCLE.md).
+- The two renderer **update** callback adapters at `0x455120` and
+  `0x455130` now have independent **7/7 exact** linked proofs with one REL32
+  tail jump each. See [renderer lifecycle](ANIMATION_RENDERER_LIFECYCLE.md).
 - Player animation-pair reset `0x42F580` is **286/286 exact**;
   the player dialogue query `0x42F540` is **27/27 exact**;
   two array element constructors are **3/3 exact** each.

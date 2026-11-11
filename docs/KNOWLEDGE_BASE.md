@@ -348,3 +348,10 @@ derives a projected half-size and rotates an anchored four-corner screen
 quad. The first real-parent /GL build yields927 bytes versus native976;
 native paired FSINCOS and float evaluation lifetimes remain open. See
 `ANIMATION_PROJECTED_QUAD.md`.
+
+The two outstanding animation renderer **update-chain** callbacks `455120`
+and `455130` also reconstruct exactly under the genuine constructor producer.
+Each is a 7-byte `MOV EAX,ECX; JMP` adapter to the larger update routines
+`455480`/`455560`; independently strict linked-PE proof replays one REL32 field
+per owner. They were absent from the earlier set of 27 draw callbacks.
+See `ANIMATION_RENDERER_LIFECYCLE.md`.

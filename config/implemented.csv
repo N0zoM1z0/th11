@@ -561,3 +561,5 @@ AnimationRendererDrawPriority62
 BuildBillboardAnimationVmQuad
 FlushScreenshotResources
 CopyAnimationTextureSurface
+AnimationRendererUpdatePriority26
+AnimationRendererUpdatePriority08

@@ -227,3 +227,21 @@ Evidence: `config/match-units.toml`,
 the preceding 22 callbacks, **all 27 registered draw-priority callbacks
 now have 780 target bytes strictly exact**. The independently reviewed
 renderer update callbacks at 455120 and 455130 are not part of this claim.
+
+## Exact renderer update-chain adapters (2026-11-11)
+
+Two additional constructor-registered update callback entries have natural
+C++ source in `AnimationRendererUpdatePriority.cpp`: `0x455120` (priority26,
+`UpdateAnimationRenderer`) and `0x455130` (priority08,
+`UpdateOtherAnimationRenderer`). Each accepts the chain context through ECX,
+forwards it to the linked helper's private EAX receiver, and tail-jumps to
+`0x455480` or `0x455560` with no additional branch or return path.
+
+Both full 7-byte native extents are reproduced under the real renderer
+constructor/dispatch VC9 `/GL` producer. The two canonical linked-PE units
+verify distinct primary-TU PE/MAP/PDB contributions, current source and
+compiler receipts, each sole REL32 JMP destination, and all remaining bytes:
+**7/7 exact** each, **zero differences**, two reviewed relocation fields.
+Only the two newly affected units were cold-replayed, not the full cohort.
+Evidence: `.analysis/renderer-update-priority-cold-proof-20261111.log` and
+`build/match-linked/AnimationRendererUpdatePriority/`.
