@@ -44,6 +44,15 @@ struct ReplayWriteSegmentNode
 };
 struct ReplayWriteSegment
 {
+    ReplayWriteSegment()
+    {
+        memset(this, 0, sizeof(*this));
+        eventEnd = reinterpret_cast<unsigned char *>(this);
+        secondaryEnd = secondary;
+        node.segment = this;
+        node.next = 0;
+        node.previous = 0;
+    }
     unsigned char events[0x1518];
     unsigned char *eventEnd;
     unsigned char secondary[0x18a0 - 0x151c];
@@ -98,29 +107,24 @@ unsigned char *__stdcall CompressReplayData(const void *input, int size, int *co
 // list. The node lives at offset 18A4 inside its 18B0-byte allocation.
 ReplayWriteSegmentNode *__stdcall AppendReplayWriteSegment(ReplayWriteState *state, int stage)
 {
-    ReplayWriteSegment *chunk = static_cast<ReplayWriteSegment *>(malloc(sizeof(ReplayWriteSegment)));
-    if (chunk)
+    ReplayWriteSegment *chunk = new ReplayWriteSegment;
+    // Preserve the generic doubly linked-list append, including its
+    // conditional splice of an already present following node.
+    ReplayWriteSegmentNode *tail = reinterpret_cast<ReplayWriteSegmentNode *>(
+        reinterpret_cast<unsigned char *>(&state->streams[stage].first) -
+        offsetof(ReplayWriteSegmentNode, next));
+    while (tail->next)
+        tail = tail->next;
+    ReplayWriteSegmentNode *node = &chunk->node;
+    if (tail->next)
     {
-        memset(chunk, 0, sizeof(*chunk));
-        chunk->eventEnd = reinterpret_cast<unsigned char *>(chunk);
-        chunk->secondaryEnd = chunk->secondary;
-        chunk->node.segment = chunk;
+        node->next = tail->next;
+        tail->next->previous = node;
     }
-
-    ReplayWriteSegmentNode **next = &state->streams[stage].first;
-    while (*next)
-        next = &(*next)->next;
-
-    if (chunk)
-    {
-        // A first node refers back to the embedded list sentinel, not a heap
-        // node; its 'next' word aliases the list's first pointer.
-        chunk->node.previous = reinterpret_cast<ReplayWriteSegmentNode *>(
-            reinterpret_cast<unsigned char *>(next) - offsetof(ReplayWriteSegmentNode, next));
-        *next = &chunk->node;
-    }
+    tail->next = node;
+    node->previous = tail;
     ++state->segmentCount;
-    return chunk ? &chunk->node : 0;
+    return &chunk->node;
 }
 
 namespace
@@ -162,8 +166,12 @@ void __fastcall WritePauseMenuReplay(const char *filename, const char *name, int
 
     strcpy(header->name, name);
     int nameLength = static_cast<int>(strlen(name));
-    for (int i = nameLength; i < 8; ++i)
-        header->name[i] = ' ';
+    if (nameLength < 8)
+        do
+        {
+            header->name[nameLength] = ' ';
+            ++nameLength;
+        } while (nameLength < 8);
 
     if (!(state->flags & 1) && mode)
     {
@@ -270,19 +278,24 @@ void __fastcall WritePauseMenuReplay(const char *filename, const char *name, int
     cursor += sprintf(cursor, "Chara %s\r\n",
                       g_ReplayCharacterNames[header->character * 3 + header->shot]);
     cursor += sprintf(cursor, "Rank %s\r\n", g_ReplayDifficultyNames[header->difficulty]);
-    if (header->stage < 8)
+    int printed;
+    if (header->stage > 7)
     {
-        if (firstStage == lastStage)
-        {
-            if (firstStage == 7) cursor += sprintf(cursor, "Extra Stage\r\n");
-            else cursor += sprintf(cursor, "Stage %d\r\n", firstStage);
-        }
-        else cursor += sprintf(cursor, "Stage %d \x81\x60 %d\r\n", firstStage, lastStage);
+        if (firstStage == 7)
+            printed = sprintf(cursor, "Extra Stage Clear\r\n");
+        else
+            printed = sprintf(cursor, "Stage All Clear\r\n");
     }
-    else if (firstStage == 7)
-        cursor += sprintf(cursor, "Extra Stage Clear\r\n");
+    else if (firstStage == lastStage)
+    {
+        if (firstStage == 7)
+            printed = sprintf(cursor, "Extra Stage\r\n");
+        else
+            printed = sprintf(cursor, "Stage %d\r\n", firstStage);
+    }
     else
-        cursor += sprintf(cursor, "Stage All Clear\r\n");
+        printed = sprintf(cursor, "Stage %d \x81\x60 %d\r\n", firstStage, lastStage);
+    cursor += printed;
 
     cursor += sprintf(cursor, "Score %d\r\n", header->score);
     cursor += sprintf(cursor, "Slow Rate %2.2f\r\n", header->slowRate);

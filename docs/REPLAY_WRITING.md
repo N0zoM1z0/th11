@@ -72,14 +72,13 @@ diagnostics are not exact:
 
 | Owner | Native span | Source COFF | Relocations | Matched comparable bytes |
 | --- | ---: | ---: | ---: | ---: |
-| WritePauseMenuReplay | 1856 | 1678 | 93 | 79 / 1484 |
-| AppendReplayWriteSegment | 150 | 139 | 2 | 39 / 142 |
+| WritePauseMenuReplay | 1856 | 1684 | 94 | 70 / 1480 |
+| AppendReplayWriteSegment | 150 | 160 | 2 | 34 / 142 |
 
 Masked similarity is diagnostic only. Address fields require
-independent binding before exact credit. A linked /GL context has
-not yet been built for these owners. Next: narrow the main compressor codegen differences and
-resolve caller-specific stream state, then compare
-the affected writer context without replaying the unrelated cohort.
+independent binding before exact credit. A focused linked /GL context now exists (details below); its output is a
+non-runnable diagnostic, not the original game. Next: recover the caller-specific
+private registers and lifetime allocation rather than changing the nominal ABI.
 Private recovery evidence is in `.analysis/replay-writer-*`
 and `.analysis/replay-deps-*`.
 
@@ -193,3 +192,38 @@ choices should be done with natural source and only this affected link
 context. Never use displacement masking as an exactness shortcut.
 Local recovery is under `build/probe-ltcg/ReplayCompressionContext`
 and `.analysis/replay-compression-linked-build.log`.
+
+## Replay writer codegen corrections (2026-11-11)
+
+Direct original-PE review revealed three source-level gaps, corrected in
+`src/ReplayWriter.cpp`:
+
+- The segment allocator at 437300 calls the throwing C++ `operator new` at
+  45FCE4 rather than `malloc`. Its 18B0-byte object's constructor clears
+  the buffer, sets the 1518/18A0 cursors and explicitly resets both intrusive
+  links. The final generic doubly linked-list splice has no extra caller-side
+  allocation guard, matching the native 437379..43738C path.
+- The native writer emits **five distinct stage-label sprintf calls**. Keeping
+  their return lengths separate until the common cursor update recovers two
+  lost call sites after VC9 optimization.
+- Original eight-character name padding uses an indexed, conditional
+  `do/while` loop. The earlier `for` form optimized to an extra
+  `memset` call; the revised loop retains only the two native memset sites.
+
+A strictly scoped eight-TU VC9 `/GL /EHsc /O2 /Ob1` link using
+`probes/replay-writer-context.cpp` includes only the writer, compressor,
+tree search/edit/reset, byte cipher and shared-file dependencies. Its PE,
+MAP and PDB identities were checked, but unresolved globals and external
+routines are provided as diagnostic anchors, not runnable game data.
+The writer's linked contribution is now **1765 bytes** versus **1856 native**.
+The link has the native **46/46 total call sites**, including all **15 sprintf**
+and **two memset** occurrences. The segment allocator is **160 bytes** versus
+150 native. The initial writer context had 1739 bytes and 45 calls.
+
+Both remain non-exact. The synthetic private writer ABI returns via RET8
+rather than native RET4; the allocator retains a stack argument versus
+native EBX/EDI and plain RET. Full address-field replay and zero-byte
+difference proofs are outstanding. Private build receipts are in
+`build/probe-ltcg/ReplayWriterContext/`; focused logs and diagnostics
+are in `.analysis/replay-writer-linked-padding-20261111.log` and
+`.analysis/replay-current-*-coff-diagnostic.json`.

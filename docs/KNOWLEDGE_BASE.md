@@ -47,7 +47,9 @@ double100.0 at497E50; the preparer rechecks stage7 after insertion.
 Replay compression main4423A0/795 now has compiled source (normal COFF738/795,
 non-exact), in addition to search442910/416 and four tree edits.
 Replay writer436420/1856 and allocator437300/150 have VC9-compiled source,
-but neither is exact. The adjacent compression dictionary reset4428D0/52 is
+but neither is exact. The scoped writer link now generates1765 bytes with
+46/46 native call sites; the chunk constructor uses operator new and the
+unconditional generic doubly linked-list insertion. ABI remains open. The adjacent compression dictionary reset4428D0/52 is
 now full normal-COFF exact with four reviewed fields. The adjacent
 416-byte tree matcher442910 has compiled source (same-length but nonexact
 normal-COFF candidate); its four node splice/delete/replace/predecessor

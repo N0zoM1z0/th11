@@ -62,8 +62,8 @@ unsigned char *__stdcall CompressReplayData(const void *data, int size,
 
     g_ReplayCompressionRoot = 1;
     g_ReplayCompressionNodes[1].parent = 8192;
-    g_ReplayCompressionNodes[1].left = 0;
     g_ReplayCompressionNodes[1].right = 0;
+    g_ReplayCompressionNodes[1].left = 0;
 
     int position = 1;
     int matchedPosition = 0;
