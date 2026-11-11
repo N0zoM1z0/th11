@@ -5499,3 +5499,27 @@ size = 10
 linkages = [
   { offset = 4, type = "REL32", symbol = "?DrawSecondaryProgramBrowser@@YGHPAUSecondaryProgramBrowserView@@@Z", target = 0x00438E70 },
 ]
+
+# The independent caller retains generic chain priorities, so genuine VC9
+# /GL must pass the two fixed native priorities in EBX instead of specializing
+# the called registrations. The real 173-byte owner remains a distinct TU.
+[units.secondary-program-browser-chain-registration]
+artifact_kind = "linked-pe"
+source = "src/SecondaryProgramBrowserRegistration.cpp"
+inputs = ["src/SecondaryProgramBrowser.hpp", "src/ChainRegistration.hpp", "src/Chain.hpp"]
+support_sources = ["src/SecondaryProgramBrowserCallbacks.cpp", "src/ChainRegistration.cpp", "probes/secondary-browser-registration-generic-probe.cpp"]
+output_dir = "build/match-linked/SecondaryProgramBrowserRegistration"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryBrowserRegistrationGenericProbe@12"
+functions = ["RegisterSecondaryProgramBrowserChains"]
+symbol = "?RegisterSecondaryProgramBrowserChains@@YGHPAUSecondaryProgramBrowserView@@@Z"
+target_address = 0x00438660
+size = 173
+linkages = [
+  { offset = 0x0B, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x0045FCE4 },
+  { offset = 0x42, type = "DIR32", symbol = "?SecondaryProgramBrowserUpdateCallback@@YIHPAUSecondaryProgramBrowserView@@@Z", target = 0x004390A0 },
+  { offset = 0x50, type = "REL32", symbol = "?AddToUpdateChain@@YGHPAUChainElement@@H@Z", target = 0x00456B70 },
+  { offset = 0x5A, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x0045FCE4 },
+  { offset = 0x8F, type = "DIR32", symbol = "?SecondaryProgramBrowserDrawCallback@@YIHPAUSecondaryProgramBrowserView@@@Z", target = 0x004390B0 },
+  { offset = 0x9D, type = "REL32", symbol = "?AddToDrawChain@@YGHPAUChainElement@@H@Z", target = 0x00456C10 },
+]

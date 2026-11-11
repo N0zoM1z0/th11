@@ -240,10 +240,9 @@ positional differences from 298 to 262. The narrow external-callee context
 separately builds 550/548 and 11 calls. Neither is exact; the two producer
 contexts remain distinct.
 The native `0x4390B0..0x4390B9` draw adapter is a separate 10-byte
-PUSH-ESI / MOV-ESI,ECX / CALL / POP-ESI / RET owner. Its maintained C++ in
-`SecondaryProgramBrowserCallbacks.cpp` currently generates a seven-byte
-call/return in a narrow context or a five-byte tail jump with the full draw
-body visible. Its private ESI forwarding is still open.
+PUSH-ESI / MOV-ESI,ECX / CALL / POP-ESI / RET owner. Earlier context-isolated experiments generated either a seven-byte
+call/return or a five-byte JMP. Under the original chain-registration
+producer, its private ESI forwarding is now reproduced exactly.
 
 The adjacent `0x4390D0..0x4390D5` storage-size getter returns `0x5B94`.
 It is now **6/6 canonical exact**: the complete two-instruction MOV EAX,
@@ -277,8 +276,8 @@ becomes the complete **5/5 byte** tail JMP, with one native REL32 at `+1`.
 Strict cold PE/MAP/PDB acceptance reports **zero byte differences**. The
 same affected-only run rechecked the six-byte storage-size getter, also
 exact; see `.analysis/secondary-browser-update-callback-exact-20261111.log`.
-The separate ten-byte draw adapter still needs its distinct ESI receiver
-in the genuine registration context and is not yet exact.
+The neighboring ten-byte draw adapter was subsequently recovered in the
+genuine registration context and is exact; see below.
 
 ## Exact ten-byte draw callback and reconstructed chain registration (2026-11-11)
 
@@ -302,11 +301,26 @@ browser offsets `+8` and `+C`. It binds the original update callback
 `0x4390A0` and draw callback `0x4390B0`, invoking `AddToUpdateChain`
 `0x456B70` and `AddToDrawChain` `0x456C10`. Full original PE/Capstone review
 finds 60 instructions, four calls and a final RET4, with CC separating its
-entry and neighbors; Ghidra did not autodefine this native owner. Natural
-VC9 `/GL` currently produces **159/173 bytes** with the narrow dependency
-context or **153/173 bytes** with real chain implementations. The full
-registration owner is source-present but not exact; its own register-lifetime
-and allocation-codegen questions remain open.
+entry and neighbors; Ghidra did not autodefine this native owner. Initial VC9 `/GL` diagnostics produced **159/173 bytes** when the chain
+helpers were external, or **153/173 bytes** with only their real
+implementations visible: VC9 specialized the fixed priorities instead of
+passing them through the native EBX convention. Adding an independent caller
+with live chain elements and *dynamic priorities* keeps the chain helpers
+generic, restoring the real browser-in-EBP, priority-in-EBX and element-in-ESI
+register lifetimes. Separating `link.next = 0` and `link.previous = 0` into
+two natural assignments also restores the native construction store order.
+
+The resulting full **173-byte, 60-instruction, four-call** source owner is now
+**canonical strict exact**. Its six reviewed fields are two operator-new
+REL32 calls (native `0x45FCE4`), the exact update/draw callback pointers
+(`0x4390A0` and `0x4390B0`), and two REL32 calls to `AddToUpdateChain`
+(`0x456B70`) and `AddToDrawChain` (`0x456C10`). The selected cold PE/MAP/PDB
+proof `secondary-program-browser-chain-registration` replays every byte with
+zero differences and verifies its unique primary-TU ownership. The affected
+10-byte exact draw callback also re-cold-replayed with zero differences.
+Evidence: `.analysis/secondary-browser-chain-registration-exact-20261111.log`.
+The genuine independent caller lives in
+`probes/secondary-browser-registration-generic-probe.cpp`.
 
 Diagnostic source is `.analysis/try-secondary-browser-registration-20261111.py`
 and `.analysis/probe-secondary-browser-update-callback-20261111.py`; the

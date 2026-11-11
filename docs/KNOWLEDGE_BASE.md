@@ -451,7 +451,10 @@ six-byte size getter independently rechecks exact. See
 The browser draw callback4390B0 is now fully **10-byte exact**. Natural
 `PUSH ESI/MOV ESI,ECX/CALL 438E70/POP ESI/RET` appears only when the real
 update/draw-chain registration producer at438660 and the large ASCII drawing
-owner are visible together to VC9 /GL. The registration itself is now
-source-present at173 bytes, native four calls; its initial 159-byte candidate
-is non-exact. It registers priority5 callback4390A0 and priority44 callback
-4390B0. See `SECONDARY_PROGRAM_BROWSER.md`.
+owner are visible together to VC9 /GL. The full 173-byte registration is **now strict exact**, all60 instructions,
+four calls and six reviewed fields. Its initial159/153-byte diagnostics were
+caused by over-specialization when no independent dynamic-priority chain
+caller was present; linking that caller naturally restores native EBP/EBX/ESI
+ABI. Splitting `link.next=0; link.previous=0;` repairs the two remaining
+constructor store-order differences. It binds priority5 callback4390A0 and
+priority44 callback4390B0. See `SECONDARY_PROGRAM_BROWSER.md`.

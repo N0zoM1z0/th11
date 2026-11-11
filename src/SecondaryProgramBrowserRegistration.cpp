@@ -18,7 +18,9 @@ struct BrowserChainElement : ChainElement
         auxiliaryCallback = 0;
         priority = 0;
         link.element = this;
-        link.next = link.previous = 0;
+        // Two separate stores in the native constructor: next before previous.
+        link.next = 0;
+        link.previous = 0;
     }
 };
 __forceinline BrowserChainElement *MakeBrowserChain(
