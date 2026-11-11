@@ -150,8 +150,9 @@ Focused VC9 /GL compilation and complete public-primary-TU diagnostic:
 | Draft | Source bytes | Fields | Full differing bytes | Returns | Frame | Missing call-count parity |
 | --- | ---: | ---: | ---: | ---: | --- | --- |
 | Pre-change (Nov 6) | 3048 | 158 | 2770 | 14 | 58 | four call families |
-| Shared call (retained) | 3112 | 160 | 2797 | 15 | 54 | **none** |
+| Shared call (pre-keyboard) | 3112 | 160 | 2797 | 15 | 54 | **none** |
 | Shared call, two explicit local IDs (discarded) | 3016 | 157 | 2799 | 14 | 58 | three call families |
+| Shared call + signed keyboard quotient (current) | **3172** | **160** | **2767** | **15** | **54** | **none** |
 | Native | 3192 | 162 | 0 | 15 | 58 | none |
 
 The target selects distinct hidden-result storage at ESP+20 or ESP+14
@@ -160,7 +161,7 @@ structure but drops one stack slot. Explicit local return IDs bring the
 frame back to 58 yet worsen call alignment (missing one each of the
 cookie-check, projectile-clear and selection-signal calls). Neither
 candidate is exact; the larger raw difference count after changing the
-control flow is recorded rather than suppressed. The first is retained
+control flow is recorded rather than suppressed. The shared factory form is retained
 because its call graph and returns match the native owner, and the
 second experiment demonstrates why blindly adding locals is not enough.
 The next meaningful issue is reproducing the two branch-dependent result
@@ -176,5 +177,17 @@ with the same 158 relocations; non-field byte matches from 134/2560 to
 139/2560. In a narrow /GL context with the real sound helper and record
 dependencies, size moves from 3032 to 3096 against native3192. That smaller
 context has 85 calls and 14 returns versus native 88/15; the prior 63-support
-3112-byte/15-return result belongs to pre-edit source and was not rerun.
-No exactness credit. Evidence: `.analysis/continue-keyboard-focused.log`.
+3112-byte/15-return result belongs to pre-edit source.
+
+The original **63-support** linked context has now also been rebuilt only for
+this owner. Its complete primary-TU PDB contribution is **3172 bytes**
+with 160 address fields, **88/88 native calls**, **15/15 RET4 paths** and
+ten IMUL/zero IDIV. After rebinding all reviewed fields, the complete
+original-owner comparison has **2767 differing bytes** against 2797 in the
+3112-byte previous candidate. The native owner remains 3192 bytes with
+162 fields; the current local stack frame is 0x54 against native 0x58.
+
+Evidence: `.analysis/continue-keyboard-focused.log`,
+`.analysis/continue-keyboard-full-context-20261111.log`, and
+`.analysis/pause-continue-keyboard-20261111-proof.json`.
+This is a non-exact local improvement without a full-cohort cold replay.

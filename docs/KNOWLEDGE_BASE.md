@@ -30,7 +30,7 @@ score formulas differ; timestamp0C/stage68 must not alias difficulty64.
 
 Historical63-support draft:3048 bytes/158 fields/2770 differences, frame58,
 14/15 returns and four call-site gaps. After merging the case13 factory the
-targeted63-support owner is3112 bytes/160 fields/2797 differences, with15/15
+targeted63-support owner is now3172 bytes/160 fields/2767 differences, with15/15
 returns and no call-count gaps. Frame54 now differs from native58. Keeping
 two explicit result objects restored frame58 but regressed to14 returns and
 three call-count gaps (3016 bytes/157 fields/2799 differences), so it was
