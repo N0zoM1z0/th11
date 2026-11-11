@@ -358,3 +358,27 @@ at `0x438660`. The canonical unit is
 `secondary-program-browser-storage-constructor`; evidence is
 `.analysis/secondary-browser-storage-constructor-strict-20261111.log`.
 No whole-program cold replay was run.
+
+## 439-byte browser destruction boss now source-present (2026-11-11)
+
+The full native ECL browser destructor at `0x438710..0x4388C6` is now
+implemented in `SecondaryProgramBrowserDestruction.cpp`. Direct Ghidra
+and independent complete Japanese PE/Capstone review establish **439 bytes,
+116 instructions, 16 calls and one RET4**, with SEH setup at entry and no
+embedded tables. The source frees its already exact filename owner, removes
+both update and draw chain nodes under the game critical-section protocol,
+frees the ECL blob and program/manager objects, destroys document slots
+**6 then 5**, clears the browser singleton and stops its worker thread.
+It retains both independent chain-lock scopes and the observed null guards.
+
+The full source compiles with pinned VC9 `/O2` and `/GL`. Focused independent
+probe linking gives **455/439 bytes, 112/116 instructions, all 16 calls**.
+Bringing the real script program, chain removal, ANM cleanup and thread
+lifecycle implementations into the same producer changes private register
+and EH lowering to a distinct **372/439, 91/116, 16-call** candidate.
+Neither diagnostic is exact; original EH and private receiver lifetime
+remain unresolved. Logs/recipe:
+`.analysis/secondary-browser-destructor-20261111.txt` and
+`.analysis/probe-secondary-browser-destructor-20261111.py`.
+The neighboring 142-byte storage constructor and 173-byte registration
+remain separately strict exact and are not modified by this source-only work.

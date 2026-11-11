@@ -466,3 +466,12 @@ memset/global publication order. All three fields (worker table4978D0,
 memset46A720, browser singleton4A8EC4) replay exactly. It directly precedes
 the independently exact 173-byte chain registration. See
 `SECONDARY_PROGRAM_BROWSER.md`.
+
+The complete 439-byte `DestroySecondaryProgramBrowser` at438710 now has
+natural C++ source. Full original PE/Ghidra review shows116 instructions,
+16 calls, one RET4 and an SEH frame. Cleanup is files -> chain update/draw
+with separate optional locks -> raw ECL -> program -> manager -> ANM slots6/5
+-> singleton -> worker thread. Scoped VC9 /GL has455/439 (112 instructions,
+16 calls) with external dependencies or372/439 (91 instructions, 16 calls)
+with real helper TUs; EH and ESI receiver ABI remain open. See
+`SECONDARY_PROGRAM_BROWSER.md`.
