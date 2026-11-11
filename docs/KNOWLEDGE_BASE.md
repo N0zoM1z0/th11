@@ -496,3 +496,10 @@ all43 fields verified: 11 calls, 12 AsciiManager globals, nine native
 string literals and 11 byte-exact float/double literals; zero differences.
 The 10-byte draw callback and 6-byte size getter retain separate exact units.
 See `SECONDARY_PROGRAM_BROWSER.md`.
+
+`StartSecondaryDebugThread` at4594A0 is **56/56 strict exact** under a
+natural `/GL` dynamic-callback producer and genuine exact stop-thread source.
+Its actual ABI passes worker in EAX, callback in EDI, context on stack, and
+returns with RET4; two reviewed REL32 calls go to StopRuntimeThread459430
+and CRT __beginthreadex46184B. It is the real thread-start dependency of
+934-byte ECL browser update. See `SECONDARY_PROGRAM_BROWSER.md`.

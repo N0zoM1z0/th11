@@ -441,3 +441,24 @@ reviewed manifest fields in `config/match-units.toml`.
 The neighboring 10-byte draw-chain adapter and 6-byte storage-size getter
 retain their own strict acceptance units. Neither the larger 934-byte
 browser update nor the 439-byte browser destructor is thereby declared exact.
+
+## Exact 56-byte worker thread starter (2026-11-11)
+
+The browser's real thread-start dependency at `0x4594A0..0x4594D7`
+(`StartSecondaryDebugThread`) is now separately reconstructed. It stops the
+previous worker, stores the dynamic callback at `worker+0x18`, sets pending
+and stop flags, calls CRT `_beginthreadex(0,0,callback,context,0,&worker+8)`,
+and publishes the new handle. The complete native body has **56 bytes,
+19 instructions, and two calls**. Its source in `SecondaryDebugThread.cpp`
+uses `StopRuntimeThread` rather than copying the stop implementation.
+
+A pinned real `FrameRuntime.cpp` producer plus an independent dynamic
+callback caller naturally recovers native private EAX worker and EDI entry
+registers. The strict `start-secondary-debug-thread` cold unit passes its
+full unique primary-TU PE/MAP/PDB proof with exactly two reviewed native
+REL32 fields: call at `+4` to `StopRuntimeThread` `0x459430`, and call at
+`+0x2A` to CRT `__beginthreadex` `0x46184B`. The complete original body is
+**56/56 strict exact, zero byte differences**; see
+`.analysis/start-secondary-debug-thread-strict-20261111.log`. This also
+identifies the genuine callee for the larger non-exact 934-byte browser
+state machine without manufacturing register arguments.

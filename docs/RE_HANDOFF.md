@@ -20,8 +20,8 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - [Generated progress](PROGRESS.md) and
   `config/{functions,function-boundaries,function-origins,matches}.csv`
   determine names, origins, reviewed extents and exact status.
-  At this checkpoint: **286 canonical exact**, **577 source-present**,
-  **660 reviewed boundaries**. Refresh with
+  At this checkpoint: **287 canonical exact**, **578 source-present**,
+  **661 reviewed boundaries**. Refresh with
   `scripts/repo-python scripts/progress.py`, not manual totals.
 - An exact owner requires the entire original function, source/tool
   receipts, exhaustive reviewed field rebinding and **zero differing
@@ -58,6 +58,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 | **439-byte** `DestroySecondaryProgramBrowser` `0x438710` | Complete source with scoped worker destructor; escaping-stdcall `/GL` caller **448/439 bytes, 118/116 instructions, 16/16 calls**; SEH entry and RET4 now restored, NON-EXACT | Reconstruct native program/ANM cleanup inlining and register scheduling; 142/173-byte neighbors remain exact. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
 | **142-byte** `ConstructSecondaryProgramBrowserStorage` `0x4385D0` | **142/142 strict exact**, 32 instructions, one memset call, three reviewed fields; sets worker/selection fields, clears 0x2E4 browser and publishes singleton | Keep original worker-vtable pointer as observed external data. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
 | **173-byte** `RegisterSecondaryProgramBrowserChains` `0x438660` | **173/173 strict exact**, 60 instructions, four calls, six reviewed fields. Dynamic-priority generic chain caller restores natural EBP/EBX/ESI owner ABI and two ordered node-field zero stores. | Keep proof with the independently exact 10-byte draw callback; pursue larger 548/934-byte owners. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
+| **56-byte** `StartSecondaryDebugThread` `0x4594A0` | **56/56 strict exact**, 19 instructions, two reviewed calls, recovered private EAX/EDI ABI via true 101-byte stop-thread source and dynamic callback | Link native start and mode producers to improve 934-byte browser; preserve exact worker stop. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
 | **934-byte** `UpdateSecondaryProgramBrowser` `0x438AC0` + **83-byte** cleanup `0x438570` | Native selection count reload; state-4 independent manager deletion test recovered. Real debug/menu/factory `/GL` **928/934 bytes, 262/267 instructions, 22/22 calls**, still non-exact; exact cleanup 83/83 | Resolve input/register scheduling and state0 initialization. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
 | **976-byte** `BuildBillboardAnimationVmQuad` `0x450700` — `AnimationBillboardQuad.cpp` | Full C++ now source-present; linked real billboard producer **927/976**, normal COFF 939 | Paired x87 `FSINCOS` and float spill/rounding lifetime; non-exact. [Billboard](ANIMATION_PROJECTED_QUAD.md) |
 | **313-byte** `CopyAnimationTextureSurface` `0x454EC0` + **48-byte** `FlushScreenshotResources` `0x445460` | Both now source-present; real parent recovers child private EAX/ECX, focused **312/313** child and **58/48** parent | Backbuffer-to-texture copy direction corrected; RECT stack slots and last texture reload remain non-exact. [Surface queue](ANIMATION_SURFACE_COPY.md) |

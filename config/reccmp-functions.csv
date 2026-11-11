@@ -576,3 +576,4 @@ SecondaryProgramBrowserUpdateCallback,0x004390A0,function
 RegisterSecondaryProgramBrowserChains,0x00438660,function
 ConstructSecondaryProgramBrowserStorage,0x004385D0,function
 DestroySecondaryProgramBrowser,0x00438710,function
+StartSecondaryDebugThread,0x004594A0,function
