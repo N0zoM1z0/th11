@@ -162,3 +162,32 @@ no old exact cohort, infrastructure suite or broad behavior harness was run.
 Aggregate state is93 exact functions/17,731 bytes,2,038 candidates,222 reviewed
 boundaries and179 source mappings. Authored90, reviewed-indeterminate123,
 excluded7 and pending1,818 are separate origin counts.
+
+## Exact renderer-priority dispatch callbacks (2026-11-11)
+
+The 22 previously source-open draw-chain callbacks now have natural C++ in
+`src/AnimationRendererPriority.cpp`: one 12-byte entry at `0x455140`, and
+21 15-byte entries covering the ordinary priority callbacks through `0x45531E`.
+They forward a renderer context and **dense draw layer**, not their public
+registration priority, to `DrawAnimationRendererLayer` at `0x455660`.
+For example, priority 04 draws layer 0, priority 39 draws layer 18, priority
+49 draws layer 21, and priority 61 draws layer 24. The larger stateful
+priorities 10, 40, 48, 62, and 63 are separate owners and remain open.
+
+The genuine `AnimationRenderer` constructor registers these callback symbols.
+Using that registration context and the real renderer dispatcher as distinct
+VC9 `/GL` source inputs recovers the private EDI renderer/EAX layer ABI
+naturally, without declaring a nonstandard ABI or injecting instructions.
+The complete normal-COFF callbacks were only nine bytes; the linked context
+restores the native 12/15-byte bodies. Each callback has one reviewed REL32
+call field pointing to the `0x455660` dispatcher; no other address fields or
+embedded tables occur in the complete reviewed extents.
+
+All **22 canonical linked units** have now passed an affected-only cold build,
+unique full primary-TU PE/MAP/PDB ownership, producer/source/tool receipts,
+exhaustive call-field replay, and **zero final byte differences**. This adds
+**327 exact code bytes**. The source, native unit identity and proof are in
+`config/match-units.toml`, `build/match-linked/AnimationRendererPriority/`,
+and `.analysis/renderer-priority-cold-proof-20261111.log`. No unrelated unit
+or whole-program cold replay was run. This proves the complete individual
+callbacks, not the construction of the full runnable game.

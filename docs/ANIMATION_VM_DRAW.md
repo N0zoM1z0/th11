@@ -140,3 +140,22 @@ Those new diagnostic families do not replace the canonical receipts above.
 The [immediate-mode caller audit](ANIMATION_IMMEDIATE_DRAW.md) establishes int
 status returns for the three draw wrappers. The54-byte unit's decorated symbol
 reflects that return type; all six affected units passed full exact replay.
+
+## Rotated quad owner now source-present (2026-11-11)
+
+The complete reviewed **571-byte** `BuildRotatedAnimationVmQuad` boundary at
+`0x4503D0` now has maintained natural C++ in `AnimationVmRotation.cpp`.
+The source uses the VM angle at +2C, dimensions and scales at +4C/+3C,
+three position vectors beginning at +3DC, and the two independent 2-bit
+anchor selectors at flag +404 bits 18 and 20. It constructs four local
+corners, rotates each with cosine and sine, adds the shared XY center, and
+publishes one common Z. Selector 3 does not initialize the corresponding
+local axis, matching the native absence of an assignment; no invented
+fallback/corner validation is added.
+
+The pinned VC9 `/O2` normal-COFF probe compiles to **609 bytes** rather than
+the original 571, making separate CRT sin/cos calls instead of the target's
+single `FSINCOS` operation. `/GL` compilation also succeeds. This owner is
+**source-present, non-exact**; recovering paired x87 codegen and native
+private-register placement remains the next issue. The existing exact
+unrounded builder and wrapper have separate canonical contracts.

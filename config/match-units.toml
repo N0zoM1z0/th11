@@ -4875,3 +4875,359 @@ linkages = [
   { offset = 0x244, type = "DIR32", symbol = "__real@4f800000", target = 0x00497F98 },
   { offset = 0x2B8, type = "REL32", symbol = "?StoreAnimationSprite@@YGXPAUAnimationDocumentView@@HPBUAnimationSpriteView@@@Z", target = 0x00454B10 },
 ]
+
+# The native renderer constructor registers these callback entry points with
+# their real chain priorities. Their /GL producer naturally yields the EDI
+# renderer / EAX dense-layer private ABI; each callback owns one REL32 call.
+
+[units.animation-renderer-draw-priority-04]
+artifact_kind = "linked-pe"
+source = "src/AnimationRendererPriority.cpp"
+inputs = ["src/AnimationRendererDispatch.hpp", "src/AnimationRendererLifecycle.hpp"]
+support_sources = ["src/AnimationRendererDispatch.cpp", "src/AnimationRendererLifecycle.cpp", "src/StageLifecycle.cpp", "src/AnimationVm.cpp", "src/ChainRegistration.cpp", "src/AnimationImmediateDraw.cpp", "probes/animation-renderer-lifecycle-context.cpp"]
+output_dir = "build/match-linked/AnimationRendererPriority"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationRendererLifecycleProbe@12"
+functions = ["AnimationRendererDrawPriority04"]
+symbol = "?AnimationRendererDrawPriority04@@YIHPAX@Z"
+target_address = 0x00455140
+size = 12
+linkages = [
+  { offset = 6, type = "REL32", symbol = "?DrawAnimationRendererLayer@@YGHPAUAnimationRenderer@@H@Z", target = 0x00455660 },
+]
+
+[units.animation-renderer-draw-priority-06]
+artifact_kind = "linked-pe"
+source = "src/AnimationRendererPriority.cpp"
+inputs = ["src/AnimationRendererDispatch.hpp", "src/AnimationRendererLifecycle.hpp"]
+support_sources = ["src/AnimationRendererDispatch.cpp", "src/AnimationRendererLifecycle.cpp", "src/StageLifecycle.cpp", "src/AnimationVm.cpp", "src/ChainRegistration.cpp", "src/AnimationImmediateDraw.cpp", "probes/animation-renderer-lifecycle-context.cpp"]
+output_dir = "build/match-linked/AnimationRendererPriority"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationRendererLifecycleProbe@12"
+functions = ["AnimationRendererDrawPriority06"]
+symbol = "?AnimationRendererDrawPriority06@@YIHPAX@Z"
+target_address = 0x00455150
+size = 15
+linkages = [
+  { offset = 9, type = "REL32", symbol = "?DrawAnimationRendererLayer@@YGHPAUAnimationRenderer@@H@Z", target = 0x00455660 },
+]
+
+[units.animation-renderer-draw-priority-08]
+artifact_kind = "linked-pe"
+source = "src/AnimationRendererPriority.cpp"
+inputs = ["src/AnimationRendererDispatch.hpp", "src/AnimationRendererLifecycle.hpp"]
+support_sources = ["src/AnimationRendererDispatch.cpp", "src/AnimationRendererLifecycle.cpp", "src/StageLifecycle.cpp", "src/AnimationVm.cpp", "src/ChainRegistration.cpp", "src/AnimationImmediateDraw.cpp", "probes/animation-renderer-lifecycle-context.cpp"]
+output_dir = "build/match-linked/AnimationRendererPriority"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationRendererLifecycleProbe@12"
+functions = ["AnimationRendererDrawPriority08"]
+symbol = "?AnimationRendererDrawPriority08@@YIHPAX@Z"
+target_address = 0x00455160
+size = 15
+linkages = [
+  { offset = 9, type = "REL32", symbol = "?DrawAnimationRendererLayer@@YGHPAUAnimationRenderer@@H@Z", target = 0x00455660 },
+]
+
+[units.animation-renderer-draw-priority-12]
+artifact_kind = "linked-pe"
+source = "src/AnimationRendererPriority.cpp"
+inputs = ["src/AnimationRendererDispatch.hpp", "src/AnimationRendererLifecycle.hpp"]
+support_sources = ["src/AnimationRendererDispatch.cpp", "src/AnimationRendererLifecycle.cpp", "src/StageLifecycle.cpp", "src/AnimationVm.cpp", "src/ChainRegistration.cpp", "src/AnimationImmediateDraw.cpp", "probes/animation-renderer-lifecycle-context.cpp"]
+output_dir = "build/match-linked/AnimationRendererPriority"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationRendererLifecycleProbe@12"
+functions = ["AnimationRendererDrawPriority12"]
+symbol = "?AnimationRendererDrawPriority12@@YIHPAX@Z"
+target_address = 0x004551F0
+size = 15
+linkages = [
+  { offset = 9, type = "REL32", symbol = "?DrawAnimationRendererLayer@@YGHPAUAnimationRenderer@@H@Z", target = 0x00455660 },
+]
+
+[units.animation-renderer-draw-priority-15]
+artifact_kind = "linked-pe"
+source = "src/AnimationRendererPriority.cpp"
+inputs = ["src/AnimationRendererDispatch.hpp", "src/AnimationRendererLifecycle.hpp"]
+support_sources = ["src/AnimationRendererDispatch.cpp", "src/AnimationRendererLifecycle.cpp", "src/StageLifecycle.cpp", "src/AnimationVm.cpp", "src/ChainRegistration.cpp", "src/AnimationImmediateDraw.cpp", "probes/animation-renderer-lifecycle-context.cpp"]
+output_dir = "build/match-linked/AnimationRendererPriority"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationRendererLifecycleProbe@12"
+functions = ["AnimationRendererDrawPriority15"]
+symbol = "?AnimationRendererDrawPriority15@@YIHPAX@Z"
+target_address = 0x00455200
+size = 15
+linkages = [
+  { offset = 9, type = "REL32", symbol = "?DrawAnimationRendererLayer@@YGHPAUAnimationRenderer@@H@Z", target = 0x00455660 },
+]
+
+[units.animation-renderer-draw-priority-16]
+artifact_kind = "linked-pe"
+source = "src/AnimationRendererPriority.cpp"
+inputs = ["src/AnimationRendererDispatch.hpp", "src/AnimationRendererLifecycle.hpp"]
+support_sources = ["src/AnimationRendererDispatch.cpp", "src/AnimationRendererLifecycle.cpp", "src/StageLifecycle.cpp", "src/AnimationVm.cpp", "src/ChainRegistration.cpp", "src/AnimationImmediateDraw.cpp", "probes/animation-renderer-lifecycle-context.cpp"]
+output_dir = "build/match-linked/AnimationRendererPriority"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationRendererLifecycleProbe@12"
+functions = ["AnimationRendererDrawPriority16"]
+symbol = "?AnimationRendererDrawPriority16@@YIHPAX@Z"
+target_address = 0x00455210
+size = 15
+linkages = [
+  { offset = 9, type = "REL32", symbol = "?DrawAnimationRendererLayer@@YGHPAUAnimationRenderer@@H@Z", target = 0x00455660 },
+]
+
+[units.animation-renderer-draw-priority-17]
+artifact_kind = "linked-pe"
+source = "src/AnimationRendererPriority.cpp"
+inputs = ["src/AnimationRendererDispatch.hpp", "src/AnimationRendererLifecycle.hpp"]
+support_sources = ["src/AnimationRendererDispatch.cpp", "src/AnimationRendererLifecycle.cpp", "src/StageLifecycle.cpp", "src/AnimationVm.cpp", "src/ChainRegistration.cpp", "src/AnimationImmediateDraw.cpp", "probes/animation-renderer-lifecycle-context.cpp"]
+output_dir = "build/match-linked/AnimationRendererPriority"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationRendererLifecycleProbe@12"
+functions = ["AnimationRendererDrawPriority17"]
+symbol = "?AnimationRendererDrawPriority17@@YIHPAX@Z"
+target_address = 0x00455220
+size = 15
+linkages = [
+  { offset = 9, type = "REL32", symbol = "?DrawAnimationRendererLayer@@YGHPAUAnimationRenderer@@H@Z", target = 0x00455660 },
+]
+
+[units.animation-renderer-draw-priority-18]
+artifact_kind = "linked-pe"
+source = "src/AnimationRendererPriority.cpp"
+inputs = ["src/AnimationRendererDispatch.hpp", "src/AnimationRendererLifecycle.hpp"]
+support_sources = ["src/AnimationRendererDispatch.cpp", "src/AnimationRendererLifecycle.cpp", "src/StageLifecycle.cpp", "src/AnimationVm.cpp", "src/ChainRegistration.cpp", "src/AnimationImmediateDraw.cpp", "probes/animation-renderer-lifecycle-context.cpp"]
+output_dir = "build/match-linked/AnimationRendererPriority"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationRendererLifecycleProbe@12"
+functions = ["AnimationRendererDrawPriority18"]
+symbol = "?AnimationRendererDrawPriority18@@YIHPAX@Z"
+target_address = 0x00455230
+size = 15
+linkages = [
+  { offset = 9, type = "REL32", symbol = "?DrawAnimationRendererLayer@@YGHPAUAnimationRenderer@@H@Z", target = 0x00455660 },
+]
+
+[units.animation-renderer-draw-priority-19]
+artifact_kind = "linked-pe"
+source = "src/AnimationRendererPriority.cpp"
+inputs = ["src/AnimationRendererDispatch.hpp", "src/AnimationRendererLifecycle.hpp"]
+support_sources = ["src/AnimationRendererDispatch.cpp", "src/AnimationRendererLifecycle.cpp", "src/StageLifecycle.cpp", "src/AnimationVm.cpp", "src/ChainRegistration.cpp", "src/AnimationImmediateDraw.cpp", "probes/animation-renderer-lifecycle-context.cpp"]
+output_dir = "build/match-linked/AnimationRendererPriority"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationRendererLifecycleProbe@12"
+functions = ["AnimationRendererDrawPriority19"]
+symbol = "?AnimationRendererDrawPriority19@@YIHPAX@Z"
+target_address = 0x00455240
+size = 15
+linkages = [
+  { offset = 9, type = "REL32", symbol = "?DrawAnimationRendererLayer@@YGHPAUAnimationRenderer@@H@Z", target = 0x00455660 },
+]
+
+[units.animation-renderer-draw-priority-21]
+artifact_kind = "linked-pe"
+source = "src/AnimationRendererPriority.cpp"
+inputs = ["src/AnimationRendererDispatch.hpp", "src/AnimationRendererLifecycle.hpp"]
+support_sources = ["src/AnimationRendererDispatch.cpp", "src/AnimationRendererLifecycle.cpp", "src/StageLifecycle.cpp", "src/AnimationVm.cpp", "src/ChainRegistration.cpp", "src/AnimationImmediateDraw.cpp", "probes/animation-renderer-lifecycle-context.cpp"]
+output_dir = "build/match-linked/AnimationRendererPriority"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationRendererLifecycleProbe@12"
+functions = ["AnimationRendererDrawPriority21"]
+symbol = "?AnimationRendererDrawPriority21@@YIHPAX@Z"
+target_address = 0x00455250
+size = 15
+linkages = [
+  { offset = 9, type = "REL32", symbol = "?DrawAnimationRendererLayer@@YGHPAUAnimationRenderer@@H@Z", target = 0x00455660 },
+]
+
+[units.animation-renderer-draw-priority-23]
+artifact_kind = "linked-pe"
+source = "src/AnimationRendererPriority.cpp"
+inputs = ["src/AnimationRendererDispatch.hpp", "src/AnimationRendererLifecycle.hpp"]
+support_sources = ["src/AnimationRendererDispatch.cpp", "src/AnimationRendererLifecycle.cpp", "src/StageLifecycle.cpp", "src/AnimationVm.cpp", "src/ChainRegistration.cpp", "src/AnimationImmediateDraw.cpp", "probes/animation-renderer-lifecycle-context.cpp"]
+output_dir = "build/match-linked/AnimationRendererPriority"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationRendererLifecycleProbe@12"
+functions = ["AnimationRendererDrawPriority23"]
+symbol = "?AnimationRendererDrawPriority23@@YIHPAX@Z"
+target_address = 0x00455260
+size = 15
+linkages = [
+  { offset = 9, type = "REL32", symbol = "?DrawAnimationRendererLayer@@YGHPAUAnimationRenderer@@H@Z", target = 0x00455660 },
+]
+
+[units.animation-renderer-draw-priority-24]
+artifact_kind = "linked-pe"
+source = "src/AnimationRendererPriority.cpp"
+inputs = ["src/AnimationRendererDispatch.hpp", "src/AnimationRendererLifecycle.hpp"]
+support_sources = ["src/AnimationRendererDispatch.cpp", "src/AnimationRendererLifecycle.cpp", "src/StageLifecycle.cpp", "src/AnimationVm.cpp", "src/ChainRegistration.cpp", "src/AnimationImmediateDraw.cpp", "probes/animation-renderer-lifecycle-context.cpp"]
+output_dir = "build/match-linked/AnimationRendererPriority"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationRendererLifecycleProbe@12"
+functions = ["AnimationRendererDrawPriority24"]
+symbol = "?AnimationRendererDrawPriority24@@YIHPAX@Z"
+target_address = 0x00455270
+size = 15
+linkages = [
+  { offset = 9, type = "REL32", symbol = "?DrawAnimationRendererLayer@@YGHPAUAnimationRenderer@@H@Z", target = 0x00455660 },
+]
+
+[units.animation-renderer-draw-priority-26]
+artifact_kind = "linked-pe"
+source = "src/AnimationRendererPriority.cpp"
+inputs = ["src/AnimationRendererDispatch.hpp", "src/AnimationRendererLifecycle.hpp"]
+support_sources = ["src/AnimationRendererDispatch.cpp", "src/AnimationRendererLifecycle.cpp", "src/StageLifecycle.cpp", "src/AnimationVm.cpp", "src/ChainRegistration.cpp", "src/AnimationImmediateDraw.cpp", "probes/animation-renderer-lifecycle-context.cpp"]
+output_dir = "build/match-linked/AnimationRendererPriority"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationRendererLifecycleProbe@12"
+functions = ["AnimationRendererDrawPriority26"]
+symbol = "?AnimationRendererDrawPriority26@@YIHPAX@Z"
+target_address = 0x00455280
+size = 15
+linkages = [
+  { offset = 9, type = "REL32", symbol = "?DrawAnimationRendererLayer@@YGHPAUAnimationRenderer@@H@Z", target = 0x00455660 },
+]
+
+[units.animation-renderer-draw-priority-28]
+artifact_kind = "linked-pe"
+source = "src/AnimationRendererPriority.cpp"
+inputs = ["src/AnimationRendererDispatch.hpp", "src/AnimationRendererLifecycle.hpp"]
+support_sources = ["src/AnimationRendererDispatch.cpp", "src/AnimationRendererLifecycle.cpp", "src/StageLifecycle.cpp", "src/AnimationVm.cpp", "src/ChainRegistration.cpp", "src/AnimationImmediateDraw.cpp", "probes/animation-renderer-lifecycle-context.cpp"]
+output_dir = "build/match-linked/AnimationRendererPriority"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationRendererLifecycleProbe@12"
+functions = ["AnimationRendererDrawPriority28"]
+symbol = "?AnimationRendererDrawPriority28@@YIHPAX@Z"
+target_address = 0x00455290
+size = 15
+linkages = [
+  { offset = 9, type = "REL32", symbol = "?DrawAnimationRendererLayer@@YGHPAUAnimationRenderer@@H@Z", target = 0x00455660 },
+]
+
+[units.animation-renderer-draw-priority-32]
+artifact_kind = "linked-pe"
+source = "src/AnimationRendererPriority.cpp"
+inputs = ["src/AnimationRendererDispatch.hpp", "src/AnimationRendererLifecycle.hpp"]
+support_sources = ["src/AnimationRendererDispatch.cpp", "src/AnimationRendererLifecycle.cpp", "src/StageLifecycle.cpp", "src/AnimationVm.cpp", "src/ChainRegistration.cpp", "src/AnimationImmediateDraw.cpp", "probes/animation-renderer-lifecycle-context.cpp"]
+output_dir = "build/match-linked/AnimationRendererPriority"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationRendererLifecycleProbe@12"
+functions = ["AnimationRendererDrawPriority32"]
+symbol = "?AnimationRendererDrawPriority32@@YIHPAX@Z"
+target_address = 0x004552A0
+size = 15
+linkages = [
+  { offset = 9, type = "REL32", symbol = "?DrawAnimationRendererLayer@@YGHPAUAnimationRenderer@@H@Z", target = 0x00455660 },
+]
+
+[units.animation-renderer-draw-priority-34]
+artifact_kind = "linked-pe"
+source = "src/AnimationRendererPriority.cpp"
+inputs = ["src/AnimationRendererDispatch.hpp", "src/AnimationRendererLifecycle.hpp"]
+support_sources = ["src/AnimationRendererDispatch.cpp", "src/AnimationRendererLifecycle.cpp", "src/StageLifecycle.cpp", "src/AnimationVm.cpp", "src/ChainRegistration.cpp", "src/AnimationImmediateDraw.cpp", "probes/animation-renderer-lifecycle-context.cpp"]
+output_dir = "build/match-linked/AnimationRendererPriority"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationRendererLifecycleProbe@12"
+functions = ["AnimationRendererDrawPriority34"]
+symbol = "?AnimationRendererDrawPriority34@@YIHPAX@Z"
+target_address = 0x004552B0
+size = 15
+linkages = [
+  { offset = 9, type = "REL32", symbol = "?DrawAnimationRendererLayer@@YGHPAUAnimationRenderer@@H@Z", target = 0x00455660 },
+]
+
+[units.animation-renderer-draw-priority-36]
+artifact_kind = "linked-pe"
+source = "src/AnimationRendererPriority.cpp"
+inputs = ["src/AnimationRendererDispatch.hpp", "src/AnimationRendererLifecycle.hpp"]
+support_sources = ["src/AnimationRendererDispatch.cpp", "src/AnimationRendererLifecycle.cpp", "src/StageLifecycle.cpp", "src/AnimationVm.cpp", "src/ChainRegistration.cpp", "src/AnimationImmediateDraw.cpp", "probes/animation-renderer-lifecycle-context.cpp"]
+output_dir = "build/match-linked/AnimationRendererPriority"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationRendererLifecycleProbe@12"
+functions = ["AnimationRendererDrawPriority36"]
+symbol = "?AnimationRendererDrawPriority36@@YIHPAX@Z"
+target_address = 0x004552C0
+size = 15
+linkages = [
+  { offset = 9, type = "REL32", symbol = "?DrawAnimationRendererLayer@@YGHPAUAnimationRenderer@@H@Z", target = 0x00455660 },
+]
+
+[units.animation-renderer-draw-priority-39]
+artifact_kind = "linked-pe"
+source = "src/AnimationRendererPriority.cpp"
+inputs = ["src/AnimationRendererDispatch.hpp", "src/AnimationRendererLifecycle.hpp"]
+support_sources = ["src/AnimationRendererDispatch.cpp", "src/AnimationRendererLifecycle.cpp", "src/StageLifecycle.cpp", "src/AnimationVm.cpp", "src/ChainRegistration.cpp", "src/AnimationImmediateDraw.cpp", "probes/animation-renderer-lifecycle-context.cpp"]
+output_dir = "build/match-linked/AnimationRendererPriority"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationRendererLifecycleProbe@12"
+functions = ["AnimationRendererDrawPriority39"]
+symbol = "?AnimationRendererDrawPriority39@@YIHPAX@Z"
+target_address = 0x004552D0
+size = 15
+linkages = [
+  { offset = 9, type = "REL32", symbol = "?DrawAnimationRendererLayer@@YGHPAUAnimationRenderer@@H@Z", target = 0x00455660 },
+]
+
+[units.animation-renderer-draw-priority-61]
+artifact_kind = "linked-pe"
+source = "src/AnimationRendererPriority.cpp"
+inputs = ["src/AnimationRendererDispatch.hpp", "src/AnimationRendererLifecycle.hpp"]
+support_sources = ["src/AnimationRendererDispatch.cpp", "src/AnimationRendererLifecycle.cpp", "src/StageLifecycle.cpp", "src/AnimationVm.cpp", "src/ChainRegistration.cpp", "src/AnimationImmediateDraw.cpp", "probes/animation-renderer-lifecycle-context.cpp"]
+output_dir = "build/match-linked/AnimationRendererPriority"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationRendererLifecycleProbe@12"
+functions = ["AnimationRendererDrawPriority61"]
+symbol = "?AnimationRendererDrawPriority61@@YIHPAX@Z"
+target_address = 0x004552E0
+size = 15
+linkages = [
+  { offset = 9, type = "REL32", symbol = "?DrawAnimationRendererLayer@@YGHPAUAnimationRenderer@@H@Z", target = 0x00455660 },
+]
+
+[units.animation-renderer-draw-priority-60]
+artifact_kind = "linked-pe"
+source = "src/AnimationRendererPriority.cpp"
+inputs = ["src/AnimationRendererDispatch.hpp", "src/AnimationRendererLifecycle.hpp"]
+support_sources = ["src/AnimationRendererDispatch.cpp", "src/AnimationRendererLifecycle.cpp", "src/StageLifecycle.cpp", "src/AnimationVm.cpp", "src/ChainRegistration.cpp", "src/AnimationImmediateDraw.cpp", "probes/animation-renderer-lifecycle-context.cpp"]
+output_dir = "build/match-linked/AnimationRendererPriority"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationRendererLifecycleProbe@12"
+functions = ["AnimationRendererDrawPriority60"]
+symbol = "?AnimationRendererDrawPriority60@@YIHPAX@Z"
+target_address = 0x004552F0
+size = 15
+linkages = [
+  { offset = 9, type = "REL32", symbol = "?DrawAnimationRendererLayer@@YGHPAUAnimationRenderer@@H@Z", target = 0x00455660 },
+]
+
+[units.animation-renderer-draw-priority-50]
+artifact_kind = "linked-pe"
+source = "src/AnimationRendererPriority.cpp"
+inputs = ["src/AnimationRendererDispatch.hpp", "src/AnimationRendererLifecycle.hpp"]
+support_sources = ["src/AnimationRendererDispatch.cpp", "src/AnimationRendererLifecycle.cpp", "src/StageLifecycle.cpp", "src/AnimationVm.cpp", "src/ChainRegistration.cpp", "src/AnimationImmediateDraw.cpp", "probes/animation-renderer-lifecycle-context.cpp"]
+output_dir = "build/match-linked/AnimationRendererPriority"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationRendererLifecycleProbe@12"
+functions = ["AnimationRendererDrawPriority50"]
+symbol = "?AnimationRendererDrawPriority50@@YIHPAX@Z"
+target_address = 0x00455300
+size = 15
+linkages = [
+  { offset = 9, type = "REL32", symbol = "?DrawAnimationRendererLayer@@YGHPAUAnimationRenderer@@H@Z", target = 0x00455660 },
+]
+
+[units.animation-renderer-draw-priority-49]
+artifact_kind = "linked-pe"
+source = "src/AnimationRendererPriority.cpp"
+inputs = ["src/AnimationRendererDispatch.hpp", "src/AnimationRendererLifecycle.hpp"]
+support_sources = ["src/AnimationRendererDispatch.cpp", "src/AnimationRendererLifecycle.cpp", "src/StageLifecycle.cpp", "src/AnimationVm.cpp", "src/ChainRegistration.cpp", "src/AnimationImmediateDraw.cpp", "probes/animation-renderer-lifecycle-context.cpp"]
+output_dir = "build/match-linked/AnimationRendererPriority"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationRendererLifecycleProbe@12"
+functions = ["AnimationRendererDrawPriority49"]
+symbol = "?AnimationRendererDrawPriority49@@YIHPAX@Z"
+target_address = 0x00455310
+size = 15
+linkages = [
+  { offset = 9, type = "REL32", symbol = "?DrawAnimationRendererLayer@@YGHPAUAnimationRenderer@@H@Z", target = 0x00455660 },
+]

@@ -302,3 +302,20 @@ and two RET4 exits with only two non-field SIB selector differences
 at B3 and BD (commutative ECX/EDX addressing). It remains **non-exact**
 and must not replace the separately exact 811-byte decoder family.
 See [ANIMATION_CHUNKS](ANIMATION_CHUNKS.md).
+
+Renderer priority callbacks 455140..45531E: the real
+`AnimationRenderer` constructor provides the natural /GL producer context
+for all 22 formerly source-open wrappers. They carry renderer in EDI,
+selected dense layer in EAX and call dispatcher455660. Ordinary COFF
+collapses the wrappers to 9 bytes, but the real producer reconstructs
+12/15 bytes exactly, with one independently reviewed REL32 field per
+callback and zero remaining byte differences under strict cold replay.
+The five stateful priorities (10, 40, 48, 62 and 63) remain open.
+See [ANIMATION_RENDERER_LIFECYCLE](ANIMATION_RENDERER_LIFECYCLE.md).
+
+The 221-byte animation source loader4543E0 remains non-exact after eight
+additional natural direct-array, signed-index and byte-offset expressions:
+all preserve the full221-byte producer body but still select SIB0A rather
+than native SIB11 at offsets B3/BD. Those alternatives are isolated in
+`.analysis/try-animation-load-sib-20261111.py` and must not replace the
+separately exact 811-byte decoder.

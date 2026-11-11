@@ -11,6 +11,6 @@ void __stdcall BuildUnroundedAnimationVmQuad(AnimationVmView *vm, CameraVector *
 int __stdcall DrawUnroundedAnimationVm(RenderBatchView *renderer, AnimationVmView *vm);
 int __stdcall DrawAdaptiveAnimationVm(RenderBatchView *renderer, AnimationVmView *vm);
 
-// Reviewed 0x4503D0 external boundary; the571-byte rotated body is still open.
+// Reviewed 0x4503D0 complete rotated builder is implemented in AnimationVmRotation.cpp.
 void __stdcall BuildRotatedAnimationVmQuad(AnimationVmView *vm, CameraVector *first,
     CameraVector *second, CameraVector *third, CameraVector *fourth);
