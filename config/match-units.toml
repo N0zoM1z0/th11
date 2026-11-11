@@ -4841,3 +4841,22 @@ size = 7
 relocations = [
   { offset = 2, type = "REL32", symbol = "?UpdateMenuController@@YGHPAUMenuControllerView@@@Z", target = 0x004399B0 },
 ]
+
+# Native 51-byte slot destructor: the genuine generic renderer/index caller
+# and all of its document dependencies naturally yield the private EBX/ESI ABI.
+[units.animation-document-slot-free]
+artifact_kind = "linked-pe"
+source = "src/AnimationDocumentSlotsLifecycle.cpp"
+inputs = ["src/AnimationDocument.hpp", "src/StageResource.hpp"]
+support_sources = ["src/AnimationDocumentDestructor.cpp", "src/MenuControllerSupport.cpp", "src/AnimationChunk.cpp", "probes/animation-document-destructor-context.cpp", "probes/animation-document-slots-context.cpp"]
+output_dir = "build/match-linked/AnimationDocumentSlotFree"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationDocumentSlotsProbe@8"
+functions = ["FreeAnimationDocumentSlot"]
+symbol = "?FreeAnimationDocumentSlot@@YGXPAURenderBatchView@@I@Z"
+target_address = 0x004549A0
+size = 51
+linkages = [
+  { offset = 0x12, type = "REL32", symbol = "?DestroyAnimationDocument@@YGXPAUAnimationDocumentView@@@Z", target = 0x004549E0 },
+  { offset = 0x1F, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x0045FD49 },
+]

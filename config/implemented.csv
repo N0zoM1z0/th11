@@ -528,3 +528,5 @@ PlayerEmitterPolarPair::PlayerEmitterPolarPair
 PlayerEmitterOffsetPair::PlayerEmitterOffsetPair
 ConstructSecondaryPlayerElementArray
 DestroyAnimationDocument
+UpdateAnimationDocumentSlots
+FreeAnimationDocumentSlot

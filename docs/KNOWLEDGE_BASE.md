@@ -264,3 +264,12 @@ the scoped /GL parent has all **three native direct free calls**
 and the full **12-call/one-RET** graph, producing435/native415 bytes.
 It remains non-exact; the storage constructor42F760 is unaffected.
 See [SECONDARY_PLAYER_INITIALIZATION](SECONDARY_PLAYER_INITIALIZATION.md).
+
+
+Animation document slot free4549A0/51 now has strict cold-linked
+**exact 51/51** from natural C++ in AnimationDocumentSlotsLifecycle.cpp,
+replaying two REL32 calls to exact document cleanup4549E0 and operator
+delete45FD49. Its neighboring 32-slot scanner4548D0/135 has source
+but is non-exact (115-byte scoped /GL), with the original unchecked
+pending-destroy reload retained. See
+[ANIMATION_DOCUMENT_SLOTS](ANIMATION_DOCUMENT_SLOTS.md).

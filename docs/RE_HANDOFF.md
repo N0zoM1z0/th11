@@ -31,6 +31,13 @@ Canonical source, ledgers and build/comparison scripts are unchanged.
 
 ## Next reconstruction work
 
+Animation slot release4549A0/51 is now **cold linked exact 51/51**
+with two reviewed REL32 fields (document destroy4549E0, operator
+delete45FD49). The adjacent full 135-byte scan4548D0 now has
+compiled maintained source, narrow /GL115/three calls/two returns
+versus native135/3/2, non-exact. Both are in
+AnimationDocumentSlotsLifecycle.cpp; see ANIMATION_DOCUMENT_SLOTS.md.
+
 The 415-byte player-storage destructor now inlines the two original
 VM buffer frees in reverse member order rather than calling the
 separately exact VM destructor body. In the focused linked context

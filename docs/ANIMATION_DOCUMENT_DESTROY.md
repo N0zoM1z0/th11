@@ -61,3 +61,9 @@ Scoped evidence:
 `build/probe-ltcg/AnimationDocumentDestructor-{simple,player}/`.
 The next integration step is reconciling the still non-exact 415-byte
 player storage destructor against the newly exact cleanup callee.
+
+
+The related indexed document-slot deletion at4549A0/51 is now a
+separate strict linked-PE **51/51 exact** owner with two bound calls.
+The pending-document scanner4548D0/135 is also source-present but
+non-exact; see [ANIMATION_DOCUMENT_SLOTS](ANIMATION_DOCUMENT_SLOTS.md).
