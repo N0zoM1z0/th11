@@ -44,6 +44,13 @@ reviewed3208-byte owner including a seven-entry switch table, and VC9-compiled
 state20..26 source. Targeted linked candidate3060/native3208 has88/88 calls
 and14/14 returns; still nonexact. See
 [PAUSE_GAME_OVER_MENU](PAUSE_GAME_OVER_MENU.md).
+Two formerly unclassified native overlay helpers at 42F400/103 and
+42F480/101 have compiled C++ source for four 40-byte rectangle slots and
+VM float-coordinate conversion, nonexact. The neighboring 42F340/350
+14-byte comparison candidates are 12/14 with ordinary C++ thiscall
+source and unproved incoming references. See
+[PAUSE_OVERLAY_RECTANGLES](PAUSE_OVERLAY_RECTANGLES.md) and
+[PAUSE_GAME_OVER_MENU](PAUSE_GAME_OVER_MENU.md).
 PreparePauseContinueRecords42D850/380 and its insertion callee42BA80/365
 now have maintained VC9-compiled source; the normal-COFF diagnostic sizes are
 387/232 respectively, neither exact. The insertion percentage uses target

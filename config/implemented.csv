@@ -513,3 +513,7 @@ ReplaceReplayCompressionNode
 FindReplayCompressionPredecessor
 CompressReplayData
 UpdatePauseGameOverMenu
+PauseSelectionComparisonView::IsDifferent
+PauseSelectionComparisonView::IsSmaller
+QueuePauseOverlayRectangle
+CapturePauseOverlayFromVm

@@ -63,8 +63,12 @@ The other child-finder caller42E6B0 now has a **reviewed complete3208-byte**
 owner with the seven-entry jump table and VC9-compiled source in
 src/PauseGameOverMenu.cpp. Focused six-TU /GL generates3060/native3208
 bytes,88/88 calls and14/14 returns; it remains non-exact. See
-[PAUSE_GAME_OVER_MENU](PAUSE_GAME_OVER_MENU.md). Do not rebuild unrelated
-HUD/gameplay/ActorInstructions sources.
+[PAUSE_GAME_OVER_MENU](PAUSE_GAME_OVER_MENU.md). Neighboring 42F340/350
+14-byte selection comparisons now have natural C++ source, 12/14 bytes
+each and no confirmed xrefs. Overlay queue42F400/103 and VM capture
+42F480/101 also have compiled source, nonexact. See
+[PAUSE_OVERLAY_RECTANGLES](PAUSE_OVERLAY_RECTANGLES.md). Do not rebuild
+unrelated gameplay or canonical units.
 
 ## Checks
 

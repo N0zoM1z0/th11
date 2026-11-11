@@ -1,87 +1,103 @@
-# Game-over menu states 20–26
+# TH11 game-over pause/replay menu (0x0042E6B0)
 
-The Japanese TH11 1.00a game-over owner at `0x0042E6B0..0x0042F337`
-now has maintained C++ source in `src/PauseGameOverMenu.cpp`. It is a
-substantial **3208-byte** function, not the original Ghidra default 3179-byte
-span. It is independent of the 3192-byte continuation function at
-`42D9D0`, although both use the observed pause-view storage. Original
-class/TU ownership and runtime behavior remain unknown.
+The original Japanese TH11v1.00a game-over menu is maintained in
+`src/PauseGameOverMenu.cpp` under the descriptive name
+`UpdatePauseGameOverMenu`. Its owner and nominal class remain unproven.
+This function is **source-present, non-exact**. It is distinct from the
+normal pause owner at 42C8D0/3212 and continue owner at 42D9D0/3192.
 
-## Complete original extent
+## Complete native boundary
 
-Direct hash-attested local Ghidra code and reference review plus independent
-native PE Capstone CFG traversal establishes:
+An original-image-hash-attested Ghidra review and independent PE/Capstone
+CFG walk covered the entire owner `0x42E6B0..0x42F337` (3208 bytes):
 
-| Owned component | Bytes |
+| Measure | Count |
 | --- | ---: |
-| 875 reachable instructions | 3163 |
-| Four alignment slots at 42E737/42E73E/42EC29/42F31B | 17 |
-| Seven four-byte state jump-table entries at 42F31C..42F337 | 28 |
-| **Complete function** | **3208** |
+| Reachable instructions | 875 |
+| Instruction bytes | 3163 |
+| Alignment/layout bytes | 17 |
+| Switch table bytes | 28 |
+| Calls, distinct native targets | 88, 26 |
+| Returns | 14 RET4 |
+| Foreign interior entries/tail transfers | 0 |
 
-The seven dispatch targets (states 20–26) are `42E6DC`, `42E774`,
-`42E8E7`, `42EAB6`, `42ED14`, `42EFC9` and
-`42F2B2`. All are internal code destinations; alleged foreign
-interior refs to jump cells are DATA, not additional function entries.
-There are **88 calls to 26 targets**, **14 GS/RET4 exits**, no
-unresolved outgoing branch and eight CC immediately after the table,
-before the independent owner at `42F340`.
+The original Ghidra default span ended at `0x42F31A`, before one alignment
+NOP at `0x42F31B` and the seven four-byte switch entries at
+`0x42F31C..0x42F337`. The table maps menu states 20..26 to entries
+`42E6DC, 42E774, 42E8E7, 42EAB6, 42ED14, 42EFC9, 42F2B2`.
+There are 7+2 alignment bytes near 42E737, 7 bytes near 42EC29 and the
+final one-byte NOP. CC bytes begin immediately after the table.
 
-Recovery: `.analysis/pause-gameover-review-20261111.txt`,
-`.analysis/pause-gameover-decompile-20261111.c`, and the independent
-`.analysis/gameover-cfg-review-20261111.py` with its log.
-These private target artifacts are not committed.
+## Maintained state-machine behavior
 
-## Reconstructed state transitions
+- State 20 waits for a confirmed game-over screen, plays sound 10,
+  sets state 21, propagates animation event 2 and resets its timer
+- State 21 commits the current score, updates practice records or
+  prepares a high-score name, distinguishes the game-over save script
+  0x68/0x67 from normal continuation and initializes three menu choices
+- State 22 navigates the three choices, dispatches confirm/cancel,
+  requests replay slot selection when choice 1 is confirmed, and handles
+  the delayed closing path for choices 0/2
+- State 23 selects among 25 replay files; confirmation initializes the
+  91-key name editor and timestamps the replay header at offset 0x0C,
+  while cancellation disposes all 25 replay entries
+- State 24 edits an eight-character replay name and writes a selected
+  `th11_%.2d.rpy` replay through the maintained writer at 436420
+- State 25 edits the inserted score record's eight-character name,
+  persists it to the per-character/per-difficulty score array and
+  remembered name, and returns to the game-over selector
+- State 26 waits twelve frames then restores runtime state or requests
+  runtime mode 10, depending on the selected exit path
 
-State 20 waits ten frames, accepts the 0x80001 confirm mask, queues sound10,
-sets root/related event2 and resets the timer on entry to21. State21 commits
-the score: practice mode updates the per-character, difficulty and stage
-record and creates the distinct `0x68 - (saveMode != 0)` animation
-before entering22. Normal mode prepares record insertion, resets the timer,
-enters record naming state25 when required, or creates script62 and sets
-state14 as the native cross-mode continuation path. The selector has three
-choices, wrap1 and root choice event7.
+The native code uses the same PauseMenu storage offsets as existing owners:
+state04, timer10, selector38, keyboard110, root1E8, cursor1F0,
+save-mode1F4, replay array204 and name2CC. The code preserves
+individual input tests, animation ID side effects and early returns.
 
-State22 supports three options. Up/down changes trigger selection animation
-before sound12. Confirm signals child script `0x5E+current` and
-commits the current score; choices0/2 close via state26, while choice1
-opens the 25-slot replay selection in state23. Cancel selects0 if necessary.
+## Focused compiler diagnostics
 
-State23 waits ten frames, navigates replay slots, and initializes the
-91-key editor when entering24. It stamps the active replay header at
-+0xC and sets stage at +0x68; the latter is **not** difficulty+0x64.
-Remembered name and trimmed cursor are restored. Cancel instead restores
-the root and history, destroys/deletes and clears all25 replay slots,
-and returns to the three-choice selector at22.
+The pinned VC9 normal-COFF `/O2 /Ob1 /Gy /MT /EHsc` source generates
+3068 bytes with 154 relocation fields. A separate, non-runnable,
+scope-limited six-TU VC9 `/GL` linked context compiles only this owner,
+score/record preparation, pause/continue support and the game-over probe.
+Its complete primary PDB contribution is **3060 bytes**, against native
+**3208 bytes**. Independent instruction inventory confirms exact
+**88/88 call-site counts**, **26/26 callee identities**, **14/14 RET4
+sites**, the 7-entry switch-table shape and a 0x58 stack frame.
 
-State24 edits the eight-character replay name in a 13-column keyboard:
-navigation uses -13/+13 and horizontal wrapping, keys88/89 are space/delete
-and key90 writes the selected replay with **mode0**, reloads its slot,
-stores the remembered name and returns to23. State25 is the separate
-high-score name editor, conditional on unknown1F8; it can insert a name
-into the character/partner/difficulty record and return through the
-game-over script67 before restoring state22.
+This is **not an exact match**: synthetic helper ABIs, register allocation,
+instruction ordering, layout offsets and unbound original data still differ.
+A matching call graph is not a zero-byte-difference proof, and this
+local linked context is not an authentic whole-game build.
 
-State26 waits12 frames, closes the menu, sets state27 and selects
-runtime mode4 for choices0/1 or writes mode10 for choice2. No new
-null, bounds or input guards are introduced.
+Private evidence: `.analysis/gameover-cfg-review-20261111.py`,
+`.analysis/gameover-cfg-review-20261111.log`,
+`.analysis/pause-gameover-review-20261111.txt`,
+`.analysis/pause-gameover-decompile-20261111.c`,
+`.analysis/pause-game-over-ltcg-build.log`,
+`.analysis/gameover-coff-compare-20261111.json` and
+`build/probe-ltcg/PauseGameOverContext/`.
 
-## Narrow VC9 diagnostics
+Next focus: preserve the full state20..26 graph while reducing register
+allocation/stack/result-identity differences against the 3208-byte owner.
+Do not run unrelated cold replay cohorts to compare this function.
 
-Fixed VC9 RTM with `/TP /O2 /Ob1 /Gy /MT /EHsc` compiles the complete
-maintained source to **3068 bytes**, with154 COFF relocations. A scoped
-six-TU `/GL` context using `probes/pause-game-over-context.cpp`,
-the menu support functions and record insertion produces a **3060-byte**
-public primary-TU PDB contribution. PE/MAP/PDB ownership is confirmed.
-The target and both candidates have **88 calls in 26 categories**; target
-and linked source both have **14 RET4 paths**, with all seven state
-table cells retained. Codegen and full bytes remain non-exact, and
-the original production TU/helper register ABI is unknown. This is source
-presence plus useful compiler evidence, **not canonical exact credit**.
+## Neighboring previously uninventoried comparison helpers
 
-Build logs/proofs are under `.analysis/gameover-*` and
-`build/probe-ltcg/PauseGameOverContext/`. No unrelated canonical
-cold replay was run. Next useful work: recover the private register
-allocations and local temporary lifetimes, not synthetic instruction
-bytes or cropped function extents.
+The independent original PE also contains two complete fourteen-byte
+comparison bodies at `42F340..42F34D` and `42F350..42F35D`,
+separated by two CC bytes. Each takes an ECX object pointer and one
+stack integer, compares that value with the object's first integer, returns
+the normalized integer predicate (`!=` or signed `<`) and
+ends in RET4. These bodies begin **after** the game-over function's table,
+not within its 3208-byte extent.
+
+Ghidra has no function definitions or incoming references for either
+candidate. The original source/class identity remains unknown. A natural
+C++ member-view draft in `src/PauseSelectionComparisons.cpp` compiles
+with the pinned VC9 into complete 14-byte non-COMDAT function extents
+with no relocations; independent full comparisons reproduce **12/14 bytes**
+for each. The two remaining differences are ECX-vs-EDX register choices
+in the load and compare, not address fields. Neither is exact and no
+vendor/game attribution is claimed. The adjacent 42F360/42F370 wrappers
+are still unclassified.

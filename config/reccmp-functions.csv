@@ -514,3 +514,7 @@ ReplaceReplayCompressionNode,0x00442B50,function
 FindReplayCompressionPredecessor,0x00442BE0,function
 CompressReplayData,0x004423A0,function
 UpdatePauseGameOverMenu,0x0042E6B0,function
+PauseSelectionComparisonView::IsDifferent,0x0042F340,function
+PauseSelectionComparisonView::IsSmaller,0x0042F350,function
+QueuePauseOverlayRectangle,0x0042F400,function
+CapturePauseOverlayFromVm,0x0042F480,function
