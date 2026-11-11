@@ -507,3 +507,7 @@ WritePauseMenuReplay
 AppendReplayWriteSegment
 ResetReplayCompressionTree
 FindReplayCompressionMatch
+DeleteReplayCompressionNode
+SpliceReplayCompressionNode
+ReplaceReplayCompressionNode
+FindReplayCompressionPredecessor

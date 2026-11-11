@@ -48,7 +48,7 @@ REPLAY_WRITING.md and PAUSE_CONTINUE_MENU.md. Compression tree reset
 relocations. Tree search442910/416 also has compiled source in
 src/ReplayCompressionSearch.cpp; normal COFF416/19 fields/270 of340
 comparable bytes, nonexact. Continue with compressor main4423A0
-and its node-update helpers; no unrelated cold cohort needed. The other native child-finder
+and test linked /GL codegen with the new nonexact node helpers\nin src/ReplayCompressionTreeOps.cpp (four original owners79/80/134/49).\nNo unrelated cold cohort needed. The other native child-finder
 caller42E6B0 retains an unreviewed3179-byte default. Do not substitute unrelated
 HUD/gameplay/ActorInstructions sources.
 

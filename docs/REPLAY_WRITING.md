@@ -104,3 +104,29 @@ ordinary source declaration uses two stack arguments. Do not falsify
 its ABI to make the normal COFF probe match. The next meaningful test is
 a focused linked /GL compilation with the genuine compressor caller and
 tree helpers once they have source.
+
+## Dictionary tree update helpers (00442AB0..00442C10)
+
+Four linked-tree operations are maintained together in
+`src/ReplayCompressionTreeOps.cpp`. They implement recursive
+node deletion, parent/child splicing (including the original zero-node
+sentinel), full node replacement and rightmost-predecessor search.
+Direct original Ghidra review and independent complete PE disassembly
+establish all four boundaries and neighboring padding; the original
+functions use privately optimized ECX/ESI/EDX/EAX argument registers.
+Source code deliberately uses normal typed parameters instead.
+
+| Operation | Original bytes | VC9 normal COFF | Address fields |
+| --- | ---: | ---: | ---: |
+| DeleteReplayCompressionNode | 79 | 95 | 9 |
+| SpliceReplayCompressionNode | 80 | 97 | 8 |
+| ReplaceReplayCompressionNode | 134 | 144 | 14 |
+| FindReplayCompressionPredecessor | 49 | 51 | 3 |
+
+Every function compiles with the pinned VC9 /O2 toolchain; every full
+normal-COFF comparison is non-exact. The natural source follows the
+native tree operations without inventing ABI parameters. These four
+functions complete the source dependencies of the 416-byte search
+function, but not yet the main 795-byte compressor. All candidate
+objects and complete diagnostics remain ignored under `build/`
+and `.analysis/`.

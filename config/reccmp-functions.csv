@@ -508,3 +508,7 @@ WritePauseMenuReplay,0x00436420,function
 AppendReplayWriteSegment,0x00437300,function
 ResetReplayCompressionTree,0x004428D0,function
 FindReplayCompressionMatch,0x00442910,function
+DeleteReplayCompressionNode,0x00442AB0,function
+SpliceReplayCompressionNode,0x00442B00,function
+ReplaceReplayCompressionNode,0x00442B50,function
+FindReplayCompressionPredecessor,0x00442BE0,function
