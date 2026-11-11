@@ -150,3 +150,13 @@ physical state/selection layout. Both compile in VC9 COFF and `/GL`; the scoped 
 **83/83 strict linked-PE exact**, with both native CRT free calls bound. The complete state branches,
 filename allocation, input-bit semantics and script-manager dependency are
 detailed in [SECONDARY_PROGRAM_BROWSER](SECONDARY_PROGRAM_BROWSER.md).
+
+## Source for deferred ECL browser loading (2026-11-11)
+
+The exact thread callback at `0x438900` is now recognized as an independent
+8-byte function and has source plus a strict linked-PE proof. It calls the
+newly source-present but non-exact **277-byte** `LoadSecondaryProgramSelection`
+(`0x438910`). The state-1 selection branch in the larger 934-byte browser now
+uses the actual registered callback rather than the unrelated debug-loader
+function. See [SECONDARY_PROGRAM_BROWSER](SECONDARY_PROGRAM_BROWSER.md) for
+physical state fields, compiler comparisons and unresolved loader ABI.

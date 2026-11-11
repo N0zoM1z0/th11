@@ -23,6 +23,7 @@ struct SecondaryProgramBrowserView
     unsigned int flags;
     SecondaryProgramView *program;
     SecondaryManager *manager;
+    unsigned char *loadedData;
 };
 typedef char BrowserStateOffset[(offsetof(SecondaryProgramBrowserView, state) == 0x30) ? 1 : -1];
 typedef char BrowserFilesOffset[(offsetof(SecondaryProgramBrowserView, filenames) == 0x34) ? 1 : -1];
@@ -34,6 +35,7 @@ typedef char BrowserDisplayScaleOffset[(offsetof(SecondaryProgramBrowserView, di
 typedef char BrowserFlagsOffset[(offsetof(SecondaryProgramBrowserView, flags) == 0x2d4) ? 1 : -1];
 typedef char BrowserProgramOffset[(offsetof(SecondaryProgramBrowserView, program) == 0x2d8) ? 1 : -1];
 typedef char BrowserManagerOffset[(offsetof(SecondaryProgramBrowserView, manager) == 0x2dc) ? 1 : -1];
+typedef char BrowserLoadedDataOffset[(offsetof(SecondaryProgramBrowserView, loadedData) == 0x2e0) ? 1 : -1];
 
 void __stdcall ClearSecondaryProgramBrowserFiles(SecondaryProgramBrowserView *self);
 int __fastcall UpdateSecondaryProgramBrowser(SecondaryProgramBrowserView *self);
@@ -41,3 +43,8 @@ int __fastcall UpdateSecondaryProgramBrowser(SecondaryProgramBrowserView *self);
 // Independently observed owner at 0x0045DB90, not yet reconstructed here.
 SecondaryManager *__stdcall CreateSecondaryProgramBrowserManager(
     SecondaryProgramView *program, const char *subroutineName);
+
+// Native ECL browser loader and dedicated thread callback at 438910/438900.
+extern SecondaryProgramBrowserView *g_SecondaryProgramBrowser;
+int __cdecl LoadSecondaryProgramSelection();
+unsigned int __cdecl SecondaryProgramBrowserLoadThread();

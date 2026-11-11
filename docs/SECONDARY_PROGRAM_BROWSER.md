@@ -87,3 +87,45 @@ Private diagnostic recipe and result context:
 `.analysis/probe-secondary-program-browser.py`,
 `.analysis/browser-direct-producer.cpp`, and
 `build/probe-ltcg/SecondaryProgramBrowser-*`. No full cold replay was run.
+
+## Real loader thread and 277-byte file selection (2026-11-11)
+
+The source-open browser's state-1 file confirmation originally registered
+`0x438900` as its thread callback (a DATA xref at `0x438CBE`), not the
+separate generic debug loader. Its complete eight-byte native body is
+`CALL 0x438910; XOR EAX,EAX; RET`, with one preceding CC byte, eight
+following CC bytes, and no other references into its interior. Ghidra
+originally labeled it `LAB_00438900` instead of including it as a function;
+complete PE/Capstone review now establishes a separate function candidate.
+`SecondaryProgramBrowserLoadThread` in
+`src/SecondaryProgramBrowserThread.cpp` is the exact C++ callback selected
+by the maintained browser state machine.
+
+`LoadSecondaryProgramSelection` at `0x438910..0x438A24` is the real
+**277-byte** loader. Its new natural C++ in
+`src/SecondaryProgramSelection.cpp` formats the selected filename through
+`"%s"`, deletes the previous manager, frees the old browser input blob
+at +0x2E0, loads a fresh resource in disk mode 0, constructs a 0x1098-byte
+`SecondaryProgramView`, calls its virtual Install slot, publishes the
+new subroutine count and resets the selected subroutine and browser state.
+The source retains the original two manager-null assignments and the lack
+of new allocation-failure guards. The base program's vptr/memset order and
+actual original TU partition remain open, so the source is not treated as
+an executable runtime guarantee.
+
+The pinned VC9 `/GL` loader in the real thread-caller context is currently
+**274/277 bytes**, **80/81 instructions**, **8/8 calls**. Adding the real
+`ResourceFile.cpp` support naturally changes the private `LoadResourceFile`
+argument ABI and yields **271/277**; neither candidate is exact. The
+compiler/source observations are in `.analysis/probe-secondary-program-loader.py`
+and `.analysis/try-secondary-program-loader-real-resource.py`.
+
+The new eight-byte callback has separately passed strict cold-linked Oracle
+`secondary-program-browser-load-thread`: unique primary-TU PE/MAP/PDB owner,
+one independently reviewed REL32 call field at offset +1 to `0x438910`,
+current source/producer/tool receipts, and **8/8 exact with zero differences**.
+The pre-existing `secondary-program-browser-clear` 83-byte exact owner was
+cold-rechecked in the same scoped run after the shared header/caller edits
+and remains **83/83 exact**. Evidence:
+`.analysis/secondary-loader-two-scoped-exact-20261111.log` and
+`build/match-linked/SecondaryProgramLoadThread/`. No full cohort replay.

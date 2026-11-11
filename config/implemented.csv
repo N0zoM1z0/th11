@@ -565,3 +565,5 @@ AnimationRendererUpdatePriority26
 AnimationRendererUpdatePriority08
 ClearSecondaryProgramBrowserFiles
 UpdateSecondaryProgramBrowser
+LoadSecondaryProgramSelection
+SecondaryProgramBrowserLoadThread

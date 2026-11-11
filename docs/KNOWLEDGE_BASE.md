@@ -373,3 +373,12 @@ restores native MOV/TEST/PUSH rather than CMP-memory/LEA/MOV; both original
 CRT free calls at 45FC3B are independently bound. The larger934-byte ECL
 browser retains its 859-byte /22-call diagnostic and remains non-exact.
 See [SECONDARY_PROGRAM_BROWSER](SECONDARY_PROGRAM_BROWSER.md).
+
+Original callback at438900 was missed by Ghidra's initial function inventory.
+The browser's actual registration at438CBE takes its address, and the complete
+8 bytes are CALL438910, XOR EAX,EAX, RET. Natural VC9 /GL linked code is
+exact 8/8 with one reviewed REL32, independent of the still non-exact 277-byte
+`LoadSecondaryProgramSelection` body. The bigger934-byte browser has been
+corrected to register this callback. The separate83-byte filename cleanup
+remains exact after a scoped cold recheck. See
+[SECONDARY_PROGRAM_BROWSER](SECONDARY_PROGRAM_BROWSER.md).

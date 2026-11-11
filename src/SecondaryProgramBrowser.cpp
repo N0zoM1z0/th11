@@ -105,7 +105,7 @@ int __fastcall UpdateSecondaryProgramBrowser(SecondaryProgramBrowserView *self)
             if (g_InputState.pressed & 0x80001)
             {
                 self->flags &= ~2u;
-                StartSecondaryDebugThread(&self->worker, LoadSecondaryDebugScript, self);
+                StartSecondaryDebugThread(&self->worker, SecondaryProgramBrowserLoadThread, self);
                 self->state = 2;
             }
             break;

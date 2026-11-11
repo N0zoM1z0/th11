@@ -5406,3 +5406,22 @@ linkages = [
   { offset = 0x1C, type = "REL32", symbol = "_free", target = 0x0045FC3B },
   { offset = 0x3D, type = "REL32", symbol = "_free", target = 0x0045FC3B },
 ]
+
+# Actual native ECL browser loader thread callback, independent new 8-byte
+# owner omitted from the original auto-analysis inventory. The genuine loader
+# is compiled in another TU; no invented trampoline or target machine bytes.
+[units.secondary-program-browser-load-thread]
+artifact_kind = "linked-pe"
+source = "src/SecondaryProgramBrowserThread.cpp"
+inputs = ["src/SecondaryProgramBrowser.hpp", "src/SecondaryScript.hpp", "src/SecondaryGameplay.hpp"]
+support_sources = ["src/SecondaryProgramSelection.cpp", "probes/secondary-program-loader-context.cpp"]
+output_dir = "build/match-linked/SecondaryProgramLoadThread"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryProgramLoaderProbe@4"
+functions = ["SecondaryProgramBrowserLoadThread"]
+symbol = "?SecondaryProgramBrowserLoadThread@@YAIXZ"
+target_address = 0x00438900
+size = 8
+linkages = [
+  { offset = 1, type = "REL32", symbol = "?LoadSecondaryProgramSelection@@YAHXZ", target = 0x00438910 },
+]
