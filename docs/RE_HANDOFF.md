@@ -68,7 +68,9 @@ bytes,88/88 calls and14/14 returns; it remains non-exact. See
 each and no confirmed xrefs. Overlay queue42F400/103 now has a strict cold linked-PE **103/103
 exact** unit (no relocation fields, full PE/MAP/PDB receipt). Adjacent
 VM capture42F480/101 has corrected sprite height/width parameter order
-but remains non-exact (linked100). See
+but remains non-exact (linked100). An early volatile-index experiment gets
+linked101 but swaps native EBP/EBX and was not retained; a float-temp
+variant regressed to111. See PAUSE_OVERLAY_RECTANGLES.md. See
 [PAUSE_OVERLAY_RECTANGLES](PAUSE_OVERLAY_RECTANGLES.md). Do not rebuild
 unrelated gameplay or canonical units.
 

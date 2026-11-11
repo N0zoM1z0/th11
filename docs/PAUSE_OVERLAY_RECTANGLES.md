@@ -78,3 +78,26 @@ independently validates the unmodified 103-byte owner and unique
 PE/MAP/PDB contribution. The adjacent capture function remains non-exact;
 its corrected float conversion order now follows the native
 **height -> width -> top -> left** sequence.
+
+## Capture register-allocation trials
+
+The adjacent 101-byte VM capture was separately cold-linked in an isolated
+probe with the already exact `FindAnimationVmById` implementation supplied
+from `StageMesh.cpp`. The native routine retains renderer in EBP and sprite
+texture index in EBX across four calls to `__ftol2_sse`. The faithful source
+currently links to 100 bytes with two generic probe callers, or 99 bytes
+with the native finder and a cached renderer.
+
+A focused experiment forcing an early volatile read of the texture index
+gave a **101-byte linked candidate**, but its registers are reversed:
+renderer EBX and index EBP instead of the native EBP/EBX. The full machine
+code is **not identical**; size equality does not confer exactness.
+A separate explicit float temporary placed the native height load ahead
+of the texture-index load, but forced an extra float stack round-trip
+and 111 bytes. Neither experiment was copied to the maintained source.
+The source continues to use the real `AnimationSpriteView` offsets
+and ordinary ABI, without fabricated register shims.
+
+Local diagnostic sources/logs are under
+`.analysis/pause-overlay-capture-*` and the limited images below
+`build/probe-ltcg/PauseOverlayCapture*`. No other exact cohort was replayed.
