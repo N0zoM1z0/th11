@@ -224,3 +224,12 @@ in the 272-byte storage constructor recovers its original five calls,
 one RET4, and a focused linked **278/native272** contribution
 (previously236/three calls). See
 [SECONDARY_PLAYER_INITIALIZATION](SECONDARY_PLAYER_INITIALIZATION.md).
+
+
+The player storage constructor42F760/272 now uses a physical inline
+two-embedded-VM prefix (members at14/448) instead of two unrelated
+placement-new statements. Pinned normal COFF improves
+287/27-of-232 comparable bytes to **271/46-of-232**.
+Scoped /GL remains **278/native272**, with all five native calls
+and one RET4. This is still non-exact; see
+[SECONDARY_PLAYER_INITIALIZATION](SECONDARY_PLAYER_INITIALIZATION.md).

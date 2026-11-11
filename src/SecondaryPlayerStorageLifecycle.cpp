@@ -15,6 +15,21 @@ extern SecondaryPatternConfigurationView *g_SecondaryPlayerPreparedConfiguration
 
 namespace
 {
+// A physical C++ view of two embedded VM members at their native offsets.
+// The inline aggregate constructor preserves two distinct member calls
+// while keeping the observed 0x434-byte VM layouts and EH lifetimes.
+struct SecondaryPlayerEmbeddedVms
+{
+    unsigned char unknown000[0x14];
+    StageEmbeddedVm primary;
+    StageEmbeddedVm secondary;
+    __forceinline SecondaryPlayerEmbeddedVms() : primary(), secondary() {}
+};
+typedef char PlayerEmbeddedVmPrimaryOffset[
+    (offsetof(SecondaryPlayerEmbeddedVms, primary) == 0x14) ? 1 : -1];
+typedef char PlayerEmbeddedVmSecondaryOffset[
+    (offsetof(SecondaryPlayerEmbeddedVms, secondary) == 0x448) ? 1 : -1];
+
 // The native storage constructor's two seven-element arrays use real
 // identity-only default constructors. Keep the callback behavior expressed
 // through the C++ type, rather than supplying a fake register shim.
@@ -99,8 +114,7 @@ SecondaryPlayerControllerView *__stdcall ConstructSecondaryPlayerStorage(
     SecondaryPlayerControllerView *owner)
 {
     unsigned char *base = reinterpret_cast<unsigned char *>(owner);
-    new (base + 0x14) StageEmbeddedVm;
-    new (base + 0x448) StageEmbeddedVm;
+    new (base) SecondaryPlayerEmbeddedVms;
 
     owner->patternTime.flags &= ~1u;
     owner->stateTime.flags &= ~1u;

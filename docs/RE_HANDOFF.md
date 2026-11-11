@@ -57,7 +57,9 @@ initializer-only /GL149, lifecycle+initializer /GL152/native152 with
 different and private call ABI/stack differences. Both lifecycle
 dependencies also have compiled source in
 SecondaryPlayerStorageLifecycle.cpp. Constructor42F760/272 now explicitly calls the real array iterator
-4021A0 twice per emitter: normal COFF287, scoped /GL278 with
+4021A0 twice per emitter: normal COFF now271 (before287 after
+replacing two raw placement-new VM calls with inlined typed member
+construction), scoped /GL278 with
 **five native calls and one RET4** (previous236/three calls).
 The iterator4021A0/33 has separate source; generic /GL33
 with29/33 bytes equal but specialized real-caller /GL31, non-exact.

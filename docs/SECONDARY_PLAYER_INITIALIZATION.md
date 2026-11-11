@@ -105,7 +105,8 @@ In a focused VC9 /GL context with the player factory, initializer and
 exact three-byte element constructors, the complete constructor
 produces **278 bytes / five calls / one RET4**, compared with
 native **272 bytes / five calls / one RET4**. Its ordinary COFF
-is 287 bytes with ten relocation fields. This is a substantial
+is now **271 bytes with ten relocation fields** (the earlier
+separate placement-member source produced 287). This is a substantial
 call-graph recovery, but still **non-exact** (different private
 register allocation and EH/loop code generation).
 
@@ -230,8 +231,10 @@ one per array, and all five native call-site occurrences. A
 source-level countdown-loop experiment changes its three loops
 to native-style JNS branches but grows the scoped 278-byte
 contribution to 279 bytes. Replacing the two placement-constructed
-VMs with a physical aggregate reduces the linked contribution
-to 246 bytes and loses a call. A native-looking C++ array
+VMs with a **non-inlined** physical aggregate reduced the linked
+contribution to 246 bytes and lost a call; a header-local
+`__forceinline` aggregate constructor instead retains both
+VM constructor calls and the full five-call owner. A native-looking C++ array
 placement-constructor experiment also collapses to a 215-byte
 linked contribution after optimizer dead-code elimination. All
 three alternatives were rejected as the maintained source.
@@ -246,3 +249,37 @@ share `src/SecondaryPlayerEmitterPairConstructors.hpp` with the
 player storage caller, and both canonical cold-compiled units include
 that header in their build receipts. This does **not** change their
 exact machine code.
+
+
+## Inlined physical embedded-VM members (2026-11-11)
+
+The player object stores two 0x434-byte embedded VM objects at offsets
+`0x14` and `0x448`. Rather than separately invoking placement-new
+at those two raw addresses, the maintained storage constructor now
+placement-constructs one physical `SecondaryPlayerEmbeddedVms`
+prefix whose two real C++ member fields have those exact offsets.
+Its short constructor is inlined by the ordinary VC9 optimizer,
+while the two `StageEmbeddedVm` constructor calls remain separately
+observable. This models C++ member lifetime without hardcoded native
+instructions or fake private-register declarations.
+
+That change improves the **normal COFF** body from 287 bytes /
+27 of 232 relocation-masked comparable bytes to **271 bytes /
+46 of 232**, against native 272 bytes. In a focused five-TU
+VC9 `/GL` link, the complete primary PDB contribution remains
+**278 bytes with five calls and one RET4**, versus native
+**272 bytes, five calls and one RET4**; the 33-byte generic
+array iterator still privately specializes to 31 bytes in
+this context. All owner and return inventories were rerun after
+the source edit. It remains **non-exact**, with native control-flow
+and EH/stack allocation differences open.
+
+The non-inlined aggregate experiment previously produced 246 bytes
+with four calls: its C++ aggregate constructor remained a separate
+helper, merging the two embedded VM calls into one parent call.
+The inlined source version is intentionally distinct and supersedes
+that rejected variant. Local evidence:
+`.analysis/player-storage-embedded-forced-inline-coff.json`,
+`.analysis/player-storage-embedded-forced-inline-linked.log`,
+`.analysis/player-storage-inline-aggregate-current-compare.json`,
+and `.analysis/player-storage-inline-aggregate-current-linked.log`.
