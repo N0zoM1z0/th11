@@ -504,3 +504,5 @@ CommitPauseMenuScore,0x0042BA20,function
 ClosePauseContinueMenu,0x0042D7F0,function
 ShowPauseMenuAnimationTree,0x00456610,function
 CreateDefaultSecondaryDrawAnimationVmId,0x00455D80,function
+WritePauseMenuReplay,0x00436420,function
+AppendReplayWriteSegment,0x00437300,function

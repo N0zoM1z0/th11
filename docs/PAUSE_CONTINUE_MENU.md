@@ -21,7 +21,7 @@ The complete C++ states preserve:
 
 - 12:wait10, confirm, sound10, state13, root/related event2 and timer reset.
 - 13:commit score, then either update the practice stage/difficulty score or call
-  source-open42D850. The latter resets time and may enter record-name state18.
+  record preparer42D850. The latter resets time and may enter record-name state18.
   Other paths create default-layer script62, enter14, set count4/wrap1, clamp0,
   send event3 and then7+current.
 - 14:copy previous before navigation, signal before sound12, confirm child
@@ -91,9 +91,9 @@ RET4 versus native EBX/plain RET. No canonical exact unit is affected or added.
 Private recovery: `.analysis/verify-pause-continue-checkpoint.py`,
 `pause-continue-checkpoint-proof.json`, `pause-continue-source-freeze.json`,
 `pause-continue-menu-proof.json`, target reviews and build/audit scripts/logs.
-These were retained by cleanup. `PreparePauseContinueRecords42D850/380` is
-boundary-reviewed but source-open; its insertion callee42BA80 and writer436420/
-1856 also remain open. The last missing large child-finder caller42E6B0 still
+These were retained by cleanup. The 380-byte record preparer, its 365-byte
+insertion callee and the 1856-byte writer have since gained source; all remain
+non-exact (see REPLAY_WRITING.md). The large child-finder caller42E6B0 still
 has its unreviewed default3179-byte boundary. Original class/TU, whole product,
 runtime and portability are unproved.
 
@@ -131,8 +131,8 @@ nominally unknown globals at 4A573C and 4A8D80.
 
 The preparer is called from the 3192-byte continuation owner at 42D9D0
 and from 42E6B0. The insertion callee is also used by 43F802.
-Future work: investigate /GL codegen and the 1856-byte replay writer
-436420 without expanding to unrelated full-build validation.
+Future work: investigate /GL codegen and the still non-exact 1856-byte replay
+writer436420 (see REPLAY_WRITING.md) without unrelated full-build validation.
 
 ## Case-13 shared factory codegen experiment (2026-11-11)
 

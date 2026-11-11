@@ -503,3 +503,5 @@ CommitPauseMenuScore
 ClosePauseContinueMenu
 ShowPauseMenuAnimationTree
 CreateDefaultSecondaryDrawAnimationVmId
+WritePauseMenuReplay
+AppendReplayWriteSegment

@@ -40,8 +40,10 @@ PreparePauseContinueRecords42D850/380 and InsertPauseContinueScore42BA80/365
 now have VC9-compiled source in src/PauseContinueRecords.cpp and
 src/PauseRecordInsertion.cpp. Full normal-COFF diagnostic sizes are387/232;
 they are not exact. The insertion coefficient uses100.0, and the stage7/saved
-run branch is rechecked after insertion. Writer436420/1856 remains source-open.
-See PAUSE_CONTINUE_MENU.md. The other native child-finder
+run branch is rechecked after insertion. Writer436420/1856 and stream
+allocator437300/150 have compiled source in src/ReplayWriter.cpp; normal-COFF
+sizes1678/139, neither exact. Compression4423A0 remains source-open. See
+REPLAY_WRITING.md and PAUSE_CONTINUE_MENU.md. The other native child-finder
 caller42E6B0 retains an unreviewed3179-byte default. Do not substitute unrelated
 HUD/gameplay/ActorInstructions sources.
 

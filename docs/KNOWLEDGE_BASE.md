@@ -44,7 +44,8 @@ default. PreparePauseContinueRecords42D850/380 and its insertion callee42BA80/36
 now have maintained VC9-compiled source; the normal-COFF diagnostic sizes are
 387/232 respectively, neither exact. The insertion percentage uses target
 double100.0 at497E50; the preparer rechecks stage7 after insertion.
-Replay writer436420/1856 remains source-open.
+Replay writer436420/1856 and allocator437300/150 have VC9-compiled source,
+but neither is exact. See [REPLAY_WRITING](REPLAY_WRITING.md).
 Existing ActorInstructions/HUD/gameplay sources do not implement these owners.
 
 ## Pause3212 and returned-ID lifetimes
