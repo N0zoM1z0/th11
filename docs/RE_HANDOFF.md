@@ -31,6 +31,15 @@ Canonical source, ledgers and build/comparison scripts are unchanged.
 
 ## Next reconstruction work
 
+The 415-byte player-storage destructor now inlines the two original
+VM buffer frees in reverse member order rather than calling the
+separately exact VM destructor body. In the focused linked context
+with exact animation-document cleanup243 and VM marker78, the parent
+has **435/native415 bytes, 12/12 callee categories (three direct
+frees) and one RET4**. Normal COFF446; remains non-exact.
+The 272-byte storage constructor keeps the previous COFF271 layout.
+See SECONDARY_PLAYER_INITIALIZATION.md.
+
 Registered menu update callback439F10/7 is now canonical cold
 normal-COFF **exact 7/7**, one REL32 to the 1224-byte menu owner4399B0.
 Its source stays in MenuControllerCallbacks.cpp, and the complete

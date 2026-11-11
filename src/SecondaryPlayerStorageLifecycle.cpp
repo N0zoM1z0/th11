@@ -115,11 +115,20 @@ void __stdcall DestructSecondaryPlayerStorage(SecondaryPlayerControllerView *own
         g_SecondaryPlayerPreparedConfiguration = owner->configuration;
     }
 
-    // The original frees storage400 of the SECOND embedded VM before
-    // storage400 of the first (+0x848, then +0x414). A real composite
-    // C++ member destructor preserves the reverse lifetime ordering.
-    reinterpret_cast<SecondaryPlayerEmbeddedVms *>(owner)->
-        ~SecondaryPlayerEmbeddedVms();
+    // The native owner inlines the two StageEmbeddedVm destructors:
+    // each one conditionally frees storage400 and then clears it.
+    // Keep reverse member lifetime order (+0x848, then +0x414) rather
+    // than issuing two out-of-line VM destructor calls under LTCG.
+    StageEmbeddedVm *secondVm =
+        &reinterpret_cast<SecondaryPlayerEmbeddedVms *>(owner)->secondary;
+    if (secondVm->storage400)
+        free(secondVm->storage400);
+    secondVm->storage400 = 0;
+    StageEmbeddedVm *firstVm =
+        &reinterpret_cast<SecondaryPlayerEmbeddedVms *>(owner)->primary;
+    if (firstVm->storage400)
+        free(firstVm->storage400);
+    firstVm->storage400 = 0;
 }
 
 // Original 0042F760..0042F86F, 272 bytes. Two StageEmbeddedVm objects

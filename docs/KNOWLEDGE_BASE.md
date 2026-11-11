@@ -255,3 +255,12 @@ with zero fields, when a real generic renderer/file caller
 prevents LTCG over-specialization. Both strict units retain
 complete source/support/tool/PE/MAP/PDB receipts. See
 [ANIMATION_DOCUMENT_DESTROY](ANIMATION_DOCUMENT_DESTROY.md).
+
+
+The player storage destructor430010/415 now directly inlines the
+observable two StageEmbeddedVm `storage400` cleanup operations after
+its configuration free. With exact animation-document/marker callees,
+the scoped /GL parent has all **three native direct free calls**
+and the full **12-call/one-RET** graph, producing435/native415 bytes.
+It remains non-exact; the storage constructor42F760 is unaffected.
+See [SECONDARY_PLAYER_INITIALIZATION](SECONDARY_PLAYER_INITIALIZATION.md).

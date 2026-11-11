@@ -296,10 +296,11 @@ The last two native releases in destructor `430010` are exactly
 the `storage400` fields of the second and first `StageEmbeddedVm`
 members declared at `owner+0x448` and `owner+0x14`. They correspond to
 the real `StageEmbeddedVm::~StageEmbeddedVm` lifetime logic, not
-independent anonymous heap fields. The maintained source now
-destroys the whole physical `SecondaryPlayerEmbeddedVms` aggregate,
-allowing C++ to automatically destroy the second member and then the
-first. Compile-time offset assertions protect both releases.
+independent anonymous heap fields. The maintained source now inlines the exact observable VM-storage
+cleanup on the second member, then the first. It conditionally frees
+the two `storage400` pointers and publishes null afterward, matching
+the behavior of the separate StageEmbeddedVm destructor without
+forcing the original parent to call that out-of-line helper. Compile-time offset assertions protect both releases.
 
 The original also enters/leaves a critical section around the update
 and draw chain removals, checking the runtime flag independently
@@ -328,3 +329,32 @@ to recover the 400/12/1 owner. Evidence:
 `.analysis/player-storage-dtor-raii-current-linked.log`.
 The constructor and the already exact 286-byte animation reset retain
 separate validation scopes.
+
+
+## Inline VM buffer teardown in the parent destructor
+
+The original 415-byte player storage destructor issues **three direct
+`_free` calls**: one for its per-player configuration and two for the
+0x434-byte embedded VMs' buffer fields at `owner+0x848` and
+`owner+0x414`. The previous typed aggregate `~SecondaryPlayerEmbeddedVms`
+source caused VC9 /GL to call two separate StageEmbeddedVm destructors,
+leaving only **one direct free** in the parent contribution.
+
+The maintained `src/SecondaryPlayerStorageLifecycle.cpp` now directly
+spells the native VM destructor body in reverse member order
+(conditional free, then zero) and retains the surrounding scoped
+critical-section lifetime. This restores all **12 native physical
+callee categories**, including **3/3 direct free** calls. With the
+already exact animation-document destroy and menu VM marker sources
+supplied in a focused related /GL context, the complete parent is now
+**435 bytes / 12 calls / one RET4** against native **415 / 12 / one**;
+ordinary COFF is **446 bytes** with 33 relocations. It remains
+**non-exact**, as native helper-private registers and the parent
+EH/branch layout still differ. The separate 272-byte storage
+constructor is unchanged (normal COFF271 bytes in the same scope).
+
+Local source alternatives with redundant explicit if/else zero stores
+or raw untyped VM member views were compiled and linked; these gave
+429-435 bytes and were not adopted over the ordinary typed-field
+cleanup. See `.analysis/player-dtor-manual-final-*` and
+`.analysis/player-dtor-three-free-final-linked.log`.
