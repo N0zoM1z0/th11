@@ -31,6 +31,12 @@ Canonical source, ledgers and build/comparison scripts are unchanged.
 
 ## Next reconstruction work
 
+Dialog phase query42F540/27 is new strict normal-COFF exact with one
+reviewed DIR32 field, in SecondaryDialogueStateQuery.cpp. Nearby
+42F580/286 is the next source-open cleanup owner, with eight
+VM-identifier pairs and no native callees; review underway.
+
+
 The normal pause42C8D0 and continue42D9D0 owners now use native-style
 constant-multiply signed keyboard remainder: pause 4 IMUL/0 IDIV,
 continue 10 IMUL/0 IDIV. Narrow /GL probes give pause3244->3276/native3212

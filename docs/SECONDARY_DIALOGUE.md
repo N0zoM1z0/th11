@@ -127,3 +127,13 @@ tests, volatile fields, fabricated returns or private ABI declarations are used.
 The dialogue context changed four prior inputs and added15. Only the earlier
 adapter exact unit was affected; its cold11-byte/one-field replay remained zero.
 The source-open HUD caller and complete byte/codegen differences remain next work.
+## Session-state phase flag (0042F540)
+
+The controller caller at 42BF30 queries the dialogue session's state
+pointer at +8 and checks bit 1 of its nested +4 flags. The native
+27-byte owner has two plain RETs and one absolute address field.
+Maintained source is `src/SecondaryDialogueStateQuery.cpp`. A scoped,
+cold-pinned VC9 normal-COFF reconstruction reproduces the full
+**27/27 bytes** with the single DIR32 global pointer bound to
+`g_SecondaryDialogueSession` at `0x4A8E88`. Canonical unit:
+`secondary-dialogue-state-flag2`; original source/TU provenance is open.

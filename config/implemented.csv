@@ -517,3 +517,4 @@ PauseSelectionComparisonView::IsDifferent
 PauseSelectionComparisonView::IsSmaller
 QueuePauseOverlayRectangle
 CapturePauseOverlayFromVm
+IsSecondaryDialogueStateFlag2Set

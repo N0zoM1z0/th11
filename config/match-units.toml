@@ -4701,3 +4701,19 @@ symbol = "?QueuePauseOverlayRectangle@@YGHPAURenderBatchView@@HHHHHH@Z"
 target_address = 0x0042F400
 size = 103
 linkages = []
+
+# Full native 27-byte phase-state query, one independently reviewed absolute
+# global pointer field. The member offsets +8/+4 are source structure fields.
+[units.secondary-dialogue-state-flag2]
+artifact_kind = "coff"
+source = "src/SecondaryDialogueStateQuery.cpp"
+inputs = ["src/SecondaryDialogue.hpp"]
+object = "build/match/SecondaryDialogueStateQuery.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["IsSecondaryDialogueStateFlag2Set"]
+symbol = "?IsSecondaryDialogueStateFlag2Set@@YAHXZ"
+target_address = 0x0042F540
+size = 27
+relocations = [
+  { offset = 1, type = "DIR32", symbol = "?g_SecondaryDialogueSession@@3PAUSecondaryDialogueSessionView@@A", target = 0x004A8E88 },
+]
