@@ -228,8 +228,8 @@ in state 3. The actual AsciiManager color is set for loading and position
 lines and restored to white. The arrow Y is category*10+16. The source uses
 the existing browser layout and `AsciiManagerPrint` rather than a mock draw.
 
-The first pinned VC9 `/GL` source cached the ASCII singleton across all
-calls. This forced a competing long-lived register, and linking the real
+Historical diagnostic (superseded by strict exact proof below): the first
+pinned VC9 `/GL` source cached the ASCII singleton across all calls. This forced a competing long-lived register, and linking the real
 `AsciiFormatting.cpp`/`AsciiAppend.cpp` TUs then generated just 445 bytes
 and 10 calls (native 548/11). The original owner reloads the global pointer
 after opaque print calls. The maintained source now does so, restoring the
@@ -237,8 +237,8 @@ native ESI browser receiver and the original complete opening x87 position
 setup. With actual ASCII support, the scoped result improves to **526/548
 bytes, 123/130 instructions and 11/11 native call sites**, reducing nonfield
 positional differences from 298 to 262. The narrow external-callee context
-separately builds 550/548 and 11 calls. Neither is exact; the two producer
-contexts remain distinct.
+separately builds 550/548 and 11 calls. These two earlier diagnostics were non-exact; the two producer
+contexts remain distinct. The final case-local version below is exact.
 The native `0x4390B0..0x4390B9` draw adapter is a separate 10-byte
 PUSH-ESI / MOV-ESI,ECX / CALL / POP-ESI / RET owner. Earlier context-isolated experiments generated either a seven-byte
 call/return or a five-byte JMP. Under the original chain-registration
@@ -408,3 +408,36 @@ release calls, and several register lifetime decisions.
 Evidence: `.analysis/probe-secondary-browser-destructor-lifetime-20261111.py`,
 `.analysis/probe-secondary-browser-destructor-indirect-20261111.py`, and
 `build/probe-ltcg/SecondaryBrowserDestructor-maintained-*`.
+
+## Exact 548-byte ASCII overlay via state-local vectors (2026-11-11)
+
+The full `DrawSecondaryProgramBrowser` owner at `0x438E70..0x439093`
+is now **canonical strict exact: 548/548 bytes, 130/130 decoded
+instructions and 11/11 calls**. The preceding singleton-reload fix
+restored the private browser-in-ESI and ASCII manager-in-ECX conventions, but
+the compiler still omitted some Z stores in modes 1/2/3. The original
+function builds **a fresh local three-float position for each state**,
+reinitializing the full XYZ vector even if the header's earlier position
+is already zero. The maintained natural C++ now creates a distinct scoped
+`float position[3]` in each `switch` case. VC9 `/GL` recovers the original
+x87 `FLDZ` / `FSTP` lifetime, all control flow and all return sites.
+
+The strict `secondary-program-browser-ascii-draw` linked unit compiles
+actual `AsciiFormatting.cpp` and `AsciiAppend.cpp` alongside the independent
+browser draw caller, preserving all nine real ASCII printing calls plus two
+CRT `__ftol2_sse` conversions. **All 43 original address fields** were
+independently checked before acceptance: 11 REL32 calls, 12 DIR32 accesses
+to `g_AsciiManager` (`0x4A8D58`), nine native ASCII string literals
+(verified byte-for-byte at their original `.rdata` addresses), and eleven
+binary-identical float/double literals. These are the entire native field
+inventory; no embedded table or cropped boundary was excluded. A fresh cold
+build and complete primary-TU PE/MAP/PDB contribution replay returned
+**zero differing bytes**, with current source/tool/producer receipts.
+Evidence: `.analysis/secondary-browser-ascii-draw-strict-20261111.log`,
+`build/match-linked/SecondaryProgramBrowserAsciiDraw/`,
+`probes/secondary-program-browser-draw-context.cpp`, and the independently
+reviewed manifest fields in `config/match-units.toml`.
+
+The neighboring 10-byte draw-chain adapter and 6-byte storage-size getter
+retain their own strict acceptance units. Neither the larger 934-byte
+browser update nor the 439-byte browser destructor is thereby declared exact.

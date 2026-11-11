@@ -5543,3 +5543,65 @@ linkages = [
   { offset = 0x7B, type = "REL32", symbol = "_memset", target = 0x0046A720 },
   { offset = 0x87, type = "DIR32", symbol = "?g_SecondaryProgramBrowser@@3PAUSecondaryProgramBrowserView@@A", target = 0x004A8EC4 },
 ]
+
+# Complete 548-byte owner: case-local float[3] vectors retain native x87
+# initialization and the real AsciiFormatting/Append producer recovers private
+# ESI browser/ECX ASCII receiver convention. All 43 native fields have
+# independently reviewed symbol identities, literal bytes and PE addresses.
+[units.secondary-program-browser-ascii-draw]
+artifact_kind = "linked-pe"
+source = "src/SecondaryProgramBrowserDraw.cpp"
+inputs = ["src/SecondaryProgramBrowser.hpp", "src/AsciiFormatting.hpp", "src/AsciiLifecycle.hpp", "src/AsciiManager.hpp"]
+support_sources = ["src/AsciiFormatting.cpp", "src/AsciiAppend.cpp", "probes/secondary-program-browser-draw-context.cpp"]
+output_dir = "build/match-linked/SecondaryProgramBrowserAsciiDraw"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryProgramBrowserDrawProbe@4"
+functions = ["DrawSecondaryProgramBrowser"]
+symbol = "?DrawSecondaryProgramBrowser@@YGHPAUSecondaryProgramBrowserView@@@Z"
+target_address = 0x00438E70
+size = 548
+linkages = [
+  { offset = 0x007, type = "DIR32", symbol = "?g_AsciiManager@@3PAUAsciiManagerObject@@A", target = 0x004A8D58 },
+  { offset = 0x014, type = "DIR32", symbol = "??_C@_09EPACFKEJ@Spt?5Test?6?$AA@", target = 0x00495A04 },
+  { offset = 0x021, type = "REL32", symbol = "?AsciiManagerPrint@@YAXPAUAsciiManagerView@@PBMPBDZZ", target = 0x00401600 },
+  { offset = 0x044, type = "DIR32", symbol = "__real@42000000", target = 0x00497EF0 },
+  { offset = 0x04B, type = "DIR32", symbol = "?g_AsciiManager@@3PAUAsciiManagerObject@@A", target = 0x004A8D58 },
+  { offset = 0x055, type = "DIR32", symbol = "__real@41800000", target = 0x00497FF0 },
+  { offset = 0x074, type = "REL32", symbol = "__ftol2_sse", target = 0x004864E0 },
+  { offset = 0x080, type = "REL32", symbol = "__ftol2_sse", target = 0x004864E0 },
+  { offset = 0x086, type = "DIR32", symbol = "??_C@_0O@LKELLPF@Pos?5?$CF?43d?5?$CF?43d?$AA@", target = 0x00493CB4 },
+  { offset = 0x091, type = "REL32", symbol = "?AsciiManagerPrint@@YAXPAUAsciiManagerView@@PBMPBDZZ", target = 0x00401600 },
+  { offset = 0x096, type = "DIR32", symbol = "?g_AsciiManager@@3PAUAsciiManagerObject@@A", target = 0x004A8D58 },
+  { offset = 0x0B4, type = "DIR32", symbol = "?g_AsciiManager@@3PAUAsciiManagerObject@@A", target = 0x004A8D58 },
+  { offset = 0x0BA, type = "DIR32", symbol = "__real@42000000", target = 0x00497EF0 },
+  { offset = 0x0D4, type = "DIR32", symbol = "__real@41800000", target = 0x00497FF0 },
+  { offset = 0x0EA, type = "DIR32", symbol = "??_C@_0L@OKBLGMCB@Loading?5?$CFs?$AA@", target = 0x00493C68 },
+  { offset = 0x0F3, type = "REL32", symbol = "?AsciiManagerPrint@@YAXPAUAsciiManagerView@@PBMPBDZZ", target = 0x00401600 },
+  { offset = 0x0F8, type = "DIR32", symbol = "?g_AsciiManager@@3PAUAsciiManagerObject@@A", target = 0x004A8D58 },
+  { offset = 0x119, type = "DIR32", symbol = "__real@42280000", target = 0x00498104 },
+  { offset = 0x127, type = "DIR32", symbol = "__real@41800000", target = 0x00497FF0 },
+  { offset = 0x145, type = "DIR32", symbol = "?g_AsciiManager@@3PAUAsciiManagerObject@@A", target = 0x004A8D58 },
+  { offset = 0x14B, type = "DIR32", symbol = "??_C@_07NPEDNENG@File?5?$CFs?$AA@", target = 0x00493C74 },
+  { offset = 0x150, type = "REL32", symbol = "?AsciiManagerPrint@@YAXPAUAsciiManagerView@@PBMPBDZZ", target = 0x00401600 },
+  { offset = 0x15B, type = "DIR32", symbol = "?g_AsciiManager@@3PAUAsciiManagerObject@@A", target = 0x004A8D58 },
+  { offset = 0x160, type = "DIR32", symbol = "??_C@_0BA@DOIDIGMK@File?5not?5found?4?$AA@", target = 0x00493C7C },
+  { offset = 0x165, type = "REL32", symbol = "?AsciiManagerPrint@@YAXPAUAsciiManagerView@@PBMPBDZZ", target = 0x00401600 },
+  { offset = 0x174, type = "DIR32", symbol = "__real@41d00000", target = 0x00498100 },
+  { offset = 0x195, type = "DIR32", symbol = "?g_AsciiManager@@3PAUAsciiManagerObject@@A", target = 0x004A8D58 },
+  { offset = 0x19B, type = "DIR32", symbol = "??_C@_06DMKEJMOH@Ecl?5?$CFs?$AA@", target = 0x00493C8C },
+  { offset = 0x1A0, type = "REL32", symbol = "?AsciiManagerPrint@@YAXPAUAsciiManagerView@@PBMPBDZZ", target = 0x00401600 },
+  { offset = 0x1AB, type = "DIR32", symbol = "?g_AsciiManager@@3PAUAsciiManagerObject@@A", target = 0x004A8D58 },
+  { offset = 0x1B0, type = "DIR32", symbol = "??_C@_0N@OPJEEJJA@Ecl?5not?5load?$AA@", target = 0x00495A10 },
+  { offset = 0x1B5, type = "REL32", symbol = "?AsciiManagerPrint@@YAXPAUAsciiManagerView@@PBMPBDZZ", target = 0x00401600 },
+  { offset = 0x1BE, type = "DIR32", symbol = "__real@42100000", target = 0x004980FC },
+  { offset = 0x1C4, type = "DIR32", symbol = "?g_AsciiManager@@3PAUAsciiManagerObject@@A", target = 0x004A8D58 },
+  { offset = 0x1C9, type = "DIR32", symbol = "??_C@_04GMBKPCGK@Quit?$AA@", target = 0x00493C9C },
+  { offset = 0x1D6, type = "REL32", symbol = "?AsciiManagerPrint@@YAXPAUAsciiManagerView@@PBMPBDZZ", target = 0x00401600 },
+  { offset = 0x1DC, type = "DIR32", symbol = "__real@42000000", target = 0x00497EF0 },
+  { offset = 0x1E2, type = "DIR32", symbol = "?g_AsciiManager@@3PAUAsciiManagerObject@@A", target = 0x004A8D58 },
+  { offset = 0x1EE, type = "DIR32", symbol = "??_C@_01PPODPGHN@?$DO?$AA@", target = 0x00493CA4 },
+  { offset = 0x1F4, type = "DIR32", symbol = "__real@4024000000000000", target = 0x00497FC8 },
+  { offset = 0x1FA, type = "DIR32", symbol = "__real@4030000000000000", target = 0x00497EE0 },
+  { offset = 0x203, type = "REL32", symbol = "?AsciiManagerPrint@@YAXPAUAsciiManagerView@@PBMPBDZZ", target = 0x00401600 },
+  { offset = 0x209, type = "DIR32", symbol = "?g_AsciiManager@@3PAUAsciiManagerObject@@A", target = 0x004A8D58 },
+]

@@ -30,8 +30,10 @@ int __stdcall DrawSecondaryProgramBrowser(SecondaryProgramBrowserView *browser)
     switch (browser->state)
     {
     case 1:
-        position[0] = 42.0f;
-        position[1] = 16.0f;
+    {
+        // The target reinitializes a distinct local screen-space vector
+        // for each state, including Z even when it is already zero.
+        float position[3] = {42.0f, 16.0f, 0.0f};
         if (browser->fileCount)
             ShowFile(browser, position, "File %s");
         else
@@ -52,22 +54,25 @@ int __stdcall DrawSecondaryProgramBrowser(SecondaryProgramBrowserView *browser)
         AsciiManagerPrint(TextManager(), position, ">");
         TextManager()->color = 0xffffffff;
         break;
+    }
     case 2:
-        position[0] = 32.0f;
-        position[1] = 16.0f;
+    {
+        float position[3] = {32.0f, 16.0f, 0.0f};
         TextManager()->color = 0xffff4040;
         ShowFile(browser, position, "Loading %s");
         TextManager()->color = 0xffffffff;
         break;
+    }
     case 3:
-        position[0] = 32.0f;
-        position[1] = 16.0f;
+    {
+        float position[3] = {32.0f, 16.0f, 0.0f};
         TextManager()->color = 0xffa0a0a0;
         AsciiManagerPrint(TextManager(), position, "Pos %.3d %.3d",
             static_cast<int>(browser->displayOrigin),
             static_cast<int>(browser->displayScale));
         TextManager()->color = 0xffffffff;
         break;
+    }
     }
     return 1;
 }

@@ -484,3 +484,15 @@ original SEH entry and RET4 rather than producing a specialized ECX/RET.
 The real 16-call producer now yields448/439 bytes and118/116 instructions,
 still non-exact (233 non-address-field positional differences). See
 `SECONDARY_PROGRAM_BROWSER.md`.
+
+
+The previously open 548-byte ECL browser ASCII overlay at438E70 is now
+**strict full exact** with all130 native instructions and11 call sites. A
+fresh distinct local `float position[3]` in each case1/2/3 restores
+the target's x87 redundant XYZ initialization/stack lifetimes; earlier
+526/548 and 123/130 candidate was non-exact. The full primary-TU source
+passes independent pinned VC9 `/GL` cold-linked PE/MAP/PDB replay, with
+all43 fields verified: 11 calls, 12 AsciiManager globals, nine native
+string literals and 11 byte-exact float/double literals; zero differences.
+The 10-byte draw callback and 6-byte size getter retain separate exact units.
+See `SECONDARY_PROGRAM_BROWSER.md`.
