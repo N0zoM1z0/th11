@@ -335,7 +335,8 @@ A real 48-byte four-slot animation surface-copy producer at445460 calls the
 313-byte D3D9 texture blitter at454EC0 through a private EAX record/ECX
 renderer ABI. The slots are the existing renderer four40-byte prefix entries.
 After a managed-texture check and batch flush, the child acquires backbuffer
-and texture level0, copies source/destination RECT regions with filter2,
+and texture level0, **copies from backbuffer into texture surface** with
+source rectangle fields at command +8 and destination fields at +18 (filter2),
 marks the texture dirty after success, and releases both surfaces. The 313-byte
 native has113 instructions; reloading document/texture entries after each
 opaque COM call rather than keeping the texture pointer cached recovers a

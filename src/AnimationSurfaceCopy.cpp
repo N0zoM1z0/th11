@@ -3,10 +3,11 @@
 #include "AnimationTexture.hpp"
 #include "MainRuntime.hpp"
 
-// TH11 00454EC0..00454FF8: copy a document texture region into the back
-// buffer and mark the corresponding managed texture level dirty afterward.
+// TH11 00454EC0..00454FF8: capture a backbuffer region into the selected
+// animation texture, and mark that texture level dirty afterward.
 // The source mirrors native early return and COM release order, including
 // the absence of extra index, resource and rectangle-boundary checks.
+// The copy direction is backbuffer -> texture level 0 (then AddDirtyRect).
 void __stdcall CopyAnimationTextureSurface(RenderBatchView *renderer,
     const AnimationSurfaceCopyView *command)
 {
@@ -22,22 +23,25 @@ void __stdcall CopyAnimationTextureSurface(RenderBatchView *renderer,
         0, 0, D3DBACKBUFFER_TYPE_MONO, &backBuffer) != D3D_OK)
         return;
 
-    IDirect3DSurface9 *source;
-    if (slots->files[command->documentIndex]->textures[command->textureIndex].texture->GetSurfaceLevel(0, &source) != D3D_OK)
+    IDirect3DSurface9 *textureSurface;
+    if (slots->files[command->documentIndex]->textures[command->textureIndex].texture->GetSurfaceLevel(0, &textureSurface) != D3D_OK)
     {
         backBuffer->Release();
         return;
     }
 
-    RECT destination = {command->destinationX, command->destinationY,
-        command->destinationX + command->destinationWidth,
-        command->destinationY + command->destinationHeight};
-    RECT sourceRect = {command->sourceX, command->sourceY,
-        command->sourceX + command->sourceWidth,
-        command->sourceY + command->sourceHeight};
-    if (D3DXLoadSurfaceFromSurface(backBuffer, 0, &destination,
-        source, 0, &sourceRect, 2, 0) == D3D_OK)
+    struct { RECT sourceRect, destination; } rects;
+    rects.sourceRect.left = command->sourceX;
+    rects.sourceRect.top = command->sourceY;
+    rects.sourceRect.right = command->sourceX + command->sourceWidth;
+    rects.sourceRect.bottom = command->sourceY + command->sourceHeight;
+    rects.destination.left = command->destinationX;
+    rects.destination.top = command->destinationY;
+    rects.destination.right = command->destinationX + command->destinationWidth;
+    rects.destination.bottom = command->destinationY + command->destinationHeight;
+    if (D3DXLoadSurfaceFromSurface(textureSurface, 0, &rects.destination,
+        backBuffer, 0, &rects.sourceRect, 2, 0) == D3D_OK)
         slots->files[command->documentIndex]->textures[command->textureIndex].texture->AddDirtyRect(0);
-    source->Release();
+    textureSurface->Release();
     backBuffer->Release();
 }

@@ -13,18 +13,21 @@ reference to the scanner, and the scanner is the sole caller of the copy.
 
 The copy function receives the renderer in ECX and the 40-byte record in EAX
 under the original private LTCG convention. Its record begins with document
-and texture indices. The destination rectangle consists of x, y, width and
-height at record +8..+17; the source rectangle uses x, y, width and height at
-+18..+27. The native first checks the indexed document texture's COM pointer.
+and texture indices. The **backbuffer source rectangle** consists of x, y, width and
+height at record +8..+17; the **texture destination rectangle** uses x, y,
+width and height at +18..+27. The native first checks the indexed document texture's COM pointer.
 If absent it returns; otherwise it flushes the renderer and obtains
 backbuffer 0 by `IDirect3DDevice9::GetBackBuffer(0,0,MONO)`.
 
 If that call fails it returns. Otherwise it gets texture surface level 0,
 releasing the backbuffer and returning if that fails. On success the code
-builds two signed `RECT` values, and calls `D3DXLoadSurfaceFromSurface`
-with filter 2, color key 0 and null palettes. A successful load invokes
-the texture's `AddDirtyRect(NULL)` via vtable offset `+0x54`. It always
-releases source surface then backbuffer after the load. The target does not
+builds two signed `RECT` values and calls
+`D3DXLoadSurfaceFromSurface(textureSurface, 0, &destination, backBuffer,
+0, &sourceRect, 2, 0)`. **The source is the backbuffer and the destination
+is the texture level 0**, so this captures a backbuffer region into the
+texture rather than blitting a texture onto the backbuffer. A successful
+copy invokes the texture's `AddDirtyRect(NULL)` via vtable offset `+0x54`.
+It always releases texture surface then backbuffer after the load. The target does not
 add document-index bounds, rectangle clipping, source-null checks or extra
 HRESULT recovery. The maintained C++ preserves this flow and independent
 reloads after opaque D3D/COM calls, rather than keeping a texture pointer
@@ -48,8 +51,10 @@ with pinned VC9 in both normal COFF and `/GL` profiles. The real
 register contract. A first linked copy was **234 bytes**; removing a
 long-lived local texture cache and reloading the entry after COM calls
 restores **312 candidate bytes / 113 instructions**, compared with native
-**313 / 113**. Its main remaining differences are two separate `RECT` stack
-placements and the final indexed texture pointer reload. The compile-only
+**313 / 113**, after the backbuffer-to-texture argument and record-field
+direction were corrected. The current diagnostic has 55 non-address-field
+byte differences; the remaining major differences are local `RECT` stack
+placement and the final indexed texture pointer reload. The compile-only
 producer context is under `.analysis/animation-surface-copy-context-20261111.cpp`;
 linked artifacts and variant results are in
 `build/probe-ltcg/AnimationSurfaceCopy-*` and `.analysis/try-surface-copy-*`.

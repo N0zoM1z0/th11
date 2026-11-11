@@ -6,8 +6,8 @@
 struct AnimationSurfaceCopyView
 {
     int documentIndex, textureIndex;
-    int destinationX, destinationY, destinationWidth, destinationHeight;
     int sourceX, sourceY, sourceWidth, sourceHeight;
+    int destinationX, destinationY, destinationWidth, destinationHeight;
 };
 typedef char SurfaceCopyRecordSize[(sizeof(AnimationSurfaceCopyView) == 40) ? 1 : -1];
 
