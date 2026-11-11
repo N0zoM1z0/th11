@@ -35,8 +35,11 @@ Controller initialization owner42F8A0/1557 now has compiled full
 source in SecondaryPlayerInitialization.cpp: pinned normal COFF1492/40
 fields and narrow /GL1479/13 calls/2 returns versus native1557/13/2.
 Six direct support TUs yield1520/14 calls/3 returns, still non-exact.
-The child42F580/286 stays cold-linked exact. Next recover the
-constructor4301B0/152 and native private register allocation. See
+The child42F580/286 stays cold-linked exact. The constructor factory4301B0/152 now also has compiled source
+(ordinary COFF67, scoped /GL66, five calls/two returns) but the native
+SEH prologue is missing; its 272-byte storage constructor and 415-byte
+destructor are still open. Next recover their natural lifetime code and
+original private register allocation. See
 [SECONDARY_PLAYER_INITIALIZATION](SECONDARY_PLAYER_INITIALIZATION.md).
 
 

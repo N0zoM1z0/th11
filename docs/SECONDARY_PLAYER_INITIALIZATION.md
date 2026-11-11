@@ -40,3 +40,26 @@ Evidence: `.analysis/pause-next-big-20261111-review.txt`,
 Next useful work: reconstruct the 152-byte construction caller
 at `0x4301B0` and determine whether it restores native prologue and
 callee-specialized register ownership, without unrelated cold replay.
+
+## Real factory caller, 0x4301B0 (152 bytes)
+
+The reviewed source-visible caller at `0x4301B0..0x430247` has
+**49 instructions, five calls and two plain returns**. It allocates
+0x8D24 bytes, calls the separate constructed-storage owner at
+42F760, invokes the 1557-byte initialization function, and
+destroys/deallocates the player if initialization fails. The
+native exception prologue preserves the unwind state around this
+construction, and it has two known incoming calls.
+
+The maintained implementation is in `src/SecondaryPlayerFactory.cpp`.
+A fixed VC9 ordinary COFF build generates 67 bytes, and a narrow /GL
+link with the full initializer as another source TU yields 66 bytes,
+with the correct five-call/two-return shape. The **152-byte**
+native EH/unwind layout is still missing; the separate native 272-byte
+construction and 415-byte destructor owners are not reconstructed
+here. Making the factory the actual caller of the source-present
+initializer did not change the latter's earlier 1479-byte narrow
+/GL contribution. Neither function is exact. Targeted evidence:
+`.analysis/secondary-player-constructor-review-20261111.txt`,
+`.analysis/secondary-player-factory-coff-compare.json` and
+`.analysis/secondary-player-init-with-factory.log`.

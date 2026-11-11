@@ -521,3 +521,4 @@ IsSecondaryDialogueStateFlag2Set
 ResetSecondaryPlayerAnimationPairs
 ResetSecondaryPlayerControllerState
 InitializeSecondaryPlayerController
+CreateSecondaryPlayerController
