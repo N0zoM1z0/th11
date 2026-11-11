@@ -228,11 +228,17 @@ in state 3. The actual AsciiManager color is set for loading and position
 lines and restored to white. The arrow Y is category*10+16. The source uses
 the existing browser layout and `AsciiManagerPrint` rather than a mock draw.
 
-The scoped pinned VC9 `/GL` owner compiles to **504/548 bytes with all 11
-native calls** when the ASCII print function is an external dependency.
-Including `AsciiFormatting.cpp` and `AsciiAppend.cpp` in a different genuine
-support context changes optimization to **445/548 bytes and 10 calls**. Both
-are diagnostic contexts and non-exact; do not conflate their owners.
+The first pinned VC9 `/GL` source cached the ASCII singleton across all
+calls. This forced a competing long-lived register, and linking the real
+`AsciiFormatting.cpp`/`AsciiAppend.cpp` TUs then generated just 445 bytes
+and 10 calls (native 548/11). The original owner reloads the global pointer
+after opaque print calls. The maintained source now does so, restoring the
+native ESI browser receiver and the original complete opening x87 position
+setup. With actual ASCII support, the scoped result improves to **526/548
+bytes, 123/130 instructions and 11/11 native call sites**, reducing nonfield
+positional differences from 298 to 262. The narrow external-callee context
+separately builds 550/548 and 11 calls. Neither is exact; the two producer
+contexts remain distinct.
 The native `0x4390B0..0x4390B9` draw adapter is a separate 10-byte
 PUSH-ESI / MOV-ESI,ECX / CALL / POP-ESI / RET owner. Its maintained C++ in
 `SecondaryProgramBrowserCallbacks.cpp` currently generates a seven-byte
@@ -250,5 +256,7 @@ exact units** (getter, filename cleanup, loader callback, manager factory)
 passed affected-only cold replay, recorded in
 `.analysis/secondary-browser-display-affected-exact-20261111.log`. The
 complete drawing diagnostic lives at
-`.analysis/probe-secondary-browser-draw-20261111.py` and
-`build/probe-ltcg/SecondaryProgramBrowserDraw-*`.
+`.analysis/probe-secondary-browser-draw-20261111.py`,
+`.analysis/secondary-browser-draw-actual-ascii-20261111.log` and
+`build/probe-ltcg/SecondaryProgramBrowserDraw-*`. The exact six-byte getter
+was re-cold-replayed after the drawing-source change and remains 6/6.

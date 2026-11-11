@@ -428,3 +428,14 @@ that context to445 bytes/10 calls. Neither is exact. The distinct size getter
 at4390D0 returns0x5B94 and is **6/6 strict exact** with no fields. The
 header-dependent83-byte cleanup, 8-byte loader callback and77-byte manager
 factory all rechecked exact. See `SECONDARY_PROGRAM_BROWSER.md`.
+
+
+The 548-byte ECL ASCII draw owner at438E70 must reload g_AsciiManager
+after opaque AsciiManagerPrint calls. Retaining its pointer throughout the
+function causes VC9 /GL to keep it in ESI and use EDI for the browser, losing
+one of the native11 calls when real ASCII support is compiled. Removing the
+long-lived cache naturally recovers native browser-in-ESI, the complete x87
+opening position setup, and11/11 calls: the real-ASCII candidate improves
+from445/548 (10 calls,298 nonfield differences) to526/548 (11 calls,262
+nonfield differences). The related six-byte size getter remains strict exact.
+See `SECONDARY_PROGRAM_BROWSER.md`.
