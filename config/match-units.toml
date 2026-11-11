@@ -5462,3 +5462,21 @@ symbol = "?SecondaryProgramBrowserStorageSize@@YAIXZ"
 target_address = 0x004390D0
 size = 6
 linkages = []
+
+# Missed by Ghidra's initial inventory: one complete native 5-byte JMP owner
+# registered from the real browser update-chain initializer at 0x4386A2.
+[units.secondary-program-browser-update-callback]
+artifact_kind = "linked-pe"
+source = "src/SecondaryProgramBrowserCallbacks.cpp"
+inputs = ["src/SecondaryProgramBrowser.hpp", "src/SecondaryGameplay.hpp"]
+support_sources = ["src/SecondaryProgramBrowser.cpp", "probes/secondary-browser-callbacks-probe.cpp"]
+output_dir = "build/match-linked/SecondaryProgramBrowserUpdateCallback"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryProgramBrowserCallbacksProbe@8"
+functions = ["SecondaryProgramBrowserUpdateCallback"]
+symbol = "?SecondaryProgramBrowserUpdateCallback@@YIHPAUSecondaryProgramBrowserView@@@Z"
+target_address = 0x004390A0
+size = 5
+linkages = [
+  { offset = 1, type = "REL32", symbol = "?UpdateSecondaryProgramBrowser@@YIHPAUSecondaryProgramBrowserView@@@Z", target = 0x00438AC0 },
+]

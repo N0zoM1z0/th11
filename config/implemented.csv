@@ -571,3 +571,4 @@ CreateSecondaryManager
 DrawSecondaryProgramBrowser
 SecondaryProgramBrowserDrawCallback
 SecondaryProgramBrowserStorageSize
+SecondaryProgramBrowserUpdateCallback

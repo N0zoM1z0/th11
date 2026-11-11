@@ -615,6 +615,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00438910,unknown,SecondaryScriptVm,indeterminate,unknown,secondary-program-origin-2026-10-29
 0x00438AC0,unknown,SecondaryScriptVm,indeterminate,unknown,secondary-program-origin-2026-10-29
 0x00438E70,unknown,SecondaryScriptVm,indeterminate,unknown,secondary-browser-ascii-display-origin-20261111
+0x004390A0,unknown,SecondaryScriptVm,indeterminate,unknown,secondary-browser-update-callback-origin-20261111
 0x004390B0,unknown,SecondaryScriptVm,indeterminate,unknown,secondary-browser-ascii-display-origin-20261111
 0x004390D0,unknown,SecondaryScriptVm,indeterminate,unknown,secondary-browser-ascii-display-origin-20261111
 0x004390E0,unknown,ConfigurationMenu,indeterminate,unknown,configuration-audio-menu-origin-2026-11-06

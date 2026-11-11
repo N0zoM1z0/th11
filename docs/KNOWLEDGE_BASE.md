@@ -439,3 +439,11 @@ opening position setup, and11/11 calls: the real-ASCII candidate improves
 from445/548 (10 calls,298 nonfield differences) to526/548 (11 calls,262
 nonfield differences). The related six-byte size getter remains strict exact.
 See `SECONDARY_PROGRAM_BROWSER.md`.
+
+Another ECL browser owner missed by initial Ghidra function discovery:
+4390A0..4390A4, a complete five-byte update-chain tail JMP to438AC0.
+The real registration stores its address at4386A2. With the maintained
+934-byte update source visible to VC9 /GL, the natural five-byte forwarding
+body is strict linked-PE exact with the sole REL32 at+1; the neighboring
+six-byte size getter independently rechecks exact. See
+`SECONDARY_PROGRAM_BROWSER.md`.

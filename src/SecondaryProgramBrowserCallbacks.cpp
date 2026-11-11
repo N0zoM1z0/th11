@@ -7,6 +7,13 @@ int __fastcall SecondaryProgramBrowserDrawCallback(SecondaryProgramBrowserView *
     return DrawSecondaryProgramBrowser(browser);
 }
 
+// Native 004390A0: the registered update-chain entry is a tail jump to the
+// complete 934-byte ECL browser state machine, preserving its ECX receiver.
+int __fastcall SecondaryProgramBrowserUpdateCallback(SecondaryProgramBrowserView *browser)
+{
+    return UpdateSecondaryProgramBrowser(browser);
+}
+
 // Native 004390D0: returns the observed size of the surrounding debug object.
 // The object's nominal type and constructor remain independent questions.
 unsigned int __cdecl SecondaryProgramBrowserStorageSize()

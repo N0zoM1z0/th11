@@ -260,3 +260,22 @@ complete drawing diagnostic lives at
 `.analysis/secondary-browser-draw-actual-ascii-20261111.log` and
 `build/probe-ltcg/SecondaryProgramBrowserDraw-*`. The exact six-byte getter
 was re-cold-replayed after the drawing-source change and remains 6/6.
+
+## Recovered 5-byte update-chain callback (2026-11-11)
+
+Independent native PE reference review located the real update-chain
+registration at `0x4386A2`: it stores the entry `0x4390A0`. That complete
+five-byte owner is a single JMP REL32 to the existing 934-byte
+`UpdateSecondaryProgramBrowser` at `0x438AC0`. Ghidra's initial function
+inventory omitted the entry. It is isolated by CC padding from the overlay
+at `0x438E70..0x439093` and the draw-chain callback at `0x4390B0`.
+
+`SecondaryProgramBrowserUpdateCallback` in
+`SecondaryProgramBrowserCallbacks.cpp` forwards the ordinary browser context
+to the real update source. Under the pinned VC9 `/GL` producer, it naturally
+becomes the complete **5/5 byte** tail JMP, with one native REL32 at `+1`.
+Strict cold PE/MAP/PDB acceptance reports **zero byte differences**. The
+same affected-only run rechecked the six-byte storage-size getter, also
+exact; see `.analysis/secondary-browser-update-callback-exact-20261111.log`.
+The separate ten-byte draw adapter still needs its distinct ESI receiver
+in the genuine registration context and is not yet exact.
