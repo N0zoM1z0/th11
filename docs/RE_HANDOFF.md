@@ -50,8 +50,11 @@ src/ReplayCompressionSearch.cpp; normal COFF416/19 fields/270 of340
 comparable bytes, nonexact. Continue narrowing the native-vs-VC9 codegen on compressor main
 4423A0, then test a focused linked /GL context with the non-exact
 node helpers in src/ReplayCompressionTreeOps.cpp (owners79/80/134/49).
-No unrelated cold cohort needed. The other native child-finder
-caller42E6B0 retains an unreviewed3179-byte default. Do not substitute unrelated
+A focused five-TU VC9 /GL link gives encoder760/native795,
+tree matcher414/native416, replacement134/native134 (nonexact), deletion
+87/native79 and reset52/native52. See REPLAY_WRITING.md for field gaps;
+this is diagnostic, not exact. No unrelated cold cohort needed.
+The other native child-finder caller42E6B0 retains an unreviewed3179-byte default. Do not substitute unrelated
 HUD/gameplay/ActorInstructions sources.
 
 ## Checks

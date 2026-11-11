@@ -51,7 +51,9 @@ but neither is exact. The adjacent compression dictionary reset4428D0/52 is
 now full normal-COFF exact with four reviewed fields. The adjacent
 416-byte tree matcher442910 has compiled source (same-length but nonexact
 normal-COFF candidate); its four node splice/delete/replace/predecessor
-helpers now also have compiled but nonexact source. See
+helpers now also have compiled but nonexact source. Focused five-TU
+VC9 /GL gives encoder760/795 and tree matcher414/416; same-length
+node replacement still differs in 65 unmasked bytes. See
 [REPLAY_WRITING](REPLAY_WRITING.md).
 Existing ActorInstructions/HUD/gameplay sources do not implement these owners.
 

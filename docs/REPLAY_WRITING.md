@@ -165,3 +165,31 @@ The exact source of the tree reset, the 416-byte match finder and the
 four tree-edit helpers are maintained separately. Native optimized register
 ABIs and /GL ownership remain open, so normal-COFF mismatch is expected;
 these observations give no byte-exact credit.
+
+## Focused VC9 /GL linked diagnostic (2026-11-11)
+
+A cold, **scope-limited** five-translation-unit link now compiles the
+maintained encoder, tree search, four tree operations, dictionary reset and
+`probes/replay-compression-context.cpp`. The probe is a non-runnable
+entry wrapper; any unresolved data are bound to diagnostic address anchors.
+The linked PE, MAP and PDB identity was checked for each public owner.
+This is a diagnostic link, **not** a claim about the original production
+translation-unit partition or exactness.
+
+| Function | Original full extent | Linked PDB contribution | Result |
+| --- | ---: | ---: | --- |
+| CompressReplayData | 795 | 760 | Non-exact |
+| FindReplayCompressionMatch | 416 | 414 | Non-exact |
+| ReplaceReplayCompressionNode | 134 | 134 | Non-exact (65 of 78 non-field bytes differ) |
+| DeleteReplayCompressionNode | 79 | 87 | Non-exact |
+| ResetReplayCompressionTree | 52 | 52 | All 36 non-field bytes equal; independent canonical normal-COFF proof remains authoritative |
+
+The dictionary reset has four complete linked code fields and matches
+all unmasked bytes; no additional exact credit is claimed in this
+support-object link context. The source still differs from native in
+private register allocation and some call/return placement. Improving
+the full encoder caller and the tree search's private input register
+choices should be done with natural source and only this affected link
+context. Never use displacement masking as an exactness shortcut.
+Local recovery is under `build/probe-ltcg/ReplayCompressionContext`
+and `.analysis/replay-compression-linked-build.log`.
