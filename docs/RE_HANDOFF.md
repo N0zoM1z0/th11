@@ -62,9 +62,11 @@ this is diagnostic, not exact. No unrelated cold cohort needed.
 The other child-finder caller42E6B0 now has a **reviewed complete3208-byte**
 owner with the seven-entry jump table and VC9-compiled source in
 src/PauseGameOverMenu.cpp. Branch-local selection reset in state21 improves
-normal COFF3068->3116 and a focused /GL link with MeshEffects.cpp gives
-3180/native3208 bytes,88/88 calls and14/14 returns (seven table cells).
-It remains non-exact; next align factory result and name-editor layouts. See
+normal COFF3068->3116; the signed 13-column keyboard quotient form
+eliminates four synthetic IDIVs. A focused /GL link with MeshEffects.cpp
+now gives **3228/native3208** bytes, 10/10 IMUL, zero IDIV,
+88/88 calls,14/14 returns and the seven table cells. Still non-exact;
+align factory-result lifetime and state25 record-name layout next. See
 [PAUSE_GAME_OVER_MENU](PAUSE_GAME_OVER_MENU.md). Neighboring 42F340/350
 14-byte selection comparisons now have natural C++ source, 12/14 bytes
 each and no confirmed xrefs. Overlay queue42F400/103 now has a strict cold linked-PE **103/103

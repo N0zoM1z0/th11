@@ -96,8 +96,18 @@ the source change and 3060 in the earlier six-TU context. It retains
 A wider `/GL` context adding timer and selection helpers instead reduced
 the function and removed call/return sites; it was not adopted.
 
-The remaining **28-byte size difference** still requires full code/data
-field reconciliation; size proximity does not establish exactness.
+A second change makes the two 13-column keyboard navigation tests
+compute the signed remainder as `current - (current / 13) * 13`.
+This is equivalent to `current % 13`, but VC9 lowers the direct modulo
+tests to IDIV. The quotient form restores the original multiply sequence:
+native uses **10 IMUL and zero IDIV**, and the focused linked candidate
+now also uses **10 IMUL and zero IDIV** (rather than 2 IMUL and four IDIV).
+The full linked owner becomes **3228/3208 bytes**, with **88 calls,
+14 RET4 and seven table entries** still intact. The updated normal-COFF
+body is 3172 bytes with 154 relocation fields.
+
+The remaining **20-byte size difference** still requires complete code and
+data-field reconciliation; size proximity is not exactness.
 Local diagnostics: `.analysis/gameover-state21-source-linked.log`,
 `.analysis/gameover-main-after-branches-coff-compare.json`, and
 `build/probe-ltcg/GameOverSoundOnly/`. Next focus: case 21's private

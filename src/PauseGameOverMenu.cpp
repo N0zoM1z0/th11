@@ -38,9 +38,19 @@ __forceinline void Keyboard(SecondaryDebugSelectionView *selection)
     if ((g_InputState.pressed & 0x20) || (g_InputState.repeat & 0x20))
         MoveSecondaryDebugSelection(selection, 13);
     if ((g_InputState.pressed & 0x40) || (g_InputState.repeat & 0x40))
-        MoveSecondaryDebugSelection(selection, selection->current % 13 == 0 ? 12 : -1);
+    {
+        int current = selection->current;
+        // Keep VC9's native constant-multiply quotient codegen, not IDIV.
+        int remainder = current - (current / 13) * 13;
+        MoveSecondaryDebugSelection(selection, remainder == 0 ? 12 : -1);
+    }
     if ((g_InputState.pressed & 0x80) || (g_InputState.repeat & 0x80))
-        MoveSecondaryDebugSelection(selection, selection->current % 13 == 12 ? -12 : 1);
+    {
+        int current = selection->current;
+        // Keep VC9's native constant-multiply quotient codegen, not IDIV.
+        int remainder = current - (current / 13) * 13;
+        MoveSecondaryDebugSelection(selection, remainder == 12 ? -12 : 1);
+    }
     if (selection->previous != selection->current) QueueMeshEffectSound(12);
 }
 __forceinline void SignalChoice(PauseMenuView *self)
