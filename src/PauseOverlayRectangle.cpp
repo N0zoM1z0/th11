@@ -7,24 +7,23 @@ int __stdcall QueuePauseOverlayRectangle(RenderBatchView *renderer,
 {
     PauseOverlayRectangleSlot *slots =
         reinterpret_cast<PauseOverlayRectangleSlot *>(renderer);
-    for (unsigned int i = 0; i < 4; ++i)
-    {
-        PauseOverlayRectangleSlot &slot = slots[i];
-        if (slot.texture < 0)
-        {
-            slot.texture = texture;
-            slot.textureIndex = textureIndex;
-            slot.minX = 0x20;
-            slot.minY = 0x10;
-            slot.maxX = 0x180;
-            slot.maxY = 0x1c0;
-            slot.x = x;
-            slot.y = y;
-            slot.width = width;
-            slot.height = height;
-            return 0;
-        }
-    }
+    unsigned int index = 0;
+    PauseOverlayRectangleSlot *cursor = slots;
+    for (; index < 4; ++index, ++cursor)
+        if (cursor->texture < 0) goto insert;
+    return 0;
+insert:
+    PauseOverlayRectangleSlot *slot = slots + index;
+    slot->texture = texture;
+    slot->textureIndex = textureIndex;
+    slot->minX = 0x20;
+    slot->minY = 0x10;
+    slot->maxX = 0x180;
+    slot->maxY = 0x1c0;
+    slot->x = x;
+    slot->y = y;
+    slot->width = width;
+    slot->height = height;
     return 0;
 }
 

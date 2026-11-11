@@ -65,8 +65,10 @@ src/PauseGameOverMenu.cpp. Focused six-TU /GL generates3060/native3208
 bytes,88/88 calls and14/14 returns; it remains non-exact. See
 [PAUSE_GAME_OVER_MENU](PAUSE_GAME_OVER_MENU.md). Neighboring 42F340/350
 14-byte selection comparisons now have natural C++ source, 12/14 bytes
-each and no confirmed xrefs. Overlay queue42F400/103 and VM capture
-42F480/101 also have compiled source, nonexact. See
+each and no confirmed xrefs. Overlay queue42F400/103 now has a strict cold linked-PE **103/103
+exact** unit (no relocation fields, full PE/MAP/PDB receipt). Adjacent
+VM capture42F480/101 has corrected sprite height/width parameter order
+but remains non-exact (linked100). See
 [PAUSE_OVERLAY_RECTANGLES](PAUSE_OVERLAY_RECTANGLES.md). Do not rebuild
 unrelated gameplay or canonical units.
 

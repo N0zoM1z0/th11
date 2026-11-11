@@ -4685,3 +4685,19 @@ linkages = [
   { offset = 16, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8, addend = 8 },
   { offset = 40, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8, addend = 8 },
 ]
+
+# VC9 /GL private EDX renderer naturally emerges from the two real kinds of
+# source caller; the complete 103-byte renderer slot owner has zero fields.
+[units.pause-overlay-queue-rectangle]
+artifact_kind = "linked-pe"
+source = "src/PauseOverlayRectangle.cpp"
+inputs = ["src/PauseOverlayRectangle.hpp"]
+support_sources = ["probes/pause-overlay-context.cpp"]
+output_dir = "build/match-linked/PauseOverlayQueueRectangle"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "PauseOverlayProbe@4"
+functions = ["QueuePauseOverlayRectangle"]
+symbol = "?QueuePauseOverlayRectangle@@YGHPAURenderBatchView@@HHHHHH@Z"
+target_address = 0x0042F400
+size = 103
+linkages = []

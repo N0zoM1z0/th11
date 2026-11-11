@@ -44,9 +44,10 @@ reviewed3208-byte owner including a seven-entry switch table, and VC9-compiled
 state20..26 source. Targeted linked candidate3060/native3208 has88/88 calls
 and14/14 returns; still nonexact. See
 [PAUSE_GAME_OVER_MENU](PAUSE_GAME_OVER_MENU.md).
-Two formerly unclassified native overlay helpers at 42F400/103 and
-42F480/101 have compiled C++ source for four 40-byte rectangle slots and
-VM float-coordinate conversion, nonexact. The neighboring 42F340/350
+The native overlay queue42F400/103 now has a cold linked-PE **exact**
+primary-TU proof with all103 bytes equal and zero fields. Its caller42F480/101
+also has compiled C++ source but remains **non-exact**; the width/height
+argument order was corrected using the established sprite layout. The neighboring 42F340/350
 14-byte comparison candidates are 12/14 with ordinary C++ thiscall
 source and unproved incoming references. See
 [PAUSE_OVERLAY_RECTANGLES](PAUSE_OVERLAY_RECTANGLES.md) and
