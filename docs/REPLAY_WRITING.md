@@ -28,7 +28,13 @@ callers, no foreign interior reference and following CC padding.
 The writer calls the source-open compressor at `4423A0` (795
 bytes), the source-present but non-exact `GatherXorBlocks` at
 `4582E0`, and the exact `OpenSharedFileForWrite` at
-`4587A0`. The unresolved compressor is declared as a dependency,
+`4587A0`. The compressor dictionary-reset leaf at `4428D0` now reproduces all
+52 native bytes including four exact field bindings via a cold pinned VC9
+normal-COFF proof (unit `replay-compression-tree-reset`). Its 8-KiB
+window and 8193 three-word tree nodes occupy adjacent mapped storage;
+a three-byte compiler alignment LEA remains in the proven extent.
+The original source/TU owner is not established by this COFF match.
+The unresolved main compressor is declared as a dependency,
 not supplied as a fabricated implementation.
 
 ## Recovered behavior and layout
@@ -70,8 +76,8 @@ diagnostics are not exact:
 
 Masked similarity is diagnostic only. Address fields require
 independent binding before exact credit. A linked /GL context has
-not yet been built for these owners. Next: reconstruct compressor
-ownership and resolve caller-specific stream state, then compare
+not yet been built for these owners. Next: reconstruct the remaining compressor loop/tree helpers
+and resolve caller-specific stream state, then compare
 the affected writer context without replaying the unrelated cohort.
 Private recovery evidence is in `.analysis/replay-writer-*`
 and `.analysis/replay-deps-*`.

@@ -505,3 +505,4 @@ ShowPauseMenuAnimationTree
 CreateDefaultSecondaryDrawAnimationVmId
 WritePauseMenuReplay
 AppendReplayWriteSegment
+ResetReplayCompressionTree

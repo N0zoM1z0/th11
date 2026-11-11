@@ -4645,3 +4645,22 @@ linkages = [
   { offset = 3708, type = "REL32", symbol = "?FindAnimationVmById@@YGPAUAnimationVmView@@PAURenderBatchView@@UAnimationVmId@@@Z", target = 0x4561e0, addend = 0x0 },
   { offset = 3734, type = "REL32", symbol = "?FindAnimationVmById@@YGPAUAnimationVmView@@PAURenderBatchView@@UAnimationVmId@@@Z", target = 0x4561e0, addend = 0x0 },
 ]
+
+# Complete 52-byte VC9 normal-COFF reconstruction; two distinct data
+# references identify the dictionary/tree end and the backing window.
+[units.replay-compression-tree-reset]
+artifact_kind = "coff"
+source = "src/ReplayCompressionTree.cpp"
+inputs = []
+object = "build/match/ReplayCompressionTree.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["ResetReplayCompressionTree"]
+symbol = "?ResetReplayCompressionTree@@YAXXZ"
+target_address = 0x004428D0
+size = 52
+relocations = [
+  { offset = 10, type = "DIR32", symbol = "?g_ReplayCompressionWindow@@3PAEA", target = 0x004C0EE8 },
+  { offset = 15, type = "REL32", symbol = "_memset", target = 0x0046A720 },
+  { offset = 23, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8 },
+  { offset = 44, type = "DIR32", symbol = "?g_ReplayCompressionWindow@@3PAEA", target = 0x004C0EE8 },
+]
