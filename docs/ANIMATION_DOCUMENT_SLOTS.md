@@ -137,8 +137,8 @@ The proof unit is `animation-document-slot-update` in
 `.analysis/animation-document-slot-update-strict-20261112.log`.
 The exact dependent 811-byte decoder and 51-byte indexed release also
 compile with **zero differences** under the same diagnostic producer
-(`.analysis/probe-slot-real-decoder-20261111.py`). The separate 212-byte
-`AdvanceAnimationDocument` now compiles to **211/212 bytes** with genuine
-decoder support; that callee remains **non-exact**, despite the scanner's
-strict acceptance. Historical one-byte ABI diagnostic above is superseded.
+(`.analysis/probe-slot-real-decoder-20261111.py`). The separate 212-byte `AdvanceAnimationDocument` was initially **211/212**
+under that producer. After recovering its integer decoded-state, ordering
+and nonvolatile continuation comparison, the complete callee also passed
+**212/212 strict exact** (see `ANIMATION_CHUNKS.md`). Historical one-byte ABI diagnostic above is superseded.
 No full cold replay was run.

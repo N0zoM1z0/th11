@@ -36,8 +36,10 @@ AnimationDocumentView *__stdcall AdvanceAnimationDocument(AnimationDocumentView 
 {
     TraceAnimationLoad(g_AnimationPostloadTraceFormat, file->index, file->busy);
     AnimationChunkHeaderView *chunk = file->data;
-    int spriteIndex = 0, scriptIndex = 0, textureIndex = 0, index = 0;
-    bool decoded = false;
+    // The native owner allocates the scan index before the prefix counters
+    // and keeps the decoded-state flag as a 32-bit integer, not a byte.
+    int index = 0, spriteIndex = 0, scriptIndex = 0, textureIndex = 0;
+    int decoded = 0;
     for (;;)
     {
         if (index == file->busy - 1)
@@ -49,8 +51,8 @@ AnimationDocumentView *__stdcall AdvanceAnimationDocument(AnimationDocumentView 
             }
             decoded = true;
         }
-        scriptIndex += chunk->scriptCount;
         spriteIndex += chunk->spriteCount;
+        scriptIndex += chunk->scriptCount;
         ++textureIndex;
         if (!chunk->nextOffset)
         {
@@ -60,7 +62,10 @@ AnimationDocumentView *__stdcall AdvanceAnimationDocument(AnimationDocumentView 
         ++index;
         chunk = reinterpret_cast<AnimationChunkHeaderView *>(
             reinterpret_cast<unsigned char *>(chunk) + chunk->nextOffset);
-        if (index == file->busy || decoded)
+        // This native continuation path uses one ordinary memory compare;
+        // unlike asynchronous status observers it does not force a volatile
+        // load into EAX before the indexed EDI call convention.
+        if (index == *const_cast<int *>(&file->busy) || decoded)
         {
             ++file->busy;
             return file;

@@ -532,3 +532,15 @@ linked alongside the scanner and `AdvanceAnimationDocument`. All135 bytes,
 fields now match, independently cold accepted. This proves the non-exact
 212-byte advance callee's private EDI input without asserting that callee
 is exact. See `ANIMATION_DOCUMENT_SLOTS.md`.
+
+
+`AdvanceAnimationDocument` at4544C0 is now **212/212 strict exact** under
+real 811-byte decoder + 135-byte exact document slot scanner production.
+Its original EDI document receiver, five argument decoder call, first four
+DWORD stack locals, 32-bit decoded flag, sprite/script prefix order and
+non-volatile direct CMP of busy+124 restore all74 instructions. Three native
+DIR32/REL32 fields are independently reviewed and the full primary-TU VC9
+/GL PE/MAP/PDB cold replay reports zero differing bytes. The exact 135-byte
+scanner, 811-byte decoder and51-byte slot release remain compatible in the
+same linked diagnostic context. `LoadAnimationChunkSource` remains nonexact.
+See `ANIMATION_CHUNKS.md` and `ANIMATION_DOCUMENT_SLOTS.md`.

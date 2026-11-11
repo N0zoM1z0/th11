@@ -8,7 +8,7 @@ postloading. The actual texture/sprite/script decoder is 0x004545A0.
 | Function | Complete native extent | Candidate bytes | State |
 | --- | --- | ---: | --- |
 | LoadAnimationChunkSource | 0x004543E0..0x004544BC, 221 bytes | 221 (producer context) | source, non-exact, two SIB code bytes differ |
-| AdvanceAnimationDocument | 0x004544C0..0x00454593, 212 bytes | 211 | source, non-exact |
+| AdvanceAnimationDocument | 0x004544C0..0x00454593, 212 bytes | 212 | **canonical linked-PE exact, 3 fields** |
 | DecodeAnimationChunk | 0x004545A0..0x004548CA, 811 bytes | 811 | **canonical linked-PE exact, 15 bindings** |
 | StoreAnimationSprite | 0x00454B10..0x00454BA4, 149 bytes | 149 | canonical linked-PE exact |
 
@@ -177,8 +177,8 @@ The separately accepted 149-byte sprite store remains an independent
 strict exact owner.
 
 This does not establish original C++ nominal classes or the exact
-commercial translation-unit partition. The 212-byte advance owner
-and file-source loader remain non-exact, and the focused image is a
+commercial translation-unit partition. The 212-byte advance owner later became strict exact (see below); the
+file-source loader remains non-exact, and the focused image is a
 non-runnable diagnostic, not a reconstructed full executable.
 Evidence is under `.analysis/decode-animation-chunk-strict-*.json`,
 `.analysis/decode-animation-chunk-strict-cold-build.log` and
@@ -198,7 +198,7 @@ Private receipts:
 `.analysis/create-animation-*-decoder-exact-proof.json` and
 `.analysis/store-animation-sprite-final-boss-proof.json`.
 
-The remaining 212-byte `AdvanceAnimationDocument` was also exercised
+Historical pre-exact diagnostic: the remaining 212-byte `AdvanceAnimationDocument` was also exercised
 in its sole native scan caller context. Changing its decoded-state
 `bool` to a 32-bit integer produced a **215-byte** private /GL
 contribution instead of the previous 212, and did not change the
@@ -243,3 +243,51 @@ The linked producer context also changes the decoder to 827 bytes,
 so it is **not** substituted for the already cold-attested independent
 811/811 exact `decode-animation-chunk` unit. The production TU
 partition remains unknown.
+
+
+## Exact 212-byte advance boss under actual decoder producer (2026-11-12)
+
+The previously source-only `AdvanceAnimationDocument` at `0x4544C0` is
+now **canonical strict exact: all 212 bytes, 74 instructions and two calls**.
+The native function receives the document in EDI, traces its one-based
+postload cursor, scans the chunk headers, decodes one chunk, and either
+advances the cursor or returns on completion/failure. It has three return
+paths and no embedded data or foreign instruction boundaries.
+
+The 135-byte document-slot scanner's real `AdvanceAnimationDocument` call
+and the complete **811-byte exact** decoder producer were both essential
+for this code generation. The earlier limited `/GL` link inlined a private
+three-stack-argument decoder and passed the file in EAX; the real
+decoder/texture/sprite/transparent-pixel family requires all five native
+arguments and the correct private EDI receiver, yielding the native
+stack layout.
+
+Three additional natural C++ changes restore the remaining instructions:
+
+- Initialize `index` before the three prefix counters, so VC9 allocates the
+  first four local DWORDs in the original order; use a 32-bit `int decoded`
+  instead of a single-byte `bool`, preserving the original complete status
+  write and loop test.
+- Update `spriteIndex` from `spriteCount` before updating `scriptIndex`
+  from `scriptCount`, restoring the original byte-by-byte register schedule.
+- Use one ordinary read of physical `file->busy` in the final index compare
+  (via `const_cast<int *>(&file->busy)`), rather than forcing an additional
+  volatile EAX load. The native uses a direct `CMP ECX,[EDI+0x124]`, so this
+  is an observed codegen distinction, not an inserted instruction.
+
+The strict `advance-animation-document` unit produces a unique public
+primary-TU PE/MAP/PDB owner and exhaustively binds three native fields:
+DIR32 `+0x16` to `g_AnimationPostloadTraceFormat` (`0x4975F4`), REL32
+`+0x1B` to `TraceAnimationLoad` (`0x456AD0`), and REL32 `+0x59` to the
+original decoder `DecodeAnimationChunk` (`0x4545A0`). The full cold
+replay returns **zero differing code bytes**, with current source, pinned
+VC9 and real producer receipts. Evidence:
+`.analysis/advance-animation-document-strict-20261112.log` and
+`config/match-units.toml`.
+
+The linked 135-byte slot scan, 811-byte decoder and 51-byte slot release
+also reproduce every code byte in this same genuine diagnostic family.
+The neighboring external source loader `LoadAnimationChunkSource`
+(`0x4543E0`, 221 bytes) remains non-exact with two known native SIB
+selector bytes differing under its *different* real loader-producer
+context. Do not conflate those independent contexts or replay full cohort.
