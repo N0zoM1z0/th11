@@ -202,3 +202,12 @@ The initializer42F8A0/1557 also has a source-level data-flow correction:
 the second collision extent reads table4A7AB0, not focus table4A7AC0.
 The large initializer and storage constructor remain non-exact;
 see [SECONDARY_PLAYER_INITIALIZATION](SECONDARY_PLAYER_INITIALIZATION.md).
+
+
+The TH11 player allocation factory4301B0/152 now has a natural C++
+RAII source whose 0x8D24-byte typed storage restores VC9 exception
+handling: normal COFF150, focused initializer /GL149, and
+initializer+storage lifecycle /GL **152/native152** with five calls
+and two returns. It remains **non-exact** (121 raw byte differences
+and distinct optimized helper ABIs); see
+[SECONDARY_PLAYER_INITIALIZATION](SECONDARY_PLAYER_INITIALIZATION.md).

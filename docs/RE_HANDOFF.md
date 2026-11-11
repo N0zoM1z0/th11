@@ -43,14 +43,18 @@ Controller initialization owner42F8A0/1557 now has compiled full
 source in SecondaryPlayerInitialization.cpp: pinned normal COFF1492/40
 fields and narrow /GL1479/13 calls/2 returns versus native1557/13/2.
 Six direct support TUs yield1520/14 calls/3 returns, still non-exact.
-The child42F580/286 stays cold-linked exact. The constructor factory4301B0/152 now also has compiled source
-(ordinary COFF67, scoped /GL66, five calls/two returns) but the native
-SEH prologue is missing; both lifecycle dependencies also have compiled source in
+The child42F580/286 stays cold-linked exact. The constructor factory4301B0/152 now uses real C++ RAII,
+restoring the native VC9 SEH frame: normal COFF150 (previous67), scoped
+initializer-only /GL149, lifecycle+initializer /GL152/native152 with
+5/5 calls and 2/2 returns. **Still non-exact**, with 121 raw bytes
+different and private call ABI/stack differences. Both lifecycle
+dependencies also have compiled source in
 SecondaryPlayerStorageLifecycle.cpp. Constructor42F760/272 is
 normal COFF255/scoped /GL236, destructor430010/415 normal COFF371/
-/GL357, both non-exact. Continue EH/lifetime ABI recovery, without
-unrelated cold replay. Next recover their natural lifetime code and
-original private register allocation. See
+/GL357, both non-exact. Continue EH/lifetime register allocation recovery without unrelated
+cold replay. C++ placement-array trials for the identity constructors
+regressed to /GL215/native272 after dead-code elimination and were
+not adopted. See
 [SECONDARY_PLAYER_INITIALIZATION](SECONDARY_PLAYER_INITIALIZATION.md).
 
 

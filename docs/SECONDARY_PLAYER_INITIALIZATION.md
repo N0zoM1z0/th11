@@ -51,19 +51,36 @@ destroys/deallocates the player if initialization fails. The
 native exception prologue preserves the unwind state around this
 construction, and it has two known incoming calls.
 
-The maintained implementation is in `src/SecondaryPlayerFactory.cpp`.
-A fixed VC9 ordinary COFF build generates 67 bytes, and a narrow /GL
-link with the full initializer as another source TU yields 66 bytes,
-with the correct five-call/two-return shape. The **152-byte**
-native EH/unwind layout is still missing; the separate native 272-byte
-construction and 415-byte destructor owners are not reconstructed
-here. Making the factory the actual caller of the source-present
-initializer did not change the latter's earlier 1479-byte narrow
-/GL contribution. Neither function is exact. Targeted evidence:
-`.analysis/secondary-player-constructor-review-20261111.txt`,
-`.analysis/secondary-player-factory-coff-compare.json` and
-`.analysis/secondary-player-init-with-factory.log`.
+The maintained implementation in `src/SecondaryPlayerFactory.cpp` now
+constructs a genuine RAII storage object with a 0x8D24-byte physical
+buffer, whose constructor invokes the 272-byte storage constructor
+and whose destructor invokes the 415-byte cleanup routine. This
+preserves C++ exceptional construction/deallocation and naturally
+restores the original VC9 SEH/unwind stack frame, without assembly or
+inert register/byte padding.
 
+The first manual-allocation source compiled to just **67 bytes** and
+linked to **66** in the narrow initializer/factory context; its native
+SEH frame was missing. The RAII source now compiles to **150 bytes**
+with seven relocation fields; a limited /GL link with the initializer
+produces **149 bytes**, still five calls/two returns. A second, scoped
+/GL link including the real constructor/destructor source yields a
+**152-byte** complete PDB contribution, **identical length** to
+native, with the native five-call/two-return shape. It is **not exact**:
+native uses `SUB ESP,8; PUSH ESI` while the linked draft
+uses `PUSH ECX; PUSH ESI; PUSH EDI`; the optimizer also
+specializes helper call registers ESI/EDI, and **121 of 152 raw
+bytes differ**. Only full independently reviewed native field replay
+and zero-byte-difference comparison can confer exact credit.
+
+Alternative natural source trials include a separate placement-new
+raw pointer (156 normal COFF /144 limited linked) and equivalent
+conditional delete forms (150 normal COFF), neither improving the
+native stack lifetime. Source experiment records are in
+`.analysis/player-factory-raii-*` and the scoped PE/MAP/PDB outputs
+in `build/probe-ltcg/SecondaryPlayerInitializationFactory/` and
+`build/probe-ltcg/SecondaryPlayerLifecycleFactory/`. The original
+nominal class, EH table and TU partition are still unknown.
 ## Storage constructor and destructor, source-present
 
 The original storage constructor at `42F760..42F86F` has 272 bytes,
@@ -128,3 +145,23 @@ Oracle units with no relocations:
 
 These exact leaf proofs do not imply that the 272-byte containing
 constructor or 1557-byte initialization main is exact.
+
+
+## Vector-constructor codegen experiment
+
+The native 272-byte storage constructor explicitly calls the
+generic array constructor at `4021A0` twice per emitter, each
+time with count 7, stride 8 and an identity-only callback. A
+genuine C++ placement-new array expression for the two seven-element
+types was compiled as a local experiment. It increased normal COFF
+from 255 to **367 bytes**, but the whole-function /GL optimizer
+eliminated the empty constructors and emitted only **215 bytes** with
+three calls (native: 272 bytes and five calls), even when the
+out-of-line callbacks were marked noinline. This is a codegen
+regression, not evidence that native omitted those calls. The
+maintained constructor's existing physical traversal is retained
+until a realistic compilation context can recover the native
+shared array-constructor helper. Local experiments:
+`.analysis/player-storage-vector-ctor-v1-compare.json`,
+`.analysis/player-storage-vector-variant-linked.log`,
+`.analysis/player-storage-vector-noinline-linked.log`.
