@@ -31,13 +31,17 @@ Canonical source, ledgers and build/comparison scripts are unchanged.
 
 ## Next reconstruction work
 
-Document cleanup4549E0/243 now has complete maintained C++ and
-reviewed boundaries in AnimationDocumentDestructor.cpp. VC9 normal
-COFF246/8 fields/167 of211 comparable bytes, two limited /GL contexts
-both229/native243 with8 calls/one return. The actual player destructor
-430010/415 is among native callers. Remaining differences center
-on the renderer marker4564C0 private ABI and loop alignment.
-See [ANIMATION_DOCUMENT_DESTROY](ANIMATION_DOCUMENT_DESTROY.md).
+Document cleanup4549E0/243 is now **cold linked-PE exact 243/243**
+with eight independently reviewed fields (one renderer DIR32,
+marker REL32 and six free REL32), native8 calls/one return and
+complete primary-TU PE/MAP/PDB/source receipts. Its direct
+callee `MarkMenuFileAnimations`4564C0/78 is independently
+**cold linked-PE exact 78/78** with no relocation fields in a real
+MenuController caller context. Both benefit from an explicit
+generic renderer/file caller so LTCG preserves native ABI. The
+415-byte player destructor430010 remains non-exact; next reconcile
+its resource cleanup with this newly exact callee. See
+[ANIMATION_DOCUMENT_DESTROY](ANIMATION_DOCUMENT_DESTROY.md).
 
 
 Two additional cold VC9 exact three-byte identity constructors

@@ -32,20 +32,32 @@ relocation masking. Natural for, while and do/while forms of the
 texture loop all generate identical COFF code. The explicit final
 data guard improved nonfield agreement from the initial 152/211.
 
-Two isolated `/GL` contexts compile the source: the direct owner
-and real menu marker, and a larger context with the source-present
-player destructor, initializer, stage VM lifecycle and factory.
-Both produce a full PDB-owned **229-byte** document-destruction
-function with **eight calls and one return**, against original
-243/8/1. The per-texture release loop is close to native. Remaining
-differences include the ESI renderer register passed to the
-menu-marking callee (95 linked bytes versus native 78) and the
-native six-byte loop alignment. This remains **non-exact**.
+The original two scoped `/GL` contexts linked the document destructor to
+the menu marker with only a single global-renderer caller. They produced
+a **229-byte** document owner and a 95-byte marker because LTCG
+specialized the original private callee ABI. A separate, genuinely
+generic renderer/file caller was added to the existing compile-only
+`probes/animation-document-destructor-context.cpp`. Rebuilding only
+this related scope yields the complete native **243-byte destructor**,
+its **eight calls/one RET**, and a separate exact **78-byte marker**.
+
+The strict canonical unit `animation-document-destroy` cold-compiles the
+current source, marker callee, and both diagnostic callers. All
+**243/243 bytes are identical after the eight reviewed fields** are
+replayed: DIR32 renderer at offset `13`, REL32 marker at `1A` and six
+REL32 free calls at `56/80/99/B2/CB/E4`. The public primary-TU
+function owner, native complete boundary, all eight fields, and
+source/support/tool/PE/MAP/PDB receipts pass the strict linked Oracle.
+This is **canonical exact**, not merely a same-sized linked diagnostic.
+
+The separately accepted `menu-mark-file-animations` unit uses its
+actual menu-controller producer call context and independently
+reproduces **78/78 bytes, zero relocations**.
 
 Scoped evidence:
 `.analysis/player-animation-document-release-review-20261111.txt`,
 `.analysis/animation-document-destructor-final-check-compare.json`,
 `.analysis/animation-document-destructor-contexts.log`, and
 `build/probe-ltcg/AnimationDocumentDestructor-{simple,player}/`.
-Next useful step is improving the real menu-marking call ABI, not
-changing the already matching per-texture cleanup loop.
+The next integration step is reconciling the still non-exact 415-byte
+player storage destructor against the newly exact cleanup callee.

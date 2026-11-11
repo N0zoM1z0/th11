@@ -245,11 +245,13 @@ owner improves from357/12 calls/2 returns to **400 bytes/
 see [SECONDARY_PLAYER_INITIALIZATION](SECONDARY_PLAYER_INITIALIZATION.md).
 
 
-Animation document cleanup4549E0/243 now has source in
-AnimationDocumentDestructor.cpp. It releases textures, their COM
-objects and source buffers, and five document buffers
-(+120/+118/+11C/+130/+108) in original order. VC9 normal
-COFF246/8 relocations/167 of211 comparable bytes; local /GL229
-with eight calls and one return. Non-exact, primarily due private
-renderer marker ABI and alignment. See
+Animation document cleanup4549E0/243 is now **strict cold-linked
+exact 243/243**, with eight reviewed native fields and the full
+six-byte internal alignment. Maintained C++ in
+AnimationDocumentDestructor.cpp frees texture COM objects, source
+buffers and five document allocations in observed order. The
+separate menu marker4564C0/78 is also **cold-linked exact 78/78**
+with zero fields, when a real generic renderer/file caller
+prevents LTCG over-specialization. Both strict units retain
+complete source/support/tool/PE/MAP/PDB receipts. See
 [ANIMATION_DOCUMENT_DESTROY](ANIMATION_DOCUMENT_DESTROY.md).

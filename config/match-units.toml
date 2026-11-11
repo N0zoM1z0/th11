@@ -4781,3 +4781,46 @@ symbol = "??0PlayerEmitterOffsetPair@@QAE@XZ"
 target_address = 0x00433F00
 size = 3
 relocations = []
+
+# Full 78-byte native renderer/file VM marker. A real menu-controller caller
+# restores the private ESI renderer + EDX file ABI without register shims.
+[units.menu-mark-file-animations]
+artifact_kind = "linked-pe"
+source = "src/MenuControllerSupport.cpp"
+inputs = ["src/MenuController.hpp", "src/VmBindings.hpp"]
+support_sources = ["src/MenuController.cpp", "src/MenuControllerCallbacks.cpp", "probes/menu-controller-context.cpp"]
+normal_support_sources = ["src/MenuControllerCallbacks.cpp"]
+output_dir = "build/match-linked/MenuMarkFileAnimations"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "MenuControllerProbe@4"
+functions = ["MarkMenuFileAnimations"]
+symbol = "?MarkMenuFileAnimations@@YGXPAURenderBatchView@@PAUAnimationFileView@@@Z"
+target_address = 0x004564C0
+size = 78
+linkages = []
+
+# Full original 243-byte animation-document cleanup, including six owned
+# instruction alignment bytes. The independent generic marker caller stops
+# LTCG from over-specializing the source-present 78-byte marker dependency.
+[units.animation-document-destroy]
+artifact_kind = "linked-pe"
+source = "src/AnimationDocumentDestructor.cpp"
+inputs = ["src/StageResource.hpp", "src/AnimationDocument.hpp", "src/MenuController.hpp", "src/VmBindings.hpp"]
+support_sources = ["src/MenuControllerSupport.cpp", "probes/animation-document-destructor-context.cpp"]
+output_dir = "build/match-linked/AnimationDocumentDestroy"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationDocumentDestructorProbe@4"
+functions = ["DestroyAnimationDocument"]
+symbol = "?DestroyAnimationDocument@@YGXPAUAnimationDocumentView@@@Z"
+target_address = 0x004549E0
+size = 243
+linkages = [
+  { offset = 0x13, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x004C3268 },
+  { offset = 0x1A, type = "REL32", symbol = "?MarkMenuFileAnimations@@YGXPAURenderBatchView@@PAUAnimationFileView@@@Z", target = 0x004564C0 },
+  { offset = 0x56, type = "REL32", symbol = "_free", target = 0x0045FC3B },
+  { offset = 0x80, type = "REL32", symbol = "_free", target = 0x0045FC3B },
+  { offset = 0x99, type = "REL32", symbol = "_free", target = 0x0045FC3B },
+  { offset = 0xB2, type = "REL32", symbol = "_free", target = 0x0045FC3B },
+  { offset = 0xCB, type = "REL32", symbol = "_free", target = 0x0045FC3B },
+  { offset = 0xE4, type = "REL32", symbol = "_free", target = 0x0045FC3B },
+]
