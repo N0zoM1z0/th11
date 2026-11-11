@@ -233,3 +233,13 @@ placement-new statements. Pinned normal COFF improves
 Scoped /GL remains **278/native272**, with all five native calls
 and one RET4. This is still non-exact; see
 [SECONDARY_PLAYER_INITIALIZATION](SECONDARY_PLAYER_INITIALIZATION.md).
+
+
+The player destructor430010/415 now models two scope-guarded
+chain unregister operations and **automatic reverse C++ destruction**
+of embedded VM members. Their `storage400` fields are precisely
+controller offsets848 and414, matching the native cleanup order.
+In a limited VC9 /GL context including StageLifecycle.cpp the
+owner improves from357/12 calls/2 returns to **400 bytes/
+12 calls/1 return**, versus native415/12/1. It is still non-exact;
+see [SECONDARY_PLAYER_INITIALIZATION](SECONDARY_PLAYER_INITIALIZATION.md).

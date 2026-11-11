@@ -29,6 +29,12 @@ typedef char PlayerEmbeddedVmPrimaryOffset[
     (offsetof(SecondaryPlayerEmbeddedVms, primary) == 0x14) ? 1 : -1];
 typedef char PlayerEmbeddedVmSecondaryOffset[
     (offsetof(SecondaryPlayerEmbeddedVms, secondary) == 0x448) ? 1 : -1];
+typedef char PlayerFirstVmStorageOffset[
+    (offsetof(SecondaryPlayerEmbeddedVms, primary) +
+     offsetof(StageEmbeddedVm, storage400) == 0x414) ? 1 : -1];
+typedef char PlayerSecondVmStorageOffset[
+    (offsetof(SecondaryPlayerEmbeddedVms, secondary) +
+     offsetof(StageEmbeddedVm, storage400) == 0x848) ? 1 : -1];
 
 // The native storage constructor's two seven-element arrays use real
 // identity-only default constructors. Keep the callback behavior expressed
@@ -42,22 +48,35 @@ static void *__fastcall ConstructOffsetPair(void *memory)
     return new (memory) PlayerEmitterOffsetPair;
 }
 
+// The native destructor conditionally locks separately around each chain
+// unregister call. C++ scoped cleanup also preserves the EH/unwind lifetime.
+struct ScopedPlayerChainLock
+{
+    ScopedPlayerChainLock()
+    {
+        if (g_MainRuntime.flags & 0x8000)
+        {
+            EnterCriticalSection(&g_MainRuntime.criticalSections[0]);
+            ++g_MainRuntime.criticalDepth[0];
+        }
+    }
+    ~ScopedPlayerChainLock()
+    {
+        if (g_MainRuntime.flags & 0x8000)
+        {
+            LeaveCriticalSection(&g_MainRuntime.criticalSections[0]);
+            --g_MainRuntime.criticalDepth[0];
+        }
+    }
+};
+
 static __forceinline void RemovePlayerChain(ChainElement *element)
 {
     if (!element)
         return;
     ChainManagerView *manager = g_ChainManager;
-    if (g_MainRuntime.flags & 0x8000)
-    {
-        EnterCriticalSection(&g_MainRuntime.criticalSections[0]);
-        ++g_MainRuntime.criticalDepth[0];
-    }
+    ScopedPlayerChainLock lock;
     UnregisterChainElement(element, manager);
-    if (g_MainRuntime.flags & 0x8000)
-    {
-        LeaveCriticalSection(&g_MainRuntime.criticalSections[0]);
-        --g_MainRuntime.criticalDepth[0];
-    }
 }
 }
 
@@ -96,15 +115,11 @@ void __stdcall DestructSecondaryPlayerStorage(SecondaryPlayerControllerView *own
         g_SecondaryPlayerPreparedConfiguration = owner->configuration;
     }
 
-    void **tailBuffer = reinterpret_cast<void **>(base + 0x848);
-    if (*tailBuffer)
-        free(*tailBuffer);
-    *tailBuffer = 0;
-
-    void **vmBuffer = reinterpret_cast<void **>(base + 0x414);
-    if (*vmBuffer)
-        free(*vmBuffer);
-    *vmBuffer = 0;
+    // The original frees storage400 of the SECOND embedded VM before
+    // storage400 of the first (+0x848, then +0x414). A real composite
+    // C++ member destructor preserves the reverse lifetime ordering.
+    reinterpret_cast<SecondaryPlayerEmbeddedVms *>(owner)->
+        ~SecondaryPlayerEmbeddedVms();
 }
 
 // Original 0042F760..0042F86F, 272 bytes. Two StageEmbeddedVm objects

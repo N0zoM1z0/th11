@@ -63,8 +63,13 @@ construction), scoped /GL278 with
 **five native calls and one RET4** (previous236/three calls).
 The iterator4021A0/33 has separate source; generic /GL33
 with29/33 bytes equal but specialized real-caller /GL31, non-exact.
-Destructor430010/415 remains normal COFF371 /GL357, non-exact.
-The two 3-byte identity constructors remain cold exact. Continue EH/lifetime register allocation recovery without unrelated
+Destructor430010/415 now uses scoped C++ locks and automatic
+reverse destruction of embedded VMs: normal COFF389, focused
+/GL **400/native415 with 12/12 calls and 1/1 return** when
+StageLifecycle.cpp supplies real VM destructor bodies (previous
+357/12 calls/2 returns). Without that TU the helper tail gives
+387/11/1; both remain non-exact. The two 3-byte identity
+constructors remain cold exact. Continue EH/lifetime register allocation recovery without unrelated
 cold replay. C++ placement-array trials for the identity constructors
 regressed to /GL215/native272 after dead-code elimination and were
 not adopted. See

@@ -115,10 +115,14 @@ The matched destructor-shaped native owner at
 12 physical calls. Maintained source in the same TU reconstructs
 both update/draw chain removals with optional runtime locks, conditional
 animation document disposal or retention, pending pattern ownership
-handoff, and two backing-buffer frees. Normal COFF produces 371 bytes
-and factory-scoped /GL produces 357 bytes and 12 calls, but two
-synthetic returns instead of the native single RET4; it is non-exact.
-The native C++ EH and original class lifecycle are still unresolved.
+handoff, and the reverse-order destructors of two embedded VM members.
+Its scoped lock and member destructors now naturally express the native
+C++ EH and object lifetime. The **current normal COFF** is 389 bytes,
+and a focused /GL link with real `StageLifecycle.cpp` code produces
+**400 bytes, 12 calls and one return**, against original
+**415 bytes, 12 calls and one return**. Earlier hand-coded unlock/free
+source compiled to COFF371 and /GL357 with two returns.
+The native ABI and all bytes still do **not** match.
 Neither helper modifies the already exact 286-byte animation-pair reset.
 Evidence: `.analysis/player-storage-lifecycle-review-20261111.txt`,
 `.analysis/player-lifecycle-ConstructSecondaryPlayerStorage-coff-compare.json`,
@@ -283,3 +287,44 @@ that rejected variant. Local evidence:
 `.analysis/player-storage-embedded-forced-inline-linked.log`,
 `.analysis/player-storage-inline-aggregate-current-compare.json`,
 and `.analysis/player-storage-inline-aggregate-current-linked.log`.
+
+
+## Player destructor EH and reversed VM ownership (2026-11-11)
+
+The last two native releases in destructor `430010` are exactly
+`owner+0x848` and `owner+0x414`, in that order. These are respectively
+the `storage400` fields of the second and first `StageEmbeddedVm`
+members declared at `owner+0x448` and `owner+0x14`. They correspond to
+the real `StageEmbeddedVm::~StageEmbeddedVm` lifetime logic, not
+independent anonymous heap fields. The maintained source now
+destroys the whole physical `SecondaryPlayerEmbeddedVms` aggregate,
+allowing C++ to automatically destroy the second member and then the
+first. Compile-time offset assertions protect both releases.
+
+The original also enters/leaves a critical section around the update
+and draw chain removals, checking the runtime flag independently
+before and after each unregister. The new source uses a normal
+`ScopedPlayerChainLock` with the same two checks and C++ scope
+cleanup, preserving exception unwinding. No artificial SEH prologue,
+hardcoded machine code, or fake register ABI was inserted.
+
+In the scoped VC9 /GL link **including the actual
+`StageLifecycle.cpp`**, this changes destructor `430010/415` from
+357 bytes / 12 calls / 2 returns to **400 bytes / 12 calls /
+1 return**, matching the native call/return structure. The new
+normal COFF has 389 bytes and 32 relocation fields (formerly
+371/31). Linking without the VM destructor source instead gives
+387 bytes / 11 calls / 1 return because the compiler emits a
+specialized member-destruction tail; this narrower variant is
+**not** treated as the native call graph. Full machine-code and
+address-field equality remain open.
+
+Trial results: the lock-only RAII version generated 454 linked bytes,
+and implicit VM destruction without scoped locks generated 312 bytes
+and lost the matching return path. Their combination was necessary
+to recover the 400/12/1 owner. Evidence:
+`.analysis/player-storage-dtor-lock-members-linked.log`,
+`.analysis/player-storage-dtor-raii-final-coff.json` and
+`.analysis/player-storage-dtor-raii-current-linked.log`.
+The constructor and the already exact 286-byte animation reset retain
+separate validation scopes.
