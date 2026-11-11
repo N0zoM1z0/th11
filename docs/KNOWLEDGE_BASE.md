@@ -391,3 +391,14 @@ all267 native decoded instructions while retaining22/22 calls. It is not
 byte exact (659 nonfield diagnostic differences). The shared83-byte file
 cleanup stays strict exact after a scoped cold replay. See
 [SECONDARY_PROGRAM_BROWSER](SECONDARY_PROGRAM_BROWSER.md).
+
+
+The ECL browser deferred loader438910 now compiles to full native277 bytes
+and81 instructions under the real `ResourceFile` archive/critical dependency
+producer, with8/8 calls. Changing its filename storage from256 to MAX_PATH260
+restores native `SUB ESP,108`; expressing an explicit 0/positive/negative
+selection rule restores original code length. Only18 nonfield bytes remain,
+mostly the ordering of constructor vptr write and the final EBX/ECX index
+register allocation. Resource loader466/466 remains exact and the separately
+accepted 8-byte thread caller still passes a scoped strict cold replay.
+See [SECONDARY_PROGRAM_BROWSER](SECONDARY_PROGRAM_BROWSER.md).

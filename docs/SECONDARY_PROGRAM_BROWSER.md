@@ -99,7 +99,7 @@ by the maintained browser state machine.
 
 `LoadSecondaryProgramSelection` at `0x438910..0x438A24` is the real
 **277-byte** loader. Its new natural C++ in
-`src/SecondaryProgramSelection.cpp` formats the selected filename through
+`src/SecondaryProgramSelection.cpp` formats the selected filename in a `MAX_PATH` buffer through
 `"%s"`, deletes the previous manager, frees the old browser input blob
 at +0x2E0, loads a fresh resource in disk mode 0, constructs a 0x1098-byte
 `SecondaryProgramView`, calls its virtual Install slot, publishes the
@@ -109,12 +109,25 @@ of new allocation-failure guards. The base program's vptr/memset order and
 actual original TU partition remain open, so the source is not treated as
 an executable runtime guarantee.
 
-The pinned VC9 `/GL` loader in the real thread-caller context is currently
-**274/277 bytes**, **80/81 instructions**, **8/8 calls**. Adding the real
-`ResourceFile.cpp` support naturally changes the private `LoadResourceFile`
-argument ABI and yields **271/277**; neither candidate is exact. The
-compiler/source observations are in `.analysis/probe-secondary-program-loader.py`
-and `.analysis/try-secondary-program-loader-real-resource.py`.
+The loader now uses the observed Windows `MAX_PATH` (260) local buffer,
+which restores the original `0x108` stack allocation instead of `0x104`.
+A natural three-way zero/positive/negative selection rule preserves the
+original signed zero checks without inventing additional error paths.
+Compiling its genuine `ResourceFile.cpp` dependency with the existing archive,
+cipher and critical-section support produces **277/277 bytes, 81/81 decoded
+instructions, and all 8 native calls**. Of the full native span, **18
+non-address-field bytes still differ**; the remaining discrepancies cluster
+around the constructor vptr-store order and final selected-index register
+allocation. This is improved source codegen, *not* an exact claim.
+
+The unchanged resource loader itself reproduces its full **466/466** body
+with 36 reviewed fields and no nonfield differences in this targeted context.
+`secondary-program-browser-load-thread` was separately cold-replayed after
+the loader edit and remains strictly exact **8/8**, with its one REL32 call.
+Proof logs: `.analysis/secondary-loader-full-resource-current-20261111.log`
+and `.analysis/secondary-program-load-thread-after-loader-change-20261111.log`.
+The rejected natural variants remain under `.analysis/probe-loader-*20261111.py`.
+
 
 The new eight-byte callback has separately passed strict cold-linked Oracle
 `secondary-program-browser-load-thread`: unique primary-TU PE/MAP/PDB owner,

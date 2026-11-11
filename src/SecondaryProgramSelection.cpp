@@ -8,7 +8,7 @@
 int __cdecl LoadSecondaryProgramSelection()
 {
     SecondaryProgramBrowserView *self = g_SecondaryProgramBrowser;
-    char filename[256];
+    char filename[MAX_PATH];
     sprintf(filename, "%s", self->filenames[self->fileSelection.current]);
     if (self->manager)
     {
@@ -26,7 +26,18 @@ int __cdecl LoadSecondaryProgramSelection()
     self->program->Install(self->loadedData);
     int count = self->program->subroutineCount;
     self->subroutineSelection.count = count;
-    self->subroutineSelection.current = count < 0 ? count - 1 : 0;
+    int selected = 0;
+    if (count == 0)
+    {
+        // The native empty-program branch keeps the initial zero index.
+    }
+    else if (count > 0)
+    {
+        // Select the first subroutine when the program is nonempty.
+    }
+    else
+        selected = static_cast<int>(static_cast<unsigned int>(count) - 1u);
+    self->subroutineSelection.current = selected;
     self->state = 1;
     return 0;
 }
