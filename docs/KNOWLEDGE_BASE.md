@@ -44,7 +44,8 @@ default. PreparePauseContinueRecords42D850/380 and its insertion callee42BA80/36
 now have maintained VC9-compiled source; the normal-COFF diagnostic sizes are
 387/232 respectively, neither exact. The insertion percentage uses target
 double100.0 at497E50; the preparer rechecks stage7 after insertion.
-Replay writer436420/1856 and allocator437300/150 have VC9-compiled source,
+Replay compression main4423A0/795 now has compiled source (normal COFF738/795,
+non-exact), in addition to search442910/416 and four tree edits.\nReplay writer436420/1856 and allocator437300/150 have VC9-compiled source,
 but neither is exact. The adjacent compression dictionary reset4428D0/52 is
 now full normal-COFF exact with four reviewed fields. The adjacent
 416-byte tree matcher442910 has compiled source (same-length but nonexact

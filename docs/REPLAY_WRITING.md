@@ -34,8 +34,9 @@ normal-COFF proof (unit `replay-compression-tree-reset`). Its 8-KiB
 window and 8193 three-word tree nodes occupy adjacent mapped storage;
 a three-byte compiler alignment LEA remains in the proven extent.
 The original source/TU owner is not established by this COFF match.
-The unresolved main compressor is declared as a dependency,
-not supplied as a fabricated implementation.
+The main compressor now has maintained source in `src/ReplayCompressionEncoder.cpp`;
+its writer dependency is no longer source-open. The compiler does not yet
+reproduce its complete native body, and its original TU/ABI remains unknown.
 
 ## Recovered behavior and layout
 
@@ -76,8 +77,8 @@ diagnostics are not exact:
 
 Masked similarity is diagnostic only. Address fields require
 independent binding before exact credit. A linked /GL context has
-not yet been built for these owners. Next: reconstruct the remaining compressor loop/tree helpers
-and resolve caller-specific stream state, then compare
+not yet been built for these owners. Next: narrow the main compressor codegen differences and
+resolve caller-specific stream state, then compare
 the affected writer context without replaying the unrelated cohort.
 Private recovery evidence is in `.analysis/replay-writer-*`
 and `.analysis/replay-deps-*`.
@@ -130,3 +131,33 @@ functions complete the source dependencies of the 416-byte search
 function, but not yet the main 795-byte compressor. All candidate
 objects and complete diagnostics remain ignored under `build/`
 and `.analysis/`.
+
+## Compression core (004423A0..004426BA)
+
+The main encoder has 795 bytes, with 768 bytes of Ghidra-owned instruction
+body spread across five ranges and 27 layout bytes. Independent Capstone
+decodes 240 instructions over the complete span. Both incoming callers at
+436782 and 437B98, all five native callees and adjacent function/padding
+are reviewed. The new maintained source is in `src/ReplayCompressionEncoder.cpp`.
+
+The loop preloads up to 18 literal bytes at ring index 1, seeds the 8192-node
+root sentinel, and emits variable-width packed tokens: 1 bit and an 8-bit
+literal, or 0 bit followed by 13 bits of match position and four bits of
+match length minus three. The tree search uses an 18-byte match cap. As the
+read cursor advances, it removes the outgoing window position, preserves
+the tree and refills the circular buffer. End-of-stream emits a 0-bit
+selector and 13 zeros; the original emits only completed output bytes,
+without a forced partial-byte flush. A zero-length allocation retains
+the original allocation-failure semantics; no new safety guards were added.
+
+VC9 normal-COFF source trials (complete function owner, non-exact):
+
+| Variant | Bytes | Address fields | Observation |
+| --- | ---: | ---: | --- |
+| Outgoing tree removal via helper | 571 | 11 | Too much native inline tree manipulation missing |
+| Inline common deletion paths | 738 | 24 | Five native call targets represented; substantially closer size |
+
+The exact source of the tree reset, the 416-byte match finder and the
+four tree-edit helpers are maintained separately. Native optimized register
+ABIs and /GL ownership remain open, so normal-COFF mismatch is expected;
+these observations give no byte-exact credit.

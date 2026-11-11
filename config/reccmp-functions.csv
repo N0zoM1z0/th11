@@ -512,3 +512,4 @@ DeleteReplayCompressionNode,0x00442AB0,function
 SpliceReplayCompressionNode,0x00442B00,function
 ReplaceReplayCompressionNode,0x00442B50,function
 FindReplayCompressionPredecessor,0x00442BE0,function
+CompressReplayData,0x004423A0,function
