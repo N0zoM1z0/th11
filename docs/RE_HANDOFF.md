@@ -56,9 +56,13 @@ initializer-only /GL149, lifecycle+initializer /GL152/native152 with
 5/5 calls and 2/2 returns. **Still non-exact**, with 121 raw bytes
 different and private call ABI/stack differences. Both lifecycle
 dependencies also have compiled source in
-SecondaryPlayerStorageLifecycle.cpp. Constructor42F760/272 is
-normal COFF255/scoped /GL236, destructor430010/415 normal COFF371/
-/GL357, both non-exact. Continue EH/lifetime register allocation recovery without unrelated
+SecondaryPlayerStorageLifecycle.cpp. Constructor42F760/272 now explicitly calls the real array iterator
+4021A0 twice per emitter: normal COFF287, scoped /GL278 with
+**five native calls and one RET4** (previous236/three calls).
+The iterator4021A0/33 has separate source; generic /GL33
+with29/33 bytes equal but specialized real-caller /GL31, non-exact.
+Destructor430010/415 remains normal COFF371 /GL357, non-exact.
+The two 3-byte identity constructors remain cold exact. Continue EH/lifetime register allocation recovery without unrelated
 cold replay. C++ placement-array trials for the identity constructors
 regressed to /GL215/native272 after dead-code elimination and were
 not adopted. See

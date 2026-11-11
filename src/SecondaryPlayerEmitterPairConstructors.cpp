@@ -3,16 +3,7 @@
 // addresses at 0042F7ED and 0042F801 to the native generic seven-element
 // vector constructor. Types are plausible physical 8-byte element views;
 // original C++ class names and TU ownership are not established.
-struct PlayerEmitterPolarPair
-{
-    float x, y;
-    PlayerEmitterPolarPair();
-};
-struct PlayerEmitterOffsetPair
-{
-    int x, y;
-    PlayerEmitterOffsetPair();
-};
+#include "SecondaryPlayerEmitterPairConstructors.hpp"
 // No field writes: native both bodies are MOV EAX, ECX; RET.
 PlayerEmitterPolarPair::PlayerEmitterPolarPair() {}
 PlayerEmitterOffsetPair::PlayerEmitterOffsetPair() {}

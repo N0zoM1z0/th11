@@ -526,3 +526,4 @@ ConstructSecondaryPlayerStorage
 DestructSecondaryPlayerStorage
 PlayerEmitterPolarPair::PlayerEmitterPolarPair
 PlayerEmitterOffsetPair::PlayerEmitterOffsetPair
+ConstructSecondaryPlayerElementArray

@@ -211,3 +211,16 @@ initializer+storage lifecycle /GL **152/native152** with five calls
 and two returns. It remains **non-exact** (121 raw byte differences
 and distinct optimized helper ABIs); see
 [SECONDARY_PLAYER_INITIALIZATION](SECONDARY_PLAYER_INITIALIZATION.md).
+
+
+The complete 33-byte original compiler-style element iterator4021A0
+has reviewed ownership and maintained source in
+`SecondaryPlayerElementIterator.cpp`. It is called twice per
+player emitter in constructor42F760. Generic VC9 /GL gives 33 bytes
+with29/33 identical but with the count/array registers swapped;
+the actual seven-element callsite specializes it to31 bytes,
+so **not exact**. Restoring explicit caller-level helper invocations
+in the 272-byte storage constructor recovers its original five calls,
+one RET4, and a focused linked **278/native272** contribution
+(previously236/three calls). See
+[SECONDARY_PLAYER_INITIALIZATION](SECONDARY_PLAYER_INITIALIZATION.md).

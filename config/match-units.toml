@@ -4759,7 +4759,7 @@ linkages = [
 [units.secondary-player-polar-pair-constructor]
 artifact_kind = "coff"
 source = "src/SecondaryPlayerEmitterPairConstructors.cpp"
-inputs = []
+inputs = ["src/SecondaryPlayerEmitterPairConstructors.hpp"]
 object = "build/match/SecondaryPlayerPolarPairCtor.obj"
 profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
 functions = ["PlayerEmitterPolarPair::PlayerEmitterPolarPair"]
@@ -4773,7 +4773,7 @@ relocations = []
 [units.secondary-player-offset-pair-constructor]
 artifact_kind = "coff"
 source = "src/SecondaryPlayerEmitterPairConstructors.cpp"
-inputs = []
+inputs = ["src/SecondaryPlayerEmitterPairConstructors.hpp"]
 object = "build/match/SecondaryPlayerOffsetPairCtor.obj"
 profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
 functions = ["PlayerEmitterOffsetPair::PlayerEmitterOffsetPair"]

@@ -6,6 +6,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <new>
+#include "SecondaryPlayerEmitterPairConstructors.hpp"
+#include "SecondaryPlayerElementIterator.hpp"
 
 // Original nominal C++ owner unknown. Both globals are physically observed.
 extern SecondaryPlayerControllerView *g_SecondaryPlayerControllerInstance;
@@ -13,6 +15,18 @@ extern SecondaryPatternConfigurationView *g_SecondaryPlayerPreparedConfiguration
 
 namespace
 {
+// The native storage constructor's two seven-element arrays use real
+// identity-only default constructors. Keep the callback behavior expressed
+// through the C++ type, rather than supplying a fake register shim.
+static void *__fastcall ConstructPolarPair(void *memory)
+{
+    return new (memory) PlayerEmitterPolarPair;
+}
+static void *__fastcall ConstructOffsetPair(void *memory)
+{
+    return new (memory) PlayerEmitterOffsetPair;
+}
+
 static __forceinline void RemovePlayerChain(ChainElement *element)
 {
     if (!element)
@@ -92,10 +106,9 @@ SecondaryPlayerControllerView *__stdcall ConstructSecondaryPlayerStorage(
     owner->stateTime.flags &= ~1u;
     owner->auxiliaryTime.flags &= ~1u;
 
-    // The original contains two calls per emitter to the generic
-    // seven-element (8-byte stride) constructor helper at 004021A0.
-    // Its invoked callbacks (004021D0 and 00433F00) are identity constructors,
-    // and thus have no element field writes.
+    // The original contains two vector-constructor calls per emitter,
+    // both with count 7 and stride 8. Their linked identity callbacks
+    // have no member writes, but the calls themselves are real work.
     for (int i = 0; i < 256; ++i)
     {
         unsigned int *flag = reinterpret_cast<unsigned int *>(
@@ -104,8 +117,12 @@ SecondaryPlayerControllerView *__stdcall ConstructSecondaryPlayerStorage(
     }
     for (int i = 0; i < 8; ++i)
     {
-        unsigned int *flag = reinterpret_cast<unsigned int *>(
-            base + 0x7638 + i * 0xe4);
+        unsigned char *emitter = base + 0x7570 + i * 0xe4;
+        ConstructSecondaryPlayerElementArray(emitter + 0x1c, 8, 7,
+            ConstructPolarPair);
+        ConstructSecondaryPlayerElementArray(emitter + 0x64, 8, 7,
+            ConstructOffsetPair);
+        unsigned int *flag = reinterpret_cast<unsigned int *>(emitter + 0xc8);
         *flag &= ~1u;
     }
     for (int i = 0; i < 33; ++i)

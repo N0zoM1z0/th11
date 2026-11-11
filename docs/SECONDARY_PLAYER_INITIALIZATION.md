@@ -95,9 +95,19 @@ cold normal-COFF exact source in `src/SecondaryPlayerEmitterPairConstructors.cpp
 both **3/3 bytes**, zero relocations. Their tentative C++ type names
 do not establish original class or translation-unit identity. The remaining work clears the
 flags of 256, eight and 33 records, resets the 0x8D24-byte storage,
-and publishes the singleton. Maintained source in
-`src/SecondaryPlayerStorageLifecycle.cpp` compiles to 255 bytes
-in normal COFF and 236 bytes in a local factory /GL link, non-exact.
+and publishes the singleton. Earlier maintained source only cleared the
+emitter flags and compiled to **255 normal-COFF bytes / 236 linked bytes**,
+with the two original array-construction calls absent. Updated source
+in `src/SecondaryPlayerStorageLifecycle.cpp` now explicitly calls
+`ConstructSecondaryPlayerElementArray` twice per eight-byte-stride
+emitter pair, via ordinary typed C++ placement construction callbacks.
+In a focused VC9 /GL context with the player factory, initializer and
+exact three-byte element constructors, the complete constructor
+produces **278 bytes / five calls / one RET4**, compared with
+native **272 bytes / five calls / one RET4**. Its ordinary COFF
+is 287 bytes with ten relocation fields. This is a substantial
+call-graph recovery, but still **non-exact** (different private
+register allocation and EH/loop code generation).
 
 The matched destructor-shaped native owner at
 `430010..4301AE` occupies 415 bytes /103 instructions and makes
@@ -190,3 +200,49 @@ reduce the FADD ordering match, so were not adopted. They are kept
 only as ignored evidence in `.analysis/player-init-plus-*` and
 `.analysis/player-init-swap-plus-args-linked.log`. The owner remains
 **non-exact**; no broader cold exact cohort was rerun.
+
+
+## Array construction loop ownership and codegen (2026-11-11)
+
+The native generic iterator at `0x4021A0..0x4021C0` has been
+independently reviewed via pinned hash-attested Ghidra and a full
+**17-instruction / 33-byte** original PE decode. It is the only helper
+called twice from the 272-byte player storage constructor:
+the array receiver is in ECX, element count in EAX, callback in EBX
+and stride as the single stack argument. It performs a count-minus-one
+signed loop with an indirect callback call and returns via RET4.
+
+Source is now in `src/SecondaryPlayerElementIterator.cpp` with a
+shared declaration in `src/SecondaryPlayerElementIterator.hpp`.
+The ordinary source-level signature is not a fabricated native
+register ABI; it is lowered privately by VC9 /GL as compiler context
+allows. Normal COFF generates **50 bytes**; with a generic dynamic
+caller, a complete PDB-owned linked contribution is **33 bytes**,
+with **29/33 literal bytes matching native**. The four differences
+at offsets 8, 10, 11 and 13 correspond to the count/receiver
+register assignment and the initial `ADD -1` versus native
+`SUB 1`. When the real seven-element caller supplies constant
+count and stride, /GL instead specializes the helper to
+**31 bytes**. It is thus **source-present, not exact**.
+
+The accepted storage-constructor source retains two genuine calls,
+one per array, and all five native call-site occurrences. A
+source-level countdown-loop experiment changes its three loops
+to native-style JNS branches but grows the scoped 278-byte
+contribution to 279 bytes. Replacing the two placement-constructed
+VMs with a physical aggregate reduces the linked contribution
+to 246 bytes and loses a call. A native-looking C++ array
+placement-constructor experiment also collapses to a 215-byte
+linked contribution after optimizer dead-code elimination. All
+three alternatives were rejected as the maintained source.
+Scoped artifacts:
+`build/probe-ltcg/PlayerStorageWithIterator/`,
+`.analysis/player-storage-loop-*-linked.log`,
+`.analysis/player-storage-embedded-batch-linked.log` and
+`.analysis/player-array-dual-context.log`.
+
+The two exactly reconstructed three-byte element constructors now
+share `src/SecondaryPlayerEmitterPairConstructors.hpp` with the
+player storage caller, and both canonical cold-compiled units include
+that header in their build receipts. This does **not** change their
+exact machine code.
