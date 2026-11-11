@@ -31,6 +31,15 @@ Canonical source, ledgers and build/comparison scripts are unchanged.
 
 ## Next reconstruction work
 
+Document cleanup4549E0/243 now has complete maintained C++ and
+reviewed boundaries in AnimationDocumentDestructor.cpp. VC9 normal
+COFF246/8 fields/167 of211 comparable bytes, two limited /GL contexts
+both229/native243 with8 calls/one return. The actual player destructor
+430010/415 is among native callers. Remaining differences center
+on the renderer marker4564C0 private ABI and loop alignment.
+See [ANIMATION_DOCUMENT_DESTROY](ANIMATION_DOCUMENT_DESTROY.md).
+
+
 Two additional cold VC9 exact three-byte identity constructors
 at4021D0 and433F00 (zero relocations) are used by the storage
 constructor's two seven-element arrays. A behavioral bug in

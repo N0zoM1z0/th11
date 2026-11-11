@@ -243,3 +243,13 @@ In a limited VC9 /GL context including StageLifecycle.cpp the
 owner improves from357/12 calls/2 returns to **400 bytes/
 12 calls/1 return**, versus native415/12/1. It is still non-exact;
 see [SECONDARY_PLAYER_INITIALIZATION](SECONDARY_PLAYER_INITIALIZATION.md).
+
+
+Animation document cleanup4549E0/243 now has source in
+AnimationDocumentDestructor.cpp. It releases textures, their COM
+objects and source buffers, and five document buffers
+(+120/+118/+11C/+130/+108) in original order. VC9 normal
+COFF246/8 relocations/167 of211 comparable bytes; local /GL229
+with eight calls and one return. Non-exact, primarily due private
+renderer marker ABI and alignment. See
+[ANIMATION_DOCUMENT_DESTROY](ANIMATION_DOCUMENT_DESTROY.md).

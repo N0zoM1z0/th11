@@ -889,7 +889,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x004545A0,authored_game,AnimationDocument,authored,high,animation-chunk-origin-20261028
 0x004548D0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004549A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x004549E0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x004549E0,unknown,AnimationDocument,review,unknown,animation-document-destroy-origin-open-2026-11-11
 0x00454B10,authored_game,AnimationDocument,authored,high,animation-chunk-origin-20261028
 0x00454BB0,unknown,TextTextureDispatch,indeterminate,unknown,outlined-text-origin-20261024
 0x00454C60,unknown,FormattedTextureText,indeterminate,unknown,formatted-text-origin-20261024

@@ -527,3 +527,4 @@ DestructSecondaryPlayerStorage
 PlayerEmitterPolarPair::PlayerEmitterPolarPair
 PlayerEmitterOffsetPair::PlayerEmitterOffsetPair
 ConstructSecondaryPlayerElementArray
+DestroyAnimationDocument
