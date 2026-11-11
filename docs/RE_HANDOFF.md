@@ -31,6 +31,15 @@ Canonical source, ledgers and build/comparison scripts are unchanged.
 
 ## Next reconstruction work
 
+Chunk source loader4543E0/221 now has a focused *real*
+BeginLoadAnimationDocument producer context (probe at
+probes/animation-document-load-context.cpp). Natural VC9 /GL yields
+full221 bytes, six calls/two RET4, with twelve reviewed address fields
+and only two remaining SIB bytes (B3/BD, native11 versus source0A).
+This remains non-exact. Pointer/reference/offset C++ variants regress
+to212 bytes and were not adopted. The independent 811-byte decoder
+remains strict cold exact. See ANIMATION_CHUNKS.md.
+
 The new decoder exact checkpoint also reran only its four directly
 affected sprite/texture exact units (149/287/67/69 bytes): all
 still exact after cold rebuild. The separate document scanner4548D0

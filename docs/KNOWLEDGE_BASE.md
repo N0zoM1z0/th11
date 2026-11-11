@@ -294,3 +294,11 @@ fileIndex/texture/textureIndex assignment order eliminate all ten
 previous code differences. The 149-byte StoreAnimationSprite is
 separately exact, while AdvanceAnimationDocument4544C0/212 remains
 non-exact. See [ANIMATION_CHUNKS](ANIMATION_CHUNKS.md).
+
+
+The 221-byte `LoadAnimationChunkSource` real parent context now includes
+`BeginLoadAnimationDocument`: it reproduces 221 bytes, native six calls
+and two RET4 exits with only two non-field SIB selector differences
+at B3 and BD (commutative ECX/EDX addressing). It remains **non-exact**
+and must not replace the separately exact 811-byte decoder family.
+See [ANIMATION_CHUNKS](ANIMATION_CHUNKS.md).

@@ -7,7 +7,7 @@ postloading. The actual texture/sprite/script decoder is 0x004545A0.
 
 | Function | Complete native extent | Candidate bytes | State |
 | --- | --- | ---: | --- |
-| LoadAnimationChunkSource | 0x004543E0..0x004544BC, 221 bytes | 209 | source, non-exact |
+| LoadAnimationChunkSource | 0x004543E0..0x004544BC, 221 bytes | 221 (producer context) | source, non-exact, two SIB code bytes differ |
 | AdvanceAnimationDocument | 0x004544C0..0x00454593, 212 bytes | 211 | source, non-exact |
 | DecodeAnimationChunk | 0x004545A0..0x004548CA, 811 bytes | 811 | **canonical linked-PE exact, 15 bindings** |
 | StoreAnimationSprite | 0x00454B10..0x00454BA4, 149 bytes | 149 | canonical linked-PE exact |
@@ -204,3 +204,40 @@ scanning caller's private EAX receiver (native EDI). Source variable
 reordering and extra natural dynamic callers gave the same result.
 Those variants are kept only under `.analysis/advance-document-*`;
 the maintained advance source was not changed.
+
+
+## Real producer context for 221-byte source loader (2026-11-11)
+
+The source-present `BeginLoadAnimationDocument` at 0x454190 is the genuine
+producer of `LoadAnimationChunkSource` (0x4543E0). A compile-only dynamic
+source caller in `probes/animation-document-load-context.cpp` retains
+this parent-child relationship in a narrowly linked VC9 `/GL` family.
+The source loader naturally recovers the native private arguments:
+ECX document, EBX texture index and a single stack chunk parameter,
+with `RET4`. The complete PDB contribution is **221/221 bytes**,
+**six calls and two RET4s**, unlike the earlier texture-only family
+with 209 bytes, five calls and one RET8.
+
+All twelve address/call fields were independently compared with the
+hash-pinned original: six DIR32 values (security cookie, error strings
+and runtime log) and six REL32 calls (logging, security check,
+formatting and resource loading). Only **two non-field bytes remain**:
+the SIB selectors at offsets 0xB3 and 0xBD encode commutatively
+equivalent ECX/EDX base/index addressing for the two stores into the
+texture entry. The native uses byte 0x11 and the linked candidate
+0x0A. **This is not exact**: these instruction bytes must match,
+not be ignored or rewritten by the comparator.
+
+Nine normal C++ alternatives using a pointer, reference, precomputed
+offset or explicit member addresses were compiled with pinned VC9. The
+first five bounded real-producer `/GL` links all regressed to **212
+bytes** and did not recover the native SIB register selection, so the
+maintained source remains untouched. Private evidence:
+`.analysis/animation-load-real-producer.log`,
+`.analysis/animation-load-store-link-a.log`,
+and `build/probe-ltcg/AnimationRealProducer-producer/`.
+
+The linked producer context also changes the decoder to 827 bytes,
+so it is **not** substituted for the already cold-attested independent
+811/811 exact `decode-animation-chunk` unit. The production TU
+partition remains unknown.
