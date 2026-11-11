@@ -20,8 +20,8 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - [Generated progress](PROGRESS.md) and
   `config/{functions,function-boundaries,function-origins,matches}.csv`
   determine names, origins, reviewed extents and exact status.
-  At this checkpoint: **275 canonical exact**, **560 source-present**,
-  **649 reviewed boundaries**. Refresh with
+  At this checkpoint: **275 canonical exact**, **563 source-present**,
+  **651 reviewed boundaries**. Refresh with
   `scripts/repo-python scripts/progress.py`, not manual totals.
 - An exact owner requires the entire original function, source/tool
   receipts, exhaustive reviewed field rebinding and **zero differing
@@ -48,6 +48,8 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 
 | Native owner / current source | Current scoped result | Next concrete question |
 | --- | --- | --- |
+| **976-byte** `BuildBillboardAnimationVmQuad` `0x450700` — `AnimationBillboardQuad.cpp` | Full C++ now source-present; linked real billboard producer **927/976**, normal COFF 939 | Paired x87 `FSINCOS` and float spill/rounding lifetime; non-exact. [Billboard](ANIMATION_PROJECTED_QUAD.md) |
+| **313-byte** `CopyAnimationTextureSurface` `0x454EC0` + **48-byte** `FlushScreenshotResources` `0x445460` | Both now source-present; real parent recovers child private EAX/ECX, focused **312/313** child and **58/48** parent | RECT stack slot allocation and last texture reload; non-exact. [Surface queue](ANIMATION_SURFACE_COPY.md) |
 | **571-byte** `BuildRotatedAnimationVmQuad` `0x4503D0` — `AnimationVmRotation.cpp` | Natural source added; VC9 COFF **609/571** with separate sin/cos calls, `/GL` compiles | Restore native paired `FSINCOS` and owner/register context. [VM draw](ANIMATION_VM_DRAW.md) |
 | **221-byte** `LoadAnimationChunkSource` `0x4543E0` — `AnimationChunk.cpp` | With real `BeginLoadAnimationDocument` producer: **221 bytes, six calls, two RET4**; 12 reviewed address fields; only two non-field SIB selector bytes at `0xB3/0xBD` differ | Natural ECX/EDX array-address codegen. Earlier pointer/reference trials regressed to 212 bytes; eight later ordinary array/offset variants preserve 221 but retain both SIB differences. [Chunks](ANIMATION_CHUNKS.md) |
 | **212-byte** `AdvanceAnimationDocument` `0x4544C0` — `AnimationChunk.cpp` | Narrow decoder context: **211 bytes**; native file input uses EDI | Resolve native private register ABI; the dependent **135-byte** `UpdateAnimationDocumentSlots` at `0x4548D0` now links to **135 bytes, three calls, two returns**, with only **one non-field byte at 0x70** (EAX vs EDI). Byte-to-int decoded-state trials regressed. [Slots](ANIMATION_DOCUMENT_SLOTS.md) |
@@ -62,6 +64,10 @@ Newly accepted renderer-priority callbacks: 27 exact owners, 780 bytes
 (22 simple callbacks + 5 stateful camera/device callbacks). Both linked
 families were cold-replayed individually, not the whole cohort. See
 `AnimationRendererPriority.cpp` and `AnimationRendererStatePriority.cpp`.
+
+The newly mapped billboard (976) and renderer surface-copy pair (313+48)
+are **source-only** progress and add no exact credit. Their producer and
+diagnostic evidence are in the linked subsystem notes.
 
 Other protected exact leaves: replay dictionary reset `0x4428D0`
 (52 bytes), predecessor `0x442BE0` (49 bytes), pause overlay queue

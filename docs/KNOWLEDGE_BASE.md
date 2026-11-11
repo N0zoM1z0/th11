@@ -330,3 +330,21 @@ The 133-byte priority-62 owner restores screen camera after drawing
 the alternate layer and retains the first draw result. No full-cohort
 cold replay was needed. See
 [ANIMATION_RENDERER_LIFECYCLE](ANIMATION_RENDERER_LIFECYCLE.md).
+
+A real 48-byte four-slot animation surface-copy producer at445460 calls the
+313-byte D3D9 texture blitter at454EC0 through a private EAX record/ECX
+renderer ABI. The slots are the existing renderer four40-byte prefix entries.
+After a managed-texture check and batch flush, the child acquires backbuffer
+and texture level0, copies source/destination RECT regions with filter2,
+marks the texture dirty after success, and releases both surfaces. The 313-byte
+native has113 instructions; reloading document/texture entries after each
+opaque COM call rather than keeping the texture pointer cached recovers a
+312-byte /113-instruction focused VC9 /GL candidate. Two RECT stack slots and
+last reload codegen remain non-exact. See `ANIMATION_SURFACE_COPY.md`.
+
+The source-open 976-byte billboard boss at450700 now has C++ that projects a
+translated origin and camera-right vector, bounds-checks normalized depth,
+derives a projected half-size and rotates an anchored four-corner screen
+quad. The first real-parent /GL build yields927 bytes versus native976;
+native paired FSINCOS and float evaluation lifetimes remain open. See
+`ANIMATION_PROJECTED_QUAD.md`.

@@ -558,3 +558,6 @@ AnimationRendererDrawPriority40
 AnimationRendererDrawPriority48
 AnimationRendererDrawPriority63
 AnimationRendererDrawPriority62
+BuildBillboardAnimationVmQuad
+FlushScreenshotResources
+CopyAnimationTextureSurface

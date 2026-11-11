@@ -559,3 +559,6 @@ AnimationRendererDrawPriority40,0x00455320,function
 AnimationRendererDrawPriority48,0x00455350,function
 AnimationRendererDrawPriority63,0x004553A0,function
 AnimationRendererDrawPriority62,0x004553F0,function
+BuildBillboardAnimationVmQuad,0x00450700,function
+FlushScreenshotResources,0x00445460,function
+CopyAnimationTextureSurface,0x00454EC0,function

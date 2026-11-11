@@ -19,5 +19,5 @@ int __stdcall DrawFoggedBillboardAnimationVm(RenderBatchView *renderer, Animatio
 int __stdcall DrawAdaptiveUnroundedAnimationVm(RenderBatchView *renderer, AnimationVmView *vm);
 void __stdcall BuildAnimationVmModeQuad(AnimationVmView *vm, CameraVector *quad);
 
-// Complete target owner reviewed; paired FSINCOS source/codegen remains open.
+// Complete native 976-byte billboard owner has maintained source in AnimationBillboardQuad.cpp; paired FSINCOS codegen remains open.
 int __stdcall BuildBillboardAnimationVmQuad(AnimationVmView *vm);

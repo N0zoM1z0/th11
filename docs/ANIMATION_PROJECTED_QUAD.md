@@ -157,3 +157,28 @@ dispatcher source, corrects its topology labels to strip/fan and establishes
 int status returns for four wrappers, including adaptive unrounded drawing.
 Its ten-unit cold proof refreshes the affected prior families; the projected
 diagnostic snapshot above predates this return-type correction.
+
+## 976-byte billboard boss now source-present (2026-11-11)
+
+`src/AnimationBillboardQuad.cpp` now implements the complete reviewed
+`BuildBillboardAnimationVmQuad` native algorithm at `0x450700..0x450ACF`.
+The VM contributes a summed translation, sprite dimensions, XY scaling,
+angle and two independent two-bit anchor selectors. The function constructs
+an identity world matrix with that translation, projects the origin through
+the active camera, and rejects a depth outside the ordered `[0,1]` interval
+(including NaN). It then projects the camera-right vector through the same
+world/projection/view matrices and computes the screen-space displacement
+length. Half that distance, VM width/height and scale control the local
+billboard rectangle. X/Y anchors 0/1/2 choose centered, positive-edge or
+negative-edge coordinates; selector 3 leaves that axis unset. Rotation and
+translation publish all four screen corners with the projected center Z.
+
+The entire owner compiles with pinned VC9: normal `/O2` gives **939 bytes**
+with 287 instructions and separate CRT `sin`/`cos` calls; its genuine
+`DrawBillboardAnimationVm`/`DrawFoggedBillboardAnimationVm` `/GL` producer
+yields **927 bytes**, still non-exact against native **976/295**. The
+original has two paired x87 `FSINCOS` operations, while the natural source
+has separate transcendental calls and different floating-point scheduling.
+No exact credit is assigned. The scoped diagnostic and public owner are in
+`.analysis/try-billboard-real-producer-20261111.py` and
+`build/probe-ltcg/AnimationBillboardRealProducer/`.
