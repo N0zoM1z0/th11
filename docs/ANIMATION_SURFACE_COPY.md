@@ -101,3 +101,34 @@ unresolved codegen difference, not a license to add fake loads or patches.
 The four-record producer remains source-present, non-exact at 58/48 bytes.
 Log: `.analysis/animation-surface-copy-tracked-20261111.log`. No full
 cold replay was run for this diagnostic.
+
+## Bounded screenshot parent and child matrix (2026-11-13)
+
+Previously untracked compile-only dynamic caller experiments have been
+preserved in `probes/animation-screenshot-flush-context.cpp` and
+`probes/animation-screenshot-flush-only-context.cpp`, with the reproducible
+`/GL` runner `scripts/probe-screenshot-flush.py`. This runner builds only
+the scoped parent and its directly requested support sources, examines the
+unique primary-TU PDB/MAP code contribution and reports actual whole-function
+byte differences (excluding only decoded address fields). No full-game or
+full cold replay is involved.
+
+| Real scoped producer | Scanner / native 48 | Child / native 313 | Finding |
+| --- | ---: | ---: | --- |
+| Bare scanner or generic independent caller | 46 / 48 | Not present | Standard stack arguments; 20 positional nonfield differences |
+| Scanner plus actual 313-byte child | 56 / 48 | 313 / 313 | Full-length child still has 287 positional nonfield differences; scanner gains an 8-byte aligned frame |
+| Scanner, real child and renderer | 58 / 48 | 317 / 313 | Register scheduling and alignment still differ; no exactness claim |
+| Previously retained full screenshot parent + renderer producer | 58 / 48 | **311 / 313** | Best child so far: 112/113 instructions, eight calls, 46 nonfield differences |
+
+Twelve natural C++ lifetime variants for the texture entry, table and
+short-lived COM texture pointer were tried in a bounded `/GL` producer: an
+entry reference yielded 310 bytes/112 instructions and 51 differences, a
+short-lived texture pointer 308/111 and 48 differences, and volatile index
+or entry variants changed larger sections. None improved the retained
+311-byte owner. The source deliberately continues to preserve the native
+backbuffer-to-texture transfer and exact COM cleanup order. The remaining
+private receiver/register and x87/stack-frame scheduling questions require a
+real original translation-unit partition, not a byte patch or function
+boundary adjustment. Scope logs are under
+`.analysis/screenshot-flush-scope-20261113.log` and
+`.analysis/probe-surface-dirtytext-20261113.log`.
