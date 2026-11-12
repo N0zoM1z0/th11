@@ -176,3 +176,37 @@ The separately scoped 318-byte native `InitializeSecondaryHost` main body
 also has full natural source in `src/SecondaryMasterInitialization.cpp`;
 its real program/new/chain construction paths preserve all seven calls.
 Its current linked codegen is still non-exact and is tracked separately.
+
+## Full 318-byte secondary host initialization boss (2026-11-12)
+
+`src/SecondaryMasterInitialization.cpp` now reconstructs the complete reviewed
+`InitializeSecondaryHost` (`0x410BE0..0x410D1D`) in ordinary C++.
+It loads the active animation file from the existing secondary actor files,
+constructs the native 0x1098-byte program-with-extensions and calls its
+virtual script-loader, then allocates and initializes **two independent
+0x24-byte chain nodes** for update and draw. These link into the actual
+`AddToUpdateChain` and `AddToDrawChain` paths with priorities **18** and
+**20**, using now-exact native callbacks at `0x4111A0` and `0x4111B0`.
+It initializes the embedded stage timer fields at +0x50 through +0x60
+with the native `SetFrame(-1)` path and returns zero. The allocation-failure
+fall-throughs remain native unchecked paths; no unwarranted guards or
+nominal class claims were introduced.
+
+Three scoped pinned VC9 `/GL` PE/MAP/PDB context links were compared to the
+entire **318-byte / 102-instruction / seven-call** original. A standalone
+producer yields **306/318 bytes, 96 instructions, 7/7 calls**; linking the
+real script-program constructors and both chain producers yields **242/318**
+and **248/318** variants (still seven calls), because the compiler emits
+separate program construction rather than the target's inlined sequence.
+Six further natural C++ variations for program result, chain-field ordering,
+flag expressions, and timer initialization retain or slightly alter the
+same non-exact layout. No forced ABI, byte edits, or suppressed owner code
+were accepted. The complete natural source is source-present **but not
+strict exact**, with no credit in `config/matches.csv`.
+
+The bounded reproducible diagnostic is
+`.analysis/probe-secondary-master-initialization-20261112.py`, and the
+variant study is `.analysis/try-secondary-master-init-20261112.py`.
+Their public independent caller is
+`probes/secondary-master-initialization-context.cpp`. All probes compile
+only this primary source owner and direct producers, never a full cohort.

@@ -20,7 +20,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - [Generated progress](PROGRESS.md) and
   `config/{functions,function-boundaries,function-origins,matches}.csv`
   determine names, origins, reviewed extents and exact status.
-  At this checkpoint: **303 canonical exact**, **600 source-present**,
+  At this checkpoint: **303 canonical exact**, **601 source-present**,
   **661 reviewed boundaries**. Refresh with
   `scripts/repo-python scripts/progress.py`, not manual totals.
 - An exact owner requires the entire original function, source/tool
@@ -64,8 +64,8 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   unresolved; no exact claim. [Secondary lifetime](SECONDARY_LIFETIME.md).
 - Two new complete secondary-master chain callbacks are **7/7 and 6/6
   strict exact normal-COFF**, one real call field for the update adapter.
-  The adjacent 318-byte initialization boss is source-present but remains
-  non-exact. [Secondary extension](SECONDARY_EXTENSION.md).
+  The adjacent 318-byte initialization boss has full source and a scoped
+  306/318-byte candidate (7/7 calls), but remains non-exact. [Secondary extension](SECONDARY_EXTENSION.md).
 - Full **201-byte** secondary-master precleanup at `0x40D0C0` is
   **201/201 strict exact**, 68 instructions, one renderer field, with
   the genuine four-document/two-VM-chain scans and actor virtual cleanup.
@@ -92,8 +92,8 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   unresolved; no exact claim. [Secondary lifetime](SECONDARY_LIFETIME.md).
 - Two new complete secondary-master chain callbacks are **7/7 and 6/6
   strict exact normal-COFF**, one real call field for the update adapter.
-  The adjacent 318-byte initialization boss is source-present but remains
-  non-exact. [Secondary extension](SECONDARY_EXTENSION.md).
+  The adjacent 318-byte initialization boss has full source and a scoped
+  306/318-byte candidate (7/7 calls), but remains non-exact. [Secondary extension](SECONDARY_EXTENSION.md).
 - Full **201-byte** secondary-master precleanup at `0x40D0C0` is
   **201/201 strict exact**, 68 instructions, one renderer field, with
   the genuine four-document/two-VM-chain scans and actor virtual cleanup.

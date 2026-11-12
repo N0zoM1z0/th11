@@ -598,3 +598,4 @@ DestroySecondaryMaster
 PrepareSecondaryMasterDestruction
 SecondaryMasterUpdateCallback
 SecondaryMasterDrawCallback
+InitializeSecondaryHost
