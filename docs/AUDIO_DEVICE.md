@@ -122,3 +122,25 @@ Cold scope is exactly9 new plus20 affected old MusicStream/SoundQueue units:
 declared, including the new SoundDevice.hpp. No unrelated family, full cohort,
 broad behavior suite or infrastructure tests are required; infrastructure is
 unchanged. Whole-game linking/runtime and original TU/data ownership remain open.
+
+## Exact 168-byte matrix scratch owner (2026-11-12)
+
+`src/AudioAdjacentHelpers.cpp` now implements all three independently
+reviewed audio-adjacent owners: `FindAudioAdjacentListNode` at `0x459C40`
+(18 bytes), `InitializeAudioAdjacentTween` at `0x459C60` (12 bytes), and
+`SetAudioAdjacentScratchMatrix` at `0x459C70` (168 bytes). The first two
+compile to full 18/18 and 12/12 lengths but remain non-exact because the
+original uses private EAX/ECX inputs rather than the ordinary fastcall
+ECX/EDX assignment. No false register-level ABI is asserted.
+
+The matrix scratch owner is **strict exact, all 168/168 bytes**. Its complete
+34-instruction original loads each of 16 float arguments from the stack with
+x87 `FLD`, stores them to sixteen consecutive floats at `0x4A5900..0x4A593C`
+with `FSTP`, returns the scratch base in EAX and cleans 64 stack bytes.
+Ordinary VC9 RTM `/O2 /Ob1 /Gy` C++ naturally reproduces this entire owner.
+Every one of the **17** DIR32 fields was independently reviewed: the EAX base
+immediate and sixteen stores, all referring to the same native base plus
+addends `0, 4, ..., 0x3C`. The pinned complete single-function normal-COFF
+COMDAT, current source/tool/object receipt and all 17 field replays give
+zero differing bytes. Canonical unit `audio-adjacent-scratch-matrix`; focused
+cold proof `.analysis/audio-adjacent-matrix-strict-20261112.log`.

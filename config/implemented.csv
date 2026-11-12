@@ -625,3 +625,6 @@ TraceMusicStream
 InitializeSecondaryEffect
 UpdateSecondaryEffect
 DrawSecondaryEffect
+FindAudioAdjacentListNode
+InitializeAudioAdjacentTween
+SetAudioAdjacentScratchMatrix

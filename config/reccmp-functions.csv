@@ -626,3 +626,6 @@ TraceMusicStream,0x0045B5A0,function
 InitializeSecondaryEffect,0x0045DD70,function
 UpdateSecondaryEffect,0x0045DE30,function
 DrawSecondaryEffect,0x0045DF10,function
+FindAudioAdjacentListNode,0x00459C40,function
+InitializeAudioAdjacentTween,0x00459C60,function
+SetAudioAdjacentScratchMatrix,0x00459C70,function

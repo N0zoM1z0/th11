@@ -20,7 +20,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - [Generated progress](PROGRESS.md) and
   `config/{functions,function-boundaries,function-origins,matches}.csv`
   determine names, origins, reviewed extents and exact status.
-  At this checkpoint: **314 canonical exact**, **627 source-present**,
+  At this checkpoint: **315 canonical exact**, **630 source-present**,
   **661 reviewed boundaries**. Refresh with
   `scripts/repo-python scripts/progress.py`, not manual totals.
 - An exact owner requires the entire original function, source/tool
@@ -67,6 +67,11 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   **184/188, 178/177 and 73/84** diagnostics; all 14 original calls
   agree, and the 268-byte activation boss is recompiled with its real
   initializer. Still non-exact. [Player controller](SECONDARY_PLAYER_CONTROLLER.md).
+- Complete `SetAudioAdjacentScratchMatrix` at `0x459C70` is now
+  **168/168 strict exact**, 34 instructions and **all 17 DIR32** fields.
+  Its adjacent 18-byte list search and 12-byte tween initializer have
+  maintained source but retain private EAX/ECX register mismatches.
+  [Audio device](AUDIO_DEVICE.md).
 - Full **188/177/84-byte** special-effect init/update/draw chain
   is source-present, with scoped VC9 diagnostics 184/188, 180/177 and
   82/84 respectively, retaining 5/7/2 native calls. Original source
