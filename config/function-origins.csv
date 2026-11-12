@@ -630,11 +630,11 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00439260,unknown,ConfigurationMenu,indeterminate,unknown,menu-primary-origin-2026-11-06
 0x00439350,unknown,ConfigurationMenu,indeterminate,unknown,menu-primary-origin-2026-11-06
 0x004393B0,unknown,ConfigurationMenu,indeterminate,unknown,menu-player-data-origin-2026-11-06
-0x00439420,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x004395A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x004396C0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00439900,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00439970,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00439420,unknown,TitleMenu,indeterminate,unknown,title-menu-lifecycle-origin-2026-11-12
+0x004395A0,unknown,TitleMenu,indeterminate,unknown,title-menu-lifecycle-origin-2026-11-12
+0x004396C0,unknown,TitleMenu,indeterminate,unknown,title-menu-lifecycle-origin-2026-11-12
+0x00439900,unknown,TitleMenu,indeterminate,unknown,title-menu-lifecycle-origin-2026-11-12
+0x00439970,unknown,TitleMenu,indeterminate,unknown,title-menu-lifecycle-origin-2026-11-12
 0x004399B0,unknown,ConfigurationMenu,indeterminate,unknown,menu-controller-origin-2026-11-06
 0x00439E80,unknown,ConfigurationMenu,indeterminate,unknown,menu-controller-origin-2026-11-06
 0x00439F10,unknown,ConfigurationMenu,indeterminate,unknown,menu-controller-origin-2026-11-06

@@ -652,3 +652,8 @@ DrawMenuPage0A
 QuantizeSecondaryActorPosition
 ReadSecondaryHostDialogueDelay
 FindSecondaryClearObjectByIdentity
+ConstructTitleMenuStorage
+InitializeTitleMenuResources
+DestroyTitleMenuStorage
+StartTitleMenu
+DeleteTitleMenu
