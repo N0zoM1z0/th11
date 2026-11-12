@@ -638,3 +638,13 @@ DrawMenuController
 InitializeInputBindingDefaults
 DrawMenuPage08
 ChangeSecondaryAnimationScript
+ReadSecondaryState000A
+WriteSecondaryState000A
+ReadSecondaryState000B
+WriteSecondaryState000B
+ReadSecondaryState004
+WriteSecondaryState004
+ReadSecondaryState008
+WriteSecondaryState008
+WriteSecondaryState010
+StoreSecondaryStateValue

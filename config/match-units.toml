@@ -6197,3 +6197,133 @@ linkages = [
   { offset = 0x25, type = "DIR32", symbol = "__imp__CloseHandle@4", target = 0x0048B0A0 },
   { offset = 0x3B, type = "DIR32", symbol = "__imp__ReadFile@20", target = 0x0048B0A4 },
 ]
+
+[units.secondary-state-accessor-410020]
+artifact_kind = "linked-pe"
+source = "src/SecondaryStateAccessors.cpp"
+support_sources = ["probes/secondary-state-accessors-context.cpp"]
+output_dir = "build/match-linked/SecondaryStateAccessors"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryStateAccessorProbe@12"
+functions = ["ReadSecondaryState000A", "WriteSecondaryState000A", "ReadSecondaryState000B", "WriteSecondaryState000B", "ReadSecondaryState004", "WriteSecondaryState004", "ReadSecondaryState008", "WriteSecondaryState008", "WriteSecondaryState010", "StoreSecondaryStateValue"]
+symbol = "?ReadSecondaryState000A@@YGHPBUSecondaryStateFieldsView@@@Z"
+target_address = 0x00410020
+size = 3
+linkages = []
+
+[units.secondary-state-accessor-410030]
+artifact_kind = "linked-pe"
+source = "src/SecondaryStateAccessors.cpp"
+support_sources = ["probes/secondary-state-accessors-context.cpp"]
+output_dir = "build/match-linked/SecondaryStateAccessors"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryStateAccessorProbe@12"
+functions = ["ReadSecondaryState000A", "WriteSecondaryState000A", "ReadSecondaryState000B", "WriteSecondaryState000B", "ReadSecondaryState004", "WriteSecondaryState004", "ReadSecondaryState008", "WriteSecondaryState008", "WriteSecondaryState010", "StoreSecondaryStateValue"]
+symbol = "?WriteSecondaryState000A@@YGXHPAUSecondaryStateFieldsView@@@Z"
+target_address = 0x00410030
+size = 3
+linkages = []
+
+[units.secondary-state-accessor-410040]
+artifact_kind = "linked-pe"
+source = "src/SecondaryStateAccessors.cpp"
+support_sources = ["probes/secondary-state-accessors-context.cpp"]
+output_dir = "build/match-linked/SecondaryStateAccessors"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryStateAccessorProbe@12"
+functions = ["ReadSecondaryState000A", "WriteSecondaryState000A", "ReadSecondaryState000B", "WriteSecondaryState000B", "ReadSecondaryState004", "WriteSecondaryState004", "ReadSecondaryState008", "WriteSecondaryState008", "WriteSecondaryState010", "StoreSecondaryStateValue"]
+symbol = "?ReadSecondaryState000B@@YGHPBUSecondaryStateFieldsView@@@Z"
+target_address = 0x00410040
+size = 3
+linkages = []
+
+[units.secondary-state-accessor-410050]
+artifact_kind = "linked-pe"
+source = "src/SecondaryStateAccessors.cpp"
+support_sources = ["probes/secondary-state-accessors-context.cpp"]
+output_dir = "build/match-linked/SecondaryStateAccessors"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryStateAccessorProbe@12"
+functions = ["ReadSecondaryState000A", "WriteSecondaryState000A", "ReadSecondaryState000B", "WriteSecondaryState000B", "ReadSecondaryState004", "WriteSecondaryState004", "ReadSecondaryState008", "WriteSecondaryState008", "WriteSecondaryState010", "StoreSecondaryStateValue"]
+symbol = "?WriteSecondaryState000B@@YGXHPAUSecondaryStateFieldsView@@@Z"
+target_address = 0x00410050
+size = 3
+linkages = []
+
+[units.secondary-state-accessor-410080]
+artifact_kind = "linked-pe"
+source = "src/SecondaryStateAccessors.cpp"
+support_sources = ["probes/secondary-state-accessors-context.cpp"]
+output_dir = "build/match-linked/SecondaryStateAccessors"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryStateAccessorProbe@12"
+functions = ["ReadSecondaryState000A", "WriteSecondaryState000A", "ReadSecondaryState000B", "WriteSecondaryState000B", "ReadSecondaryState004", "WriteSecondaryState004", "ReadSecondaryState008", "WriteSecondaryState008", "WriteSecondaryState010", "StoreSecondaryStateValue"]
+symbol = "?ReadSecondaryState004@@YGHPBUSecondaryStateFieldsView@@@Z"
+target_address = 0x00410080
+size = 4
+linkages = []
+
+[units.secondary-state-accessor-410090]
+artifact_kind = "linked-pe"
+source = "src/SecondaryStateAccessors.cpp"
+support_sources = ["probes/secondary-state-accessors-context.cpp"]
+output_dir = "build/match-linked/SecondaryStateAccessors"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryStateAccessorProbe@12"
+functions = ["ReadSecondaryState000A", "WriteSecondaryState000A", "ReadSecondaryState000B", "WriteSecondaryState000B", "ReadSecondaryState004", "WriteSecondaryState004", "ReadSecondaryState008", "WriteSecondaryState008", "WriteSecondaryState010", "StoreSecondaryStateValue"]
+symbol = "?WriteSecondaryState004@@YGXHPAUSecondaryStateFieldsView@@@Z"
+target_address = 0x00410090
+size = 4
+linkages = []
+
+[units.secondary-state-accessor-4100a0]
+artifact_kind = "linked-pe"
+source = "src/SecondaryStateAccessors.cpp"
+support_sources = ["probes/secondary-state-accessors-context.cpp"]
+output_dir = "build/match-linked/SecondaryStateAccessors"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryStateAccessorProbe@12"
+functions = ["ReadSecondaryState000A", "WriteSecondaryState000A", "ReadSecondaryState000B", "WriteSecondaryState000B", "ReadSecondaryState004", "WriteSecondaryState004", "ReadSecondaryState008", "WriteSecondaryState008", "WriteSecondaryState010", "StoreSecondaryStateValue"]
+symbol = "?ReadSecondaryState008@@YGHPBUSecondaryStateFieldsView@@@Z"
+target_address = 0x004100A0
+size = 4
+linkages = []
+
+[units.secondary-state-accessor-4100b0]
+artifact_kind = "linked-pe"
+source = "src/SecondaryStateAccessors.cpp"
+support_sources = ["probes/secondary-state-accessors-context.cpp"]
+output_dir = "build/match-linked/SecondaryStateAccessors"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryStateAccessorProbe@12"
+functions = ["ReadSecondaryState000A", "WriteSecondaryState000A", "ReadSecondaryState000B", "WriteSecondaryState000B", "ReadSecondaryState004", "WriteSecondaryState004", "ReadSecondaryState008", "WriteSecondaryState008", "WriteSecondaryState010", "StoreSecondaryStateValue"]
+symbol = "?WriteSecondaryState008@@YGXHPAUSecondaryStateFieldsView@@@Z"
+target_address = 0x004100B0
+size = 4
+linkages = []
+
+[units.secondary-state-accessor-4100c0]
+artifact_kind = "linked-pe"
+source = "src/SecondaryStateAccessors.cpp"
+support_sources = ["probes/secondary-state-accessors-context.cpp"]
+output_dir = "build/match-linked/SecondaryStateAccessors"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryStateAccessorProbe@12"
+functions = ["ReadSecondaryState000A", "WriteSecondaryState000A", "ReadSecondaryState000B", "WriteSecondaryState000B", "ReadSecondaryState004", "WriteSecondaryState004", "ReadSecondaryState008", "WriteSecondaryState008", "WriteSecondaryState010", "StoreSecondaryStateValue"]
+symbol = "?WriteSecondaryState010@@YGXHPAUSecondaryStateFieldsView@@@Z"
+target_address = 0x004100C0
+size = 4
+linkages = []
+
+[units.secondary-state-accessor-4100d0]
+artifact_kind = "linked-pe"
+source = "src/SecondaryStateAccessors.cpp"
+support_sources = ["probes/secondary-state-accessors-context.cpp"]
+output_dir = "build/match-linked/SecondaryStateAccessors"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryStateAccessorProbe@12"
+functions = ["ReadSecondaryState000A", "WriteSecondaryState000A", "ReadSecondaryState000B", "WriteSecondaryState000B", "ReadSecondaryState004", "WriteSecondaryState004", "ReadSecondaryState008", "WriteSecondaryState008", "WriteSecondaryState010", "StoreSecondaryStateValue"]
+symbol = "?StoreSecondaryStateValue@@YGXPAHH@Z"
+target_address = 0x004100D0
+size = 3
+linkages = []

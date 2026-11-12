@@ -639,3 +639,13 @@ DrawMenuController,0x00439E80,function
 InitializeInputBindingDefaults,0x00459BD0,function
 DrawMenuPage08,0x0043DAA0,function
 ChangeSecondaryAnimationScript,0x00456770,function
+ReadSecondaryState000A,0x00410020,function
+WriteSecondaryState000A,0x00410030,function
+ReadSecondaryState000B,0x00410040,function
+WriteSecondaryState000B,0x00410050,function
+ReadSecondaryState004,0x00410080,function
+WriteSecondaryState004,0x00410090,function
+ReadSecondaryState008,0x004100A0,function
+WriteSecondaryState008,0x004100B0,function
+WriteSecondaryState010,0x004100C0,function
+StoreSecondaryStateValue,0x004100D0,function

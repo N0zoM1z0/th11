@@ -308,3 +308,39 @@ Both targeted contexts are reproducible through
 `.analysis/probe-secondary-master-lifecycle-20261112.py` and the public
 dynamic producer `probes/secondary-master-lifecycle-context.cpp`. Only the
 new 29-byte strict unit was cold replayed; no unrelated full replay.
+
+## Ten exactly reconstructed secondary state accessors (2026-11-12)
+
+`src/SecondaryStateAccessors.cpp` now contains the **ten complete** native
+read/write leaves at `0x410020`, `0x410030`, `0x410040`, `0x410050`,
+`0x410080`, `0x410090`, `0x4100A0`, `0x4100B0`, `0x4100C0` and `0x4100D0`.
+They are individually reviewed, **35 bytes total**, and each consists of
+exactly one ordinary field load/store followed by a return. The four readers
+access offsets 0, 0, 4 and 8; the five paired field stores write 0, 0,
+4, 8 and 0x10; the last helper stores a value through a pointer. The
+identical byte patterns of two distinct 0-offset readers and two writers
+remain separate, real native owners with separate original boundaries and
+unique source PDB contributions. No guessed class identity or authorship
+is claimed from these register operations.
+
+The first ordinary natural C++ version generated exact read/store bodies
+but assigned the wrong ECX/EAX roles in five writer bodies (each one
+ModRM byte away, despite correct size). Using the equally natural argument
+order **(value, receiver)** for the five writers makes VC9 allocate the
+value in ECX and the receiver pointer in EAX, as the original Japanese PE
+does, without explicit registers, naked functions, byte blobs or padding.
+Both isolated and genuine `SecondaryCounter.cpp`-producer linked contexts
+generate **all 35/35 original bytes** in all ten unique functions, with
+zero relocations and no masked differences.
+
+Ten independent canonical units named `secondary-state-accessor-410020`
+through `secondary-state-accessor-4100d0` share one pinned VC9 RTM `/GL`
+production context (source + `probes/secondary-state-accessors-context.cpp`).
+All ten strictly cold-replayed in a **selected-only** run, with complete
+unique public primary-TU PE/MAP/PDB contributions, current source/compiler/
+producer receipts, zero address fields and `difference_count=0` on every
+original 3- or 4-byte extent. The local receipt log is
+`.analysis/secondary-state-accessors-strict-20261112.log` and the explored
+source-context comparison is
+`.analysis/probe-secondary-state-accessors-20261112.py`.
+No unrelated canonical exact units were rebuilt.
