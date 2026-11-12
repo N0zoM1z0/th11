@@ -547,3 +547,25 @@ canonical source or shared `SecondaryScript.hpp` header. Evidence:
 complete native/candidate private PE disassembly. The open question is
 constructor/vptr scheduling and the eventual count register-lifetime under
 the original translation-unit context, not another equivalent clear call.
+
+## Loader selection object and branch-register trials (2026-11-12)
+
+Five additional natural C++ formulations of the complete 277-byte
+`LoadSecondaryProgramSelection` were cold-linked with the genuine program
+browser thread and archive/resource producers. Naming the target selection
+object as a reference or pointer, testing `count != 0 && count <= 0`, and
+reloading the value from the written selection-count field all keep
+**277 bytes, 81 instructions, eight original calls and the same 18
+non-address-field byte differences**. A `switch` with negative-case
+selection instead produces 275 bytes/80 instructions and 53 nonfield
+differences. The first four therefore have no improvement over the
+maintained source, and the `switch` version is worse; none was promoted.
+
+All variants share the same four-byte constructor-vptr/push ordering gap at
++0x9F..+0xA2 and register/cookie scheduling gap at +0xDB..+0xF8.
+This further narrows the issue to original constructor/LTCG allocation and
+private register lifetime, not selection-container access syntax or a missing
+branch. Focused experiments and raw output are retained in
+`.analysis/try-loader-new-selection-20261112.py` and its log. The canonical
+loader, real resource producer and already exact units were not modified;
+no broad cold replay was run.
