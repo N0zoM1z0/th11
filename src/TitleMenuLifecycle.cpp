@@ -215,7 +215,8 @@ TitleMenuView *__cdecl StartTitleMenu()
     thread->pending = 1;
     thread->stopRequested = 0;
     thread->thread = reinterpret_cast<HANDLE>(
-        _beginthreadex(0, 0, TitleMenuThread, menu, 0, &thread->unknown08));
+        _beginthreadex(0, 0, reinterpret_cast<unsigned int (__stdcall *)(void *)>(TitleMenuThread),
+            menu, 0, &thread->unknown08));
     return menu;
 }
 

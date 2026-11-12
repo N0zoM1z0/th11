@@ -49,4 +49,4 @@ void __cdecl DeleteTitleMenu();
 // Owned downstream records and the background callback need their own
 // independently reviewed functions; their lifetimes belong to this owner.
 void __stdcall DestroyTitleMenuRecord(TitleMenuRecordView *record);
-unsigned int __stdcall TitleMenuThread(void *context);
+unsigned int __cdecl TitleMenuThread();

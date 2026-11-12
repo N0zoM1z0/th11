@@ -565,3 +565,13 @@ one call and two independently reviewed DIR32/REL32 fields. The genuine
 restores the original EAX ID reference / EDX renderer private ABI. The
 linked primary owner is byte-exact with zero differences; the 3192-byte
 parent remains non-exact. See `PAUSE_CONTINUE_MENU.md`.
+
+
+The title-menu thread at `0x4394F0` is now **165/165 strict linked exact**.
+Its native callback has no consumed argument and uses plain `RET` even though
+the caller passes its address to `_beginthreadex`. After the real animation
+document destructor, the original re-reads renderer slot 1 before scalar
+delete; preserving that pointer reload naturally restores ESI/EDI register
+allocation and all 47 instructions. The genuine title/document `/GL`
+producer and 12 reviewed address/call fields replay with zero differences.
+See [TITLE_MENU_LIFECYCLE](TITLE_MENU_LIFECYCLE.md).

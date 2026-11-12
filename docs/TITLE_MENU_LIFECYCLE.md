@@ -54,9 +54,10 @@ function-pointer owners Ghidra missed in its initial inventory:
   runtime flag `0x180` interrupts waiting. `Sleep(16)` is used between
   progress reads. Renderer slot 1 is then destroyed, the menu update-chain
   flag is enabled, and the thread state is published. Failure builds
-  flags from the runtime's `0x2000` state and exits early. The thread source
-  compiles to 166 bytes in the conventional callable context but has
-  private ABI/branch differences, so remains non-exact.
+  flags from the runtime's `0x2000` state and exits early. The verified
+  zero-input `__cdecl` callback is now **165/165 strict exact** in a real
+  title/document producer context, with all 12 native address/call fields
+  replayed (details below).
 - `0x439F20..0x439F26` (7 bytes), `MenuControllerDrawCallback`:
   the original is `MOV EAX,ECX` then a tail `JMP` to the 140-byte draw
   dispatcher at `0x439E80`. Its body is present as a natural C++ forwarder;
@@ -67,4 +68,36 @@ function-pointer owners Ghidra missed in its initial inventory:
 
 The 429-byte replay-record owner called from title destruction is now in
 `TitleMenuRecord.cpp`; it is source-present and independently matched in
-size, not strict codegen. No exact units are modified by these additions.
+size, not strict codegen. The separate 165-byte thread has now become an independently exact unit.
+
+## Exact 165-byte title worker callback (2026-11-12)
+
+Ghidra's full mapped-PE review at `0x4394F0..0x439594` shows a callback
+which does **not** consume its `_beginthreadex` context parameter and has two
+ordinary `RET` exits. Declaring it as `unsigned int __cdecl TitleMenuThread()`
+reflects that real ABI, while the title launcher retains the required explicit
+cast to the Win32 thread callback pointer. In normal COFF this restores most
+of the original failure and readiness code, but leaves a 163-byte non-exact
+owner.
+
+The remaining real semantic difference is at the loader-only animation slot
+(`g_RenderBatch` + `0x4350C4`, slot index 1). The native releases the document
+using the original file pointer in EDI, **then reloads the slot pointer** for
+`operator delete` before clearing the slot. The earlier source reused the
+cached file pointer and compiled differently. Expressing the slot as
+`AnimationDocumentView **slot`, then `DestroyAnimationDocument(file)`,
+`operator delete(*slot)`, and finally `*slot = 0` recovers its full native
+ESI/EDI register lifetimes and preserves any intervening slot mutation.
+
+A narrow genuine producer comprises `TitleMenuThread.cpp` as primary,
+`TitleMenuLifecycle.cpp` and `AnimationDocumentDestructor.cpp` as real `/GL`
+support, and the simple dynamic caller
+`probes/title-menu-thread-context.cpp`. Pinned VC9 RTM creates a single
+complete public 165-byte PDB/MAP owner, **47/47 instructions, four calls,
+two RETs, 12 independently reviewed DIR32/REL32 target fields, and zero
+byte differences**. All 12 fields cover the real resource initializer,
+runtime flag offset `+0x590`, startup error state, loading singleton, Sleep
+import, renderer, document destructor, scalar delete, title singleton and
+thread-active global. Canonical `title-menu-thread` cold replay verifies its
+current source/header/tool/producer/PE/MAP/PDB receipt. Original production
+TU ownership remains open, but this complete owner is strictly exact.

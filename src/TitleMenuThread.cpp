@@ -19,7 +19,7 @@ extern TitleMenuView *g_TitleMenu;
 // Native 0x4394F0..0x439594: initialize chains/assets, wait for the runtime
 // load milestone unless graphics/device shutdown interrupts, then release
 // the loader-only animation document and enable the update callback.
-unsigned int __stdcall TitleMenuThread(void *context)
+unsigned int __cdecl TitleMenuThread()
 {
     if (InitializeTitleMenuResources() != 0)
     {
@@ -32,12 +32,13 @@ unsigned int __stdcall TitleMenuThread(void *context)
             Sleep(16);
         AnimationDocumentSlotsView *slots =
             reinterpret_cast<AnimationDocumentSlotsView *>(g_RenderBatch);
-        AnimationDocumentView *file = slots->files[1];
+        AnimationDocumentView **slot = &slots->files[1];
+        AnimationDocumentView *file = *slot;
         if (file)
         {
             DestroyAnimationDocument(file);
-            ::operator delete(file);
-            slots->files[1] = 0;
+            ::operator delete(*slot);
+            *slot = 0;
         }
     }
     g_TitleMenu->updateChain->flags |= 2;
