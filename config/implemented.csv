@@ -669,3 +669,4 @@ DestroyThreadInfVirtual
 ConstructThreadInfStorage
 DeleteThreadInfVirtual
 SetRuntimeThreadFlagA577C
+UpdateReplayInputRepeatState

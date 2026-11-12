@@ -6625,3 +6625,15 @@ linkages = [
   { offset = 0x0D, type = "REL32", symbol = "??1TitleMenuView@@QAE@XZ", target = 0x004396C0 },
   { offset = 0x13, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x0045FD49 },
 ]
+
+[units.replay-input-repeat-state]
+artifact_kind = "coff"
+source = "src/ReplayInputRepeat.cpp"
+inputs = ["src/ReplayInputRepeat.hpp"]
+object = "build/match/ReplayInputRepeat.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["UpdateReplayInputRepeatState"]
+symbol = "?UpdateReplayInputRepeatState@@YIXPAUReplayInputRepeatView@@@Z"
+target_address = 0x0040DE10
+size = 137
+relocations = []
