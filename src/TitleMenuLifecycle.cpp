@@ -56,32 +56,20 @@ __forceinline TitleMenuChain *CreateTitleMenuChain(
     return chain;
 }
 
-struct ScopedTitleChainLock
-{
-    ScopedTitleChainLock()
-    {
-        if (g_MainRuntime.flags & 0x8000)
-        {
-            EnterCriticalSection(&g_MainRuntime.criticalSections[0]);
-            ++g_MainRuntime.criticalDepth[0];
-        }
-    }
-    ~ScopedTitleChainLock()
-    {
-        if (g_MainRuntime.flags & 0x8000)
-        {
-            LeaveCriticalSection(&g_MainRuntime.criticalSections[0]);
-            --g_MainRuntime.criticalDepth[0];
-        }
-    }
-};
-
 __forceinline void RemoveTitleMenuChain(ChainElement *chain)
 {
-    if (chain)
+    if (!chain) return;
+    ChainManagerView *manager = g_ChainManager;
+    if (g_MainRuntime.flags & 0x8000)
     {
-        ScopedTitleChainLock lock;
-        UnregisterChainElement(chain, g_ChainManager);
+        EnterCriticalSection(&g_MainRuntime.criticalSections[0]);
+        ++g_MainRuntime.criticalDepth[0];
+    }
+    UnregisterChainElement(chain, manager);
+    if (g_MainRuntime.flags & 0x8000)
+    {
+        LeaveCriticalSection(&g_MainRuntime.criticalSections[0]);
+        --g_MainRuntime.criticalDepth[0];
     }
 }
 
@@ -89,12 +77,13 @@ __forceinline void ReleaseTitleMenuAnimation(int index)
 {
     AnimationDocumentSlotsView *slots =
         reinterpret_cast<AnimationDocumentSlotsView *>(g_RenderBatch);
-    AnimationDocumentView *file = slots->files[index];
+    AnimationDocumentView **slot = &slots->files[index];
+    AnimationDocumentView *file = *slot;
     if (file)
     {
         DestroyAnimationDocument(file);
-        ::operator delete(file);
-        slots->files[index] = 0;
+        ::operator delete(*slot);
+        *slot = 0;
     }
 }
 

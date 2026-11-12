@@ -145,3 +145,38 @@ The only original address field, a `REL32` at +3 to the reviewed complete
 `menu-controller-draw-callback` strict linked Oracle. Cold VC9 comparison
 with current source/tool/PE/MAP/PDB receipts reports **zero differences**.
 The 140-byte dispatcher itself remains source-present but non-exact.
+
+## 561-byte destructor: original lock pairing and resource-slot reload (2026-11-12)
+
+The `0x4396C0..0x4398F0` destructor is now substantially closer in a bounded
+VC9 `/GL` diagnostic family. Its original code enters and leaves each chain
+critical section directly, without recording a separate exception-unwind
+state for each lock. The maintained `RemoveTitleMenuChain` now uses these
+actual paired operations, retaining the real manager pointer before locking.
+For each renderer document slot (24 and 25), it preserves the pointer to the
+slot, calls `DestroyAnimationDocument` with the loaded document, **reloads the
+slot for scalar deletion**, then clears the slot. These are real lifetime and
+side-effect observations, not artificial code-generation padding.
+
+A full original-PE comparison with the genuine destructor caller, real
+`AnimationDocumentDestructor.cpp` and `FrameRuntime.cpp` producers gives:
+
+| Source variant | Linked bytes / native | Instructions / native | Calls / native | Return | Non-address differences |
+| --- | --- | --- | --- | --- | --- |
+| Earlier scoped locks, cached document | 569 / 561 | 154 / 155 | 15 / 15 | `RET` | 385 |
+| Direct lock pairs, cached document | 561 / 561 | 150 / 155 | 15 / 15 | `RET 4` | 226 |
+| Direct lock pairs, **slot reload** | **561 / 561** | **152 / 155** | **15 / 15** | **`RET 4`** | **231** |
+
+The retained detailed probe is `.analysis/probe-title-menu-dtor-variants-20261112.py`
+with its accompanying log; the typed producer is
+`probes/title-menu-destructor-context.cpp`. The extra five positional
+non-address differences in the final variant are not ignored: the slot reload
+faithfully retains native document ownership even as it changes register
+allocation. Neither of these candidates is exact. The native still saves a
+separate ECX and uses different first-chain bit-mask/register lifetimes.
+
+The only directly affected canonical units using `TitleMenuLifecycle.cpp`
+were cold-replayed after the change: `title-menu-constructor` (201 bytes),
+`title-menu-thread` (165 bytes), and `menu-controller-draw-callback` (7 bytes).
+All three retained strict full-byte and field equality. See private scoped
+verification `.analysis/title-menu-destructor-affected-exact-20261112.log`.

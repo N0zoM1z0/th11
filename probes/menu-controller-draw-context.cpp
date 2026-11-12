@@ -1,6 +1,6 @@
-struct MenuControllerView;
-extern int __fastcall DrawMenuController(MenuControllerView *);
-extern "C" int __stdcall MenuControllerDrawProbe(MenuControllerView *self)
+#include "MenuController.hpp"
+int __fastcall DrawMenuController(MenuControllerView *menu);
+extern "C" int __stdcall MenuControllerDrawProbe(MenuControllerView *menu)
 {
-    return DrawMenuController(self);
+    return DrawMenuController(menu);
 }
