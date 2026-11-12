@@ -659,3 +659,6 @@ DestroyTitleMenuStorage,0x004396C0,function
 StartTitleMenu,0x00439900,function
 DeleteTitleMenu,0x00439970,function
 DestroyReplayRecordStageLink,0x004374D0,function
+DestroyTitleMenuRecord,0x00435C50,function
+TitleMenuThread,0x004394F0,function
+MenuControllerDrawCallback,0x00439F20,function

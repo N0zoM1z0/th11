@@ -23,3 +23,24 @@ several owned buffers, unregisters up to three chain elements with optional
 runtime critical-section locks, clears a singleton if owned, and destructs the
 eight stage links above. That enclosing body requires separate source and
 linked EH/codegen analysis; the stage-link match alone makes no claim for it.
+
+## Full 429-byte record destructor source
+
+The enclosing `0x435C50..0x435DFC` is now mapped to
+`TitleMenuRecord.cpp`, with its complete 429-byte cleanup represented in
+natural C++. The physical `TitleMenuRecordView` has streams at `+0x40`,
+`ReplayRecordStageLink stages[8]` at `+0xA4` and a third chain link at
+`+0x1D0`; compile-time offset assertions protect those observations. C++
+member lifetime generates an actual vector of eight nested stage-link
+destructors, avoiding a synthetic call or dummy EH stack frame. Cleanup
+performs each original ownership action and preserves its three independent
+conditional chain unregisters. The wrapper is separately callable by the
+title/menu owner and other replay consumers.
+
+The locked VC9 normal-COFF `/O2 /Ob1 /Gy /MT /EHsc` compilation yields a
+**complete 429-byte destructor function** with 36 source relocation fields,
+but the full strict comparison still has differences, including EH and
+private caller-register scheduling. This is a size-aligned *source-present*
+boss, **not an exact claim**; its private cold-linked primary-TU context
+remains to be established. The independently exact 37-byte stage-link
+function and its canonical receipt are unchanged.

@@ -42,3 +42,29 @@ exception frames and source-TU/LTCG ownership remain open; there is no new
 strict exact claim from this five-function batch. The title-thread callback at
 `0x4394F0`, the draw callback at `0x439F20`, and the 429-byte record destructor
 at `0x435C50` are distinct follow-up owners.
+
+## Background thread and draw callback now source-present
+
+Direct native instruction review also recovered two independently bounded
+function-pointer owners Ghidra missed in its initial inventory:
+
+- `0x4394F0..0x439594` (165 bytes), `TitleMenuThread`:
+  `InitializeTitleMenuResources` runs before a load-progress wait on the
+  singleton at `0x4A8E98`, whose `+0x474` counter must reach 180 unless
+  runtime flag `0x180` interrupts waiting. `Sleep(16)` is used between
+  progress reads. Renderer slot 1 is then destroyed, the menu update-chain
+  flag is enabled, and the thread state is published. Failure builds
+  flags from the runtime's `0x2000` state and exits early. The thread source
+  compiles to 166 bytes in the conventional callable context but has
+  private ABI/branch differences, so remains non-exact.
+- `0x439F20..0x439F26` (7 bytes), `MenuControllerDrawCallback`:
+  the original is `MOV EAX,ECX` then a tail `JMP` to the 140-byte draw
+  dispatcher at `0x439E80`. Its body is present as a natural C++ forwarder;
+  isolated VC9 generates a shorter 5-byte tail jump, so the private
+  register bridge and linked owner are still open. Both reference/padding
+  spans were directly reviewed, and the title resource setup uses this
+  callback rather than inventing a no-op.
+
+The 429-byte replay-record owner called from title destruction is now in
+`TitleMenuRecord.cpp`; it is source-present and independently matched in
+size, not strict codegen. No exact units are modified by these additions.

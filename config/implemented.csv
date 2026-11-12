@@ -658,3 +658,6 @@ DestroyTitleMenuStorage
 StartTitleMenu
 DeleteTitleMenu
 DestroyReplayRecordStageLink
+DestroyTitleMenuRecord
+TitleMenuThread
+MenuControllerDrawCallback
