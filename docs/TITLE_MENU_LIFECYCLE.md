@@ -12,7 +12,7 @@ simulating the small callback entries without their owning state.
 | `0x4395A0` chain/resource setup | 275 | 262 isolated / 275 linked | **275/275 strict exact** |
 | `0x4396C0` full destruction | 561 | 584 | source-present, not exact |
 | `0x439900` worker startup | 106 | 107 normal COFF / 106 linked | **106/106 strict exact** |
-| `0x439970` singleton release | 28 | 29 | source-present, not exact |
+| `0x439970` singleton release | 28 | 29 normal COFF / 28 linked | **28/28 strict exact** |
 
 The constructor initializes the three early selection blocks and replay
 selection with matching `current=0`, `count=999`, wrap and exclusion fields,
@@ -239,3 +239,19 @@ two chain operations, two animation names, two document loads, error format,
 log root and logger call, plus success state. All 15 are replayed against the
 hash-pinned original with **zero differences**. Original TU ownership and
 whole-game runtime equivalence remain open.
+
+## Exact 28-byte singleton deletion entry (2026-11-12)
+
+The same real source family that proves the full 275-byte title resource boss
+also constrains the separate `DeleteTitleMenu` entry at
+`0x439970..0x43998B`. The original function conditionally reads the title
+singleton and invokes its destructor and the scalar delete routine; it does
+not perform an independent global reset because the destructor owns that.
+
+Pinned VC9 RTM `/GL` produces **28/28 original bytes, 11/11 instructions
+and both native calls** in one unambiguous public primary-TU owner. Its
+three original fields bind the title singleton `0x4A8ECC`, the reviewed
+561-byte title destructor `0x4396C0`, and scalar delete `0x45FD49`. The
+canonical `delete-title-menu` linked Oracle exhaustively replays all fields
+with **zero byte differences**. This claim applies only to the 28-byte
+entry; the 561-byte callee remains source-present and nonexact.
