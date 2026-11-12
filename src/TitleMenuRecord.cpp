@@ -8,32 +8,20 @@ extern TitleMenuRecordView *g_TitleReplayRecord;
 
 namespace
 {
-struct ScopedReplayChainLock
-{
-    ScopedReplayChainLock()
-    {
-        if (g_MainRuntime.flags & 0x8000)
-        {
-            EnterCriticalSection(&g_MainRuntime.criticalSections[0]);
-            ++g_MainRuntime.criticalDepth[0];
-        }
-    }
-    ~ScopedReplayChainLock()
-    {
-        if (g_MainRuntime.flags & 0x8000)
-        {
-            LeaveCriticalSection(&g_MainRuntime.criticalSections[0]);
-            --g_MainRuntime.criticalDepth[0];
-        }
-    }
-};
-
 __forceinline void ReleaseReplayChain(ChainElement *element)
 {
-    if (element)
+    if (!element) return;
+    ChainManagerView *manager = g_ChainManager;
+    if (g_MainRuntime.flags & 0x8000)
     {
-        ScopedReplayChainLock lock;
-        UnregisterChainElement(element, g_ChainManager);
+        EnterCriticalSection(&g_MainRuntime.criticalSections[0]);
+        ++g_MainRuntime.criticalDepth[0];
+    }
+    UnregisterChainElement(element, manager);
+    if (g_MainRuntime.flags & 0x8000)
+    {
+        LeaveCriticalSection(&g_MainRuntime.criticalSections[0]);
+        --g_MainRuntime.criticalDepth[0];
     }
 }
 }
@@ -46,18 +34,20 @@ TitleMenuRecordView::~TitleMenuRecordView()
     for (int stage = 0; stage < 8; ++stage)
         ClearReplayStageSegments(reinterpret_cast<ReplayCleanupState *>(this), stage);
 
-    ::operator delete(buffer018);
+    void *const blob = buffer018;
+    ::operator delete(blob);
     buffer018 = 0;
     for (int i = 0; i < 8; ++i)
     {
-        ::operator delete(buffers[i]);
+        void *const item = buffers[i];
+        ::operator delete(item);
         buffers[i] = 0;
     }
 
     ReleaseReplayChain(updateChain);
     ReleaseReplayChain(secondaryChain);
     ReleaseReplayChain(drawChain);
-    if (g_TitleReplayRecord == this) g_TitleReplayRecord = 0;
+    if (this == g_TitleReplayRecord) g_TitleReplayRecord = 0;
     // C++ implicitly runs the eight ReplayRecordStageLink destructors here.
 }
 

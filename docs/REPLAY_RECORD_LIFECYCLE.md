@@ -37,10 +37,47 @@ performs each original ownership action and preserves its three independent
 conditional chain unregisters. The wrapper is separately callable by the
 title/menu owner and other replay consumers.
 
-The locked VC9 normal-COFF `/O2 /Ob1 /Gy /MT /EHsc` compilation yields a
-**complete 429-byte destructor function** with 36 source relocation fields,
-but the full strict comparison still has differences, including EH and
-private caller-register scheduling. This is a size-aligned *source-present*
-boss, **not an exact claim**; its private cold-linked primary-TU context
-remains to be established. The independently exact 37-byte stage-link
-function and its canonical receipt are unchanged.
+The first locked VC9 normal-COFF `/O2 /Ob1 /Gy /MT /EHsc` candidate
+emitted 429 bytes with 36 relocations but a private receiver and three extra
+lock EH scopes. That earlier unlinked diagnostic was **not** exact. The stage
+link's independent strict 37/37 receipt remains unchanged.
+
+## Narrowed full-length `/GL` boss (2026-11-12)
+
+A minimal genuine producer at `probes/title-replay-record-context.cpp` calls
+the real 429-byte record owner. With both real `ClearReplayStageSegments`
+and `ReplayRecordStageLink::~ReplayRecordStageLink` as `/GL` support, the
+compiler reproduces its private **stack-argument `RET 4`** and real loop ABI.
+The source now uses explicit paired conditional critical-section calls
+rather than three local scoped lock objects; the native destructor did not
+emit EH-state stores for those locks. Loading the chain manager before each
+lock check also restores the original manager lifetime, register allocation
+and complete body size. Natural local pointers for the two delete paths and
+`this == g_TitleReplayRecord` recover the target load/compare encodings.
+
+| Scoped linked diagnostic | Body bytes | Instructions | Calls | Address/call fields | Non-address byte differences |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Initial worker with real stages (RAII locks) | 432 / 429 | 115 / 114 | 14 / 14 | 36 | 182 |
+| Explicit lock pairs | 417 / 429 | 112 / 114 | 14 / 14 | 36 | 153 |
+| Preload chain manager | 429 / 429 | 114 / 114 | 14 / 14 | 38 | 11 |
+| Preserve delete locals; reverse singleton equality | **429 / 429** | **114 / 114** | **14 / 14** | **38** | **6** |
+
+The six differences are exactly the instruction-byte register move order in
+three calls to `UnregisterChainElement`, each of which moves the correct
+pointer values into `ECX` and `EDX` before the call. Natural reference,
+inline-forwarder and helper-argument-order variants did not improve them;
+including the full chain-remove producer instead of its external call changed
+the link-time owner to 370 bytes, so that context is not promoted. Evidence:
+`.analysis/probe-title-record-real-callees-20261112.log`,
+`.analysis/probe-title-record-11diffs-20261112.log`,
+`.analysis/probe-title-record-last-six-20261112.log`, and
+`.analysis/verify-title-record-current-20261112.py` (complete original
+function and candidate bytes plus all decoded fields). In ordinary COFF the
+updated source produces **425 bytes**; that different context grants no
+comparison credit.
+
+The complete 429-byte linked diagnostic is deliberately still **non-exact**:
+no masked six-byte exception or altered function boundary is accepted, and
+original translation-unit ownership remains unknown. The strongest next step
+is recovering native argument-move scheduling without changing the real
+callee ABI or the established `/GL` sources.
