@@ -6341,3 +6341,25 @@ symbol = "?InitializeInputBindingDefaults@InputBindingDefaultsView@@QAEPAU1@XZ"
 target_address = 0x00459BD0
 size = 98
 relocations = []
+
+# Full 133-byte quantizer with x87 paired 128/1-128 scaling and eight
+# invalidation flags. The two consecutive destination floats share one
+# natural pointer, restoring the original /GL store scheduling.
+[units.quantize-secondary-actor-position]
+artifact_kind = "linked-pe"
+source = "src/SecondaryActorPositionQuantization.cpp"
+support_sources = ["probes/secondary-actor-position-quantization-context.cpp"]
+output_dir = "build/match-linked/SecondaryActorPositionQuantization"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryActorPositionQuantizationProbe@4"
+functions = ["QuantizeSecondaryActorPosition"]
+symbol = "?QuantizeSecondaryActorPosition@@YGXPBM@Z"
+target_address = 0x00410580
+size = 133
+linkages = [
+  { offset = 0x05, type = "DIR32", symbol = "__real@4060000000000000", target = 0x00497ED8 },
+  { offset = 0x0B, type = "DIR32", symbol = "?g_MeshEffectActor@@3PAUMeshEffectActorView@@A", target = 0x004A8EB4 },
+  { offset = 0x14, type = "REL32", symbol = "__ftol2_sse", target = 0x004864E0 },
+  { offset = 0x22, type = "REL32", symbol = "__ftol2_sse", target = 0x004864E0 },
+  { offset = 0x2E, type = "DIR32", symbol = "__real@3f80000000000000", target = 0x00497ED0 },
+]

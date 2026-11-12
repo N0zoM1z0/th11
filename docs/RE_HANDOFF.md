@@ -20,7 +20,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - [Generated progress](PROGRESS.md) and
   `config/{functions,function-boundaries,function-origins,matches}.csv`
   determine names, origins, reviewed extents and exact status.
-  At this checkpoint: **329 canonical exact**, **651 source-present**,
+  At this checkpoint: **330 canonical exact**, **652 source-present**,
   **661 reviewed boundaries**. Refresh with
   `scripts/repo-python scripts/progress.py`, not manual totals.
 - An exact owner requires the entire original function, source/tool
@@ -108,6 +108,12 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   cold replay of all ten units. The five setter ModRM mismatches were
   fixed by natural value-first argument order, recovering ECX value/EAX
   receiver without artificial ABI code. [Lifetime](SECONDARY_LIFETIME.md).
+- `QuantizeSecondaryActorPosition` (`0x410580`, 133 bytes) is now
+  **133/133 strict /GL exact**, 29 instructions, two float conversions,
+  five reviewed fields, and eight original actor invalidation flags.
+  A shared `float *` for the adjacent snapped coordinate outputs naturally
+  restores x87/flag store scheduling. Only its exact unit was cold replayed.
+  [Secondary lifetime](SECONDARY_LIFETIME.md).
 - Ten original `0x410020..0x4100D0` secondary state accessor owners
   are now individually **35/35 strict exact**, all ten with zero
   relocation fields. Natural value-before-pointer setter declarations

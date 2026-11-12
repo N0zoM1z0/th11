@@ -649,3 +649,4 @@ WriteSecondaryState008
 WriteSecondaryState010
 StoreSecondaryStateValue
 DrawMenuPage0A
+QuantizeSecondaryActorPosition

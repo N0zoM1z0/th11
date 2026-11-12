@@ -370,3 +370,38 @@ Japanese v1.00a, with **zero relocation fields** and zero differences.
 Selected cold replay: `.analysis/secondary-state-accessors-strict-20261112.log`
 (`cold replay passed: 10 units`). All ten share only the targeted
 `SecondaryStateAccessors` producer; no full cohort cold replay was used.
+
+## Exact 133-byte actor XY quantizer (2026-11-12)
+
+`src/SecondaryActorPositionQuantization.cpp` now maintains the complete
+original Japanese v1.00a `QuantizeSecondaryActorPosition` at
+`0x410580..0x410604`. The original has **133 bytes / 29 instructions**,
+two `__ftol2_sse` calls and one return. It receives an XY float position
+in a private EDI register, converts each float with a double-precision
+scale of 128.0 to signed integers at shared mesh actor +0x888/+0x88C,
+then scales those integers back with double 0.0078125 into the two float
+cells at +0x87C/+0x880. Finally it sets eight actor flags to one, at
+0xE4-byte intervals from +0x7644 through +0x7C80.
+
+The first complete source emitted 143/133 bytes because the compiler
+spilled both conversion results to the stack. Reading the integers back
+from the object, as the original `FILD` and `FIMUL` do, restored exactly
+133 bytes and 29 instructions, but the eight independent flag stores
+were interleaved with x87 float operations (37 non-address differences).
+Nine bounded natural source variants established that treating the two
+adjacent normalized float cells as **one `float *` destination** restores
+the original sequential float-store scheduling. The resulting pinned VC9
+RTM `/GL` public primary-TU PE/MAP/PDB contribution is **133/133 strict
+exact**, 29/29 instructions and both native float-conversion calls.
+
+Five independent address fields are rebound to the Japanese PE: 128.0
+at `0x497ED8`, the mesh actor pointer `0x4A8EB4`, two `__ftol2_sse`
+REL32 calls at `0x4864E0`, and reciprocal 128.0 at `0x497ED0`. The
+independent dynamic caller, real mesh producer and true secondary lifetime
+producer all compiled identical exact bytes. Full selected cold replay
+of only the `quantize-secondary-actor-position` unit passed with
+`difference_count=0`: `.analysis/secondary-position-quantizer-strict-20261112.log`.
+The temporary variants and their results are in
+`.analysis/try-secondary-position-quantizer-20261112.py` and its log.
+No forced registers, inline assembly, synthetic padding or full-cohort replay
+were used.
