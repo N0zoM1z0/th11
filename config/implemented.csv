@@ -612,3 +612,6 @@ CreateSecondaryMaster
 ActivateSecondaryPlayerSpecial
 SpawnSecondaryPlayerDrop
 SecondaryDropPolarVector::SetPolar
+StoreSecondaryHostSlot040
+LoadSecondaryDebugScript
+LoadSecondaryDebugSessionBody

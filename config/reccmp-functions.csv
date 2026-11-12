@@ -613,3 +613,6 @@ CreateSecondaryMaster,0x00411070,function
 ActivateSecondaryPlayerSpecial,0x00406510,function
 SpawnSecondaryPlayerDrop,0x00424230,function
 SecondaryDropPolarVector::SetPolar,0x00424670,function
+StoreSecondaryHostSlot040,0x00410530,function
+LoadSecondaryDebugScript,0x0040D4F0,function
+LoadSecondaryDebugSessionBody,0x0040D500,function

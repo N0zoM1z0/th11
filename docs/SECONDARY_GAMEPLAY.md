@@ -179,3 +179,35 @@ proof has **zero address fields and zero differences**. See the
 `.analysis/secondary-gameplay-mode-strict-20261111.log`.
 This same dynamic producer restores the correct literal-mode call lowering
 in the 934-byte ECL browser owner, which is still non-exact.
+
+## Debug session loader and thread entry reconstructed (2026-11-12)
+
+`SecondaryDebugScriptLoad.cpp` now covers the complete **111-byte**
+`LoadSecondaryDebugSessionBody` at `0x40D500..0x40D56E`, adjacent to the
+separate **10-byte** `LoadSecondaryDebugScript` callback at `0x40D4F0`.
+The loader invokes the real secondary-player factory and four separately
+reviewed setup owners, creates a secondary master from the selected ECL
+filename, invokes its final stage setup helper, reads the new program's
+subroutine count into the third selection record at debug session +0x1F4,
+steps that selection by +1 and -1, and sets debug state +0x30 to 1.
+The four opaque startup callees are kept as distinct function declarations;
+no speculative implementation or fake class identity is added. The complete
+111-byte original has 32 instructions and nine calls, with no foreign
+interior entry. Pinned VC9 `/GL` with real selection and master producers
+emits **109/111 bytes, 30 instructions and 9/9 calls**. Its 10-byte
+callback is **8/10** in both normal COFF and real-loader `/GL`: the
+original saves/restores ECX around one forwarded call, whereas VC9 omits
+that scratch preservation. Both owners remain **source-present, non-exact**.
+The dedicated bounded producer is
+`probes/secondary-debug-script-load-context.cpp`; the scoped comparison
+and log are `.analysis/probe-secondary-debug-script-load-20261112.py`
+and `.analysis/probe-secondary-debug-script-load-20261112.log`.
+
+The nearby `StoreSecondaryHostSlot040` at `0x410530..0x41053A` also now
+has full natural C++ in `src/SecondaryMasterSlot040.cpp`. It writes an
+animation-file pointer through the unguarded indexed master table at +0x40.
+Native code uses private EAX payload / EDX index, while an ordinary
+fastcall compilation emits **10/11** bytes with ECX payload and EDX
+index. Several calling-convention/source variants were compared in
+`.analysis/try-master-slot040-20261112.py`; none is strictly exact, so
+the source remains uncredited in the exact ledger.
