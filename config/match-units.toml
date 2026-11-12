@@ -6649,3 +6649,15 @@ symbol = "??0ReplayRecordStageLink@@QAE@XZ"
 target_address = 0x00437490
 size = 51
 relocations = []
+
+[units.replay-payload-checksum]
+artifact_kind = "coff"
+source = "src/ReplayPayloadChecksum.cpp"
+inputs = ["src/ReplayPayloadChecksum.hpp"]
+object = "build/match/ReplayPayloadChecksum.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["SumReplayPayloadBytes"]
+symbol = "?SumPayloadBytes@ReplayPayloadChecksumView@@QAEIH@Z"
+target_address = 0x00437500
+size = 79
+relocations = []

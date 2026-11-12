@@ -675,3 +675,4 @@ RecordReplayInputFrame,0x00435FE0,function
 ConstructReplayRecordStageLink,0x00437490,function
 CreateReplayRecording,0x00435E00,function
 CreateReplayPlayback,0x00435EF0,function
+SumReplayPayloadBytes,0x00437500,function

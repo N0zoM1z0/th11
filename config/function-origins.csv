@@ -600,7 +600,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00437420,unknown,SecondaryReplay,indeterminate,unknown,replay-stage-segment-cleanup-origin-20261112
 0x00437490,unknown,ReplayRecording,indeterminate,unknown,replay-stage-link-constructor-origin-2026-11-12
 0x004374D0,unknown,SecondaryReplay,indeterminate,unknown,replay-record-stage-link-origin-2026-11-12
-0x00437500,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00437500,unknown,ReplayRecording,indeterminate,unknown,replay-payload-checksum-origin-2026-11-12
 0x00437550,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00437660,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00437740,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

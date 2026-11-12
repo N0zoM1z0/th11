@@ -157,3 +157,21 @@ canonical strict exactness after the shared record layout change. The bounded
 probe is `.analysis/probe-replay-record-factories-ltcg-20261112.py`; output
 for the current 0x2DC-byte typed version is
 `.analysis/probe-replay-record-factories-final-20261112.log`.
+
+## Strict 79-byte replay payload checksum (2026-11-12)
+
+The independently reviewed native member owner at `0x437500..0x43754E`
+returns an unsigned byte sum of a variable-length payload beginning at
+receiver `+8`. It accumulates even and odd byte positions separately and adds
+one final byte when the payload has odd length; the entry has a stack length
+argument, `RET 4`, no relocation fields and two native replay readers at
+`0x4378F0` and `0x437A70`.
+
+In ordinary VC9 `/O2` compilation, declaring the trailing-byte accumulator
+only after the loop produced a shorter 76-byte body. Moving its declaration
+before both loop accumulators preserves the original observable local lifetime
+and induces VC9's native stack slot/reload, with no register directives or
+instruction padding. The maintained C++ `ReplayPayloadChecksumView` uses a
+physical eight-byte header and real unsigned byte loads. Canonical
+`replay-payload-checksum` cold-replays the **entire 79-byte body**, with zero
+relocations and zero byte differences.
