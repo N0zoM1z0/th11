@@ -201,3 +201,32 @@ into the same `/GL` producer instead changes the record destructor to 370
 bytes. No manually assigned registers or synthetic instruction fields were
 adopted. Evidence is in `.analysis/probe-429-generic-chain-20261112.log` and
 `.analysis/probe-replay-record-factories-derived-20261112.log`.
+
+## Derived record construction improves the full factories
+
+The first factory source used `new TitleMenuRecordView` plus a following
+`memset` and generated 205/199 and 203/198 bytes. The maintained source
+now uses `ReplayRecordCompleteStorage`, a **real derived C++ constructor**
+which first constructs the eight `ReplayRecordStageLink` members via base
+lifetime, then clears the actual 0x2DC-byte storage. The original six-call
+allocation, vector construction, zeroing and EH failure cleanup remain.
+
+Under a scoped real record-destructor producer this gives **200/199** bytes
+for recording and **198/198** for playback; the playback owner also matches
+all 60 native instructions and six native calls. The ten native address/call
+fields are fully decoded, and the remaining non-field byte count is zero.
+Nevertheless **the playback factory is not a canonical exact**: its SEH
+handler metadata field at function offset +3 points to a private EH table,
+not a uniquely named public MAP symbol; the strict linked owner contract
+cannot establish that field's original symbol identity. This diagnostic
+result is retained without masking the field or weakening the validator.
+The recording factory still has a private mode argument/registry call ABI
+and one extra byte plus register-allocation differences; it is nonexact too.
+
+A separate generic chain caller at
+`probes/replay-record-chain-generic-context.cpp` verifies that the existing
+429-byte record destructor retains 429 bytes, 114 instructions and 14 calls
+in a dynamic chain context, but still differs in six argument-move bytes.
+A real chain-removal LTCG producer changes its owner to 370 bytes; a normal
+COFF chain-removal producer preserves the six-byte residual. These diagnostic
+probes make the remaining barriers reproducible.

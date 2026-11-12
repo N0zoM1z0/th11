@@ -678,3 +678,6 @@ CreateReplayPlayback,0x00435EF0,function
 SumReplayPayloadBytes,0x00437500,function
 InitializeReplayScoreArchive,0x00437550,function
 InitializeReplaySeedArchive,0x00437660,function
+ConstructReplayLeaderboardRuntime,0x00437740,function
+CreateReplayLeaderboardRuntime,0x00437800,function
+LoadReplayLeaderboardRecords,0x004378F0,function
