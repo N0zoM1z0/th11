@@ -151,3 +151,23 @@ bounded build and PE/MAP/PDB comparison script are retained privately under
 `.analysis/probe-positioned-vm-20261112.py`; the public producer context is
 `probes/animation-vm-positioned-context.cpp`. Native boundary and caller
 reviews remain as documented above.
+
+## Positioned primary prepend factories (2026-11-12)
+
+`src/SecondaryEmitterPositioned.cpp` now implements both formerly source-open
+factories with complete flow: 455C30 (151 bytes) and 455CD0 (167 bytes).
+Both conditionally enter runtime critical section 9, allocate one VM, enable
+bit 0x40000000 and fix layer 8. The first copies the caller's complete XYZ
+position to VM+0x3E8; the second adds double 32 then 192 to X, double 16 to Y,
+and preserves Z. Both then use **BindAnimationScript 44ACD0**, not the
+position-clearing initializer, and publish to the primary prepend list at
+455760 before conditionally releasing the lock. This is distinct from the
+112-byte zero-position factory at 455BC0.
+
+A scoped pinned VC9 `/GL` PE/MAP/PDB comparison, including the real publisher
+source and dynamic position/script arguments, yielded **138/151** and
+**156/167** bytes, with five calls in each candidate and target. Register and
+private producer scheduling remain non-exact, so neither is admitted to the
+strict match ledger. Private comparison details are under
+`.analysis/probe-secondary-emitter-positioned-20261112.py` and the public
+producer context is `probes/secondary-emitter-positioned-context.cpp`.
