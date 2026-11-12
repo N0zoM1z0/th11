@@ -666,3 +666,4 @@ ReleaseSecondaryHostSpellAnimation,0x004107B0,function
 ResetSecondaryHostEffectSnapshot,0x00410880,function
 CopySecondaryHostVector,0x004108A0,function
 PauseSecondaryMasterChains,0x00410E60,function
+DestroyThreadInfVirtual,0x00459410,function

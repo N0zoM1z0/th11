@@ -6501,3 +6501,22 @@ size = 7
 linkages = [
   { offset = 0x03, type = "REL32", symbol = "?DrawMenuController@@YIHPAUMenuControllerView@@@Z", target = 0x00439E80 },
 ]
+
+# The real StopRuntimeThread /GL producer preserves the original virtual
+# ThreadInf destructor's ESI receiver and full 16-byte EH lifetime owner.
+[units.threadinf-virtual-destructor]
+artifact_kind = "linked-pe"
+source = "src/ThreadInfLifecycle.cpp"
+inputs = ["src/ThreadInfLifecycle.hpp", "src/FrameLoop.hpp", "src/MainRuntime.hpp"]
+support_sources = ["probes/threadinf-lifecycle-context.cpp", "src/FrameRuntime.cpp"]
+output_dir = "build/match-linked/ThreadInfVirtualDestructor"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "ThreadInfLifecycleProbe@4"
+functions = ["DestroyThreadInfVirtual"]
+symbol = "??1ThreadInfView@@UAE@XZ"
+target_address = 0x00459410
+size = 16
+linkages = [
+  { offset = 5, type = "DIR32", symbol = "??_7ThreadInfView@@6B@", target = 0x004978D0 },
+  { offset = 10, type = "REL32", symbol = "?StopRuntimeThread@@YGXPAURuntimeThreadView@@@Z", target = 0x00459430 },
+]

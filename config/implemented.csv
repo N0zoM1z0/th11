@@ -665,3 +665,4 @@ ReleaseSecondaryHostSpellAnimation
 ResetSecondaryHostEffectSnapshot
 CopySecondaryHostVector
 PauseSecondaryMasterChains
+DestroyThreadInfVirtual
