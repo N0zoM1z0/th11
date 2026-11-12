@@ -6391,3 +6391,15 @@ size = 31
 relocations = [
   { offset = 1, type = "DIR32", symbol = "?g_SecondaryClearManager@@3PAUSecondaryClearManagerView@@A", target = 0x004A8E94 },
 ]
+
+[units.replay-record-stage-link-destructor]
+artifact_kind = "coff"
+source = "src/ReplayRecordStageLink.cpp"
+inputs = ["src/ReplayRecordStageLink.hpp"]
+object = "build/match/ReplayRecordStageLink.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["DestroyReplayRecordStageLink"]
+symbol = "??1ReplayRecordStageLink@@QAE@XZ"
+target_address = 0x004374D0
+size = 37
+relocations = []
