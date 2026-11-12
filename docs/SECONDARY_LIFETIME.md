@@ -237,3 +237,41 @@ public independent caller is
 374-byte master is still **340/374 source-only, non-exact**: closing its
 201-byte callee does not magically grant exactness to the caller. No full
 cold replay was run.
+
+## Exact 105-byte master actor scheduler (2026-11-12)
+
+`UpdateSecondaryMasterActors` at `0x411120..0x411188` is now strict
+**105/105-byte exact** with complete natural C++ in
+`src/SecondaryMasterUpdate.cpp`. It walks the master actor-node chain,
+retaining `next` before actor updates or virtual deletion. Actor flag
+`0x200000` skips the full **4230-byte** `UpdateSecondaryActorState`
+callee (`0x411750`) on the actor's state at +0x103C; a successful
+zero-return update clears bit `0x4000` in the same state, otherwise the
+function invokes the actor's native virtual scalar-deleting destructor.
+After the loop it advances the embedded stage timer at master+0x50 through
+the real `AdvanceStageTimer` (`0x459270`) and returns 1. It preserves
+all three native calls, the plain internal control-flow loops and RET4.
+
+The original is **36 instructions, 105 bytes**. An initial direct C++
+source that saved the actor pointer across the update generated only
+98/105 bytes because LTCG retained the master in EBP and the actor in
+ESI. Accessing `node->actor` through the node on both branches restored
+**106/105 bytes**, preserving the first 0x55 native code bytes. The only
+remaining difference was an extra pushed timer parameter from the opaque
+callee. Linking the **real** `StageTween.cpp` producer instead exposes the
+original private ESI timer convention and closes the entire owner:
+**105/105 bytes, 36/36 instructions, all three callsites, zero differences**.
+Both independently reviewed REL32 fields replay to the original targets
+0x411750 (at +0x28) and 0x459270 (at +0x5C), and the full unique
+primary-TU PDB/MAP/PE extent passes the pinned VC9 source/tool/producer
+receipt checks. No artificial ABI declaration or machine-code edits were
+needed. Canonical unit: `update-secondary-master-actors`.
+
+Local strict receipt: `.analysis/update-secondary-master-actors-strict-20261112.log`;
+focused comparison and natural source iteration:
+`.analysis/probe-secondary-master-update-20261112.py`,
+`.analysis/try-secondary-master-update-loops-20261112.py` and
+`.analysis/try-master-update-timer-producer-20261112.py` with logs.
+The public independent caller is `probes/secondary-master-update-context.cpp`.
+Only this owner was cold replayed; the larger 318-byte host initializer and
+374-byte master destructor remain source-present, non-exact.

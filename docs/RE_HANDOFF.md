@@ -20,7 +20,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - [Generated progress](PROGRESS.md) and
   `config/{functions,function-boundaries,function-origins,matches}.csv`
   determine names, origins, reviewed extents and exact status.
-  At this checkpoint: **303 canonical exact**, **601 source-present**,
+  At this checkpoint: **304 canonical exact**, **602 source-present**,
   **661 reviewed boundaries**. Refresh with
   `scripts/repo-python scripts/progress.py`, not manual totals.
 - An exact owner requires the entire original function, source/tool
@@ -62,6 +62,11 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   bytes, 12/12 calls, two returns and 97 positional nonfield differences.
   True program destructor inlining and indexed renderer-slot codegen remain
   unresolved; no exact claim. [Secondary lifetime](SECONDARY_LIFETIME.md).
+- `UpdateSecondaryMasterActors` (`0x411120`) is newly strict
+  **105/105 exact**, 36 instructions and 2 reviewed REL32 fields. Node
+  pointer reloads plus the real StageTween timer producer restore VC9's
+  private ESI calling convention. The 4230-byte actor-state update remains
+  a distinct source-present non-exact boss. [Secondary lifetime](SECONDARY_LIFETIME.md).
 - Two new complete secondary-master chain callbacks are **7/7 and 6/6
   strict exact normal-COFF**, one real call field for the update adapter.
   The adjacent 318-byte initialization boss has full source and a scoped
@@ -90,6 +95,11 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   bytes, 12/12 calls, two returns and 97 positional nonfield differences.
   True program destructor inlining and indexed renderer-slot codegen remain
   unresolved; no exact claim. [Secondary lifetime](SECONDARY_LIFETIME.md).
+- `UpdateSecondaryMasterActors` (`0x411120`) is newly strict
+  **105/105 exact**, 36 instructions and 2 reviewed REL32 fields. Node
+  pointer reloads plus the real StageTween timer producer restore VC9's
+  private ESI calling convention. The 4230-byte actor-state update remains
+  a distinct source-present non-exact boss. [Secondary lifetime](SECONDARY_LIFETIME.md).
 - Two new complete secondary-master chain callbacks are **7/7 and 6/6
   strict exact normal-COFF**, one real call field for the update adapter.
   The adjacent 318-byte initialization boss has full source and a scoped

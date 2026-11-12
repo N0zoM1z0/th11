@@ -5954,3 +5954,22 @@ symbol = "?SecondaryMasterDrawCallback@@YIHPAX@Z"
 target_address = 0x004111B0
 size = 6
 relocations = []
+
+# Real StageTween producer exposes the native private ESI timer ABI, and
+# node/actor reload restores the original master-list register allocation.
+[units.update-secondary-master-actors]
+artifact_kind = "linked-pe"
+source = "src/SecondaryMasterUpdate.cpp"
+inputs = ["src/SecondaryActorState.hpp", "src/SecondaryActor.hpp", "src/StageScript.hpp"]
+support_sources = ["probes/secondary-master-update-context.cpp", "src/StageTween.cpp"]
+output_dir = "build/match-linked/SecondaryMasterUpdate"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryMasterUpdateProbe@4"
+functions = ["UpdateSecondaryMasterActors"]
+symbol = "?UpdateSecondaryMasterActors@@YGHPAUSecondaryMasterView@@@Z"
+target_address = 0x00411120
+size = 105
+linkages = [
+  { offset = 0x28, type = "REL32", symbol = "?UpdateSecondaryActorState@@YGHPAUSecondaryActorStateView@@@Z", target = 0x00411750 },
+  { offset = 0x5C, type = "REL32", symbol = "?AdvanceStageTimer@@YGHPAUStageTimerView@@@Z", target = 0x00459270 },
+]
