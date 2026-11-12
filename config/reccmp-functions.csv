@@ -662,3 +662,7 @@ DestroyReplayRecordStageLink,0x004374D0,function
 DestroyTitleMenuRecord,0x00435C50,function
 TitleMenuThread,0x004394F0,function
 MenuControllerDrawCallback,0x00439F20,function
+ReleaseSecondaryHostSpellAnimation,0x004107B0,function
+ResetSecondaryHostEffectSnapshot,0x00410880,function
+CopySecondaryHostVector,0x004108A0,function
+PauseSecondaryMasterChains,0x00410E60,function

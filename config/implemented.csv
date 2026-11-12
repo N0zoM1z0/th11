@@ -661,3 +661,7 @@ DestroyReplayRecordStageLink
 DestroyTitleMenuRecord
 TitleMenuThread
 MenuControllerDrawCallback
+ReleaseSecondaryHostSpellAnimation
+ResetSecondaryHostEffectSnapshot
+CopySecondaryHostVector
+PauseSecondaryMasterChains

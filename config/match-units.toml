@@ -6403,3 +6403,18 @@ symbol = "??1ReplayRecordStageLink@@QAE@XZ"
 target_address = 0x004374D0
 size = 37
 relocations = []
+
+[units.release-secondary-host-spell-animation]
+artifact_kind = "coff"
+source = "src/SecondaryHostMiscLeaves.cpp"
+inputs = ["src/SecondaryHostMiscLeaves.hpp", "src/SecondaryActorRuntime.hpp"]
+object = "build/match/SecondaryHostMiscLeaves.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["ReleaseSecondaryHostSpellAnimation"]
+symbol = "?ReleaseSecondaryHostSpellAnimation@@YGXXZ"
+target_address = 0x004107B0
+size = 38
+relocations = [
+  { offset = 3, type = "DIR32", symbol = "?g_MeshEffectSpell@@3PAUMeshEffectSpellView@@A", target = 0x004A8D6C },
+  { offset = 22, type = "REL32", symbol = "?ReleaseSecondaryAnimation@@YGXUAnimationVmId@@@Z", target = 0x004562E0 },
+]
