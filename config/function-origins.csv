@@ -667,7 +667,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00441360,unknown,ConfigurationMenu,indeterminate,unknown,menu-music-room-origin-2026-11-06
 0x004413A0,unknown,ConfigurationMenu,indeterminate,unknown,menu-music-room-origin-2026-11-06
 0x00441400,unknown,ConfigurationMenu,indeterminate,unknown,menu-music-room-origin-2026-11-06
-0x004415A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x004415A0,unknown,PbgResourceSession,indeterminate,unknown,pbg-session-ctor-origin-2026-11-12
 0x004415B0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004415C0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00441650,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

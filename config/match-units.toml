@@ -6754,3 +6754,15 @@ symbol = "?SkipMenuMusicLine@@YGPADPADPAH@Z"
 target_address = 0x00441360
 size = 59
 linkages = []
+
+[units.pbg-resource-session-constructor]
+artifact_kind = "coff"
+source = "src/PbgResourceSessionCtor.cpp"
+inputs = ["src/PbgResourceSession.hpp"]
+object = "build/match/PbgResourceSessionCtor.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["ConstructPbgResourceSession"]
+symbol = "??0PbgResourceSessionView@@QAE@XZ"
+target_address = 0x004415A0
+size = 16
+relocations = []

@@ -689,3 +689,4 @@ DestroySecondaryAuxiliaryOwner
 CreateSecondaryAuxiliaryOwner
 RenderSecondaryDebugOverlay
 RenderSecondaryDebugOverlayCallback
+ConstructPbgResourceSession
