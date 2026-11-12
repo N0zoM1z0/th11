@@ -681,3 +681,5 @@ InitializeReplaySeedArchive,0x00437660,function
 ConstructReplayLeaderboardRuntime,0x00437740,function
 CreateReplayLeaderboardRuntime,0x00437800,function
 LoadReplayLeaderboardRecords,0x004378F0,function
+DestroyReplayFileBrowser,0x00437E40,function
+DeleteReplayFileBrowser,0x00438000,function

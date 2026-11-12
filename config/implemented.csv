@@ -680,3 +680,5 @@ InitializeReplaySeedArchive
 ConstructReplayLeaderboardRuntime
 CreateReplayLeaderboardRuntime
 LoadReplayLeaderboardRecords
+DestroyReplayFileBrowser
+DeleteReplayFileBrowser
