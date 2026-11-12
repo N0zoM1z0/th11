@@ -212,3 +212,44 @@ comparisons under `.analysis/front-draw-*-strict-20261112.json`. Only these
 and the directly affected existing header consumers need cold replay, not
 the full cohort. The unresolved 118-byte publisher continues as a separate
 full-extent codegen target.
+
+## Secondary drawing append factories and exact default owner (2026-11-12)
+
+Two more independently reviewed **full** owners now have maintained C++ in
+`src/SecondaryDrawPositioned.cpp`: `CreatePositionedSecondaryDrawAnimationVmId`
+at 455E60 (151 bytes) and `CreateOffsetSecondaryDrawAnimationVmId` at 455F00
+(167 bytes). Both allocate under conditional runtime critical section 9,
+set bit 0x40000000 with **layer zero**, retain XYZ through direct
+`BindAnimationScript` 44ACD0, and publish with the **secondary append**
+owner at 4557E0. The offset version preserves distinct double `+32`, `+192`
+and `+16` additions with native float stores; it is not a reassociated
+`+224` float operation.
+
+Under a real `AnimationVm.cpp` script binder and the real
+`SecondaryEmitterAnimation.cpp` publisher, the complete scoped VC9 `/GL`
+contributions match native extents and instruction totals exactly:
+**151/151 bytes, 39/39 instructions** and **167/167 bytes, 41/41
+instructions**, each with five calls. Only **two nonfield bytes per owner**
+remain different, at +0x0E and +0x5A / +0x6C. These are the original
+hidden-result/file pointer stack-slot order; three dynamic result consumer
+variants (conditional, stored-output and sequential) retain the same gap.
+Because this is an original private ABI question, we do not swap source
+parameters or misdeclare a convention to force equality. Both remain
+**source-only, non-exact**. Private scoped evidence:
+`.analysis/probe-secondary-draw-positioned-20261112.py` and
+`.analysis/try-draw-positioned-consumers-20261112.py`.
+
+The neighboring `CreateDefaultSecondaryDrawAnimationVmId` at 455D80
+(previously source-present in `PauseContinueMenuSupport.cpp`) is now
+**canonical strict exact: 105/105 bytes, 24/24 instructions and five calls**.
+The native initializer's private ABI only reappeared with genuine
+`AnimationVmFactory.cpp` and secondary append publisher source in an
+independent live script caller. Its unique primary-TU PE/MAP/PDB owner and
+all **11 independently reviewed fields** match. These include runtime flags,
+critical section/depth, two Win32 lock IAT entries, the original allocator
+4569C0, initializer 456910 and append publisher 4557E0. The cold receipt
+and complete zero-difference field replay are retained in
+`.analysis/default-secondary-draw-strict-20261112.log`; canonical unit
+`create-default-secondary-draw-animation-vm-id`. The changed shared factory
+header is checked only against its exact direct consumers, not the full
+cold cohort.

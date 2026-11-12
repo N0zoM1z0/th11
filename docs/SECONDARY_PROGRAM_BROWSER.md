@@ -498,3 +498,23 @@ and verified native target bytes. Recorded result:
 also confirms **83/83** filename cleanup, **56/56** worker-start,
 **101/101** worker-stop, and **30/30** mode-setting bodies remain exact.
 Only the 934-byte update owner itself remains non-exact.
+
+## State-0 branch-layout probes under genuine producers (2026-11-12)
+
+The 934-byte browser update was re-examined in the already established real
+mode-setting/worker-thread producer context, not an isolated stub link. The
+original state-0 selection reset uses distinct zero (`JZ`), positive (`JG`)
+and negative (`DEC`) branches, and writes wrap flags and category/file/subroutine
+counts in a precise register order. The maintained C++ preserves these
+semantics but VC9 reorders the zero/positive stores and hoists a count reload.
+
+Five bounded natural C++ variants (goto labels, nonzero-nested, negative
+fallthrough, zero-positive and positive-negative) were compiled and compared
+against the complete native 934-byte body. The goto variant reproduced the
+current **928/934, 262/267 instructions, 22 calls, 173 nonfield differences**;
+the others either retained 928 bytes without improvement or shortened to
+915 bytes by merging branches. No variant earned exact credit, and the
+canonical source was left unchanged. The next actionable question is the
+original compiler's count/branch register lifetime, not another equivalent
+conditional spelling. Evidence: `.analysis/try-browser-state0-20261112.py`
+and `.analysis/try-browser-state0-20261112.log`.
