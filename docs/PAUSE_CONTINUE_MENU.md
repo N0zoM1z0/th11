@@ -191,3 +191,35 @@ Evidence: `.analysis/continue-keyboard-focused.log`,
 `.analysis/continue-keyboard-full-context-20261111.log`, and
 `.analysis/pause-continue-keyboard-20261111-proof.json`.
 This is a non-exact local improvement without a full-cohort cold replay.
+
+
+## Exact 92-byte close helper under real signal/VM producer (2026-11-12)
+
+The native owner `ClosePauseContinueMenu` at `0x42D7F0..0x42D84B` is now
+**92/92-byte, 22/22-instruction strict exact**. It sets menu state 19,
+advances the timer to frame -1, signals both backdrop and root animations,
+and restores the saved animation time scale, but it does not restore audio.
+The maintained natural C++ is in `src/PauseContinueMenuSupport.cpp`.
+
+Small standalone callback contexts over-specialized `SignalSecondaryAnimation`
+(94/92, two extra stack pushes); the genuine `SecondaryActorAnimation.cpp`
+signal and `StageMesh.cpp` VM finder implementations restore the original
+private ESI menu receiver. An independent dynamic menu/VM-ID caller is
+tracked as `probes/pause-continue-support-context.cpp`, so the complete
+producer needs only these three support translation units, not the full
+63-support continuation menu. The 92-byte body has two calls, one plain
+return and **four independently reviewed address fields**: DIR32 sites at
+`+0x25/+0x57` to `g_AnimationTimeScale` (`0x4A7948`), and REL32 calls at
+`+0x40/+0x4B` to the independently exact `SignalSecondaryAnimation`
+(`0x4070E0`). The unique source TU has full PE/MAP/PDB ownership; all
+original bytes match after binding the four fields, with **zero differences**.
+Acceptance unit: `close-pause-continue-menu` in `config/match-units.toml`,
+receipt `.analysis/close-pause-continue-menu-strict-20261112.log`.
+
+The neighboring 64-byte `ShowPauseMenuAnimationTree` has a 64/64 candidate
+in the full continuation-game producer, but with this smaller set of real
+callees the compiler selects a 52-byte specialized function. It is still
+**non-exact**, and remains independent of this accepted 92-byte owner.
+The 3192-byte continuation state machine is also **non-exact**; experiments
+with branch-specific animation factory result variables restored its stack
+frame but reduced native calls from 88 to 85, and were not adopted.

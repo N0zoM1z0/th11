@@ -5685,3 +5685,26 @@ linkages = [
   { offset = 0x1B, type = "REL32", symbol = "?TraceAnimationLoad@@YAXZZ", target = 0x00456AD0 },
   { offset = 0x59, type = "REL32", symbol = "?DecodeAnimationChunk@@YGHPAUAnimationDocumentView@@HHHPAUAnimationChunkHeaderView@@@Z", target = 0x004545A0 },
 ]
+
+# The real secondary animation signal and VM finder TUs constrain the native
+# private ESI pause receiver without keeping the full 3192-byte menu context.
+# All four native fields are independently reviewed (two identical data roots
+# and two distinct native call sites to the same 70-byte signal function).
+[units.close-pause-continue-menu]
+artifact_kind = "linked-pe"
+source = "src/PauseContinueMenuSupport.cpp"
+inputs = ["src/PauseContinueMenu.hpp", "src/PauseMenu.hpp", "src/AnimationVmId.hpp", "src/StageMesh.hpp"]
+support_sources = ["probes/pause-continue-support-context.cpp", "src/StageMesh.cpp", "src/SecondaryActorAnimation.cpp"]
+output_dir = "build/match-linked/ClosePauseContinueMenu"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "PauseContinueSupportProbe@12"
+functions = ["ClosePauseContinueMenu"]
+symbol = "?ClosePauseContinueMenu@@YGXPAUPauseMenuView@@@Z"
+target_address = 0x0042D7F0
+size = 92
+linkages = [
+  { offset = 0x25, type = "DIR32", symbol = "?g_AnimationTimeScale@@3MA", target = 0x004A7948 },
+  { offset = 0x40, type = "REL32", symbol = "?SignalSecondaryAnimation@@YGXPAI@Z", target = 0x004070E0 },
+  { offset = 0x4B, type = "REL32", symbol = "?SignalSecondaryAnimation@@YGXPAI@Z", target = 0x004070E0 },
+  { offset = 0x57, type = "DIR32", symbol = "?g_AnimationTimeScale@@3MA", target = 0x004A7948 },
+]

@@ -20,7 +20,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - [Generated progress](PROGRESS.md) and
   `config/{functions,function-boundaries,function-origins,matches}.csv`
   determine names, origins, reviewed extents and exact status.
-  At this checkpoint: **290 canonical exact**, **578 source-present**,
+  At this checkpoint: **291 canonical exact**, **578 source-present**,
   **661 reviewed boundaries**. Refresh with
   `scripts/repo-python scripts/progress.py`, not manual totals.
 - An exact owner requires the entire original function, source/tool
@@ -66,6 +66,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 | **571-byte** `BuildRotatedAnimationVmQuad` `0x4503D0` — `AnimationVmRotation.cpp` | Natural source added; VC9 COFF **609/571** with separate sin/cos calls, `/GL` compiles | Restore native paired `FSINCOS` and owner/register context. [VM draw](ANIMATION_VM_DRAW.md) |
 | **221-byte** `LoadAnimationChunkSource` `0x4543E0` — `AnimationChunk.cpp` | With real `BeginLoadAnimationDocument` producer: **221 bytes, six calls, two RET4**; 12 reviewed address fields; only two non-field SIB selector bytes at `0xB3/0xBD` differ | Natural ECX/EDX array-address codegen. Earlier pointer/reference trials regressed to 212 bytes; eight later ordinary array/offset variants preserve 221 but retain both SIB differences. [Chunks](ANIMATION_CHUNKS.md) |
 | **212-byte** `AdvanceAnimationDocument` `0x4544C0` — `AnimationChunk.cpp` | **212/212 strict exact**, 74 instructions, 2 calls, 3 reviewed fields. Real 811-byte decoder TU and 135-byte slot scan caller recover native EDI ABI; 32-bit decoded flag, sprite-before-script order and ordinary busy comparison restore every byte | Protect this exact boss, 135-byte exact scan, 811-byte exact decoder and 51-byte exact release together. [Chunks](ANIMATION_CHUNKS.md) |
+| **92-byte** `ClosePauseContinueMenu` `0x42D7F0` | **92/92 strict exact**, 22 instructions, two calls, four reviewed fields. Real signal+VM finder source preserves native ESI menu receiver | Independently accepted cold PE/MAP/PDB proof; 3192-byte parent and 64-byte animation-tree leaf remain separately open. [Continue](PAUSE_CONTINUE_MENU.md) |
 | **3192-byte** `UpdatePauseContinueMenu` `0x42D9D0` — `PauseContinueMenu.cpp` | 63-support `/GL` **3172/3192**; 88/88 calls, 15/15 returns; stack `0x54` vs native `0x58` | State 13 factory-result lifetime and private ABI. Private helper `.analysis/build-pause-continue-menu.py`. [Continue](PAUSE_CONTINUE_MENU.md) |
 | **3208-byte** `UpdatePauseGameOverMenu` `0x42E6B0` — `PauseGameOverMenu.cpp` | Sound-support `/GL` **3228/3208**, 88 calls, 14 returns, seven table cells | State 21 factory/result and state 25 record-name editor. [Game over](PAUSE_GAME_OVER_MENU.md) |
 | **3212-byte** `UpdatePauseMenu` `0x42C8D0` — `PauseMenu.cpp` | Older `/GL` ~3084 bytes; seven child-result slots differ | Full owner/stack/child finder. [Pause](PAUSE_MENU.md) |

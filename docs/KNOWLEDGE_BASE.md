@@ -544,3 +544,13 @@ DIR32/REL32 fields are independently reviewed and the full primary-TU VC9
 scanner, 811-byte decoder and51-byte slot release remain compatible in the
 same linked diagnostic context. `LoadAnimationChunkSource` remains nonexact.
 See `ANIMATION_CHUNKS.md` and `ANIMATION_DOCUMENT_SLOTS.md`.
+
+
+`ClosePauseContinueMenu` at42D7F0 is now **92/92 strict exact** (22
+instructions, two calls, four reviewed native fields). A dynamic caller
+and actual `SecondaryActorAnimation.cpp`/`StageMesh.cpp` TUs recover the
+native ESI receiver and two direct signal calls; standalone source without
+the real callee was94 bytes due over-specialized stack argument pushes.
+Full unique PE/MAP/PDB owner cold replays with zero differences. The helper
+restores animation time scale, not audio. Parent3192 continuation owner is
+still non-exact. See `PAUSE_CONTINUE_MENU.md`.
