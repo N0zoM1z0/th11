@@ -5973,3 +5973,47 @@ linkages = [
   { offset = 0x28, type = "REL32", symbol = "?UpdateSecondaryActorState@@YGHPAUSecondaryActorStateView@@@Z", target = 0x00411750 },
   { offset = 0x5C, type = "REL32", symbol = "?AdvanceStageTimer@@YGHPAUStageTimerView@@@Z", target = 0x00459270 },
 ]
+
+# Three complete independently bounded secondary-master accessors. All are
+# ordinary VC9 normal-COFF COMDAT owners with one g_SecondaryMaster DIR32.
+[units.read-secondary-host-068]
+artifact_kind = "coff"
+source = "src/SecondaryMasterAccessors.cpp"
+inputs = ["src/SecondaryActorState.hpp", "src/AnimationVm.hpp"]
+object = "build/match/SecondaryMasterAccessors.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["ReadSecondaryHost068"]
+symbol = "?ReadSecondaryHost068@@YAPAUSecondaryActorNode@@XZ"
+target_address = 0x00410540
+size = 9
+relocations = [
+  { offset = 1, type = "DIR32", symbol = "?g_SecondaryMaster@@3PAUSecondaryMasterView@@A", target = 0x004A8D7C },
+]
+
+[units.store-secondary-host-slot-01c]
+artifact_kind = "coff"
+source = "src/SecondaryMasterAccessors.cpp"
+inputs = ["src/SecondaryActorState.hpp", "src/AnimationVm.hpp"]
+object = "build/match/SecondaryMasterAccessors.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["StoreSecondaryHostSlot01C"]
+symbol = "?StoreSecondaryHostSlot01C@@YIXPAUSecondaryActorManagerView@@H@Z"
+target_address = 0x00410550
+size = 10
+relocations = [
+  { offset = 1, type = "DIR32", symbol = "?g_SecondaryMaster@@3PAUSecondaryMasterView@@A", target = 0x004A8D7C },
+]
+
+[units.set-secondary-host-flag-03c]
+artifact_kind = "coff"
+source = "src/SecondaryMasterAccessors.cpp"
+inputs = ["src/SecondaryActorState.hpp", "src/AnimationVm.hpp"]
+object = "build/match/SecondaryMasterAccessors.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["SetSecondaryHostFlag03C"]
+symbol = "?SetSecondaryHostFlag03C@@YGXI@Z"
+target_address = 0x00410560
+size = 21
+relocations = [
+  { offset = 1, type = "DIR32", symbol = "?g_SecondaryMaster@@3PAUSecondaryMasterView@@A", target = 0x004A8D7C },
+]

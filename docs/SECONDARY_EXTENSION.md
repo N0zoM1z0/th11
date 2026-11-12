@@ -246,3 +246,32 @@ Scoped reproduction: `.analysis/probe-secondary-master-initialization-20261112.p
 plus public dynamic caller `probes/secondary-master-initialization-context.cpp`.
 The unchanged exact callbacks retain their own cold normal-COFF receipts;
 no unrelated full cold replay was performed.
+
+## Three strict secondary-master accessors (2026-11-12)
+
+Three previously source-open complete owners adjacent to the actor master
+lifecycle now have exact C++ in `src/SecondaryMasterAccessors.cpp`:
+
+- `ReadSecondaryHost068` (`0x410540`, **9/9 bytes**) returns the first actor
+  list node at master+0x68, preserving the original `MOV EAX,[master];
+  MOV EAX,[EAX+68]; RET`.
+- `StoreSecondaryHostSlot01C` (`0x410550`, **10/10 bytes**) writes an
+  actor pointer to the unguarded indexed master slot at +0x1C. Its natural
+  fastcall C++ produces native ECX payload/EDX index and plain `RET`.
+- `SetSecondaryHostFlag03C` (`0x410560`, **21/21 bytes**) updates only bit
+  zero at master+0x3C, preserves all higher bits and uses native `RET4`.
+  Writing the natural equivalent as `(flags & ~1u) | (bit & 1u)` restores
+  the exact memory XOR/AND/XOR codegen. Direct XOR-assign and `volatile`
+  alternatives produced 24–35 bytes instead; no artificial instructions
+  or fake register ABI were adopted.
+
+All three targets have independently reviewed complete original boundaries
+with no foreign interior references or embedded tables. The pinned VC9
+normal-COFF functions are unique complete single-function COMDAT owners;
+each has exactly **one independently reviewed DIR32** at +1 targeting
+`g_SecondaryMaster = 0x4A8D7C`, and **zero byte differences** after full
+relocation replay and source/tool/object receipt checks. Canonical units:
+`read-secondary-host-068`, `store-secondary-host-slot-01c`, and
+`set-secondary-host-flag-03c`. Scoped cold replay evidence is in
+`.analysis/secondary-master-accessors-strict-20261112.log`. All three
+builds were selected by changed unit, not by full cold replay.

@@ -20,7 +20,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - [Generated progress](PROGRESS.md) and
   `config/{functions,function-boundaries,function-origins,matches}.csv`
   determine names, origins, reviewed extents and exact status.
-  At this checkpoint: **304 canonical exact**, **606 source-present**,
+  At this checkpoint: **307 canonical exact**, **609 source-present**,
   **661 reviewed boundaries**. Refresh with
   `scripts/repo-python scripts/progress.py`, not manual totals.
 - An exact owner requires the entire original function, source/tool
@@ -62,6 +62,11 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   bytes, 12/12 calls, two returns and 97 positional nonfield differences.
   True program destructor inlining and indexed renderer-slot codegen remain
   unresolved; no exact claim. [Secondary lifetime](SECONDARY_LIFETIME.md).
+- Three secondary-master accessors are newly **9/9 + 10/10 + 21/21
+  strict exact** (40 complete bytes), each with a validated original
+  `g_SecondaryMaster` DIR32 field and normal-COFF receipt. The low-bit
+  flag setter uses a natural masked replacement, not an ABI trick.
+  [Secondary extension](SECONDARY_EXTENSION.md).
 - Full **156-byte** `FinishSecondaryActorEffect` at `0x4127E0` now
   calls real sound, positioned animation, item-drop and 457-byte effect
   implementations with a bounded 146–151/156-byte VC9 diagnostic. It remains
@@ -106,6 +111,11 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   bytes, 12/12 calls, two returns and 97 positional nonfield differences.
   True program destructor inlining and indexed renderer-slot codegen remain
   unresolved; no exact claim. [Secondary lifetime](SECONDARY_LIFETIME.md).
+- Three secondary-master accessors are newly **9/9 + 10/10 + 21/21
+  strict exact** (40 complete bytes), each with a validated original
+  `g_SecondaryMaster` DIR32 field and normal-COFF receipt. The low-bit
+  flag setter uses a natural masked replacement, not an ABI trick.
+  [Secondary extension](SECONDARY_EXTENSION.md).
 - Full **156-byte** `FinishSecondaryActorEffect` at `0x4127E0` now
   calls real sound, positioned animation, item-drop and 457-byte effect
   implementations with a bounded 146–151/156-byte VC9 diagnostic. It remains
