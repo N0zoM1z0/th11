@@ -255,3 +255,24 @@ three original fields bind the title singleton `0x4A8ECC`, the reviewed
 canonical `delete-title-menu` linked Oracle exhaustively replays all fields
 with **zero byte differences**. This claim applies only to the 28-byte
 entry; the 561-byte callee remains source-present and nonexact.
+
+## Retained large-destructor negative-control trials (2026-11-12)
+
+Additional real producer matrices tested (a) replacing the title owner with
+a true C++ *virtual destructor*, (b) direct record member destruction versus
+`delete record` with and without an explicit null guard, and (c) adding actual
+`ChainRemove.cpp` as LTCG or ordinary COFF. The virtual-class formulation
+preserved the already exact 201-byte constructor and 106-byte worker starter,
+but its destructing owner produced **559/561 bytes, ordinary RET**, 209
+nonfield differences. That regressed the original `RET4` and was not adopted.
+The three natural record-deletion formulations all preserved the earlier
+**561-byte, 152-instruction, 15-call, RET4** diagnostic with **231
+nonfield differences**. Real/normal chain removal did not improve it;
+including the replay record producer raised differences to 234.
+
+The retained maintained title source therefore remains the explicit
+conditional lock-pair and animation-slot-reload version, without unproved
+virtual object identities. Separate proven exact units are unchanged.
+Evidence: `.analysis/probe-title-menu-virtual-dtor-callers-20261112.log`,
+`.analysis/probe-title-dtor-record-lifetime-20261112.log`, and
+`.analysis/probe-title-dtor-chain-deps-20261112.log`.

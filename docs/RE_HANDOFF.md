@@ -23,11 +23,11 @@ checkpoint the ledgers report:
 
 | Scope | Current count |
 | --- | ---: |
-| Function candidates | 2,150 (provisional inventory) |
-| Reviewed boundaries | **678** |
-| Maintained source mappings | **652** |
-| Strict canonical exact functions | **330** |
-| Strict exact code bytes | **37,980** |
+| Function candidates | 2,155 (provisional inventory) |
+| Reviewed boundaries | **697** |
+| Maintained source mappings | **671** |
+| Strict canonical exact functions | **344** |
+| Strict exact code bytes | **38,969** |
 | Exact with confirmed authored origin | 52 |
 
 `config/functions.csv`, `function-boundaries.csv`,
@@ -54,9 +54,65 @@ Recent strict successes to protect:
 | `AdvanceAnimationDocument` `0x4544C0` | **212/212** | Independently exact; the related 135-byte slot *scanner is not*, [slots](ANIMATION_DOCUMENT_SLOTS.md) |
 
 The broader exact catalog is in the canonical manifest and topic notes;
-do not repeat all 330 units as hand-edited prose. Historical diagnostic
+do not repeat all 344 units as hand-edited prose. Historical diagnostic
 numbers in topic documents describe their **then-current** source and
 producer, not a newer receipt for altered source.
+
+## Current title, replay and ThreadInf reconstruction (2026-11-12)
+
+A recent scoped run recovered **14 strict exact owners / 989 original code
+bytes**, from 330 to **344 exact functions**; the progress ledger is still
+a provisional whole-game inventory. All commits are local `gpt-web: ...` and
+may remain ahead of origin. These exact owners include both large genuine
+bosses and small leaves:
+
+| Exact owners (original addresses) | Native size, codegen evidence |
+| --- | --- |
+| `InitializeTitleMenuResources` `0x4395A0` | **275/275**, 90 instructions, seven calls, 15 fields; dynamic priority/slot producer with real chain, animation and log TUs; `initialize-title-menu-resources` |
+| `ConstructTitleMenuStorage` `0x439420` | **201/201**, 39 instructions, four fields; `title-menu-constructor` |
+| `TitleMenuThread` `0x4394F0` | **165/165**, 47 instructions, four calls, 12 fields; slot pointer is **reloaded after document destruction**; `title-menu-thread` |
+| `StartTitleMenu` `0x439900` | **106/106**, 32 instructions, seven fields; real `FrameRuntime.cpp` producer; `start-title-menu` |
+| `DeleteTitleMenu` `0x439970` | **28/28**, 11 instructions, three fields, genuine title-resource producer; `delete-title-menu` |
+| `MenuControllerDrawCallback` `0x439F20` | **7/7**, `MOV EAX,ECX` / tail `JMP`; real menu/title producer; `menu-controller-draw-callback` |
+| `ThreadInf` `0x4593C0/0x459410` | **21/21 constructor** and **16/16 non-deleting destructor** under real worker-stop `/GL`; two distinct units |
+| `0x459420` and four actor/host helpers | Physical 11/11 global publish plus 18/18, 31/31, 38/38, 35/35; strictly independent COFF units |
+| `0x4374D0` replay stage link | **37/37**, natural member destructor, no fields |
+
+Critical outstanding **large** bosses and falsification evidence:
+
+- `DestroyTitleMenuStorage` `0x4396C0` **561 bytes**: complete natural
+  source and both chain lock pairs, animation slots 24/25, 100 record
+  deletes and VM propagation. Real `FrameRuntime`/animation producer restores
+  **561/561 length, 152/155 instructions, 15/15 calls, RET4**, but **231
+  positional nonaddress bytes still differ**. Using actual virtual title
+  destructor changed to 559 bytes / ordinary RET; it did preserve its exact
+  201-byte constructor and 106-byte startup, but **was not adopted**. Swapping
+  direct record destructor for `delete record`, removing the null guard, and
+  linking real/normal chain removal made **no improvement**. See
+  `docs/TITLE_MENU_LIFECYCLE.md`, `.analysis/probe-title-dtor-chain-deps-20261112.log`,
+  `.analysis/probe-title-dtor-record-lifetime-20261112.log`, and
+  `.analysis/probe-title-menu-virtual-dtor-callers-20261112.log`.
+- `DestroyTitleMenuRecord` `0x435C50` **429 bytes**: actual replay stage
+  destructors and link removal, **429/429 size, 114/114 instructions, 14/14
+  calls, RET4, 38 linked fields**, only **six non-field byte differences**
+  (three paired ECX/EDX register assignment orders before chain removal).
+  Real chain-as-normal-COFF did not alter them; moving stage producers to
+  normal COFF regressed to 427 bytes. Current optimized source retained;
+  docs/REPLAY_RECORD_LIFECYCLE.md and
+  `.analysis/probe-title-record-mixed-producer-20261112.log`.
+- `ThreadInf` deleting destructor `0x4593E0` **36 bytes**: complete code and
+  all three native fields match in a real `/GL` diagnostic, but **NOT exact**:
+  MAP publishes `??_E` and `??_G` at the same entry and the strict oracle
+  rejects ambiguous owner identity. The separate constructor/non-deleting
+  destructor are true exact. See docs/THREADINF_LIFECYCLE.md.
+- `DrawMenuController` `0x439E80` **140 bytes**: five page calls and eight
+  switch cells source-present but 112/140 or 120/140 linked diagnostic,
+  original aligned frame/EAX receiver remains open.
+
+Do not claim strict exactness for any unresolved boss from size alone, patch
+non-field bytes, normalize an ambiguous deleting destructor, invent a virtual
+ABI, or replay the entire cold graph. Only affected function/producer units
+need rebuilding after source edits.
 
 ## Substantial work ready for continuation
 
@@ -122,7 +178,7 @@ families**. Keep them and the pinned original/tools/Wine/Ghidra projects.
 build caches**, not authoritative source or exact proofs. On 2026-11-12,
 **835 old diagnostic links and the scratch-object trees were deleted**,
 reclaiming **831.9 MiB**; `build/` fell from ~965 MiB to ~133 MiB.
-Five representative contexts remain: `PauseContinueMenuOwner`,
+Five representative contexts remained immediately after the earlier cleanup (newer 2026-11-12 scoped probes have since been generated): `PauseContinueMenuOwner`,
 `LoaderCtorOrder20261112-explicit-before-clear`,
 `BrowserState0-20261112-goto-layout`,
 `SecondaryReplayLoadRealHooks-real-all-hooks-20261112` and

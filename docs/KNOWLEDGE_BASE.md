@@ -585,3 +585,26 @@ original initializes selection records and ThreadInf before zeroing the
 complete 0x5B94-byte object, then publishes flags and its singleton. This
 exact match does not establish original TU partition. See
 [TITLE_MENU_LIFECYCLE](TITLE_MENU_LIFECYCLE.md).
+
+
+The complete title resource initializer at `0x4395A0` is now **275/275
+strict exact**; its important producer context is the separate generic
+priority/slot caller together with the real chain, document, log and document
+load sources. A mere real-document link left two instruction-byte differences,
+but constraining both dynamic priority and dynamic file slot restored all
+90 native instructions/7 calls and 15 reviewed fields. The same real producer
+also gives the 28-byte singleton deletion exact. The title startup at
+`0x439900` is **106/106 strict exact** under the true runtime-thread stop
+producer. The ThreadInf constructor + non-deleting destructor are **21/21 +
+16/16**; its 36-byte deleting destructor is **non-exact owner identity**
+despite identical bytes because MAP aliases the `??_E` and `??_G` entries.
+See [TITLE_MENU_LIFECYCLE](TITLE_MENU_LIFECYCLE.md),
+[THREADINF_LIFECYCLE](THREADINF_LIFECYCLE.md).
+
+`DestroyTitleMenuStorage` 561 still differs in 231 position-wise nonfield
+bytes under its 561-byte/15-call/RET4 real-worker context. A true C++ virtual
+title class generated 559 bytes and ordinary RET, and direct record deletion
+spelling or real chain removal did not help. The related 429-byte replay
+record destructor still differs in exactly three ECX/EDX load pairs, 6
+nonfield bytes. No unsupported match credit is assigned; probe evidence is
+retained in `.analysis/probe-title-*20261112.log`.

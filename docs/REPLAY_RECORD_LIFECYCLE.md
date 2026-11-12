@@ -81,3 +81,14 @@ no masked six-byte exception or altered function boundary is accepted, and
 original translation-unit ownership remains unknown. The strongest next step
 is recovering native argument-move scheduling without changing the real
 callee ABI or the established `/GL` sources.
+
+## Mixed producer check (2026-11-12)
+
+The native 429-byte owner was re-linked with its two genuine stage producers
+and either an opaque chain-removal anchor or the real `ChainRemove.cpp` built
+as normal COFF. Both preserve the exact **429-byte/114-instruction/14-call**
+layout and the same **six** non-field bytes of argument-move scheduling.
+Building both stage producers as normal COFF instead shortens it to 427
+bytes and changes over 200 non-field bytes. The best maintained source stays
+unchanged; neither alternate context is strict exact. Private evidence:
+`.analysis/probe-title-record-mixed-producer-20261112.log`.
