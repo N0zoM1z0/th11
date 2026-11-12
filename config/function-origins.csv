@@ -654,7 +654,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0043E2F0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0043E790,unknown,ConfigurationMenu,indeterminate,unknown,menu-player-data-origin-2026-11-06
 0x0043F120,unknown,ConfigurationMenu,indeterminate,unknown,menu-player-data-origin-2026-11-06
-0x0043F410,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0043F410,unknown,ConfigurationMenu,indeterminate,unknown,menu-replay-records-draw-origin-20261112
 0x0043F6B0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0043FC50,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0043FFA0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

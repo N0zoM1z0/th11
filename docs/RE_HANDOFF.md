@@ -20,7 +20,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - [Generated progress](PROGRESS.md) and
   `config/{functions,function-boundaries,function-origins,matches}.csv`
   determine names, origins, reviewed extents and exact status.
-  At this checkpoint: **329 canonical exact**, **650 source-present**,
+  At this checkpoint: **329 canonical exact**, **651 source-present**,
   **661 reviewed boundaries**. Refresh with
   `scripts/repo-python scripts/progress.py`, not manual totals.
 - An exact owner requires the entire original function, source/tool
@@ -119,6 +119,11 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   actor update boss. With exact VM lookup and the real animation binder its
   scoped VC9 candidate is 30/36, keeping both native calls and RET4;
   private ABI remains non-exact. [Actor](SECONDARY_ACTOR.md).
+- `DrawMenuPage0A` (`0x43F410`, 670 bytes) now has complete
+  ten-record replay score/date/percentage source and three summary lines,
+  with real calendar and ASCII formatting producers. Scoped VC9 `/GL`
+  builds preserve all 6 native calls / one return at 627/670 isolated,
+  623/670 with real ASCII producer. Non-exact. [Menu](MENU_CONTROLLER.md).
 - `DrawMenuPage08` (`0x43DAA0`, 427 bytes) and its adjacent 140-byte
   `DrawMenuController` now have complete natural source. The page source
   handles all six unlock/score entries, color blinking, positions and text

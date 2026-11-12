@@ -189,3 +189,42 @@ Local reproduction:
 `.analysis/probe-menu-practice-stage-draw-20261112.py` and
 `.analysis/probe-menu-controller-draw-linked-practice-20261112.py` with their
 logs, using only the changed page/dispatcher and direct producers.
+
+## Complete 670-byte replay records menu draw (2026-11-12)
+
+`src/MenuReplayRecordsDraw.cpp` now maintains the entire Japanese v1.00a
+`DrawMenuPage0A` at `0x43F410..0x43F6AD`, the 140-byte menu draw dispatcher's
+page-10 callee. Independent target/Ghidra review covers **670 bytes,
+186 instructions**, one native return and **six actual calls**: one
+`__localtime64` and five `AsciiManagerPrint` calls. There is no foreign
+interior entry or embedded table; the next function starts after CC.
+
+In page state 2, the owner enables ASCII text rendering and draws up to ten
+record slots from the selected replay-table index at menu+0xFC. Each record
+uses the native 0x1C stride in a 0x118-byte table, under the currently
+selected 0x68D4-byte character-group record. It starts at position (48,160),
+uses the native RGB/alpha gradient (initial alpha 0xFF, step -0x10), and
+advances y by 18.0 double per line. Empty 64-bit timestamps print the
+original dash date/stage and masked percent string; nonempty timestamps
+pass to the real `_localtime64` and produce year/month/day/hour/minute
+alongside the signed byte stage-name selector and the original float
+percentage. Both routes print the actual nine-digit score plus its
+single extra digit, and use the native formatted strings at 0x4962C4
+and 0x4962FC.
+
+Regardless of record-list suppression at menu+0x1D4, three trailing summary
+labels display the group value at +0x590, convert frame count +0x594 to
+`hours:minutes:seconds` at 60 frames per second, and print the selected
+counter at +0x598 plus index*4. Their x position is 328 and y values
+378, 396 and 414. Finally the source restores the original white ASCII
+color and clears render flag +0x18494.
+
+Four focused pinned VC9 `/GL` primary-TU PE/MAP/PDB contexts compile the
+full owner: isolated and actual menu source give **627/670 bytes, 185/186
+instructions**, whereas the actual ASCII formatter/append producer yields
+**623/670, 179/186**. All contexts preserve **six native calls and one RET**,
+with 22 current address fields. The remaining register lifetime, pointer
+ABI and x87/vararg stack placement is non-exact; no acceptance credit.
+Local probes: `.analysis/probe-menu-replay-records-draw-20261112.py` and its
+log; public dynamic producer `probes/menu-replay-records-draw-context.cpp`.
+No full-cohort replay was run.
