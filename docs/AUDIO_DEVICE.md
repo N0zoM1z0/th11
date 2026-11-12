@@ -155,9 +155,16 @@ the target's `OR EDX,EDX` is a flags operation and does not clear the
 register, which has already been set to -1. Stores are represented as normal
 member field writes in original observed instruction order.
 
-Scoped pinned VC9 RTM `/O2` normal COFF and `/GL` public primary-TU builds
-produce **96/98 bytes, 19 instructions, zero address fields and zero calls**.
-The remaining difference is the native initial EAX receiver copy and ECX/EDX
-value scheduling, not missing default stores. No exact credit is taken.
-Local sources: `.analysis/probe-input-binding-defaults-20261112.py`,
-`probes/input-binding-defaults-context.cpp`.
+The initial source declared a void member and omitted the native return-
+receiver behavior: VC9 RTM `/O2` compiled 96/98 bytes. The native first
+instruction `MOV EAX,ECX` is meaningful: the initializer returns its own
+receiver. Declaring `InputBindingDefaultsView *` and returning `this` yields
+**98/98 strict exact bytes** in a complete normal-COFF COMDAT, 20 native
+instructions, zero relocations, zero differences. Focused cold replay:
+`.analysis/input-binding-defaults-strict-20261112.log` and canonical unit
+`input-binding-defaults`. The current separate `/GL` producer still emits
+96/98 bytes due to interprocedural argument allocation; the original TU
+partition and normal-COFF versus LTCG ownership remain unknown. The accepted
+result is a strict complete ordinary-COFF comparison, not an original-TU
+claim. Local /GL diagnostic source:
+`.analysis/probe-input-binding-defaults-20261112.py`.

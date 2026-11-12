@@ -20,7 +20,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - [Generated progress](PROGRESS.md) and
   `config/{functions,function-boundaries,function-origins,matches}.csv`
   determine names, origins, reviewed extents and exact status.
-  At this checkpoint: **328 canonical exact**, **650 source-present**,
+  At this checkpoint: **329 canonical exact**, **650 source-present**,
   **661 reviewed boundaries**. Refresh with
   `scripts/repo-python scripts/progress.py`, not manual totals.
 - An exact owner requires the entire original function, source/tool
@@ -125,9 +125,11 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   calls; scoped VC9 full 399/427 and 406/427 codegen, retaining both native
   calls/two returns; the parent retains all five routed calls and eight
   switch cells. Both remain non-exact. [Menu](MENU_CONTROLLER.md).
-- `InitializeInputBindingDefaults` at `0x459BD0` now has all nine 16-bit
-  observed defaults in source; normal COFF and /GL are 96/98, not exact.
-  [Audio](AUDIO_DEVICE.md).
+- `InitializeInputBindingDefaults` at `0x459BD0` is now **98/98 strict
+  exact** under pinned VC9 ordinary COFF, zero relocations. Returning the
+  original receiver rather than void restores `MOV EAX,ECX` and all 20
+  native instructions; the independent /GL producer remains 96/98, so
+  original TU partition is still open. [Audio](AUDIO_DEVICE.md).
 - The full **441-byte** `LoadReplayStageData` at `0x436B60` is now
   source-present: disk/resource replay intake, two cipher passes,
   decompression and stage-index reconstruction. Real-producer scoped VC9

@@ -4,11 +4,11 @@ struct InputBindingDefaultsView
 {
     unsigned char unused000[0x134];
     short bindings[9];
-    void InitializeInputBindingDefaults();
+    InputBindingDefaultsView *InitializeInputBindingDefaults();
 };
 
 // TH11 Japanese v1.00a 0x459BD0..0x459C31: the nine original WORD defaults.
-void InputBindingDefaultsView::InitializeInputBindingDefaults()
+InputBindingDefaultsView *InputBindingDefaultsView::InitializeInputBindingDefaults()
 {
     bindings[0] = 0;
     bindings[1] = 1;
@@ -19,4 +19,5 @@ void InputBindingDefaultsView::InitializeInputBindingDefaults()
     bindings[5] = -1;
     bindings[6] = -1;
     bindings[7] = -1;
+    return this;
 }

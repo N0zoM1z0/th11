@@ -6327,3 +6327,17 @@ symbol = "?StoreSecondaryStateValue@@YGXPAHH@Z"
 target_address = 0x004100D0
 size = 3
 linkages = []
+
+# 98-byte full WORD defaults owner. Returning the original receiver naturally
+# restores the native MOV EAX,ECX in the ordinary VC9 /O2 COFF contribution.
+# The original TU and possible interprocedural /GL ownership remain unproved.
+[units.input-binding-defaults]
+artifact_kind = "coff"
+source = "src/InputBindingDefaults.cpp"
+object = "build/match/InputBindingDefaults.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["InitializeInputBindingDefaults"]
+symbol = "?InitializeInputBindingDefaults@InputBindingDefaultsView@@QAEPAU1@XZ"
+target_address = 0x00459BD0
+size = 98
+relocations = []

@@ -1,5 +1,5 @@
-struct InputBindingDefaultsView { void InitializeInputBindingDefaults(); };
-extern "C" void __stdcall InputBindingDefaultsProbe(InputBindingDefaultsView *self)
+struct InputBindingDefaultsView { InputBindingDefaultsView *InitializeInputBindingDefaults(); };
+extern "C" InputBindingDefaultsView *__stdcall InputBindingDefaultsProbe(InputBindingDefaultsView *self)
 {
-    self->InitializeInputBindingDefaults();
+    return self->InitializeInputBindingDefaults();
 }
