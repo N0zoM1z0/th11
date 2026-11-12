@@ -610,3 +610,5 @@ SetSecondaryHostFlag03C
 DeleteSecondaryMaster
 CreateSecondaryMaster
 ActivateSecondaryPlayerSpecial
+SpawnSecondaryPlayerDrop
+SecondaryDropPolarVector::SetPolar

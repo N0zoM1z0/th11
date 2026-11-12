@@ -227,3 +227,65 @@ ledger is unchanged. Local recipe:
 comparison log; public caller
 `probes/secondary-player-special-activation-context.cpp`.
 No full cold replay or unrelated build was run.
+
+## Full 851-byte drop allocator boss and 30-byte polar helper (2026-11-12)
+
+`src/SecondaryPlayerDrop.cpp` and `SecondaryPlayerDrop.hpp` now contain
+complete natural C++ for `SpawnSecondaryPlayerDrop` at
+`0x424230..0x424582`, rather than a short allocator prefix. The original
+owner is **851 bytes**: 829 executable bytes plus three alignment bytes,
+a two-entry branch table and its 11-byte selector vector. The original
+bounds and interior branch destinations are independently reviewed. The
+code has **eight direct callsites and three RET12 exits**; ordinary and
+special paths differ substantially and must not be conflated.
+
+The physical data model records a verified **0x478-byte item stride**:
+`AnimationVmView` at record+0, position at +0x434, velocity at +0x440,
+a standalone float at +0x44C, a full `StageTimerView` at +0x450,
+state at +0x464, kind and visible-kind at +0x468/+0x46C, and the
+special group field at +0x474. The manager's record array begins at
++0x14. The **150 ordinary entries** use `records[0..149]` and stop on
+the first state-zero record (or return zero after all 150 are occupied).
+The distinct **2048 special-history records** begin at +0x29E64;
+cursor and event count are at +0x265E68/+0x265E6C. Header compile-time
+layout assertions verify the actual offsets, rather than inventing an
+original nominal item class.
+
+Ordinary allocation copies XYZ, clamps X to the native [-192,192] interval
+with the original unordered comparison behavior, computes polar velocity,
+zeros velocity Z and the preceding timer float, and runs the real timer
+initialization. At the original power threshold, kinds 1,4,10,11 map to
+9. Kind 5 additionally creates the script-0x73 layer-0x16 positioned VM
+and queues sound 0x34. Kind 10 uses visible-kind 1 and script 0x61;
+kind 11 uses visible-kind 4 and script 0x64. The source preserves the
+**three separate** native `ResetAnimationVm` call arms, sets animation
+bytes +0x41C/+0x41D to 0x10, binds the selected animation script and
+stores the caller's color at VM+0x374.
+
+The special kind-8 path separately advances its event count, examines the
+selected historic record, conditionally initializes it with state 5 and
+kind 8, then computes the original tiered signed index groups using
+moduli **4, 8, 16, 32** and offsets 0,4,8,16 according to count thresholds
+256,512,1024. The cursor advances modulo **2048** even if the selected
+record was occupied. The source retains the original unchecked old cursor
+and signed-remainder assumptions; it does not shrink or repurpose the ring.
+
+Four scoped pinned VC9 `/GL` source PE/MAP/PDB links were run with the
+independent dynamic caller and selected real polar, VM and mesh producers.
+After separating the three native VM-reset callsites, candidate sizes were
+**835, 835, 839 and 851** bytes respectively; every version preserves
+**all eight native calls**. The real-polar/VM/mesh context reaches the
+native **851-byte extent** and exposes 20 candidate address fields but
+still has ~713 nonfield differences, a different control-flow/table layout
+and only two emitted RET exits. It is **not byte-exact** and is recorded
+only as complete source coverage. No full cold replay was performed.
+Evidence: `.analysis/probe-secondary-player-drop-20261112.py`,
+`.analysis/probe-secondary-player-drop-20261112.log`; public producer
+`probes/secondary-player-drop-context.cpp`.
+
+The adjacent `0x424670..0x42468D` 30-byte two-float polar helper now has
+full, independently reviewed natural C++ in `SecondaryDropPolar.cpp`.
+The original uses one x87 `FSINCOS` and `RET8`; VC9 normal COFF generates
+a 56-byte function with two separate cosine/sine calls and thus remains
+non-exact. Its two original callers and complete boundary were checked;
+no inline assembly or patched bytes were introduced.
