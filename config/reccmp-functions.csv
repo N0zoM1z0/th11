@@ -671,3 +671,4 @@ ConstructThreadInfStorage,0x004593C0,function
 DeleteThreadInfVirtual,0x004593E0,function
 SetRuntimeThreadFlagA577C,0x00459420,function
 UpdateReplayInputRepeatState,0x0040DE10,function
+RecordReplayInputFrame,0x00435FE0,function
