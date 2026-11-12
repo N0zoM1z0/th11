@@ -707,3 +707,4 @@ WritePbgLowLevelFile
 GetPbgLowLevelFileSize
 SeekPbgLowLevelFile
 ReadWholePbgLowLevelFile
+DeletePbgResFile

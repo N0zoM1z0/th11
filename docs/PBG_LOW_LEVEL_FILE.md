@@ -125,3 +125,16 @@ register shims or masked exceptions.
 Changing `PbgLowLevelFile.hpp` affects the same source unit as Close, Read,
 Write and Size. All six normal-COFF I/O units must be locally cold-replayed
 after this change; broader source and full-game replay are unnecessary.
+
+## Corrected return contract for the 238-byte Open boss (2026-11-13)
+
+The complete native `0x441D50` shows the file `Open` method returns a status
+in **AL**: invalid/empty mode and unsuccessful `CreateFileA` return zero;
+successful creation (and optional append seek) returns one. The earlier
+`void Open()` source omitted this observable result and the invalid-handle
+failure branch. Its maintained signature is now `unsigned char Open(...)`,
+and the native mode failure/success paths are explicitly present. The pinned
+VC9 isolated COFF candidate is **223/238 bytes** (still nonexact), so this
+is a behavioral and ABI correction rather than a byte-level exact claim.
+The previously exact low-level 46/66-byte destructors and the 121-byte path
+resolver are independently reverified after the signature change.

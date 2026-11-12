@@ -13,7 +13,7 @@ struct PbgLowLevelFileView
 
     ~PbgLowLevelFileView();
     PbgLowLevelFileView *DestroyAndMaybeDelete(unsigned int flags);
-    void Open(const char *filename, const char *mode);
+    unsigned char Open(const char *filename, const char *mode);
     void Close();
     unsigned int Read(void *destination, unsigned int length);
     unsigned char Write(const void *source, unsigned int length);

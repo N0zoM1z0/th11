@@ -37,7 +37,7 @@ PbgLowLevelFileView *PbgLowLevelFileView::DestroyAndMaybeDelete(unsigned int fla
 
 // Original 0x441D50..0x441E3D: native mode selection and Win32 file creation
 // with a 260-character resolved pathname and compiler cookie frame.
-void PbgLowLevelFileView::Open(const char *filename, const char *mode)
+unsigned char PbgLowLevelFileView::Open(const char *filename, const char *mode)
 {
     unsigned int creation = 0;
     int append = 0;
@@ -48,7 +48,7 @@ void PbgLowLevelFileView::Open(const char *filename, const char *mode)
     for (;;)
     {
         char ch = *cursor;
-        if (!ch) return;
+        if (!ch) return 0;
         if (ch == 'r')
         {
             access = GENERIC_READ;
@@ -74,6 +74,7 @@ void PbgLowLevelFileView::Open(const char *filename, const char *mode)
     ResolvePbgDiskPath(resolvedPath, filename);
     handle = CreateFileA(resolvedPath, access, FILE_SHARE_READ, 0,
         creation, FILE_ATTRIBUTE_NORMAL | FILE_FLAG_SEQUENTIAL_SCAN, 0);
-    if (handle != INVALID_HANDLE_VALUE && append)
-        SetFilePointer(handle, 0, 0, FILE_END);
+    if (handle == INVALID_HANDLE_VALUE) return 0;
+    if (append) SetFilePointer(handle, 0, 0, FILE_END);
+    return 1;
 }
