@@ -603,3 +603,4 @@ UpdateSecondaryMasterActors
 EmitSecondaryActorEffects
 ResetSecondaryStateWithEffect
 SecondaryEffectPolarVector::SetPolar
+FinishSecondaryActorEffect

@@ -20,7 +20,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - [Generated progress](PROGRESS.md) and
   `config/{functions,function-boundaries,function-origins,matches}.csv`
   determine names, origins, reviewed extents and exact status.
-  At this checkpoint: **304 canonical exact**, **605 source-present**,
+  At this checkpoint: **304 canonical exact**, **606 source-present**,
   **661 reviewed boundaries**. Refresh with
   `scripts/repo-python scripts/progress.py`, not manual totals.
 - An exact owner requires the entire original function, source/tool
@@ -62,6 +62,10 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   bytes, 12/12 calls, two returns and 97 positional nonfield differences.
   True program destructor inlining and indexed renderer-slot codegen remain
   unresolved; no exact claim. [Secondary lifetime](SECONDARY_LIFETIME.md).
+- Full **156-byte** `FinishSecondaryActorEffect` at `0x4127E0` now
+  calls real sound, positioned animation, item-drop and 457-byte effect
+  implementations with a bounded 146–151/156-byte VC9 diagnostic. It remains
+  source-only, not byte-exact. [Actor lifecycle](SECONDARY_ACTOR.md).
 - Full **457-byte** `EmitSecondaryActorEffects` is now source-present,
   with an independently linked **436/457 candidate preserving 122/122
   instructions and seven native calls**; source remains non-exact. Its
@@ -102,6 +106,10 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   bytes, 12/12 calls, two returns and 97 positional nonfield differences.
   True program destructor inlining and indexed renderer-slot codegen remain
   unresolved; no exact claim. [Secondary lifetime](SECONDARY_LIFETIME.md).
+- Full **156-byte** `FinishSecondaryActorEffect` at `0x4127E0` now
+  calls real sound, positioned animation, item-drop and 457-byte effect
+  implementations with a bounded 146–151/156-byte VC9 diagnostic. It remains
+  source-only, not byte-exact. [Actor lifecycle](SECONDARY_ACTOR.md).
 - Full **457-byte** `EmitSecondaryActorEffects` is now source-present,
   with an independently linked **436/457 candidate preserving 122/122
   instructions and seven native calls**; source remains non-exact. Its

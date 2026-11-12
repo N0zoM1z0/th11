@@ -170,3 +170,39 @@ not primary-TU acceptance, and add no creator exact credit. Both larger callers
 40D600/1212 and420390/1149 have complete source;418460/189 remains source-open.
 See [SECONDARY_HOST_DISPATCH](SECONDARY_HOST_DISPATCH.md) for whole-host evidence
 and [SECONDARY_GAMEPLAY](SECONDARY_GAMEPLAY.md) for the real caller/helper context.
+
+## Complete 156-byte actor effect finishing owner (2026-11-12)
+
+`src/SecondaryActorEffectFinish.cpp` now implements the complete native
+`FinishSecondaryActorEffect` at `0x4127E0..0x41287B` in ordinary C++.
+The target is **156 bytes, 46 instructions, four call sites and one RET**.
+The caller's actor has the full `SecondaryActorStateView` at +0x103C.
+Its settings array at actor offsets **+0x2580/+0x2584/+0x2588** controls
+independent sound, script and animation-file indices. When the sound index
+is nonnegative, the original calls `QueueSecondaryActorSound` at `0x44A260`
+with the horizontal world position; a nonnegative script index calls the
+native `CreatePositionedAnimationVmId` (`0x455B10`) with layer 3 and the
+animation file fetched from master `+0x40 + 4*fileIndex` (not a fixed file).
+
+It then checks the ID at actor+0x2544; a positive ID triggers the real
+`SpawnSecondaryPlayerDrop` (`0x424230`) with the original opaque color,
+angle and speed. Independently of that ID, it calls the full **457-byte**
+`EmitSecondaryActorEffects` (`0x4101D0`) with the same state record and
+world position; it always clears that ID and returns 1. This deliberately
+does not dispatch through the separate 58-byte `ResetSecondaryStateWithEffect`
+entry, because the native caller inlines its own gate.
+
+Four pinned VC9 RTM `/GL` primary-TU PE/MAP/PDB experiments retain **all
+four calls**: an independent live argument caller yields **150/156 bytes**,
+real emission producer **146/156**, real audio/positioned animation producers
+**148/156**, and their combined context **147/156**. A second bounded family
+uses the genuine **4230-byte** `SecondaryActorUpdate.cpp` caller and yields
+**150/156**, **146/156** and **151/156** depending on available direct
+producer TUs. The original 46-instruction scheduling and native private
+register/hidden-result arrangement are still non-exact; **no strict match
+credit** is claimed. Reproduce with
+`.analysis/probe-secondary-actor-effect-finish-20261112.py` and
+`.analysis/probe-secondary-actor-effect-finish-real-parent-20261112.py`
+plus their logs; public producers under
+`probes/secondary-actor-effect-finish*-context.cpp`. No unrelated full cold
+replay was performed.
