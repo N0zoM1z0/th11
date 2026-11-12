@@ -380,3 +380,61 @@ with current compiler/source/producer receipt and zero replay differences.
 Canonical unit: `start-prepared-music-file`; log under
 `.analysis/start-prepared-music-file-strict-20261112.log`. Only this scoped
 producer was cold compiled; the unrelated exact cohort was not replayed.
+
+## Exact 178-byte prepared music shutdown boss (2026-11-12)
+
+`ClosePreparedMusic` at `0x449FE0..0x44A091` now has a complete, naturally
+compiled C++ owner in `src/PreparedMusicClose.cpp`. Its source checks the
+manager's extended music controller at `+0x5208`, stops playback through the
+true `StopMusicStream` (`0x45AB70`, `closeFile=1`), then, if a worker exists,
+posts `WM_QUIT` and repeats the original 256-ms `WaitForSingleObject` loop
+with another post on each nonzero result. It closes the worker and event
+handles at `+0x618/+0x520C`, zeros only the worker field, re-reads the
+controller independently and invokes the native virtual scalar-deleting
+destructor if present. No additional worker cancellation, wait bound,
+exception cleanup or null guard was invented.
+
+Pinned VC9 `/GL` with real `SoundQueue.cpp`, `MusicStream.cpp` and a dynamic
+sound queue producer restores the original private ESI manager receiver,
+Win32 import pointer loads and virtual deletion. The cold linked full
+primary-TU PDB/MAP/PE owner matches all **178/178 bytes, 55/55 instructions,
+8/8 call sites**, plus all four independently checked address fields:
+`StopMusicStream` REL32, `PostThreadMessageA`, `WaitForSingleObject`,
+`CloseHandle` DIR32/IAT roots. The source does not patch code bytes or force
+an ABI declaration. The complete matched function has one RET and no
+embedded table. Canonical strict unit: `close-prepared-music`; receipts and
+comparison are in `.analysis/close-prepared-music-strict-20261112.log`.
+
+The immediately related 515-byte load and 291-byte start bosses retain
+complete, independently compiled sources but are **not** declared exact.
+Only the closing function's local cold replay was needed here.
+
+## Exact 178-byte prepared music shutdown boss (2026-11-12)
+
+`ClosePreparedMusic` at `0x449FE0..0x44A091` now has maintained, complete
+C++ in `src/PreparedMusicClose.cpp`. Its **178 bytes, 55 decoded instructions,
+eight calls and ordinary RET** cover the *entire* native owner. It first
+checks the manager's current controller at +0x5208, invokes the actual
+`StopMusicStream(controller, 1)`, then performs the original background-worker
+shutdown if `thread` is nonnull. It sends `WM_QUIT`, calls
+`WaitForSingleObject(thread, 256)` and repeats the message/wait cycle until
+`WAIT_OBJECT_0`. It closes both the worker handle and the music event at
++0x520C, clears the thread slot, re-reads the controller and invokes the
+real virtual scalar-deleting destructor before clearing +0x5208. Neither
+invented early termination on wait failure nor extra cleanup is introduced.
+
+An isolated source link emitted 178 bytes but 56 instructions and 47
+positional nonfield differences. Adding actual `MusicStream.cpp` restored the
+55-instruction shape, while linking its true parent `SoundQueue.cpp` with the
+independent dynamic queue caller recovered the native ESI manager register and
+all remaining instructions. The complete real-producer contribution is now
+**strict 178/178 exact** after pinned VC9 `/GL` cold compilation, unique
+primary-TU PE/MAP/PDB ownership and exhaustive independent field replay.
+The four original linkages are REL32 `StopMusicStream` (45AB70) and DIR32
+IAT entries for `PostThreadMessageA` (48B27C), `WaitForSingleObject`
+(48B0F0), and `CloseHandle` (48B0A0). All **four fields and every code byte**
+match exactly, with current source/compiler/producer receipts. Canonical unit
+`close-prepared-music`; strict evidence:
+`.analysis/close-prepared-music-strict-20261112.log`, bounded experiment
+`.analysis/probe-prepared-music-close-20261112.py` and public dynamic producer
+`probes/prepared-music-close-context.cpp`. No full cold replay was run.

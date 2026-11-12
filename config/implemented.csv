@@ -592,3 +592,4 @@ LoadPreparedMusic
 TraceSoundQueue
 FindSoundTrack
 StartPreparedMusicFile
+ClosePreparedMusic
