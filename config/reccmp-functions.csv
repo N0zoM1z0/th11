@@ -629,3 +629,5 @@ DrawSecondaryEffect,0x0045DF10,function
 FindAudioAdjacentListNode,0x00459C40,function
 InitializeAudioAdjacentTween,0x00459C60,function
 SetAudioAdjacentScratchMatrix,0x00459C70,function
+EndSecondarySpecialState,0x00406860,function
+QueueSecondarySpecialPulse,0x0044A300,function

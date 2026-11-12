@@ -371,3 +371,24 @@ yet reproduce all native instruction bytes. Reproduce using
 `.analysis/try-special-effect-draw-20261112.py` with their logs, and the
 public caller `probes/secondary-special-effect-lifecycle-context.cpp`.
 No full cold replay was performed.
+
+## Special-effect timer and sound-queue callees (2026-11-12)
+
+`SecondarySpecialEffectSupport.cpp` closes two direct dependencies of the
+177-byte special-effect update. `EndSecondarySpecialState` (0x406860,
+**93 bytes**) initializes the player's stage timer at +0x8BB0 only if
+flag bit 0 is clear; it then stores the integer frame, preceding frame and
+rounded float frame. `QueueSecondarySpecialPulse` (0x44A300, **58 bytes**)
+searches the real twelve-slot sound queue for event 0x31, fills the first
+empty slot if necessary and sets that slot's pending count to -1.
+
+Direct Ghidra and independent mapped-PE reviews accept both whole function
+boundaries, their callers, exits and CC neighbors. Natural VC9 RTM normal
+COFF gives **93/93** and **58/58** candidate lengths, with two and four
+linked fields; the latter has 26 remaining nonfield mismatches, and neither
+is byte-exact. Focused real-caller `/GL` comparisons with
+`SecondarySpecialEffectLifecycle.cpp` retain complete function bodies but
+also remain non-exact (96/93 and 58/58 with 16/17 instructions). The
+producer script and retained diagnostic are
+`.analysis/probe-special-support-real-parent-20261112.py` and its log.
+No unrelated cold replay was performed.

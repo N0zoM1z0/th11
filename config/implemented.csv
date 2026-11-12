@@ -628,3 +628,5 @@ DrawSecondaryEffect
 FindAudioAdjacentListNode
 InitializeAudioAdjacentTween
 SetAudioAdjacentScratchMatrix
+EndSecondarySpecialState
+QueueSecondarySpecialPulse
