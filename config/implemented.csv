@@ -697,7 +697,7 @@ ReleasePbgResourceSession
 DestroyPbgResourceEntry
 DuplicatePbgResourcePath
 TracePbgResourceEvent
-DestroyAndMaybeDeletePbgLowLevelFile
+DeletePbgLowLevelFile
 DestroyPbgLowLevelFile
 OpenPbgLowLevelFile
 ResolvePbgDiskPath

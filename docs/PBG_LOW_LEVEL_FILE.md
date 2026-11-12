@@ -55,3 +55,19 @@ the returned separator pointer, even if the null path first caused the output
 buffer's first byte to be cleared. Adding a defensive `else` changes the
 original control flow; the maintained source deliberately does not claim that
 such a guard existed. Its 121-byte length match is still not exact codegen.
+
+## Strict 121-byte original disk path resolver (2026-11-13)
+
+The `ResolvePbgDiskPath` source was already complete, including the original
+unchecked dereference of the separator return value. In isolated VC9 normal
+COFF it produced 121 bytes but differed from the original private register
+allocation. A bounded real `/GL` producer containing the full 238-byte
+`PbgLowLevelFileView::Open` source and a separate dynamic caller now yields
+**121/121 original bytes, 55 instructions and no non-field differences**.
+The original filename arrives in EAX and destination in ECX naturally.
+
+The canonical `pbg-resolve-disk-path` unit binds all three code fields: REL32
+`strchr` at +0xA to `0x4604A0`, DIR32 `GetModuleFileNameA` import at +0x37
+to `0x48B0B0`, and REL32 `strrchr` at +0x3F to `0x460560`. Full hash-pinned
+PE/MAP/PDB/source/tool replay has zero differences. The 238-byte Open caller
+itself is still nonexact, so this claim is limited to the resolver owner.

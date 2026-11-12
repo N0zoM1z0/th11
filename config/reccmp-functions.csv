@@ -698,7 +698,7 @@ ReleasePbgResourceSession,0x004416C0,function
 DestroyPbgResourceEntry,0x00441C00,function
 DuplicatePbgResourcePath,0x00441BD0,function
 TracePbgResourceEvent,0x00441C80,function
-DestroyAndMaybeDeletePbgLowLevelFile,0x00441CD0,function
+DeletePbgLowLevelFile,0x00441CD0,function
 DestroyPbgLowLevelFile,0x00441D20,function
 OpenPbgLowLevelFile,0x00441D50,function
 ResolvePbgDiskPath,0x00442000,function
