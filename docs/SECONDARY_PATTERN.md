@@ -233,3 +233,32 @@ Reproduce with `.analysis/probe-secondary-replay-load-20261112.py` and its
 logged source PE/MAP/PDB comparisons; independent caller:
 `probes/secondary-replay-load-context.cpp`. Only this owner and directly
 needed producer TUs were built, not the full cold replay cohort.
+
+## Exact shared replay close helper and source-backed read helper (2026-11-12)
+
+`src/SharedFileReadHelpers.cpp` now implements both complete read-path
+helpers used by the 441-byte replay loader. `ReadSharedReplayBytes`
+(`0x458980`, 69 bytes) checks the global shared handle, allocates a
+caller-sized buffer, closes the handle if allocation fails, and otherwise
+uses `ReadFile` to fill it. The native read size arrives in EDI through a
+private calling convention. Its scoped VC9 `/GL` code is **69/69 bytes,
+35 instructions and three calls**, but differs in ten register/prologue
+bytes; it remains source-backed, non-exact.
+
+`CloseSharedReplayReader` (`0x4589D0`, 49 bytes) closes that global handle
+when valid and conditionally releases the input runtime's critical section,
+then decrements its depth byte. Its complete independently reviewed native
+owner has **49 bytes, 12 instructions, two Win32 calls** and six data/IAT
+fields. A natural VC9 `/GL` public primary-TU PE/MAP/PDB link produces
+**49/49 strict exact bytes**. All six DIR32 targets were independently
+checked: shared handle `0x4A34E0`, `CloseHandle` IAT `0x48B0A0`, runtime
+flags `0x4C3810`, critical section `0x4C3AC0`, `LeaveCriticalSection`
+IAT `0x48B088` and depth byte `0x4C3BB2`. Complete cold replay has
+`difference_count=0`, with current source/tool/producer receipts.
+
+Canonical exact unit: `close-shared-replay-reader`;
+`.analysis/close-shared-replay-strict-20261112.log`. Diagnostic comparisons
+for both functions are in `.analysis/probe-shared-replay-helpers-20261112.py`
+and its log, with an independent dynamic caller in
+`probes/shared-file-read-helpers-context.cpp`. Only the 49-byte exact unit
+was cold replayed.

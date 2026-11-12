@@ -990,8 +990,8 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x004587A0,authored_game,SharedFile,authored,high,shared-file-ghidra-review-20261023
 0x00458860,authored_game,SharedFile,authored,high,shared-file-ghidra-review-20261023
 0x00458920,authored_game,SharedFile,authored,high,shared-file-ghidra-review-20261023
-0x00458980,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x004589D0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00458980,unknown,SharedFileReplay,indeterminate,unknown,shared-replay-file-helper-origin-20261112
+0x004589D0,unknown,SharedFileReplay,indeterminate,unknown,shared-replay-file-helper-origin-20261112
 0x00458A10,authored_game,LogBuffer,authored,high,random-log-ghidra-review-20261023
 0x00458AF0,authored_game,LogBuffer,authored,high,device-init-runtime-origin-20261024
 0x00458BC0,authored_game,Random,authored,high,random-log-ghidra-review-20261023

@@ -631,3 +631,5 @@ SetAudioAdjacentScratchMatrix
 EndSecondarySpecialState
 QueueSecondarySpecialPulse
 LoadReplayStageData
+ReadSharedReplayBytes
+CloseSharedReplayReader
