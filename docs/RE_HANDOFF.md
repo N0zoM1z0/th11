@@ -20,7 +20,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - [Generated progress](PROGRESS.md) and
   `config/{functions,function-boundaries,function-origins,matches}.csv`
   determine names, origins, reviewed extents and exact status.
-  At this checkpoint: **296 canonical exact**, **590 source-present**,
+  At this checkpoint: **296 canonical exact**, **591 source-present**,
   **661 reviewed boundaries**. Refresh with
   `scripts/repo-python scripts/progress.py`, not manual totals.
 - An exact owner requires the entire original function, source/tool
@@ -48,6 +48,10 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   head-prepend publisher is source-present but remains 111/118 diagnostic;
   three existing exact shared-header consumers were re-cold-proved.
   See [emitter factory evidence](SECONDARY_EMITTER_RESET.md).
+- `LoadPreparedMusic` (515 bytes) has full maintained source with a
+  485/515-byte linked diagnostic retaining **153/153 instructions and
+  15/15 calls**; original private register allocation remains open. Its
+  291-byte startup neighbor is separately source-present. [Audio](SOUND_QUEUE.md).
 - The full **291-byte** `StartPreparedMusic` is now source-present and
   scoped VC9 linked **291/291 bytes, 5 calls**, but non-exact (89/92
   instructions). The corresponding **515-byte** prepared audio loader is

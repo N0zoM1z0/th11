@@ -589,3 +589,4 @@ EnterSecondaryContinueMenu,0x0042C760,function
 EnterSecondaryGameOverMenu,0x0042D560,function
 QueueMusicWaveRequest,0x0042A0D0,function
 StartPreparedMusic,0x00449E80,function
+LoadPreparedMusic,0x00449C70,function

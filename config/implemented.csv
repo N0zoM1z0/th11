@@ -588,3 +588,4 @@ EnterSecondaryContinueMenu
 EnterSecondaryGameOverMenu
 QueueMusicWaveRequest
 StartPreparedMusic
+LoadPreparedMusic

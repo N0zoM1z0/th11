@@ -243,3 +243,44 @@ credit is taken. Private producer comparison:
 `.analysis/prepared-music-start-20261112.log`; public independent caller:
 `probes/prepared-music-start-context.cpp`. The larger 515-byte prepared load
 owner remains separate work.
+
+## Prepared BGM archive load boss (2026-11-12)
+
+The reviewed complete **515-byte** `LoadPreparedMusic` owner at 449C70 now
+has maintained source in `src/PreparedMusicLoad.cpp`. This is the actual
+load/cache dependency called by `ProcessSoundQueue`, rather than a stub. It
+first checks whether a prepared sample exists for the requested index and
+whether the incoming name equals the cached one; identical requests return
+immediately. Otherwise it copies the path to the indexed 256-byte cache,
+then only performs disk loading when runtime byte +200 bit 0x10 and the
+manager's prepared-audio gate are both set.
+
+The source retains **four distinct 16-entry tables** at manager offsets
++1E80 (record), +1EC0 (allocated wave), +1F00 (playback wave) and +1F40
+(stored bytes). After freeing an old sample, the native logs the requested
+index, conditionally enters runtime critical section 2 and opens the
+separate archive pathname at +5108 with read/share-read, OPEN_EXISTING and
+sequential-scan attributes. Failed open logs the archive path, conditionally
+leaves the section and returns -1. The normal path resolves a track through
+the real 215-byte `FindSoundTrack`, seeks to that track's data offset,
+allocates exactly its stored-byte count, reads it and closes the handle.
+Allocation failure closes the file, logs the path and invokes the actual
+37-byte `LeaveRuntimeCriticalSection` wrapper. Successful read also invokes
+that wrapper and only then publishes the indexed track, two data pointers
+and byte count. No unobserved bounds validation, allocation fallback or
+ReadFile-status rejection is introduced. The two logger format literals are
+independently confirmed at native 497140/49715C.
+
+The full 515-byte target contains **153 instructions, 15 calls and three
+RET8 exits**, with no owned table or interior foreign entry. Scoped pinned
+VC9 `/GL` builds of the source compile to **489/515 bytes** with an opaque
+producer; the authentic `SoundQueue.cpp`, `MusicStream.cpp`,
+`RuntimeCritical.cpp` and independent sound-queue caller produce a unique
+primary-TU **485/515-byte** contribution. This latter family preserves
+**153/153 instructions and all 15/15 calls**, with 27 candidate linked
+fields and 336 positional non-address-field differences. It is **non-exact**
+and grants no strict byte credit. Local bounded comparison recipe:
+`.analysis/probe-prepared-music-load-20261112.py`, public dynamic caller:
+`probes/prepared-music-load-context.cpp`. The 291-byte startup owner remains
+separate source-present work, and previously accepted queue/streaming exact
+functions were not replayed unnecessarily.
