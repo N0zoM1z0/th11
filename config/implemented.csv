@@ -650,3 +650,5 @@ WriteSecondaryState010
 StoreSecondaryStateValue
 DrawMenuPage0A
 QuantizeSecondaryActorPosition
+ReadSecondaryHostDialogueDelay
+FindSecondaryClearObjectByIdentity

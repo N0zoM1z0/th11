@@ -221,12 +221,12 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00410610,unknown,SecondaryPlayerController,indeterminate,unknown,secondary-controller-callee-origin-2026-10-29
 0x00410660,unknown,SecondaryActor,indeterminate,unknown,secondary-actor-origin-2026-10-29
 0x00410690,unknown,SecondaryActor,indeterminate,unknown,secondary-actor-origin-2026-10-29
-0x00410720,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00410720,unknown,SecondaryActorState,indeterminate,unknown,secondary-host-lookup-origin-2026-11-12
 0x00410780,unknown,SecondaryActorState,indeterminate,unknown,secondary-state-origin-2026-10-29
 0x004107B0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00410880,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004108A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x004108D0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x004108D0,unknown,SecondaryClearing,indeterminate,unknown,secondary-host-lookup-origin-2026-11-12
 0x004108F0,unknown,SecondaryActor,indeterminate,unknown,secondary-actor-origin-2026-10-29
 0x00410B60,unknown,SecondaryActor,indeterminate,unknown,secondary-actor-origin-2026-10-29
 0x00410BE0,unknown,SecondaryScriptVm,indeterminate,unknown,secondary-extension-origin-2026-10-29

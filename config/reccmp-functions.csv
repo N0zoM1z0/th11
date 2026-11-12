@@ -651,3 +651,5 @@ WriteSecondaryState010,0x004100C0,function
 StoreSecondaryStateValue,0x004100D0,function
 DrawMenuPage0A,0x0043F410,function
 QuantizeSecondaryActorPosition,0x00410580,function
+ReadSecondaryHostDialogueDelay,0x00410720,function
+FindSecondaryClearObjectByIdentity,0x004108D0,function
