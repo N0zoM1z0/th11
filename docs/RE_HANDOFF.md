@@ -20,7 +20,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - [Generated progress](PROGRESS.md) and
   `config/{functions,function-boundaries,function-origins,matches}.csv`
   determine names, origins, reviewed extents and exact status.
-  At this checkpoint: **300 canonical exact**, **597 source-present**,
+  At this checkpoint: **301 canonical exact**, **598 source-present**,
   **661 reviewed boundaries**. Refresh with
   `scripts/repo-python scripts/progress.py`, not manual totals.
 - An exact owner requires the entire original function, source/tool
@@ -62,6 +62,11 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   bytes, 12/12 calls, two returns and 97 positional nonfield differences.
   True program destructor inlining and indexed renderer-slot codegen remain
   unresolved; no exact claim. [Secondary lifetime](SECONDARY_LIFETIME.md).
+- Full **201-byte** secondary-master precleanup at `0x40D0C0` is
+  **201/201 strict exact**, 68 instructions, one renderer field, with
+  the genuine four-document/two-VM-chain scans and actor virtual cleanup.
+  The complete **374-byte** parent at `0x410E90` remains source-present,
+  **340/374 non-exact**. [Secondary lifetime](SECONDARY_LIFETIME.md).
 - Full **366-byte** `CheckSecondaryPlayerRectangle` source has been added:
   double-half extents, a separate 24.0 near rectangle and the actual
   collision/HUD/mode/timer gates. Scoped VC9 gives 355/366 or 356/366,
@@ -81,6 +86,11 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   bytes, 12/12 calls, two returns and 97 positional nonfield differences.
   True program destructor inlining and indexed renderer-slot codegen remain
   unresolved; no exact claim. [Secondary lifetime](SECONDARY_LIFETIME.md).
+- Full **201-byte** secondary-master precleanup at `0x40D0C0` is
+  **201/201 strict exact**, 68 instructions, one renderer field, with
+  the genuine four-document/two-VM-chain scans and actor virtual cleanup.
+  The complete **374-byte** parent at `0x410E90` remains source-present,
+  **340/374 non-exact**. [Secondary lifetime](SECONDARY_LIFETIME.md).
 - Full **366-byte** `CheckSecondaryPlayerRectangle` source has been added:
   double-half extents, a separate 24.0 near rectangle and the actual
   collision/HUD/mode/timer gates. Scoped VC9 gives 355/366 or 356/366,

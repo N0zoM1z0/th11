@@ -5908,3 +5908,21 @@ linkages = [
   { offset = 0x3D, type = "DIR32", symbol = "__imp__WaitForSingleObject@8", target = 0x0048B0F0 },
   { offset = 0x79, type = "DIR32", symbol = "__imp__CloseHandle@4", target = 0x0048B0A0 },
 ]
+
+# Complete master pre-destruction: native 201-byte renderer mark and actor
+# teardown owner, with one independently reviewed renderer DIR32 binding.
+[units.prepare-secondary-master-destruction]
+artifact_kind = "linked-pe"
+source = "src/SecondaryMasterPrecleanup.cpp"
+inputs = ["src/SecondaryActorState.hpp", "src/VmBindings.hpp", "src/AnimationDocument.hpp", "src/Chain.hpp"]
+support_sources = ["probes/secondary-master-precleanup-context.cpp"]
+output_dir = "build/match-linked/SecondaryMasterPrecleanup"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryMasterPrecleanupProbe@4"
+functions = ["PrepareSecondaryMasterDestruction"]
+symbol = "?PrepareSecondaryMasterDestruction@@YGXPAUSecondaryMasterView@@@Z"
+target_address = 0x0040D0C0
+size = 201
+linkages = [
+  { offset = 0x06, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x004C3268 },
+]

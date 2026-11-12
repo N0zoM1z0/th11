@@ -145,7 +145,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0040CFA0,unknown,SecondaryGameplay,indeterminate,unknown,secondary-gameplay-dependencies-origin-2026-11-06
 0x0040CFE0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0040D040,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0040D0C0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0040D0C0,unknown,SecondaryLifetime,indeterminate,unknown,secondary-master-precleanup-origin-20261112
 0x0040D190,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0040D320,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0040D4F0,unknown,SecondaryEclDebug,indeterminate,unknown,secondary-gameplay-origin-2026-11-06

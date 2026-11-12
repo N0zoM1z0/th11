@@ -159,9 +159,8 @@ blocker above: fixed120 and native dispatch layout are recovered in the current
 `src/SecondaryMasterDestruction.cpp` now reconstructs the whole reviewed
 `DestroySecondaryMaster` function at `0x410E90..0x411005` (**374 native
 bytes, 108 decoded instructions, 12 calls, two returns**, no embedded
-jump table or foreign interior entry). The first call remains an explicit
-external boundary to the separately inventoried 201-byte owner at 40D0C0;
-its original nominal class identity is unresolved. The master pointer
+jump table or foreign interior entry). The first call is now the independent **201/201 exact** maintained
+precleanup owner at 40D0C0; its nominal original class is still unresolved. The master pointer
 receives ordinary source-level C++ parameters; native compiler privately
 passes it through EAX, not a hard-coded caller ABI shim.
 
@@ -199,3 +198,42 @@ and `.analysis/secondary-master-loops-20261112.log`; the public live caller is
 `probes/secondary-master-destruction-context.cpp`. This checkpoint grants
 **374 target bytes of complete source coverage but zero new exact bytes**.
 No unrelated full cold replay was executed.
+
+## Strict 201-byte master precleanup dependency (2026-11-12)
+
+`PrepareSecondaryMasterDestruction` at `0x40D0C0..0x40D188`, the real
+precleanup called by the 374-byte master teardown, now has complete natural
+C++ in `src/SecondaryMasterPrecleanup.cpp`. The independently reviewed TH11
+1.00a original has **201 bytes, 68 instructions, one virtual deleting call,
+one RET4**, no embedded table, and no foreign interior entry. The operation
+scans renderer document slots **8–11** and both separate linked VM lists:
+for each VM referring to the current file, it sets flag `0x04000000` at
+VM+0x404 without removing the node. It then follows the master actor chain
+from +0x68, snapshots each next link before invoking the actor's virtual
+scalar-deleting destructor, clears fields +0x74 and +0x1C, and removes flag
+bit 2 from the independently nullable master update/draw chains at +8/+C.
+No invented owner deletion or null check is added.
+
+Initial VC9 `/GL` compiled **200/201** bytes with 67 instructions because
+its `for` loops loaded VM data before the next node; expressing native-style
+`next` snapshots and advancing at the end of each body restored the first
+`0x9B` bytes and **201/201 bytes, 68/68 instructions**. The remaining 14
+positional differences came from the compiler hoisting a chain pointer load
+ahead of two state stores. Using the existing typed `self->Slot(0) = 0`
+source expression restores the native exact ordering, instead of volatile
+aliases, artificial ABIs or code-byte patches. The final strict VC9 RTM
+`/GL` unique primary-TU **PE/MAP/PDB** replay matches **all 201 bytes**,
+including the sole independently reviewed `g_RenderBatch` DIR32 field at
++0x06 targeting `0x4C3268`, with current tool/source/producer receipts and
+zero differences. Canonical unit: `prepare-secondary-master-destruction`;
+receipt/replay `.analysis/master-precleanup-strict-20261112.log`.
+
+The bounded exploration is reproducible via
+`.analysis/probe-secondary-master-precleanup-20261112.py`,
+`.analysis/try-master-precleanup-order-20261112.py`,
+`.analysis/try-master-precleanup-tail-20261112.py` and matching logs. The
+public independent caller is
+`probes/secondary-master-precleanup-context.cpp`. The directly linked
+374-byte master is still **340/374 source-only, non-exact**: closing its
+201-byte callee does not magically grant exactness to the caller. No full
+cold replay was run.

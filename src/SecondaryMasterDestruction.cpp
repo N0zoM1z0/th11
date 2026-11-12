@@ -7,9 +7,9 @@
 #include <stdlib.h>
 #include <new>
 
-// Original 0x40D0C0 is an independent 201-byte shutdown dependency, whose
-// nominal class and original function name remain unresolved. Its argument
-// is the same master object that the native 0x410E90 owns in EAX.
+// Original 0x40D0C0 is the independently exact, source-present 201-byte
+// precleanup dependency. Both call sites share the real master object;
+// its native private EAX calling convention remains compiler-owned.
 void __stdcall PrepareSecondaryMasterDestruction(SecondaryMasterView *self);
 void __stdcall DestroyAnimationDocument(AnimationDocumentView *file);
 
