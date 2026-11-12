@@ -334,3 +334,40 @@ strict credit is claimed. The scoped experiments are reproducible with
 `.analysis/probe-special-activation-with-lifecycle-20261112.py`, with
 public producer `probes/secondary-special-effect-lifecycle-context.cpp`.
 No unrelated full cold replay was executed.
+
+## Special-effect initialization, update and draw chain (2026-11-12)
+
+`SecondarySpecialEffectLifecycle.cpp` now implements the complete native
+188-byte `InitializeSecondaryEffect` at `0x45DD70`, 177-byte
+`UpdateSecondaryEffect` at `0x45DE30`, and 84-byte `DrawSecondaryEffect`
+at `0x45DF10`. Together these cover 449 original bytes in the six-way
+special-activation path, with the authentic 5, 7 and 2 direct calls.
+
+Initialization establishes origin and radius/step values 0, 224, 32 and 10;
+queues sound 0x31; allocates animation scripts 0x23/0x24 in layer 0x16;
+updates the spell state; binds script 0x1A to the player animation; sets
+player flag bit 2; clears two position state slots; and increments the
+master counter. The update checks the first animation VM ID, clears the
+special spell/animation and queues termination code 0x28 when missing.
+At frame 180 it queues sound 0x26 and the distinct pulse call, allocates a
+30-frame, damage-50 region at the current origin, and thereafter calls the
+independent 84-byte draw owner before increasing its radius by 10 each
+frame. Drawing dispatches to both scene-projectile and secondary-object
+radius clearing. The original reloads the spell flags **after** the first
+clearing call; source now keeps two reads, since that call can mutate the
+state and sharing a cached mask would change behavior.
+
+Four scoped pinned VC9 `/GL` links with real animation, sound and clearing
+producers compile every owner without loss of original call sites:
+initialization reaches **184/188 bytes (5 calls)**, update **180/177
+(7 calls)** with animation producer, and draw **82/84 (2 calls)** in the
+independent-callee family (80/84 with real clearing). The current owners
+are **source-present but not byte-exact**; the remaining differences
+concern private register contracts, x87 stores and producer scheduling.
+Six focused natural variants of the draw expression were compiled and
+compared; separate spell-state reads preserve native semantics, but do not
+yet reproduce all native instruction bytes. Reproduce using
+`.analysis/probe-special-effect-lifecycle-20261112.py` and
+`.analysis/try-special-effect-draw-20261112.py` with their logs, and the
+public caller `probes/secondary-special-effect-lifecycle-context.cpp`.
+No full cold replay was performed.

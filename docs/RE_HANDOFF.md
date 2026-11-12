@@ -67,6 +67,11 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   **184/188, 178/177 and 73/84** diagnostics; all 14 original calls
   agree, and the 268-byte activation boss is recompiled with its real
   initializer. Still non-exact. [Player controller](SECONDARY_PLAYER_CONTROLLER.md).
+- Full **188/177/84-byte** special-effect init/update/draw chain
+  is source-present, with scoped VC9 diagnostics 184/188, 180/177 and
+  82/84 respectively, retaining 5/7/2 native calls. Original source
+  reloads spell flags between its two draw clears. No exact credit.
+  [Player controller](SECONDARY_PLAYER_CONTROLLER.md).
 - Six tiny, independently bounded utility owners are now strict exact:
   four 3-byte renderer ECX→EAX identities and two one-byte input/music
   no-ops, **14/14 bytes**, all with empty relocation sets and complete
