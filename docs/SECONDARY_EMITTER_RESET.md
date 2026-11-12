@@ -253,3 +253,21 @@ and complete zero-difference field replay are retained in
 `create-default-secondary-draw-animation-vm-id`. The changed shared factory
 header is checked only against its exact direct consumers, not the full
 cold cohort.
+
+## Front publisher counter scheduling experiment (2026-11-12)
+
+The still-open 118-byte secondary head-prepend publisher at `0x455860`
+produces 111 bytes/32 instructions with ordinary unsigned increments. Its
+exact native first 0x55 bytes and tail differ at the ID counter: native
+emits `ADD [EDX+0x7BD888], ECX; CMP [EDX+0x7BD888],0; POP ESI; JNE; ADD`,
+whereas VC9 reuses the add flags and folds the wrap-recovery write to a
+single `MOV`. Eight natural C++ counter variants were compiled under the
+same real initializer/publisher-producer context. Ordinary `+=`, a named
+one-constant and testing the returned increment all kept **111/118** bytes.
+Making the counter member/reference `volatile` emitted an extra saved
+register and produced **119/118**, 35 instructions, rather than the native
+33. The current 118-byte target remains **non-exact**. Crucially, both
+independently accepted 105/112-byte front factories stayed zero-difference
+through every experiment; no established canonical source was replaced.
+Private script and evidence:
+`.analysis/try-front-publisher-counter-20261112.py` and its log.

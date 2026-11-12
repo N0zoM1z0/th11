@@ -518,3 +518,32 @@ canonical source was left unchanged. The next actionable question is the
 original compiler's count/branch register lifetime, not another equivalent
 conditional spelling. Evidence: `.analysis/try-browser-state0-20261112.py`
 and `.analysis/try-browser-state0-20261112.log`.
+
+## Loader construction and selection-register evidence (2026-11-12)
+
+The full native 277-byte `LoadSecondaryProgramSelection` at `0x438910`
+was compared instruction by instruction to the complete 277-byte, 81-op
+VC9 `/GL` real-resource producer (`LoaderFullResource-standard`). Its
+**18 nonfield byte differences** are confined to two groups. At relative
+`+0x9F..+0xA2`, the native stores the program vptr to `[EDI]` **before**
+pushing the zero-fill's `EBX`/`EDI` arguments; the linked code pushes both
+arguments first, then stores the same vptr. Both proceed with the same
+`+0x1090/+0x1094` zero writes and `memset` call. At `+0xDB..+0xF8`, the
+native loads the program's subroutine count into `ECX`, copies to `EAX`,
+uses `EBX` for the negative-case selection and reloads the stack cookie
+*before* its final selected-index store. The linked code uses `EAX` and
+`ECX` for those roles and reloads the cookie afterward. The native eight
+calls and the real 466-byte resource loader remain independently aligned.
+
+Six ordinary constructor formulations were tried with the genuine bounded
+resource/worker dependency set. The established trailing-field initializer
+and explicit-before-clear, char-pointer and inline-helper formulations all
+preserved **277 bytes, 81 instructions and the same 18 nonfield differences**.
+Moving trailing-field clears *after* `memset` kept 277 bytes but regressed
+to 34 nonfield differences; removing the separate initializers reduced the
+candidate to 276 bytes with 149 nonfield differences. None changed the
+canonical source or shared `SecondaryScript.hpp` header. Evidence:
+`.analysis/try-loader-constructor-order-20261112.py`, the paired log, and
+complete native/candidate private PE disassembly. The open question is
+constructor/vptr scheduling and the eventual count register-lifetime under
+the original translation-unit context, not another equivalent clear call.
