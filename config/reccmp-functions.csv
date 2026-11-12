@@ -667,3 +667,5 @@ ResetSecondaryHostEffectSnapshot,0x00410880,function
 CopySecondaryHostVector,0x004108A0,function
 PauseSecondaryMasterChains,0x00410E60,function
 DestroyThreadInfVirtual,0x00459410,function
+ConstructThreadInfStorage,0x004593C0,function
+DeleteThreadInfVirtual,0x004593E0,function

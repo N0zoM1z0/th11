@@ -666,3 +666,5 @@ ResetSecondaryHostEffectSnapshot
 CopySecondaryHostVector
 PauseSecondaryMasterChains
 DestroyThreadInfVirtual
+ConstructThreadInfStorage
+DeleteThreadInfVirtual

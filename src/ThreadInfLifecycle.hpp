@@ -1,12 +1,16 @@
 #pragma once
 #include "FrameLoop.hpp"
 
-// A typed lifetime view for the 0x1C-byte native ThreadInf storage. The
-// compiler-generated virtual destructor points at the observed vtable root
-// 0x4978D0; the original translation unit and source spelling are unknown.
+// A typed lifetime view for the native 0x1C-byte ThreadInf storage. VC9
+// emits the original constructor, normal destructor and deleting destructor
+// through actual C++ object lifetime, not hand-written instruction bytes.
 struct ThreadInfView
 {
-    virtual ~ThreadInfView();
+    ThreadInfView();
+    virtual ~ThreadInfView()
+    {
+        StopRuntimeThread(reinterpret_cast<RuntimeThreadView *>(this));
+    }
     HANDLE thread;
     unsigned int unknown08;
     int stopRequested;
@@ -15,5 +19,3 @@ struct ThreadInfView
     unsigned int unknown18;
 };
 typedef char ThreadInfStorageSize[(sizeof(ThreadInfView) == sizeof(RuntimeThreadView)) ? 1 : -1];
-
-void __stdcall DestroyThreadInfForUnwind(ThreadInfView *self);

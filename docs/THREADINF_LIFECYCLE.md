@@ -26,3 +26,30 @@ zero differences. This is exact code generation for this single owner, not
 proof of the original translation-unit partition. The adjacent 36-byte
 *deleting* destructor at `0x4593E0` and full runtime-thread stop producer
 remain independent areas for investigation.
+
+## Three-member lifecycle recovery and deleting-owner limitation
+
+The maintained `ThreadInfView` now has a real four-field constructor and
+inline virtual destructor. In a genuine VC9 `/GL` context with
+`FrameRuntime.cpp`, construction, scalar deletion and non-deleting destruction
+compile to the complete original **21/21**, **36/36**, and **16/16** bytes
+respectively. The native constructor at `0x4593C0..0x4593D4` was omitted
+from the initial inventory: independent Ghidra review confirmed 21 contiguous
+bytes, seven instructions, a `RET` and CC neighbors, with vtable field at +4.
+It writes `vtable`, zeroes fields +4/+8/+C/+10, and deliberately does not
+clear the final two member words. Canonical `threadinf-constructor` now cold
+replays that complete 21-byte PDB/MAP owner.
+
+The scalar deleting destructor at `0x4593E0..0x459403` preserves the original
+conditional storage deletion, worker shutdown, and `RET 4`. Three native
+address fields are aligned (vtable at +5, worker stop at +10, scalar delete
+at +23); all 36 compiled code bytes match the original when replayed.
+**It is nevertheless not a canonical exact match**: this actual historical
+VC9 link publishes *both* `??_EThreadInfView` and `??_GThreadInfView`
+functions at the same 36-byte entry in MAP, so the strict linked oracle
+rightly rejects ambiguous ownership. No field masking, symbol filtering or
+modified oracle was used to claim success. The deleting function remains
+source-mapped/non-exact until a unique production owner can be established.
+
+Only the 21-byte constructor and 16-byte normal destructor carry canonical
+exact credit. All three mappings and the dirty worktree are preserved.

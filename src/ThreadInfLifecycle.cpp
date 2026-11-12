@@ -1,16 +1,12 @@
 #include "ThreadInfLifecycle.hpp"
 
-// Original 0x459410..0x45941F: non-deleting 16-byte virtual destructor,
-// referenced by the native EH unwind routines. With the actual
-// StopRuntimeThread producer, VC9 retains ESI as the worker receiver.
-ThreadInfView::~ThreadInfView()
+// Original 0x4593C0..0x4593D4: private EAX receiver and exactly four member
+// zeros after the virtual table store. The final two words are not cleared.
+ThreadInfView::ThreadInfView()
+    : thread(0), unknown08(0), stopRequested(0), pending(0)
 {
-    StopRuntimeThread(reinterpret_cast<RuntimeThreadView *>(this));
 }
 
-// A natural dynamic caller keeps the member destructor in its own complete
-// public primary-TU contribution for the bounded /GL comparison.
-void __stdcall DestroyThreadInfForUnwind(ThreadInfView *self)
-{
-    self->~ThreadInfView();
-}
+// The inline virtual destructor in the header also emits the 16-byte
+// non-deleting owner at 0x459410 and natural 36-byte scalar deleting owner
+// at 0x4593E0 when constructed and destroyed under the real /GL producer.

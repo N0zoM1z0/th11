@@ -1,5 +1,14 @@
 #include "ThreadInfLifecycle.hpp"
-extern "C" void __stdcall ThreadInfLifecycleProbe(ThreadInfView *self)
+#include <new>
+
+// Compile-only dynamic producer: the three independent lifetime operations
+// are deliberately exclusive, not performed sequentially on one object.
+extern "C" void __stdcall ThreadInfLifecycleProbe(ThreadInfView *self, int action)
 {
-    DestroyThreadInfForUnwind(self);
+    if (action == 0)
+        new (self) ThreadInfView;
+    else if (action == 1)
+        self->~ThreadInfView();
+    else
+        delete self;
 }

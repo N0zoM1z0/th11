@@ -6511,7 +6511,7 @@ inputs = ["src/ThreadInfLifecycle.hpp", "src/FrameLoop.hpp", "src/MainRuntime.hp
 support_sources = ["probes/threadinf-lifecycle-context.cpp", "src/FrameRuntime.cpp"]
 output_dir = "build/match-linked/ThreadInfVirtualDestructor"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
-entry = "ThreadInfLifecycleProbe@4"
+entry = "ThreadInfLifecycleProbe@8"
 functions = ["DestroyThreadInfVirtual"]
 symbol = "??1ThreadInfView@@UAE@XZ"
 target_address = 0x00459410
@@ -6519,4 +6519,20 @@ size = 16
 linkages = [
   { offset = 5, type = "DIR32", symbol = "??_7ThreadInfView@@6B@", target = 0x004978D0 },
   { offset = 10, type = "REL32", symbol = "?StopRuntimeThread@@YGXPAURuntimeThreadView@@@Z", target = 0x00459430 },
+]
+
+[units.threadinf-constructor]
+artifact_kind = "linked-pe"
+source = "src/ThreadInfLifecycle.cpp"
+inputs = ["src/ThreadInfLifecycle.hpp", "src/FrameLoop.hpp", "src/MainRuntime.hpp"]
+support_sources = ["probes/threadinf-lifecycle-context.cpp", "src/FrameRuntime.cpp"]
+output_dir = "build/match-linked/ThreadInfVirtualDestructor"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "ThreadInfLifecycleProbe@8"
+functions = ["ConstructThreadInfStorage"]
+symbol = "??0ThreadInfView@@QAE@XZ"
+target_address = 0x004593C0
+size = 21
+linkages = [
+  { offset = 4, type = "DIR32", symbol = "??_7ThreadInfView@@6B@", target = 0x004978D0 },
 ]
