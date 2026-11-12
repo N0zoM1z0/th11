@@ -20,7 +20,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - [Generated progress](PROGRESS.md) and
   `config/{functions,function-boundaries,function-origins,matches}.csv`
   determine names, origins, reviewed extents and exact status.
-  At this checkpoint: **317 canonical exact**, **636 source-present**,
+  At this checkpoint: **318 canonical exact**, **636 source-present**,
   **661 reviewed boundaries**. Refresh with
   `scripts/repo-python scripts/progress.py`, not manual totals.
 - An exact owner requires the entire original function, source/tool
@@ -93,8 +93,9 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   preserve its source codegen. [Secondary pattern](SECONDARY_PATTERN.md).
 - The replay loader's `CloseSharedReplayReader` at `0x4589D0`
   is **49/49 strict exact** under real VC9 `/GL`, with all six native
-  address fields rebound; its adjacent `ReadSharedReplayBytes` is fully
-  sourced at 69/69 with ten private-register mismatches (non-exact).
+  address fields rebound; its adjacent `ReadSharedReplayBytes` is now
+  **69/69 strict exact** with four reviewed fields. Reordering a natural
+  global-handle guard restored the original EBX/EDI allocation.
   [Secondary pattern](SECONDARY_PATTERN.md).
 - The full **441-byte** `LoadReplayStageData` at `0x436B60` is now
   source-present: disk/resource replay intake, two cipher passes,

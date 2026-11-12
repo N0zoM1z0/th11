@@ -9,8 +9,9 @@ extern unsigned char g_FileCriticalDepth;
 // global shared handle. Native LTCG passes the requested size in EDI.
 unsigned char *__stdcall ReadSharedReplayBytes(unsigned int size)
 {
+    if (g_SharedFile == INVALID_HANDLE_VALUE)
+        return 0;
     HANDLE file = g_SharedFile;
-    if (file == INVALID_HANDLE_VALUE) return 0;
     unsigned char *buffer = static_cast<unsigned char *>(malloc(size));
     if (!buffer)
     {
@@ -21,7 +22,6 @@ unsigned char *__stdcall ReadSharedReplayBytes(unsigned int size)
     ReadFile(file, buffer, size, &read, 0);
     return buffer;
 }
-
 // Full 0x4589D0..0x458A00: close the shared read handle and conditionally
 // leave the same runtime critical section entered by OpenSharedFileForRead.
 int __cdecl CloseSharedReplayReader()

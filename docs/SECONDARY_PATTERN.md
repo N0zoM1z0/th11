@@ -241,9 +241,15 @@ helpers used by the 441-byte replay loader. `ReadSharedReplayBytes`
 (`0x458980`, 69 bytes) checks the global shared handle, allocates a
 caller-sized buffer, closes the handle if allocation fails, and otherwise
 uses `ReadFile` to fill it. The native read size arrives in EDI through a
-private calling convention. Its scoped VC9 `/GL` code is **69/69 bytes,
-35 instructions and three calls**, but differs in ten register/prologue
-bytes; it remains source-backed, non-exact.
+private calling convention. The first scoped VC9 `/GL` code was **69/69 bytes,
+35 instructions and three calls**, but exchanged EBX and EDI for ten byte
+differences. Eleven bounded natural source variants revealed that checking
+`g_SharedFile == INVALID_HANDLE_VALUE` **before** copying the handle to a
+local variable restores the original EBX file / EDI size allocation. The
+revised owner now passes **69/69 strict exact bytes, 35/35 instructions and
+all four independent DIR32/REL32 fields**: shared handle `0x4A34E0`,
+`malloc` `0x460192`, `CloseHandle` IAT `0x48B0A0` and `ReadFile` IAT
+`0x48B0A4`. Neither register was forced or explicitly named in C++.
 
 `CloseSharedReplayReader` (`0x4589D0`, 49 bytes) closes that global handle
 when valid and conditionally releases the input runtime's critical section,
