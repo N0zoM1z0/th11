@@ -151,8 +151,8 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0040D4F0,unknown,SecondaryEclDebug,indeterminate,unknown,secondary-gameplay-origin-2026-11-06
 0x0040D500,unknown,SecondaryEclDebug,indeterminate,unknown,secondary-debug-load-body-origin-20261112
 0x0040D600,unknown,SecondaryEclDebug,indeterminate,unknown,secondary-gameplay-origin-2026-11-06
-0x0040DAC0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0040DDE0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0040DAC0,unknown,SecondaryDebug,indeterminate,unknown,secondary-debug-overlay-origin-2026-11-12
+0x0040DDE0,unknown,SecondaryDebug,indeterminate,unknown,secondary-debug-overlay-origin-2026-11-12
 0x0040DE10,unknown,ReplayInput,indeterminate,unknown,replay-input-repeat-origin-2026-11-12
 0x0040DEA0,unknown,SecondaryGameplay,indeterminate,unknown,secondary-gameplay-dependencies-origin-2026-11-06
 0x0040DF10,unknown,ConfigurationMenu,indeterminate,unknown,menu-primary-origin-2026-11-06
