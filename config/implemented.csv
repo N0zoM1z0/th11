@@ -634,3 +634,5 @@ LoadReplayStageData
 ReadSharedReplayBytes
 CloseSharedReplayReader
 ClearReplayStageSegments
+DrawMenuController
+InitializeInputBindingDefaults

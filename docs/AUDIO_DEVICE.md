@@ -144,3 +144,20 @@ addends `0, 4, ..., 0x3C`. The pinned complete single-function normal-COFF
 COMDAT, current source/tool/object receipt and all 17 field replays give
 zero differing bytes. Canonical unit `audio-adjacent-scratch-matrix`; focused
 cold proof `.analysis/audio-adjacent-matrix-strict-20261112.log`.
+
+## Nine-key input defaults (2026-11-12)
+
+`src/InputBindingDefaults.cpp` implements the complete reviewed
+`InitializeInputBindingDefaults` at `0x459BD0..0x459C31`, an input-binding
+receiver with nine `short` defaults at +0x134 through +0x144. Slot order is
+`0, 1, 2, 4, -1, -1, -1, -1, 3`; the assignment to slot +0x140 is **-1**:
+the target's `OR EDX,EDX` is a flags operation and does not clear the
+register, which has already been set to -1. Stores are represented as normal
+member field writes in original observed instruction order.
+
+Scoped pinned VC9 RTM `/O2` normal COFF and `/GL` public primary-TU builds
+produce **96/98 bytes, 19 instructions, zero address fields and zero calls**.
+The remaining difference is the native initial EAX receiver copy and ECX/EDX
+value scheduling, not missing default stores. No exact credit is taken.
+Local sources: `.analysis/probe-input-binding-defaults-20261112.py`,
+`probes/input-binding-defaults-context.cpp`.

@@ -128,3 +128,23 @@ The player-data context supplies the full2448-byte page0A owner and750-byte
 record refresher, alongside the current typed-selection music-room candidate.
 See [MENU_PLAYER_DATA.md](MENU_PLAYER_DATA.md); canonical exactness is separate
 from these broader linked diagnostics.
+
+## Complete 140-byte menu draw owner (2026-11-12)
+
+`src/MenuControllerDraw.cpp` now maintains the complete source of the
+five-path `DrawMenuController` (`0x439E80..0x439F0B`), adjacent to the 1224-byte
+update dispatcher and the independently exact callback. Original Japanese PE
+review covers **105 code bytes/43 instructions**, the **three-byte internal
+alignment**, and the **eight-cell, 32-byte jump table** at `0x439EEC`.
+The page-index switch checks the original page value at menu +0x1C and
+routes 8 to `0x43DAA0`, 10 to `0x43F410`, 11 to `0x43E2F0`, 14 to
+`0x43FC50`, and 15 to `0x440520`; other selectors return 1 without a
+page call. Cases 14/15 receive the controller as one stack argument.
+
+The isolated and real-update/menu-producer pinned VC9 `/GL` primary-TU
+comparisons both compile the complete five-route source: **108/140 bytes**,
+**five calls and eight real jump cells**, with 14 current address fields.
+The native aligned stack frame, saved EDI and original EAX receiver are
+not yet recovered. The full original owner is retained without cropping its
+table. This is source presence, not byte-exact acceptance. Local comparison:
+`.analysis/probe-menu-controller-draw-20261112.py` and log.

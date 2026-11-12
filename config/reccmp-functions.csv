@@ -635,3 +635,5 @@ LoadReplayStageData,0x00436B60,function
 ReadSharedReplayBytes,0x00458980,function
 CloseSharedReplayReader,0x004589D0,function
 ClearReplayStageSegments,0x00437420,function
+DrawMenuController,0x00439E80,function
+InitializeInputBindingDefaults,0x00459BD0,function
