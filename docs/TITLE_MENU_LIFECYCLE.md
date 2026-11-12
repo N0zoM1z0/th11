@@ -11,7 +11,7 @@ simulating the small callback entries without their owning state.
 | `0x439420` storage construction | 201 | 205 normal COFF / 201 linked | **201/201 strict exact** |
 | `0x4395A0` chain/resource setup | 275 | 262 | source-present, not exact |
 | `0x4396C0` full destruction | 561 | 584 | source-present, not exact |
-| `0x439900` worker startup | 106 | 107 | source-present, not exact |
+| `0x439900` worker startup | 106 | 107 normal COFF / 106 linked | **106/106 strict exact** |
 | `0x439970` singleton release | 28 | 29 | source-present, not exact |
 
 The constructor initializes the three early selection blocks and replay
@@ -180,3 +180,30 @@ were cold-replayed after the change: `title-menu-constructor` (201 bytes),
 `title-menu-thread` (165 bytes), and `menu-controller-draw-callback` (7 bytes).
 All three retained strict full-byte and field equality. See private scoped
 verification `.analysis/title-menu-destructor-affected-exact-20261112.log`.
+
+## Exact 106-byte menu worker startup (2026-11-12)
+
+The full native `0x439900..0x439969` owner allocates a 0x5B94-byte title
+object, calls the exact 201-byte title constructor, resets the associated
+worker, stores the thread entry callback at `0x4394F0`, launches
+`_beginthreadex` and records its thread handle. An isolated normal-COFF
+producer had 107 bytes, obscuring the private worker register lifetime.
+
+The existing natural `StartTitleMenu` source requires no expression hacks.
+When the real `FrameRuntime.cpp` stop-worker producer participates in a
+bounded genuine VC9 `/GL` context, it recovers the native **106/106 bytes,
+32/32 instructions, four calls and plain `RET`**. The strict canonical
+`start-title-menu` unit verifies one unique primary-TU MAP/PDB code owner
+and seven fully reviewed fields: allocator and constructor calls, startup
+state, worker-stop call, the two identical callback-address publications,
+and `_beginthreadex`. Every field is replayed against the hash-pinned
+original and the complete code has **zero differences**. The original TU
+partition and runtime closure remain separate, unknown questions.
+
+A separate experiment using a real typed `ThreadInf` placement constructor
+in the title constructor changed the latter to 182 bytes and therefore
+was **not** adopted: the existing 201/201 exact constructor remains intact.
+Typed worker destruction without that constructor also worsened the nonexact
+561-byte destructor. The untouched title destructor retains the improved
+561/561-length, 15-call, `RET 4` diagnostic from the explicit lock-and-slot
+restoration, without claiming byte exactness.
