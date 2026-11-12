@@ -117,7 +117,7 @@ ConfigurationMenuSelection.cpp supplies the real movement/history operations:
 | --- | ---: | --- | --- |
 | MoveSecondaryDebugSelection459160 |121|121 /40|EAX selection, stack amount, RET4|
 | PushConfigurationSelection4590F0 |61|63 /20|EAX selection, RET|
-| PopConfigurationSelection459130 |48|48 /0|EAX selection, RET|
+| PopConfigurationSelection459130 |48|**48/48 strict exact**|EAX selection, RET|
 | SignalAndExecuteConfigurationAnimation456280 |95|95 /0 after4 fields|DI event, stack ID, RET4|
 
 The physical selection storage retains16-entry histories at0C/4C, depth8C,
@@ -179,3 +179,21 @@ ConfigurationAudioMenu.cpp/.hpp and MeshEffects.cpp within the prior203 frozen
 inputs, adding the three public support files. Only eight directly affected
 accepted units in five compilation families are cold-replayed; no full cohort
 or broad runtime suites are required. No new leaf acceptance units are added.
+
+## Exact 48-byte configuration selection pop (2026-11-12)
+
+The shared `0x459130..0x45915F` pop operation decrements the saved-selection
+stack depth (clamping below zero), restores the previous current/count values
+from their true fixed arrays, and clears excludedCount without mutating the
+previous selection. Direct Ghidra reviews confirm all 48 bytes, 13 native
+instructions, no interior entry/table and the normal plain `RET`.
+
+Isolated normal VC9 COFF compiled the same source to 54 bytes because its
+public declaration takes a stack pointer argument. Under a genuine dynamic
+caller in `probes/configuration-selection-pop-context.cpp`, pinned VC9 RTM
+`/GL` naturally passes the receiver in native EAX and emits **all 48 bytes
+and 13 instructions**. The canonical `pop-configuration-selection` linked
+Oracle confirms one public source.ltcg.obj PDB/MAP contribution, zero
+relocation fields, and a complete byte-for-byte cold replay with zero
+differences. The neighboring push function still differs and receives no
+credit; the larger 992-byte configuration audio page also remains nonexact.

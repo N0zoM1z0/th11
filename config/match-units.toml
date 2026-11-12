@@ -6722,3 +6722,19 @@ symbol = "?SelectMenuItem@@YIHHPAUSecondaryDebugSelectionView@@@Z"
 target_address = 0x0040DF10
 size = 33
 relocations = []
+
+# An independent dynamic caller gives the historical selector its native
+# EAX register receiver and 48-byte frame without changing its stdcall API.
+[units.pop-configuration-selection]
+artifact_kind = "linked-pe"
+source = "src/ConfigurationMenuSelection.cpp"
+inputs = ["src/ConfigurationAudioMenu.hpp"]
+support_sources = ["probes/configuration-selection-pop-context.cpp"]
+output_dir = "build/match-linked/PopConfigurationSelection"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "ConfigurationSelectionPopProbe@8"
+functions = ["PopConfigurationSelection"]
+symbol = "?PopConfigurationSelection@@YGXPAUSecondaryDebugSelectionView@@@Z"
+target_address = 0x00459130
+size = 48
+linkages = []
