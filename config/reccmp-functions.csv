@@ -603,3 +603,4 @@ InitializeSecondaryHost,0x00410BE0,function
 UpdateSecondaryMasterActors,0x00411120,function
 EmitSecondaryActorEffects,0x004101D0,function
 ResetSecondaryStateWithEffect,0x00410190,function
+SecondaryEffectPolarVector::SetPolar,0x00419BB0,function

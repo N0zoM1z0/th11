@@ -602,3 +602,4 @@ InitializeSecondaryHost
 UpdateSecondaryMasterActors
 EmitSecondaryActorEffects
 ResetSecondaryStateWithEffect
+SecondaryEffectPolarVector::SetPolar

@@ -299,7 +299,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00419920,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004199E0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00419A20,unknown,SecondaryActorState,indeterminate,unknown,secondary-state-origin-2026-10-29
-0x00419BB0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00419BB0,unknown,SecondaryActorEffectMath,indeterminate,unknown,secondary-effect-polar-origin-20261112
 0x00419BD0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00419C30,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00419C90,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

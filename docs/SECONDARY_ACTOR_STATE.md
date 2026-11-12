@@ -191,3 +191,28 @@ Diagnostics: `.analysis/probe-secondary-actor-effect-reset-20261112.py`,
 `.analysis/probe-secondary-actor-effect-real-parent-20261112.py` and logs;
 independent public caller `probes/secondary-actor-effect-reset-context.cpp`.
 The duplicate untracked scratch owner was reconciled into this single source.
+
+## Complete 30-byte elliptical polar math leaf (2026-11-12)
+
+The 457-byte effect emitter's real dependency at `0x419BB0..0x419BCD`
+is now independently mapped to `src/SecondaryEffectPolar.cpp`, with a
+bounded physical `SecondaryEffectPolarVector` of two 32-bit floats.
+The original 30-byte/11-instruction native owner reads angle, ellipse
+width and height from the stack and writes `cos(angle)*width` and
+`sin(angle)*height` through its ECX receiver. Direct hash-attested Ghidra
+and PE/Capstone verification find one incoming caller from `0x410251`,
+**no interior foreign reference**, and `RET12`; following CC padding is
+excluded. No original nominal class or authored origin is inferred.
+
+The original uses one x87 **`FSINCOS`** to compute both components from a
+single argument. Ordinary VC9 `/O2` C++ with `cos`/`sin` and the observed
+three-float member signature compiles to a **56-byte** normal-COFF owner
+with separate `__CIcos`/`__CIsin` references; `/fp:fast` reduces it to a
+**26-byte** owner using separate `FCOS` and `FSIN`, but not the native
+`FSINCOS`. Neither is byte-exact. The source retains natural math and the
+complete owner; no forced x87 assembly, injected bytes or false strict
+credit is introduced. Its bounded diagnostics are
+`.analysis/probe-secondary-effect-polar-20261112.py`, together with the
+local compiler-option probe objects in the ignored `build/probe` tree.
+The full actor interpreter producer for the 58-byte reset owner is also
+available as `probes/secondary-actor-effect-real-parent-context.cpp`.
