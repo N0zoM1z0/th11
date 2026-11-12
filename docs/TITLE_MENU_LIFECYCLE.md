@@ -62,8 +62,8 @@ function-pointer owners Ghidra missed in its initial inventory:
 - `0x439F20..0x439F26` (7 bytes), `MenuControllerDrawCallback`:
   the original is `MOV EAX,ECX` then a tail `JMP` to the 140-byte draw
   dispatcher at `0x439E80`. Its body is present as a natural C++ forwarder;
-  isolated VC9 generates a shorter 5-byte tail jump, so the private
-  register bridge and linked owner are still open. Both reference/padding
+  isolated VC9 generates a shorter 5-byte tail jump, but its actual
+  title menu `/GL` caller now restores the 7-byte private register bridge. Both reference/padding
   spans were directly reviewed, and the title resource setup uses this
   callback rather than inventing a no-op.
 
@@ -127,3 +127,21 @@ Additional scoped `/GL` diagnostic comparisons for the neighboring full
 resource initializer/destructor/startup still show **268/275, 569/561 and
 107/106** bytes in the selected real resource/chain context; their full
 bodies remain non-exact and are not cropped to improve metrics.
+
+## Exact 7-byte title draw callback (2026-11-12)
+
+The registered draw callback at `0x439F20..0x439F26` is separate from the
+140-byte `DrawMenuController` switch boss. The original has `MOV EAX,ECX`
+followed by a full `JMP 0x439E80`, even though ordinary isolated VC9 source
+optimizes the C++ forwarder to only the 5-byte tail jump. Providing the real
+`MenuControllerDraw.cpp` and `TitleMenuLifecycle.cpp` as genuine `/GL` support
+restores the private EAX receiver and the **complete 7-byte owner** without
+changing the source or ABI declarations.
+
+The scoped producer `probes/title-menu-draw-callback-context.cpp` yields a
+single public primary-TU 7-byte contribution and native 2/2 instructions.
+The only original address field, a `REL32` at +3 to the reviewed complete
+140-byte draw dispatcher `0x439E80`, is independently bound in the canonical
+`menu-controller-draw-callback` strict linked Oracle. Cold VC9 comparison
+with current source/tool/PE/MAP/PDB receipts reports **zero differences**.
+The 140-byte dispatcher itself remains source-present but non-exact.
