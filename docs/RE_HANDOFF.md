@@ -108,6 +108,12 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   cold replay of all ten units. The five setter ModRM mismatches were
   fixed by natural value-first argument order, recovering ECX value/EAX
   receiver without artificial ABI code. [Lifetime](SECONDARY_LIFETIME.md).
+- Ten original `0x410020..0x4100D0` secondary state accessor owners
+  are now individually **35/35 strict exact**, all ten with zero
+  relocation fields. Natural value-before-pointer setter declarations
+  restore native EAX/ECX allocation; each has a distinct public /GL
+  PE/MAP/PDB contribution and all ten passed selected cold replay.
+  [Secondary lifetime](SECONDARY_LIFETIME.md).
 - `ChangeSecondaryAnimationScript` (`0x456770`, 36 bytes) now has
   complete natural source tied to both callsites in the 4230-byte secondary
   actor update boss. With exact VM lookup and the real animation binder its

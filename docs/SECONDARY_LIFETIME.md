@@ -344,3 +344,29 @@ original 3- or 4-byte extent. The local receipt log is
 source-context comparison is
 `.analysis/probe-secondary-state-accessors-20261112.py`.
 No unrelated canonical exact units were rebuilt.
+
+## Ten exact secondary state accessors (2026-11-12)
+
+`src/SecondaryStateAccessors.cpp` now maintains all ten separately reviewed
+3- and 4-byte getter/setter bodies at `0x410020`, `0x410030`, `0x410040`,
+`0x410050`, `0x410080`, `0x410090`, `0x4100A0`, `0x4100B0`, `0x4100C0`
+and `0x4100D0`. The original two zero-offset getter/setter pairs have
+identical machine code but distinct function extents and separately named
+source functions; none is collapsed into a shared owner. The other getters
+read fields +4 and +8, and the setters write fields +4, +8, +0x10 or the
+provided address.
+
+Initial natural C++ generated the exact EAX-based four getters and generic
+ECX-based store; the five setters differed by exactly one ModR/M register
+byte each. Putting the **value before the destination pointer** in their
+ordinary C++ signatures lets VC9 `/GL` schedule the target's EAX pointer
+and ECX value without any inline assembly, artificial ABI annotation,
+forced return, or byte injection. All ten were then separately verified in
+the independent dynamic caller context and with the real secondary counter
+producer. The canonical ten linked-PE units have separate complete public
+primary-TU PE/MAP/PDB contributions, all **35/35 bytes** match the original
+Japanese v1.00a, with **zero relocation fields** and zero differences.
+
+Selected cold replay: `.analysis/secondary-state-accessors-strict-20261112.log`
+(`cold replay passed: 10 units`). All ten share only the targeted
+`SecondaryStateAccessors` producer; no full cohort cold replay was used.
