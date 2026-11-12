@@ -680,9 +680,9 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00441BD0,unknown,PbgResourceSession,indeterminate,unknown,pbg-resource-path-trace-origin-2026-11-12
 0x00441C00,unknown,PbgResourceSession,indeterminate,unknown,pbg-resource-lifetime-origin-2026-11-12
 0x00441C80,unknown,PbgResourceSession,indeterminate,unknown,pbg-resource-path-trace-origin-2026-11-12
-0x00441CD0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00441D20,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00441D50,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00441CD0,unknown,PbgLowLevelFile,indeterminate,unknown,pbg-lowlevel-file-origin-2026-11-13
+0x00441D20,unknown,PbgLowLevelFile,indeterminate,unknown,pbg-lowlevel-file-origin-2026-11-13
+0x00441D50,unknown,PbgLowLevelFile,indeterminate,unknown,pbg-lowlevel-file-origin-2026-11-13
 0x00441E40,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00441E70,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00441EB0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
@@ -690,7 +690,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00441F10,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00441F30,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00441F60,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00442000,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00442000,unknown,PbgLowLevelFile,indeterminate,unknown,pbg-lowlevel-file-origin-2026-11-13
 0x00442090,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004420E0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004421E0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

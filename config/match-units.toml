@@ -6812,3 +6812,36 @@ symbol = "?TracePbgResourceEvent@@YAXPBDZZ"
 target_address = 0x00441C80
 size = 1
 relocations = []
+
+[units.pbg-low-level-file-destructor]
+artifact_kind = "coff"
+source = "src/PbgLowLevelFile.cpp"
+inputs = ["src/PbgLowLevelFile.hpp"]
+object = "build/match/PbgLowLevelFile.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/EHsc", "/Isrc"]
+functions = ["DestroyPbgLowLevelFile"]
+symbol = "??1PbgLowLevelFileView@@QAE@XZ"
+target_address = 0x00441D20
+size = 46
+relocations = [
+  { offset = 0x08, type = "DIR32", symbol = "?g_PbgFileVtable@@3QBIB", target = 0x004964EC },
+  { offset = 0x14, type = "DIR32", symbol = "__imp__CloseHandle@4", target = 0x0048B0A0 },
+  { offset = 0x28, type = "DIR32", symbol = "?g_PbgIFileVtable@@3QBIB", target = 0x00496514 },
+]
+
+[units.pbg-low-level-file-deleting-destructor]
+artifact_kind = "coff"
+source = "src/PbgLowLevelFile.cpp"
+inputs = ["src/PbgLowLevelFile.hpp"]
+object = "build/match/PbgLowLevelFile.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/EHsc", "/Isrc"]
+functions = ["DestroyAndMaybeDeletePbgLowLevelFile"]
+symbol = "?DestroyAndMaybeDelete@PbgLowLevelFileView@@QAEPAU1@I@Z"
+target_address = 0x00441CD0
+size = 66
+relocations = [
+  { offset = 0x08, type = "DIR32", symbol = "?g_PbgFileVtable@@3QBIB", target = 0x004964EC },
+  { offset = 0x14, type = "DIR32", symbol = "__imp__CloseHandle@4", target = 0x0048B0A0 },
+  { offset = 0x2D, type = "DIR32", symbol = "?g_PbgIFileVtable@@3QBIB", target = 0x00496514 },
+  { offset = 0x35, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x0045FD49 },
+]
