@@ -1,4 +1,4 @@
-#include "SecondaryActorState.hpp"
+#include "SecondaryMasterInitialization.hpp"
 #include "SecondaryActorRuntime.hpp"
 #include "SecondaryProgramExtension.hpp"
 #include "ChainRegistration.hpp"
@@ -24,6 +24,7 @@ struct MasterChainElementWithConstructor : ChainElement
         link.previous = 0;
     }
 };
+typedef char MasterChainInitializationSize[(sizeof(MasterChainElementWithConstructor) == 0x24) ? 1 : -1];
 __forceinline ChainElement *CreateMasterChainElement(SecondaryMasterView *master,
     ChainCallback callback, int priority, bool update)
 {

@@ -210,3 +210,39 @@ variant study is `.analysis/try-secondary-master-init-20261112.py`.
 Their public independent caller is
 `probes/secondary-master-initialization-context.cpp`. All probes compile
 only this primary source owner and direct producers, never a full cohort.
+
+## Full 318-byte master initialization boss (2026-11-12)
+
+`src/SecondaryMasterInitialization.cpp/.hpp` now maintains the **entire**
+`InitializeSecondaryHost` at `0x410BE0..0x410D1D` (**318 native bytes,
+102 decoded instructions, seven calls, one RET4**, no embedded table or
+foreign interior entry). The source saves the actual HUD/ANM file pointer
+to master+0x40, allocates the real `SecondaryProgramWithExtensions` (0x1098
+bytes), stores it at master+0x64 and invokes the third virtual file-loading
+slot. It then creates **two distinct 0x24-byte chain elements** with native
+constructor flag/node initialization and independently exact callbacks
+`0x4111A0` and `0x4111B0`, registers update at **priority 18** and draw at
+**priority 20**, and installs the update/draw fields at master+8/+C. The
+embedded stage timer at master+0x50 is reset to frame -1, including the
+initialization branch guarded by timer flag 1. Native null allocation and
+unconditional-use behavior is retained rather than inventing extra recovery.
+
+A dedicated physical 0x24-byte chain element constructor preserves the
+native flag-clear, null callback/node initialization and owner pointer
+publication, instead of using a zero-fill POD value-init that would change
+the original uninitialized flag semantics. The original derived script
+program constructor, virtual file loader, two exact 147-byte chain-list
+registration owners and the two exact callback leaves are compiled in
+bounded **VC9 RTM `/GL`** PE/MAP/PDB contexts. The independent producer
+family is 348/318 bytes, while the real program and chain producer context
+produces a **290/318-byte complete code contribution, 95/102 instructions,
+all seven native calls**, ten candidate code fields and 230 positional
+nonfield byte differences. The parent remains **non-exact** because of the
+program constructor inlining, chain construction and private register
+allocation. It is not cropped or falsely marked byte-exact.
+
+Scoped reproduction: `.analysis/probe-secondary-master-initialization-20261112.py`,
+`.analysis/try-secondary-master-init-constructors-20261112.py` with logs,
+plus public dynamic caller `probes/secondary-master-initialization-context.cpp`.
+The unchanged exact callbacks retain their own cold normal-COFF receipts;
+no unrelated full cold replay was performed.
