@@ -616,3 +616,4 @@ SecondaryDropPolarVector::SetPolar,0x00424670,function
 StoreSecondaryHostSlot040,0x00410530,function
 LoadSecondaryDebugScript,0x0040D4F0,function
 LoadSecondaryDebugSessionBody,0x0040D500,function
+InitializeSecondaryReplay,0x004356E0,function

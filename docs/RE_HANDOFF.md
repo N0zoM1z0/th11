@@ -20,7 +20,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - [Generated progress](PROGRESS.md) and
   `config/{functions,function-boundaries,function-origins,matches}.csv`
   determine names, origins, reviewed extents and exact status.
-  At this checkpoint: **308 canonical exact**, **617 source-present**,
+  At this checkpoint: **308 canonical exact**, **618 source-present**,
   **661 reviewed boundaries**. Refresh with
   `scripts/repo-python scripts/progress.py`, not manual totals.
 - An exact owner requires the entire original function, source/tool
@@ -62,6 +62,11 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   bytes, 12/12 calls, two returns and 97 positional nonfield differences.
   True program destructor inlining and indexed renderer-slot codegen remain
   unresolved; no exact claim. [Secondary lifetime](SECONDARY_LIFETIME.md).
+- The full **1380-byte** `InitializeSecondaryReplay` replay/recording
+  owner now has maintained three-mode source and scoped VC9
+  **1236/1380** diagnostic preserving **all 22 native calls/four returns**.
+  It remains non-exact; 60-byte snapshots, three replay chains and the
+  20-word stage pattern are implemented. [Secondary pattern](SECONDARY_PATTERN.md).
 - Secondary ECL debug session loader **111 bytes** and its **10-byte**
   thread callback now have full source, scoped 109/111 and 8/10
   diagnostics; master slot +0x40 accessor (11 bytes) is source-present,

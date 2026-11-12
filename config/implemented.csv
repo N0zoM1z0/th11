@@ -615,3 +615,4 @@ SecondaryDropPolarVector::SetPolar
 StoreSecondaryHostSlot040
 LoadSecondaryDebugScript
 LoadSecondaryDebugSessionBody
+InitializeSecondaryReplay

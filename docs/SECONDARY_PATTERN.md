@@ -152,3 +152,48 @@ Canonical contexts are declared in `config/match-units.toml`.
 Later full caller/callback source, period/phase fields, containing emitter array,
 44 false-reference classifications and that checkpoint's18-unit cold proof are recorded
 in [SECONDARY_PATTERN_CALLBACKS](SECONDARY_PATTERN_CALLBACKS.md).
+
+## Complete 1380-byte replay initialization boss (2026-11-12)
+
+`src/SecondaryReplayInitialization.cpp` now maintains the complete
+`InitializeSecondaryReplay` at `0x4356E0..0x435C43` in natural C++.
+The native Japanese 1.00a owner spans **1380 bytes / 406 instructions**,
+with **22 calls, four returns** and independent complete-flow review.
+Its three native modes remain separate: fresh replay recording (0),
+loading and restoring a replay (1), and a validating-only mode (2).
+
+Mode 0 publishes the current replay root, constructs the observed 0x24
+file header (magic/version), 0x70 replay header and one 0x90 stage record,
+appends the real replay-write segment, snapshots the current selection,
+score, difficulty, seed/call counter, lives, bonus and other replay-stage
+fields, initializes all **20** recorded words with the native descending
+`0x21522153` pattern, and registers three distinct chain elements with
+the native recording, auxiliary and draw callbacks. Stage and stream
+records are indexed with the existing stage selector, not silently clamped.
+
+Mode 1 loads the replay, restores 60 bytes of snapshot data, copies the
+stage stream bookkeeping, restores the captured RNG seed/counter and
+selected gameplay globals (including capped power), registers the
+playback/auxiliary/draw chains, and records the -1 playback stage sentinel.
+Mode 2 calls the same separately observed 441-byte loader without creating
+those three chains, reporting the native success/failure result. The
+original code does not use synthetic resource failure cleanup; the source
+preserves the observed unchecked allocation paths and unknown original
+class ownership. `ReplayInitStateView` asserts the physical writer-compatible
+0x14/0x18 header offsets, +0x40 streams, +0x9C last-stream tail and
++0x1D4 stage selector, rather than inventing a different replay object.
+
+Three **scoped** pinned VC9 `/GL` PE/MAP/PDB links successfully compile
+this full source: **1241/1380 bytes** independent,
+**1229/1380** with real chain producer, and **1236/1380** with the real
+chain and `ReplayWriter.cpp`. All retain the **22/22 original calls and
+four returns**. The closest context has **371 versus 406 instructions**,
+66 candidate linkage fields and 939 positional nonfield byte differences.
+The remaining differences are real constructor inlining, register/stack
+scheduling, source-known-global identity and callback/stream lifetimes;
+no strict exact byte credit is taken. The complete source, not a passing
+prefix, is the maintained starting point. Reproduce the local comparison
+with `.analysis/probe-secondary-replay-init-20261112.py` and its log,
+and the public independent caller
+`probes/secondary-replay-initialization-context.cpp`. No full cold replay
+was executed.
