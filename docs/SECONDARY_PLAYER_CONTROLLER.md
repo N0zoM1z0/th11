@@ -289,3 +289,48 @@ The original uses one x87 `FSINCOS` and `RET8`; VC9 normal COFF generates
 a 56-byte function with two separate cosine/sine calls and thus remains
 non-exact. Its two original callers and complete boundary were checked;
 no inline assembly or patched bytes were introduced.
+
+## Complete special-effect initialization/update/draw lifecycle (2026-11-12)
+
+Three additional, previously source-open neighbors now have maintained
+natural C++ in `src/SecondarySpecialEffectLifecycle.cpp`: the **188-byte**
+`InitializeSecondaryEffect` (`0x45DD70`), **177-byte**
+`UpdateSecondaryEffect` (`0x45DE30`), and **84-byte**
+`DrawSecondaryEffect` (`0x45DF10`). This closes the direct source
+producer for the 268-byte `ActivateSecondaryPlayerSpecial` boss, rather
+than only reconstructing a small callback.
+
+Initialization sets controller position/radius and step fields (+0x484 to
++0x494), queues the observed sound 0x31, creates two genuine animation
+VMs with scripts 0x23/0x24 at layer 0x16, updates spell state, binds
+script 0x1A to the player's embedded VM, publishes special flag bit 1,
+clears the two original player position fields and increments the master
+counter at +0x14. Its complete original 188-byte owner has **five calls**.
+
+Update checks the exact VM lookup by ID at `0x4561E0`. A missing VM
+clears its ID, binds fallback script zero to the embedded player VM,
+clears special flag bit 1 and positional state, invokes the independent
+special cleanup with code 0x28 and returns -1. At frame >=180 it draws
+the radius effect and adds the original incremental radius; at precisely
+frame 180 it also queues sound 0x26, emits the separate pulse and creates
+a damage region with original 32/10 floats, frame 30 and damage 50.
+The complete native owner has **seven calls and two returns**.
+
+Draw computes the inverse of the native spell low flag and sends the
+same radius at controller+0x490 to both `ClearSceneProjectilesInRadius`
+and `ClearSecondaryObjectsInRadius`, with original mode/filter values;
+its 84-byte target has **two calls and one return**.
+
+Four scoped pinned VC9 `/GL` contexts were run with ordinary C++ and
+selectively linked real animation factory, VM binder, mesh sound and
+damage producers. The closest comparison is **184/188** for init
+(5/5 calls), **178/177** for update (7/7 calls) and **73/84** for draw
+(2/2 calls); normalized register and frame scheduling still differ.
+The real initializer was also linked into the 268-byte special-activation
+caller, yielding **256/268 bytes** with all seven calls and returns.
+These are complete source mappings, not byte-exact entries; no extra
+strict credit is claimed. The scoped experiments are reproducible with
+`.analysis/probe-special-effect-lifecycle-20261112.py` and
+`.analysis/probe-special-activation-with-lifecycle-20261112.py`, with
+public producer `probes/secondary-special-effect-lifecycle-context.cpp`.
+No unrelated full cold replay was executed.

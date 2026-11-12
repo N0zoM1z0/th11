@@ -8,7 +8,7 @@
 // These original independent mode callees still have source-open owners.
 struct MeshEffectActorView;
 extern MeshEffectActorView *g_MeshEffectActor;
-void __stdcall InitializeSecondaryEffect(MeshEffectActorView *self);
+int __stdcall InitializeSecondaryEffect(MeshEffectActorView *self);
 void __stdcall InitializeSecondarySpecialMode1(MeshEffectActorView *self);
 void __stdcall InitializeSecondarySpecialMode4(MeshEffectActorView *self);
 void __stdcall InitializeSecondarySpecialMode5(MeshEffectActorView *self);

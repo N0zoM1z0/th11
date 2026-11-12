@@ -623,3 +623,6 @@ UnresolvedIdentity4526E0,0x004526E0,function
 UnresolvedIdentity453120,0x00453120,function
 InputNoOpEntry,0x00459BC0,function
 TraceMusicStream,0x0045B5A0,function
+InitializeSecondaryEffect,0x0045DD70,function
+UpdateSecondaryEffect,0x0045DE30,function
+DrawSecondaryEffect,0x0045DF10,function
