@@ -343,10 +343,10 @@ at controller+C, passes the selected 0x34-stride `SoundTrackRecord` to
 one-byte `TraceSoundQueue` and returns zero. All **21 target instructions,
 three calls and two returns** belong to this complete owner.
 
-With the real prepared startup and dynamic queue producer, bounded VC9
-`/GL` compilation produces **74 candidate / 65 native bytes**, 23/21
-instructions, 3/3 calls and four candidate address fields. This remains
-**source-present and non-exact**; its original private ESI manager and ECX
+The historical opaque-finder/generic-caller VC9 `/GL` diagnostic produced
+**74 candidate / 65 native bytes**, 23/21 instructions, 3/3 calls and
+four candidate address fields. This result was **non-exact and is now superseded
+by the strict real-parent proof below**; its original private ESI manager and ECX
 filename scheduling is not faked with incorrect calling conventions.
 Private comparison: `.analysis/probe-prepared-music-file-20261112.py`.
 
