@@ -637,3 +637,4 @@ ClearReplayStageSegments
 DrawMenuController
 InitializeInputBindingDefaults
 DrawMenuPage08
+ChangeSecondaryAnimationScript

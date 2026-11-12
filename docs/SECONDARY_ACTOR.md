@@ -206,3 +206,28 @@ credit** is claimed. Reproduce with
 plus their logs; public producers under
 `probes/secondary-actor-effect-finish*-context.cpp`. No unrelated full cold
 replay was performed.
+
+## Full 36-byte secondary animation script switch (2026-11-12)
+
+`src/SecondaryAnimationScriptSwitch.cpp` now owns the complete natural source
+of `ChangeSecondaryAnimationScript` at `0x456770..0x456793`. The original
+Japanese PE has **36 bytes, 10 instructions, two calls, one RET4** and no
+foreign interior entry. Both original callsites (`0x411A22`, `0x411A92`)
+belong to the already source-backed **4230-byte**
+`UpdateSecondaryActorState` boss. The small owner reads the animation ID
+through its pointer, calls the existing independently exact
+`FindAnimationVmById` (`0x4561E0`), then, only when found, calls the real
+animation file/script binder (`0x44AE60`) with the VM's file pointer at
++0x3B0. No substitute VM handling or null recovery has been invented.
+
+Four bounded VC9 `/GL` owner contexts compile the complete source at
+40/36 bytes isolated, 33/36 with real lookup, 37/36 with real binder and
+**30/36** with both, retaining the original **two calls and RET4**. Repeating
+all four with the real 4230-byte parent yields the same respective output.
+The native private interface moves the animation ID pointer in EAX and the
+script on the stack, then prepares ECX script / EDX file for the binder;
+our public signatures still differ at this optimization boundary.
+This is maintained complete source, **not an exact function**. Reproduction:
+`.analysis/probe-secondary-animation-script-switch-20261112.py` and
+`.analysis/probe-secondary-animation-switch-real-parent-20261112.py` with
+their logs. The previously exact VM lookup source was not changed.

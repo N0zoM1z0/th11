@@ -20,7 +20,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - [Generated progress](PROGRESS.md) and
   `config/{functions,function-boundaries,function-origins,matches}.csv`
   determine names, origins, reviewed extents and exact status.
-  At this checkpoint: **318 canonical exact**, **639 source-present**,
+  At this checkpoint: **318 canonical exact**, **640 source-present**,
   **661 reviewed boundaries**. Refresh with
   `scripts/repo-python scripts/progress.py`, not manual totals.
 - An exact owner requires the entire original function, source/tool
@@ -102,6 +102,11 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   **69/69 strict exact** with four reviewed fields. Reordering a natural
   global-handle guard restored the original EBX/EDI allocation.
   [Secondary pattern](SECONDARY_PATTERN.md).
+- `ChangeSecondaryAnimationScript` (`0x456770`, 36 bytes) now has
+  complete natural source tied to both callsites in the 4230-byte secondary
+  actor update boss. With exact VM lookup and the real animation binder its
+  scoped VC9 candidate is 30/36, keeping both native calls and RET4;
+  private ABI remains non-exact. [Actor](SECONDARY_ACTOR.md).
 - `DrawMenuPage08` (`0x43DAA0`, 427 bytes) and its adjacent 140-byte
   `DrawMenuController` now have complete natural source. The page source
   handles all six unlock/score entries, color blinking, positions and text
