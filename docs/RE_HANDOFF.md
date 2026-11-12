@@ -1,4 +1,4 @@
-# TH11 reconstruction — agent handoff (2026-11-11)
+# TH11 reconstruction — agent handoff (2026-11-12)
 
 **Read this before resuming work.** Reconstruct only *original Japanese*
 TH11 v1.00a, SHA-256
@@ -20,7 +20,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - [Generated progress](PROGRESS.md) and
   `config/{functions,function-boundaries,function-origins,matches}.csv`
   determine names, origins, reviewed extents and exact status.
-  At this checkpoint: **292 canonical exact**, **578 source-present**,
+  At this checkpoint: **294 canonical exact**, **584 source-present**,
   **661 reviewed boundaries**. Refresh with
   `scripts/repo-python scripts/progress.py`, not manual totals.
 - An exact owner requires the entire original function, source/tool
@@ -42,6 +42,12 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - The two renderer **update** callback adapters at `0x455120` and
   `0x455130` now have independent **7/7 exact** linked proofs with one REL32
   tail jump each. See [renderer lifecycle](ANIMATION_RENDERER_LIFECYCLE.md).
+- Two newly reconstructed front-secondary animation factories are **105/105**
+  and **112/112 strict exact**, each with 11 reviewed linked fields and a
+  real `AnimationVmFactory.cpp` initializer producer. Their shared 118-byte
+  head-prepend publisher is source-present but remains 111/118 diagnostic;
+  three existing exact shared-header consumers were re-cold-proved.
+  See [emitter factory evidence](SECONDARY_EMITTER_RESET.md).
 - Player animation-pair reset `0x42F580` is **286/286 exact**;
   the player dialogue query `0x42F540` is **27/27 exact**;
   two array element constructors are **3/3 exact** each.
@@ -60,6 +66,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 | **173-byte** `RegisterSecondaryProgramBrowserChains` `0x438660` | **173/173 strict exact**, 60 instructions, four calls, six reviewed fields. Dynamic-priority generic chain caller restores natural EBP/EBX/ESI owner ABI and two ordered node-field zero stores. | Keep proof with the independently exact 10-byte draw callback; pursue larger 548/934-byte owners. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
 | **56-byte** `StartSecondaryDebugThread` `0x4594A0` | **56/56 strict exact**, 19 instructions, two reviewed calls, recovered private EAX/EDI ABI via true 101-byte stop-thread source and dynamic callback | Link native start and mode producers to improve 934-byte browser; preserve exact worker stop. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
 | **30-byte** `SetSecondaryGameplayRuntimeMode` `0x40DEA0` | **30/30 strict exact**, six instructions, two RET, zero relocations. Generic dynamic runtime/mode caller preserves original EAX/ECX ABI | Real dependency of ECL browser state-2 mode transition; use tracked generic producer, no ABI shim. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
+| **105/112-byte** front-secondary draw factories `0x455FB0/0x456020` + **118-byte** publisher `0x455860` | Both factories **strict exact, 217/217 bytes** and 22 reviewed fields with real initializer source; publisher 111/118 non-exact | Keep accepted factory owners and address publisher counter-zero scheduling; no code patches. [Emitter factories](SECONDARY_EMITTER_RESET.md) |
 | **934-byte** `UpdateSecondaryProgramBrowser` `0x438AC0` + **83-byte** cleanup `0x438570` | Native selection count reload; state-4 independent manager deletion test recovered. Scoped true mode/worker source `/GL` **928/934 bytes, 262/267 instructions, 22/22 calls, 173 nonfield mismatches**, still non-exact; exact cleanup 83/83 | Resolve input/register scheduling and state0 initialization. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
 | **976-byte** `BuildBillboardAnimationVmQuad` `0x450700` — `AnimationBillboardQuad.cpp` | Full C++ now source-present; linked real billboard producer **927/976**, normal COFF 939 | Paired x87 `FSINCOS` and float spill/rounding lifetime; non-exact. [Billboard](ANIMATION_PROJECTED_QUAD.md) |
 | **313-byte** `CopyAnimationTextureSurface` `0x454EC0` + **48-byte** `FlushScreenshotResources` `0x445460` | Both source-present; real parent preserves native private ECX/EAX. New short-lived texture-table reload **311/313 bytes, 112/113 instructions, 8/8 calls, 46 positional nonfield differences** (previous 55); parent **58/48** | Restore final dirty-texture index register/codegen and parent scan. Use `scripts/probe-animation-surface-copy.py`, not full replay. [Surface queue](ANIMATION_SURFACE_COPY.md) |

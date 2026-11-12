@@ -171,3 +171,44 @@ private producer scheduling remain non-exact, so neither is admitted to the
 strict match ledger. Private comparison details are under
 `.analysis/probe-secondary-emitter-positioned-20261112.py` and the public
 producer context is `probes/secondary-emitter-positioned-context.cpp`.
+
+## Exact 105/112-byte secondary-front factories (2026-11-12)
+
+The formerly source-open secondary **head-prepend** publisher at 455860
+and its 455FB0/456020 factories now have natural C++ in
+`SecondaryDrawFrontAnimation.cpp`. The publisher inserts VM+4 at the
+secondary chain head (renderer+7B5634), setting the tail at +7B5638 only
+for an empty list, and publishes the wrap-avoiding ID at +7BD888.
+Its complete native owner is 118 bytes, 33 instructions and one renderer
+DIR32 field. The current scoped publisher is **111/118 bytes**, 32
+instructions, with a different counter-zero branch; this remains
+**non-exact**, independent of its two accepted callers.
+
+The no-layer factory at 455FB0 (105 bytes) and explicit-layer factory at
+456020 (112 bytes) each conditionally enter critical section 9, allocate a
+VM, set bit 0x40000000, call the **position-clearing** initializer at
+456910, publish through 455860 and release the critical section if enabled.
+The explicit-layer owner additionally writes VM+0x20. These differ from the
+position-preserving factories at 455C30/455CD0.
+
+An opaque initializer initially generated stack calls and left 5/8 nonfield
+byte mismatches, even though both factory extents matched. Adding the actual
+`AnimationVmFactory.cpp` TU and `SecondaryEmitterAnimation.cpp` producer to
+the dynamic factory caller restores native EAX/EDX register arguments. The
+strict **complete primary-TU** VC9 `/GL` family reproduces **105/105 and
+112/112 bytes** with **24/24 and 26/26 instructions**, respectively; each
+has five calls. All **22 relocation/address fields** were individually
+compared to the original Japanese 1.00a mapped PE: for each function,
+DIR32 fields to runtime flags (+590), critical section 9 (+8E8), depth
+byte (+939) and the Win32 Enter/Leave IAT, plus REL32 calls to allocator
+4569C0, real initializer 456910 and publisher 455860. Complete cold linked
+PE/MAP/PDB, unique public primary-TU ownership and full field replay return
+**zero differing bytes** for both independently registered exact units.
+
+Canonical units: `create-default-front-secondary-draw-animation-vm-id` and
+`create-front-secondary-draw-animation-vm-id`; recorded proof
+`.analysis/front-draw-vm-strict-20261112.log` and independent full JSON
+comparisons under `.analysis/front-draw-*-strict-20261112.json`. Only these
+and the directly affected existing header consumers need cold replay, not
+the full cohort. The unresolved 118-byte publisher continues as a separate
+full-extent codegen target.
