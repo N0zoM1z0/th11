@@ -71,3 +71,35 @@ The canonical `pbg-resolve-disk-path` unit binds all three code fields: REL32
 to `0x48B0B0`, and REL32 `strrchr` at +0x3F to `0x460560`. Full hash-pinned
 PE/MAP/PDB/source/tool replay has zero differences. The 238-byte Open caller
 itself is still nonexact, so this claim is limited to the resolver owner.
+
+## Full six-operation low-level I/O interface (2026-11-13)
+
+The complete native I/O family is now maintained in
+`src/PbgLowLevelFileIO.cpp/.hpp`, using the real 12-byte file layout and
+ordinary Win32 calls. All six original function boundaries have separately
+reviewed instructions, return behavior, callers and following CC padding.
+The four smaller operations reproduce the *entire original function* with
+one independently reviewed Win32 import each under pinned VC9 RTM normal COFF:
+
+| Operation | Original range | Strict result | Native import |
+| --- | --- | --- | --- |
+| Close | `0x441E40..0x441E61` | **34/34 exact** | `CloseHandle` at `0x48B0A0` |
+| Read | `0x441E70..0x441EA8` | **57/57 exact** | `ReadFile` at `0x48B0A4` |
+| Write | `0x441EB0..0x441EEE` | **63/63 exact** | `WriteFile` at `0x48B0A8` |
+| Size | `0x441F10..0x441F24` | **21/21 exact** | `GetFileSize` at `0x48B0AC` |
+
+`Read` returns the bytes actually read, not the Win32 BOOL. `Write` returns
+success only when the number of bytes written equals the requested length;
+the native access-mode tests are preserved. These exact units replay each
+whole body and its single native DIR32 field, not a masked snippet.
+
+The separate 37-byte `Seek` at `0x441F30..0x441F54` retains the native
+failure return `0xFFFFFF00` and combines the successful SetFilePointer result
+with low-byte success marker 1, but its current ordinary COFF is 46 bytes,
+so it remains nonexact. The **145-byte** `ReadWhole` at
+`0x441F60..0x441FF0` is implemented in full, preserving virtual
+Size/Tell/Seek/Read calls, allocation, early seek failure without invented
+cleanup, file-position restoration and read-failure free. Its isolated
+candidate has the same 145-byte length but still differs from original
+private ABI and relocation locations. Both remain separate, substantive
+source-present owners rather than partial exact claims.

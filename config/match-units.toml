@@ -6863,3 +6863,59 @@ linkages = [
   { offset = 0x37, type = "DIR32", symbol = "__imp__GetModuleFileNameA@12", target = 0x0048B0B0 },
   { offset = 0x3F, type = "REL32", symbol = "_strrchr", target = 0x00460560 },
 ]
+
+[units.pbg-file-close]
+artifact_kind = "coff"
+source = "src/PbgLowLevelFileIO.cpp"
+inputs = ["src/PbgLowLevelFile.hpp"]
+object = "build/match/PbgLowLevelFileIO.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["ClosePbgLowLevelFile"]
+symbol = "?Close@PbgLowLevelFileView@@QAEXXZ"
+target_address = 0x00441E40
+size = 34
+relocations = [
+  { offset = 0x0E, type = "DIR32", symbol = "__imp__CloseHandle@4", target = 0x0048B0A0 },
+]
+
+[units.pbg-file-read]
+artifact_kind = "coff"
+source = "src/PbgLowLevelFileIO.cpp"
+inputs = ["src/PbgLowLevelFile.hpp"]
+object = "build/match/PbgLowLevelFileIO.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["ReadPbgLowLevelFile"]
+symbol = "?Read@PbgLowLevelFileView@@QAEIPAXI@Z"
+target_address = 0x00441E70
+size = 57
+relocations = [
+  { offset = 0x2E, type = "DIR32", symbol = "__imp__ReadFile@20", target = 0x0048B0A4 },
+]
+
+[units.pbg-file-write]
+artifact_kind = "coff"
+source = "src/PbgLowLevelFileIO.cpp"
+inputs = ["src/PbgLowLevelFile.hpp"]
+object = "build/match/PbgLowLevelFileIO.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["WritePbgLowLevelFile"]
+symbol = "?Write@PbgLowLevelFileView@@QAEEPBXI@Z"
+target_address = 0x00441EB0
+size = 63
+relocations = [
+  { offset = 0x2F, type = "DIR32", symbol = "__imp__WriteFile@20", target = 0x0048B0A8 },
+]
+
+[units.pbg-file-size]
+artifact_kind = "coff"
+source = "src/PbgLowLevelFileIO.cpp"
+inputs = ["src/PbgLowLevelFile.hpp"]
+object = "build/match/PbgLowLevelFileIO.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["GetPbgLowLevelFileSize"]
+symbol = "?Size@PbgLowLevelFileView@@QAEIXZ"
+target_address = 0x00441F10
+size = 21
+relocations = [
+  { offset = 0x10, type = "DIR32", symbol = "__imp__GetFileSize@8", target = 0x0048B0AC },
+]

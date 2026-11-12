@@ -702,3 +702,9 @@ DeletePbgLowLevelFile,0x00441CD0,function
 DestroyPbgLowLevelFile,0x00441D20,function
 OpenPbgLowLevelFile,0x00441D50,function
 ResolvePbgDiskPath,0x00442000,function
+ClosePbgLowLevelFile,0x00441E40,function
+ReadPbgLowLevelFile,0x00441E70,function
+WritePbgLowLevelFile,0x00441EB0,function
+GetPbgLowLevelFileSize,0x00441F10,function
+SeekPbgLowLevelFile,0x00441F30,function
+ReadWholePbgLowLevelFile,0x00441F60,function

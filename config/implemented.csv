@@ -701,3 +701,9 @@ DeletePbgLowLevelFile
 DestroyPbgLowLevelFile
 OpenPbgLowLevelFile
 ResolvePbgDiskPath
+ClosePbgLowLevelFile
+ReadPbgLowLevelFile
+WritePbgLowLevelFile
+GetPbgLowLevelFileSize
+SeekPbgLowLevelFile
+ReadWholePbgLowLevelFile
