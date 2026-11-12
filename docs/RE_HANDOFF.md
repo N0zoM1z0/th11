@@ -52,11 +52,11 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   485/515-byte linked diagnostic retaining **153/153 instructions and
   15/15 calls**; original private register allocation remains open. Its
   291-byte startup neighbor is separately source-present. [Audio](SOUND_QUEUE.md).
-- `FindSoundTrack` `0x4496B0` (215 bytes) and `TraceSoundQueue`
-  `0x44AB00` (1 byte) now have **independent strict exact proofs**.
-  The 65-byte file-backed starter at `0x449C20` is source-present but
-  non-exact (74/65); its genuine C++ definition replaces the earlier
-  filename-only caller declaration. [Audio](SOUND_QUEUE.md).
+- `FindSoundTrack` `0x4496B0` (215 bytes), `TraceSoundQueue`
+  `0x44AB00` (1 byte) and the 65-byte file-backed starter at `0x449C20`
+  now each have **independent strict exact proofs** (215/215, 1/1 and
+  65/65). The real caller and decoder producers restore the starter's
+  private ESI/ECX ABI. [Audio](SOUND_QUEUE.md).
 - The complete **374-byte** `DestroySecondaryMaster` is now source-present:
   scoped VC9 with real chain/program/document dependencies gives 340/374
   bytes, 12/12 calls, two returns and 97 positional nonfield differences.
@@ -111,55 +111,6 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   `MusicStream` producer. All four fields and 65 bytes replay; its original
   private ESI/ECX convention and plain RET emerge naturally. The larger
   291-byte startup remains source-present non-exact. [Sound](SOUND_QUEUE.md).
-- The complete **374-byte** `DestroySecondaryMaster` is now source-present:
-  scoped VC9 with real chain/program/document dependencies gives 340/374
-  bytes, 12/12 calls, two returns and 97 positional nonfield differences.
-  True program destructor inlining and indexed renderer-slot codegen remain
-  unresolved; no exact claim. [Secondary lifetime](SECONDARY_LIFETIME.md).
-- Complete **97-byte** `CreateSecondaryMaster` source is now present
-  (88–90/97 in focused links; non-exact), and its matching **29-byte**
-  `DeleteSecondaryMaster` is **29/29 strict exact**, three independently
-  rebound native fields with the real 374-byte teardown producer.
-  [Secondary lifetime](SECONDARY_LIFETIME.md).
-- Three secondary-master accessors are newly **9/9 + 10/10 + 21/21
-  strict exact** (40 complete bytes), each with a validated original
-  `g_SecondaryMaster` DIR32 field and normal-COFF receipt. The low-bit
-  flag setter uses a natural masked replacement, not an ABI trick.
-  [Secondary extension](SECONDARY_EXTENSION.md).
-- Full **156-byte** `FinishSecondaryActorEffect` at `0x4127E0` now
-  calls real sound, positioned animation, item-drop and 457-byte effect
-  implementations with a bounded 146–151/156-byte VC9 diagnostic. It remains
-  source-only, not byte-exact. [Actor lifecycle](SECONDARY_ACTOR.md).
-- Full **457-byte** `EmitSecondaryActorEffects` is now source-present,
-  with an independently linked **436/457 candidate preserving 122/122
-  instructions and seven native calls**; source remains non-exact. Its
-  58-byte reset entrance and 30-byte elliptical polar helper now have
-  separate complete source (57/58 and 56/30 local diagnostics), both
-  non-exact; the polar helper uses native `FSINCOS`, not VC9 sin/cos calls.
-  [Actor state](SECONDARY_ACTOR_STATE.md).
-- `UpdateSecondaryMasterActors` (`0x411120`) is newly strict
-  **105/105 exact**, 36 instructions and 2 reviewed REL32 fields. Node
-  pointer reloads plus the real StageTween timer producer restore VC9's
-  private ESI calling convention. The 4230-byte actor-state update remains
-  a distinct source-present non-exact boss. [Secondary lifetime](SECONDARY_LIFETIME.md).
-- Two new complete secondary-master chain callbacks are **7/7 and 6/6
-  strict exact normal-COFF**, one real call field for the update adapter.
-  The adjacent 318-byte initialization boss has full source and a scoped
-  306/318-byte candidate (7/7 calls), but remains non-exact. [Secondary extension](SECONDARY_EXTENSION.md).
-- Full **201-byte** secondary-master precleanup at `0x40D0C0` is
-  **201/201 strict exact**, 68 instructions, one renderer field, with
-  the genuine four-document/two-VM-chain scans and actor virtual cleanup.
-  The complete **374-byte** parent at `0x410E90` remains source-present,
-  **340/374 non-exact**. [Secondary lifetime](SECONDARY_LIFETIME.md).
-- Full **366-byte** `CheckSecondaryPlayerRectangle` source has been added:
-  double-half extents, a separate 24.0 near rectangle and the actual
-  collision/HUD/mode/timer gates. Scoped VC9 gives 355/366 or 356/366,
-  with the correct three returns and one call; **non-exact**.
-  [Pattern callbacks](SECONDARY_PATTERN_CALLBACKS.md).
-- The **178-byte** `ClosePreparedMusic` at `0x449FE0` is now
-  **178/178 strict exact**, 55 instructions/eight calls and all four reviewed
-  Win32/native code fields. Real `SoundQueue.cpp` and `MusicStream.cpp`
-  producer context restores private ESI; no full replay. [Audio](SOUND_QUEUE.md).
 - The full **291-byte** `StartPreparedMusic` is now source-present and
   scoped VC9 linked **292/291 bytes, 5 calls**, still non-exact in its
   corrected real file-callee context. The corresponding **515-byte** loader is
