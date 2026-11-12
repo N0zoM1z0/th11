@@ -12,6 +12,7 @@ struct ReplayRecordStageLink
 {
     unsigned char unknown000[0x18];
     ReplayRecordStageNode link;
+    ReplayRecordStageLink();
     ~ReplayRecordStageLink();
 };
 typedef char ReplayStageLinkSize[(sizeof(ReplayRecordStageLink) == 0x24) ? 1 : -1];

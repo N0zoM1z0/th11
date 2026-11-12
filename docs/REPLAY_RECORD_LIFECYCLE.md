@@ -92,3 +92,24 @@ Building both stage producers as normal COFF instead shortens it to 427
 bytes and changes over 200 non-field bytes. The best maintained source stays
 unchanged; neither alternate context is strict exact. Private evidence:
 `.analysis/probe-title-record-mixed-producer-20261112.log`.
+
+## Exact 51-byte stage construction (2026-11-12)
+
+Independent Ghidra review of native `0x437490..0x4374C2` recovered the
+constructor missed by the initial function inventory. It is a complete
+**51-byte** member owner referenced by both 199-byte and 198-byte replay
+record factories as the eight-element vector constructor callback. The
+function zeroes each of nine DWORDs in the 0x24-byte stage, reads two of the
+cleared cursor fields back into the companion slots, then writes the stage's
+self-node pointer at +0x18 and clears the two intrusive links. The constructor
+has a plain `RET`, following CC padding and no foreign interior entries.
+
+An ordinary C++ loop collapses two stores/reads and generates 48 bytes. The
+maintained constructor expresses each *observed memory write* explicitly
+through a volatile physical field view; it then performs the two cursor copies
+and normal typed link publication. This preserves the actual native memory
+operations, not inert padding or fabricated machine instructions. The pinned
+VC9 RTM normal-COFF unit `replay-record-stage-link-constructor` strictly
+replays **51/51 original bytes with zero relocations or differences**. The
+paired 37-byte stage-link destructor remains independently exact after the
+shared header change. The original constructor's class/TU name is still open.

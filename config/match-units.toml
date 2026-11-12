@@ -6637,3 +6637,15 @@ symbol = "?UpdateReplayInputRepeatState@@YIXPAUReplayInputRepeatView@@@Z"
 target_address = 0x0040DE10
 size = 137
 relocations = []
+
+[units.replay-record-stage-link-constructor]
+artifact_kind = "coff"
+source = "src/ReplayRecordStageConstructor.cpp"
+inputs = ["src/ReplayRecordStageLink.hpp"]
+object = "build/match/ReplayRecordStageConstructor.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["ConstructReplayRecordStageLink"]
+symbol = "??0ReplayRecordStageLink@@QAE@XZ"
+target_address = 0x00437490
+size = 51
+relocations = []

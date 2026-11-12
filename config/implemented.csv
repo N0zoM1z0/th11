@@ -671,3 +671,4 @@ DeleteThreadInfVirtual
 SetRuntimeThreadFlagA577C
 UpdateReplayInputRepeatState
 RecordReplayInputFrame
+ConstructReplayRecordStageLink
