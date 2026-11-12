@@ -695,3 +695,5 @@ OpenPbgFileSession
 OpenPbgResFileSession
 ReleasePbgResourceSession
 DestroyPbgResourceEntry
+DuplicatePbgResourcePath
+TracePbgResourceEvent

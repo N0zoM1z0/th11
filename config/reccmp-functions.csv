@@ -696,3 +696,5 @@ OpenPbgFileSession,0x004415C0,function
 OpenPbgResFileSession,0x00441650,function
 ReleasePbgResourceSession,0x004416C0,function
 DestroyPbgResourceEntry,0x00441C00,function
+DuplicatePbgResourcePath,0x00441BD0,function
+TracePbgResourceEvent,0x00441C80,function

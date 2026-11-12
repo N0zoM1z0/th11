@@ -6801,3 +6801,14 @@ linkages = [
   { offset = 0x45, type = "REL32", symbol = "??_M@YGXPAXIHP6EX0@Z@Z", target = 0x00460066 },
   { offset = 0x4B, type = "REL32", symbol = "??_V@YAXPAX@Z", target = 0x0045FD49 },
 ]
+
+[units.pbg-resource-trace-noop]
+artifact_kind = "coff"
+source = "src/PbgResourceTrace.cpp"
+object = "build/match/PbgResourceTrace.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["TracePbgResourceEvent"]
+symbol = "?TracePbgResourceEvent@@YAXPBDZZ"
+target_address = 0x00441C80
+size = 1
+relocations = []

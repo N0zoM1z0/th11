@@ -83,3 +83,31 @@ sequence. It and the two file-opening owners need original `/GL` owner and
 private argument scheduling work. Scoped proof is retained in
 `.analysis/probe-pbg-resource-session-ltcg-20261112.log` and
 `.analysis/probe-pbg-109-store-order-20261112.log`.
+
+## Path duplication and original no-op trace hook
+
+The native `0x441BD0..0x441BFE` contains a **47-byte** path duplication
+owner called by both open modes. It computes length including the NUL byte,
+allocates an independent buffer with CRT malloc, and copies forward through
+the terminating NUL only when allocation succeeds. A maintainable natural
+implementation is in `src/PbgResourcePath.cpp`. Plain VC9 normal-COFF emits
+46 bytes and an actual `/GL` producer with the File/ResFile open sources emits
+44 bytes. Its original filename arrives in a private EDI register that the
+current C++ partition has not yet restored. This remains source-present,
+**nonexact**; no match percentage is promoted for size-only similarity.
+
+The traced `0x441C80..0x441C80` entry is independently reviewed as a genuine
+**one-byte `RET`** with no reads/writes or side effects, not an imagined
+printf-style logger. It has incoming calls from the File open/cleanup and
+other Pbg resource paths. `src/PbgResourceTrace.cpp` defines this exact
+no-op function with the original variadic call shape; pinned VC9 normal COFF
+emits the identical single-byte owner without relocations. The canonical
+`pbg-resource-trace-noop` unit cold-replays that byte and leaves the larger
+134/101-byte owners' separate nonexactness intact.
+
+Bounded experiments with the genuine newly sourced path copier and Pbg entry
+destructor included in `/GL` are retained in
+`.analysis/probe-pbg-real-file-helpers-20261112.log`. Those experiments did
+not improve the 134-byte File or 101-byte ResFile owners, and linking the
+trace no-op into their producer would remove native calls, so the canonical
+109-byte cleanup continues to use its real opaque trace boundary.
