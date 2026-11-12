@@ -20,7 +20,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - [Generated progress](PROGRESS.md) and
   `config/{functions,function-boundaries,function-origins,matches}.csv`
   determine names, origins, reviewed extents and exact status.
-  At this checkpoint: **300 canonical exact**, **596 source-present**,
+  At this checkpoint: **300 canonical exact**, **597 source-present**,
   **661 reviewed boundaries**. Refresh with
   `scripts/repo-python scripts/progress.py`, not manual totals.
 - An exact owner requires the entire original function, source/tool
@@ -57,6 +57,11 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   The 65-byte file-backed starter at `0x449C20` is source-present but
   non-exact (74/65); its genuine C++ definition replaces the earlier
   filename-only caller declaration. [Audio](SOUND_QUEUE.md).
+- The complete **374-byte** `DestroySecondaryMaster` is now source-present:
+  scoped VC9 with real chain/program/document dependencies gives 340/374
+  bytes, 12/12 calls, two returns and 97 positional nonfield differences.
+  True program destructor inlining and indexed renderer-slot codegen remain
+  unresolved; no exact claim. [Secondary lifetime](SECONDARY_LIFETIME.md).
 - Full **366-byte** `CheckSecondaryPlayerRectangle` source has been added:
   double-half extents, a separate 24.0 near rectangle and the actual
   collision/HUD/mode/timer gates. Scoped VC9 gives 355/366 or 356/366,
@@ -71,6 +76,11 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   `MusicStream` producer. All four fields and 65 bytes replay; its original
   private ESI/ECX convention and plain RET emerge naturally. The larger
   291-byte startup remains source-present non-exact. [Sound](SOUND_QUEUE.md).
+- The complete **374-byte** `DestroySecondaryMaster` is now source-present:
+  scoped VC9 with real chain/program/document dependencies gives 340/374
+  bytes, 12/12 calls, two returns and 97 positional nonfield differences.
+  True program destructor inlining and indexed renderer-slot codegen remain
+  unresolved; no exact claim. [Secondary lifetime](SECONDARY_LIFETIME.md).
 - Full **366-byte** `CheckSecondaryPlayerRectangle` source has been added:
   double-half extents, a separate 24.0 near rectangle and the actual
   collision/HUD/mode/timer gates. Scoped VC9 gives 355/366 or 356/366,

@@ -153,3 +153,49 @@ are unchanged; no broad behavior or infrastructure suite ran.
 Later actual-caller and typed-trace work supersedes the interpreter alignment
 blocker above: fixed120 and native dispatch layout are recovered in the current
 7033/5779 context. See [SECONDARY_INTERPRETER_CODEGEN](SECONDARY_INTERPRETER_CODEGEN.md).
+
+## Full 374-byte master destruction boss (2026-11-12)
+
+`src/SecondaryMasterDestruction.cpp` now reconstructs the whole reviewed
+`DestroySecondaryMaster` function at `0x410E90..0x411005` (**374 native
+bytes, 108 decoded instructions, 12 calls, two returns**, no embedded
+jump table or foreign interior entry). The first call remains an explicit
+external boundary to the separately inventoried 201-byte owner at 40D0C0;
+its original nominal class identity is unresolved. The master pointer
+receives ordinary source-level C++ parameters; native compiler privately
+passes it through EAX, not a hard-coded caller ABI shim.
+
+The function unregisters the two independent update/draw chain pointers
+at master `+8/+C`, each under its own conditional runtime critical
+section 0, using the real, already exact `UnregisterChainElement` 457080.
+It then walks all **32** installed script-file pointers in the master's
+program table (offsets `0x0C..0x88`), freeing each nonnull allocation
+without a new program-null guard. The ordinary program destructor frees
+its subroutine table before the program allocation is released. The master
+program pointer at `+0x64` is then cleared. Only when resource flag bits
+`0x09` are both absent does the original check renderer document slots
+**8 through 11**: each live file is passed to the independently exact
+243-byte `DestroyAnimationDocument` at 4549E0, deleted and its indexed
+pointer cleared. Both exit paths clear the original singleton. This is
+not a blanket or reordered destruction of all renderer slots.
+
+A scoped pinned VC9 `/GL` diagnostic links the real chain removal,
+script-program destructor, and animation-document implementations. The
+first natural indexed-array source emitted **321/374 bytes, 95/108
+instructions, all 12 calls and two returns**, with 191 positional
+nonfield mismatches. Six independent C++ loop-shape probes tested the
+native byte-offset traversal for `program+0x0C..0x88`, the four document
+indices, and a fresh renderer slot read each iteration. Keeping the two
+natural byte-offset loops improves the retained source to **340/374
+bytes, 99/108 instructions, all 12 calls, two returns, 29 linked fields,
+97 positional nonfield differences**. The exact original 374-byte owner
+is still open: VC9's program destructor inlining, index bounds codegen and
+private chain-register allocation differ. No fake vtable, padding or
+register declarations were inserted to force an apparent match.
+
+The focused recipe is `.analysis/probe-secondary-master-destruction-20261112.py`,
+with variants/results under `.analysis/try-secondary-master-loops-20261112.py`
+and `.analysis/secondary-master-loops-20261112.log`; the public live caller is
+`probes/secondary-master-destruction-context.cpp`. This checkpoint grants
+**374 target bytes of complete source coverage but zero new exact bytes**.
+No unrelated full cold replay was executed.

@@ -594,3 +594,4 @@ FindSoundTrack
 StartPreparedMusicFile
 ClosePreparedMusic
 CheckSecondaryPlayerRectangle
+DestroySecondaryMaster
