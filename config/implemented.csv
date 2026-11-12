@@ -576,3 +576,4 @@ RegisterSecondaryProgramBrowserChains
 ConstructSecondaryProgramBrowserStorage
 DestroySecondaryProgramBrowser
 StartSecondaryDebugThread
+CreateDirectPositionAnimationVmId

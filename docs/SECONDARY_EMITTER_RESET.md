@@ -131,3 +131,23 @@ and remaining real positioned factory callers, preserving full extents.
 The later [controller checkpoint](SECONDARY_PLAYER_CONTROLLER.md) supplies full
 controller2888 source, real chain callbacks and exact refresh/angle helpers.
 Controller source is complete but non-exact; it is no longer source-open.
+
+## Direct-position primary factory source (2026-11-12)
+
+`CreateDirectPositionAnimationVmId` (455A70, complete 153 bytes) now has
+maintained C++ in `src/AnimationVmPositioned.cpp`. It locks runtime critical
+section 9 conditionally, allocates a VM, sets persistent layer 0x20 and bit
+0x40000000, copies all three supplied world-position components into the
+persistent vector at 0x3E8, then calls the **direct** `BindAnimationScript`
+(44ACD0) and the primary append publisher (4556E0). The distinct initializer
+at 456910 would erase this position and is deliberately not used.
+
+A scoped VC9 `/GL` link with the real `StartMenuTransitionOverlay` producer
+at 40FCA0 and its stack-constructed position gives a complete **135-byte
+primary TU diagnostic** against the native 153-byte owner, both with five
+calls. Its caller specializes script/layer values and the factory's private
+position/return ABI, so this is **source-only**, not a strict match. The
+bounded build and PE/MAP/PDB comparison script are retained privately under
+`.analysis/probe-positioned-vm-20261112.py`; the public producer context is
+`probes/animation-vm-positioned-context.cpp`. Native boundary and caller
+reviews remain as documented above.

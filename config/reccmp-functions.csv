@@ -577,3 +577,4 @@ RegisterSecondaryProgramBrowserChains,0x00438660,function
 ConstructSecondaryProgramBrowserStorage,0x004385D0,function
 DestroySecondaryProgramBrowser,0x00438710,function
 StartSecondaryDebugThread,0x004594A0,function
+CreateDirectPositionAnimationVmId,0x00455A70,function
