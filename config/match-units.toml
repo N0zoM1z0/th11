@@ -6710,3 +6710,15 @@ relocations = [
   { offset = 0x0D, type = "REL32", symbol = "?DestroyReplayFileBrowser@@YGXPAUReplayFileBrowserView@@@Z", target = 0x00437E40 },
   { offset = 0x13, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x0045FD49 },
 ]
+
+[units.select-menu-item]
+artifact_kind = "coff"
+source = "src/MenuPrimarySelection.cpp"
+inputs = ["src/MenuPrimary.hpp"]
+object = "build/match/MenuPrimarySelection.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["SelectMenuItem"]
+symbol = "?SelectMenuItem@@YIHHPAUSecondaryDebugSelectionView@@@Z"
+target_address = 0x0040DF10
+size = 33
+relocations = []

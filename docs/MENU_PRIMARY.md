@@ -3,7 +3,7 @@
 UpdateMenuPage01 at43A0A0 has complete natural C++ source in MenuPrimary.cpp.
 It is the primary page reached by the full menu controller4399B0. The owner
 includes all three dispatch tables, not just the initial Ghidra code extent.
-No leaf acceptance units are introduced for its supporting operations.
+Its shared general selector now has a dedicated complete-function exact acceptance unit; the 1608-byte primary page itself remains nonexact.
 
 ## Complete target owner
 
@@ -63,8 +63,7 @@ value type and native unchecked missing-root/child accesses. Stop caches no new
 lifetime guarantee: it signals the root and marker-zero related nodes before
 clearing the ID unconditionally. The unlock query short-circuits bit10 across
 statistics bytes2DDF0..2DDF5. The general selector stores the requested value
-when count is zero; otherwise it clamps to zero/count-1 as observed. These are
-supporting source mappings, not independent exact acceptance claims.
+when count is zero; otherwise it clamps to zero/count-1 as observed. Most of these remain supporting source mappings rather than exact claims; the 33-byte general selector has a separate exact acceptance receipt.
 
 ## Compiler evidence and open claims
 
@@ -146,3 +145,20 @@ the isolated30-difference receipt is historical after the current menu header
 and sprite-scale correction. See [MENU_JOYSTICK.md](MENU_JOYSTICK.md) for current
 context and cold proof. None of the six follow-up pointer/reference/local/scalar/
 address-/GS- probes improves the isolated baseline, and none is retained.
+
+## Strict 33-byte shared selection clamp (2026-11-12)
+
+The existing `SelectMenuItem` owner at `0x40DF10..0x40DF30` was not exact
+despite complete original native review and source. It reads the selection's
+count at `+8`, clamps the requested signed index to `[0,count-1]` when
+nonzero, and otherwise publishes the input as-is. The original has three
+plain return paths and a negative-value `SETL`/`DEC`/`AND` bit-mask.
+
+Ten natural C++ source alternatives were compiled with pinned VC9 RTM.
+An explicit high-limit return followed by `value & (value<0 ? 0 : -1)`
+preserves the native `ECX` value / `EDX` selection receiver and restores
+the exact signed-mask sequence. The maintained full body is now
+**33/33 strict exact**, with a unique normal-COFF COMDAT, no relocation
+fields and a cold replay of every byte. The result covers only the shared
+selector, not the still nonexact 1608-byte menu page. The original nominal
+class/translation-unit identity remains unknown.
