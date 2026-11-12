@@ -93,13 +93,35 @@ success only when the number of bytes written equals the requested length;
 the native access-mode tests are preserved. These exact units replay each
 whole body and its single native DIR32 field, not a masked snippet.
 
-The separate 37-byte `Seek` at `0x441F30..0x441F54` retains the native
-failure return `0xFFFFFF00` and combines the successful SetFilePointer result
-with low-byte success marker 1, but its current ordinary COFF is 46 bytes,
-so it remains nonexact. The **145-byte** `ReadWhole` at
-`0x441F60..0x441FF0` is implemented in full, preserving virtual
-Size/Tell/Seek/Read calls, allocation, early seek failure without invented
-cleanup, file-position restoration and read-failure free. Its isolated
-candidate has the same 145-byte length but still differs from original
-private ABI and relocation locations. Both remain separate, substantive
-source-present owners rather than partial exact claims.
+The two remaining I/O operations are now **strict exact** as well. The
+37-byte `Seek` at `0x441F30..0x441F54` returns success or failure in **AL**
+only; high EAX bits on failure were never part of its return contract. The
+145-byte `ReadWhole` at `0x441F60..0x441FF0` calls the native virtual
+Size/Tell/Seek/Read functions, conditionally allocates a buffer, restores
+the prior position on success, frees on read failure, and preserves the
+original early seek failure without adding compensating cleanup. Both
+owners now replay all their original bytes and independently reviewed fields.
+
+## Restored AL-only Seek contract and 145-byte ReadWhole boss
+
+An earlier source declaration returned `unsigned int` for `Seek`, forcing
+VC9 to preserve high EAX bits and emit a 46-byte body instead of the native
+37 bytes. The actual original writes only **AL**, returning 0 for an invalid
+handle and 1 after calling SetFilePointer; the upper register bits are
+incidental. Declaring the real C++ result as `unsigned char` emits the
+original **37/37 bytes**, with one independently reviewed DIR32 Win32 import
+to `SetFilePointer` `0x48B09C` at offset +0x1C.
+
+That contract also explains a mismatch in the **145-byte `ReadWhole` boss**:
+its first virtual seek must test **AL**, not EAX. Expressing the true length
+comparison as `length > maximumSize`, placing read-failure free/return before
+restore-and-success, and correcting the virtual Seek result to `unsigned char`
+restores the complete original function, including 145/145 bytes and native
+branch layout. The two reviewed REL32 fields call `malloc` `0x460192` from
++0x2C and `free` `0x45FC3B` from +0x6C. Both new canonical units replay
+**every byte, with zero differences**, without synthetic padding, custom
+register shims or masked exceptions.
+
+Changing `PbgLowLevelFile.hpp` affects the same source unit as Close, Read,
+Write and Size. All six normal-COFF I/O units must be locally cold-replayed
+after this change; broader source and full-game replay are unnecessary.

@@ -6919,3 +6919,32 @@ size = 21
 relocations = [
   { offset = 0x10, type = "DIR32", symbol = "__imp__GetFileSize@8", target = 0x0048B0AC },
 ]
+
+[units.pbg-file-seek]
+artifact_kind = "coff"
+source = "src/PbgLowLevelFileIO.cpp"
+inputs = ["src/PbgLowLevelFile.hpp"]
+object = "build/match/PbgLowLevelFileIO.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["SeekPbgLowLevelFile"]
+symbol = "?Seek@PbgLowLevelFileView@@QAEEHI@Z"
+target_address = 0x00441F30
+size = 37
+relocations = [
+  { offset = 0x1C, type = "DIR32", symbol = "__imp__SetFilePointer@16", target = 0x0048B09C },
+]
+
+[units.pbg-file-read-whole]
+artifact_kind = "coff"
+source = "src/PbgLowLevelFileIO.cpp"
+inputs = ["src/PbgLowLevelFile.hpp"]
+object = "build/match/PbgLowLevelFileIO.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["ReadWholePbgLowLevelFile"]
+symbol = "?ReadWhole@PbgLowLevelFileView@@QAEPAXI@Z"
+target_address = 0x00441F60
+size = 145
+relocations = [
+  { offset = 0x2C, type = "REL32", symbol = "_malloc", target = 0x00460192 },
+  { offset = 0x6C, type = "REL32", symbol = "_free", target = 0x0045FC3B },
+]

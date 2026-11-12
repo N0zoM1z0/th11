@@ -40,14 +40,14 @@ unsigned int PbgLowLevelFileView::Size()
     return GetFileSize(handle, 0);
 }
 
-// 0x441F30..0x441F54: the native return preserves the SetFilePointer upper
-// 24 bits, overwrites only the lowest byte with 1 (or returns 0xFFFFFF00).
-unsigned int PbgLowLevelFileView::Seek(int offset, unsigned int origin)
+// 0x441F30..0x441F54: only AL reports success. The native leaves the
+// remaining EAX bits unspecified; claiming an unsigned int return was what
+// introduced nine extra bytes and also made ReadWhole test EAX instead of AL.
+unsigned char PbgLowLevelFileView::Seek(int offset, unsigned int origin)
 {
-    if (handle == INVALID_HANDLE_VALUE)
-        return 0xffffff00u;
-    unsigned int result = SetFilePointer(handle, offset, 0, origin);
-    return (result & 0xffffff00u) | 1u;
+    if (handle == INVALID_HANDLE_VALUE) return 0;
+    SetFilePointer(handle, offset, 0, origin);
+    return 1;
 }
 
 // 0x441F60..0x441FF0: the Pbg stream owns a virtual Size/Tell/Seek/Read
@@ -60,10 +60,10 @@ void *PbgLowLevelFileView::ReadWhole(unsigned int maximumSize)
 
     typedef unsigned int (__thiscall *GetSize)(PbgLowLevelFileView *);
     typedef unsigned int (__thiscall *Tell)(PbgLowLevelFileView *);
-    typedef unsigned int (__thiscall *SeekTo)(PbgLowLevelFileView *, int, unsigned int);
+    typedef unsigned char (__thiscall *SeekTo)(PbgLowLevelFileView *, int, unsigned int);
     typedef unsigned int (__thiscall *ReadBytes)(PbgLowLevelFileView *, void *, unsigned int);
     unsigned int length = reinterpret_cast<GetSize>(vtable[5])(this);
-    if (maximumSize < length)
+    if (length > maximumSize)
         return 0;
     void *buffer = malloc(length);
     if (!buffer)
@@ -71,11 +71,11 @@ void *PbgLowLevelFileView::ReadWhole(unsigned int maximumSize)
     unsigned int pos = reinterpret_cast<Tell>(vtable[4])(this);
     if (!reinterpret_cast<SeekTo>(vtable[6])(this, pos, 0))
         return 0;
-    if (reinterpret_cast<ReadBytes>(vtable[2])(this, buffer, length))
+    if (!reinterpret_cast<ReadBytes>(vtable[2])(this, buffer, length))
     {
-        reinterpret_cast<SeekTo>(vtable[6])(this, pos, 0);
-        return buffer;
+        free(buffer);
+        return 0;
     }
-    free(buffer);
-    return 0;
+    reinterpret_cast<SeekTo>(vtable[6])(this, pos, 0);
+    return buffer;
 }
