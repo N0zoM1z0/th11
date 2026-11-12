@@ -175,3 +175,29 @@ instruction padding. The maintained C++ `ReplayPayloadChecksumView` uses a
 physical eight-byte header and real unsigned byte loads. Canonical
 `replay-payload-checksum` cold-replays the **entire 79-byte body**, with zero
 relocations and zero byte differences.
+
+## Derived-record construction and generic-chain review (2026-11-12)
+
+A more faithful six-call `/GL` source moves the full 0x2DC-byte wipe into
+the final `ReplayRecordCompleteStorage` constructor body, after its eight
+`ReplayRecordStageLink` base-member lifetimes. This derived physical view
+naturally preserves the original EH vector construction then `memset`
+sequence; wiping inside the base's constructor had previously eliminated
+the vector-constructor call entirely. The real replay-record destructor as
+linked support produces a **200/199-byte recording factory** and a
+**198/198-byte playback factory**, with the playback function's 60/60
+instructions and all ten decoded fields' non-address bytes equal. The
+playback function still has a private exception-registration target at
+`0x48A87B` without a unique public MAP owner; the strict linked oracle
+cannot identify that field, so neither factory is promoted to canonical
+exactness. The recording factory remains one byte long with a private
+parameter-move/EH-state difference.
+
+A genuine generic chain-removal caller was also tested alongside the 429-byte
+record destructor. With opaque, real `/GL`, and ordinary-COFF chain-removal
+producers, the best destructor remains 429 bytes with only **six**
+non-address register-move bytes different. Compiling the full chain remover
+into the same `/GL` producer instead changes the record destructor to 370
+bytes. No manually assigned registers or synthetic instruction fields were
+adopted. Evidence is in `.analysis/probe-429-generic-chain-20261112.log` and
+`.analysis/probe-replay-record-factories-derived-20261112.log`.

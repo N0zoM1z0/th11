@@ -7,11 +7,18 @@ int __stdcall LoadReplayStageData(ReplayInitStateView *state, void *source);
 
 namespace
 {
-// The native record is a full 0x2DC-byte class; its default constructor
-// initializes eight stage nodes before clearing the complete record.
+// The full 0x2DC-byte storage is physically the same replay record base.
+// Placing its wipe in the final derived constructor body restores the native
+// eight-member EH vector construction followed immediately by memset.
+struct ReplayRecordCompleteStorage : TitleMenuRecordView
+{
+    ReplayRecordCompleteStorage() { memset(this, 0, sizeof(*this)); }
+};
+typedef char ReplayRecordCompleteSize[
+    (sizeof(ReplayRecordCompleteStorage) == 0x2dc) ? 1 : -1];
 __forceinline TitleMenuRecordView *AllocateReplayRecord()
 {
-    return new TitleMenuRecordView;
+    return new ReplayRecordCompleteStorage;
 }
 }
 

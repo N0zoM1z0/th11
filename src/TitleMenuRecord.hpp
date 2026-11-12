@@ -27,7 +27,6 @@ struct TitleMenuRecordView
     unsigned char unknown1c4[0x1d0 - 0x1c4];
     ChainElement *secondaryChain;
     unsigned char unknown1d4[0x2dc - 0x1d4];
-    TitleMenuRecordView() { memset(this, 0, sizeof(*this)); }
     ~TitleMenuRecordView();
 };
 
