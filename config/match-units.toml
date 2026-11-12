@@ -6738,3 +6738,19 @@ symbol = "?PopConfigurationSelection@@YGXPAUSecondaryDebugSelectionView@@@Z"
 target_address = 0x00459130
 size = 48
 linkages = []
+
+# The real music-room page is the native producer for the 59-byte line-skip
+# helper; its three fields are private but the resulting function has no relocs.
+[units.skip-menu-music-line]
+artifact_kind = "linked-pe"
+source = "src/MenuMusicRoomSupport.cpp"
+inputs = ["src/MenuMusicRoom.hpp"]
+support_sources = ["probes/menu-music-line-context.cpp", "src/MenuMusicRoom.cpp"]
+output_dir = "build/match-linked/SkipMenuMusicLine"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "MenuMusicLineProbe@20"
+functions = ["SkipMenuMusicLine"]
+symbol = "?SkipMenuMusicLine@@YGPADPADPAH@Z"
+target_address = 0x00441360
+size = 59
+linkages = []

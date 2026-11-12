@@ -29,8 +29,7 @@ the complete comparison. No target instruction dump is public.
 | TweenMenuMusicPosition |441400..4414DE|223|EAX VM/ECX target/EDX initial; plain RET|
 
 These full bodies have no foreign interior reference or table. Their following
-CC gaps are5/7/1 bytes. They support the large owner and have no separate exact
-acceptance units. Source uses ordinary stdcall signatures and keeps /GL.
+CC gaps are5/7/1 bytes. They support the large owner; the 59-byte skip reader now has its own complete strict-exact unit. The 89-byte copy and 223-byte tween remain nonexact. Source uses ordinary stdcall signatures and keeps /GL.
 
 ## Operations retained from the target
 
@@ -97,7 +96,7 @@ argument choice is resolved, but it does not explain the whole-owner gap.
 | Complete contribution | Native bytes | Source bytes | Full differing bytes | Replayed fields |
 | --- | ---: | ---: | ---: | ---: |
 | Music-room primary, current typed-selection candidate |2668|2680|2416|94|
-| Required skip reader, support only |59|59|0|0|
+| Required skip reader, **strict exact** |59|59|0|0|
 | Required copy reader, support only |89|90|79|0|
 | Required position tween, support only |223|213|193|4|
 
@@ -164,3 +163,20 @@ This family is a compilation diagnostic with unresolved data anchors, not a
 runnable game. There is no canonical music-room manifest entry and no exact
 credit. New-context output from already accepted dependencies does not inherit
 those dependencies' canonical exactness.
+
+## Exact music-room newline skipper (2026-11-12)
+
+The native shared `0x441360..0x44139A` reader walks characters until `\n`
+or `\r`, decrements the live remaining-byte counter, and then skips a
+consecutive CR/LF run. Unlike the 89-byte copy helper, it does not create a
+new buffer; its complete original body has 59 bytes, 29 instructions, a
+plain return, no data/table interior and five following alignment CC bytes.
+
+With the genuine 2668-byte `MenuMusicRoom.cpp` update owner participating
+in the scoped pinned VC9 `/GL` producer, the ordinary stdcall declaration
+compiles to the native private cursor/remaining calling convention and a
+unique complete **59-byte** public PDB/MAP source contribution. Canonical
+`skip-menu-music-line` checks every byte and all zero relocation fields
+against the hash-pinned original; strict affected-only cold replay reports
+**zero differences**. The nonexact 89-byte copy helper and full music room
+owner are not granted any borrowed exact credit.
