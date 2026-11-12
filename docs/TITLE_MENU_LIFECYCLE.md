@@ -9,7 +9,7 @@ simulating the small callback entries without their owning state.
 | Original owner | Original bytes | VC9 normal-COFF diagnostic | Result |
 | --- | ---: | ---: | --- |
 | `0x439420` storage construction | 201 | 205 normal COFF / 201 linked | **201/201 strict exact** |
-| `0x4395A0` chain/resource setup | 275 | 262 | source-present, not exact |
+| `0x4395A0` chain/resource setup | 275 | 262 isolated / 275 linked | **275/275 strict exact** |
 | `0x4396C0` full destruction | 561 | 584 | source-present, not exact |
 | `0x439900` worker startup | 106 | 107 normal COFF / 106 linked | **106/106 strict exact** |
 | `0x439970` singleton release | 28 | 29 | source-present, not exact |
@@ -207,3 +207,35 @@ Typed worker destruction without that constructor also worsened the nonexact
 561-byte destructor. The untouched title destructor retains the improved
 561/561-length, 15-call, `RET 4` diagnostic from the explicit lock-and-slot
 restoration, without claiming byte exactness.
+
+## Exact 275-byte title resource initializer boss (2026-11-12)
+
+The complete `0x4395A0..0x4396B2` function constructs two 36-byte chain
+elements, registers priority-6 update and priority-54 draw callbacks, then
+loads animation documents in slots 24 and 25. Both distinct error returns
+log the real format; success sets the selection flag and resource state.
+It is a substantive seven-call boss, not a neighboring small callback.
+
+Standalone VC9 codegen was 262 bytes. Linking only real chain and document
+functions produced a 268-byte owner with different register scheduling. The
+crucial missing context was a *separate generic-priority and dynamic-slot
+caller*. The retained compile-only
+`probes/title-menu-resources-generic-context.cpp` calls both real registration
+functions with independent priority arguments and also acquires an arbitrary
+animation document. Together with genuine `ChainRegistration.cpp`,
+`AnimationDocument.cpp`, `LogBuffer.cpp`, and the original document-load
+producer, this constrains VC9 `/GL` to the native **ESI element, EBX chain
+priority, EBX pathname and ECX animation slot** convention. No artificial
+register assignments, inline assembly or target byte splices are used.
+
+Four bounded producer variants established that chain+document support alone
+leaves four non-field bytes; adding only the real logger or only the generic
+document caller leaves two; **both** together reproduce the original
+**275/275 bytes, 90/90 instructions and 7/7 calls**.
+The canonical `initialize-title-menu-resources` strict linked Oracle has a
+unique public primary-TU MAP/PDB contribution and **15** independently
+reviewed bindings: singleton, two allocations, both registered callbacks,
+two chain operations, two animation names, two document loads, error format,
+log root and logger call, plus success state. All 15 are replayed against the
+hash-pinned original with **zero differences**. Original TU ownership and
+whole-game runtime equivalence remain open.

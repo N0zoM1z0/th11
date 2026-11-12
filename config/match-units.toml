@@ -6573,3 +6573,35 @@ size = 11
 relocations = [
   { offset = 2, type = "DIR32", symbol = "?g_RuntimeThreadFlagA577C@@3IA", target = 0x004A577C },
 ]
+
+# Real chain, document and log producers plus an independent generic-priority
+# caller preserve the native EBX/ESI registration and EBX/ECX file-load ABI.
+[units.initialize-title-menu-resources]
+artifact_kind = "linked-pe"
+source = "src/TitleMenuLifecycle.cpp"
+inputs = ["src/TitleMenuLifecycle.hpp", "src/ChainRegistration.hpp", "src/AnimationDocument.hpp", "src/LogBuffer.hpp"]
+support_sources = ["probes/title-menu-resources-generic-context.cpp", "src/ChainRegistration.cpp", "src/AnimationDocument.cpp", "src/LogBuffer.cpp", "probes/animation-document-load-context.cpp"]
+output_dir = "build/match-linked/InitializeTitleMenuResources"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "TitleResourcesGenericProbe@12"
+functions = ["InitializeTitleMenuResources"]
+symbol = "?InitializeTitleMenuResources@@YAHXZ"
+target_address = 0x004395A0
+size = 275
+linkages = [
+  { offset = 0x006, type = "DIR32", symbol = "?g_TitleMenu@@3PAUTitleMenuView@@A", target = 0x004A8ECC },
+  { offset = 0x00D, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x0045FCE4 },
+  { offset = 0x049, type = "DIR32", symbol = "?MenuControllerUpdateCallback@@YIHPAUMenuControllerView@@@Z", target = 0x00439F10 },
+  { offset = 0x05A, type = "REL32", symbol = "?AddToUpdateChain@@YGHPAUChainElement@@H@Z", target = 0x00456B70 },
+  { offset = 0x064, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x0045FCE4 },
+  { offset = 0x09E, type = "DIR32", symbol = "?MenuControllerDrawCallback@@YIHPAUMenuControllerView@@@Z", target = 0x00439F20 },
+  { offset = 0x0AF, type = "REL32", symbol = "?AddToDrawChain@@YGHPAUChainElement@@H@Z", target = 0x00456C10 },
+  { offset = 0x0B4, type = "DIR32", symbol = "?g_TitleMenuAnimation18@@3QBDB", target = 0x004961B8 },
+  { offset = 0x0C1, type = "REL32", symbol = "?AcquireAnimationDocument@@YGPAUAnimationDocumentView@@HPBD@Z", target = 0x00454360 },
+  { offset = 0x0CD, type = "DIR32", symbol = "?g_TitleMenuAnimationError@@3QBDB", target = 0x00493874 },
+  { offset = 0x0D2, type = "DIR32", symbol = "?g_RuntimeLog@@3UErrorLogBufferView@@A", target = 0x004A5940 },
+  { offset = 0x0D7, type = "REL32", symbol = "?AppendLog@@YAPBDPAULogBufferView@@PBDZZ", target = 0x00458A10 },
+  { offset = 0x0E7, type = "DIR32", symbol = "?g_TitleMenuAnimation19@@3QBDB", target = 0x004961C4 },
+  { offset = 0x0F1, type = "REL32", symbol = "?AcquireAnimationDocument@@YGPAUAnimationDocumentView@@HPBD@Z", target = 0x00454360 },
+  { offset = 0x10A, type = "DIR32", symbol = "?g_TitleMenuInitializationState@@3HA", target = 0x004C2EF4 },
+]
