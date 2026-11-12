@@ -45,29 +45,42 @@ void __fastcall InitializeReplayScoreArchive(ReplayScoreArchiveView *self)
     At<unsigned short>(self, 2) = 0;
     At<unsigned int>(self, 8) = sizeof(*self);
 
-    for (int category = 0; category < 5; ++category)
+    unsigned char *entry = self->bytes + 0x14;
+    int group = 5;
+    for (; group != 0; --group)
     {
-        for (int rank = 0; rank < 10; ++rank)
+        int score = 1000000;
+        do
         {
-            unsigned int offset = 0x10 + (category * 10 + rank) * 0x1c;
-            At<unsigned int>(self, offset) = 1000000 - rank * 100000;
-            At<unsigned char>(self, offset + 4) = 1;
-            At<unsigned char>(self, offset + 5) = 0;
-            memcpy(&At<char>(self, offset + 6), g_ReplayScoreEmptyName, 9);
-            At<unsigned int>(self, offset + 0x10) = 0;
-            At<unsigned int>(self, offset + 0x14) = 0;
-        }
+            *reinterpret_cast<int *>(entry - 4) = score;
+            entry[0] = 1;
+            *reinterpret_cast<unsigned int *>(entry + 2) =
+                *reinterpret_cast<const unsigned int *>(g_ReplayScoreEmptyName);
+            *reinterpret_cast<unsigned int *>(entry + 6) =
+                *reinterpret_cast<const unsigned int *>(g_ReplayScoreEmptyName + 4);
+            entry[10] = g_ReplayScoreEmptyName[8];
+            *reinterpret_cast<int *>(entry + 0x0c) = 0;
+            *reinterpret_cast<int *>(entry + 0x10) = 0;
+            entry[1] = 0;
+            score -= 100000;
+            entry += 0x1c;
+        } while (score > 0);
     }
 
-    for (int group = 0; group < 35; ++group)
+    unsigned char *record = self->bytes + 0x6f0;
+    for (; group < 175; group += 5, record += 0x2d0)
     {
-        unsigned int base = 0x6ec + group * 0x2d0;
-        for (int index = 0; index < 5; ++index)
-        {
-            int id = group * 5 + index;
-            At<int>(self, base + index * 0x90) = id;
-            At<int>(self, base + index * 0x90 + 4) = g_ReplayScoreCharacterClass[id];
-        }
+        int idx = group;
+        *reinterpret_cast<int *>(record - 4) = idx;
+        *reinterpret_cast<int *>(record) = g_ReplayScoreCharacterClass[idx];
+        *reinterpret_cast<int *>(record + 0x8c) = idx + 1;
+        *reinterpret_cast<int *>(record + 0x90) = g_ReplayScoreCharacterClass[idx + 1];
+        *reinterpret_cast<int *>(record + 0x11c) = idx + 2;
+        *reinterpret_cast<int *>(record + 0x120) = g_ReplayScoreCharacterClass[idx + 2];
+        *reinterpret_cast<int *>(record + 0x1ac) = idx + 3;
+        *reinterpret_cast<int *>(record + 0x1b0) = g_ReplayScoreCharacterClass[idx + 3];
+        *reinterpret_cast<int *>(record + 0x23c) = idx + 4;
+        *reinterpret_cast<int *>(record + 0x240) = g_ReplayScoreCharacterClass[idx + 4];
     }
 }
 
