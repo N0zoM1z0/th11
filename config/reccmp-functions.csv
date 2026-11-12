@@ -683,3 +683,5 @@ CreateReplayLeaderboardRuntime,0x00437800,function
 LoadReplayLeaderboardRecords,0x004378F0,function
 DestroyReplayFileBrowser,0x00437E40,function
 DeleteReplayFileBrowser,0x00438000,function
+InitializeReplayFileBrowser,0x00437D50,function
+CreateReplayFileBrowser,0x00437F60,function

@@ -682,3 +682,5 @@ CreateReplayLeaderboardRuntime
 LoadReplayLeaderboardRecords
 DestroyReplayFileBrowser
 DeleteReplayFileBrowser
+InitializeReplayFileBrowser
+CreateReplayFileBrowser

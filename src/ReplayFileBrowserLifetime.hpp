@@ -1,5 +1,6 @@
 #pragma once
 #include "Chain.hpp"
+#include "AnimationDocument.hpp"
 #include <stddef.h>
 
 // Physical native 0x78C-byte replay file browser owner. The private original
@@ -10,7 +11,7 @@ struct ReplayFileBrowserView
     unsigned int flags;
     unsigned int unknown004;
     ChainElement *update, *draw;
-    unsigned int animationId;
+    AnimationDocumentView *animation;
     unsigned char unknown014[0x418 - 0x14];
     void *ownedData;
     unsigned char unknown41c[0x78c - 0x41c];
@@ -22,3 +23,5 @@ typedef char ReplayFileBrowserBlobOffset[(offsetof(ReplayFileBrowserView, ownedD
 extern ReplayFileBrowserView *g_ReplayFileBrowser;
 void __stdcall DestroyReplayFileBrowser(ReplayFileBrowserView *self);
 void __cdecl DeleteReplayFileBrowser();
+int __stdcall InitializeReplayFileBrowser(ReplayFileBrowserView *self);
+ReplayFileBrowserView *__cdecl CreateReplayFileBrowser();
