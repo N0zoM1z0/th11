@@ -171,3 +171,41 @@ final compilation. No full cohort, broad behavior
 suite or Oracle/infrastructure regression is run for these source changes.
 
 Canonical contexts are declared in `config/match-units.toml`.
+
+## Complete 366-byte player rectangle owner (2026-11-12)
+
+`src/SecondaryPlayerRectangle.cpp` now contains the full native owner
+`CheckSecondaryPlayerRectangle` (`0x431E00..0x431F6D`). The pinned Japanese
+PE and direct Ghidra confirm **366 bytes, 112 decoded instructions,
+three returns and one call** to `BeginSecondaryCollision` at `0x432A90`,
+without tables or foreign interior entries. The function is called from
+one independently reviewed native entry at `0x408900`; original register
+lifetime is private (EAX dimensions, EDX position).
+
+The source first computes four floating AABB edges around the supplied
+position using dimensions times **double 0.5**, preserving rounded
+single-precision edge stores and the native left/top/right/bottom test
+order. A rectangle hit returns 1 only if the HUD's `+0x4438` dialogue
+pointer is absent, player modes are not 2, 4 or 3, and player flag bit 2
+is clear; an expired status timer conditionally invokes the actual
+`BeginSecondaryCollision` before returning 1. A miss instead tests a
+**separate double 24.0** proximity rectangle against the same player
+bounds, returning 2 on that near-hit, otherwise zero. The two paths have
+independent early conditions; no new clamp, guards or epsilon was inserted.
+
+Two scoped VC9 RTM `/GL` PE/MAP/PDB diagnostics compile the entire natural
+source: **355/366** bytes with an independent live argument caller, and
+**356/366** with real `SecondaryCollision.cpp` and gameplay support.
+Both preserve all **three native RETs and the one genuine callback**, but
+emit 114 rather than 112 instructions and remain **non-exact**. Five further
+float-expression probes (temporaries, 32-bit and 64-bit half-extents,
+reordered axes, center locals) produced 355–406 bytes without strict
+improvement; canonical natural source was not replaced by an inferior
+variant. Reproduction:
+`.analysis/probe-secondary-player-rectangle-20261112.py`,
+`.analysis/try-secondary-rectangle-float-20261112.py`, and their logs;
+public caller `probes/secondary-player-rectangle-context.cpp`.
+
+This adds the full **366-byte source owner**, not 366 bytes of strict
+match credit. The original authored/class provenance remains indeterminate.
+No unrelated full cold replay was run.

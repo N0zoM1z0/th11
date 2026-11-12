@@ -593,3 +593,4 @@ TraceSoundQueue
 FindSoundTrack
 StartPreparedMusicFile
 ClosePreparedMusic
+CheckSecondaryPlayerRectangle

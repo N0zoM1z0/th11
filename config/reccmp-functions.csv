@@ -594,3 +594,4 @@ TraceSoundQueue,0x0044AB00,function
 FindSoundTrack,0x004496B0,function
 StartPreparedMusicFile,0x00449C20,function
 ClosePreparedMusic,0x00449FE0,function
+CheckSecondaryPlayerRectangle,0x00431E00,function
