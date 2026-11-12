@@ -20,7 +20,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - [Generated progress](PROGRESS.md) and
   `config/{functions,function-boundaries,function-origins,matches}.csv`
   determine names, origins, reviewed extents and exact status.
-  At this checkpoint: **295 canonical exact**, **586 source-present**,
+  At this checkpoint: **296 canonical exact**, **589 source-present**,
   **661 reviewed boundaries**. Refresh with
   `scripts/repo-python scripts/progress.py`, not manual totals.
 - An exact owner requires the entire original function, source/tool
@@ -48,6 +48,13 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   head-prepend publisher is source-present but remains 111/118 diagnostic;
   three existing exact shared-header consumers were re-cold-proved.
   See [emitter factory evidence](SECONDARY_EMITTER_RESET.md).
+- The 275-byte `EnterSecondaryContinueMenu` and 336-byte
+  `EnterSecondaryGameOverMenu` now have maintained full source and targeted
+  272/275 and 336/336 diagnostics (non-exact). The real 123-byte
+  `QueueMusicWaveRequest` callee at `0x42A0D0` is now **strict 123/123
+  exact**, five reviewed fields; real generic sound producer needed to
+  preserve EAX/EDI argument allocation. See [sound queue](SOUND_QUEUE.md)
+  and [player controller](SECONDARY_PLAYER_CONTROLLER.md).
 - The secondary-draw default factory at `0x455D80` is newly
   **105/105 strict exact** under its real initializer and append-publisher
   producer. Two positioned secondary-draw append factories at `0x455E60`

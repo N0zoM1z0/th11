@@ -5810,3 +5810,25 @@ linkages = [
   { offset = 0x5A, type = "DIR32", symbol = "__imp__LeaveCriticalSection@4", target = 0x0048B088 },
   { offset = 0x60, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x939 },
 ]
+
+# Full native 123-byte music-wave filename queue wrapper. Dynamic audio queue
+# producer preserves the native EAX manager/EDI path calling convention.
+[units.queue-music-wave-request]
+artifact_kind = "linked-pe"
+source = "src/MusicWaveRequest.cpp"
+inputs = ["src/MusicWaveRequest.hpp", "src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/SoundDevice.hpp"]
+support_sources = ["probes/music-wave-request-context.cpp", "src/SoundQueue.cpp", "src/MusicStream.cpp", "probes/sound-queue-context.cpp"]
+output_dir = "build/match-linked/MusicWaveRequest"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "MusicWaveRequestProbe@8"
+functions = ["QueueMusicWaveRequest"]
+symbol = "?QueueMusicWaveRequest@@YGHHPBD@Z"
+target_address = 0x0042A0D0
+size = 123
+linkages = [
+  { offset = 0x07, type = "DIR32", symbol = "___security_cookie", target = 0x004A2088 },
+  { offset = 0x33, type = "REL32", symbol = "_strrchr", target = 0x00460560 },
+  { offset = 0x55, type = "DIR32", symbol = "?g_SoundManagerQueue@@3USoundManagerQueueView@@A", target = 0x004C3E80 },
+  { offset = 0x5A, type = "REL32", symbol = "?EnqueueSoundCommand@@YGXPAUSoundManagerQueueView@@HHPBD@Z", target = 0x0044A9C0 },
+  { offset = 0x6E, type = "REL32", symbol = "@__security_check_cookie@4", target = 0x0045FC2C },
+]

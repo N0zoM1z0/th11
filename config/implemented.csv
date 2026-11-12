@@ -586,3 +586,4 @@ CreatePositionedSecondaryDrawAnimationVmId
 CreateOffsetSecondaryDrawAnimationVmId
 EnterSecondaryContinueMenu
 EnterSecondaryGameOverMenu
+QueueMusicWaveRequest

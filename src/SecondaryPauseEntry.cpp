@@ -5,7 +5,7 @@
 #include "SecondaryDialogue.hpp"
 #include "SecondaryActorRuntime.hpp"
 #include "SecondaryGameplay.hpp"
-#include "MenuController.hpp"
+#include "MusicWaveRequest.hpp"
 #include "SoundQueue.hpp"
 #include "MainRuntime.hpp"
 
@@ -93,7 +93,7 @@ void __stdcall EnterSecondaryGameOverMenu()
     pause->backdrop = CreateDefaultSecondaryDrawAnimationVmId(PauseBackdropFile(), 0x4b);
     CapturePauseOverlayFromVm(pause->backdrop);
     session->file = PauseMainFile();
-    EnqueueMenuMusicLoad(0, "bgm/th10_17.wav");
+    QueueMusicWaveRequest(0, "bgm/th10_17.wav");
     if (reinterpret_cast<unsigned char *>(&g_MainRuntime)[0x200] & 0x10)
         EnqueueSoundCommand(&g_SoundManagerQueue, 4, 0, "dummy");
     EnqueueSoundCommand(&g_SoundManagerQueue, 2, 0, "dummy");

@@ -184,3 +184,10 @@ scheduling, frame stores and the remaining call/field agreement have not
 reached strict zero-difference acceptance. Reproduce with the bounded private
 `.analysis/probe-secondary-pause-entry-20261112.py`; its public producer is
 `probes/secondary-pause-entry-context.cpp`. No full cold replay was performed.
+
+The game-over entry's observed music helper at 42A0D0 has since been
+reconstructed as the complete **123-byte strict exact**
+`QueueMusicWaveRequest`. `SecondaryPauseEntry.cpp` now calls that actual
+helper. The entry function's own last scoped 336/336-byte diagnostic still
+has nonfield register/stack differences and receives no exact credit; see
+[SOUND_QUEUE](SOUND_QUEUE.md).

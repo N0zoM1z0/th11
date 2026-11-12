@@ -176,3 +176,39 @@ retain full zero replay after this context change. Only these two affected old
 owners plus the three new sound units were cold-replayed:5 units total,757
 bytes/33 fields. No full cohort, broad behavior suite or infrastructure tests
 were run; infrastructure is unchanged.
+
+## Exact 123-byte WAV request producer (2026-11-12)
+
+`QueueMusicWaveRequest` at `0x42A0D0..0x42A14A` now has complete maintained
+C++ in `MusicWaveRequest.cpp`. The direct hash-attested Ghidra review and
+independent mapped-PE decode agree on all **123 bytes, 34 instructions,
+3 calls and a RET8**, with ten original call sites in eight containing
+functions and no interior foreign entry or owned table. Its five following
+CC bytes belong outside the owner.
+
+The original copies the supplied pathname into a **256-byte stack array**
+without extra bounds or null checks, finds the last dot with `strrchr`,
+changes the next three bytes to `wav`, calls the queue with opcode 1 and
+returns integer 1. It does not force a null terminator after those three
+writes. The source retains that exact behavior, including the assumption
+that the input contains a dot.
+
+A restricted `/GL` compile with the queue treated as opaque produced
+120/123 bytes; including real `SoundQueue.cpp` produced 116/123 because VC9
+specialized the fixed opcode and global queue pointer. Linking the **actual
+independent dynamic queue producer** `probes/sound-queue-context.cpp` and its
+real `MusicStream.cpp` companion preserves the generic audio argument ABI:
+**123/123 bytes, 34/34 instructions, 3/3 calls**, and zero nonfield
+differences. The complete unique primary-TU PDB contribution has five
+independently reviewed original fields: DIR32 security cookie at +7,
+REL32 `strrchr` at +0x33, DIR32 queue root at +0x55, REL32
+`EnqueueSoundCommand` at +0x5A and REL32 security-check helper at +0x6E.
+All five rebind to the original target, leaving **zero differing bytes**.
+
+Canonical linked unit: `queue-music-wave-request`; full cold PE/MAP/PDB
+receipt and strict replay log:
+`.analysis/music-wave-request-strict-20261112.log`. Focused diagnostic
+recipe: `.analysis/probe-music-wave-request-20261112.py`; public producer:
+`probes/music-wave-request-context.cpp`. The game-over menu entrance now
+uses this real C++ function instead of an unresolved name-only dependency.
+This success does not imply the 275/336-byte menu bosses are exact.
