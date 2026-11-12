@@ -148,3 +148,39 @@ six main factory sites versus native four; a signed counter view with explicit
 wrapped increments leaves publishers111/33 and116/47. Neither is adopted. Further
 work should use genuine movement/death/clear source and full vector/store/frame
 differences. Never replace full owners with passing prefixes or force their ABI.
+
+## Continue and game-over menu entry bosses (2026-11-12)
+
+`SecondaryPauseEntry.cpp` now implements the full 275-byte `EnterSecondaryContinueMenu`
+(42C760) and 336-byte `EnterSecondaryGameOverMenu` (42D560). Their boundaries
+had already been independently reviewed. The first has one return and five
+calls; the second preserves **both** the mode-1 runtime-only return and the
+normal game-over menu return, with five calls. Neither owner is cropped.
+
+Both transitions set the native pause state, initialize the two embedded
+stage timers to frame -1 (including their conditional scale-pointer setup),
+set scene flag 0x10, create the backdrop VM with script 0x4B and queue its
+rectangle capture. The main animation file is read from the HUD at +0x444C.
+The continue path also creates the script 0x5B root, clears its native
+projectile flag, and queues the `Pause` command only when the stage is not 6
+or the dialogue-session frame at +0x14 is at least 300. It saves and replaces
+the animation time scale and music state, without inventing null checks.
+
+The game-over path differs: dialogue mode 1 immediately switches the game
+runtime to mode 2 or 4 depending on the runtime 0x2000 flag; otherwise it
+sets pause state 13 or 21 from the stage resource flag, loads
+`bgm/th10_17.wav`, queues sound command 4 conditionally and command 2
+unconditionally, marks the native +0x2DE0B game-over state flag, zeros save
+mode and changes the saved audio state to 1. The pause-session pointer at
+0x4A8EB0 and game-over state root at 0x4A8EBC have narrow external source
+names, not invented nominal classes or assumed allocations.
+
+Scoped VC9 RTM `/GL` PE/MAP/PDB diagnostics with the genuine 105-byte exact
+secondary draw factory, VM initializer and append producer compile complete
+natural source contributions. Continue: **272 candidate / 275 native bytes,
+80/82 instructions, 5/5 calls**. Game over: **336/336 bytes,
+93/97 instructions, 5/5 calls**. Both are source-present only: register
+scheduling, frame stores and the remaining call/field agreement have not
+reached strict zero-difference acceptance. Reproduce with the bounded private
+`.analysis/probe-secondary-pause-entry-20261112.py`; its public producer is
+`probes/secondary-pause-entry-context.cpp`. No full cold replay was performed.
