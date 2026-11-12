@@ -600,3 +600,4 @@ SecondaryMasterUpdateCallback
 SecondaryMasterDrawCallback
 InitializeSecondaryHost
 UpdateSecondaryMasterActors
+EmitSecondaryActorEffects

@@ -133,3 +133,37 @@ behavior or infrastructure suite ran.
 Later complete damage1579/collision244/sound148 source, the124-byte special
 dispatcher correction and four new exact helper proofs are recorded in
 [SECONDARY_DAMAGE](SECONDARY_DAMAGE.md).
+
+## Complete 457-byte actor effect emission boss (2026-11-12)
+
+`src/SecondaryActorEffects.cpp` now reconstructs the complete original
+`EmitSecondaryActorEffects` at `0x4101D0..0x410398`, rather than just the
+short emitter/callback leaf. The hash-attested native body is **457 bytes,
+122 instructions, seven calls and one RET4**, and its real incoming edges
+come from the 58-byte effect-reset entrance and the actor finish path.
+
+The source uses the full unsigned 32-bit `RandomNext32` from the original
+text RNG, taking care to store float intermediates before double scaling.
+It generates an initial polar angle, then loops over **eleven** 32-bit
+count buckets at effect+4, uses the independent two-component elliptical
+`SetPolar` helper at `0x419BB0` with the configured width/height, applies
+a randomized scale to an XYZ around the originating actor position, and
+passes the category, all-ones color, fixed signed angle and 2.2f speed to
+the real `SpawnSecondaryPlayerDrop` at `0x424230`. It advances the angle
+through `NormalizeAngle` at `0x458ED0` using a second random sample on each
+iteration. The final `memset` clears **0x30 bytes**, including the extra
+physical count field outside the eleven emitted buckets. The implementation
+does not add caller checks, alternative RNG distributions or shortened loops.
+
+Three independently scoped pinned VC9 `/GL` PE/MAP/PDB source contribution
+links were compared. With both original math producer TUs and the natural
+polar helper, the candidate is **436/457 bytes, 122/122 instructions, 7/7
+calls and native RET4**, with 24 candidate relocation fields. The opaque
+context is **442/457, 121 instructions**, while the partial real-math context
+is **427/457, 118 instructions**. None has zero exhaustive byte differences;
+**this is source coverage, not strict exact credit**. The polar helper's own
+original 30-byte extent and the real 58-byte reset caller are tracked
+separately. Bounded reproduction:
+`.analysis/probe-secondary-actor-effects-20261112.py` and the corresponding
+`.analysis/secondary-actor-effects-20261112.log`; independent public caller:
+`probes/secondary-actor-effects-context.cpp`. Full cold replay was not run.

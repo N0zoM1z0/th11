@@ -601,3 +601,4 @@ SecondaryMasterUpdateCallback,0x004111A0,function
 SecondaryMasterDrawCallback,0x004111B0,function
 InitializeSecondaryHost,0x00410BE0,function
 UpdateSecondaryMasterActors,0x00411120,function
+EmitSecondaryActorEffects,0x004101D0,function
