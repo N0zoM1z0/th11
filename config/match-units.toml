@@ -6462,3 +6462,24 @@ linkages = [
   { offset = 0x8D, type = "DIR32", symbol = "?g_TitleMenu@@3PAUTitleMenuView@@A", target = 0x004A8ECC },
   { offset = 0x9A, type = "DIR32", symbol = "?g_TitleMenuThreadState@@3HA", target = 0x004C3E00 },
 ]
+
+# The dynamic title resource producer retains the original constructor's
+# private ESI this / EAX return, all four fields and the post-memset singleton.
+[units.title-menu-constructor]
+artifact_kind = "linked-pe"
+source = "src/TitleMenuLifecycle.cpp"
+inputs = ["src/TitleMenuLifecycle.hpp", "src/SecondaryGameplay.hpp", "src/FrameLoop.hpp", "src/Chain.hpp", "src/AnimationDocument.hpp"]
+support_sources = ["probes/title-menu-lifecycle-context.cpp"]
+output_dir = "build/match-linked/TitleMenuConstructor"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "TitleMenuResourcesProbe"
+functions = ["ConstructTitleMenuStorage"]
+symbol = "??0TitleMenuView@@QAE@XZ"
+target_address = 0x00439420
+size = 201
+linkages = [
+  { offset = 0x02, type = "DIR32", symbol = "?g_TitleMenuVtable@@3QBIB", target = 0x0049637C },
+  { offset = 0x98, type = "DIR32", symbol = "?g_SecondaryBrowserWorkerVtable@@3QBIB", target = 0x004978D0 },
+  { offset = 0xB5, type = "REL32", symbol = "_memset", target = 0x0046A720 },
+  { offset = 0xC2, type = "DIR32", symbol = "?g_TitleMenu@@3PAUTitleMenuView@@A", target = 0x004A8ECC },
+]

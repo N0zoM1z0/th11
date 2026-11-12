@@ -8,7 +8,7 @@ simulating the small callback entries without their owning state.
 
 | Original owner | Original bytes | VC9 normal-COFF diagnostic | Result |
 | --- | ---: | ---: | --- |
-| `0x439420` storage construction | 201 | 205 | source-present, not exact |
+| `0x439420` storage construction | 201 | 205 normal COFF / 201 linked | **201/201 strict exact** |
 | `0x4395A0` chain/resource setup | 275 | 262 | source-present, not exact |
 | `0x4396C0` full destruction | 561 | 584 | source-present, not exact |
 | `0x439900` worker startup | 106 | 107 | source-present, not exact |
@@ -36,10 +36,11 @@ NOP at `0x43983D..0x43983F`; direct Ghidra reviewed that gap separately,
 so it has not been silently cropped.
 
 These functions compile with pinned VC9 RTM using natural C++ and the real
-existing threading, chain, renderer, document, and VM view APIs. Size-only
-comparisons against the original are *diagnostics*: private register scheduling,
-exception frames and source-TU/LTCG ownership remain open; there is no new
-strict exact claim from this five-function batch. The title-thread callback at
+existing threading, chain, renderer, document, and VM view APIs. The storage
+constructor has since achieved independent strict cold exactness under a
+narrow title-lifecycle `/GL` context. The remaining resource, destructor,
+startup and delete owner size comparisons are only diagnostics; private
+register scheduling, EH and source-TU/LTCG ownership remain open. The title-thread callback at
 `0x4394F0`, the draw callback at `0x439F20`, and the 429-byte record destructor
 at `0x435C50` are distinct follow-up owners.
 
@@ -101,3 +102,28 @@ import, renderer, document destructor, scalar delete, title singleton and
 thread-active global. Canonical `title-menu-thread` cold replay verifies its
 current source/header/tool/producer/PE/MAP/PDB receipt. Original production
 TU ownership remains open, but this complete owner is strictly exact.
+
+## Exact 201-byte title storage constructor (2026-11-12)
+
+The native `0x439420..0x4394E8` owner returns its ESI object in EAX after
+39 instructions. Its order is unusual but real: publish the title vtable,
+initialize three early selection blocks and the replay selection, construct
+the embedded `ThreadInf` state, **then clear all 0x5B94 bytes with `memset`**,
+set flags bit 1, and publish the global title singleton. The maintained
+natural constructor preserves this ordering without padding, machine-code
+splices or fake branches.
+
+The dynamic entry `probes/title-menu-lifecycle-context.cpp` is sufficient to
+keep a complete unique public 201-byte primary-TU PDB/MAP symbol under pinned
+VC9 `/GL`; its single call and all 39 instructions match. Four independently
+reviewed address fields (title vtable `0x49637C`, worker vtable `0x4978D0`,
+`memset` at `0x46A720`, singleton `0x4A8ECC`) fully replay in the canonical
+`title-menu-constructor` unit with **zero byte differences** and cold current
+source/tool/producer receipts. The old isolated normal COFF compiled to 205
+bytes because it did not recover the original private ESI receiver. No
+original production TU partition is inferred from this linked family.
+
+Additional scoped `/GL` diagnostic comparisons for the neighboring full
+resource initializer/destructor/startup still show **268/275, 569/561 and
+107/106** bytes in the selected real resource/chain context; their full
+bodies remain non-exact and are not cropped to improve metrics.

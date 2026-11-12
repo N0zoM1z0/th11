@@ -575,3 +575,13 @@ delete; preserving that pointer reload naturally restores ESI/EDI register
 allocation and all 47 instructions. The genuine title/document `/GL`
 producer and 12 reviewed address/call fields replay with zero differences.
 See [TITLE_MENU_LIFECYCLE](TITLE_MENU_LIFECYCLE.md).
+
+
+`TitleMenuView` construction at `0x439420` is now a strict **201/201-byte**
+public primary-TU `/GL` match: 39 native instructions, one memset call and
+four reviewed target fields. VC9's dynamic title-lifecycle producer recovers
+the original private ESI-this/EAX-return convention. Surprisingly, the
+original initializes selection records and ThreadInf before zeroing the
+complete 0x5B94-byte object, then publishes flags and its singleton. This
+exact match does not establish original TU partition. See
+[TITLE_MENU_LIFECYCLE](TITLE_MENU_LIFECYCLE.md).
