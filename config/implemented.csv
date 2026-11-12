@@ -633,3 +633,4 @@ QueueSecondarySpecialPulse
 LoadReplayStageData
 ReadSharedReplayBytes
 CloseSharedReplayReader
+ClearReplayStageSegments

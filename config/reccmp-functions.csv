@@ -634,3 +634,4 @@ QueueSecondarySpecialPulse,0x0044A300,function
 LoadReplayStageData,0x00436B60,function
 ReadSharedReplayBytes,0x00458980,function
 CloseSharedReplayReader,0x004589D0,function
+ClearReplayStageSegments,0x00437420,function

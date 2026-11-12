@@ -262,3 +262,26 @@ for both functions are in `.analysis/probe-shared-replay-helpers-20261112.py`
 and its log, with an independent dynamic caller in
 `probes/shared-file-read-helpers-context.cpp`. Only the 49-byte exact unit
 was cold replayed.
+
+## Exact 93-byte replay segment cleanup (2026-11-12)
+
+`src/ReplayStageSegmentCleanup.cpp` implements the full, independently
+reviewed `ClearReplayStageSegments` at `0x437420..0x43747C`. The function
+selects the replay stream by stage index (state +0x40, 12-byte stride),
+walks its linked nodes with a saved `next`, and, for each non-null owned
+segment, detaches the segment from its intrusive pair of links at
++0x18A8/+0x18AC, clears those links and invokes `operator delete`.
+The node traversal and two-way unlink are retained without a new null
+check or guessed container ownership.
+
+All four focused VC9 `/GL` contexts—an independent dynamic caller, the
+real `ReplayWriter.cpp`, the 1380-byte replay initializer, and the two
+real producers together—compile **93/93 bytes, 33/33 instructions and the
+one native delete call** with zero nonfield differences. Strict PE/MAP/PDB
+replay independently binds the single native REL32 at +0x4D to the exact
+`operator delete` target `0x45FD49`; all 93 bytes match with current
+source/tool/producer receipts and `difference_count = 0`. Canonical unit:
+`clear-replay-stage-segments`. The local replay log is
+`.analysis/replay-stage-segment-clear-strict-20261112.log`, with a bounded
+probe `.analysis/probe-replay-segment-cleanup-20261112.py` and public
+producer `probes/replay-stage-segment-cleanup-context.cpp`.
