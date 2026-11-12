@@ -554,3 +554,13 @@ the real callee was94 bytes due over-specialized stack argument pushes.
 Full unique PE/MAP/PDB owner cold replays with zero differences. The helper
 restores animation time scale, not audio. Parent3192 continuation owner is
 still non-exact. See `PAUSE_CONTINUE_MENU.md`.
+
+
+The 64-byte `ShowPauseMenuAnimationTree` helper at456610 is **strict exact**:
+20 native instructions including a reached six-byte loop-alignment LEA,
+one call and two independently reviewed DIR32/REL32 fields. The genuine
+`StageMesh.cpp` finder alone specializes away the renderer and yields only
+52 bytes; adding `probes/stage-mesh-context.cpp` with a dynamic renderer
+restores the original EAX ID reference / EDX renderer private ABI. The
+linked primary owner is byte-exact with zero differences; the 3192-byte
+parent remains non-exact. See `PAUSE_CONTINUE_MENU.md`.

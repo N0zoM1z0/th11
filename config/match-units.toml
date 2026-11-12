@@ -5708,3 +5708,23 @@ linkages = [
   { offset = 0x4B, type = "REL32", symbol = "?SignalSecondaryAnimation@@YGXPAI@Z", target = 0x004070E0 },
   { offset = 0x57, type = "DIR32", symbol = "?g_AnimationTimeScale@@3MA", target = 0x004A7948 },
 ]
+
+# Dynamic StageMesh renderer/VM-ID callers preserve the real private EDX
+# renderer and stack ID ABI for the VM lookup instead of specializing the
+# global render-batch pointer out of this 64-byte tree visibility owner.
+[units.show-pause-menu-animation-tree]
+artifact_kind = "linked-pe"
+source = "src/PauseContinueMenuSupport.cpp"
+inputs = ["src/PauseContinueMenu.hpp", "src/PauseMenu.hpp", "src/AnimationVmId.hpp", "src/StageMesh.hpp"]
+support_sources = ["probes/pause-continue-support-context.cpp", "src/StageMesh.cpp", "src/SecondaryActorAnimation.cpp", "probes/stage-mesh-context.cpp"]
+output_dir = "build/match-linked/ShowPauseMenuAnimationTree"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "PauseContinueSupportProbe@12"
+functions = ["ShowPauseMenuAnimationTree"]
+symbol = "?ShowPauseMenuAnimationTree@@YGXABUAnimationVmId@@@Z"
+target_address = 0x00456610
+size = 64
+linkages = [
+  { offset = 0x04, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x004C3268 },
+  { offset = 0x0A, type = "REL32", symbol = "?FindAnimationVmById@@YGPAUAnimationVmView@@PAURenderBatchView@@UAnimationVmId@@@Z", target = 0x004561E0 },
+]

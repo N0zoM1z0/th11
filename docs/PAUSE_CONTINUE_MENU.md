@@ -223,3 +223,30 @@ callees the compiler selects a 52-byte specialized function. It is still
 The 3192-byte continuation state machine is also **non-exact**; experiments
 with branch-specific animation factory result variables restored its stack
 frame but reduced native calls from 88 to 85, and were not adopted.
+
+
+## Exact 64-byte animation-tree visibility helper (2026-11-12)
+
+`ShowPauseMenuAnimationTree` at `0x456610..0x45664F` is now independently
+**64/64-byte, 20/20-instruction strict exact** under pinned VC9 `/GL`.
+The owner obtains a VM by its ID, marks root bit 2, and traverses the
+related VM list when no special bound marker is present. The original
+six-byte loop-alignment `LEA EBX,[EBX]` remains naturally emitted; no
+machine-code patch, artificial padding or fake register shim was used.
+
+The 52-byte candidate from only the concrete `StageMesh.cpp` VM finder
+wrongly specialized the global renderer pointer away. Linking the
+independent generic renderer/VM-ID caller from
+`probes/stage-mesh-context.cpp` with `StageMesh.cpp`, the actual
+`SecondaryActorAnimation.cpp` signal source, and tracked
+`probes/pause-continue-support-context.cpp` restores the original
+private EAX ID reference and EDX renderer register conventions.
+The primary `PauseContinueMenuSupport.cpp` PE/MAP/PDB contribution
+then contains the complete target with **zero code-byte differences**.
+Both original relocation fields were independently bound: DIR32 `+0x04`
+to `g_RenderBatch` `0x4C3268`, and REL32 `+0x0A` to the independently
+accepted `FindAnimationVmById` at `0x4561E0`. The selected-only cold
+Oracle `show-pause-menu-animation-tree` accepted the full 64 bytes;
+receipt `.analysis/show-pause-menu-animation-tree-strict-20261112.log`.
+This exact leaf is separate from the 92-byte close helper and the
+still-non-exact 3192-byte continuation owner.
