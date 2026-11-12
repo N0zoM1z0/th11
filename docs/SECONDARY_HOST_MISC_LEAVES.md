@@ -22,6 +22,11 @@ verified relocations: spell-global `0x4A8D6C` at +3 (`DIR32`), and exact VM
 release `0x4562E0` at +22 (`REL32`). Locked VC9 RTM normal-COFF full-body
 cold replay establishes a unique **38/38 byte exact match, zero differences**.
 
+`PauseSecondaryMasterChains` retains the original repeated loads of the two
+chain pointers, which permits VC9 to reproduce the EAX/ECX/EDX scheduling
+with one native DIR32 at offset +1 to the master at `0x4A8D7C`. Full strict
+35/35 comparison is accepted as a separate canonical unit.
+
 `ResetSecondaryHostEffectSnapshot` preserves the physical `0x204`-byte
 reset and readonly floating point constant, but source uses a conventional
 parameter ABI; the original implicitly receives the effect state in ESI and

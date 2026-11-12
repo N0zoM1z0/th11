@@ -6418,3 +6418,17 @@ relocations = [
   { offset = 3, type = "DIR32", symbol = "?g_MeshEffectSpell@@3PAUMeshEffectSpellView@@A", target = 0x004A8D6C },
   { offset = 22, type = "REL32", symbol = "?ReleaseSecondaryAnimation@@YGXUAnimationVmId@@@Z", target = 0x004562E0 },
 ]
+
+[units.pause-secondary-master-chains]
+artifact_kind = "coff"
+source = "src/SecondaryMasterPauseChains.cpp"
+inputs = ["src/SecondaryHostMiscLeaves.hpp", "src/SecondaryActorState.hpp", "src/Chain.hpp"]
+object = "build/match/SecondaryMasterPauseChains.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["PauseSecondaryMasterChains"]
+symbol = "?PauseSecondaryMasterChains@@YAXXZ"
+target_address = 0x00410E60
+size = 35
+relocations = [
+  { offset = 1, type = "DIR32", symbol = "?g_SecondaryMaster@@3PAUSecondaryMasterView@@A", target = 0x004A8D7C },
+]
