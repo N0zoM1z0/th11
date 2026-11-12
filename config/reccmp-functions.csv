@@ -631,3 +631,4 @@ InitializeAudioAdjacentTween,0x00459C60,function
 SetAudioAdjacentScratchMatrix,0x00459C70,function
 EndSecondarySpecialState,0x00406860,function
 QueueSecondarySpecialPulse,0x0044A300,function
+LoadReplayStageData,0x00436B60,function

@@ -20,7 +20,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - [Generated progress](PROGRESS.md) and
   `config/{functions,function-boundaries,function-origins,matches}.csv`
   determine names, origins, reviewed extents and exact status.
-  At this checkpoint: **315 canonical exact**, **632 source-present**,
+  At this checkpoint: **315 canonical exact**, **633 source-present**,
   **661 reviewed boundaries**. Refresh with
   `scripts/repo-python scripts/progress.py`, not manual totals.
 - An exact owner requires the entire original function, source/tool
@@ -87,6 +87,11 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   no-ops, **14/14 bytes**, all with empty relocation sets and complete
   normal-COFF receipts. [Renderer](ANIMATION_RENDERER_LIFECYCLE.md),
   [audio](SOUND_QUEUE.md).
+- The full **441-byte** `LoadReplayStageData` at `0x436B60` is now
+  source-present: disk/resource replay intake, two cipher passes,
+  decompression and stage-index reconstruction. Real-producer scoped VC9
+  387/441 bytes with 14/14 original calls and one return, non-exact.
+  [Secondary pattern](SECONDARY_PATTERN.md).
 - The full **1380-byte** `InitializeSecondaryReplay` replay/recording
   owner now has maintained three-mode source and scoped VC9
   **1236/1380** diagnostic preserving **all 22 native calls/four returns**.

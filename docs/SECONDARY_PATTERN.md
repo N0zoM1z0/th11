@@ -197,3 +197,39 @@ with `.analysis/probe-secondary-replay-init-20261112.py` and its log,
 and the public independent caller
 `probes/secondary-replay-initialization-context.cpp`. No full cold replay
 was executed.
+
+## Full 441-byte replay stage loader (2026-11-12)
+
+The 1380-byte replay initializer now has a maintained source-level callee:
+`LoadReplayStageData` at `0x436B60..0x436D18`, implemented in
+`src/SecondaryReplayLoad.cpp`. Direct original PE/Ghidra review confirms the
+complete **441-byte, 137-instruction** owner with **14 calls, one RET8**, three
+incoming callsites, no foreign interior reference or owned table.
+
+The loader copies the supplied filename into replay state +0x1DC. In disk
+mode it formats `replay/%s`, checks existence, opens the shared read handle,
+reads and validates the 0x24-byte `t11r`/version-4 file header, then reads
+its packed payload and closes the shared file. When replay status bit 0x20
+is set, it instead loads the resource data and uses the packed payload after
+the inline header. The source allocates the header's stated unpacked size,
+performs the two original scramble passes with key/step/block combinations
+`0xAA/0xE1/0x800` and `0x3D/0x7A/0x40`, then invokes the existing archive
+decompressor and stores the unpacked pointer at +0x18/+0x1C4. Starting from
+the unpacked header +0x70, it walks at most six stages when the recorded
+stage count reaches eight, indexing each by its signed 16-bit stage number
+and computing its event start/end from the native +0x90 header and six-byte
+event stride. Only a disk-allocated packed buffer is freed at exit.
+
+Four bounded pinned VC9 `/GL` primary-TU comparisons compile this entire
+owner: **413/441 bytes** standalone, **399/441** with real file producers,
+**402/441** with real codecs, and **387/441** with both. The last emits
+122/137 instructions, the original **14/14 calls and one return**, with 18
+candidate linkage fields. It remains non-exact because the historic private
+reading and codec helper ABI, stack layout and register scheduling are still
+unrecovered. The natural source and raw helper boundaries are preserved,
+without injected code or a shortened output owner.
+
+Reproduce with `.analysis/probe-secondary-replay-load-20261112.py` and its
+logged source PE/MAP/PDB comparisons; independent caller:
+`probes/secondary-replay-load-context.cpp`. Only this owner and directly
+needed producer TUs were built, not the full cold replay cohort.
