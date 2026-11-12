@@ -610,3 +610,4 @@ StoreSecondaryHostSlot01C,0x00410550,function
 SetSecondaryHostFlag03C,0x00410560,function
 DeleteSecondaryMaster,0x00411100,function
 CreateSecondaryMaster,0x00411070,function
+ActivateSecondaryPlayerSpecial,0x00406510,function

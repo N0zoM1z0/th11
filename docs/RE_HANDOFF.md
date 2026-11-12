@@ -20,7 +20,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - [Generated progress](PROGRESS.md) and
   `config/{functions,function-boundaries,function-origins,matches}.csv`
   determine names, origins, reviewed extents and exact status.
-  At this checkpoint: **308 canonical exact**, **611 source-present**,
+  At this checkpoint: **308 canonical exact**, **612 source-present**,
   **661 reviewed boundaries**. Refresh with
   `scripts/repo-python scripts/progress.py`, not manual totals.
 - An exact owner requires the entire original function, source/tool
@@ -62,6 +62,10 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   bytes, 12/12 calls, two returns and 97 positional nonfield differences.
   True program destructor inlining and indexed renderer-slot codegen remain
   unresolved; no exact claim. [Secondary lifetime](SECONDARY_LIFETIME.md).
+- Full **268-byte** `ActivateSecondaryPlayerSpecial` boss source now
+  covers the complete six-way switch including 24-byte native table, timer,
+  spell gate and 7 calls/returns. Best 264/268 linked diagnostic remains
+  non-exact. [Player controller](SECONDARY_PLAYER_CONTROLLER.md).
 - Complete **97-byte** `CreateSecondaryMaster` source is now present
   (88–90/97 in focused links; non-exact), and its matching **29-byte**
   `DeleteSecondaryMaster` is **29/29 strict exact**, three independently

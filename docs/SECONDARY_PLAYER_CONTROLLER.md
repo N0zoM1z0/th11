@@ -191,3 +191,39 @@ reconstructed as the complete **123-byte strict exact**
 helper. The entry function's own last scoped 336/336-byte diagnostic still
 has nonfield register/stack differences and receives no exact credit; see
 [SOUND_QUEUE](SOUND_QUEUE.md).
+
+## Full 268-byte secondary special activation boss (2026-11-12)
+
+`src/SecondaryPlayerSpecialActivation.cpp` now implements the complete
+`ActivateSecondaryPlayerSpecial` at `0x406510..0x40661B` in natural C++.
+The original 268-byte span includes **241 bytes of executable switch code,
+three alignment bytes, and the entire six-entry dispatch table at
+0x406604..0x40661B**. The attested Ghidra and independent PE/Capstone
+reviews cover the whole boundary including all **seven native calls and
+seven return paths**, not merely an apparent function-prefix owner.
+
+The source first gates on the controller's singleton-active field at +0x3C,
+returning -1 if already active. Otherwise it sets that field to 1 and resets
+the embedded `StageTimerView` at +0x14 with the original `SetFrame(-1)`
+path. It publishes readiness at +0x498 based on the independently observed
+spell flags at +0x8E0 and age at +0x88C (threshold 60), queues positional
+sound 0x26 at the player's X position, and selects one of **six distinct
+special handlers** with `selection0 * 3 + selection1`. The original targets
+include `InitializeSecondaryEffect` 0x45DD70,
+`InitializeSquareMeshEffect` 0x407BB0 and
+`InitializeColumnMeshEffect` 0x406920; the three other independent handlers
+at 0x407A40/0x407130/0x407680 remain separate source-open boundaries.
+No null check or synthetic resource clamping was introduced.
+
+Four bounded pinned VC9 RTM `/GL` primary-TU PE/MAP/PDB comparisons were
+run with the independent caller and optionally real audio/mesh producers:
+**276/268 bytes** standalone, **264/268** with real mesh,
+**240/268** with real sound, and **240/268** with both. Every candidate
+retains all **seven native calls and seven returns**, but register allocation,
+variant-call conventions and switch-table scheduling are non-exact. Full
+source coverage does **not** imply strict 268-byte matching, and the exact
+ledger is unchanged. Local recipe:
+`.analysis/probe-secondary-player-special-activation-20261112.py` and its
+comparison log; public caller
+`probes/secondary-player-special-activation-context.cpp`.
+No full cold replay or unrelated build was run.
