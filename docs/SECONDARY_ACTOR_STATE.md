@@ -167,3 +167,27 @@ separately. Bounded reproduction:
 `.analysis/probe-secondary-actor-effects-20261112.py` and the corresponding
 `.analysis/secondary-actor-effects-20261112.log`; independent public caller:
 `probes/secondary-actor-effects-context.cpp`. Full cold replay was not run.
+
+## Full 58-byte effect-reset gate (2026-11-12)
+
+`src/SecondaryActorEffectReset.cpp` now maintains the complete native
+`ResetSecondaryStateWithEffect` at `0x410190..0x4101C9`. It checks the
+record's leading ID and, only for positive IDs, invokes the real
+`SpawnSecondaryPlayerDrop` at `0x424230` with its original color `-1`,
+angle `-1.5707963705062866f` and speed `2.200000047683716f`.
+It then **always** calls the full 457-byte `EmitSecondaryActorEffects`
+at `0x4101D0`, finally zeros the ID, preserving the native one-RET owner
+and both calls without inventing a buffer guard or an alternate effect.
+The original private ESI/EAX/EDI allocation is compiler-owned.
+
+Focused pinned VC9 `/GL` gives **57/58 bytes, 19/18 instructions and
+2/2 calls** with an opaque emitter. Adding the real emitter and x87 math
+producers yields **60–65/58** or **63/58**, still with two native calls.
+A separate bounded link includes the actual `SecondaryActorInstructions.cpp`
+interpreter as the *producer* of case 0x149 and compares the whole reset
+owner; it does not close the private callee/caller allocation gap.
+The current source is **non-exact**, not included in the strict match ledger.
+Diagnostics: `.analysis/probe-secondary-actor-effect-reset-20261112.py`,
+`.analysis/probe-secondary-actor-effect-real-parent-20261112.py` and logs;
+independent public caller `probes/secondary-actor-effect-reset-context.cpp`.
+The duplicate untracked scratch owner was reconciled into this single source.

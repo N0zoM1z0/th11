@@ -20,7 +20,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - [Generated progress](PROGRESS.md) and
   `config/{functions,function-boundaries,function-origins,matches}.csv`
   determine names, origins, reviewed extents and exact status.
-  At this checkpoint: **304 canonical exact**, **603 source-present**,
+  At this checkpoint: **304 canonical exact**, **604 source-present**,
   **661 reviewed boundaries**. Refresh with
   `scripts/repo-python scripts/progress.py`, not manual totals.
 - An exact owner requires the entire original function, source/tool
@@ -65,7 +65,9 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - Full **457-byte** `EmitSecondaryActorEffects` is now source-present,
   with an independently linked **436/457 candidate preserving 122/122
   instructions and seven native calls**; source remains non-exact. Its
-  58-byte reset entrance and 30-byte polar helper are next scoped targets.
+  58-byte reset entrance now has separate full C++ and 57/58
+  opaque-callee diagnostic; both owners remain non-exact. The 30-byte
+  polar helper is being scoped independently.
   [Actor state](SECONDARY_ACTOR_STATE.md).
 - `UpdateSecondaryMasterActors` (`0x411120`) is newly strict
   **105/105 exact**, 36 instructions and 2 reviewed REL32 fields. Node
@@ -103,7 +105,9 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - Full **457-byte** `EmitSecondaryActorEffects` is now source-present,
   with an independently linked **436/457 candidate preserving 122/122
   instructions and seven native calls**; source remains non-exact. Its
-  58-byte reset entrance and 30-byte polar helper are next scoped targets.
+  58-byte reset entrance now has separate full C++ and 57/58
+  opaque-callee diagnostic; both owners remain non-exact. The 30-byte
+  polar helper is being scoped independently.
   [Actor state](SECONDARY_ACTOR_STATE.md).
 - `UpdateSecondaryMasterActors` (`0x411120`) is newly strict
   **105/105 exact**, 36 instructions and 2 reviewed REL32 fields. Node

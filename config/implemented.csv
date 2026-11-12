@@ -601,3 +601,4 @@ SecondaryMasterDrawCallback
 InitializeSecondaryHost
 UpdateSecondaryMasterActors
 EmitSecondaryActorEffects
+ResetSecondaryStateWithEffect
