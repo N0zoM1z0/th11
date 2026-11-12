@@ -607,3 +607,5 @@ FinishSecondaryActorEffect
 ReadSecondaryHost068
 StoreSecondaryHostSlot01C
 SetSecondaryHostFlag03C
+DeleteSecondaryMaster
+CreateSecondaryMaster

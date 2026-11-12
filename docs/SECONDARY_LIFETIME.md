@@ -275,3 +275,36 @@ focused comparison and natural source iteration:
 The public independent caller is `probes/secondary-master-update-context.cpp`.
 Only this owner was cold replayed; the larger 318-byte host initializer and
 374-byte master destructor remain source-present, non-exact.
+
+## Master creation (97 bytes) and exact singleton deletion (29 bytes), 2026-11-12
+
+`src/SecondaryMasterLifecycle.cpp` now covers both complete reviewed owners.
+`CreateSecondaryMaster` at `0x411070..0x4110D0` allocates the actual 0x78-byte
+master, clears the observed flag at +0x60, zeroes its storage, sets bit 1,
+publishes the singleton at `0x4A8D7C` and calls the real
+`InitializeSecondaryHost` (`0x410BE0`) with the caller's script filename.
+On initialization failure it invokes the full native 374-byte teardown
+before `operator delete`, returning null; otherwise it returns the master.
+The native intentionally does not add an allocation-null guard before its
+initializer call. Four scoped VC9 `/GL` links reproduce all **five calls**:
+88–90/97 bytes with private constructor and register scheduling still
+non-exact. The entire 97-byte owner is source-covered, **not** admitted to
+the exact ledger.
+
+`DeleteSecondaryMaster` at `0x411100..0x41111C` checks the singleton,
+passes the native receiver to `DestroySecondaryMaster` (`0x410E90`), and
+then releases its allocation. The genuine destructor and its 201-byte
+precleanup source are included in the pinned VC9 `/GL` producer context,
+restoring the native ESI singleton and EAX destructor call. The complete
+unique primary-TU PDB/MAP/PE owner passes **29/29 native bytes, 11/11
+instructions, two calls and one RET**, with exhaustive independent binding
+of its **three original fields**: singleton DIR32 at +3 (`0x4A8D7C`),
+master destructor REL32 at +0xE (`0x410E90`) and deleting operator REL32 at
++0x14 (`0x45FD49`). No code-byte patch or false inlining claim was used.
+Canonical strict unit `delete-secondary-master`; complete local replay:
+`.analysis/delete-secondary-master-strict-20261112.log`.
+
+Both targeted contexts are reproducible through
+`.analysis/probe-secondary-master-lifecycle-20261112.py` and the public
+dynamic producer `probes/secondary-master-lifecycle-context.cpp`. Only the
+new 29-byte strict unit was cold replayed; no unrelated full replay.

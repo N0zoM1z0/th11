@@ -608,3 +608,5 @@ FinishSecondaryActorEffect,0x004127E0,function
 ReadSecondaryHost068,0x00410540,function
 StoreSecondaryHostSlot01C,0x00410550,function
 SetSecondaryHostFlag03C,0x00410560,function
+DeleteSecondaryMaster,0x00411100,function
+CreateSecondaryMaster,0x00411070,function
