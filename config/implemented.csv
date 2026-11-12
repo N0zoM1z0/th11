@@ -672,3 +672,5 @@ SetRuntimeThreadFlagA577C
 UpdateReplayInputRepeatState
 RecordReplayInputFrame
 ConstructReplayRecordStageLink
+CreateReplayRecording
+CreateReplayPlayback

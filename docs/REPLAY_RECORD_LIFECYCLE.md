@@ -113,3 +113,47 @@ VC9 RTM normal-COFF unit `replay-record-stage-link-constructor` strictly
 replays **51/51 original bytes with zero relocations or differences**. The
 paired 37-byte stage-link destructor remains independently exact after the
 shared header change. The original constructor's class/TU name is still open.
+
+## Full replay record factories at 0x435E00 and 0x435EF0 (2026-11-12)
+
+The two unsourced native record factories are now maintained as separate
+natural C++ functions in `ReplayRecordFactories.cpp`, rather than leaving
+only the 51/37-byte stage member constructor/destructor reconstructed.
+`CreateReplayRecording` (`0x435E00..0x435EC6`, **199 bytes**) allocates a
+physical 0x2DC-byte record, constructs its eight 0x24-byte stage members,
+zeroes the record and hands it to the recording initializer; initialization
+failure destroys and frees the record, with a native null guard.
+`CreateReplayPlayback` (`0x435EF0..0x435FB5`, **198 bytes**) constructs the
+same storage, sets its mode DWORD at +0x10 to 2, loads the replay stage data,
+then calls the destructor and scalar delete if loading fails. Both complete
+original owner ranges have six native calls, two returns, an EH frame, and
+reviewed adjacent CC padding.
+
+`TitleMenuRecordView` now preserves its actual **0x2DC-byte allocation size**,
+not just the 0x1D4-byte minimum destructor view. The expression
+`new TitleMenuRecordView` constructs the eight actual stage members using
+C++ member lifetimes, followed by an observable 0x2DC-byte clear. Pinned VC9
+normal-COFF and scoped /GL comparisons with the real stage constructor,
+stage destructor, replay-record destructor, and stage-data loader all compile.
+The generic /GL producer gives **205/199** and **203/198** byte candidate
+owners with all six calls in each. Including the replay-record destructor gives
+204 and 202 bytes; adding the real loader gives the playback factory a 200-byte
+candidate. They are source-present, **not exact**.
+
+The major remaining codegen difference is the compiler's placement of the
+record `memset` and EH unwind state relative to the eight-member constructor.
+Putting `memset` into the record's own C++ constructor made /GL optimize away
+the stage-vector constructor and reduced the native six calls to five, which
+is **incorrect** for this original path. Declaring the stage constructor
+`noinline` or compiling it as ordinary COFF did not repair that. The real
+recording initializer additionally uses a private mode/record ABI, and the
+factory's failure path invokes the native 429-byte destructor with its own
+private stack convention. Keep the best six-call source until the original
+owner partition and EH/codegen sequencing can be reproduced; do not credit
+partial sizes or a masked comparison.
+
+The 51-byte stage constructor and 37-byte stage destructor both retained
+canonical strict exactness after the shared record layout change. The bounded
+probe is `.analysis/probe-replay-record-factories-ltcg-20261112.py`; output
+for the current 0x2DC-byte typed version is
+`.analysis/probe-replay-record-factories-final-20261112.log`.
