@@ -587,3 +587,4 @@ CreateOffsetSecondaryDrawAnimationVmId
 EnterSecondaryContinueMenu
 EnterSecondaryGameOverMenu
 QueueMusicWaveRequest
+StartPreparedMusic

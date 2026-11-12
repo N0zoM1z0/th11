@@ -212,3 +212,34 @@ recipe: `.analysis/probe-music-wave-request-20261112.py`; public producer:
 `probes/music-wave-request-context.cpp`. The game-over menu entrance now
 uses this real C++ function instead of an unresolved name-only dependency.
 This success does not imply the 275/336-byte menu bosses are exact.
+
+## Prepared music streaming startup boss (2026-11-12)
+
+The complete 291-byte `StartPreparedMusic` at 449E80 now has natural
+maintained source in `src/PreparedMusicStart.cpp`. Its authentic 92-instruction
+owner checks the queue/device readiness, runtime byte +1E3, and prepared
+mode at +200. File mode calls the separate 65-byte 449C20 entry using the
+indexed cached filename; prepared mode requires the indexed wave buffer,
+traces the requested index and uses the saved `SoundTrackRecord` block align
+and sample rate to derive the notification chunk size. The source retains
+original 32-bit overflow/truncation before rounding down to block alignment.
+
+It creates the auto-reset music event and streaming callback thread with
+real `MusicStreamingThread` 44A900 and the runtime context at +58. Then it
+uses the existing `SoundDeviceOwnerView::CreateMemoryMusicStream` 45A1B0
+with the source buffer, track record, 16-byte native stream GUID, rounded
+chunk size and event. Only successful nonnegative HRESULT publishes the
+active slot at manager+1F80. The source deliberately does not add a failure
+rollback or pointer/index guard missing in the original.
+
+Scoped pinned VC9 `/GL` with real `SoundQueue.cpp`, `MusicStream.cpp` and
+independent dynamic queue producer yields the entire **291/291-byte public
+primary-TU PDB contribution**, **five calls** and 15 candidate linked
+fields. It currently emits 89 vs the original 92 decoded instructions and
+224 positional nonfield differences. The alternative queue-only family is
+300/291 with 91 instructions. These remain diagnostics; no strict byte
+credit is taken. Private producer comparison:
+`.analysis/probe-prepared-music-start-20261112.py` and
+`.analysis/prepared-music-start-20261112.log`; public independent caller:
+`probes/prepared-music-start-context.cpp`. The larger 515-byte prepared load
+owner remains separate work.
