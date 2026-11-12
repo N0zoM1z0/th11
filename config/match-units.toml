@@ -6661,3 +6661,36 @@ symbol = "?SumPayloadBytes@ReplayPayloadChecksumView@@QAEIH@Z"
 target_address = 0x00437500
 size = 79
 relocations = []
+
+# Real dynamic archive receiver and inline 512-word RNG producer preserve
+# native EAX/ESI and critical-section lifetimes without register shims.
+[units.initialize-replay-seed-archive]
+artifact_kind = "linked-pe"
+source = "src/ReplayLeaderboardInitialization.cpp"
+inputs = ["src/ReplayLeaderboardInitialization.hpp", "src/MainRuntime.hpp", "src/Random.hpp"]
+support_sources = ["probes/replay-leaderboard-context.cpp"]
+output_dir = "build/match-linked/InitializeReplaySeedArchive"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "ReplayLeaderboardProbe@12"
+functions = ["InitializeReplaySeedArchive"]
+symbol = "?InitializeReplaySeedArchive@@YIXPAUReplaySeedArchiveView@@@Z"
+target_address = 0x00437660
+size = 215
+linkages = [
+  { offset = 0x00F, type = "REL32", symbol = "_memset", target = 0x0046A720 },
+  { offset = 0x015, type = "DIR32", symbol = "__imp__EnterCriticalSection@4", target = 0x0048B084 },
+  { offset = 0x01B, type = "DIR32", symbol = "__imp__LeaveCriticalSection@4", target = 0x0048B088 },
+  { offset = 0x036, type = "DIR32", symbol = "?g_ReplaySeedEmptyName@@3QBDB", target = 0x00495244 },
+  { offset = 0x03E, type = "DIR32", symbol = "?g_ReplaySeedEmptyName@@3QBDB", target = 0x00495244, addend = 4 },
+  { offset = 0x047, type = "DIR32", symbol = "?g_ReplaySeedEmptyName@@3QBDB", target = 0x00495244, addend = 8 },
+  { offset = 0x062, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x590 },
+  { offset = 0x06D, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x900 },
+  { offset = 0x075, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x93A },
+  { offset = 0x07B, type = "DIR32", symbol = "?g_TextRandomState@@3URandomStateView@@A", target = 0x004C2F00 },
+  { offset = 0x081, type = "DIR32", symbol = "?g_TextRandomState@@3URandomStateView@@A", target = 0x004C2F00, addend = 4 },
+  { offset = 0x0A4, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x590 },
+  { offset = 0x0AE, type = "DIR32", symbol = "?g_TextRandomState@@3URandomStateView@@A", target = 0x004C2F00 },
+  { offset = 0x0B5, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x900 },
+  { offset = 0x0BD, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x93A },
+  { offset = 0x0C3, type = "DIR32", symbol = "?g_TextRandomState@@3URandomStateView@@A", target = 0x004C2F00 },
+]

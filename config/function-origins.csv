@@ -601,8 +601,8 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00437490,unknown,ReplayRecording,indeterminate,unknown,replay-stage-link-constructor-origin-2026-11-12
 0x004374D0,unknown,SecondaryReplay,indeterminate,unknown,replay-record-stage-link-origin-2026-11-12
 0x00437500,unknown,ReplayRecording,indeterminate,unknown,replay-payload-checksum-origin-2026-11-12
-0x00437550,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00437660,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00437550,unknown,ReplayLeaderboard,indeterminate,unknown,replay-leaderboard-origin-2026-11-12
+0x00437660,unknown,ReplayLeaderboard,indeterminate,unknown,replay-leaderboard-origin-2026-11-12
 0x00437740,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00437800,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004378F0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

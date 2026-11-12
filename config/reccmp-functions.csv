@@ -676,3 +676,5 @@ ConstructReplayRecordStageLink,0x00437490,function
 CreateReplayRecording,0x00435E00,function
 CreateReplayPlayback,0x00435EF0,function
 SumReplayPayloadBytes,0x00437500,function
+InitializeReplayScoreArchive,0x00437550,function
+InitializeReplaySeedArchive,0x00437660,function
