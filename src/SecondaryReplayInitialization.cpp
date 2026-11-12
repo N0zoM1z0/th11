@@ -50,7 +50,8 @@ extern unsigned int g_ReplayStageEndScore;
 extern RandomStateView g_TextRandomState;
 extern unsigned int g_StageVariant;
 
-void __stdcall InitializeReplayRecordHeader(ReplayInitStateView *state); // 00437420
+struct ReplayCleanupState;
+void __stdcall ClearReplayStageSegments(ReplayCleanupState *state, int stage); // 00437420
 void __stdcall InitializeReplayHeaderStorage(ReplayInitHeaderView *header); // 00420D80
 int __stdcall LoadReplayStageData(ReplayInitStateView *state, void *source); // 00436B60
 int __fastcall ReplayRecordUpdate(void *context); // 00436D20
@@ -200,9 +201,13 @@ int __stdcall InitializeSecondaryReplay(ReplayInitStateView *state,
     if (mode == 0)
     {
         g_SecondaryReplayCurrent = state;
-        InitializeReplayRecordHeader(state);
+        // The exact 0x437420 owner clears the *selected* stage's stream;
+        // AppendReplayWriteSegment also receives the selected stage, while
+        // its result is published in the separate +0x9C tail slot.
+        ClearReplayStageSegments(reinterpret_cast<ReplayCleanupState *>(state),
+            static_cast<int>(g_StageVariant));
         state->streams[7].last = AppendReplayWriteSegment(
-            reinterpret_cast<ReplayWriteState *>(state), 7);
+            reinterpret_cast<ReplayWriteState *>(state), static_cast<int>(g_StageVariant));
         state->fileHeader = NewFileHeader();
         state->header = NewHeader();
         state->stages[g_StageVariant] = NewStage();

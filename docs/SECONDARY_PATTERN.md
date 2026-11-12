@@ -291,3 +291,26 @@ source/tool/producer receipts and `difference_count = 0`. Canonical unit:
 `.analysis/replay-stage-segment-clear-strict-20261112.log`, with a bounded
 probe `.analysis/probe-replay-segment-cleanup-20261112.py` and public
 producer `probes/replay-stage-segment-cleanup-context.cpp`.
+
+## Corrected mode-0 replay segment lifecycle call (2026-11-12)
+
+The native prologue of `InitializeSecondaryReplay` loads `g_StageVariant`
+into EAX and the replay state into ECX immediately before calling exact
+`ClearReplayStageSegments` (`0x437420`). The subsequent
+`AppendReplayWriteSegment` (`0x437300`) also receives the **selected stage**
+in its private EDI argument, while the returned tail node is stored in the
+separate fixed `state+0x9C` field. Earlier source had mistaken the first
+call for a header initializer and passed a fixed stage 7 to the second.
+`src/SecondaryReplayInitialization.cpp` now models both selected-stage
+operations and uses the complete reconstructed cleanup owner.
+
+Scoped VC9 `/GL` re-compilation of the corrected complete 1380-byte function
+preserves all 22 native calls and four returns; with the real cleanup and
+writer producer, the diagnostic is **1247/1380 bytes**, still non-exact.
+The replay loader's separate 441-byte owner was also relinked with both
+exact shared-file helpers and the actual codec/file producers: full source
+continues to compile, with 14/14 calls and one native return, but
+**402/441 bytes** versus **387/441** in the original opaque-helper context.
+The previous diagnostics are retained and no unsupported exactness is claimed.
+Local reports: `.analysis/probe-secondary-replay-init-with-true-cleanup-20261112.log`
+and `.analysis/probe-secondary-replay-load-with-helpers-20261112.log`.

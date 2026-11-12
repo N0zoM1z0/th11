@@ -87,6 +87,11 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   no-ops, **14/14 bytes**, all with empty relocation sets and complete
   normal-COFF receipts. [Renderer](ANIMATION_RENDERER_LIFECYCLE.md),
   [audio](SOUND_QUEUE.md).
+- The 1380-byte replay initialization mode-0 source now correctly
+  invokes exact replay segment cleanup for the *selected* stage and passes
+  that same stage to segment append; the resulting node alone goes into
+  the fixed +0x9C tail. Corrected scope has all 22 calls/four returns but
+  remains non-exact. [Secondary pattern](SECONDARY_PATTERN.md).
 - `ClearReplayStageSegments` at `0x437420` is now **93/93 strict
   exact**, 33 instructions and one independently rebound `operator delete`
   REL32. The complete 1380-byte replay initializer and real writer both
