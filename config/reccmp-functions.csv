@@ -637,3 +637,4 @@ CloseSharedReplayReader,0x004589D0,function
 ClearReplayStageSegments,0x00437420,function
 DrawMenuController,0x00439E80,function
 InitializeInputBindingDefaults,0x00459BD0,function
+DrawMenuPage08,0x0043DAA0,function

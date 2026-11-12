@@ -148,3 +148,44 @@ The native aligned stack frame, saved EDI and original EAX receiver are
 not yet recovered. The full original owner is retained without cropping its
 table. This is source presence, not byte-exact acceptance. Local comparison:
 `.analysis/probe-menu-controller-draw-20261112.py` and log.
+
+## Full 427-byte practice-stage page draw (2026-11-12)
+
+`src/MenuPracticeStageDraw.cpp` now contains the complete source of
+`DrawMenuPage08` at `0x43DAA0..0x43DC4A`, a substantial original owner
+which the 140-byte menu draw dispatcher calls directly. Full attested PE and
+direct Ghidra review confirms **427 bytes / 108 instructions**, only
+**two calls** to the genuine `AsciiManagerPrint` at `0x4015A0`, **two
+return paths**, a sole real caller, no foreign interior entry or owned table.
+
+Menu states 2/3 enable the practice screen. It sets the ASCII manager's
++0x18494 rendering flag, prepares a three-float text position (two native
+x columns, 168/296, at y=216), and iterates the six stages. For each
+stage it indexes the real statistics buffer using
+`(selection0*3 + selection1)*0x68D4 + (stage + difficulty*6)*8`, reads
+its +0x5A9 unlock byte and +0x5A4 high-score integer, and sets the
+original white/grey/yellow/black colors for locked, unselected, selected,
+or timer-modulo-four blinking entries. It formats the real stage name with
+`"%s  ---------"` for locked stages or `"%s  %.8d0"` for an unlocked
+score. Every line moves y by the original double constant 18.0; the function
+finally restores white and clears the ASCII draw flag. Only state 2 with
+elapsed time under 10 skips the list; states other than 2/3 return
+immediately.
+
+The naturally typed `AsciiManagerPrint` takes a manager and position explicitly;
+the original private `/GL` call had ECX manager and EBX position with its
+format arguments on the stack. The parent dispatcher now supplies the menu
+object to page08, instead of declaring it as a no-argument stub.
+Scoped pinned VC9 `/GL` linked comparisons give **399/427** with the
+independent caller and real menu producer (104/108 instructions, both
+native calls and both returns, 17 candidate fields), and **406/427**
+with the actual ASCII formatter (107/108 instructions, both calls/returns,
+18 candidate fields). The updated parent emits 112/140 bytes isolated,
+120/140 with the page08 implementation, preserving all five calls and the
+eight owned table entries. Original private ABI/stack/x87 scheduling remains
+open; these are full-source, *non-exact* diagnostics, not partial owners.
+
+Local reproduction:
+`.analysis/probe-menu-practice-stage-draw-20261112.py` and
+`.analysis/probe-menu-controller-draw-linked-practice-20261112.py` with their
+logs, using only the changed page/dispatcher and direct producers.
