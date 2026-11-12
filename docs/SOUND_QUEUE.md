@@ -438,3 +438,14 @@ match exactly, with current source/compiler/producer receipts. Canonical unit
 `.analysis/close-prepared-music-strict-20261112.log`, bounded experiment
 `.analysis/probe-prepared-music-close-20261112.py` and public dynamic producer
 `probes/prepared-music-close-context.cpp`. No full cold replay was run.
+
+## Exact release-only audio and input no-op entries (2026-11-12)
+
+The independently reviewed complete `InputNoOpEntry` (`0x459BC0`) and
+`TraceMusicStream` (`0x45B5A0`) both consist of a single `RET` byte.
+`src/AudioNoopLeaves.cpp` now defines their ordinary release-build
+C++ bodies. The latter retains a variadic source signature for its actual
+music stream tracing callers without inventing a formatter implementation.
+Both are independently **1/1 byte exact** under pinned VC9 normal COFF,
+with zero relocation fields and complete current object receipts. Their
+canonical units are `input-noop-entry` and `trace-music-stream`.

@@ -6037,3 +6037,71 @@ linkages = [
   { offset = 0x0E, type = "REL32", symbol = "?DestroySecondaryMaster@@YGXPAUSecondaryMasterView@@@Z", target = 0x00410E90 },
   { offset = 0x14, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x0045FD49 },
 ]
+
+# Four independently reviewed 3-byte renderer identity functions. Their
+# unknown original nominal classes remain unassigned; all are whole COFFs.
+[units.renderer-identity-4526c0]
+artifact_kind = "coff"
+source = "src/RendererIdentityLeaves.cpp"
+object = "build/match/RendererIdentityLeaves.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["UnresolvedIdentity4526C0"]
+symbol = "?UnresolvedIdentity4526C0@@YIPAXPAX@Z"
+target_address = 0x004526C0
+size = 3
+relocations = []
+
+[units.renderer-identity-4526d0]
+artifact_kind = "coff"
+source = "src/RendererIdentityLeaves.cpp"
+object = "build/match/RendererIdentityLeaves.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["UnresolvedIdentity4526D0"]
+symbol = "?UnresolvedIdentity4526D0@@YIPAXPAX@Z"
+target_address = 0x004526D0
+size = 3
+relocations = []
+
+[units.renderer-identity-4526e0]
+artifact_kind = "coff"
+source = "src/RendererIdentityLeaves.cpp"
+object = "build/match/RendererIdentityLeaves.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["UnresolvedIdentity4526E0"]
+symbol = "?UnresolvedIdentity4526E0@@YIPAXPAX@Z"
+target_address = 0x004526E0
+size = 3
+relocations = []
+
+[units.renderer-identity-453120]
+artifact_kind = "coff"
+source = "src/RendererIdentityLeaves.cpp"
+object = "build/match/RendererIdentityLeaves.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["UnresolvedIdentity453120"]
+symbol = "?UnresolvedIdentity453120@@YIPAXPAX@Z"
+target_address = 0x00453120
+size = 3
+relocations = []
+
+[units.input-noop-entry]
+artifact_kind = "coff"
+source = "src/AudioNoopLeaves.cpp"
+object = "build/match/AudioNoopLeaves.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["InputNoOpEntry"]
+symbol = "?InputNoOpEntry@@YAXXZ"
+target_address = 0x00459BC0
+size = 1
+relocations = []
+
+[units.trace-music-stream]
+artifact_kind = "coff"
+source = "src/AudioNoopLeaves.cpp"
+object = "build/match/AudioNoopLeaves.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["TraceMusicStream"]
+symbol = "?TraceMusicStream@@YAXPBDZZ"
+target_address = 0x0045B5A0
+size = 1
+relocations = []

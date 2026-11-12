@@ -245,3 +245,15 @@ compiler receipts, each sole REL32 JMP destination, and all remaining bytes:
 Only the two newly affected units were cold-replayed, not the full cohort.
 Evidence: `.analysis/renderer-update-priority-cold-proof-20261111.log` and
 `build/match-linked/AnimationRendererUpdatePriority/`.
+
+## Four exact renderer identity leaves (2026-11-12)
+
+Four independently bounded renderer-adjacent entries at `0x4526C0`,
+`0x4526D0`, `0x4526E0` and `0x453120` each consist of precisely
+`MOV EAX,ECX; RET` (3 bytes). `src/RendererIdentityLeaves.cpp` now
+provides independent natural fastcall pointer identities for all four.
+Their normal VC9 RTM single-function COFF COMDATs each match **3/3 bytes**
+with no relocations; all four focused strict cold replays pass. Their
+original classes and authorship remain indeterminate. The canonical
+units are `renderer-identity-4526c0`, `renderer-identity-4526d0`,
+`renderer-identity-4526e0` and `renderer-identity-453120`.
