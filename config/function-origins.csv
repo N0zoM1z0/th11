@@ -156,9 +156,9 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0040DE10,unknown,ReplayInput,indeterminate,unknown,replay-input-repeat-origin-2026-11-12
 0x0040DEA0,unknown,SecondaryGameplay,indeterminate,unknown,secondary-gameplay-dependencies-origin-2026-11-06
 0x0040DF10,unknown,ConfigurationMenu,indeterminate,unknown,menu-primary-origin-2026-11-06
-0x0040E0A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0040E190,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0040E240,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0040E0A0,unknown,SecondaryAuxiliaryOwner,indeterminate,unknown,secondary-aux-owner-origin-2026-11-12
+0x0040E190,unknown,SecondaryAuxiliaryOwner,indeterminate,unknown,secondary-aux-owner-origin-2026-11-12
+0x0040E240,unknown,SecondaryAuxiliaryOwner,indeterminate,unknown,secondary-aux-owner-origin-2026-11-12
 0x0040E320,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0040E450,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0040E520,unknown,StageMesh,indeterminate,unknown,stage-mesh-origin-20261028

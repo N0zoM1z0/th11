@@ -685,3 +685,6 @@ DestroyReplayFileBrowser,0x00437E40,function
 DeleteReplayFileBrowser,0x00438000,function
 InitializeReplayFileBrowser,0x00437D50,function
 CreateReplayFileBrowser,0x00437F60,function
+InitializeSecondaryAuxiliaryOwner,0x0040E0A0,function
+DestroySecondaryAuxiliaryOwner,0x0040E190,function
+CreateSecondaryAuxiliaryOwner,0x0040E240,function

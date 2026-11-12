@@ -684,3 +684,6 @@ DestroyReplayFileBrowser
 DeleteReplayFileBrowser
 InitializeReplayFileBrowser
 CreateReplayFileBrowser
+InitializeSecondaryAuxiliaryOwner
+DestroySecondaryAuxiliaryOwner
+CreateSecondaryAuxiliaryOwner
