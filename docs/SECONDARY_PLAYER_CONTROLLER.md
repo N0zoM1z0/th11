@@ -321,6 +321,9 @@ same radius at controller+0x490 to both `ClearSceneProjectilesInRadius`
 and `ClearSecondaryObjectsInRadius`, with original mode/filter values;
 its 84-byte target has **two calls and one return**.
 
+The following numbers are the **earlier** source/compiler context, not
+the latest special-effect probe results recorded in the next section.
+
 Four scoped pinned VC9 `/GL` contexts were run with ordinary C++ and
 selectively linked real animation factory, VM binder, mesh sound and
 damage producers. The closest comparison is **184/188** for init

@@ -22,7 +22,11 @@ normal-COFF support so the controller retains its real stack argument/RET4.
 No existing /GL owner was downgraded. The adjacent draw dispatcher439E80 owns
 140 bytes:105 code/43 instructions,3 alignment and32 bytes in eight cells at
 439EEC..439F0B. Its auto-analysis105-byte extent omitted the owned table/layout.
-That draw owner has boundary review only; no draw source body is claimed.
+That historical inventory observation is superseded: `src/MenuControllerDraw.cpp`
+now has the full 140-byte draw dispatcher source, and its 427-byte practice
+page (`0x43DAA0`) and 670-byte replay-records page (`0x43F410`) also have
+maintained source. All three draw owners remain **non-exact**; see the later
+page-draw sections in this document.
 
 The four marking calls use4564C0..45650D/78 bytes, with renderer ESI/file EDX.
 The complete supporting source traverses both real renderer VM chains, caches

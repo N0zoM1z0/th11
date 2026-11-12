@@ -280,7 +280,7 @@ VC9 /GL **135/135-byte**, 50-instruction, 3-call/2-return complete
 candidate. Its ordinary C++ restores the signed lower index check,
 nonvolatile busy memory comparison and renderer-index reload; after
 one DIR32 and three REL32 native fields only **one instruction byte**
-differs (EDI vs EAX for non-exact AdvanceAnimationDocument4544C0/212).
+differs (EDI vs EAX in the **then-non-exact** AdvanceAnimationDocument4544C0/212 context).
 This scanner remains **non-exact**; the neighboring 51-byte slot
 release remains strict canonical exact. See
 [ANIMATION_DOCUMENT_SLOTS](ANIMATION_DOCUMENT_SLOTS.md).
@@ -292,8 +292,9 @@ DIR32/REL32 fields replayed and nine owned alignment bytes.
 The natural `script[i].offset` loop and the native sprite
 fileIndex/texture/textureIndex assignment order eliminate all ten
 previous code differences. The 149-byte StoreAnimationSprite is
-separately exact, while AdvanceAnimationDocument4544C0/212 remains
-non-exact. See [ANIMATION_CHUNKS](ANIMATION_CHUNKS.md).
+separately exact. The later AdvanceAnimationDocument4544C0/212 cold
+proof supersedes this historical non-exact observation; see the later
+entry below and [ANIMATION_CHUNKS](ANIMATION_CHUNKS.md). See [ANIMATION_CHUNKS](ANIMATION_CHUNKS.md).
 
 
 The 221-byte `LoadAnimationChunkSource` real parent context now includes

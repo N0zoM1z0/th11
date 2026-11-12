@@ -183,6 +183,9 @@ class ownership. `ReplayInitStateView` asserts the physical writer-compatible
 0x14/0x18 header offsets, +0x40 streams, +0x9C last-stream tail and
 +0x1D4 stage selector, rather than inventing a different replay object.
 
+The following were the **initial** scoped links, before the mode-0 stage
+cleanup correction documented below; they are historical diagnostics:
+
 Three **scoped** pinned VC9 `/GL` PE/MAP/PDB links successfully compile
 this full source: **1241/1380 bytes** independent,
 **1229/1380** with real chain producer, and **1236/1380** with the real
