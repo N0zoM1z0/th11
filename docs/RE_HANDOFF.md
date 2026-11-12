@@ -20,7 +20,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - [Generated progress](PROGRESS.md) and
   `config/{functions,function-boundaries,function-origins,matches}.csv`
   determine names, origins, reviewed extents and exact status.
-  At this checkpoint: **296 canonical exact**, **591 source-present**,
+  At this checkpoint: **298 canonical exact**, **593 source-present**,
   **661 reviewed boundaries**. Refresh with
   `scripts/repo-python scripts/progress.py`, not manual totals.
 - An exact owner requires the entire original function, source/tool
@@ -55,7 +55,12 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - The full **291-byte** `StartPreparedMusic` is now source-present and
   scoped VC9 linked **291/291 bytes, 5 calls**, but non-exact (89/92
   instructions). The corresponding **515-byte** prepared audio loader is
-  the next larger source-open target. [Audio](SOUND_QUEUE.md).
+  now source-present with a full 485/515-byte, 153/153-instruction,
+  15-call scoped diagnostic (non-exact); the 215-byte track finder has
+  passed strict full 215/215-byte exact replay with four reviewed fields.
+  The genuine 1-byte release-build audio tracing stub is also separately
+  exact, without substituting synthetic machine code.
+  [Audio](SOUND_QUEUE.md).
 - The 275-byte `EnterSecondaryContinueMenu` and 336-byte
   `EnterSecondaryGameOverMenu` now have maintained full source and targeted
   272/275 and 336/336 diagnostics (non-exact). The real 123-byte

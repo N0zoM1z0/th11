@@ -590,3 +590,5 @@ EnterSecondaryGameOverMenu,0x0042D560,function
 QueueMusicWaveRequest,0x0042A0D0,function
 StartPreparedMusic,0x00449E80,function
 LoadPreparedMusic,0x00449C70,function
+TraceSoundQueue,0x0044AB00,function
+FindSoundTrack,0x004496B0,function

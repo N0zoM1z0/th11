@@ -284,3 +284,49 @@ and grants no strict byte credit. Local bounded comparison recipe:
 `probes/prepared-music-load-context.cpp`. The 291-byte startup owner remains
 separate source-present work, and previously accepted queue/streaming exact
 functions were not replayed unnecessarily.
+
+## Strict 215-byte soundtrack basename/record lookup (2026-11-12)
+
+The complete target `FindSoundTrack` at `0x4496B0..0x449786` is now
+maintained as `src/SoundTrackLookup.cpp`. The original Ghidra direct
+function/caller/xref review, independent PE decode and strict linked proof
+cover all **215 bytes, 81 instructions, three calls** and its RET4, without
+including adjacent padding. The original 3 callers include the prepared
+515-byte loader and the 65-byte file-backed path.
+
+The source extracts the final filename after the last `/`, or failing that
+tries the last `\\`, copying the suffix (or entire name) into an unchecked
+**128-byte local**. It walks 0x34-byte `SoundTrackRecord` names until a match
+or the first empty name, returning the matched index or zero when exhausted.
+It does not impose a new record-count bound or alter case sensitivity. Ghidra's
+inferred `void` return was incorrect; the original callers consume the integer.
+
+A genuine bounded VC9 `/GL` initially yielded **216/215 bytes**. Eight
+source variants identified two essential C++ lifetimes: initialize `index`
+before the `strrchr` calls, and keep the no-slash filename-copy path before
+the suffixed path, preserving the native EDI index and conditional copy loop.
+The resulting source was **213 bytes** but still optimized its final ternary
+into a branchless sign/bit mask. Expressing the native fallback as
+`if (!records[index].name[0]) index = 0; return index;` restored the final
+CMP/JNE/XOR/JMP/MOV sequence naturally without forced registers or no-op
+instructions. **All 215 bytes and 81 instructions now match exactly**.
+
+The independent strict VC9 primary-TU proof replays all **four** native fields:
+DIR32 security cookie `0x4A2088` and REL32 calls to CRT `strrchr` (twice,
+`0x460560`) and `__security_check_cookie` (`0x45FC2C`). All original code
+bytes and each field match with **zero differences**, current source/tool and
+producer receipts. Canonical unit: `find-sound-track`; strict log:
+`.analysis/find-sound-track-strict-20261112.log`; public dynamic producer:
+`probes/sound-track-lookup-context.cpp`. No unrelated full cold replay was run.
+
+## Original single-byte release tracing leaf (2026-11-12)
+
+The independently reviewed original `TraceSoundQueue` at `0x44AB00` is
+**one `RET` byte**, with callers cleaning their own variadic trace arguments.
+The complete native function boundary and callers were checked directly;
+following `CC` bytes are outside the owner. `SoundQueueTrace.cpp` uses an
+ordinary empty variadic C++ body—no inline assembly or injected opcodes.
+Its own pinned VC9 **normal-COFF** strict replay accepts the complete
+one-byte auxiliary/COMDAT contribution, with **no relocation fields** and
+zero differing bytes. Canonical unit: `trace-sound-queue`. This does not
+establish original authorship or permit inlining away its parent calls.
