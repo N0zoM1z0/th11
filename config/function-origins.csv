@@ -1013,6 +1013,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x004593C0,unknown,RuntimeThread,indeterminate,unknown,threadinf-ctor-origin-2026-11-12
 0x004593E0,unknown,RuntimeThread,indeterminate,unknown,threadinf-lifetime-origin-2026-11-12
 0x00459410,unknown,RuntimeThread,indeterminate,unknown,threadinf-lifetime-origin-2026-11-12
+0x00459420,unknown,RuntimeThread,indeterminate,unknown,runtime-thread-flag-origin-2026-11-12
 0x00459430,unknown,FrameRuntime,indeterminate,unknown,frame-loop-origin-review-20261023
 0x004594A0,unknown,FrameRuntime,indeterminate,unknown,secondary-runtime-thread-start-origin-20261111
 0x00459540,unknown,SecondaryActorState,indeterminate,unknown,secondary-state-origin-2026-10-29

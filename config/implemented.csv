@@ -668,3 +668,4 @@ PauseSecondaryMasterChains
 DestroyThreadInfVirtual
 ConstructThreadInfStorage
 DeleteThreadInfVirtual
+SetRuntimeThreadFlagA577C

@@ -53,3 +53,18 @@ source-mapped/non-exact until a unique production owner can be established.
 
 Only the 21-byte constructor and 16-byte normal destructor carry canonical
 exact credit. All three mappings and the dirty worktree are preserved.
+
+## Separate eleven-byte global publication entry
+
+A further explicit Ghidra span revealed a distinct function at
+`0x459420..0x45942A`, immediately between the 16-byte virtual destructor
+and the 101-byte worker-stop routine. It consists of `MOV DWORD PTR
+[0x4A577C],1; RET`, followed by five alignment CC bytes. No incoming
+reference or code/data overlap has been established. The meaning of the
+`0x4A577C` global, nominal original class and translation unit are unknown.
+
+The minimal natural source `SetRuntimeThreadFlagA577C` encodes exactly
+that physical operation. Pinned VC9 normal-COFF produces a unique 11-byte
+owner and its single reviewed DIR32 field at +2. The canonical
+`runtime-thread-global-flag-a577c` unit strictly replays all bytes and the
+field with zero differences, without inferring behavioral semantics.
