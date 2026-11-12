@@ -27,3 +27,59 @@ resource cleanup (`0x4416C0`), while 134-byte `0x4415C0` and 101-byte
 `0x441650` open Pbg::File and Pbg::ResFile variants. They own memory,
 stream state and failure cleanup and require their own reconstruction and
 verification. This constructor's exactness does not imply theirs.
+
+## Full 134-byte File and 101-byte ResFile opening owners
+
+`OpenPbgFileSession` (`0x4415C0..0x441645`) is the entire native **134-byte**
+File-mode owner. It first releases any prior session, traces the requested
+name through the original `0x441C80` trace boundary, allocates the 12-byte
+Pbg::File object (vtable `0x4964EC`), stores it in session `+0xC`, loads the
+directory through the real `0x441910` helper, duplicates the name using
+`0x441BD0` and calls the stream's virtual open method with mode at `0x496544`.
+Failure traces again and tears down the session. It has eight native calls.
+Natural C++ emits 143 bytes in normal COFF and 136 in the genuine scoped
+`/GL` source family. The function is source-present, **not exact**.
+
+`OpenPbgResFileSession` (`0x441650..0x4416B4`) is the separate **101-byte**
+ResFile-mode owner. It follows the same release/parse/name-copy sequence,
+but allocates a 16-byte Pbg::ResFile object (vtable `0x496614`, remaining
+fields initially zero) and returns success without a virtual file-open call.
+Normal COFF emits 106 bytes; the scoped `/GL` candidate has 99 bytes and all
+five native calls. This is also **nonexact**. These two complete source owners
+are maintained in `src/PbgResourceSessionOps.cpp` and independently bounded
+rather than represented by stubs or fabricated register moves.
+
+## Exact 109-byte session release and 26-byte directory destructor
+
+The larger `ReleasePbgResourceSession` at `0x4416C0..0x44172C` performs the
+actual cleanup: optionally logs and frees a temporary buffer, clears its
+slot even on the empty path, conditionally destroys/free's a vector of
+**16-byte Pbg directory entries** with the genuine C++ EH vector destructor
+iterator, optionally calls the stream's virtual deleting destructor at vtable
+`+0x1C`, and clears all session fields. The native function has **109 bytes,
+44 instructions and five calls**. Its current natural C++ source compiles to
+109/109 under a real dynamic session `/GL` caller. The only initial differences
+were two final ordinary zero stores scheduled in reverse order by VC9;
+sequencing the two independent source assignments in the other order restores
+native `MOV [ESI+4],EDI` before `MOV [ESI+0xC],EDI`, without `volatile`,
+dummy accesses or machine-byte patches. Canonical `pbg-resource-session-release`
+checks the full 109-byte primary-TU owner and six actual fields: original
+trace data and call, CRT free, directory-entry destructor, EH vector iterator,
+and array delete. The original private ESI receiver and function behavior
+are preserved by the linked context.
+
+The `PbgResourceEntryView` destructor at `0x441C00..0x441C19` is a separate
+**26-byte** owner, also reconstructed. It frees the entry's optional filename
+and clears the name only when a free occurred; putting the clear outside the
+null guard changes one byte of the native conditional jump. Its sole native
+REL32 field calls CRT free at `0x45FC3B`. The natural C++ member destructor
+matches all 26 bytes under pinned normal COFF and serves as the exact element
+destructor callback used by the larger session.
+
+The adjacent 10-byte session destructor adapter at `0x4415B0` remains
+source-present but **nonexact**: an isolated normal and linked forwarder
+compiles to a five-byte tail jump, not the original ESI-save/CALL/restore
+sequence. It and the two file-opening owners need original `/GL` owner and
+private argument scheduling work. Scoped proof is retained in
+`.analysis/probe-pbg-resource-session-ltcg-20261112.log` and
+`.analysis/probe-pbg-109-store-order-20261112.log`.

@@ -691,3 +691,8 @@ CreateSecondaryAuxiliaryOwner,0x0040E240,function
 RenderSecondaryDebugOverlay,0x0040DAC0,function
 RenderSecondaryDebugOverlayCallback,0x0040DDE0,function
 ConstructPbgResourceSession,0x004415A0,function
+DestroyPbgResourceSession,0x004415B0,function
+OpenPbgFileSession,0x004415C0,function
+OpenPbgResFileSession,0x00441650,function
+ReleasePbgResourceSession,0x004416C0,function
+DestroyPbgResourceEntry,0x00441C00,function

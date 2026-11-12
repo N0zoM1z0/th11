@@ -6766,3 +6766,38 @@ symbol = "??0PbgResourceSessionView@@QAE@XZ"
 target_address = 0x004415A0
 size = 16
 relocations = []
+
+[units.pbg-resource-entry-destructor]
+artifact_kind = "coff"
+source = "src/PbgResourceEntry.cpp"
+inputs = ["src/PbgResourceEntry.hpp"]
+object = "build/match/PbgResourceEntry.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["DestroyPbgResourceEntry"]
+symbol = "??1PbgResourceEntryView@@QAE@XZ"
+target_address = 0x00441C00
+size = 26
+relocations = [
+  { offset = 0x0B, type = "REL32", symbol = "_free", target = 0x0045FC3B },
+]
+
+[units.pbg-resource-session-release]
+artifact_kind = "linked-pe"
+source = "src/PbgResourceSessionOps.cpp"
+inputs = ["src/PbgResourceSession.hpp", "src/PbgResourceEntry.hpp"]
+support_sources = ["probes/pbg-resource-session-context.cpp"]
+output_dir = "build/match-linked/PbgResourceSessionRelease"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "PbgResourceSessionProbe@12"
+functions = ["ReleasePbgResourceSession"]
+symbol = "?ReleasePbgResourceSession@@YIXPAUPbgResourceSessionView@@@Z"
+target_address = 0x004416C0
+size = 109
+linkages = [
+  { offset = 0x0C, type = "DIR32", symbol = "?g_PbgSessionCleanupLog@@3QBDB", target = 0x00496400 },
+  { offset = 0x11, type = "REL32", symbol = "?TracePbgResourceEvent@@YAXPBDZZ", target = 0x00441C80 },
+  { offset = 0x21, type = "REL32", symbol = "_free", target = 0x0045FC3B },
+  { offset = 0x3C, type = "DIR32", symbol = "??1PbgResourceEntryView@@QAE@XZ", target = 0x00441C00 },
+  { offset = 0x45, type = "REL32", symbol = "??_M@YGXPAXIHP6EX0@Z@Z", target = 0x00460066 },
+  { offset = 0x4B, type = "REL32", symbol = "??_V@YAXPAX@Z", target = 0x0045FD49 },
+]

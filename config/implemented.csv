@@ -690,3 +690,8 @@ CreateSecondaryAuxiliaryOwner
 RenderSecondaryDebugOverlay
 RenderSecondaryDebugOverlayCallback
 ConstructPbgResourceSession
+DestroyPbgResourceSession
+OpenPbgFileSession
+OpenPbgResFileSession
+ReleasePbgResourceSession
+DestroyPbgResourceEntry
