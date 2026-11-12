@@ -119,11 +119,17 @@ routine all-unit cold replay or broad behavioral/fault-injection suite.
 `build/match-linked/` and `build/match/` contain useful **canonical receipt
 families**. Keep them and the pinned original/tools/Wine/Ghidra projects.
 `build/probe-ltcg/` and `build/probe/` are ignored, **regenerable diagnostic
-build caches**, not authoritative source or exact proofs. Old failed
-variant builds may be removed for storage; retain the expensive
-`build/probe-ltcg/PauseContinueMenuOwner` and a small number of representative
-current contexts when useful. Scripts/logs in `.analysis/` retain the
-important decisions even if historical images are gone. Never delete the
+build caches**, not authoritative source or exact proofs. On 2026-11-12,
+**835 old diagnostic links and the scratch-object trees were deleted**,
+reclaiming **831.9 MiB**; `build/` fell from ~965 MiB to ~133 MiB.
+Five representative contexts remain: `PauseContinueMenuOwner`,
+`LoaderCtorOrder20261112-explicit-before-clear`,
+`BrowserState0-20261112-goto-layout`,
+`SecondaryReplayLoadRealHooks-real-all-hooks-20261112` and
+`MenuReplayRecordsDraw-isolated-20261112` (under `build/probe-ltcg/`).
+Scripts/logs in `.analysis/` retain the important decisions even when
+historical binary images are gone. Do not expect deleted probe binaries
+to exist; rerun their recorded recipes when a specific context is needed. Never delete the
 original `resources/th11.exe`, `.tools/msvc900`,
 `.tools/wineprefix-msvc900`, `ghidra-project/`, useful `.analysis/` evidence,
 or existing uncommitted work. See [artifacts](ARTIFACTS.md).
