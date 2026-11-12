@@ -330,3 +330,29 @@ Its own pinned VC9 **normal-COFF** strict replay accepts the complete
 one-byte auxiliary/COMDAT contribution, with **no relocation fields** and
 zero differing bytes. Canonical unit: `trace-sound-queue`. This does not
 establish original authorship or permit inlining away its parent calls.
+
+## File-backed music startup dependency (2026-11-12)
+
+`StartPreparedMusicFile` at 449C20 now has full **65-byte** source in
+`PreparedMusicFile.cpp` with an independent caller in
+`probes/prepared-music-file-context.cpp`. The native code tests the active
+music controller at queue+5208 and returns -1 if missing. Otherwise it
+calls the newly strict-exact 215-byte `FindSoundTrack`, obtains the decoder
+at controller+C, passes the selected 0x34-stride `SoundTrackRecord` to
+`ConfigureMusicDecoder` with offset zero, traces the index using the true
+one-byte `TraceSoundQueue` and returns zero. All **21 target instructions,
+three calls and two returns** belong to this complete owner.
+
+With the real prepared startup and dynamic queue producer, bounded VC9
+`/GL` compilation produces **74 candidate / 65 native bytes**, 23/21
+instructions, 3/3 calls and four candidate address fields. This remains
+**source-present and non-exact**; its original private ESI manager and ECX
+filename scheduling is not faked with incorrect calling conventions.
+Private comparison: `.analysis/probe-prepared-music-file-20261112.py`.
+
+The 291-byte `StartPreparedMusic` now calls this actual two-argument C++
+boundary with the manager and cached path. Its latest full producer diagnostic
+is 292/291 bytes (previously 291/291 using an opaque filename-only callee),
+so it also remains non-exact. These C++ changes do not affect the independently
+accepted 215-byte finder, 123-byte WAV request or one-byte logger; those two
+new exact units were re-cold-replayed together with zero differences.

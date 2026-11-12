@@ -52,9 +52,14 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   485/515-byte linked diagnostic retaining **153/153 instructions and
   15/15 calls**; original private register allocation remains open. Its
   291-byte startup neighbor is separately source-present. [Audio](SOUND_QUEUE.md).
+- `FindSoundTrack` `0x4496B0` (215 bytes) and `TraceSoundQueue`
+  `0x44AB00` (1 byte) now have **independent strict exact proofs**.
+  The 65-byte file-backed starter at `0x449C20` is source-present but
+  non-exact (74/65); its genuine C++ definition replaces the earlier
+  filename-only caller declaration. [Audio](SOUND_QUEUE.md).
 - The full **291-byte** `StartPreparedMusic` is now source-present and
-  scoped VC9 linked **291/291 bytes, 5 calls**, but non-exact (89/92
-  instructions). The corresponding **515-byte** prepared audio loader is
+  scoped VC9 linked **292/291 bytes, 5 calls**, still non-exact in its
+  corrected real file-callee context. The corresponding **515-byte** loader is
   now source-present with a full 485/515-byte, 153/153-instruction,
   15-call scoped diagnostic (non-exact); the 215-byte track finder has
   passed strict full 215/215-byte exact replay with four reviewed fields.

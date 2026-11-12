@@ -2,9 +2,9 @@
 #include "MusicStream.hpp"
 #include "MainRuntime.hpp"
 
-// Observed original 0x449C20 file-backed playback entry and no-op trace
-// (0x44AB00). Their independent source owners are still open.
-extern int __stdcall StartPreparedMusicFile(const char *filename);
+// The observed original 0x449C20 file-backed playback entry and no-op
+// trace (0x44AB00) now have their own maintained source owners.
+extern int __stdcall StartPreparedMusicFile(SoundManagerQueueView *self, const char *filename);
 extern void __cdecl TraceSoundQueue(const char *format, ...);
 extern const char g_PreparedMusicStartTrace[];
 extern const GUID g_PreparedMusicStreamAlgorithm;
@@ -44,7 +44,7 @@ int __stdcall StartPreparedMusic(SoundManagerQueueView *self, int index)
         return -1;
 
     if (!(PreparedRuntimeByte(0x200) & 0x10))
-        return StartPreparedMusicFile(self->filenames[index]);
+        return StartPreparedMusicFile(self, self->filenames[index]);
 
     if (!reinterpret_cast<unsigned char **>(
         reinterpret_cast<unsigned char *>(self) + 0x1ec0)[index])
