@@ -20,7 +20,7 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 - [Generated progress](PROGRESS.md) and
   `config/{functions,function-boundaries,function-origins,matches}.csv`
   determine names, origins, reviewed extents and exact status.
-  At this checkpoint: **298 canonical exact**, **593 source-present**,
+  At this checkpoint: **299 canonical exact**, **593 source-present**,
   **661 reviewed boundaries**. Refresh with
   `scripts/repo-python scripts/progress.py`, not manual totals.
 - An exact owner requires the entire original function, source/tool
@@ -57,6 +57,11 @@ Follow [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
   The 65-byte file-backed starter at `0x449C20` is source-present but
   non-exact (74/65); its genuine C++ definition replaces the earlier
   filename-only caller declaration. [Audio](SOUND_QUEUE.md).
+- The newly exact **65-byte** `StartPreparedMusicFile` (`0x449C20`)
+  uses a real parent and the exact 215-byte soundtrack finder and
+  `MusicStream` producer. All four fields and 65 bytes replay; its original
+  private ESI/ECX convention and plain RET emerge naturally. The larger
+  291-byte startup remains source-present non-exact. [Sound](SOUND_QUEUE.md).
 - The full **291-byte** `StartPreparedMusic` is now source-present and
   scoped VC9 linked **292/291 bytes, 5 calls**, still non-exact in its
   corrected real file-callee context. The corresponding **515-byte** loader is

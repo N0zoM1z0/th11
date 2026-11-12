@@ -356,3 +356,27 @@ is 292/291 bytes (previously 291/291 using an opaque filename-only callee),
 so it also remains non-exact. These C++ changes do not affect the independently
 accepted 215-byte finder, 123-byte WAV request or one-byte logger; those two
 new exact units were re-cold-replayed together with zero differences.
+
+## Strict exact 65-byte file-backed startup (2026-11-12)
+
+The complete `StartPreparedMusicFile` at `0x449C20..0x449C60` now passes
+its own strict linked replay: **65/65 native bytes, 21/21 instructions,
+3/3 calls and all four original linkage fields**. The native reads the
+manager's controller pointer at `+0x5208`, returns -1 immediately when it
+is absent, uses the now-exact `FindSoundTrack` to select a 52-byte WAV
+record, passes its decoder at controller `+0x0C` to `ConfigureMusicDecoder`
+(`0x45B2D0`), calls the genuine variadic `TraceSoundQueue` (`0x44AB00`),
+and returns zero. The normal native return is a plain `RET`, not a `RET4`.
+
+An opaque-callee build produced **78/65**, whereas the true parent
+`PreparedMusicStart.cpp` together with exact `SoundTrackLookup.cpp` and
+`MusicStream.cpp` causes VC9 `/GL` to allocate the receiver in ESI and the
+filename in ECX, restoring the complete native owner naturally without
+redeclaring an artificial register ABI. All four independently reviewed
+fields replay: the three REL32 calls to the exact track finder, decoder
+configuration and trace leaf, and the native trace-format DIR32 at
+`0x497124`. The full owner is uniquely public in the source TU's PDB/MAP,
+with current compiler/source/producer receipt and zero replay differences.
+Canonical unit: `start-prepared-music-file`; log under
+`.analysis/start-prepared-music-file-strict-20261112.log`. Only this scoped
+producer was cold compiled; the unrelated exact cohort was not replayed.

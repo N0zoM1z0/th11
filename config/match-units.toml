@@ -5866,3 +5866,24 @@ linkages = [
   { offset = 0x2D, type = "REL32", symbol = "_strrchr", target = 0x00460560 },
   { offset = 0xCA, type = "REL32", symbol = "@__security_check_cookie@4", target = 0x0045FC2C },
 ]
+
+# Genuine prepared music caller plus real name lookup and decoder restores the
+# original private ESI-manager / ECX-filename / plain-RET optimizer context.
+[units.start-prepared-music-file]
+artifact_kind = "linked-pe"
+source = "src/PreparedMusicFile.cpp"
+inputs = ["src/SoundQueue.hpp", "src/MusicStream.hpp"]
+support_sources = ["src/PreparedMusicStart.cpp", "probes/prepared-music-start-context.cpp", "src/SoundTrackLookup.cpp", "src/MusicStream.cpp"]
+output_dir = "build/match-linked/PreparedMusicFile"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "PreparedMusicStartProbe@8"
+functions = ["StartPreparedMusicFile"]
+symbol = "?StartPreparedMusicFile@@YGHPAUSoundManagerQueueView@@PBD@Z"
+target_address = 0x00449C20
+size = 65
+linkages = [
+  { offset = 0x10, type = "REL32", symbol = "?FindSoundTrack@@YGHPBDPAUSoundManagerQueueView@@@Z", target = 0x004496B0 },
+  { offset = 0x2B, type = "REL32", symbol = "?ConfigureMusicDecoder@@YGJPAUMusicDecoderView@@PAUSoundTrackRecord@@H@Z", target = 0x0045B2D0 },
+  { offset = 0x31, type = "DIR32", symbol = "?g_PreparedMusicFileTrace@@3QBDB", target = 0x00497124 },
+  { offset = 0x36, type = "REL32", symbol = "?TraceSoundQueue@@YAXPBDZZ", target = 0x0044AB00 },
+]
