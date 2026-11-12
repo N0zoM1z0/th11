@@ -237,6 +237,8 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00411070,unknown,SecondaryLifetime,indeterminate,unknown,secondary-lifetime-origin-2026-10-29
 0x00411100,unknown,SecondaryLifetime,indeterminate,unknown,secondary-lifetime-origin-2026-10-29
 0x00411120,unknown,SecondaryLifetime,indeterminate,unknown,secondary-lifetime-origin-2026-10-29
+0x004111A0,unknown,SecondaryLifetime,indeterminate,unknown,secondary-master-callback-origin-20261112
+0x004111B0,unknown,SecondaryLifetime,indeterminate,unknown,secondary-master-callback-origin-20261112
 0x004111C0,unknown,SecondaryActor,indeterminate,unknown,secondary-actor-origin-2026-10-29
 0x00411480,unknown,SecondaryActor,indeterminate,unknown,secondary-actor-origin-2026-10-29
 0x00411600,unknown,SecondaryLifetime,indeterminate,unknown,secondary-lifetime-origin-2026-10-29

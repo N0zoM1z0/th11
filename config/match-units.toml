@@ -5926,3 +5926,31 @@ size = 201
 linkages = [
   { offset = 0x06, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x004C3268 },
 ]
+
+# Independently reviewed source-open 0x4111A0..A6 and 0x4111B0..B5
+# chain callbacks; original instructions and references were checked directly.
+[units.secondary-master-update-callback]
+artifact_kind = "coff"
+source = "src/SecondaryMasterCallbacks.cpp"
+inputs = ["src/SecondaryActorState.hpp"]
+object = "build/match/SecondaryMasterCallbacks.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["SecondaryMasterUpdateCallback"]
+symbol = "?SecondaryMasterUpdateCallback@@YIHPAX@Z"
+target_address = 0x004111A0
+size = 7
+relocations = [
+  { offset = 2, type = "REL32", symbol = "?UpdateSecondaryMasterActors@@YGHPAUSecondaryMasterView@@@Z", target = 0x00411120 },
+]
+
+[units.secondary-master-draw-callback]
+artifact_kind = "coff"
+source = "src/SecondaryMasterCallbacks.cpp"
+inputs = ["src/SecondaryActorState.hpp"]
+object = "build/match/SecondaryMasterCallbacks.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["SecondaryMasterDrawCallback"]
+symbol = "?SecondaryMasterDrawCallback@@YIHPAX@Z"
+target_address = 0x004111B0
+size = 6
+relocations = []

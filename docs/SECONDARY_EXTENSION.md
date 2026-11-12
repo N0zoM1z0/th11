@@ -148,3 +148,31 @@ checkpoint prerequisites.
 Later actual-caller and typed-trace work supersedes the interpreter alignment
 blocker above: fixed120 and native dispatch layout are recovered in the current
 7033/5779 context. See [SECONDARY_INTERPRETER_CODEGEN](SECONDARY_INTERPRETER_CODEGEN.md).
+
+## Strict chain callbacks and initialization source work (2026-11-12)
+
+Two original `InitializeSecondaryHost` (`0x410BE0`) chain callback pointers
+were independently reviewed as **whole** native owners, not invented stubs.
+`SecondaryMasterUpdateCallback` at `0x4111A0..0x4111A6` is exactly
+`PUSH ECX; CALL 0x411120; RET`: it adapts the native ECX context to the
+105-byte `UpdateSecondaryMasterActors` and retains that callee's return.
+`SecondaryMasterDrawCallback` at `0x4111B0..0x4111B5` is exactly
+`MOV EAX,1; RET`, acknowledging the draw chain. The native registrations
+refer directly to each distinct callback start at `0x410C76/0x410CCB`,
+with no foreign interior entries or tables; following `CC` bytes are not
+part of either function.
+
+The ordinary C++ in `src/SecondaryMasterCallbacks.cpp` naturally generates
+both target functions with the pinned VC9 normal-COFF toolchain: **7/7 and
+6/6 complete bytes**, one reviewed REL32 call field targeting `0x411120`
+and no fields, respectively. Both have independent cold source/tool/object
+receipts and **zero differences**; canonical units
+`secondary-master-update-callback` and `secondary-master-draw-callback`.
+The match is full-function COFF ownership, not an orphan instruction sequence
+or a claim of original source provenance. Only these two small affected
+units were cold replayed.
+
+The separately scoped 318-byte native `InitializeSecondaryHost` main body
+also has full natural source in `src/SecondaryMasterInitialization.cpp`;
+its real program/new/chain construction paths preserve all seven calls.
+Its current linked codegen is still non-exact and is tracked separately.

@@ -596,3 +596,5 @@ ClosePreparedMusic
 CheckSecondaryPlayerRectangle
 DestroySecondaryMaster
 PrepareSecondaryMasterDestruction
+SecondaryMasterUpdateCallback
+SecondaryMasterDrawCallback

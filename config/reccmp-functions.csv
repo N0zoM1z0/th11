@@ -597,3 +597,5 @@ ClosePreparedMusic,0x00449FE0,function
 CheckSecondaryPlayerRectangle,0x00431E00,function
 DestroySecondaryMaster,0x00410E90,function
 PrepareSecondaryMasterDestruction,0x0040D0C0,function
+SecondaryMasterUpdateCallback,0x004111A0,function
+SecondaryMasterDrawCallback,0x004111B0,function
