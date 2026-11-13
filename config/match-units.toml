@@ -7189,3 +7189,33 @@ relocations = [
   { offset = 0x15, type = "REL32", symbol = "_free", target = 0x0045FC3B },
   { offset = 0x2B, type = "DIR32", symbol = "?g_PbgIFileVtable@@3QBIB", target = 0x00496514 },
 ]
+
+# The native failure-cleanup join precedes the checksum/decode success body;
+# a real independent archive caller plus genuine lookup, cipher and decoder
+# producers recovers its private ECX/EAX dispatch without register shims.
+[units.read-archived-file]
+artifact_kind = "linked-pe"
+source = "src/Archive.cpp"
+inputs = ["src/Archive.hpp", "src/ByteCipher.hpp"]
+support_sources = ["probes/archive-read-context.cpp", "src/ArchiveLookup.cpp", "src/ArchiveDecompress.cpp", "src/ByteCipher.cpp"]
+output_dir = "build/match-linked/ReadArchivedFile"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "ArchiveReadProbe@24"
+functions = ["ReadArchivedFile"]
+symbol = "?ReadArchivedFile@@YGPAEPAUArchiveStateView@@PBDPAE@Z"
+target_address = 0x00441760
+size = 300
+linkages = [
+  { offset = 0x01B, type = "REL32", symbol = "?FindArchiveEntry@@YGPAUArchiveEntryView@@PAUArchiveStateView@@PBD@Z", target = 0x004418D0 },
+  { offset = 0x040, type = "REL32", symbol = "_malloc", target = 0x00460192 },
+  { offset = 0x076, type = "DIR32", symbol = "??_C@_0BC@MEMJKKEL@info?5?3?5?$CFs?5error?$AN?6?$AA@", target = 0x00496440 },
+  { offset = 0x07B, type = "REL32", symbol = "?ArchiveTrace@@YAXPBDZZ", target = 0x00441C80 },
+  { offset = 0x088, type = "REL32", symbol = "_free", target = 0x0045FC3B },
+  { offset = 0x0D2, type = "DIR32", symbol = "?g_ArchiveCipherRules@@3PAUArchiveCipherRule@@A", target = 0x004A3480, addend = 8 },
+  { offset = 0x0D9, type = "DIR32", symbol = "?g_ArchiveCipherRules@@3PAUArchiveCipherRule@@A", target = 0x004A3480, addend = 4 },
+  { offset = 0x0E3, type = "DIR32", symbol = "?g_ArchiveCipherRules@@3PAUArchiveCipherRule@@A", target = 0x004A3480, addend = 1 },
+  { offset = 0x0E9, type = "DIR32", symbol = "?g_ArchiveCipherRules@@3PAUArchiveCipherRule@@A", target = 0x004A3480 },
+  { offset = 0x0F2, type = "REL32", symbol = "?ScatterXorBlocks@@YGPAEPAEHEEHH@Z", target = 0x004581C0 },
+  { offset = 0x106, type = "REL32", symbol = "?DecompressArchiveData@@YGPAEIPAEH0@Z", target = 0x004426C0 },
+  { offset = 0x11C, type = "REL32", symbol = "_free", target = 0x0045FC3B },
+]

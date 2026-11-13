@@ -10,13 +10,14 @@ references to its interior.
 | `FindArchiveEntry` | 0x004418D0..0x00441904 | 53 | Exact |
 | `LoadResourceFile` | 0x00458400..0x004585D1 | 466 | Exact |
 | `WriteWholeFile` | 0x00458670..0x00458798 | 297 | Exact |
-| `ReadArchivedFile` | 0x00441760..0x0044188B | 300 | Source present; non-exact312-byte candidate |
+| `ReadArchivedFile` | 0x00441760..0x0044188B | 300 | **Exact 300/300** |
 | `LeaveRuntimeCriticalSection` | 0x0042B700..0x0042B724 | 37 | Source present; one SIB-byte difference |
 
 The loader's16 reviewed callers include animation, gameplay, UI and replay
 paths. Its custom archive state, cipher-table integration, trace messages and
 shared game critical-section protocol support authored-game classification.
-The three exact functions add816 owned bytes through cold linked-PE proofs.
+The four exact functions in this resource group account for 1,116 owned
+bytes through independent cold linked-PE proofs.
 
 ## Resource loader
 
@@ -83,13 +84,27 @@ to CRT0x004616F8. It remains a real out-of-line dependency of extraction.
 
 The maintained extractor rejects a null stream, finds the entry, reuses a
 destination only for equal packed/unpacked size, otherwise allocates packed
-storage, seeks and reads. It computes an8-bit checksum of the stored entry
-name, selects one of eight cipher rules, calls ScatterXorBlocks and optionally
-decompresses. Its observed failure/success free conditions are preserved,
-including freeing a non-null reused destination on failure. It remains
-non-exact: with the real decoder visible, current312-byte code differs from
-the300-byte target in branch placement, alignment and register allocation. Size-favoring and default Ob2
-probes did not close it; no cropped or masked comparison is credited.
+storage, then calls the stream's virtual Seek and Read. It computes an 8-bit
+checksum of the entry's stored name, selects one of eight cipher rules, calls
+ScatterXorBlocks and optionally invokes the complete archive decompressor.
+Its original failure/success free conditions remain unchanged, including
+freeing a non-null reused destination on failure. **This 300-byte owner is
+now strict exact**. Initial conventional nested source under genuine `/GL`
+was 312 bytes because the compiler placed the shared failure cleanup after
+the entire checksum/decode success body, expanding its forward short branches.
+
+Moving the original failure join *before* the checksum/decode body in ordinary
+C++ restores the native short branches and the two natural interior alignment
+instructions (a 1-byte NOP at `0x4417FF` and 3-byte LEA ECX,[ECX] at
+`0x44180D`). It emits the complete **300/300 native bytes, 127 instructions,
+9 calls and all 12 separately reviewed fields** in a bounded VC9 `/GL`
+producer using the real `ArchiveLookup.cpp`, `ArchiveDecompress.cpp`,
+`ByteCipher.cpp` and a separate dynamic archive caller. All 12 fields bind
+real targets: lookup, allocator, native error format, trace, two frees,
+indexed cipher-rule fields at `0x4A3480` (+0/+1/+4/+8), cipher call and
+archive decompression. The strict linked PE/MAP/PDB primary-TU replay reports
+**zero byte differences**. No target instructions, manual register moves or
+field exceptions are patched into source.
 
 The generic unlock source uses the runtime/index private convention generated
 naturally from ordinary stdcall. Its37-byte candidate has one different SIB
@@ -98,7 +113,7 @@ no exact credit. No runtime header or previous canonical source was changed.
 
 ## Independent bindings and cold proof
 
-`config/match-units.toml` records all66 independently reviewed fields:
+`config/match-units.toml` now records 78 independently reviewed fields across the four exact resource-family units:
 36 for loading,29 for writing and one for lookup. They include MainRuntime
 root0x004C3280 with flags+0x590, section2+0x840 and depth2+0x932; archive root
 0x004C9680 with count+4; reviewed kernel32 IAT cells; CRT strrchr/stricmp/malloc;
@@ -106,12 +121,12 @@ the trace at0x00459BC0; extraction at0x00441760; unlock at0x0042B700; and the
 observed format-string cells. Target instruction/reference review and literal
 reads preceded these declarations.
 
-Three cold families keep each accepted public PDB contribution in its own
+Four cold families keep each accepted public PDB contribution in its own
 primary TU. Profile is pinned VC9 RTM `/TP /O2 /Ob1 /Gy /MT /Isrc /GL`.
 Receipts cover all primary/support source, headers, historical tools, producers
 and PE/MAP/PDB identities. Complete byte replay reports zero differences for
-all three units. Only these new canonical units were replayed; previous20
-proofs were not replayed.
+all four units. Only the newly changed `read-archived-file` and its affected exact downstream
+producer units were replayed; no full-project cold replay was run.
 
 Unknown archive owners remain represented by independent caller contexts.
 Allowing only the game-global caller lets LTCG specialize extraction/lookup
@@ -139,3 +154,13 @@ scripts/repo-python scripts/replay-exact-units.py \
 
 Loader, writer and lookup canonical receipts use separate
 `build/match-linked/` contexts declared in `config/match-units.toml`.
+
+### Replaying the extraction owner only
+
+```bash
+scripts/repo-python scripts/replay-exact-units.py \
+  --unit read-archived-file --unit load-resource-file --unit find-archive-entry
+```
+
+Its strict linked manifest, including all indexed cipher-rule references, is
+`units.read-archived-file` in `config/match-units.toml`.
