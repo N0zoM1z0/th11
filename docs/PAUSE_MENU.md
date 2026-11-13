@@ -87,8 +87,9 @@ These bodies support the large owner and have no independent acceptance units:
 
 - 42C880/72 clears gameplay flag10, queues sound command7 except stage6 before
 frame300, then restores saved scale2D8/audio200. One call/seven fields, eight CC.
-- 42F380/70 has67 reachable bytes plus three loop-alignment bytes, one lookup/two
-fields and ten CC. It sends event6 to root and related VMs when marker18 is0.
+- 42F380/70 `SignalPauseMenuChild` is now a strict exact unit:67 reachable
+bytes plus three loop-alignment bytes,22 instructions and two reviewed fields.
+It sends event6 to root and related VMs when marker18 is0.
 - 435FC0/18 guards null, destroys replay contents435C50, then invokes operator
   delete45FD49. It is not a direct free. Two calls/fields, fourteen CC.
 
@@ -97,6 +98,27 @@ At the pause checkpoint,42D9D0/42E6B0 still lacked source. The later
 remains source-open with an unreviewed3179-byte default. The call graph remains
 incomplete. Original TU, nominal classes, private ABI,
 native-product closure and runtime behavior remain unproved.
+
+## Exact event6 helper (2026-11-13)
+
+`SignalPauseMenuChild` at `0x42F380..0x42F3C5` now replays **70/70 bytes**
+exactly. The original owner has 67 reachable code bytes, three loop-alignment
+bytes,22 decoded instructions, a plain RET, and two reviewed address fields:
+DIR32 `+0x04` to `g_RenderBatch` (`0x4C3268`) and REL32 `+0x0A` to the exact
+`FindAnimationVmById` (`0x4561E0`).
+
+The key source expression materializes `AnimationVmId localId(id.value)` before
+calling the finder. Passing the reference directly made VC9 keep the incoming
+pointer in EAX and load the value into ECX, then use EDX for event6. The local
+value form naturally recovers the native EAX ID, EDX renderer and ECX event
+register schedule. No inline assembly or byte patch is used.
+
+The canonical `signal-pause-menu-child` unit supplies two independent dynamic
+ID arguments and the real `StageMesh.cpp`, `SecondaryActorAnimation.cpp`, and
+`stage-mesh-context.cpp` producers. Its unique primary-TU PDB contribution is
+70 bytes; both fields replay and the full byte difference count is zero. The
+three real menu callers remain covered by the reviewed boundary. Original
+class/TU attribution and runtime behavior are still unclaimed.
 
 ## Pause-checkpoint compiler evidence
 
@@ -125,8 +147,9 @@ independent acceptance units. The shared child finder remains76/native70 with
 41 differences and script stack/RET4 versus native EBX/plain RET. Two real
 large callers still lack source.
 
-No canonical exact dependency changed. Use the public pause recipe and the
-current work in [RE_HANDOFF](RE_HANDOFF.md) when resuming.
+The `signal-pause-menu-child` leaf is now canonical exact and has its own
+selected cold-replay receipt. Use the public pause recipe and the current work
+in [RE_HANDOFF](RE_HANDOFF.md) when resuming.
 
 The return-temporary control is concrete: an inline `SignalChild` wrapper reused
 one hidden result slot for all seven calls, producing frame4C/3041 differences.

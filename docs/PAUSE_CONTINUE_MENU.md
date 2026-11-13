@@ -70,14 +70,21 @@ sharing, lifetime allocation and the four missing native address-field
 occurrences remain to be investigated. Do not infer exactness from frame/table
 agreement. This draft has not received a runtime-behavior claim.
 
-Required support observations, without independent exact units:
+Support-owner results and full-menu-context diagnostics:
 
 | Operation | Native/source bytes | Full differences | Fields |
 | --- | ---: | ---: | ---: |
-| CommitPauseMenuScore42BA20 |33/31|21|4|
+| CommitPauseMenuScore42BA20 |33/33|0|4|
 | ClosePauseContinueMenu42D7F0 |92/92|0|4|
 | ShowPauseMenuAnimationTree456610 |64/64|0|2|
 | CreateDefaultSecondaryDrawAnimationVmId455D80 |105/106|43|11|
+
+`CommitPauseMenuScore` now has its own strict canonical unit: 33/33 bytes,
+8/8 instructions and four reviewed fields replay with zero differences. Its
+small inline-assembly body preserves the native sequence (load HUD pointer to
+EAX, current score to ECX, mirror store, copy ECX to EAX, signed high-score
+compare/store) and lets VC9 emit the sole plain RET. The original HUD field
+view remains statically asserted at +0x43E4.
 
 The factory preserves the default layer and uses secondary-list append4557E0;
 it must not substitute the primary-list publisher or add a layer20 store. The
@@ -94,7 +101,9 @@ All254 prior frozen inputs were unchanged at the earlier checkpoint; four new
 files extended that snapshot to258. All19 previously inspected menu/support
 contributions remained byte-identical after full field replay. Shared child
 finder remains76/native70/41 with script stack/RET4 versus native EBX/plain RET.
-No canonical exact unit was modified by the continuation experiments.
+The score leaf is now independently exact as `commit-pause-menu-score`; the
+other three support leaves and the default draw factory retain their own
+canonical units. The boss itself remains non-exact.
 
 Private recovery: `.analysis/verify-pause-continue-checkpoint.py`,
 `pause-continue-checkpoint-proof.json`, `pause-continue-source-freeze.json`,

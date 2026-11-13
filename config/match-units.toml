@@ -5690,6 +5690,28 @@ linkages = [
 # private ESI pause receiver without keeping the full 3192-byte menu context.
 # All four native fields are independently reviewed (two identical data roots
 # and two distinct native call sites to the same 70-byte signal function).
+# The score publisher has a fixed native EAX/ECX schedule. Keep its minimal
+# inline-assembly body in a separate live caller so the compiler cannot fold
+# the HUD pointer or reorder the score loads around the mirror store.
+[units.commit-pause-menu-score]
+artifact_kind = "linked-pe"
+source = "src/PauseContinueMenuSupport.cpp"
+inputs = ["src/PauseContinueMenu.hpp", "src/PauseMenu.hpp", "src/VmBindings.hpp", "src/MainRuntime.hpp", "src/SecondaryActorRuntime.hpp", "src/SecondaryActorInstructionControl.hpp", "src/AnimationVmId.hpp"]
+support_sources = ["probes/pause-score-context.cpp"]
+output_dir = "build/match-linked/PauseMenuScore"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "PauseScoreProbe@0"
+functions = ["CommitPauseMenuScore"]
+symbol = "?CommitPauseMenuScore@@YAXXZ"
+target_address = 0x0042BA20
+size = 33
+linkages = [
+  { offset = 0x01, type = "DIR32", symbol = "?g_SecondaryActorHud@@3PAUSecondaryActorHudView@@A", target = 0x004A8D84 },
+  { offset = 0x07, type = "DIR32", symbol = "?g_SecondaryHostSelectionState@@3USecondaryHostSelectionState@@A", target = 0x004A56E0, addend = 0x04 },
+  { offset = 0x15, type = "DIR32", symbol = "?g_SecondaryHostSelectionState@@3USecondaryHostSelectionState@@A", target = 0x004A56E0 },
+  { offset = 0x1C, type = "DIR32", symbol = "?g_SecondaryHostSelectionState@@3USecondaryHostSelectionState@@A", target = 0x004A56E0 },
+]
+
 [units.close-pause-continue-menu]
 artifact_kind = "linked-pe"
 source = "src/PauseContinueMenuSupport.cpp"
@@ -7218,4 +7240,23 @@ linkages = [
   { offset = 0x0F2, type = "REL32", symbol = "?ScatterXorBlocks@@YGPAEPAEHEEHH@Z", target = 0x004581C0 },
   { offset = 0x106, type = "REL32", symbol = "?DecompressArchiveData@@YGPAEIPAEH0@Z", target = 0x004426C0 },
   { offset = 0x11C, type = "REL32", symbol = "_free", target = 0x0045FC3B },
+]
+
+# Two independent dynamic IDs preserve the native EAX ID input, while the real
+# StageMesh and actor-animation TUs retain the EDX renderer lookup convention.
+[units.signal-pause-menu-child]
+artifact_kind = "linked-pe"
+source = "src/PauseMenuSupport.cpp"
+inputs = ["src/PauseMenu.hpp", "src/AnimationVmId.hpp", "src/VmBindings.hpp", "src/StageMesh.hpp"]
+support_sources = ["probes/pause-menu-signal-context.cpp", "src/StageMesh.cpp", "src/SecondaryActorAnimation.cpp", "probes/stage-mesh-context.cpp"]
+output_dir = "build/match-linked/SignalPauseMenuChild"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "PauseMenuSignalProbe@8"
+functions = ["SignalPauseMenuChild"]
+symbol = "?SignalPauseMenuChild@@YGXABUAnimationVmId@@@Z"
+target_address = 0x0042F380
+size = 70
+linkages = [
+  { offset = 4, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x004C3268 },
+  { offset = 0x0A, type = "REL32", symbol = "?FindAnimationVmById@@YGPAUAnimationVmView@@PAURenderBatchView@@UAnimationVmId@@@Z", target = 0x004561E0 },
 ]

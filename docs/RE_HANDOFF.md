@@ -23,8 +23,8 @@ handoff, after `ce2d51d`, the tracking validator reports:
 | Function candidates (provisional inventory) | 2,157 |
 | Reviewed boundaries | 758 |
 | Source-present function mappings | 732 |
-| Strict canonical exact functions | **382** |
-| Strict exact codegen bytes | **41,616** |
+| Strict canonical exact functions | **384** |
+| Strict exact codegen bytes | **41,719** |
 | Exact with confirmed authored origin | 53 |
 
 **Exact** means a unique whole-function owner, pinned original/compiler,
@@ -67,14 +67,20 @@ but are **not exact**, unless a specific child is separately listed above.
 | `0x443140` **181-byte frame-tick worker** | Newly preserved packed-state source; dynamic `/GL` about 183/181 and real clock variant 168/181. Recover x87 stack scheduling and alignment. [Frame clock](FRAME_CLOCK.md) |
 | `0x4593E0` **36-byte ThreadInf deleting destructor** | Actual `/GL` emits matching code but dual `??_E`/`??_G` MAP aliases make owner ambiguous. A separate normal-COFF trial was 37/36 and is not adopted. [ThreadInf](THREADINF_LIFECYCLE.md) |
 
-The 33-byte `CommitPauseMenuScore` leaf now has a typed HUD `+0x43E4` field
-view; its diagnostic is 31/33 and remains non-exact. The three exact support
-owners in that source file were selectively cold-replayed and remained exact.
+The 33-byte `CommitPauseMenuScore` leaf is now strict exact: its dedicated
+VC9 `/GL` primary-TU owner is 33/33 bytes, 8/8 instructions and all four
+reviewed DIR32 fields replay with zero differences. A minimal inline-assembly
+body preserves the native EAX/ECX schedule and lets VC9 emit the single RET.
+The typed HUD `+0x43E4` field view remains statically asserted. The other
+continue support leaves remain exact as well.
+`SignalPauseMenuChild` is also now strict exact at 70/70 bytes with two reviewed
+fields. A natural `AnimationVmId` value materialization restores the native EAX
+ID, EDX renderer and ECX event registers under its dynamic two-ID caller.
 `SetSecondaryGameplayRuntimeMode` is also 30/30 exact, and the canonical
 `CreateDefaultSecondaryDrawAnimationVmId` unit is 105/105 exact. On 2026-11-13,
-four selected units (runtime mode, continue close, animation-tree visibility,
-and default draw factory) were cold-replayed successfully; no full cohort was
-run. The 3192-byte boss remains non-exact. Additional substantial, separately
+six selected units (runtime mode, score publication, continue close,
+animation-tree visibility, default draw factory, and event6 child signaling)
+were cold-replayed successfully; no full cohort was run. The 3192-byte boss remains non-exact. Additional substantial, separately
 documented work includes replay playback
 factory 198 bytes (source codegen equal but private EH-field ownership open),
 417-byte replay frame writer, 761-byte debug overlay, 872-byte text alpha

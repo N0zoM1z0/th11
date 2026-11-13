@@ -14,7 +14,8 @@ void __stdcall ResumePauseMenu(PauseMenuView *self)
 
 void __stdcall SignalPauseMenuChild(const AnimationVmId &id)
 {
-    AnimationVmView *vm = FindAnimationVmById(g_RenderBatch, id);
+    AnimationVmId localId(id.value);
+    AnimationVmView *vm = FindAnimationVmById(g_RenderBatch, localId);
     if (vm)
     {
         reinterpret_cast<SecondaryActorAnimationView *>(vm)->event = 6;

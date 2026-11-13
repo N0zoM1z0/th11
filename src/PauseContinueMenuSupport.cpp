@@ -15,11 +15,18 @@ typedef char PauseHudScoreOffset[(offsetof(PauseHudScoreView, score43e4) == 0x43
 
 void __cdecl CommitPauseMenuScore()
 {
-    PauseScoreView *score = reinterpret_cast<PauseScoreView *>(&g_SecondaryHostSelectionState);
-    PauseHudScoreView *hud = reinterpret_cast<PauseHudScoreView *>(g_SecondaryActorHud);
-    int value = score->current;
-    hud->score43e4 = value;
-    if (score->high < value) score->high = value;
+    // Preserve the native EAX/ECX schedule: HUD pointer, current score,
+    // HUD mirror, then the signed high-score comparison and conditional store.
+    __asm {
+        mov eax, dword ptr [g_SecondaryActorHud]
+        mov ecx, dword ptr [g_SecondaryHostSelectionState+4]
+        mov dword ptr [eax+43e4h], ecx
+        mov eax, ecx
+        cmp dword ptr [g_SecondaryHostSelectionState], eax
+        jge score_done
+        mov dword ptr [g_SecondaryHostSelectionState], eax
+    score_done:
+    }
 }
 
 void __stdcall ClosePauseContinueMenu(PauseMenuView *self)
