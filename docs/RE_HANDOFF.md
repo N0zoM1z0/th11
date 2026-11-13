@@ -57,8 +57,8 @@ but are **not exact**, unless a specific child is separately listed above.
 | --- | --- |
 | `0x4356E0` **1,380-byte secondary replay initializer** | Scoped 1247/1380 after restoring selected-stage cleanup; recover private stream/constructor registers. [Replay](SECONDARY_PATTERN.md) |
 | `0x4396C0` **561-byte title destructor** | 561-byte real-context candidate, still 231 positional nonaddress differences. Investigate actual record destruction and chain lock scope. [Title](TITLE_MENU_LIFECYCLE.md) |
-| `0x435C50` **429-byte replay record destructor** | Complete 429-byte size, 114 instructions/14 calls; only six ECX/EDX argument-order bytes differ. [Record lifetime](REPLAY_RECORD_LIFECYCLE.md) |
-| `0x42D9D0` **3,192-byte continue menu** | 3172/3192 scoped 63-support-TU candidate; 0x58 vs 0x54 stack and state-13 lifetime. Retained expensive diagnostic cache. [Continue](PAUSE_CONTINUE_MENU.md) |
+| `0x435C50` **429-byte replay record destructor** | Complete 429/429-byte, 114-instruction/14-call candidate; six bytes are the order of independent `ECX=element` / `EDX=manager` moves at +A8/+AA, +F7/+F9 and +143/+145. Manager-first and noinline variants did not improve it. [Record lifetime](REPLAY_RECORD_LIFECYCLE.md) |
+| `0x42D9D0` **3,192-byte continue menu** | Best call-preserving link remains 3172/3192, 88/88 calls and 15/15 RET4 paths, but frame is 0x54 vs native 0x58. Two branch-specific result locals/array restore 0x58 but fall to 3076/3192, 85 calls and 14 returns. Recover the distinct ESP+0x20/+0x14 hidden-result lifetimes without losing calls. [Continue](PAUSE_CONTINUE_MENU.md) |
 | `0x441910` **336-byte THA1 directory loader** | Complete 15-call source, scoped 380/336; native private header decode/stack scheduling. [Directory](PBG_DIRECTORY_LOADER.md) |
 | `0x441A60` **363-byte directory entry parser** | Complete `new[]`, ctor/dtor, double name scans and signed 4-byte alignment; 341/363 scoped. [Directory](PBG_DIRECTORY_LOADER.md) |
 | `0x4421E0` / `0x4422C0` **218/202-byte resource APIs** | Source complete; normal 195/183, full real `/GL` 172/165. Resolve EH owner and unoptimized local file lifetimes. [Pbg lookup](PBG_RESOURCE_LOOKUP.md) |
@@ -67,6 +67,9 @@ but are **not exact**, unless a specific child is separately listed above.
 | `0x443140` **181-byte frame-tick worker** | Newly preserved packed-state source; dynamic `/GL` about 183/181 and real clock variant 168/181. Recover x87 stack scheduling and alignment. [Frame clock](FRAME_CLOCK.md) |
 | `0x4593E0` **36-byte ThreadInf deleting destructor** | Actual `/GL` emits matching code but dual `??_E`/`??_G` MAP aliases make owner ambiguous. A separate normal-COFF trial was 37/36 and is not adopted. [ThreadInf](THREADINF_LIFECYCLE.md) |
 
+The 33-byte `CommitPauseMenuScore` leaf now has a typed HUD `+0x43E4` field
+view; its diagnostic is 31/33 and remains non-exact. The three exact support
+owners in that source file were selectively cold-replayed and remained exact.
 Additional substantial, separately documented work includes replay playback
 factory 198 bytes (source codegen equal but private EH-field ownership open),
 417-byte replay frame writer, 761-byte debug overlay, 872-byte text alpha

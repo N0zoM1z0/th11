@@ -5,13 +5,20 @@
 namespace
 {
 struct PauseScoreView { int high, current; };
+struct PauseHudScoreView
+{
+    unsigned char unknown000[0x43e4];
+    int score43e4;
+};
+typedef char PauseHudScoreOffset[(offsetof(PauseHudScoreView, score43e4) == 0x43e4) ? 1 : -1];
 }
 
 void __cdecl CommitPauseMenuScore()
 {
     PauseScoreView *score = reinterpret_cast<PauseScoreView *>(&g_SecondaryHostSelectionState);
+    PauseHudScoreView *hud = reinterpret_cast<PauseHudScoreView *>(g_SecondaryActorHud);
     int value = score->current;
-    *reinterpret_cast<int *>(reinterpret_cast<unsigned char *>(g_SecondaryActorHud) + 0x43e4) = value;
+    hud->score43e4 = value;
     if (score->high < value) score->high = value;
 }
 

@@ -80,8 +80,9 @@ Required support observations, without independent exact units:
 
 The factory preserves the default layer and uses secondary-list append4557E0;
 it must not substitute the primary-list publisher or add a layer20 store.
-Close restores scale but does not restore pause's saved audio200. Score fields
-are host-selection-state0/4, not an unrelated actor-score global.
+Close restores scale but does not restore pause's saved audio200. The score
+pair is host-selection-state0/4 (best/current), not the unrelated actor-score
+global; its HUD mirror is the field at HUD+43E4.
 
 All254 prior frozen inputs are unchanged; four new files extend to258. All19
 previously inspected menu/support contributions remain byte-identical after
@@ -250,3 +251,49 @@ Oracle `show-pause-menu-animation-tree` accepted the full 64 bytes;
 receipt `.analysis/show-pause-menu-animation-tree-strict-20261112.log`.
 This exact leaf is separate from the 92-byte close helper and the
 still-non-exact 3192-byte continuation owner.
+
+
+## 33-byte pause score commit field view (2026-11-13)
+
+Direct original-PE review of `CommitPauseMenuScore` at `0x42BA20` confirms
+this exact sequence: load the HUD pointer from `0x4A8D84`, load the current
+score from `0x4A56E4`, store it at HUD `+0x43E4`, copy the score into EAX,
+compare against the best score at `0x4A56E0`, and update the best score only
+when the current score is greater. The native owner is 33 bytes with four
+address fields and four call sites across the continuation and game-over menus.
+
+`PauseContinueMenuSupport.cpp` now represents the HUD destination with a
+local `PauseHudScoreView` and a compile-time assertion for `score43e4` at
+`+0x43E4`; this replaces the untyped pointer arithmetic without changing the
+observed layout. The current VC9 `/GL` diagnostic remains **31/33 bytes** with
+seven non-address differences and four decoded fields. It loads the current
+score before the HUD pointer, unlike the native pointer-first sequence. A
+volatile HUD-pointer experiment restores the first three native instructions
+but reloads the current score after the store (36 bytes, six non-address
+differences); neither candidate is exact.
+
+The source change was followed by selected cold replays of all exact owners in
+the same source file: `close-pause-continue-menu` (92/92),
+`show-pause-menu-animation-tree` (64/64), and
+`create-default-secondary-draw-animation-vm-id` (105/105). All three retained
+unique public primary-TU ownership, exhaustive reviewed fields and zero byte
+differences. The score commit itself remains source-present and non-exact.
+
+## Branch-specific hidden-result storage experiments (2026-11-13)
+
+The native state-13 factory call at `0x42DB3F` is shared, but the practice and
+normal branches select different hidden-result storage before reaching it:
+`ESP+0x20` and `ESP+0x14`, respectively. The current single-result source keeps
+all **88/88 calls** and **15/15 RET4 paths**, but its best scoped 63-support
+link remains **3172/3192 bytes** with a `0x54` frame rather than the native
+`0x58` frame.
+
+Two branch-specific `AnimationVmId` locals and an equivalent two-element
+array both restore the `0x58` frame, but VC9 produces the same **3076/3192-byte**
+owner with only **85/88 calls** and **14/15 RET4 paths**. The missing call
+parity includes one `ClearSecondaryProjectileHit` and one
+`SignalSecondaryAnimationEvent`; the missing return also loses one security
+cookie check. These are worse complete-owner candidates and were not adopted.
+The maintained shared-call source remains the best call/return-preserving
+version. The next step is to recover the two native result lifetimes without
+sacrificing those call sites and epilogues.
