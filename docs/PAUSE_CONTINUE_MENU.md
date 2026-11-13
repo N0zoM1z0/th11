@@ -3,13 +3,15 @@
 The full state machine remains source-present and non-exact; both its 365-byte
 `InsertPauseContinueScore` and 380-byte `PreparePauseContinueRecords`
 dependencies are now independently exact.
-The best tracked 63-support VC9 `/GL` diagnostic is 3172/3192 bytes, with 160/162 address
-fields, 88/88 calls, 15/15 RET4 paths, a 0x54/0x58 frame and 2767 full byte
-differences after field replay. The real-caller-expanded candidate is weaker
-(3128/3192 bytes, 159/162 fields, 86/88 calls and 14/15 returns). Separate
-narrow dynamic-helper experiments reached 3192- and 3196-byte extents, but
-they do not represent the full caller set and remain non-exact. None replaces
-the tracked 63-support measurement.
+The best focused 63-support VC9 `/GL` diagnostic is now **3184/3192 bytes**,
+with **162/162 address fields**, **88/88 calls**, **15/15 RET4 paths**, a
+0x58-byte stack frame and **2008 non-address byte differences** after field
+replay. This build compiles the boss with `/Oy` and uses distinct branch-local
+hidden result slots passed in ESI. It is still non-exact: the native uses EBP
+as its menu receiver with an ESP-relative frame, while this candidate uses an
+EBP frame and EBX receiver. The last eight bytes and remaining codegen
+scheduling differences are open. Older 3172/3192, 3128/3192 and narrow
+3192/3196 diagnostics below are historical experiments, not the current best.
 
 ## Target and source scope
 
@@ -127,23 +129,26 @@ portability are unproved.
 
 ## Continued boss code-generation recovery (2026-11-13)
 
-The best tracked 63-support VC9 `/GL` owner remains **3172/3192 bytes** with
-**160/162 reviewed fields**, **88/88 calls**, **15/15 RET4 paths** and a
-**0x54 frame** against native **0x58**. After full field replay it still has
-**2767 differing bytes**; it is non-exact. The inventory row at
-`0x42D9D0` records this current measurement. The real-caller-expanded
-candidate is 3128/3192 bytes with 159 fields, 86 calls and 14 returns. Separate
-narrow dynamic-helper diagnostics reached 3192/3196-byte extents, but omit the
-full caller set and remain non-exact; matching extent is not a codegen proof.
+The best focused 63-support VC9 `/GL` owner is **3184/3192 bytes** with
+**162/162 reviewed fields**, **88/88 calls**, **15/15 RET4 paths**, a **0x58-byte
+frame**, and **2008 non-address byte differences** after field replay. The
+candidate is non-exact. It uses `/Oy`, retains the complete call/return and
+field inventories, and restores separate branch-local factory result slots.
+The native function uses EBP as its menu receiver and keeps the frame
+ESP-relative; this candidate still uses EBP as a frame pointer and EBX as the
+menu receiver. Its PDB owner extent is eight bytes short of the native 3192-byte
+span. The inventory row at `0x42D9D0` remains unclassified/non-exact. Older
+3172/3192, 3128/3192 and narrow 3192/3196 diagnostics remain historical only.
 
 The maintained case-13 source preserves the native score comparison order
-(`CurrentScore() > *record`) and expresses the equivalent factory calls in a
-conditional result initializer so LTCG emits one shared factory call. It has
-not yet recovered the native hidden-result register/lifetime schedule:
-practice uses `ESI = ESP+0x20`, normal uses `ESI = ESP+0x14`, and both join at
-the single call at `0x42DB3F`. Attempts with explicit C++ result locals restore
-the larger frame but lose native call/return parity; hand-written inline-asm
-attempts pinned the wrong frame/registers and were not adopted.
+and uses distinct `practiceResult` and `normalResult` storage addresses in ESI
+for the two factory-result lifetimes. Both paths join at the single factory
+call corresponding to `0x42DB3F`; the factory returns its hidden-result
+storage pointer in EAX, which is then copied into the menu root. The exact
+native stack offsets (`ESP+0x20` and `ESP+0x14`) are not yet reproduced, but
+the candidate retains 88 calls, 15 RET4 exits and all 162 address fields.
+Further work must recover the native EBP/ESP frame schedule, the final eight
+bytes of owner extent, and the remaining 2008 non-address codegen differences.
 
 The record preparer's private entry ABI is now recovered: `0x42D850` receives
 the menu pointer in ESI, has no stack arguments and exits through two plain
@@ -152,13 +157,12 @@ VC9 body, and both the continuation and game-over callers now load ESI and
 call it directly. Its canonical normal-COFF unit is **380/380 bytes exact**
 with all **17/17** relocation fields reviewed.
 
-A focused full `/GL` boss context using these real private-ESI callers now
-retains **88/88 calls**, **15/15 RET4 paths** and all **162/162 address fields**.
-The owner remains **3172/3192 bytes**, but non-address byte differences fell
-from 2767 to **2380**. This is a concrete 387-byte improvement, not boss
-exactness. Continue with the missing 20-byte extent, native frame/hidden-result
-lifetimes and the remaining 2380 codegen differences; do not discard the
-private-ESI bridge or conflate the exact preparer leaf with the full menu.
+The focused `/GL` boss context now retains **88/88 calls**, **15/15 RET4 paths**
+and all **162/162 address fields**. With branch-local result slots and `/Oy`,
+the best owner is **3184/3192 bytes** with **2008 non-address byte
+differences**. This is a measurable improvement, not boss exactness. Continue
+with the EBP/ESP frame schedule, missing eight-byte extent and remaining codegen
+differences; do not conflate the exact preparer leaf with the full menu.
 
 The support leaves have since been independently closed: default draw factory
 `0x455D80` is **105/105 exact**, secondary append publisher `0x4557E0` is
@@ -251,14 +255,13 @@ trailing-space trim.
 
 Both source callers now issue the preparer call through inline assembly rather
 than pushing a C++ menu argument. A scoped 63-support VC9 `/GL` integration
-probe that links the exact preparer and insertion leaves retains **3172/3192**
-bytes in `UpdatePauseContinueMenu`, with **162/162 fields**, **88/88 calls**,
-**15/15 RET4 paths**, and **2297 non-field differences**. This is an improved
-boss diagnostic, not an exact result: the current caller loads ESI from its
-EBX menu register where native uses EBP, the frame remains `0x54` vs `0x58`,
-and branch-dependent hidden-result storage is still unresolved. The same
-scoped context emits the game-over owner at 3188/3208 bytes. No full cold replay
-was run.
+probe that links the exact preparer and insertion leaves now retains
+**3184/3192** bytes in `UpdatePauseContinueMenu`, with **162/162 fields**,
+**88/88 calls**, **15/15 RET4 paths**, and **2008 non-field differences**.
+The branch-local hidden result slots are passed in ESI. This remains non-exact:
+the candidate uses EBX for the menu receiver and an EBP frame, unlike the
+native EBP receiver/ESP-relative frame. The same scoped context emits the
+game-over owner independently. No full cold replay was run.
 
 ## Case-13 shared factory codegen experiment (2026-11-11)
 

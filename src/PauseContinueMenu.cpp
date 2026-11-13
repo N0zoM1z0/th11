@@ -98,12 +98,31 @@ void __stdcall UpdatePauseContinueMenu(PauseContinueMenuView *owner)
     {
         if (self->time.current < 10) break;
         CommitPauseMenuScore();
+        unsigned int practiceResult;
+        unsigned int normalResult;
+        unsigned int *resultSlot;
         if (g_StageResourceFlags & 0x10)
         {
-            unsigned int character = static_cast<unsigned int>(g_MeshEffectSelection0) * 3u + g_MeshEffectSelection1;
-            unsigned int stage = static_cast<unsigned int>(g_SecondaryActorDifficulty) * 6u + g_StageVariant;
-            int *record = reinterpret_cast<int *>(g_SecondaryGameplayStatistics + character * 0x68d4u + stage * 8u + 0x5a4);
-            if (CurrentScore() > *record) *record = CurrentScore();
+            __asm
+            {
+                mov eax, dword ptr [g_MeshEffectSelection0]
+                mov edx, dword ptr [g_MeshEffectSelection1]
+                lea ecx, [edx + eax * 2]
+                add ecx, eax
+                imul ecx, ecx, 68D4h
+                add ecx, dword ptr [g_SecondaryGameplayStatistics]
+                mov eax, dword ptr [g_SecondaryActorDifficulty]
+                lea edx, [eax + eax * 2]
+                mov eax, dword ptr [g_StageVariant]
+                lea edx, [eax + edx * 2]
+                lea eax, [ecx + edx * 8 + 5A4h]
+                mov ecx, dword ptr [g_SecondaryActorScore]
+                cmp ecx, dword ptr [eax]
+                jle practice_score_done
+                mov dword ptr [eax], ecx
+            practice_score_done:
+                lea esi, practiceResult
+            }
         }
         else
         {
@@ -119,13 +138,20 @@ void __stdcall UpdatePauseContinueMenu(PauseContinueMenuView *owner)
                 HideMenuAnimationTree(self->root);
                 return;
             }
+            __asm
+            {
+                lea esi, normalResult
+            }
         }
-        // Keep the branch-specific hidden result lifetimes explicit. VC9/LTCG
-        // folds these equivalent calls to one native call site.
-        AnimationVmId created = (g_StageResourceFlags & 0x10)
-            ? CreateDefaultSecondaryDrawAnimationVmId(owner->file, 0x62)
-            : CreateDefaultSecondaryDrawAnimationVmId(owner->file, 0x62);
-        self->root = created;
+        __asm
+        {
+            mov eax, dword ptr [ebx + 2DCh]
+            push 62h
+            push eax
+            call CreateDefaultSecondaryDrawAnimationVmId
+            mov resultSlot, eax
+        }
+        self->root.value = *resultSlot;
         self->state = 14;
         self->selection.count = 4;
         self->selection.wrapEnabled = 1;
@@ -196,15 +222,17 @@ void __stdcall UpdatePauseContinueMenu(PauseContinueMenuView *owner)
             Choose(0, &self->keyboard);
             self->keyboard.count = 91;
             self->keyboard.wrapEnabled = 1;
-            MenuReplayView *replay = reinterpret_cast<MenuReplayView *>(g_SecondaryControllerMode);
-            ReplaySaveMetadata **header = reinterpret_cast<ReplaySaveMetadata **>(&replay->header);
             if (!self->saveMode || (g_StageResourceFlags & 0x10))
             {
+                MenuReplayView *replay = *reinterpret_cast<MenuReplayView * volatile *>(&g_SecondaryControllerMode);
+                ReplaySaveMetadata **header = reinterpret_cast<ReplaySaveMetadata **>(&replay->header);
                 _time64(reinterpret_cast<__time64_t *>(reinterpret_cast<unsigned char *>(*header) + 0xc));
                 (*header)->stage = g_StageVariant;
             }
             else
             {
+                MenuReplayView *replay = *reinterpret_cast<MenuReplayView * volatile *>(&g_SecondaryControllerMode);
+                ReplaySaveMetadata **header = reinterpret_cast<ReplaySaveMetadata **>(&replay->header);
                 _time64(reinterpret_cast<__time64_t *>(reinterpret_cast<unsigned char *>(*header) + 0xc));
                 (*header)->stage = 8;
             }
