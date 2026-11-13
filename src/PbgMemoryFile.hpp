@@ -13,7 +13,7 @@ struct PbgMemoryFileView
     void Reset();
     PbgMemoryFileView *DestroyAndMaybeDelete(unsigned int flags);
     ~PbgMemoryFileView();
-    unsigned char Open(const char *filename);
+    unsigned char Open(const char *filename, const char *mode);
     unsigned int Read(void *destination, unsigned int length);
     unsigned int Tell() const;
     unsigned int Size() const;

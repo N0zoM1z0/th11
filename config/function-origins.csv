@@ -707,9 +707,9 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00442C20,unknown,PbgMemoryFile,indeterminate,unknown,pbg-memfile-origin-2026-11-13
 0x00442C50,unknown,PbgMemoryFile,indeterminate,unknown,pbg-memfile-origin-2026-11-13
 0x00442CA0,unknown,PbgMemoryFile,indeterminate,unknown,pbg-memfile-origin-2026-11-13
-0x00442CE0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00442CE0,unknown,PbgMemoryFile,indeterminate,unknown,pbg-memfile-open-read-origin-2026-11-13
 0x00442D10,unknown,PbgMemoryFile,indeterminate,unknown,pbg-memfile-origin-2026-11-13
-0x00442D40,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00442D40,unknown,PbgMemoryFile,indeterminate,unknown,pbg-memfile-open-read-origin-2026-11-13
 0x00442DA0,unknown,PbgMemoryFile,indeterminate,unknown,pbg-memfile-origin-2026-11-13
 0x00442DB0,unknown,PbgMemoryFile,indeterminate,unknown,pbg-memfile-origin-2026-11-13
 0x00442DC0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

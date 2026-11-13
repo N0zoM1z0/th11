@@ -723,3 +723,5 @@ DestroyPbgMemoryFile,0x00442CA0,function
 ResetPbgMemoryFile,0x00442D10,function
 TellPbgMemoryFile,0x00442DA0,function
 SizePbgMemoryFile,0x00442DB0,function
+OpenPbgMemoryFile,0x00442CE0,function
+ReadPbgMemoryFile,0x00442D40,function

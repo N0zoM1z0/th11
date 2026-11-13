@@ -32,3 +32,26 @@ Seek's native 109-byte owner returns success in AL and has three origin cases;
 initial natural source emits 119 bytes. These three are not credited as exact.
 The original source class/TU partition is unknown; compile-time codegen
 identity is not proof of whole-game runtime closure.
+
+## Exact 44-byte Open and 88-byte bounded Read (2026-11-13)
+
+Two more complete native MemFile owners are now strict exact. The **44-byte**
+Open member at `0x442CE0..0x442D0B` accepts **two stack arguments** (the
+filename and a mode string) and ends with `RET 8`; the original simply does
+not use the mode. An earlier `Open(filename)` declaration emitted `RET 4`
+and differed by one byte even though the entire remaining code matched.
+Declaring the genuine second source argument naturally restores **44/44
+bytes**. Its two reviewed REL32 fields target the real 218-byte
+`ReadPbgResourceByName` at `0x4421E0` and 202-byte
+`GetPbgResourceSizeByName` at `0x4422C0`, neither of which is claimed exact
+by association.
+
+The **88-byte** Read at `0x442D40..0x442D97` has two bounded `memcpy` call
+paths: copy the requested length if it fits, otherwise copy available bytes,
+then advance the current cursor and return the count. The source-level
+comparison `requested <= available` originally generated a reversed `CMP`
+plus `JA`. Expressing the same unsigned condition as
+`available >= requested` restores the native `CMP ESI,EBX`/`JB` order,
+recovering **88/88 bytes** without instruction patches. Two original REL32
+`memcpy` calls at offsets `+0x20` and `+0x3E` target `0x46D630`.
+Both canonical units strictly replay their entire body and all fields.

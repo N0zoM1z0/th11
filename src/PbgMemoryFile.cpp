@@ -61,8 +61,9 @@ void PbgMemoryFileView::Reset()
 }
 
 // Native 0x442CE0: load requested named resource and its uncompressed size.
-unsigned char PbgMemoryFileView::Open(const char *filename)
+unsigned char PbgMemoryFileView::Open(const char *filename, const char *mode)
 {
+    (void)mode;
     buffer = static_cast<unsigned char *>(ReadPbgResourceByName(filename));
     length = GetPbgResourceSizeByName(filename);
     cursor = buffer;
@@ -73,7 +74,7 @@ unsigned char PbgMemoryFileView::Open(const char *filename)
 unsigned int PbgMemoryFileView::Read(void *destination, unsigned int requested)
 {
     unsigned int available = static_cast<unsigned int>(buffer + length - cursor);
-    if (requested <= available)
+    if (available >= requested)
     {
         memcpy(destination, cursor, requested);
         cursor += requested;
