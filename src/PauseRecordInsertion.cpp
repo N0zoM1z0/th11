@@ -23,36 +23,71 @@ typedef char PauseHighScoreRecordCompletion[(offsetof(PauseHighScoreRecord, comp
 
 // Unnamed live globals observed at 004A573C and 004A8D80 respectively.
 extern unsigned char g_PauseRecordShotType;
+#pragma pack(push, 4)
 struct PauseRecordTimingView
 {
     unsigned char unknown000[0x24];
     double elapsed, limit;
 };
+#pragma pack(pop)
 extern PauseRecordTimingView *g_PauseRecordTiming;
 
 // 0042BA80: insert the current score in descending order, preserving records
 // below the insertion point and leaving the list unchanged if none qualifies.
 int __stdcall InsertPauseContinueScore(unsigned char *scoreBlock)
 {
-    PauseHighScoreRecord *records = reinterpret_cast<PauseHighScoreRecord *>(
-        scoreBlock + 0x10 + g_SecondaryActorDifficulty * 0x118);
-
     int place = 0;
-    while (place < 10 && records[place].score > g_SecondaryActorScore)
+    int *scan = reinterpret_cast<int *>(
+        scoreBlock + 0x10 + g_SecondaryActorDifficulty * 0x118);
+    do
+    {
+        if (*scan <= g_SecondaryActorScore)
+        {
+            if (place < 10)
+            {
+                int index = 9;
+                if (place < 9)
+                {
+                    do
+                    {
+                        unsigned char *source = scoreBlock + 0x10 +
+                            (index - 1 + g_SecondaryActorDifficulty * 10) * 0x1c;
+                        unsigned char *destination = scoreBlock + 0x10 +
+                            (index + g_SecondaryActorDifficulty * 10) * 0x1c;
+                        memcpy(destination, source, 0x1c);
+                        --index;
+                    } while (place < index);
+                }
+
+                *reinterpret_cast<int *>(scoreBlock + 0x10 +
+                    (place + g_SecondaryActorDifficulty * 10) * 0x1c) =
+                    g_SecondaryActorScore;
+                *reinterpret_cast<unsigned char *>(scoreBlock + 0x15 +
+                    (place + g_SecondaryActorDifficulty * 10) * 0x1c) =
+                    g_PauseRecordShotType;
+                *reinterpret_cast<unsigned char *>(scoreBlock + 0x14 +
+                    (place + g_SecondaryActorDifficulty * 10) * 0x1c) =
+                    static_cast<unsigned char>(g_StageVariant);
+                _time64(reinterpret_cast<__time64_t *>(scoreBlock + 0x20 +
+                    (place + g_SecondaryActorDifficulty * 10) * 0x1c));
+
+                int row = place + g_SecondaryActorDifficulty * 10;
+                unsigned char *name = scoreBlock + 0x16 + row * 0x1c;
+                memcpy(name, "        ", 9);
+                const float progress = static_cast<float>(
+                    g_PauseRecordTiming->elapsed / g_PauseRecordTiming->limit);
+                *reinterpret_cast<float *>(scoreBlock + 0x28 +
+                    (place + g_SecondaryActorDifficulty * 10) * 0x1c) =
+                    static_cast<float>(100.0 - progress * 100.0);
+                return place;
+            }
+            else
+            {
+                return -1;
+            }
+        }
         ++place;
-    if (place >= 10) return -1;
-
-    for (int index = 9; index > place; --index)
-        records[index] = records[index - 1];
-
-    PauseHighScoreRecord &entry = records[place];
-    entry.score = g_SecondaryActorScore;
-    entry.shot = g_PauseRecordShotType;
-    entry.stage = static_cast<unsigned char>(g_StageVariant);
-    _time64(&entry.timestamp);
-    memcpy(entry.name, "        ", 9);
-    const float progress = static_cast<float>(
-        g_PauseRecordTiming->elapsed / g_PauseRecordTiming->limit);
-    entry.completion = static_cast<float>(100.0 - progress * 100.0);
-    return place;
+        scan += 7;
+    } while (place < 10);
+    return -1;
 }

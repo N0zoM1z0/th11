@@ -200,6 +200,31 @@ and from 42E6B0. The insertion callee is also used by 43F802.
 Future work: investigate /GL codegen and the still non-exact 1856-byte replay
 writer436420 (see REPLAY_WRITING.md) without unrelated full-build validation.
 
+## Score-insertion raw-index reconstruction (2026-11-13)
+
+A fresh hash-attested Ghidra review/decompile of `0x42BA80` confirms that the
+native leaf does not retain one `PauseHighScoreRecord *` for the whole
+operation. It scans signed scores from the difficulty row, shifts seven DWORDs
+per 28-byte record, and re-evaluates `difficulty * 10 + place` for the score,
+shot, stage, timestamp, default name and completion writes. The source now
+expresses that raw-index flow and the native do/while scan explicitly. The
+nine-byte name copy is the eight-space literal at `0x495244` including NUL.
+
+The timing view now has four-byte packing: native x87 loads read doubles at
+`+0x24` and `+0x2C`; the prior default struct alignment incorrectly placed them
+at `+0x28` and `+0x30`. This layout correction is independently reflected in
+the compiled instruction operands.
+
+Focused VC9 normal-COFF build (`/O2 /Ob1 /Gy /MT /Isrc /EHsc`) now emits the
+full **365-byte** extent for `InsertPauseContinueScore`, versus the native
+365-byte span. The relocation-aware comparison matches **276/297 comparable
+bytes**; the remaining **21 byte differences** are concentrated at
+`+0x39..+0x4D`, where this compiler build merges the two `-1` exits and uses a
+jump/padding sequence instead of the native second return block and aligned
+loop entry. This is a substantial codegen improvement, **not exactness** and
+not an accepted replay receipt. The helper still has callers at `0x42D8A0` and
+`0x43F802`; both call sites remain in scope.
+
 ## Case-13 shared factory codegen experiment (2026-11-11)
 
 Native 42DA94..42DB55 has a common animation factory call at 42DB3F.
