@@ -230,3 +230,25 @@ in a dynamic chain context, but still differs in six argument-move bytes.
 A real chain-removal LTCG producer changes its owner to 370 bytes; a normal
 COFF chain-removal producer preserves the six-byte residual. These diagnostic
 probes make the remaining barriers reproducible.
+
+
+## Six-byte record-destructor caller scheduling follow-up (2026-11-13)
+
+The remaining six non-address bytes in the 429-byte `TitleMenuRecordView`
+destructor are now isolated to the order of two independent fastcall argument
+moves at its three `UnregisterChainElement` calls. The native sequence is
+`mov ecx, esi` (element), then `mov edx, edi` (manager), then the call to
+`0x457080`. The current complete `/GL` candidate emits the same two moves in
+the opposite order. `UnregisterChainElement` itself remains independently
+strict exact at 114 bytes with the reviewed ABI ECX=element, EDX=manager; this
+is caller scheduling, not evidence for a reversed callee signature.
+
+Three source-layout alternatives were tested with the genuine stage cleanup
+and stage-link producers. A manager-first helper changes the complete owner to
+429 bytes but grows the non-address difference count to 109; passing a manager
+reference reduces it to 417 bytes/112 instructions with 150 differences. A
+manager-slot-first helper preserves the original six-byte residual. Marking
+the exact callee `__declspec(noinline)` also leaves the six bytes unchanged.
+The maintained natural source remains 429/429 bytes, 114/114 instructions,
+14/14 calls and 38 decoded fields, but is **not exact**. No ABI declaration,
+register directive or machine-code patch was changed to hide the residual.
