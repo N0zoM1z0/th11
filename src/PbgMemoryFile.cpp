@@ -103,31 +103,35 @@ unsigned int PbgMemoryFileView::Size() const
 // original's result is AL-only (other EAX bits have no semantic meaning).
 unsigned char PbgMemoryFileView::Seek(int offset, unsigned int origin)
 {
-    if (origin == 0)
+    // The original compiler implements this as a three-way descending
+    // subtraction dispatch (SUB mode,0 / SUB mode,1 / SUB mode,1).
+    switch (origin)
     {
+    case 0:
         if (offset >= 0 && static_cast<unsigned int>(offset) < length)
         {
             cursor = buffer + offset;
             return 1;
         }
-    }
-    else if (origin == 1)
-    {
-        int remaining = static_cast<int>(buffer + length - cursor);
-        if (offset < remaining)
+        break;
+    case 1:
+        if (static_cast<int>(buffer + length - cursor) > offset)
         {
             cursor += offset;
             return 1;
         }
-    }
-    else if (origin == 2 && offset <= 0)
-    {
-        unsigned int distance = static_cast<unsigned int>(offset < 0 ? -offset : offset);
-        if (distance < length)
+        break;
+    case 2:
+        if (offset <= 0)
         {
-            cursor = buffer + length + offset;
-            return 1;
+            unsigned int distance = static_cast<unsigned int>(offset < 0 ? -offset : offset);
+            if (distance < length)
+            {
+                cursor = buffer + length + offset;
+                return 1;
+            }
         }
+        break;
     }
     return 0;
 }

@@ -55,3 +55,30 @@ plus `JA`. Expressing the same unsigned condition as
 recovering **88/88 bytes** without instruction patches. Two original REL32
 `memcpy` calls at offsets `+0x20` and `+0x3E` target `0x46D630`.
 Both canonical units strictly replay their entire body and all fields.
+
+## Full 109-byte Seek source and linked-code layout (2026-11-13)
+
+The native MemFile Seek owner at `0x442DC0..0x442E2C` includes all three
+position modes in a single 109-byte member with four returns and **no jump
+table or external call fields**. Absolute mode 0 accepts only a nonnegative
+offset strictly below stream length, relative mode 1 allows a signed offset
+strictly less than remaining bytes, and end mode 2 accepts only nonpositive
+offsets whose absolute magnitude is strictly less than the full length.
+All success paths report `AL=1` and failure reports `AL=0`; no compensating
+bounds validation beyond these original comparisons is inserted.
+
+The maintained source uses a normal three-way C++ `switch(origin)`. This
+recovers the target's original progressive `SUB EAX,0` / `SUB EAX,1` /
+`SUB EAX,1` mode dispatch; bounded VC9 normal-COFF comparison improves the
+original source's **10/109** matching positional nonfield bytes to **74/109**.
+The resulting complete candidate is **120/109 bytes**: the compiler still
+duplicates 11 bytes of relative-seek update/return code that the native
+shares between modes 1 and 2, and its branch targets/one return placement
+differ. Multiple natural `goto`/shared-cursor/branch-order variants have
+also been compiled and compared without restoring the missing shared native
+code block. The owner is therefore **source-present, nonexact**. Its ABI,
+original returns and independent byte differences are preserved for further
+work rather than cropping the function or relaxing Oracle comparison.
+
+The eight already exact MemFile owners in the same source file are cold
+replayed after this control-flow improvement, with no regression.

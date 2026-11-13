@@ -729,3 +729,4 @@ LaunchPbgChildProcess,0x00442E40,function
 DeletePbgWinResourceMemoryFile,0x00442F40,function
 DestroyPbgWinResourceMemoryFile,0x00442F90,function
 OpenPbgWinResourceMemoryFile,0x00442FD0,function
+SeekPbgMemoryFile,0x00442DC0,function

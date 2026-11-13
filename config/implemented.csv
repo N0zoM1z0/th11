@@ -728,3 +728,4 @@ LaunchPbgChildProcess
 DeletePbgWinResourceMemoryFile
 DestroyPbgWinResourceMemoryFile
 OpenPbgWinResourceMemoryFile
+SeekPbgMemoryFile
