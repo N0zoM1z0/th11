@@ -118,7 +118,11 @@ void __stdcall UpdatePauseGameOverMenu(PauseContinueMenuView *owner)
         }
         else
         {
-            PreparePauseContinueRecords(self);
+            __asm
+            {
+                mov esi, ebx
+                call PreparePauseContinueRecords
+            }
             SetStageTimer(&self->time, 0);
             if (!self->unknown1f8)
             {

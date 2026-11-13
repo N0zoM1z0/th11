@@ -25,8 +25,8 @@ commit ahead of `origin/main`. Regenerated `docs/PROGRESS.md` reports:
 | Function candidates (provisional inventory) | 2,157 |
 | Reviewed boundaries | 760 |
 | Source-present function mappings | 734 |
-| Canonical exact functions | **386** |
-| Canonical exact codegen bytes | **42,207** |
+| Canonical exact functions | **387** |
+| Canonical exact codegen bytes | **42,587** |
 | Exact with confirmed authored origin | 53 |
 
 Use `docs/PROGRESS.md` for the complete generated breakdown; do not copy these
@@ -63,7 +63,8 @@ but are **not exact**, unless a specific child is separately listed above.
 | `0x4356E0` **1,380-byte secondary replay initializer** | Scoped 1247/1380 after restoring selected-stage cleanup; recover private stream/constructor registers. [Replay](SECONDARY_PATTERN.md) |
 | `0x4396C0` **561-byte title destructor** | 561-byte real-context candidate, still 231 positional nonaddress differences. Investigate actual record destruction and chain lock scope. [Title](TITLE_MENU_LIFECYCLE.md) |
 | `0x435C50` **429-byte replay record destructor** | Complete 429/429-byte, 114-instruction/14-call candidate; six bytes are the order of independent `ECX=element` / `EDX=manager` moves at +A8/+AA, +F7/+F9 and +143/+145. Manager-first and noinline variants did not improve it. [Record lifetime](REPLAY_RECORD_LIFECYCLE.md) |
-| `0x42BA80` **365-byte score insertion leaf** | **365/365 exact**, all17 DIR32/REL32 fields reviewed, canonical normal-COFF unit `insert-pause-continue-score`. The 380-byte record preparer and 3192-byte boss remain open. [Continue](PAUSE_CONTINUE_MENU.md) |
+| `0x42BA80` **365-byte score insertion leaf** | **365/365 exact**, all17 DIR32/REL32 fields reviewed, canonical normal-COFF unit `insert-pause-continue-score`. [Continue](PAUSE_CONTINUE_MENU.md) |
+| `0x42D850` **380-byte record preparer** | **380/380 exact**, all17 DIR32/REL32 fields reviewed, canonical normal-COFF unit `prepare-pause-continue-records`; private ESI receiver recovered and both callers updated. Its 3192-byte boss remains open. [Continue](PAUSE_CONTINUE_MENU.md) |
 | `0x42D9D0` **3,192-byte continue menu** | Best tracked 63-support `/GL` diagnostic: 3172/3192 bytes, 160/162 fields, 88/88 calls, 15/15 RET4 paths, 0x54/0x58 frame and 2767 full byte differences after field replay. The real-caller-expanded candidate is 3128/3192 with 159 fields, 86 calls and 14 returns; narrow helper-context candidates at 3192/3196 bytes are not full-caller builds. Native case13 uses ESI result slots at ESP+0x20/+0x14; the maintained C++ still lowers to a different hidden-result register/lifetime schedule. The native record preparer also receives its menu in ESI, not as a stack argument. [Continue](PAUSE_CONTINUE_MENU.md) |
 | `0x441910` **336-byte THA1 directory loader** | Complete 15-call source, scoped 380/336; native private header decode/stack scheduling. [Directory](PBG_DIRECTORY_LOADER.md) |
 | `0x441A60` **363-byte directory entry parser** | Complete `new[]`, ctor/dtor, double name scans and signed 4-byte alignment; 341/363 scoped. [Directory](PBG_DIRECTORY_LOADER.md) |
@@ -105,7 +106,7 @@ The five-unit selected replay run for the new secondary append path passed:
 `create-default-secondary-draw-animation-vm-id`, and
 `reset-secondary-pattern-slot`. Earlier selected runs also covered the score,
 child signal, close/tree helpers and runtime-mode leaf. No full-cohort cold
-replay was run. The 365-byte score-insertion dependency is now exact; the 3192-byte continue boss and 380-byte record preparer remain non-exact.
+replay was run. The 365-byte score-insertion leaf and 380-byte record preparer are both exact. The 3192-byte continue boss now has a focused private-ESI `/GL` candidate at 3172/3192 bytes, 162/162 fields, 88/88 calls, 15/15 returns and 2380 non-address differences; it remains non-exact.
 
 The native original TU/class/library authorship of these recovered owners is
 not established. A local commit is a source checkpoint, not an Oracle receipt.

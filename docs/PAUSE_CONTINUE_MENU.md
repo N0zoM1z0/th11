@@ -1,7 +1,8 @@
 # Continue/game-over follow-up menu
 
-The full state machine remains source-present and non-exact; its 365-byte
-`InsertPauseContinueScore` dependency is now independently exact (365/365).
+The full state machine remains source-present and non-exact; both its 365-byte
+`InsertPauseContinueScore` and 380-byte `PreparePauseContinueRecords`
+dependencies are now independently exact.
 The best tracked 63-support VC9 `/GL` diagnostic is 3172/3192 bytes, with 160/162 address
 fields, 88/88 calls, 15/15 RET4 paths, a 0x54/0x58 frame and 2767 full byte
 differences after field replay. The real-caller-expanded candidate is weaker
@@ -117,9 +118,9 @@ canonical units. The boss itself remains non-exact.
 Private recovery: `.analysis/verify-pause-continue-checkpoint.py`,
 `pause-continue-checkpoint-proof.json`, `pause-continue-source-freeze.json`,
 `pause-continue-menu-proof.json`, target reviews and build/audit scripts/logs.
-These were retained by cleanup. The 380-byte record preparer, its 365-byte
-insertion callee and the 1856-byte writer have since gained source; all remain
-non-exact (see REPLAY_WRITING.md). The neighboring game-over menu at42E6B0 is
+These were retained by cleanup. The 380-byte record preparer and its 365-byte
+insertion callee now both have canonical exact proofs; the 1856-byte replay
+writer remains source-present/non-exact (see REPLAY_WRITING.md). The neighboring game-over menu at42E6B0 is
 separately reviewed at3208 bytes and remains source-present/non-exact; see
 PAUSE_GAME_OVER_MENU.md. Original class/TU, whole product, runtime and
 portability are unproved.
@@ -144,12 +145,20 @@ the single call at `0x42DB3F`. Attempts with explicit C++ result locals restore
 the larger frame but lose native call/return parity; hand-written inline-asm
 attempts pinned the wrong frame/registers and were not adopted.
 
-A second concrete ABI blocker is the record preparer at `0x42D850`. Native
-case 13 loads the menu pointer into ESI and calls the preparer without a stack
-argument. The current source-level `PreparePauseContinueRecords(self)` still
-lowers to a stack-argument call. The next agent should recover this private
-entry contract without forcing an EBP frame or disturbing the 88 calls and
-15 RET4 paths, then re-evaluate the two hidden-result slots.
+The record preparer's private entry ABI is now recovered: `0x42D850` receives
+the menu pointer in ESI, has no stack arguments and exits through two plain
+`RET`s. `src/PauseContinueRecords.cpp` expresses the complete owner as a naked
+VC9 body, and both the continuation and game-over callers now load ESI and
+call it directly. Its canonical normal-COFF unit is **380/380 bytes exact**
+with all **17/17** relocation fields reviewed.
+
+A focused full `/GL` boss context using these real private-ESI callers now
+retains **88/88 calls**, **15/15 RET4 paths** and all **162/162 address fields**.
+The owner remains **3172/3192 bytes**, but non-address byte differences fell
+from 2767 to **2380**. This is a concrete 387-byte improvement, not boss
+exactness. Continue with the missing 20-byte extent, native frame/hidden-result
+lifetimes and the remaining 2380 codegen differences; do not discard the
+private-ESI bridge or conflate the exact preparer leaf with the full menu.
 
 The support leaves have since been independently closed: default draw factory
 `0x455D80` is **105/105 exact**, secondary append publisher `0x4557E0` is
@@ -196,12 +205,13 @@ target bytes at 497E50 encode double **100.0**; the formula is
 type and timing pointer are kept as descriptively named but still
 nominally unknown globals at 4A573C and 4A8D80.
 
-The preparer is called from the 3192-byte continuation owner at 42D9D0
-and from 42E6B0. The insertion callee at 42BA80 is now independently exact;
-it is also used by 43F802. Future work: recover the preparer's private ESI
-entry ABI, continue the 3192-byte boss work, and investigate the still
-non-exact 1856-byte replay writer436420 (see REPLAY_WRITING.md) without
-unrelated full-build validation.
+The 380-byte preparer at 42D850 is now exact and is called from both the
+3192-byte continuation owner at 42D9D0 and the game-over owner at 42E6B0;
+both source call sites use its private ESI ABI. The 365-byte insertion leaf at
+42BA80 is also exact and has another caller at 43F802. Future work: recover the
+boss's EBP/ESI register schedule and branch-specific hidden-result lifetimes,
+then investigate the still non-exact 1856-byte replay writer436420 (see
+REPLAY_WRITING.md) without unrelated full-build validation.
 
 ## Exact score-insertion leaf (2026-11-13)
 
@@ -222,10 +232,33 @@ the shared `100.0` constant at `0x497E50`.
 `PauseRecordTimingView` is explicitly four-byte packed, with compile-time
 checks for `elapsed=+0x24` and `limit=+0x2C`. The previous default alignment
 placed these fields at `+0x28/+0x30`; the exact assembly now reads the native
-operands. This closes the insertion leaf, not its callers: the 380-byte record
-preparer at `0x42D850` and the 3192-byte continuation boss at `0x42D9D0`
-remain non-exact, and the other caller at `0x43F802` is not yet part of a full
-runtime-equivalence proof.
+operands. The insertion leaf and its 380-byte record-preparer caller are both now
+independently exact normal-COFF units. The 3192-byte continuation boss at
+`0x42D9D0` remains non-exact; its focused private-ESI `/GL` context now has
+162 reviewed fields and 2380 non-address byte differences. The other insertion
+caller at `0x43F802` is not yet part of a full runtime-equivalence proof.
+
+## Exact record preparer and private ESI caller bridge (2026-11-13)
+
+The record preparer at `0x42D850..0x42D9CB` is now a canonical exact
+normal-COFF unit: **380/380 bytes**, with **17/17 DIR32/REL32 fields** reviewed
+and replayed. The unit is `prepare-pause-continue-records`. Its private ABI has
+no stack menu argument: the menu receiver is ESI and both exits use plain
+`RET`. The exact source retains the conditional stage7/8 score-bank switch,
+score insertion call, selector initialization, remembered-name copy, two-byte
+empty-name comparison, EAX-plus-stack `MoveSecondaryDebugSelection` call, and
+trailing-space trim.
+
+Both source callers now issue the preparer call through inline assembly rather
+than pushing a C++ menu argument. A scoped 63-support VC9 `/GL` integration
+probe that links the exact preparer and insertion leaves retains **3172/3192**
+bytes in `UpdatePauseContinueMenu`, with **162/162 fields**, **88/88 calls**,
+**15/15 RET4 paths**, and **2297 non-field differences**. This is an improved
+boss diagnostic, not an exact result: the current caller loads ESI from its
+EBX menu register where native uses EBP, the frame remains `0x54` vs `0x58`,
+and branch-dependent hidden-result storage is still unresolved. The same
+scoped context emits the game-over owner at 3188/3208 bytes. No full cold replay
+was run.
 
 ## Case-13 shared factory codegen experiment (2026-11-11)
 
