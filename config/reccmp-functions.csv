@@ -717,3 +717,9 @@ LoadPbgSessionDirectory,0x00441910,function
 ConstructPbgResourceEntry,0x00441C70,function
 ParsePbgDirectoryEntries,0x00441A60,function
 TellPbgLowLevelFile,0x00441EF0,function
+WriteUnsupportedPbgMemoryFile,0x00442C20,function
+DeletePbgMemoryFile,0x00442C50,function
+DestroyPbgMemoryFile,0x00442CA0,function
+ResetPbgMemoryFile,0x00442D10,function
+TellPbgMemoryFile,0x00442DA0,function
+SizePbgMemoryFile,0x00442DB0,function

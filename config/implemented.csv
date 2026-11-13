@@ -716,3 +716,9 @@ LoadPbgSessionDirectory
 ConstructPbgResourceEntry
 ParsePbgDirectoryEntries
 TellPbgLowLevelFile
+WriteUnsupportedPbgMemoryFile
+DeletePbgMemoryFile
+DestroyPbgMemoryFile
+ResetPbgMemoryFile
+TellPbgMemoryFile
+SizePbgMemoryFile
