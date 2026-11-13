@@ -713,3 +713,4 @@ GetPbgArchivedResourceSize
 ReadPbgResourceByName
 GetPbgResourceSizeByName
 LoadPbgSessionDirectory
+ConstructPbgResourceEntry

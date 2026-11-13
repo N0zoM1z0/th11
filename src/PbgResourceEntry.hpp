@@ -7,6 +7,7 @@ struct PbgResourceEntryView
 {
     char *name;
     unsigned int unknown004, unknown008, unknown00c;
+    PbgResourceEntryView();
     ~PbgResourceEntryView();
 };
 typedef char PbgResourceEntrySize[(sizeof(PbgResourceEntryView) == 0x10) ? 1 : -1];

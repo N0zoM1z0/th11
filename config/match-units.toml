@@ -6999,3 +6999,15 @@ size = 51
 linkages = [
   { offset = 0x15, type = "REL32", symbol = "__stricmp", target = 0x004616F8 },
 ]
+
+[units.pbg-resource-entry-constructor]
+artifact_kind = "coff"
+source = "src/PbgResourceEntryCtor.cpp"
+inputs = ["src/PbgResourceEntry.hpp"]
+object = "build/match/PbgResourceEntryCtor.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["ConstructPbgResourceEntry"]
+symbol = "??0PbgResourceEntryView@@QAE@XZ"
+target_address = 0x00441C70
+size = 9
+relocations = []

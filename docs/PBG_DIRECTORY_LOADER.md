@@ -47,3 +47,16 @@ with a checked-in dynamic producer
 The next substantial downstream owner is the 363-byte `0x441A60` heap
 constructor/decoder for directory entry arrays. Reconstructing that owner
 may also improve the optimizer context of the 336-byte parent.
+
+## Strict exact 9-byte entry constructor (2026-11-13)
+
+The large directory array parser's VC9 EH vector constructor references a
+previously omitted **9-byte** member at `0x441C70..0x441C78`. Direct original
+Ghidra review finds `MOV EAX,ECX`, a DWORD zero store to `this+0`, and `RET`,
+with genuine CC padding on both sides. The source
+`PbgResourceEntryView::PbgResourceEntryView()` in
+`src/PbgResourceEntryCtor.cpp` resets **only** the filename pointer, leaving
+the three metadata words for the parser. Pinned normal-COFF VC9 produces the
+complete **9/9 original bytes** and no relocations; canonical
+`pbg-resource-entry-constructor` strictly replays the whole function. The
+paired 26-byte entry destructor remains independently exact.
