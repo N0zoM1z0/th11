@@ -1,4 +1,5 @@
 #include "PauseContinueMenu.hpp"
+#include "ReplayRecordFactories.hpp"
 #include "MenuPrimary.hpp"
 #include "MenuPartnerSelection.hpp"
 #include "SecondaryPlayerController.hpp"
@@ -99,19 +100,38 @@ void __stdcall UpdatePauseGameOverMenu(PauseContinueMenuView *owner)
         CommitPauseMenuScore();
         if (g_StageResourceFlags & 0x10)
         {
-            unsigned int character = static_cast<unsigned int>(g_MeshEffectSelection0) * 3u +
-                g_MeshEffectSelection1;
-            unsigned int stage = static_cast<unsigned int>(g_SecondaryActorDifficulty) * 6u +
-                g_StageVariant;
-            int *record = reinterpret_cast<int *>(g_SecondaryGameplayStatistics +
-                character * 0x68d4u + stage * 8u + 0x5a4);
-            if (*record < CurrentScore()) *record = CurrentScore();
-            // The game-over/practice display has a different script for
-            // each save-mode, unlike the normal continue menu.
-            self->root = CreateDefaultSecondaryDrawAnimationVmId(owner->file,
-                0x68 - (self->saveMode != 0));
+            __asm
+            {
+                mov eax, dword ptr [g_MeshEffectSelection0]
+                mov edx, dword ptr [g_MeshEffectSelection1]
+                lea ecx, [edx + eax * 2]
+                add ecx, eax
+                imul ecx, ecx, 68D4h
+                add ecx, dword ptr [g_SecondaryGameplayStatistics]
+                mov eax, dword ptr [g_SecondaryActorDifficulty]
+                lea edx, [eax + eax * 2]
+                mov eax, dword ptr [g_StageVariant]
+                lea edx, [eax + edx * 2]
+                lea eax, [ecx + edx * 8 + 5A4h]
+                mov ecx, dword ptr [g_SecondaryActorScore]
+                cmp ecx, dword ptr [eax]
+                jle practice_record_done
+                mov dword ptr [eax], ecx
+            practice_record_done:
+                mov eax, dword ptr [ebx + 1F4h]
+                mov ecx, dword ptr [ebx + 2DCh]
+                neg eax
+                sbb eax, eax
+                add eax, 68h
+                push eax
+                push ecx
+                lea esi, [esp + 28h]
+                call CreateDefaultSecondaryDrawAnimationVmId
+                mov edx, dword ptr [eax]
+                lea edi, [ebx + 1E8h]
+                mov dword ptr [edi], edx
+            }
             self->state = 22;
-            // Keep the native practice and regular selection resets distinct.
             self->selection.count = 3;
             self->selection.wrapEnabled = 1;
             Choose(0, &self->selection);
@@ -130,8 +150,17 @@ void __stdcall UpdatePauseGameOverMenu(PauseContinueMenuView *owner)
                 HideMenuAnimationTree(self->root);
                 return;
             }
-            self->root = CreateDefaultSecondaryDrawAnimationVmId(owner->file, 0x62);
-            // This path rejoins the ordinary continuation state handler.
+            __asm
+            {
+                mov ecx, dword ptr [ebx + 2DCh]
+                push 62h
+                push ecx
+                lea esi, [esp + 1Ch]
+                call CreateDefaultSecondaryDrawAnimationVmId
+                mov edx, dword ptr [eax]
+                lea edi, [ebx + 1E8h]
+                mov dword ptr [edi], edx
+            }
             self->state = 14;
             self->selection.count = 3;
             self->selection.wrapEnabled = 1;
@@ -174,7 +203,7 @@ void __stdcall UpdatePauseGameOverMenu(PauseContinueMenuView *owner)
                 for (int i = 0; i < 25; ++i)
                 {
                     sprintf(filename, "th11_%.2d.rpy", i + 1);
-                    self->replays[i] = ReadMenuReplay(filename);
+                    self->replays[i] = CreateReplayPlayback(filename);
                 }
                 break;
             }
@@ -233,11 +262,11 @@ void __stdcall UpdatePauseGameOverMenu(PauseContinueMenuView *owner)
             SignalChoice(self);
             for (int i = 0; i < 25; ++i)
             {
-                MenuReplayView *replay = self->replays[i];
+                TitleMenuRecordView *replay = self->replays[i];
                 if (replay)
                 {
-                    DestroyMenuReplayContents(replay);
-                    ::operator delete(replay);
+                    replay->~TitleMenuRecordView();
+                    FreeHeapBlock(replay);
                 }
                 self->replays[i] = 0;
             }
@@ -288,10 +317,10 @@ void __stdcall UpdatePauseGameOverMenu(PauseContinueMenuView *owner)
                 {
                     QueueMeshEffectSound(44);
                     sprintf(filename, "th11_%.2d.rpy", self->selection.current + 1);
-                    DeletePauseMenuReplay(self->replays[self->selection.current]);
+                    DeletePauseMenuReplayRecord(self->replays[self->selection.current]);
                     WritePauseMenuReplay(filename, self->name, 0);
                     int slot = self->selection.current;
-                    self->replays[slot] = ReadMenuReplay(filename);
+                    self->replays[slot] = CreateReplayPlayback(filename);
                     self->state = 23;
                     SetStageTimer(&self->time, 0);
                     strcpy(reinterpret_cast<char *>(g_SecondaryGameplayStatistics) + 0x2dde0, self->name);

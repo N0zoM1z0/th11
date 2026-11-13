@@ -294,6 +294,7 @@ FormatCenteredTextureText,0x00454DE0,function
 FormatRightAlignedTextureText,0x00454D00,function
 FormatTextureText,0x00454C60,function
 FreeAnimationDocumentSlot,0x004549A0,function
+FreeHeapBlock,0x0045FD49,function
 GatherXorBlocks,0x004582E0,function
 GetFrameClockSeconds,0x00446920,function
 GetPbgArchivedResourceSize,0x00441890,function

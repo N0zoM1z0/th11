@@ -25,8 +25,8 @@ commit ahead of `origin/main`. Regenerated `docs/PROGRESS.md` reports:
 | Function candidates (provisional inventory) | 2,157 |
 | Reviewed boundaries | 760 |
 | Source-present function mappings | 734 |
-| Canonical exact functions | **387** |
-| Canonical exact codegen bytes | **42,587** |
+| Canonical exact functions | **389** |
+| Canonical exact codegen bytes | **42,616** |
 | Exact with confirmed authored origin | 53 |
 
 Use `docs/PROGRESS.md` for the complete generated breakdown; do not copy these
@@ -106,7 +106,7 @@ The five-unit selected replay run for the new secondary append path passed:
 `create-default-secondary-draw-animation-vm-id`, and
 `reset-secondary-pattern-slot`. Earlier selected runs also covered the score,
 child signal, close/tree helpers and runtime-mode leaf. No full-cohort cold
-replay was run. The 365-byte score-insertion leaf and 380-byte record preparer are both exact. The 3192-byte continue boss now has a focused 63-support `/GL` candidate at 3184/3192 bytes, 162/162 fields, 88/88 calls, 15/15 RET4 exits and 2008 non-address differences; it remains non-exact.
+replay was run. The 365-byte score-insertion leaf, 380-byte record preparer, 18-byte pause replay delete helper and 11-byte heap-free thunk are exact. The 3192-byte continue boss now has a focused 63-support `/GL` candidate at 3184/3192 bytes, 162/162 fields, 88/88 calls, 15/15 RET4 exits and 2008 non-address differences; it remains non-exact.
 
 The native original TU/class/library authorship of these recovered owners is
 not established. A local commit is a source checkpoint, not an Oracle receipt.

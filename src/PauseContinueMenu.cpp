@@ -1,4 +1,5 @@
 #include "PauseContinueMenu.hpp"
+#include "ReplayRecordFactories.hpp"
 #include "MenuPrimary.hpp"
 #include "MenuPartnerSelection.hpp"
 #include "SecondaryPlayerController.hpp"
@@ -193,7 +194,7 @@ void __stdcall UpdatePauseContinueMenu(PauseContinueMenuView *owner)
                 for (int i = 0; i < 25; ++i)
                 {
                     sprintf(filename, "th11_%.2d.rpy", i + 1);
-                    self->replays[i] = ReadMenuReplay(filename);
+                    self->replays[i] = CreateReplayPlayback(filename);
                 }
                 break;
             }
@@ -256,11 +257,11 @@ void __stdcall UpdatePauseContinueMenu(PauseContinueMenuView *owner)
             SignalChoice(self);
             for (int i = 0; i < 25; ++i)
             {
-                MenuReplayView *replay = self->replays[i];
+                TitleMenuRecordView *replay = self->replays[i];
                 if (replay)
                 {
-                    DestroyMenuReplayContents(replay);
-                    ::operator delete(replay);
+                    replay->~TitleMenuRecordView();
+                    FreeHeapBlock(replay);
                 }
                 self->replays[i] = 0;
             }
@@ -311,10 +312,10 @@ void __stdcall UpdatePauseContinueMenu(PauseContinueMenuView *owner)
                 {
                     QueueMeshEffectSound(44);
                     sprintf(filename, "th11_%.2d.rpy", self->selection.current + 1);
-                    DeletePauseMenuReplay(self->replays[self->selection.current]);
+                    DeletePauseMenuReplayRecord(self->replays[self->selection.current]);
                     WritePauseMenuReplay(filename, self->name, 0);
                     int slot = self->selection.current;
-                    self->replays[slot] = ReadMenuReplay(filename);
+                    self->replays[slot] = CreateReplayPlayback(filename);
                     self->state = 16;
                     SetStageTimer(&self->time, 0);
                     strcpy(reinterpret_cast<char *>(g_SecondaryGameplayStatistics) + 0x2dde0, self->name);

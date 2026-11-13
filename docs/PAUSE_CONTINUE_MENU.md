@@ -398,21 +398,38 @@ the score leaf as open or non-exact. Canonical unit:
 animation-tree helpers in the same source file remain separate 92/92 and
 64/64 exact owners.
 
-## Branch-specific hidden-result storage experiments (2026-11-13)
+## Replay teardown leaf and continuation boss follow-up (2026-11-13)
 
-The native state-13 factory call at `0x42DB3F` is shared, but the practice and
-normal branches select different hidden-result storage before reaching it:
-`ESP+0x20` and `ESP+0x14`, respectively. The current single-result source keeps
-all **88/88 calls** and **15/15 RET4 paths**, but its best scoped 63-support
-link remains **3172/3192 bytes** with a `0x54` frame rather than the native
-`0x58` frame.
+The pause/continue replay slot type is now TitleMenuRecordView *, matching
+the two native factories that create the 0x2DC-byte record. The replay delete
+helper is private-ESI, not a stack-argument C++ wrapper. Its 18-byte normal-COFF
+owner is now canonical exact: null guard, direct call to the 429-byte
+TitleMenuRecordView destructor, call to the 11-byte heap-free wrapper, stack
+cleanup and plain RET. Both REL32 targets are independently bound.
 
-Two branch-specific `AnimationVmId` locals and an equivalent two-element
-array both restore the `0x58` frame, but VC9 produces the same **3076/3192-byte**
-owner with only **85/88 calls** and **14/15 RET4 paths**. The missing call
-parity includes one `ClearSecondaryProjectileHit` and one
-`SignalSecondaryAnimationEvent`; the missing return also loses one security
-cookie check. These are worse complete-owner candidates and were not adopted.
-The maintained shared-call source remains the best call/return-preserving
-version. The next step is to recover the two native result lifetimes without
-sacrificing those call sites and epilogues.
+The generic wrapper at 0x45FD49 is separately canonical exact at 11/11
+bytes. It is the hotpatchable _free thunk (mov edi,edi; push ebp; mov
+ebp,esp; pop ebp; jmp _free) and has 80+ original code references. The
+25-slot Continue cleanup loop now follows the native sequence directly:
+load/test each slot, call the record destructor, call FreeHeapBlock, clear
+the slot, advance and repeat. It must not call the replay-delete helper for
+this loop; the latter is used by the distinct selected-record path.
+
+The focused /GL continuation boss now preserves 88/88 calls,
+15/15 RET4 exits, and 162/162 decoded address fields. Its current body
+is 3184/3192 bytes, with 2092 non-address byte differences. The cleanup
+loop correction restored the previously missing destructor/free call and
+improved the body by 50 non-address bytes. This remains a non-exact boss:
+the eight-byte extent and the remaining codegen differences are still open.
+
+The 3208-byte Game Over boss also now has a focused linked candidate at
+3156/3208 bytes, 85/89 calls, 13/14 RET4 exits, 151 decoded address fields
+and 2270 non-address byte differences. Its 25-slot replay cleanup loop now
+uses the native direct destructor plus heap-free sequence, restoring one
+call versus the helper-based version. The remaining call/return and frame
+differences are open; this candidate is not exact.
+
+The independent score insertion leaf remains 365/365 exact, and the
+private-ESI record preparer remains 380/380 exact. These leaf proofs do not
+promote either the 3192-byte continuation menu or the 3208-byte game-over
+menu to exact.

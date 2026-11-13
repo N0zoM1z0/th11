@@ -1,4 +1,5 @@
 #include "PauseMenu.hpp"
+#include "ReplayRecordFactories.hpp"
 #include "MenuPrimary.hpp"
 #include "MenuPartnerSelection.hpp"
 #include "SecondaryPlayerController.hpp"
@@ -242,7 +243,7 @@ void __stdcall UpdatePauseMenu(PauseMenuView *self)
         for (int i = 0; i < 25; ++i)
         {
             sprintf(filename, "th11_%.2d.rpy", i + 1);
-            self->replays[i] = ReadMenuReplay(filename);
+            self->replays[i] = CreateReplayPlayback(filename);
         }
         break;
     case 9:
@@ -287,7 +288,7 @@ void __stdcall UpdatePauseMenu(PauseMenuView *self)
             SignalChoice(self, 7);
             for (int i = 0; i < 25; ++i)
             {
-                DeletePauseMenuReplay(self->replays[i]);
+                DeletePauseMenuReplayRecord(self->replays[i]);
                 self->replays[i] = 0;
             }
             self->state = 4;
@@ -347,10 +348,10 @@ void __stdcall UpdatePauseMenu(PauseMenuView *self)
             {
                 QueueMeshEffectSound(44);
                 sprintf(filename, "th11_%.2d.rpy", self->selection.current + 1);
-                DeletePauseMenuReplay(self->replays[self->selection.current]);
+                DeletePauseMenuReplayRecord(self->replays[self->selection.current]);
                 WritePauseMenuReplay(filename, self->name, 1);
                 int slot = self->selection.current;
-                self->replays[slot] = ReadMenuReplay(filename);
+                self->replays[slot] = CreateReplayPlayback(filename);
                 self->state = 9;
                 SetStageTimer(&self->time, 0);
                 strcpy(reinterpret_cast<char *>(g_SecondaryGameplayStatistics) + 0x2dde0, self->name);

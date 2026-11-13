@@ -7316,7 +7316,7 @@ relocations = [
 [units.prepare-pause-continue-records]
 artifact_kind = "coff"
 source = "src/PauseContinueRecords.cpp"
-inputs = ["src/PauseContinueMenu.hpp", "src/MenuController.hpp", "src/SecondaryActorRuntime.hpp", "src/SecondaryGameplay.hpp", "src/StageResource.hpp"]
+inputs = ["src/PauseContinueMenu.hpp", "src/PauseMenu.hpp", "src/ReplayAllocator.hpp", "src/TitleMenuRecord.hpp", "src/MenuController.hpp", "src/SecondaryActorRuntime.hpp", "src/SecondaryGameplay.hpp", "src/StageResource.hpp"]
 object = "build/match/PauseContinueRecords.obj"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc"]
 functions = ["PreparePauseContinueRecords"]
@@ -7341,4 +7341,37 @@ relocations = [
   { offset = 205, type = "DIR32", symbol = "?g_SecondaryGameplayStatistics@@3PAEA", target = 0x004A8EBC },
   { offset = 262, type = "DIR32", symbol = "?g_PauseRecordEmptyName@@3QBDB", target = 0x00495244 },
   { offset = 318, type = "REL32", symbol = "?MoveSecondaryDebugSelection@@YGHPAUSecondaryDebugSelectionView@@H@Z", target = 0x00459160 },
+]
+
+
+# 18-byte private-ESI replay deletion leaf: native stack-this destructor call
+# followed by the exact 11-byte heap-free wrapper.
+[units.delete-pause-menu-replay]
+artifact_kind = "coff"
+source = "src/PauseMenuSupport.cpp"
+inputs = ["src/PauseMenu.hpp", "src/ReplayAllocator.hpp", "src/TitleMenuRecord.hpp", "src/SoundQueue.hpp", "src/VmBindings.hpp"]
+object = "build/match/PauseMenuSupportDeleteReplay.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc"]
+functions = ["DeletePauseMenuReplay"]
+symbol = "?DeletePauseMenuReplay@@YGXXZ"
+target_address = 0x00435FC0
+size = 18
+relocations = [
+  { offset = 6, type = "REL32", symbol = "_DestroyTitleRecordStorage", target = 0x00435C50 },
+  { offset = 12, type = "REL32", symbol = "_FreeHeapBlock", target = 0x0045FD49 },
+]
+
+# 11-byte hotpatchable CRT free wrapper, retained as a named source thunk.
+[units.free-heap-block]
+artifact_kind = "coff"
+source = "src/PauseMenuSupport.cpp"
+inputs = ["src/PauseMenu.hpp", "src/ReplayAllocator.hpp", "src/TitleMenuRecord.hpp", "src/SoundQueue.hpp", "src/VmBindings.hpp"]
+object = "build/match/FreeHeapBlock.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc"]
+functions = ["FreeHeapBlock"]
+symbol = "_FreeHeapBlock"
+target_address = 0x0045FD49
+size = 11
+relocations = [
+  { offset = 7, type = "REL32", symbol = "_free", target = 0x0045FC3B },
 ]
