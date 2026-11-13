@@ -8,7 +8,5 @@ extern "C" int __stdcall SecondaryEmitterResetProbe(SecondaryDamageReferencesVie
     ResetSecondaryPatternSlot();
     AnimationVmId first = PublishSecondaryEmitterAnimationVm(vm);
     AnimationVmId second = CreateSecondaryEmitterAnimationVmId(file, script, layer);
-    AnimationVmId third = PublishSecondaryDrawAnimationVm(vm);
-    AnimationVmId fourth = CreateSecondaryDrawAnimationVmId(file, script, layer);
-    return first.value + second.value + third.value + fourth.value;
+    return first.value + second.value;
 }

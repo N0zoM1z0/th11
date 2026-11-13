@@ -3976,6 +3976,24 @@ linkages = [
   { offset = 14, type = "REL32", symbol = "?OffsetSecondaryTimer@@YGHPAUStageTimerView@@M@Z", target = 0x459210, addend = 0x0 },
 ]
 
+# The secondary append publisher is a private register ABI, not a normal
+# stack-argument C++ function: EBX carries the VM and EAX the result slot.
+[units.publish-secondary-draw-animation-vm]
+artifact_kind = "linked-pe"
+source = "src/SecondaryDrawPublisher.cpp"
+inputs = ["src/SecondaryEmitterAnimation.hpp", "src/RenderBatch.hpp", "src/MainRuntime.hpp", "src/AnimationVmId.hpp"]
+support_sources = ["probes/secondary-draw-publisher-context.cpp"]
+output_dir = "build/match-linked/SecondaryDrawPublisher"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryDrawPublisherProbe@8"
+functions = ["PublishSecondaryDrawAnimationVm"]
+symbol = "?PublishSecondaryDrawAnimationVmNative@@YG?AUAnimationVmId@@XZ"
+target_address = 0x004557E0
+size = 123
+linkages = [
+  { offset = 0x02, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x004C3268 },
+]
+
 [units.create-secondary-emitter-animation-vm-id]
 artifact_kind = "linked-pe"
 source = "src/SecondaryEmitterAnimation.cpp"
@@ -4004,12 +4022,12 @@ linkages = [
 
 [units.create-secondary-draw-animation-vm-id]
 artifact_kind = "linked-pe"
-source = "src/SecondaryEmitterAnimation.cpp"
+source = "src/SecondaryDrawPublisher.cpp"
 inputs = ["src/SecondaryEmitterAnimation.hpp", "src/AnimationVmFactory.hpp", "src/AnimationVmId.hpp"]
-support_sources = ["probes/secondary-emitter-reset-context.cpp", "src/SecondaryEmitterReset.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryMotionMath.cpp", "src/StageMesh.cpp", "src/AngleMath.cpp", "src/AnimationImmediateDraw.cpp", "src/AnimationVmFactory.cpp"]
-output_dir = "build/match-linked/SecondaryEmitterAnimation"
+support_sources = ["probes/secondary-draw-factory-context.cpp", "src/AnimationVmFactory.cpp"]
+output_dir = "build/match-linked/SecondaryDrawPublisherFactory"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
-entry = "SecondaryEmitterResetProbe@20"
+entry = "SecondaryDrawFactoryProbe@12"
 functions = ["CreateSecondaryDrawAnimationVmId"]
 symbol = "?CreateSecondaryDrawAnimationVmId@@YG?AUAnimationVmId@@PAUAnimationFileView@@HH@Z"
 target_address = 0x455df0
@@ -4021,7 +4039,7 @@ linkages = [
   { offset = 25, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x939 },
   { offset = 31, type = "REL32", symbol = "?AllocateSceneAnimationVm@@YGPAUAnimationVmView@@XZ", target = 0x4569c0, addend = 0x0 },
   { offset = 66, type = "REL32", symbol = "?InitializeSceneAnimationVm@@YGXPAUAnimationVmView@@PAUAnimationFileView@@H@Z", target = 0x456910, addend = 0x0 },
-  { offset = 73, type = "REL32", symbol = "?PublishSecondaryDrawAnimationVm@@YG?AUAnimationVmId@@PAUAnimationVmView@@@Z", target = 0x4557e0, addend = 0x0 },
+  { offset = 73, type = "REL32", symbol = "?PublishSecondaryDrawAnimationVmNative@@YG?AUAnimationVmId@@XZ", target = 0x4557e0, addend = 0x0 },
   { offset = 79, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x590 },
   { offset = 91, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8e8 },
   { offset = 97, type = "DIR32", symbol = "__imp__LeaveCriticalSection@4", target = 0x48b088, addend = 0x0 },
@@ -5811,7 +5829,7 @@ linkages = [
 artifact_kind = "linked-pe"
 source = "src/PauseContinueMenuSupport.cpp"
 inputs = ["src/PauseContinueMenu.hpp", "src/VmBindings.hpp", "src/MainRuntime.hpp", "src/SecondaryEmitterAnimation.hpp", "src/AnimationVmFactory.hpp"]
-support_sources = ["probes/default-secondary-draw-real-context.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryEmitterAnimation.cpp"]
+support_sources = ["probes/default-secondary-draw-real-context.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryDrawPublisher.cpp"]
 output_dir = "build/match-linked/DefaultSecondaryDrawAnimation"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "DefaultSecondaryDrawProbe@8"
@@ -5826,7 +5844,7 @@ linkages = [
   { offset = 0x19, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x939 },
   { offset = 0x1F, type = "REL32", symbol = "?AllocateSceneAnimationVm@@YGPAUAnimationVmView@@XZ", target = 0x004569C0 },
   { offset = 0x3B, type = "REL32", symbol = "?InitializeSceneAnimationVm@@YGXPAUAnimationVmView@@PAUAnimationFileView@@H@Z", target = 0x00456910 },
-  { offset = 0x42, type = "REL32", symbol = "?PublishSecondaryDrawAnimationVm@@YG?AUAnimationVmId@@PAUAnimationVmView@@@Z", target = 0x004557E0 },
+  { offset = 0x42, type = "REL32", symbol = "?PublishSecondaryDrawAnimationVmNative@@YG?AUAnimationVmId@@XZ", target = 0x004557E0 },
   { offset = 0x48, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x590 },
   { offset = 0x54, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x8E8 },
   { offset = 0x5A, type = "DIR32", symbol = "__imp__LeaveCriticalSection@4", target = 0x0048B088 },

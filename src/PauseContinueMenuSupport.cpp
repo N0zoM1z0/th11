@@ -51,21 +51,35 @@ void __stdcall ShowPauseMenuAnimationTree(const AnimationVmId &id)
     }
 }
 
-AnimationVmId __stdcall CreateDefaultSecondaryDrawAnimationVmId(AnimationFileView *file, int script)
+__declspec(naked) AnimationVmId __stdcall CreateDefaultSecondaryDrawAnimationVmId(
+    AnimationFileView *file, int script)
 {
-    if (g_MainRuntime.flags & 0x8000)
-    {
-        EnterCriticalSection(&g_MainRuntime.criticalSections[9]);
-        ++g_MainRuntime.criticalDepth[9];
+    __asm {
+        test dword ptr [g_MainRuntime+590h], 8000h
+        je no_default_lock
+        push offset g_MainRuntime+8e8h
+        call dword ptr [EnterCriticalSection]
+        inc byte ptr [g_MainRuntime+939h]
+    no_default_lock:
+        push ebx
+        call AllocateSceneAnimationVm
+        mov edx, dword ptr [esp+0ch]
+        mov ebx, eax
+        mov eax, dword ptr [esp+8]
+        or dword ptr [ebx+404h], 40000000h
+        push eax
+        mov eax, ebx
+        call InitializeSceneAnimationVm
+        mov eax, esi
+        call PublishSecondaryDrawAnimationVmNative
+        test dword ptr [g_MainRuntime+590h], 8000h
+        pop ebx
+        je default_done
+        push offset g_MainRuntime+8e8h
+        call dword ptr [LeaveCriticalSection]
+        dec byte ptr [g_MainRuntime+939h]
+        mov eax, esi
+    default_done:
+        ret 8
     }
-    AnimationVmView *vm = AllocateSceneAnimationVm();
-    vm->flags.value |= 0x40000000;
-    InitializeSceneAnimationVm(vm, file, script);
-    AnimationVmId id = PublishSecondaryDrawAnimationVm(vm);
-    if (g_MainRuntime.flags & 0x8000)
-    {
-        LeaveCriticalSection(&g_MainRuntime.criticalSections[9]);
-        --g_MainRuntime.criticalDepth[9];
-    }
-    return id;
 }

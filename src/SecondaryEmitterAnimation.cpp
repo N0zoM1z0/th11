@@ -85,23 +85,3 @@ AnimationVmId __stdcall PublishSecondaryDrawAnimationVm(AnimationVmView *vm)
     vm->unknown000 = registry->nextId;
     return AnimationVmId(registry->nextId);
 }
-
-AnimationVmId __stdcall CreateSecondaryDrawAnimationVmId(AnimationFileView *file, int script, int layer)
-{
-    if (g_MainRuntime.flags & 0x8000)
-    {
-        EnterCriticalSection(&g_MainRuntime.criticalSections[9]);
-        ++g_MainRuntime.criticalDepth[9];
-    }
-    AnimationVmView *vm = AllocateSceneAnimationVm();
-    vm->flags.value |= 0x40000000;
-    vm->persistent020 = layer;
-    InitializeSceneAnimationVm(vm, file, script);
-    AnimationVmId id = PublishSecondaryDrawAnimationVm(vm);
-    if (g_MainRuntime.flags & 0x8000)
-    {
-        LeaveCriticalSection(&g_MainRuntime.criticalSections[9]);
-        --g_MainRuntime.criticalDepth[9];
-    }
-    return id;
-}

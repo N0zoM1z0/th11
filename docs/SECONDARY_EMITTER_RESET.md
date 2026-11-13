@@ -84,7 +84,7 @@ these operations are not reassociated. Positioned factories call the distinct
 `InitializeSceneAnimationVm`456910 used by other wrappers clears position and
 calls191-byte `BindAnimationFileScript`44ADA0. These contracts are not conflated.
 
-Four complete sources are added in `src/SecondaryEmitterAnimation.cpp`: primary
+The emitter prepend source remains in `src/SecondaryEmitterAnimation.cpp`; secondary append publication and factories are isolated in `src/SecondaryDrawPublisher.cpp`: primary
 prepend and secondary append publishers plus their explicit-layer factories.
 A natural pair of head tests preserves the prepend insertion and lets the
 primary factory retain the native EBX VM. Both112-byte factory contributions
@@ -102,15 +102,15 @@ and the existing four-byte AnimationVmId preserve the hidden-result ABI.
 
 All thirteen origins remain **indeterminate**. Useful renderer/gameplay roles,
 common lock scaffolding and sibling similarity do not establish original
-class/header/library versus game authorship. Nine reviewed factory/publisher
-owners remain source-open. Six new mappings cover2997 target bytes; source
+class/header/library versus game authorship. Eight reviewed factory/publisher
+owners remain source-open; the secondary append publisher is now exact. Six new mappings cover2997 target bytes; source
 presence is separate from exactness.
 
 ## Proof and remaining work
 
-The three new canonical units are `reset-secondary-pattern-slot`,
-`create-secondary-emitter-animation-vm-id` and
-`create-secondary-draw-animation-vm-id`:248 bytes and24 independently reviewed
+The four canonical units are `reset-secondary-pattern-slot`,
+`create-secondary-emitter-animation-vm-id`, `create-secondary-draw-animation-vm-id`
+and `publish-secondary-draw-animation-vm`:371 bytes and25 independently reviewed
 fields. Acceptance requires complete public primary-TU PDB ownership, current
 pinned VC9 cold receipts, full field replay and every byte equal. This context
 is diagnostic and does not constitute a runnable native game or original TU
@@ -119,8 +119,10 @@ partition proof.
 Only these new units and the ten prior exact units whose recorded dependency
 sets contain `SecondaryPattern.hpp` are replayed: two emitter-prefix helpers,
 one pattern loader and seven projectile callbacks. The full exact cohort is
-not replayed. All13 selected cold replays pass638 bytes/41 fields with frozen
-source. No Oracle/build infrastructure changes require synthetic suites.
+not replayed. All13 prior selected cold replays pass638 bytes/41 fields with frozen
+source. The new publisher unit was separately cold-replayed at123 bytes/one
+field with zero differences. No Oracle/build infrastructure changes require
+synthetic suites.
 
 Real Sound support was also tried against complete Spawn433F90/853 with actual
 callers. It yields846/733; the real-only context with independent RNG yields

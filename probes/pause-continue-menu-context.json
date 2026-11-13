@@ -66,7 +66,7 @@
     "probes/pause-menu-context.cpp",
     "src/SecondaryGameplaySupport.cpp",
     "src/PauseContinueMenuSupport.cpp",
-    "src/SecondaryEmitterAnimation.cpp",
+    "src/SecondaryDrawPublisher.cpp",
     "probes/pause-continue-menu-context.cpp"
   ],
   "normal_support_sources": [
