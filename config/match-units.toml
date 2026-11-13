@@ -7141,3 +7141,18 @@ relocations = [
   { offset = 0x20, type = "REL32", symbol = "_memcpy", target = 0x0046D630 },
   { offset = 0x3E, type = "REL32", symbol = "_memcpy", target = 0x0046D630 },
 ]
+
+[units.launch-child-process-optional-wait]
+artifact_kind = "coff"
+source = "src/PbgProcessLauncher.cpp"
+inputs = ["src/PbgProcessLauncher.hpp"]
+object = "build/match/PbgProcessLauncher.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["LaunchPbgChildProcess"]
+symbol = "?LaunchPbgChildProcess@@YGHPBDPADH@Z"
+target_address = 0x00442E40
+size = 215
+relocations = [
+  { offset = 0x85, type = "DIR32", symbol = "__imp__CreateProcessA@40", target = 0x0048B0B4 },
+  { offset = 0x9F, type = "DIR32", symbol = "__imp__GetExitCodeProcess@8", target = 0x0048B0B8 },
+]

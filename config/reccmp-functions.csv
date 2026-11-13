@@ -725,3 +725,4 @@ TellPbgMemoryFile,0x00442DA0,function
 SizePbgMemoryFile,0x00442DB0,function
 OpenPbgMemoryFile,0x00442CE0,function
 ReadPbgMemoryFile,0x00442D40,function
+LaunchPbgChildProcess,0x00442E40,function

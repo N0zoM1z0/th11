@@ -724,3 +724,4 @@ TellPbgMemoryFile
 SizePbgMemoryFile
 OpenPbgMemoryFile
 ReadPbgMemoryFile
+LaunchPbgChildProcess
