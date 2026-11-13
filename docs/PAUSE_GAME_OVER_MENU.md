@@ -118,6 +118,50 @@ Next focus: preserve the full state20..26 graph while reducing register
 allocation/stack/result-identity differences against the 3208-byte owner.
 Do not run unrelated cold replay cohorts to compare this function.
 
+## Latest focused boss and shared-selection ABI checkpoint (2026-11-13)
+
+The best **retained** focused VC9 `/GL` candidate is
+`build/probe-ltcg/PauseGameOverFpoAdapters-20261113/`. Its primary PDB
+contribution is **3212 bytes** against the native **3208-byte** extent. The
+candidate has **154/154 decoded address fields**, **88 calls**, **14 RET4
+exits**, the seven-entry state dispatch table and **2040 non-address byte
+differences** after masking those fields. Its initial frame shape is now
+aligned with the target: `sub esp,58h`, the GS cookie at ESP+54h, and EBP
+holding the menu receiver rather than a conventional EBP frame. The first
+48 bytes contain **41 equal raw bytes**; the seven differing bytes are the
+cookie/branch/table address operands. This is a substantial layout
+improvement, not exactness; the remaining body has over two thousand
+non-address differences.
+
+A separate state-26-decrement source variant measured **3212 bytes and 2039
+non-address differences** with the same 154 fields, 88 calls and 14 RET4
+exits. Its output PE/MAP/PDB was removed by a later relink attempt that hit a
+Wine linker page fault while opening the cached Archive support object. The
+source snapshot and focused driver remain at
+`.analysis/PauseGameOverMenu-state26-decrement-20261113.cpp`,
+`.analysis/PauseGameOverMenu-abi-adapters-20261113.cpp` and
+`.analysis/probe-pause-gameover-state26-decrement-20261113.py`. Treat the
+2039 figure as a historical diagnostic until the link is reproduced. The
+retained 3212/2040 snapshot is the current handoff reference.
+
+The shared `MoveSecondaryDebugSelection` helper at `0x459160` is another
+important blocker. Its native machine ABI is EAX selection pointer, one
+stack-passed signed delta, EAX result and `RET 4`; the existing C++
+`__stdcall` declaration does not describe that register-level interface.
+A temporary naked implementation reproduced **121/121 bytes** in normal
+COFF with no relocations, but only as a structural comparison with no
+accepted canonical receipt. A Game Over-only thiscall facade worsened the
+boss to **3236/3208 bytes** and **2116 non-address differences**, so those
+production-source changes were reverted. The existing production helper and
+its callers remain unchanged. Do not promote the 121-byte experiment or
+change the shared declaration globally without reviewing all callers.
+
+The production source tree remains at the committed `e7e1f13` baseline.
+No Game Over boss candidate has a canonical exact receipt or runtime-
+equivalence claim. Continue by improving the complete state20..26 owner and
+its private helper ABIs, using only the focused context; do not run a full
+cold replay for this diagnostic work.
+
 ## Neighboring previously uninventoried comparison helpers
 
 The independent original PE also contains two complete fourteen-byte

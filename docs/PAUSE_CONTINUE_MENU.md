@@ -415,19 +415,21 @@ load/test each slot, call the record destructor, call FreeHeapBlock, clear
 the slot, advance and repeat. It must not call the replay-delete helper for
 this loop; the latter is used by the distinct selected-record path.
 
-The focused /GL continuation boss now preserves 88/88 calls,
-15/15 RET4 exits, and 162/162 decoded address fields. Its current body
-is 3184/3192 bytes, with 2092 non-address byte differences. The cleanup
-loop correction restored the previously missing destructor/free call and
-improved the body by 50 non-address bytes. This remains a non-exact boss:
-the eight-byte extent and the remaining codegen differences are still open.
+The best retained focused /GL continuation boss preserves 88/88 calls,
+15/15 RET4 exits and 162/162 decoded address fields. Its current body is
+3184/3192 bytes with 2008 non-address byte differences, in
+`PauseContinueBossTrackedBestOy-20261113`. The cleanup-loop correction
+restored the native direct destructor/free sequence. This remains a non-exact
+boss: the eight-byte extent and remaining codegen differences are open.
 
-The 3208-byte Game Over boss also now has a focused linked candidate at
-3156/3208 bytes, 85/89 calls, 13/14 RET4 exits, 151 decoded address fields
-and 2270 non-address byte differences. Its 25-slot replay cleanup loop now
-uses the native direct destructor plus heap-free sequence, restoring one
-call versus the helper-based version. The remaining call/return and frame
-differences are open; this candidate is not exact.
+The 3208-byte Game Over boss has a retained focused linked candidate at
+3212 bytes, 154/154 decoded address fields, 88 calls, 14 RET4 exits and
+2040 non-address byte differences. Its initial 0x58-byte frame/GS-cookie/EBP
+receiver shape now matches the native layout, but the body remains far from
+exact. A separate state-26 variant measured 2039 non-address differences but
+its output was lost during a failed Wine relink; see
+[Game Over](PAUSE_GAME_OVER_MENU.md). Neither boss has a canonical exact
+receipt.
 
 The independent score insertion leaf remains 365/365 exact, and the
 private-ESI record preparer remains 380/380 exact. These leaf proofs do not

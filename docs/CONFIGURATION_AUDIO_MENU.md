@@ -120,6 +120,16 @@ ConfigurationMenuSelection.cpp supplies the real movement/history operations:
 | PopConfigurationSelection459130 |48|**48/48 strict exact**|EAX selection, RET|
 | SignalAndExecuteConfigurationAnimation456280 |95|95 /0 after4 fields|DI event, stack ID, RET4|
 
+The movement helper's native ABI was reconfirmed during the 2026-11-13 pause
+boss investigation: EAX selection pointer, one stack-passed signed delta,
+EAX result and `RET 4`. The existing 121-byte C++ body still has 40
+non-address differences. A throwaway naked implementation reproduced
+121/121 bytes with no relocations in a normal-COFF structural comparison, but
+has no accepted canonical receipt and was not adopted. The source declaration
+remains nominal `__stdcall`; do not treat it as an ABI-faithful ordinary
+two-stack-argument function or change it globally without accounting for the
+shared caller set.
+
 The physical selection storage retains16-entry histories at0C/4C, depth8C,
 exclusions90, wrap flagD0 and exclusion lengthD4. Movement wraps/clamps then
 retries exclusions; nonpositive count leaves current unchanged. Push caps depth
