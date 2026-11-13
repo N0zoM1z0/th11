@@ -7278,3 +7278,35 @@ linkages = [
   { offset = 4, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x004C3268 },
   { offset = 0x0A, type = "REL32", symbol = "?FindAnimationVmById@@YGPAUAnimationVmView@@PAURenderBatchView@@UAnimationVmId@@@Z", target = 0x004561E0 },
 ]
+
+# Full365-byte normal-COFF score insertion leaf; the source preserves the
+# original three RET4 paths and all independently reviewed data/call fields.
+[units.insert-pause-continue-score]
+artifact_kind = "coff"
+source = "src/PauseRecordInsertion.cpp"
+inputs = ["src/SecondaryActorRuntime.hpp", "src/SecondaryGameplay.hpp", "src/StageResource.hpp"]
+object = "build/match/PauseRecordInsertion.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc"]
+functions = ["InsertPauseContinueScore"]
+symbol = "?InsertPauseContinueScore@@YGHPAE@Z"
+target_address = 0x0042BA80
+size = 365
+relocations = [
+  { offset = 1, type = "DIR32", symbol = "?g_SecondaryActorDifficulty@@3HA", target = 0x004A5720 },
+  { offset = 24, type = "DIR32", symbol = "?g_SecondaryActorScore@@3HA", target = 0x004A56E4 },
+  { offset = 116, type = "DIR32", symbol = "?g_SecondaryActorDifficulty@@3HA", target = 0x004A5720 },
+  { offset = 124, type = "DIR32", symbol = "?g_SecondaryActorScore@@3HA", target = 0x004A56E4 },
+  { offset = 149, type = "DIR32", symbol = "?g_SecondaryActorDifficulty@@3HA", target = 0x004A5720 },
+  { offset = 162, type = "DIR32", symbol = "?g_PauseRecordShotType@@3EA", target = 0x004A573C },
+  { offset = 180, type = "DIR32", symbol = "?g_SecondaryActorDifficulty@@3HA", target = 0x004A5720 },
+  { offset = 187, type = "DIR32", symbol = "?g_StageVariant@@3IA", target = 0x004A5728 },
+  { offset = 211, type = "DIR32", symbol = "?g_SecondaryActorDifficulty@@3HA", target = 0x004A5720 },
+  { offset = 236, type = "REL32", symbol = "__time64", target = 0x004608B7 },
+  { offset = 241, type = "DIR32", symbol = "?g_SecondaryActorDifficulty@@3HA", target = 0x004A5720 },
+  { offset = 247, type = "DIR32", symbol = "?g_PauseRecordEmptyName@@3QBDB", target = 0x00495244 },
+  { offset = 276, type = "DIR32", symbol = "?g_PauseRecordEmptyName@@3QBDB", target = 0x00495244, addend = 4 },
+  { offset = 286, type = "DIR32", symbol = "?g_PauseRecordEmptyName@@3QBDB", target = 0x00495244, addend = 8 },
+  { offset = 294, type = "DIR32", symbol = "?g_PauseRecordTiming@@3PAUPauseRecordTimingView@@A", target = 0x004A8D80 },
+  { offset = 309, type = "DIR32", symbol = "?g_SecondaryActorDifficulty@@3HA", target = 0x004A5720 },
+  { offset = 340, type = "DIR32", symbol = "?g_PauseRecordHundred@@3NB", target = 0x00497E50 },
+]

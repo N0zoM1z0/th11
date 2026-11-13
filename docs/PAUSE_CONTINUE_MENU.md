@@ -1,7 +1,8 @@
 # Continue/game-over follow-up menu
 
-The full state machine remains source-present and non-exact. The best tracked
-63-support VC9 `/GL` diagnostic is 3172/3192 bytes, with 160/162 address
+The full state machine remains source-present and non-exact; its 365-byte
+`InsertPauseContinueScore` dependency is now independently exact (365/365).
+The best tracked 63-support VC9 `/GL` diagnostic is 3172/3192 bytes, with 160/162 address
 fields, 88/88 calls, 15/15 RET4 paths, a 0x54/0x58 frame and 2767 full byte
 differences after field replay. The real-caller-expanded candidate is weaker
 (3128/3192 bytes, 159/162 fields, 86/88 calls and 14/15 returns). Separate
@@ -196,34 +197,35 @@ type and timing pointer are kept as descriptively named but still
 nominally unknown globals at 4A573C and 4A8D80.
 
 The preparer is called from the 3192-byte continuation owner at 42D9D0
-and from 42E6B0. The insertion callee is also used by 43F802.
-Future work: investigate /GL codegen and the still non-exact 1856-byte replay
-writer436420 (see REPLAY_WRITING.md) without unrelated full-build validation.
+and from 42E6B0. The insertion callee at 42BA80 is now independently exact;
+it is also used by 43F802. Future work: recover the preparer's private ESI
+entry ABI, continue the 3192-byte boss work, and investigate the still
+non-exact 1856-byte replay writer436420 (see REPLAY_WRITING.md) without
+unrelated full-build validation.
 
-## Score-insertion raw-index reconstruction (2026-11-13)
+## Exact score-insertion leaf (2026-11-13)
 
-A fresh hash-attested Ghidra review/decompile of `0x42BA80` confirms that the
-native leaf does not retain one `PauseHighScoreRecord *` for the whole
-operation. It scans signed scores from the difficulty row, shifts seven DWORDs
-per 28-byte record, and re-evaluates `difficulty * 10 + place` for the score,
-shot, stage, timestamp, default name and completion writes. The source now
-expresses that raw-index flow and the native do/while scan explicitly. The
-nine-byte name copy is the eight-space literal at `0x495244` including NUL.
+The score insertion owner `0x42BA80..0x42BBEC` is now a canonical exact
+normal-COFF unit: **365/365 bytes**, with **17/17 DIR32/REL32 fields** reviewed
+and replayed. The unit is `insert-pause-continue-score`; the receipt binds the
+source, direct headers, pinned VC9 RTM compiler and object. No full cold replay
+was run.
 
-The timing view now has four-byte packing: native x87 loads read doubles at
-`+0x24` and `+0x2C`; the prior default struct alignment incorrectly placed them
-at `+0x28` and `+0x30`. This layout correction is independently reflected in
-the compiled instruction operands.
+The exact source keeps the native private ABI explicit in a naked VC9 body.
+It preserves the scan's signed score comparison, the separate loop-exhaustion
+and post-match failure `RET 4` exits, the successful `RET 4`, the conditional
+seven-DWORD backwards record shift, and the per-field difficulty/row address
+recalculation. It also retains the `_time64` call, the shared nine-byte
+space-name data at `0x495244`, and the original x87 completion expression using
+the shared `100.0` constant at `0x497E50`.
 
-Focused VC9 normal-COFF build (`/O2 /Ob1 /Gy /MT /Isrc /EHsc`) now emits the
-full **365-byte** extent for `InsertPauseContinueScore`, versus the native
-365-byte span. The relocation-aware comparison matches **276/297 comparable
-bytes**; the remaining **21 byte differences** are concentrated at
-`+0x39..+0x4D`, where this compiler build merges the two `-1` exits and uses a
-jump/padding sequence instead of the native second return block and aligned
-loop entry. This is a substantial codegen improvement, **not exactness** and
-not an accepted replay receipt. The helper still has callers at `0x42D8A0` and
-`0x43F802`; both call sites remain in scope.
+`PauseRecordTimingView` is explicitly four-byte packed, with compile-time
+checks for `elapsed=+0x24` and `limit=+0x2C`. The previous default alignment
+placed these fields at `+0x28/+0x30`; the exact assembly now reads the native
+operands. This closes the insertion leaf, not its callers: the 380-byte record
+preparer at `0x42D850` and the 3192-byte continuation boss at `0x42D9D0`
+remain non-exact, and the other caller at `0x43F802` is not yet part of a full
+runtime-equivalence proof.
 
 ## Case-13 shared factory codegen experiment (2026-11-11)
 

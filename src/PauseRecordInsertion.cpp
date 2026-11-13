@@ -30,7 +30,13 @@ struct PauseRecordTimingView
     double elapsed, limit;
 };
 #pragma pack(pop)
+typedef char PauseRecordTimingElapsedOffset[(offsetof(PauseRecordTimingView, elapsed) == 0x24) ? 1 : -1];
+typedef char PauseRecordTimingLimitOffset[(offsetof(PauseRecordTimingView, limit) == 0x2c) ? 1 : -1];
 extern PauseRecordTimingView *g_PauseRecordTiming;
+
+// These shared original .rdata constants are referenced by the native leaf.
+extern const char g_PauseRecordEmptyName[9] = "        ";
+extern const double g_PauseRecordHundred = 100.0;
 
 // 0042BA80: insert the current score in descending order, preserving records
 // below the insertion point and leaving the list unchanged if none qualifies.
@@ -73,12 +79,12 @@ int __stdcall InsertPauseContinueScore(unsigned char *scoreBlock)
 
                 int row = place + g_SecondaryActorDifficulty * 10;
                 unsigned char *name = scoreBlock + 0x16 + row * 0x1c;
-                memcpy(name, "        ", 9);
+                memcpy(name, g_PauseRecordEmptyName, sizeof(g_PauseRecordEmptyName));
                 const float progress = static_cast<float>(
                     g_PauseRecordTiming->elapsed / g_PauseRecordTiming->limit);
                 *reinterpret_cast<float *>(scoreBlock + 0x28 +
                     (place + g_SecondaryActorDifficulty * 10) * 0x1c) =
-                    static_cast<float>(100.0 - progress * 100.0);
+                    static_cast<float>(g_PauseRecordHundred - progress * g_PauseRecordHundred);
                 return place;
             }
             else
