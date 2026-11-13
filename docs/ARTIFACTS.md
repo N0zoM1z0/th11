@@ -33,8 +33,9 @@ other private/work directories.
 | Scratch `build/probe/` | 1,916 KiB | Removed |
 
 **150,640 KiB (~147 MiB)** was reclaimed by deleting 364 of 369 old
-exploratory link contexts and the scratch objects. Five deliberately retained
-expensive diagnostic contexts remain in `build/probe-ltcg/`:
+exploratory link contexts and the scratch objects. At that first cleanup
+checkpoint, five deliberately retained expensive diagnostic contexts remained
+in `build/probe-ltcg/`:
 
 - `PauseContinueMenuOwner` — 3,192-byte continuation menu with expensive
   63-support-TU context (~11 MiB);
@@ -68,3 +69,34 @@ For exploratory work rerun its relevant `.analysis/*.py` recipe or compile
 its tracked `probes/` context. **Do not replay all exact units merely because
 old diagnostic caches were removed.** For current branch state, open tasks and
 proof boundaries, see [RE_HANDOFF](RE_HANDOFF.md) and [ORACLES](ORACLES.md).
+
+## Handoff cleanup — 2026-11-13 (second pass)
+
+A second audit removed the remaining one-off experiment outputs from the
+continuation-menu and score-register search. It inspected `git ls-files` first;
+`build/probe-ltcg/` and `build/probes/` contained no tracked files. Only those
+ignored build paths were touched. No canonical `build/match/` or
+`build/match-linked/` output, target, toolchain, Ghidra data, source, probe
+recipe or `.analysis/` evidence was deleted.
+
+| Diagnostic cleanup | Before | After |
+| --- | ---: | ---: |
+| Entire `build/` | 318,428 KiB (~311 MiB) | 159,728 KiB (~156 MiB) |
+| `build/probe-ltcg/` | 186,764 KiB (~182 MiB) | 30,092 KiB (~29 MiB) |
+| Scratch `build/probes/` | 2,028 KiB | Removed |
+
+**158,700 KiB (~155 MiB)** was reclaimed from `build/`: 156 exploratory
+`build/probe-ltcg/` directories plus six loose diagnostic files were removed,
+and the scratch `build/probes/` directory was deleted. The exact removal list
+and per-context sizes are retained in
+`.analysis/handoff-storage-cleanup-20261113b.txt`.
+
+Nine probe contexts remain: the five historical contexts above plus
+`PauseContinueSameTuScore-20261113`,
+`PauseContinueAllRealCallersFinal-20261113`,
+`PauseContinueDynamicModeSupport-20261113`, and
+`PauseContinueDynamicFactorySupport-20261113`. The latter four preserve the
+current best 63-support continuation baseline, the real-caller-expanded
+comparison, and the two dynamic helper support objects needed to reproduce
+those experiments. All other diagnostic objects can be regenerated from the
+retained `.analysis/` recipes and tracked `probes/` sources.
