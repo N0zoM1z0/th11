@@ -715,3 +715,4 @@ ReadPbgResourceByName,0x004421E0,function
 GetPbgResourceSizeByName,0x004422C0,function
 LoadPbgSessionDirectory,0x00441910,function
 ConstructPbgResourceEntry,0x00441C70,function
+ParsePbgDirectoryEntries,0x00441A60,function

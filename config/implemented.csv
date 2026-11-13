@@ -714,3 +714,4 @@ ReadPbgResourceByName
 GetPbgResourceSizeByName
 LoadPbgSessionDirectory
 ConstructPbgResourceEntry
+ParsePbgDirectoryEntries
