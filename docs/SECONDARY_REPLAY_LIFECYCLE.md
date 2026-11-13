@@ -1,5 +1,18 @@
 # Secondary replay stage lifecycle
 
+## Replay-header storage leaf (`0x420D80`, 137 bytes)
+
+`InitializeReplayHeaderStorage` is a private no-stack-argument routine with
+its embedded 0x3C-byte storage view in `ESI`. It clears the view, publishes the
+native fixed constants and byte flags, copies five opaque defaults from the
+settings block at `0x4C93DC..0x4C93EF`, and preserves the original `EBX`/`RET`
+behavior. The original body is 137 bytes / 40 instructions, with one memset
+call, five default-data references and one return. Its canonical local
+`replay-header-storage-initialization` linked-PE replay has all six fields
+independently bound and zero full-byte differences. Four direct callers and
+the small `0x420E10` ESI-preserving wrapper have been cross-checked; original
+class/TU provenance remains unknown.
+
 ## Integer player-position publication (`0x435630`, 110 bytes)
 
 `SetSecondaryIntegerPlayerPosition` is the leaf called by the replay-stage
@@ -18,6 +31,23 @@ shorter and reordered the FPU and flag stores. The local canonical unit comparat
 `secondary-integer-player-position` and passes with zero differences. The
 current Factory replay-submission set does not include TH11, so this local
 result is recorded without claiming an accepted Factory fact.
+
+## Shared replay-header defaults (`0x420D80`, 137 bytes)
+
+`InitializeReplayHeaderStorage` is the private shared initializer used by the
+recording owner and both replay-settings loading paths. Its receiver is the
+embedded 0x3C-byte header view in ESI; it has no stack arguments. The exact
+source preserves the native `memset` call, field-write order, and the five
+loader-populated defaults words at `0x4C93DC..0x4C93EC`. The adjacent block is
+copied as four DWORDs and one WORD; its values are populated by the replay
+settings loader at `0x429EB0`, so their original semantic names and ownership
+remain open.
+
+The canonical local linked-PE unit `replay-header-storage-initialization`
+replays the complete 137-byte PDB-owned function, including one REL32 `memset`
+field and five DIR32 defaults-block references, with zero full-byte
+ differences. The native boundary has four incoming callers and one RET; the
+original class/TU provenance remains unknown.
 
 ## Stage-lifecycle owner (`0x436DA0`, 388 bytes)
 

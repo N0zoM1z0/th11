@@ -315,6 +315,7 @@ InitializeFanAnimationVm,0x004520F0,function
 InitializeInputBindingDefaults,0x00459BD0,function
 InitializeMainWindow,0x00446AE0,function
 InitializeReplayFileBrowser,0x00437D50,function
+InitializeReplayHeaderStorage,0x00420D80,function
 InitializeReplayScoreArchive,0x00437550,function
 InitializeReplaySeedArchive,0x00437660,function
 InitializeSceneAnimationVm,0x00456910,function

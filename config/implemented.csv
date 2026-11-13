@@ -314,6 +314,7 @@ InitializeFanAnimationVm
 InitializeInputBindingDefaults
 InitializeMainWindow
 InitializeReplayFileBrowser
+InitializeReplayHeaderStorage
 InitializeReplayScoreArchive
 InitializeReplaySeedArchive
 InitializeSceneAnimationVm
