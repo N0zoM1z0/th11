@@ -15,10 +15,16 @@ remote publication. Use direct Ghidra through `scripts/ghidra.py`, not REA.
 
 ## Verified state and trust boundaries
 
-[Generated progress](PROGRESS.md) and `config/` are authoritative. At the
-start of this handoff cleanup the repository was clean at `d3a0f8c`
-(`gpt-web: isolate exact secondary draw publisher ABI`), on `main`, one local
-commit ahead of `origin/main`. Regenerated `docs/PROGRESS.md` reports:
+[Generated progress](PROGRESS.md) and `config/` are authoritative. The
+production-source baseline for this handoff is `e7e1f13`
+(`gpt-web: recover pause replay deletion ABI`), which was at `origin/main`
+before the documentation-only handoff commits. An unfinished local ABI
+experiment had modified six production files and left three probe copies in
+`src/`. It was measured, found to worsen the Game Over boss, and reverted to
+the committed baseline; the useful ABI observations and focused source
+experiments are retained under `.analysis/`. Do not restore the rejected
+production edits as if they were accepted progress. Regenerated
+`docs/PROGRESS.md` reports:
 
 | Scope | Current checkpoint |
 | --- | ---: |
@@ -66,6 +72,7 @@ but are **not exact**, unless a specific child is separately listed above.
 | `0x42BA80` **365-byte score insertion leaf** | **365/365 exact**, all17 DIR32/REL32 fields reviewed, canonical normal-COFF unit `insert-pause-continue-score`. [Continue](PAUSE_CONTINUE_MENU.md) |
 | `0x42D850` **380-byte record preparer** | **380/380 exact**, all17 DIR32/REL32 fields reviewed, canonical normal-COFF unit `prepare-pause-continue-records`; private ESI receiver recovered and both callers updated. Its 3192-byte boss remains open. [Continue](PAUSE_CONTINUE_MENU.md) |
 | `0x42D9D0` **3,192-byte continue menu** | Best focused 63-support `/GL` diagnostic: **3184/3192 bytes**, **162/162 fields**, **88/88 calls**, **15/15 RET4 paths**, 0x58-byte frame and **2008 non-address differences**. `/Oy` plus branch-local result slots improved the case-13 call ABI, but candidate still uses EBX for the menu receiver and an EBP frame; native uses EBP receiver with ESP-relative frame. Eight-byte owner extent and remaining codegen differences remain open. [Continue](PAUSE_CONTINUE_MENU.md) |
+| `0x42E6B0` **3,208-byte game-over menu** | Best retained focused VC9 `/GL` diagnostic: **3212-byte PDB contribution**, **154/154 fields**, **88/88 calls**, **14/14 RET4 paths**, seven switch entries and **2040 non-address differences**. Its 0x58-byte ESP frame, GS cookie slot and EBP menu receiver match the native prologue shape, but the function is not exact. A separate state-26 variant measured 2039 differences, but its relink output was lost during a failed Wine link retry. [Game Over](PAUSE_GAME_OVER_MENU.md) |
 | `0x441910` **336-byte THA1 directory loader** | Complete 15-call source, scoped 380/336; native private header decode/stack scheduling. [Directory](PBG_DIRECTORY_LOADER.md) |
 | `0x441A60` **363-byte directory entry parser** | Complete `new[]`, ctor/dtor, double name scans and signed 4-byte alignment; 341/363 scoped. [Directory](PBG_DIRECTORY_LOADER.md) |
 | `0x4421E0` / `0x4422C0` **218/202-byte resource APIs** | Source complete; normal 195/183, full real `/GL` 172/165. Resolve EH owner and unoptimized local file lifetimes. [Pbg lookup](PBG_RESOURCE_LOOKUP.md) |
@@ -99,6 +106,26 @@ ABI. The two secondary append factories use the same private publisher; the
 default factory remains in `PauseContinueMenuSupport.cpp`, while the explicit-
 layer factory and publisher are in `SecondaryDrawPublisher.cpp`.
 
+### Shared selection helper ABI (provisional, not canonical exact)
+
+The shared helper at `0x459160`, currently named
+`MoveSecondaryDebugSelection`, does **not** use the ordinary two-stack-
+argument ABI implied by its C++ `__stdcall` declaration. The native entry
+uses EAX for the selection pointer, one signed delta on the stack, returns the
+current selection in EAX, and exits with `RET 4`. A throwaway naked body in
+`.analysis/ConfigurationMenuSelection-native-abi-20261113.cpp` reproduced
+**121/121 bytes** in a normal-COFF structural comparison with zero
+relocations. That result has no accepted canonical receipt and must not be
+called strict exact. The existing production C++ implementation and its
+callers were not migrated.
+
+A Game Over-only thiscall facade was also tested. It generated a
+**3236/3208-byte** boss with **2116 non-address differences**, worse than the
+retained candidate, and was reverted. The native helper has many shared
+callers; do not change its global declaration or rewrite its implementation
+until the full caller set and all call-site ABIs are accounted for. The
+throwaway raw source is retained for analysis, not as an adopted implementation.
+
 The five-unit selected replay run for the new secondary append path passed:
 `publish-secondary-draw-animation-vm`,
 `create-secondary-emitter-animation-vm-id`,
@@ -106,7 +133,13 @@ The five-unit selected replay run for the new secondary append path passed:
 `create-default-secondary-draw-animation-vm-id`, and
 `reset-secondary-pattern-slot`. Earlier selected runs also covered the score,
 child signal, close/tree helpers and runtime-mode leaf. No full-cohort cold
-replay was run. The 365-byte score-insertion leaf, 380-byte record preparer, 18-byte pause replay delete helper and 11-byte heap-free thunk are exact. The 3192-byte continue boss now has a focused 63-support `/GL` candidate at 3184/3192 bytes, 162/162 fields, 88/88 calls, 15/15 RET4 exits and 2008 non-address differences; it remains non-exact.
+replay was run. The 365-byte score-insertion leaf, 380-byte record preparer,
+18-byte pause replay delete helper and 11-byte heap-free thunk are exact. The
+3192-byte continue boss has a focused 63-support `/GL` candidate at
+3184/3192 bytes, 162/162 fields, 88/88 calls, 15/15 RET4 exits and 2008
+non-address differences. The 3208-byte Game Over boss has a retained
+3212-byte linked candidate with 154/154 fields, 88 calls, 14 RET4 exits and
+2040 non-address differences. Both bosses remain non-exact.
 
 The native original TU/class/library authorship of these recovered owners is
 not established. A local commit is a source checkpoint, not an Oracle receipt.
@@ -156,21 +189,31 @@ before/after sizes and the full removal list are recorded in
 `.analysis/handoff-storage-cleanup-20261113b.txt` and summarized in
 [ARTIFACTS.md](ARTIFACTS.md).
 
-The nine retained diagnostic contexts are the five previously documented
-history caches plus `PauseContinueSameTuScore-20261113`,
-`PauseContinueAllRealCallersFinal-20261113`,
-`PauseContinueDynamicModeSupport-20261113` and
-`PauseContinueDynamicFactorySupport-20261113`. These preserve the current
-63-support boss baseline, real-caller-expanded comparison and dynamic helper
-support objects. All canonical `build/match-linked/`
-and `build/match/` receipts, the private original, `.tools/` compiler/Wine
-state, `ghidra-project/`, source, Git history and `.analysis/` recipes/reviews
-were preserved. Deleted probe binaries are regenerable; a historical note is
-not proof its old ignored PE/PDB directory still exists. Do not erase
-canonical receipts, the original, toolchain or Ghidra project for space.
+Eleven diagnostic contexts are retained: the five earlier history caches,
+the four pause contexts above, plus `PauseContinueBossTrackedBestOy-20261113`
+(the best retained 3184/3192 continuation candidate) and
+`PauseGameOverFpoAdapters-20261113` (the best retained Game Over candidate).
+The latter cache is a diagnostic PE/MAP/PDB snapshot, not an Oracle receipt.
+The state-26 variant source and adapter recipe remain in `.analysis/`; its
+latest relink attempt hit a Wine linker page fault while opening the cached
+Archive support object, so its 2039-difference result is historical until
+reproduced.
 
-The working tree was clean at the start of cleanup; recheck status and HEAD on
-resume. The private `.analysis/handoff-threadinf-deletingview-20261113/` keeps
-a rejected duplicate deleting-owner experiment out of active `src/`. Commits
-preserve authoritative source, reusable probes, documentation and ledgers;
-ignored build outputs remain local and disposable.
+A third targeted cleanup removed 67 non-retained `build/probe-ltcg/`
+directories/loose files (92,079,610 bytes) and 49 one-off `.analysis/`
+experiment files (417,326 bytes). The complete build now occupies about
+163 MiB; the 11 retained diagnostic contexts occupy about 36 MiB.
+All canonical `build/match-linked/` and `build/match/` receipts, the private
+original, `.tools/` compiler/Wine state, `ghidra-project/`, source, Git
+history and substantive Ghidra/review evidence were preserved. The exact
+cleanup summary is `.analysis/handoff-storage-cleanup-20261113c.txt`.
+Deleted probe binaries are regenerable; a historical note is not proof its
+old ignored PE/PDB directory still exists. Do not erase canonical receipts,
+the original, toolchain or Ghidra project for space.
+
+The production tree is restored to the committed `e7e1f13` baseline; the
+worktree was clean before these documentation-only handoff commits. The private
+`.analysis/handoff-threadinf-deletingview-20261113/` keeps a rejected
+duplicate deleting-owner experiment out of active `src/`. Commits preserve
+authoritative source, reusable probes, documentation and ledgers; ignored
+build outputs remain local and disposable.

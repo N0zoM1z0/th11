@@ -91,12 +91,49 @@ and the scratch `build/probes/` directory was deleted. The exact removal list
 and per-context sizes are retained in
 `.analysis/handoff-storage-cleanup-20261113b.txt`.
 
-Nine probe contexts remain: the five historical contexts above plus
+Eleven probe contexts remain: the five historical contexts above plus
 `PauseContinueSameTuScore-20261113`,
 `PauseContinueAllRealCallersFinal-20261113`,
-`PauseContinueDynamicModeSupport-20261113`, and
-`PauseContinueDynamicFactorySupport-20261113`. The latter four preserve the
-current best 63-support continuation baseline, the real-caller-expanded
-comparison, and the two dynamic helper support objects needed to reproduce
-those experiments. All other diagnostic objects can be regenerated from the
-retained `.analysis/` recipes and tracked `probes/` sources.
+`PauseContinueDynamicModeSupport-20261113`,
+`PauseContinueDynamicFactorySupport-20261113`,
+`PauseContinueBossTrackedBestOy-20261113` and
+`PauseGameOverFpoAdapters-20261113`. The first four preserve the base
+63-support continuation context, the expanded real-caller comparison and the
+two dynamic helper objects. The last two preserve the best retained linked
+boss diagnostics: Continue 3184/3192 with 2008 non-address differences, and
+Game Over 3212/3208 with 2040 non-address differences. Neither is exact.
+All other diagnostic objects can be regenerated from retained `.analysis/`
+recipes and tracked `probes/` sources.
+
+
+## Handoff preparation cleanup — 2026-11-13 (third pass)
+
+A final handoff-oriented audit kept only the eleven contexts enumerated above
+and removed **67** non-retained exploratory `build/probe-ltcg/` directories
+or loose objects. This deleted **92,079,610 bytes** (about 87.8 MiB) of
+regenerable output. The retained `build/probe-ltcg/` inventory is now about
+36 MiB; total `build/` is about 163 MiB, with canonical `build/match/` and
+`build/match-linked/` caches untouched.
+
+The same pass removed **49** one-off Game Over/ABI source variants and probe
+scripts from ignored `.analysis/` scratch, reclaiming another **417,326
+bytes**. It retained the full Ghidra reviews/decompiles, the 2026-11-13
+Game Over review notes, one state-26 source/adapter recipe, the shared
+selection-ABI experiment and the best continuation boss recipe. The state-26
+recipe's most recent relink failed with a Wine linker page fault while opening
+a cached Archive support object; its 2039-difference measurement is therefore
+historical until reproduced. The retained Game Over PE/MAP/PDB snapshot is
+the 3212-byte/2040-difference candidate.
+
+Post-cleanup measured sizes (`du -sk`):
+
+| Path | KiB |
+| --- | ---: |
+| `build/` | 166,392 |
+| `build/probe-ltcg/` | 36,696 |
+| `build/match/` | 440 |
+| `build/match-linked/` | 129,252 |
+| `.analysis/` | 30,864 |
+
+No tracked build files were removed. The source tree was restored to the
+committed `e7e1f13` baseline before this documentation-only handoff update.
