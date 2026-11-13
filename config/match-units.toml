@@ -7893,3 +7893,50 @@ linkages = [
   { offset = 0x718, type = "DIR32", symbol = "?g_FileCriticalDepth@@3EA", target = 0x004C3BB2 },
   { offset = 0x733, type = "REL32", symbol = "@__security_check_cookie@4", target = 0x0045FC2C },
 ]
+
+# The complete 795-byte encoder owner is restored with the original x86
+# instruction stream, mixed private helper ABIs, and all five native calls.
+[units.replay-compression-main]
+artifact_kind = "linked-pe"
+source = "src/ReplayCompressionEncoder.cpp"
+inputs = []
+support_sources = [
+  "src/ReplayCompressionSearch.cpp",
+  "src/ReplayCompressionTreeOps.cpp",
+  "src/ReplayCompressionTree.cpp",
+  "probes/replay-compression-context.cpp",
+]
+output_dir = "build/match-linked/ReplayCompressionMain"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "ReplayCompressionProbe@12"
+functions = ["CompressReplayData"]
+symbol = "?CompressReplayData@@YGPAEPBXHPAH@Z"
+target_address = 0x004423A0
+size = 795
+linkages = [
+  { offset = 21, type = "REL32", symbol = "_ReplayCompressionMalloc", target = 0x00460192 },
+  { offset = 59, type = "REL32", symbol = "?ResetReplayCompressionTree@@YAXXZ", target = 0x004428D0 },
+  { offset = 601, type = "REL32", symbol = "?DeleteReplayCompressionNode@@YIXH@Z", target = 0x00442AB0 },
+  { offset = 610, type = "REL32", symbol = "_ReplayCompressionReplaceNodePrivate", target = 0x00442B50 },
+  { offset = 693, type = "REL32", symbol = "?FindReplayCompressionMatch@@YIHPAHH0@Z", target = 0x00442910 },
+]
+
+# The native EAX/EDX replacement helper is also a complete exact owner.
+[units.replay-compression-replace-private]
+artifact_kind = "linked-pe"
+source = "src/ReplayCompressionTreeOps.cpp"
+inputs = []
+support_sources = [
+  "src/ReplayCompressionEncoder.cpp",
+  "src/ReplayCompressionSearch.cpp",
+  "src/ReplayCompressionTree.cpp",
+  "probes/replay-compression-context.cpp",
+]
+output_dir = "build/match-linked/ReplayCompressionPrivateReplace"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "ReplayCompressionProbe@12"
+functions = ["ReplaceReplayCompressionNode"]
+symbol = "_ReplayCompressionReplaceNodePrivate"
+target_address = 0x00442B50
+size = 134
+linkages = []

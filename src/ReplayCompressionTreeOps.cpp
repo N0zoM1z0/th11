@@ -50,7 +50,7 @@ void __stdcall ReplaceReplayCompressionNode(int oldNode, int newNode)
 
 // 00442AB0: recursively remove a tree node. When it has two children,
 // extract the rightmost node in the left subtree and replace the removed one.
-void __stdcall DeleteReplayCompressionNode(int node)
+void __fastcall DeleteReplayCompressionNode(int node)
 {
     ReplayCompressionNode *tree = g_ReplayCompressionNodes;
     if (!tree[node].parent) return;
@@ -68,4 +68,45 @@ void __stdcall DeleteReplayCompressionNode(int node)
     int replacement = FindReplayCompressionPredecessor(node);
     DeleteReplayCompressionNode(replacement);
     ReplaceReplayCompressionNode(node, replacement);
+}
+
+
+// Native 00442B50 private ABI: EAX is the node being replaced, EDX is its
+// replacement. No stack arguments are consumed; the caller owns both values.
+extern "C" __declspec(naked) void __cdecl ReplayCompressionReplaceNodePrivate()
+{
+    __asm {
+        push esi
+        mov esi, eax
+        lea ecx, [esi + esi*2]
+        mov eax, dword ptr [ecx*4 + 04A8ED8h]
+        lea eax, [eax + eax*2]
+        add eax, eax
+        add eax, eax
+        cmp dword ptr [eax + 04A8EDCh], esi
+        jne replace_right
+        mov dword ptr [eax + 04A8EDCh], edx
+        jmp replace_children
+    replace_right:
+        mov dword ptr [eax + 04A8EE0h], edx
+    replace_children:
+        mov esi, dword ptr [ecx*4 + 04A8ED8h]
+        lea eax, [edx + edx*2]
+        add eax, eax
+        mov dword ptr [eax + eax + 04A8ED8h], esi
+        mov esi, dword ptr [ecx*4 + 04A8EDCh]
+        add eax, eax
+        mov dword ptr [eax + 04A8EDCh], esi
+        mov esi, dword ptr [ecx*4 + 04A8EE0h]
+        mov dword ptr [eax + 04A8EE0h], esi
+        mov esi, dword ptr [eax + 04A8EDCh]
+        lea esi, [esi + esi*2]
+        mov dword ptr [esi*4 + 04A8ED8h], edx
+        mov eax, dword ptr [eax + 04A8EE0h]
+        lea eax, [eax + eax*2]
+        mov dword ptr [eax*4 + 04A8ED8h], edx
+        mov dword ptr [ecx*4 + 04A8ED8h], 0
+        pop esi
+        ret
+    }
 }

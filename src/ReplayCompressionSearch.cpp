@@ -14,8 +14,9 @@ void __stdcall ReplaceReplayCompressionNode(int oldNode, int newNode);
 
 // 00442910..00442AAF: find a match for the circular dictionary position,
 // insert it into the tree, or replace the old node on an 18-byte match.
-int __stdcall FindReplayCompressionMatch(int position, int *matchPosition)
+int __fastcall FindReplayCompressionMatch(int *unused, int position, int *matchPosition)
 {
+    (void)unused;
     if (!position) return 0;
 
     int bestLength = 0;
