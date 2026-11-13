@@ -63,7 +63,7 @@ including the compiler's reuse of the dead incoming buffer home for the
 error-message pointer. No custom ABI, artificial padding or fake return was
 introduced.
 
-## Archive views and pending extraction
+## Archive views and verified extraction
 
 `Archive.hpp` describes partial observed views, not complete original owners:
 

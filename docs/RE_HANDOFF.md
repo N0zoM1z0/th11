@@ -1,195 +1,117 @@
-# TH11 reconstruction — next-agent handoff (2026-11-12)
+# TH11 reconstruction — next-agent handoff (2026-11-13)
 
-**Target:** original Japanese *Touhou 11* v1.00a, private
-`resources/th11.exe`, SHA-256
+**Start here, then work on the code.** This repository targets only original
+Japanese *Touhou 11* v1.00a (`resources/th11.exe`, ignored), SHA-256
 `2978b17f6184d100d249d4311348dd30c5c32ec75c014b667a525b797d3d8813`.
-Do not use the localized `th11c.exe` or a TH10 target. The pinned historical
-codegen candidate is **VC9 / Visual C++ 2008 RTM build 21022**; established
-LTCG owners use `/GL`. The original translation-unit partition, a complete
-native game binary, and runtime equivalence are **not** established.
+The pinned compiler candidate is **VC9 / Visual C++ 2008 RTM build 21022**;
+existing LTCG owners need their `/GL` producer context. Do not substitute
+`th11c.exe`, TH10 codegen or a different compiler.
 
-Start with `git status --short --branch` and `git diff`. All dirty, staged
-and untracked work is the project's work: **continue it, never reset or
-silently discard it**. Commit coherent progress as `gpt-web: ...`; local
-commits may be ahead of `origin/main`. Do not run the entire cold replay.
-Direct Ghidra through `scripts/ghidra.py` is the approved target analyzer,
-not REA. Read [AGENTS](../AGENTS.md), [workflow](RE_WORKFLOW.md),
-[Oracle rules](ORACLES.md) and [storage rules](ARTIFACTS.md) as needed.
+Check `git status --short --branch` and `git log -8 --oneline` before editing.
+**Do not reset, discard or overlook dirty/untracked changes.** Save substantive
+work with several appropriately scoped commits prefixed `gpt-web: ...`. The
+Factory shell has no network/push; local commits must not be described as
+remote publication. Use direct Ghidra through `scripts/ghidra.py`, not REA.
 
-## Verified checkpoint and trust boundaries
+## Verified state and trust boundaries
 
-[Generated progress](PROGRESS.md) is authoritative for counts. At this
-checkpoint the ledgers report:
+[Generated progress](PROGRESS.md) and `config/` are authoritative. As of this
+handoff, after `ce2d51d`, the tracking validator reports:
 
-| Scope | Current count |
+| Scope | Verified checkpoint |
 | --- | ---: |
-| Function candidates | 2,155 (provisional inventory) |
-| Reviewed boundaries | **697** |
-| Maintained source mappings | **671** |
-| Strict canonical exact functions | **344** |
-| Strict exact code bytes | **38,969** |
-| Exact with confirmed authored origin | 52 |
+| Function candidates (provisional inventory) | 2,157 |
+| Reviewed boundaries | 758 |
+| Source-present function mappings | 732 |
+| Strict canonical exact functions | **382** |
+| Strict exact codegen bytes | **41,616** |
+| Exact with confirmed authored origin | 53 |
 
-`config/functions.csv`, `function-boundaries.csv`,
-`function-origins.csv`, `matches.csv`, and `match-units.toml` are the
-per-function evidence/contracts. Source presence, size equality, and
-field-masked similarity **do not count as exact**. An accepted linked owner
-needs its **complete** primary-TU PDB contribution, MAP/PE identity,
-exhaustive reviewed fields, current source/compiler/producer receipt, and
-zero changed bytes. A normal-COFF match does **not** prove the target's
-original TU or `/GL` ownership.
+**Exact** means a unique whole-function owner, pinned original/compiler,
+exhaustive reviewed address fields, current cold receipt and zero differing
+bytes. Compiling, a source mapping, a function of equal length, or a diagnostic
+with matched unrelocated bytes is not exact. Original TU attribution,
+complete game build, full runtime equivalence and a complete authored-function
+denominator remain open. Do not update these counts by hand: regenerate via
+`scripts/repo-python scripts/progress.py` when the ledgers change.
 
-Recent strict successes to protect:
+The latest large **strict exact** improvement is `ReadArchivedFile`
+`0x441760` (**300/300 bytes**, 9 calls, 12 native fields): the native failure
+join belongs *before* checksum/decode success. `7b34b75` contains the natural
+source correction. Its linked unit `read-archived-file` and affected archive
+lookup/resource loader units passed local cold replay. Related exact Pbg
+owners include `FindPbgResourceRecord` `0x4420E0` (203 bytes),
+`ReadWholePbgLowLevelFile` `0x441F60` (145 bytes),
+`GetPbgArchivedResourceSize` `0x441890` (51 bytes), and eight physical
+MemFile methods (5/69/49/37/44/88/7/4 bytes). See
+[archive evidence](RESOURCE_FILES.md), [resource lookup](PBG_RESOURCE_LOOKUP.md),
+[file I/O](PBG_LOW_LEVEL_FILE.md) and [MemFile](PBG_MEMORY_FILE.md).
 
-| Function / owner | Original size and scope | Canonical unit / detail |
-| --- | --- | --- |
-| `QuantizeSecondaryActorPosition` `0x410580` | **133/133**, 29 instructions, 2 calls, 5 fields | `quantize-secondary-actor-position`; shared float destination preserves x87/flag order, [lifetime](SECONDARY_LIFETIME.md) |
-| `InitializeInputBindingDefaults` `0x459BD0` | **98/98**, 20 instructions, no relocations | `input-binding-defaults` **normal COFF**; natural `return this` restores entry MOV, but independent `/GL` stays 96/98, [audio](AUDIO_DEVICE.md) |
-| Ten state readers/writers `0x410020..0x4100D0` | **35/35** across **10** separately owned functions, no fields | `secondary-state-accessor-*`; five setters need natural value-before-pointer arguments, [lifetime](SECONDARY_LIFETIME.md) |
-| `ClearReplayStageSegments` `0x437420` | **93/93**, one delete field | `clear-replay-stage-segments`, [replay](SECONDARY_PATTERN.md) |
-| `ReadSharedReplayBytes` / `CloseSharedReplayReader` `0x458980/0x4589D0` | **69/69** + **49/49**, 4 + 6 fields | `read-shared-replay-bytes`, `close-shared-replay-reader`; global-handle guard determines EBX/EDI codegen, [replay](SECONDARY_PATTERN.md) |
-| `SetAudioAdjacentScratchMatrix` `0x459C70` | **168/168**, all 17 DIR32 fields | `audio-adjacent-scratch-matrix`, [audio](AUDIO_DEVICE.md) |
-| `DrawSecondaryProgramBrowser` `0x438E70` | **548/548**; 130 instructions, 11 calls, 43 fields | [browser](SECONDARY_PROGRAM_BROWSER.md) |
-| `DecodeAnimationChunk` `0x4545A0` | **811/811** including owned alignment/table bytes | `decode-animation-chunk`, [chunks](ANIMATION_CHUNKS.md) |
-| `AdvanceAnimationDocument` `0x4544C0` | **212/212** | Independently exact; the related 135-byte slot *scanner is not*, [slots](ANIMATION_DOCUMENT_SLOTS.md) |
+## Next substantive investigations
 
-The broader exact catalog is in the canonical manifest and topic notes;
-do not repeat all 344 units as hand-edited prose. Historical diagnostic
-numbers in topic documents describe their **then-current** source and
-producer, not a newer receipt for altered source.
+Prioritize large bosses *and* short exact candidates, without treating one
+leaf as sufficient work for an entire session. These have maintained source
+but are **not exact**, unless a specific child is separately listed above.
 
-## Current title, replay and ThreadInf reconstruction (2026-11-12)
-
-A recent scoped run recovered **14 strict exact owners / 989 original code
-bytes**, from 330 to **344 exact functions**; the progress ledger is still
-a provisional whole-game inventory. All commits are local `gpt-web: ...` and
-may remain ahead of origin. These exact owners include both large genuine
-bosses and small leaves:
-
-| Exact owners (original addresses) | Native size, codegen evidence |
+| Native owner | Latest concrete blocker / next action |
 | --- | --- |
-| `InitializeTitleMenuResources` `0x4395A0` | **275/275**, 90 instructions, seven calls, 15 fields; dynamic priority/slot producer with real chain, animation and log TUs; `initialize-title-menu-resources` |
-| `ConstructTitleMenuStorage` `0x439420` | **201/201**, 39 instructions, four fields; `title-menu-constructor` |
-| `TitleMenuThread` `0x4394F0` | **165/165**, 47 instructions, four calls, 12 fields; slot pointer is **reloaded after document destruction**; `title-menu-thread` |
-| `StartTitleMenu` `0x439900` | **106/106**, 32 instructions, seven fields; real `FrameRuntime.cpp` producer; `start-title-menu` |
-| `DeleteTitleMenu` `0x439970` | **28/28**, 11 instructions, three fields, genuine title-resource producer; `delete-title-menu` |
-| `MenuControllerDrawCallback` `0x439F20` | **7/7**, `MOV EAX,ECX` / tail `JMP`; real menu/title producer; `menu-controller-draw-callback` |
-| `ThreadInf` `0x4593C0/0x459410` | **21/21 constructor** and **16/16 non-deleting destructor** under real worker-stop `/GL`; two distinct units |
-| `0x459420` and four actor/host helpers | Physical 11/11 global publish plus 18/18, 31/31, 38/38, 35/35; strictly independent COFF units |
-| `0x4374D0` replay stage link | **37/37**, natural member destructor, no fields |
+| `0x4356E0` **1,380-byte secondary replay initializer** | Scoped 1247/1380 after restoring selected-stage cleanup; recover private stream/constructor registers. [Replay](SECONDARY_PATTERN.md) |
+| `0x4396C0` **561-byte title destructor** | 561-byte real-context candidate, still 231 positional nonaddress differences. Investigate actual record destruction and chain lock scope. [Title](TITLE_MENU_LIFECYCLE.md) |
+| `0x435C50` **429-byte replay record destructor** | Complete 429-byte size, 114 instructions/14 calls; only six ECX/EDX argument-order bytes differ. [Record lifetime](REPLAY_RECORD_LIFECYCLE.md) |
+| `0x42D9D0` **3,192-byte continue menu** | 3172/3192 scoped 63-support-TU candidate; 0x58 vs 0x54 stack and state-13 lifetime. Retained expensive diagnostic cache. [Continue](PAUSE_CONTINUE_MENU.md) |
+| `0x441910` **336-byte THA1 directory loader** | Complete 15-call source, scoped 380/336; native private header decode/stack scheduling. [Directory](PBG_DIRECTORY_LOADER.md) |
+| `0x441A60` **363-byte directory entry parser** | Complete `new[]`, ctor/dtor, double name scans and signed 4-byte alignment; 341/363 scoped. [Directory](PBG_DIRECTORY_LOADER.md) |
+| `0x4421E0` / `0x4422C0` **218/202-byte resource APIs** | Source complete; normal 195/183, full real `/GL` 172/165. Resolve EH owner and unoptimized local file lifetimes. [Pbg lookup](PBG_RESOURCE_LOOKUP.md) |
+| `0x442FD0` **169-byte Win32 RCDATA loader** | Source compiles to 169-byte extent but failure block placement remains nonexact. [Resource MemFile](PBG_WINRESOURCE_MEMFILE.md) |
+| `0x442DC0` **109-byte memory Seek** | Current committed 3-mode switch produces 120/109; a retained `case0-success-goto` probe achieves **109-byte length with 102 matching bytes**, not accepted. Recover native shared success/failure tail. [MemFile](PBG_MEMORY_FILE.md) |
+| `0x443140` **181-byte frame-tick worker** | Newly preserved packed-state source; dynamic `/GL` about 183/181 and real clock variant 168/181. Recover x87 stack scheduling and alignment. [Frame clock](FRAME_CLOCK.md) |
+| `0x4593E0` **36-byte ThreadInf deleting destructor** | Actual `/GL` emits matching code but dual `??_E`/`??_G` MAP aliases make owner ambiguous. A separate normal-COFF trial was 37/36 and is not adopted. [ThreadInf](THREADINF_LIFECYCLE.md) |
 
-Critical outstanding **large** bosses and falsification evidence:
+Additional substantial, separately documented work includes replay playback
+factory 198 bytes (source codegen equal but private EH-field ownership open),
+417-byte replay frame writer, 761-byte debug overlay, 872-byte text alpha
+fill, and 12,056-byte animation VM interpreter. Use the
+[topic index](KNOWLEDGE_BASE.md#topic-index) rather than re-reading all notes.
 
-- `DestroyTitleMenuStorage` `0x4396C0` **561 bytes**: complete natural
-  source and both chain lock pairs, animation slots 24/25, 100 record
-  deletes and VM propagation. Real `FrameRuntime`/animation producer restores
-  **561/561 length, 152/155 instructions, 15/15 calls, RET4**, but **231
-  positional nonaddress bytes still differ**. Using actual virtual title
-  destructor changed to 559 bytes / ordinary RET; it did preserve its exact
-  201-byte constructor and 106-byte startup, but **was not adopted**. Swapping
-  direct record destructor for `delete record`, removing the null guard, and
-  linking real/normal chain removal made **no improvement**. See
-  `docs/TITLE_MENU_LIFECYCLE.md`, `.analysis/probe-title-dtor-chain-deps-20261112.log`,
-  `.analysis/probe-title-dtor-record-lifetime-20261112.log`, and
-  `.analysis/probe-title-menu-virtual-dtor-callers-20261112.log`.
-- `DestroyTitleMenuRecord` `0x435C50` **429 bytes**: actual replay stage
-  destructors and link removal, **429/429 size, 114/114 instructions, 14/14
-  calls, RET4, 38 linked fields**, only **six non-field byte differences**
-  (three paired ECX/EDX register assignment orders before chain removal).
-  Real chain-as-normal-COFF did not alter them; moving stage producers to
-  normal COFF regressed to 427 bytes. Current optimized source retained;
-  docs/REPLAY_RECORD_LIFECYCLE.md and
-  `.analysis/probe-title-record-mixed-producer-20261112.log`.
-- `ThreadInf` deleting destructor `0x4593E0` **36 bytes**: complete code and
-  all three native fields match in a real `/GL` diagnostic, but **NOT exact**:
-  MAP publishes `??_E` and `??_G` at the same entry and the strict oracle
-  rejects ambiguous owner identity. The separate constructor/non-deleting
-  destructor are true exact. See docs/THREADINF_LIFECYCLE.md.
-- `DrawMenuController` `0x439E80` **140 bytes**: five page calls and eight
-  switch cells source-present but 112/140 or 120/140 linked diagnostic,
-  original aligned frame/EAX receiver remains open.
-
-Do not claim strict exactness for any unresolved boss from size alone, patch
-non-field bytes, normalize an ambiguous deleting destructor, invent a virtual
-ABI, or replay the entire cold graph. Only affected function/producer units
-need rebuilding after source edits.
-
-## Substantial work ready for continuation
-
-Both big bosses and useful leaves matter. These are real, full-source
-owners; **none in this table is exact**:
-
-| Original owner | Current scoped comparison | Concrete next step |
-| --- | --- | --- |
-| `LoadSecondaryProgramSelection` `0x438910` (277 bytes) | **277/277**, 81/81 instructions, 8 calls, **18 nonfield byte differences** | Native vptr write precedes `memset` argument pushes at +0x9F..+0xA2; count uses EBX/ECX and cookie store differs at +0xDB..+0xF8. Multiple natural constructor and selection rewrites did **not** help. [Browser](SECONDARY_PROGRAM_BROWSER.md), `.analysis/try-loader-new-selection-20261112.log` |
-| `UpdateSecondaryProgramBrowser` `0x438AC0` (934 bytes) | **928/934**, 262/267 instructions, 22/22 calls, 173 nonfield differences | State-0 filename/selection count branch lifetime and register scheduling; keep its exact 83-byte cleanup and callbacks. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
-| `DestroySecondaryProgramBrowser` `0x438710` (439 bytes) | **448/439**, all 16 native calls | Original resource/ANM destruction inlining, SEH and registers. [Browser](SECONDARY_PROGRAM_BROWSER.md) |
-| `InitializeSecondaryReplay` `0x4356E0` (1,380 bytes) | **1247/1380** with real segment cleanup/writer; **22/22 calls and 4/4 returns** | Native mode-0 first clears the **selected stage** via exact `ClearReplayStageSegments`, then appends to that stage, publishing a fixed +0x9C tail. Earlier **1236/1380** was *before this correction*. Restore private callback/constructor/stream register lifetimes. [Replay](SECONDARY_PATTERN.md), `.analysis/probe-secondary-replay-init-with-true-cleanup-20261112.log` |
-| `LoadReplayStageData` `0x436B60` (441 bytes) | **387/441** with real file/codec producers and opaque reader, **402/441** when the two exact shared-file helpers are also sourced; 14/14 calls, 1 return | Recover private read/codec helper inputs, stack/cookie schedule; [replay](SECONDARY_PATTERN.md), `.analysis/probe-secondary-replay-load-with-helpers-20261112.log` |
-| `WritePauseMenuReplay` `0x436420` (1,856 bytes) | ~**1765/1856**, 46 calls | Writer/segment ownership and original compressor ABI. [Replay writing](REPLAY_WRITING.md) |
-| `DrawMenuController` `0x439E80` (140 bytes) | **112/140** with typed page calls; 8 jump cells and all 5 calls present | Recover original EAX menu receiver and aligned EDI frame. Both page 08 and 0A below have real source. [Menu](MENU_CONTROLLER.md) |
-| `DrawMenuPage08` `0x43DAA0` (427 bytes) | **399/427** isolated / **406/427** with real ASCII, 2/2 calls and returns | Six practice stages, scores and color blinking implemented; preserve EBX/ECX ASCII ABI. [Menu](MENU_CONTROLLER.md) |
-| `DrawMenuPage0A` `0x43F410` (670 bytes) | **627/670** isolated / **623/670** with real ASCII, all 6 calls, 1 return | Ten replay record rows with `_localtime64`, dates, high scores and 3 summaries; private EDI/vararg/x87 schedule. [Menu](MENU_CONTROLLER.md) |
-| `DestroySecondaryMaster` `0x410E90` (374 bytes) | **340/374**, 12/12 calls | Program destructor inlining/renderer slots, with exact 201-byte precleanup. [Lifetime](SECONDARY_LIFETIME.md) |
-| Special effect lifecycle `0x45DD70/0x45DE30/0x45DF10` (188/177/84 bytes) | Latest scoped **184/188**, **180/177**, **82/84**, preserving 5/7/2 calls | Preserve second spell-mask reload on draw; original register/VM/audio/float scheduling remains open. Earlier 178/177 and 73/84 trials are historical. [Player controller](SECONDARY_PLAYER_CONTROLLER.md) |
-| `ChangeSecondaryAnimationScript` `0x456770` (36 bytes) | **30/36** with exact VM finder and real binder, 2 calls / RET4 | Its two actual callers are in the **4230-byte** `UpdateSecondaryActorState` boss; private EAX/ECX/EDX binder ABI remains open. [Actor](SECONDARY_ACTOR.md) |
-| `UpdatePauseContinueMenu` `0x42D9D0` (3,192 bytes) | **3172/3192** in 63-support producer; 88/88 calls, 15/15 returns | Restore native 0x58-byte versus 0x54 stack and state-13 result lifetime; keep expensive retained diagnostic PE/PDB. [Continue menu](PAUSE_CONTINUE_MENU.md) |
-
-Other challenging large sources: `SpawnSecondaryPlayerDrop` **851 bytes**,
-`ActivateSecondaryPlayerSpecial` **268**, `EmitSecondaryActorEffects`
-**457**, `BuildBillboardAnimationVmQuad` **976**, and
-`LoadAnimationChunkSource` **221** (only two SIB selector bytes left).
-For each, consult [player](SECONDARY_PLAYER_CONTROLLER.md),
-[actor state](SECONDARY_ACTOR_STATE.md),
-[billboard](ANIMATION_PROJECTED_QUAD.md) or
-[chunks](ANIMATION_CHUNKS.md) before changing an established owner.
-
-## Short continuation loop
+## Short, safe continuation loop
 
 ```bash
 git status --short --branch
 git log -8 --oneline
 scripts/repo-python scripts/verify-target.py
 scripts/repo-python scripts/verify-toolchain.py --check
-scripts/repo-python scripts/progress.py --check
 scripts/repo-python scripts/validate-tracking.py --require-target
+scripts/repo-python scripts/progress.py --check
 
-# Only for changed exact units or their proven dependencies:
-scripts/repo-python scripts/replay-exact-units.py --unit quantize-secondary-actor-position
-scripts/repo-python scripts/replay-exact-units.py --unit input-binding-defaults
-
-# Direct original evidence for a selected address:
-scripts/repo-python scripts/ghidra.py query .analysis/selected-review.txt review 0x00410580
+# Examples only; replay just a modified function and affected exact consumers:
+scripts/repo-python scripts/replay-exact-units.py --unit read-archived-file
+scripts/repo-python scripts/ghidra.py query .analysis/selected-review.txt review 0x00441A60
 ```
 
-Use pinned `scripts/compile-probe.sh` and `scripts/ltcg_link.py` for scoped
-non-exact diagnostics. The public source/probe code and locally retained
-`.analysis/*.py` recipes are reusable. `build-match-unit.py` rebuilds a
-selected canonical unit with current source/tool hashes. Source edits require
-**full affected-function bytes/fields**, plus directly affected exact units;
-prose-only edits require neither compiler nor cold replay. Never run a
-routine all-unit cold replay or broad behavioral/fault-injection suite.
+Use `scripts/compile-probe.sh` and `scripts/ltcg_link.py` for diagnostic
+compile/link experiments. Build/compare **complete affected functions and
+fields**; run `replay-exact-units.py --unit NAME` only where exact source or
+direct exact consumers actually changed. **Never run full cold replay by
+default.** Prose-only cleanup needs only a diff/link check, not compilation.
+Read [AGENTS.md](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
+[Oracle rules](ORACLES.md) before adding claims or changing validation code.
 
-## Local artifact/storage handoff
+## Local storage after 2026-11-13 cleanup
 
-`build/match-linked/` and `build/match/` contain useful **canonical receipt
-families**. Keep them and the pinned original/tools/Wine/Ghidra projects.
-`build/probe-ltcg/` and `build/probe/` are ignored, **regenerable diagnostic
-build caches**, not authoritative source or exact proofs. On 2026-11-12,
-**835 old diagnostic links and the scratch-object trees were deleted**,
-reclaiming **831.9 MiB**; `build/` fell from ~965 MiB to ~133 MiB.
-Five representative contexts remained immediately after the earlier cleanup (newer 2026-11-12 scoped probes have since been generated): `PauseContinueMenuOwner`,
-`LoaderCtorOrder20261112-explicit-before-clear`,
-`BrowserState0-20261112-goto-layout`,
-`SecondaryReplayLoadRealHooks-real-all-hooks-20261112` and
-`MenuReplayRecordsDraw-isolated-20261112` (under `build/probe-ltcg/`).
-Scripts/logs in `.analysis/` retain the important decisions even when
-historical binary images are gone. Do not expect deleted probe binaries
-to exist; rerun their recorded recipes when a specific context is needed. Never delete the
-original `resources/th11.exe`, `.tools/msvc900`,
-`.tools/wineprefix-msvc900`, `ghidra-project/`, useful `.analysis/` evidence,
-or existing uncommitted work. See [artifacts](ARTIFACTS.md).
+Only ignored diagnostic caches were removed: 364 regenerated
+`build/probe-ltcg/` contexts and `build/probe/` scratch objects, saving
+**150,640 KiB (~147 MiB)**. `build/` fell from 293,240 KiB (~286 MiB) to
+142,600 KiB (~139 MiB). Five expensive historical contexts remain, including
+`build/probe-ltcg/PauseContinueMenuOwner`; see [artifact rules](ARTIFACTS.md).
+All **canonical** `build/match-linked/` and `build/match/` receipts, private
+original, locked `.tools/` compiler/Wine state, `ghidra-project/`, source,
+Git history and locally useful `.analysis/` recipes/logs were retained.
+**Deleted probe binaries are regenerable**; a historical note is not proof
+that its old ignored PE/PDB directory still exists. Do not erase canonical
+receipts, the original, toolchain, Ghidra project or local evidence for space.
 
-**Git state is provenance, not acceptance.** Existing upstream divergence is
-normal; commit cleanup and meaningful reconstruction with `gpt-web: ...`.
-Do not commit binary targets, compiled artifacts or private decompiler dumps.
+At this checkpoint the working tree is clean; always recheck it on resume.
+The private `.analysis/handoff-threadinf-deletingview-20261113/` keeps a
+rejected duplicate deleting-owner experiment so it does not confuse active
+`src/`. Useful private evidence can remain local/ignored; commits preserve
+authoritative natural source, probes, documentation and ledgers only.

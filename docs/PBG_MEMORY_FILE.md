@@ -15,23 +15,14 @@ lifetime cleanup**, **44-byte named resource open**, **37-byte content reset**,
 **88-byte bounded read**, **7-byte Tell**, **4-byte Size**, and **109-byte
 absolute/current/end Seek**, plus the **5-byte unsupported Write**.
 
-Natural C++ under pinned VC9 `/TP /O2 /Ob1 /Gy /MT /Isrc /EHsc` already
-reproduces **all bytes and independently reviewed relocation fields** of six
-complete owners: 5-byte Write, 69-byte scalar deleting destructor (derived
-vtable, free, base vtable, scalar delete), 49-byte destructor (derived vtable,
-free, base vtable), 37-byte Reset (free), 7-byte Tell, and 4-byte Size.
-All six use the same source file but have independent canonical strict
-`pbg-memfile-*` match units, native boundary reviews, and individual replay.
-
-The original 44-byte Open calls the actual 218-byte `ReadPbgResourceByName`
-and 202-byte `GetPbgResourceSizeByName`, which remain source-present but
-nonexact. The initial natural 44-byte Open differs in one non-address byte.
-Read's natural 88-byte owner retains both memcpy calls and the original size
-and boundary decisions, but has remaining loop/branch-code differences.
-Seek's native 109-byte owner returns success in AL and has three origin cases;
-initial natural source emits 119 bytes. These three are not credited as exact.
-The original source class/TU partition is unknown; compile-time codegen
-identity is not proof of whole-game runtime closure.
+The current pinned VC9 codegen and canonical replay prove **eight** complete
+owners: 5-byte unsupported Write, 69-byte scalar deleting destructor,
+49-byte ordinary destructor, 37-byte Reset, 44-byte Open, 88-byte Read,
+7-byte Tell and 4-byte Size. Every owner has a separate strict
+`pbg-memfile-*` unit. Open's downstream 218-byte resource read and 202-byte
+size APIs remain independently source-present **nonexact**; their state does
+not affect Open's accepted 44-byte codegen. Only the 109-byte Seek member
+remains **nonexact** in this MemFile family.
 
 ## Exact 44-byte Open and 88-byte bounded Read (2026-11-13)
 
