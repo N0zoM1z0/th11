@@ -1,71 +1,70 @@
-# Local artifacts
+# Local artifacts and storage cleanup
 
-Keep the original `resources/th11.exe`, the locked compiler components and their
-used headers/libraries/runtime dependencies, the TH11 Ghidra project and the
-current independent Wine prefix. Reuse matching Factory tools through links;
-each game keeps its own writable state.
+Keep the private original `resources/th11.exe`, the pinned VC9 compiler and
+its headers/libraries, the independent Wine prefix under `.tools/`, the TH11
+Ghidra project, and useful analysis evidence. These are **not disposable
+caches**, even when they occupy more disk than generated objects.
 
-Source, public probe recipes, exact ledgers and full comparison scripts are the
-reproducible result. Canonical artifacts in `build/match/` and
-`build/match-linked/` are useful caches, not irreplaceable inputs. Rebuild an
-affected context before relying on its byte equality.
+The source in `src/`, reusable `probes/`, match contracts and review ledgers
+in `config/`, documentation, and repository scripts are the durable result.
+`build/match/` and `build/match-linked/` hold **canonical exact-unit**
+COFF/PE/MAP/PDB/object/receipt caches. Keep them for the next agent; their
+contents can be recreated, but the receipt for a changed source must be
+refreshed before relying on it. An old cached result alone is not acceptance.
 
-`build/probe-ltcg/` is a disposable, ignored diagnostic cache; preserve
-only expensive current owner contexts with a concrete handoff/debugging
-purpose (not every loop/register variant). In particular retain
-`PauseContinueMenuOwner` for the 63-support-TU menu investigation.
-Historical diagnostic images can be recreated from the source in `src/`,
-probe recipes in `probes/` and useful local `.analysis/` scripts and logs.
-A directory mentioned as *historical* evidence need not remain cached.
+`build/probe/`, `build/probe-coff/` and most of `build/probe-ltcg/` contain
+ignored, regenerable exploratory objects and temporary diagnostic links.
+Do not treat a historical `.analysis/` path as proof that its corresponding
+old executable/PDB is still cached. Retain useful experimental recipes,
+logs, target reviews and notes in the ignored `.analysis/` directory; these
+are small relative to builds and can save expensive re-analysis.
 
-Do **not** clean `build/match-linked/` or `build/match/` merely for space:
-those are the current accepted-unit PE/PDB/object/receipt caches, though
-the official match is always the freshly verified unit. Similarly,
-`.tools/msvc900` and `.tools/wineprefix-msvc900` are not throwaway
-artifact directories; removing them would break or force reinstallation
-of the pinned compiler. The private original, Ghidra database and Wine
-prefix are protected even if they are the largest users of disk space.
+## Latest cleanup — 2026-11-13
 
-Keep compact useful failed-experiment findings in topic notes. Do not
-commit diagnostic binaries, stale dump copies or screenshots of original
-target bytes. For the current policy and retained investigation context
-see [RE_HANDOFF](RE_HANDOFF.md).
+The cleanup inspected Git tracking before deleting anything; **no tracked
+files** were in the removed build paths. All actions were restricted to
+ignored diagnostic build output, without running `git clean -fdx` or touching
+other private/work directories.
 
-## Handoff storage cleanup (2026-11-12)
+| Diagnostic cleanup | Before | After |
+| --- | ---: | ---: |
+| Entire `build/` | **293,240 KiB** (~286 MiB) | **142,600 KiB** (~139 MiB) |
+| `build/probe-ltcg/` | 164,080 KiB | 15,356 KiB |
+| Scratch `build/probe/` | 1,916 KiB | Removed |
 
-Before cleanup, `build/` occupied approximately **965 MiB**, including
-**844 MiB** of noncanonical `build/probe-ltcg/` test links. An explicit
-manifest check verified that **all 330 canonical unit outputs** reside in
-`build/match-linked/` or `build/match/`, outside the removable diagnostic
-paths. We deleted **835 old diagnostic context directories** and the small
-ignored `build/probe/`/`build/probe-coff/` scratch-object trees, reclaiming
-**851,908 KiB (831.9 MiB)**. The post-cleanup `build/` occupies about
-**133 MiB**.
+**150,640 KiB (~147 MiB)** was reclaimed by deleting 364 of 369 old
+exploratory link contexts and the scratch objects. Five deliberately retained
+expensive diagnostic contexts remain in `build/probe-ltcg/`:
 
-Exactly five representative ignored diagnostic contexts were retained:
+- `PauseContinueMenuOwner` — 3,192-byte continuation menu with expensive
+  63-support-TU context (~11 MiB);
+- `LoaderCtorOrder20261112-explicit-before-clear` — browser construction;
+- `BrowserState0-20261112-goto-layout` — 934-byte state dispatcher;
+- `SecondaryReplayLoadRealHooks-real-all-hooks-20261112` — replay loader;
+- `MenuReplayRecordsDraw-isolated-20261112` — replay record UI.
 
-- `build/probe-ltcg/PauseContinueMenuOwner` — expensive 63-support-TU
-  continuation owner, approximately 11 MiB;
-- `build/probe-ltcg/LoaderCtorOrder20261112-explicit-before-clear` — 277-byte
-  browser loader vtable/push scheduling comparison;
-- `build/probe-ltcg/BrowserState0-20261112-goto-layout` — 934-byte browser
-  state-0 dispatch comparison;
-- `build/probe-ltcg/SecondaryReplayLoadRealHooks-real-all-hooks-20261112`
-  — 441-byte replay loader with real file/codec helper bodies;
-- `build/probe-ltcg/MenuReplayRecordsDraw-isolated-20261112` — 670-byte
-  menu replay-records owner.
+All canonical `build/match-linked/` (~124 MiB) and `build/match/` caches,
+`.analysis/` evidence (~24 MiB), private original, `.tools/` (~716 MiB),
+`ghidra-project/` (~14 MiB), source and Git history were preserved.
+The local cleanup inventory is
+`.analysis/handoff-storage-cleanup-20261113.txt` (ignored).
 
-The `.analysis/` recipes, logs and original review evidence, all canonical
-`build/match-linked/` / `build/match/` object/PE/MAP/PDB families and
-receipts, `resources/th11.exe`, `.tools/`, and `ghidra-project/` were
-preserved. After cleanup a targeted linked-PE comparison of
-`quantize-secondary-actor-position` still reported `difference_count=0`,
-and the normal-COFF `input-binding-defaults` comparison still reported
-**98/98 exact**. These cache comparisons check preservation only; they do
-not replace a new cold build after future source/tool changes.
+For context, an **earlier**, separate cleanup on 2026-11-12 reclaimed
+831.9 MiB from 835 outdated diagnostic links and left `build/` at ~133 MiB
+*at that time*. More probes were subsequently built, so those older sizes
+and the old 330-unit inventory are **historical**, not today's checkpoint.
 
-To recreate a missing historical diagnostic, rerun its matching local
-`.analysis/*.py` script or existing public `probes/` context. To refresh a
-canonical exact owner after an edit, rebuild only its affected unit with
-`scripts/repo-python scripts/replay-exact-units.py --unit UNIT_NAME`;
-**do not run the full cohort** just because diagnostic caches were removed.
+## How to rebuild after cleanup
+
+```bash
+# Build/verify only the exact context affected by a source change:
+scripts/repo-python scripts/replay-exact-units.py --unit read-archived-file
+
+# To examine disk usage again:
+du -sh build/* .analysis
+```
+
+For exploratory work rerun its relevant `.analysis/*.py` recipe or compile
+its tracked `probes/` context. **Do not replay all exact units merely because
+old diagnostic caches were removed.** For current branch state, open tasks and
+proof boundaries, see [RE_HANDOFF](RE_HANDOFF.md) and [ORACLES](ORACLES.md).
