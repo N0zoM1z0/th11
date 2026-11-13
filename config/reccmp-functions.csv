@@ -711,3 +711,5 @@ ReadWholePbgLowLevelFile,0x00441F60,function
 DeletePbgResFile,0x00442090,function
 FindPbgResourceRecord,0x004420E0,function
 GetPbgArchivedResourceSize,0x00441890,function
+ReadPbgResourceByName,0x004421E0,function
+GetPbgResourceSizeByName,0x004422C0,function

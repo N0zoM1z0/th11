@@ -71,3 +71,40 @@ bytes**, 28 native instructions and exactly one independently bound REL32 at
 the complete public PDB/MAP primary-TU contribution and all bytes without
 masked differences. The larger 202-byte resource-size API that calls this
 function remains separately nonexact.
+
+## Complete 218-byte resource read and 202-byte size APIs
+
+The two real outward-facing Pbg resource APIs now have maintainable natural
+C++ source in `src/PbgResourceApis.cpp`; neither is a placeholder or an
+isolated wrapper disconnected from the already reconstructed lower layers.
+
+**ReadPbgResourceByName** (`0x4421E0..0x4422B9`, 218 native bytes) calls the
+exact 203-byte mounted-record resolver. When a resource is mounted, it takes
+the filename suffix following `/` and requests the actual 300-byte
+`ReadArchivedFile` decompression/stream owner. If no mounted archive exists,
+it constructs a genuine local 12-byte `PbgLowLevelFileView`, opens the path
+in mode `"r"`, determines size, calls the complete 145-byte `ReadWhole` and
+allows C++ member destruction to release the Win32 file handle. All seven
+observed native calls and the original success/failure behavior are
+represented in source. The original uses a private EH descriptor at
+`0x48A2A8`; the present standalone VC9 owner is 195/218 bytes and the
+full real-file `/GL` producer is 172/218, **nonexact**.
+
+**GetPbgResourceSizeByName** (`0x4422C0..0x442389`, 202 native bytes) reuses
+the exact 203-byte resolver and, on a mounted hit, the newly exact 51-byte
+per-archive uncompressed-size lookup. Without a mount, it opens the same
+short-lived Pbg::File, returns the actual disk size and closes the handle
+through the real destructor. This native has six calls and a distinct
+private EH registration at `0x48A278`. Normal VC9 source is 183/202 bytes;
+real-file `/GL` produces 165/202. Its whole owner is **nonexact**.
+
+Five scoped producer variants (`base`, `lookup`, `file`, `real`, `archive`)
+were compared against the entire hash-pinned original functions. The
+participating real child sources preserved all branch/call intent but
+changed exception frames and private register lifetimes, rather than
+improving whole-byte equality; no accepted exactness credit is claimed for
+either outward-facing API. The complete diagnostic is retained as
+`.analysis/probe-pbg-resource-apis-ltcg-20261113.py` and its log, and the
+dynamic compile-only producer is `probes/pbg-resource-apis-context.cpp`.
+The exactness of their 203/51/145-byte child functions is independently
+replayable and remains separately credited.
