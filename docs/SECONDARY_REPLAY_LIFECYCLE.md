@@ -90,6 +90,34 @@ were the replay state; `src/ReplayWriter.cpp` now uses the correct replay root.
 The initializer's playback restore also reads the selected stage header through
 `stageLinks[selected].stageHeader`, not the recording-only pointer array.
 
+## Disk/archive stage loader (`0x436B60`, 441 bytes)
+
+`LoadReplayStageData` is the shared loader used by the three-mode secondary
+initializer and both replay-record factories. Its original ABI is ordinary
+`__stdcall(state, source)` with an EAX result and `RET 8`. The 441-byte body
+uses a `0x108`-byte local frame and the native VC9 `/GS` cookie sequence.
+
+The loader first copies the supplied filename to `state+0x1DC`. When status
+bit `0x20` is clear, it formats `replay/%s`, opens the shared disk reader,
+checks magic `t11r` and version `4`, reads the packed payload, and closes the
+reader. When bit `0x20` is set, it loads the packed archive resource and starts
+the payload at `resource+0x24`; that archive-owned buffer is deliberately not
+freed by this function. Both paths allocate the declared raw size, apply the
+native `(0xAA,0xE1,0x800)` and `(0x3D,0x7A,0x40)` scatter/XOR passes, decompress,
+and publish the unpacked header/data pointers.
+
+The stage count at unpacked header `+0x58` is capped to six when it is at
+least eight. Each stage entry publishes its `0x90`-byte stage header pointer,
+event payload start at `header+0x90`, and event end computed from the six-byte
+event count; the next header is found by advancing `0x90 + payloadSize`. The
+packed buffer is freed only for the disk path. The native owner has 137
+instructions, 14 calls and one `RET 8`.
+
+The canonical local linked-PE unit `secondary-replay-load` replays the complete
+441-byte primary-TU PDB contribution, including all 18 independently bound
+security-cookie, status/path, CRT and replay-helper fields, with zero full-byte
+differences. Original class/TU provenance remains unknown.
+
 ## Main initializer (`0x4356E0`, 1380 bytes)
 
 `InitializeSecondaryReplay` is now a complete mixed-register native owner:
@@ -113,3 +141,23 @@ and from `g_SecondaryDialogueSession` at `0x4A8E88`; this is not the secondary
 controller-mode root at `0x4A8EB4`. The player value is the signed
 `g_SecondaryPlayerValue` at `0x4A56F0`. Original class/TU provenance remains
 unknown even though codegen is exact.
+
+
+## Replay file loader (`0x436B60`, 441 bytes)
+
+`LoadReplayStageData` is the shared disk/archive loader used by the main
+initializer and record factories. Its native owner is 441 bytes / 137
+instructions with 14 calls and one RET8. The maintained source preserves the
+0x108-byte stack-cookie frame and the mixed helper ABI: ESI path for the shared
+file opener, EDI read size for the shared buffer helper, AL cipher key for the
+two scatter transforms, and EAX raw output size for archive decompression.
+The disk path validates the t11r/version-4 header and owns/frees the packed
+buffer; the archive path consumes the embedded resource header and does not
+free that archive-owned packed view. Both paths publish the decompressed
+header and unpacked pointer, then rebuild signed-index stage links and event
+ranges.
+
+The canonical `secondary-replay-load-stage-data` linked-PE unit reproduces
+all 441 bytes and 137 instructions, including all 18 independently bound
+fields, with zero full-byte differences. Factory oracle acceptance remains a
+separate status from this local replay.

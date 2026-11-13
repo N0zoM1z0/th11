@@ -223,19 +223,23 @@ stage count reaches eight, indexing each by its signed 16-bit stage number
 and computing its event start/end from the native +0x90 header and six-byte
 event stride. Only a disk-allocated packed buffer is freed at exit.
 
-Four bounded pinned VC9 `/GL` primary-TU comparisons compile this entire
-owner: **413/441 bytes** standalone, **399/441** with real file producers,
-**402/441** with real codecs, and **387/441** with both. The last emits
-122/137 instructions, the original **14/14 calls and one return**, with 18
-candidate linkage fields. It remains non-exact because the historic private
-reading and codec helper ABI, stack layout and register scheduling are still
-unrecovered. The natural source and raw helper boundaries are preserved,
-without injected code or a shortened output owner.
+The complete loader is now expressed as a native mixed-ABI owner in the
+maintained `src/SecondaryReplayLoad.cpp`: ESI carries the shared-file path,
+EDI carries the read allocation size, AL carries each cipher key, and EAX
+carries the decompressor output size. The original 0x108-byte stack-cookie
+frame and RET8 exit are preserved. The pinned VC9 RTM `/GL` primary-TU linked
+owner reproduces **441/441 bytes, 137/137 instructions, 14/14 calls and one
+RET8**. All 18 independently bound fields (security cookie, replay status,
+format string, file/resource/read/close helpers, malloc/free, both scramblers,
+decompressor and cookie check) replay with **zero full-byte differences**.
+The canonical unit is `secondary-replay-load-stage-data`; its local strict
+replay is separate from Factory oracle acceptance.
 
-Reproduce with `.analysis/probe-secondary-replay-load-20261112.py` and its
-logged source PE/MAP/PDB comparisons; independent caller:
-`probes/secondary-replay-load-context.cpp`. Only this owner and directly
-needed producer TUs were built, not the full cold replay cohort.
+Reproduce with `.analysis/probe-secondary-replay-load-20261112.py` for the
+rejected natural-C++ attempts, or `scripts/replay-exact-units.py --unit
+secondary-replay-load-stage-data` for the current complete linked proof. Only
+the loader and its probe are compiled for the canonical owner; unrelated
+whole-program/cold replay is not run.
 
 ## Exact shared replay close helper and source-backed read helper (2026-11-12)
 
