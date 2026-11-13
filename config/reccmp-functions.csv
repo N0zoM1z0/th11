@@ -510,6 +510,7 @@ SampleSecondarySpecialDamage2,0x00407FC0,function
 SampleSecondarySpecialDamage3,0x00406E90,function
 SampleSecondarySpecialDamage4,0x00407220,function
 SaveMusicDecoderPosition,0x0045B580,function
+SaveSecondaryGameplayStatisticsFile,0x00437A70,function
 ScaleAnimationColorChannel,0x0044F490,function
 ScaleSecondaryIntegerPair,0x00433E30,function
 ScaleSecondaryPair,0x004195C0,function

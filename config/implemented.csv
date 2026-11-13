@@ -509,6 +509,7 @@ SampleSecondarySpecialDamage2
 SampleSecondarySpecialDamage3
 SampleSecondarySpecialDamage4
 SaveMusicDecoderPosition
+SaveSecondaryGameplayStatisticsFile
 ScaleAnimationColorChannel
 ScaleSecondaryIntegerPair
 ScaleSecondaryPair
