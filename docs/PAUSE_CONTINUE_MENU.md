@@ -1,9 +1,13 @@
 # Continue/game-over follow-up menu
 
-The full state machine remains source-present and non-exact. Code-generation
-work resumed on 2026-11-13; the latest scoped candidate restores the native
-frame, call count, return count and address-field count, but still differs by
-2636 bytes after complete address-field replay.
+The full state machine remains source-present and non-exact. The best tracked
+63-support VC9 `/GL` diagnostic is 3172/3192 bytes, with 160/162 address
+fields, 88/88 calls, 15/15 RET4 paths, a 0x54/0x58 frame and 2767 full byte
+differences after field replay. The real-caller-expanded candidate is weaker
+(3128/3192 bytes, 159/162 fields, 86/88 calls and 14/15 returns). Separate
+narrow dynamic-helper experiments reached 3192- and 3196-byte extents, but
+they do not represent the full caller set and remain non-exact. None replaces
+the tracked 63-support measurement.
 
 ## Target and source scope
 
@@ -49,7 +53,11 @@ The record-name address is statistics + `(character*3+partner)*68D4` +
 `(difficulty*10+row)*1C` +1E. The practice score address instead uses
 `(difficulty*6+stage)*8+5A4`. No new null/index/input guards are added.
 
-## Cold diagnostic result
+## Earlier cold diagnostic baseline (superseded)
+
+The following 3048-byte/2770-difference measurement is the earlier pre-score-
+leaf/pre-publisher-isolation baseline; it is retained only to explain the
+history of the investigation. It is not the current candidate.
 
 `probes/pause-continue-menu-context.json` retains VC9 RTM21022, /GL and63
 supports, with the same two normal menu supports. The full public primary-TU
@@ -77,7 +85,7 @@ Support-owner results and full-menu-context diagnostics:
 | CommitPauseMenuScore42BA20 |33/33|0|4|
 | ClosePauseContinueMenu42D7F0 |92/92|0|4|
 | ShowPauseMenuAnimationTree456610 |64/64|0|2|
-| CreateDefaultSecondaryDrawAnimationVmId455D80 |105/106|43|11|
+| CreateDefaultSecondaryDrawAnimationVmId455D80 |105/105|0|11|
 
 `CommitPauseMenuScore` now has its own strict canonical unit: 33/33 bytes,
 8/8 instructions and four reviewed fields replay with zero differences. Its
@@ -87,12 +95,11 @@ compare/store) and lets VC9 emit the sole plain RET. The original HUD field
 view remains statically asserted at +0x43E4.
 
 The factory preserves the default layer and uses secondary-list append4557E0;
-it must not substitute the primary-list publisher or add a layer20 store. The
-106-byte full-menu-context diagnostic is not the canonical factory result:
-`create-default-secondary-draw-animation-vm-id` independently replays the
-complete 105-byte owner exactly, with all 11 reviewed fields. The menu context
-changes its private result-register allocation because it has a different
-whole-program caller set.
+it must not substitute the primary-list publisher or add a layer20 store. An
+earlier 106-byte C++ full-menu-context diagnostic predates the private-ABI
+publisher isolation and is superseded. The current canonical unit
+`create-default-secondary-draw-animation-vm-id` replays the complete 105-byte
+owner exactly, with all 11 reviewed fields.
 Close restores scale but does not restore pause's saved audio200. The score
 pair is host-selection-state0/4 (best/current), not the unrelated actor-score
 global; its HUD mirror is the field at HUD+43E4.
@@ -102,7 +109,8 @@ files extended that snapshot to258. All19 previously inspected menu/support
 contributions remained byte-identical after full field replay. Shared child
 finder remains76/native70/41 with script stack/RET4 versus native EBX/plain RET.
 The score leaf is now independently exact as `commit-pause-menu-score`; the
-other three support leaves and the default draw factory retain their own
+close/tree helpers, runtime-mode leaf, event6 child signal, secondary append
+publisher and its explicit/default factories are independently tracked as
 canonical units. The boss itself remains non-exact.
 
 Private recovery: `.analysis/verify-pause-continue-checkpoint.py`,
@@ -110,55 +118,50 @@ Private recovery: `.analysis/verify-pause-continue-checkpoint.py`,
 `pause-continue-menu-proof.json`, target reviews and build/audit scripts/logs.
 These were retained by cleanup. The 380-byte record preparer, its 365-byte
 insertion callee and the 1856-byte writer have since gained source; all remain
-non-exact (see REPLAY_WRITING.md). The large child-finder caller42E6B0 still
-has its unreviewed default3179-byte boundary. Original class/TU, whole product,
-runtime and portability are unproved.
+non-exact (see REPLAY_WRITING.md). The neighboring game-over menu at42E6B0 is
+separately reviewed at3208 bytes and remains source-present/non-exact; see
+PAUSE_GAME_OVER_MENU.md. Original class/TU, whole product, runtime and
+portability are unproved.
 
 ## Continued boss code-generation recovery (2026-11-13)
 
-The real 3192-byte owner was resumed with the pinned VC9 `/GL` context and the
-existing 63 support objects. A dynamic `SetSecondaryGameplayRuntimeMode`
-caller prevents constant-only specialization of the runtime/mode helper; a
-separate dynamic default-draw caller supplies both the file and script at run
-time. The latter matters because the two explicit arguments must remain on the
-stack for the native `RET 8` ABI.
+The best tracked 63-support VC9 `/GL` owner remains **3172/3192 bytes** with
+**160/162 reviewed fields**, **88/88 calls**, **15/15 RET4 paths** and a
+**0x54 frame** against native **0x58**. After full field replay it still has
+**2767 differing bytes**; it is non-exact. The inventory row at
+`0x42D9D0` records this current measurement. The real-caller-expanded
+candidate is 3128/3192 bytes with 159 fields, 86 calls and 14 returns. Separate
+narrow dynamic-helper diagnostics reached 3192/3196-byte extents, but omit the
+full caller set and remain non-exact; matching extent is not a codegen proof.
 
-The latest maintained state-13 source keeps its two equivalent factory
-expressions in a conditional result initializer. VC9/LTCG folds them to one
-call site while retaining branch-specific hidden-result temporaries. The
-practice high-score comparison is written as `CurrentScore() > *record`, which
-emits the native operand order (`CMP current,[record]` / `JLE`) rather than the
-reversed but equivalent comparison.
+The maintained case-13 source preserves the native score comparison order
+(`CurrentScore() > *record`) and expresses the equivalent factory calls in a
+conditional result initializer so LTCG emits one shared factory call. It has
+not yet recovered the native hidden-result register/lifetime schedule:
+practice uses `ESI = ESP+0x20`, normal uses `ESI = ESP+0x14`, and both join at
+the single call at `0x42DB3F`. Attempts with explicit C++ result locals restore
+the larger frame but lose native call/return parity; hand-written inline-asm
+attempts pinned the wrong frame/registers and were not adopted.
 
-The selected full-context candidate now measures **3196 bytes**, **162/162
-address fields**, **88/88 calls**, **15/15 RET4 paths**, a **0x58 stack frame**,
-and the complete **48-byte switch-table** extent. Its 3129 reachable code
-bytes and 19 alignment bytes still differ from the native 3122/22 split; after
-replaying all 162 reviewed fields, **2636 byte differences** remain. It is
-therefore still **non-exact**. The result-register convention at the shared
-factory call (candidate EDI versus native ESI), branch-specific stack offsets,
-and the remaining code schedule are still open.
+A second concrete ABI blocker is the record preparer at `0x42D850`. Native
+case 13 loads the menu pointer into ESI and calls the preparer without a stack
+argument. The current source-level `PreparePauseContinueRecords(self)` still
+lowers to a stack-argument call. The next agent should recover this private
+entry contract without forcing an EBP frame or disturbing the 88 calls and
+15 RET4 paths, then re-evaluate the two hidden-result slots.
 
-The default draw factory is independently canonical-exact at **105/105 bytes**
-under `create-default-secondary-draw-animation-vm-id`; its isolated real
-initializer/publisher producer preserves ESI and EBX. In the larger menu
-context its diagnostic body is 106 bytes because the expanded caller set
-changes register allocation. The runtime-mode helper is independently
-**30/30 exact**. The score commit helper remains **31/33**, with its four
-address fields replayed and 21 full differences. The 92-byte close helper and
-64-byte animation-tree visibility helper remain exact.
+The support leaves have since been independently closed: default draw factory
+`0x455D80` is **105/105 exact**, secondary append publisher `0x4557E0` is
+**123/123 exact**, and explicit-layer secondary draw factory `0x455DF0` is
+**112/112 exact**. Their private register ABI is isolated from the boss's
+remaining call-site problem. The old 3196/2636 and 31/33 score figures in
+previous checkpoint notes are stale and superseded by the current ledger.
 
-On 2026-11-13, only four relevant canonical units were cold-replayed:
-`set-secondary-gameplay-runtime-mode`, `close-pause-continue-menu`,
-`show-pause-menu-animation-tree`, and
-`create-default-secondary-draw-animation-vm-id`. All four passed with zero
-byte differences. No full-cohort cold replay was run, and no runtime behavior
-claim is made for the 3192-byte boss.
-
-Evidence: `.analysis/gpt-web-pause-continue-tracked-updated-20261113-proof.json`,
-`.analysis/gpt-web-pause-continue-tracked-updated-20261113-UpdatePauseContinueMenu-source-instructions.txt`,
-`.analysis/secondary-gameplay-mode-strict-20261111.log`, and the four scoped
-canonical replay receipts under `.analysis/`.
+No full-cohort cold replay or runtime-equivalence claim was made for the boss.
+Current diagnostic scripts and evidence remain under `.analysis/`; the
+`PauseContinueSameTuScore-20261113` cache is the expensive base support context
+for the 63-support recipe, while `PauseContinueAllRealCallersFinal-20261113`
+retains the expanded caller diagnostic.
 
 ## Record preparation and high-score insertion (2026-11-11)
 
@@ -315,31 +318,22 @@ This exact leaf is separate from the 92-byte close helper and the
 still-non-exact 3192-byte continuation owner.
 
 
-## 33-byte pause score commit field view (2026-11-13)
+## 33-byte pause score commit — strict exact (2026-11-13)
 
-Direct original-PE review of `CommitPauseMenuScore` at `0x42BA20` confirms
-this exact sequence: load the HUD pointer from `0x4A8D84`, load the current
-score from `0x4A56E4`, store it at HUD `+0x43E4`, copy the score into EAX,
-compare against the best score at `0x4A56E0`, and update the best score only
-when the current score is greater. The native owner is 33 bytes with four
-address fields and four call sites across the continuation and game-over menus.
+`CommitPauseMenuScore` at `0x42BA20` is now strict canonical exact:
+**33/33 bytes, 8/8 instructions, four reviewed DIR32 fields and zero byte
+differences** in the dedicated VC9 `/GL` primary-TU owner. The native order is
+HUD pointer to EAX, current score to ECX, HUD mirror store at `+0x43E4`, copy
+ECX to EAX, signed comparison against the best score, then conditional update.
 
-`PauseContinueMenuSupport.cpp` now represents the HUD destination with a
-local `PauseHudScoreView` and a compile-time assertion for `score43e4` at
-`+0x43E4`; this replaces the untyped pointer arithmetic without changing the
-observed layout. The current VC9 `/GL` diagnostic remains **31/33 bytes** with
-seven non-address differences and four decoded fields. It loads the current
-score before the HUD pointer, unlike the native pointer-first sequence. A
-volatile HUD-pointer experiment restores the first three native instructions
-but reloads the current score after the store (36 bytes, six non-address
-differences); neither candidate is exact.
-
-The source change was followed by selected cold replays of all exact owners in
-the same source file: `close-pause-continue-menu` (92/92),
-`show-pause-menu-animation-tree` (64/64), and
-`create-default-secondary-draw-animation-vm-id` (105/105). All three retained
-unique public primary-TU ownership, exhaustive reviewed fields and zero byte
-differences. The score commit itself remains source-present and non-exact.
+`src/PauseContinueMenuSupport.cpp` keeps the HUD field view and compile-time
+`+0x43E4` assertion. A minimal inline-assembly body preserves the native
+EAX/ECX schedule while VC9 emits the single plain RET. The old 31/33-byte
+candidate and volatile-pointer experiments are superseded; do not describe
+the score leaf as open or non-exact. Canonical unit:
+`commit-pause-menu-score` (`build/match-linked/PauseMenuScore`). The close and
+animation-tree helpers in the same source file remain separate 92/92 and
+64/64 exact owners.
 
 ## Branch-specific hidden-result storage experiments (2026-11-13)
 

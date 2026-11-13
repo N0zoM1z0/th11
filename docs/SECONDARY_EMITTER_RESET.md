@@ -84,14 +84,18 @@ these operations are not reassociated. Positioned factories call the distinct
 `InitializeSceneAnimationVm`456910 used by other wrappers clears position and
 calls191-byte `BindAnimationFileScript`44ADA0. These contracts are not conflated.
 
-The emitter prepend source remains in `src/SecondaryEmitterAnimation.cpp`; secondary append publication and factories are isolated in `src/SecondaryDrawPublisher.cpp`: primary
-prepend and secondary append publishers plus their explicit-layer factories.
-A natural pair of head tests preserves the prepend insertion and lets the
-primary factory retain the native EBX VM. Both112-byte factory contributions
-close. The publishers remain open at111/33 and116/47 respectively. The counter
-zero-check/add-versus-store and secondary publisher register assignment remain
-unresolved. A generic insertion-helper spelling and an externally named registry
-type do not close them; no forced registers, barriers or padding are introduced.
+The emitter prepend implementation remains in
+`src/SecondaryEmitterAnimation.cpp`. The secondary append private publisher and
+the explicit-layer factory are isolated in `src/SecondaryDrawPublisher.cpp`;
+the default-layer secondary append factory remains in
+`src/PauseContinueMenuSupport.cpp` because it is also used by the pause/continue
+menu. The secondary append publisher at4557E0 is now strict exact at123/123
+bytes. Its private ABI is EBX=VM node and EAX=hidden result slot; it has no
+stack arguments. The explicit-layer append factory at455DF0 is112/112 exact.
+The primary prepend publisher at455760 and secondary prepend publisher at455860
+remain open at111/118 and116/118 respectively. The remaining positioned
+factories are source-present but non-exact; no fake register signatures,
+barriers or padding are used.
 
 Each factory's eleven fields was reviewed independently: runtime flags base
 4C3280+590, critical section9 at+8E8, Enter/Leave IAT48B084/88, depth byte+939,
@@ -102,9 +106,11 @@ and the existing four-byte AnimationVmId preserve the hidden-result ABI.
 
 All thirteen origins remain **indeterminate**. Useful renderer/gameplay roles,
 common lock scaffolding and sibling similarity do not establish original
-class/header/library versus game authorship. Eight reviewed factory/publisher
-owners remain source-open; the secondary append publisher is now exact. Six new mappings cover2997 target bytes; source
-presence is separate from exactness.
+class/header/library versus game authorship. Six of the thirteen reviewed
+factory/publisher owners are now canonical exact (4557E0, 455BC0, 455D80,
+455DF0, 455FB0 and 456020); the other seven remain source-only/non-exact
+(455760, 455860, 455A70, 455C30, 455CD0, 455E60 and 455F00). Six new
+mappings cover2997 target bytes; source presence is separate from exactness.
 
 ## Proof and remaining work
 

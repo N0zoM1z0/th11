@@ -87,8 +87,8 @@ allocation and layout remain open. The required21-byte support has one SIB
 byte difference: source ECX menu/EAX script versus native EAX menu/ECX script.
 It is not accepted independently.
 
-The71-support HUD/gameplay/debug experiment still does not supply every native
-child-finder caller:42C8D0/42D9D0/42E6B0 have no maintained source or public PDB
+At that historical 71-support HUD/gameplay/debug experiment checkpoint, the
+link still did not supply every native child-finder caller:42C8D0/42D9D0/42E6B0 have no maintained source or public PDB
 contribution. Their default3154/3141/3179-byte boundaries remain unreviewed.
 Linking ActorInstructions.cpp does not establish those owners. Existing source
 covers the dialogue and page05/06/07 callers; genuine missing source remains a
@@ -104,8 +104,8 @@ No synthetic register/volatile/ABI workaround is adopted.
 No canonical exact dependency changed. The public difficulty-selection recipe
 reproduces this diagnostic context.
 
-Subsequent pause checkpoint:42C8D0 now has a complete reviewed3212-byte source
-owner.42D9D0 was subsequently reconstructed as a3192-byte continuation owner;
-42E6B0 remains source-open. See [PAUSE_CONTINUE_MENU](PAUSE_CONTINUE_MENU.md) for the
-current caller inventory; the counts and experiments above describe this topic's
-earlier checkpoint.
+Subsequent pause checkpoints:42C8D0 now has a complete reviewed3212-byte source
+owner, and42D9D0 has a maintained3192-byte continuation owner (still non-exact).
+The formerly open42E6B0 game-over menu now has maintained source and a reviewed
+3208-byte boundary, but remains non-exact; see [PAUSE_GAME_OVER_MENU](PAUSE_GAME_OVER_MENU.md).
+The counts and experiments above describe this topic's earlier checkpoint.

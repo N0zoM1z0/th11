@@ -83,7 +83,8 @@ not consumed; its full source and exact codegen remain separate work.
 
 ## Required supporting operations
 
-These bodies support the large owner and have no independent acceptance units:
+These bodies support the large owner; only the event6 child signal below has
+its own independent acceptance unit:
 
 - 42C880/72 clears gameplay flag10, queues sound command7 except stage6 before
 frame300, then restores saved scale2D8/audio200. One call/seven fields, eight CC.
@@ -93,11 +94,13 @@ It sends event6 to root and related VMs when marker18 is0.
 - 435FC0/18 guards null, destroys replay contents435C50, then invokes operator
   delete45FD49. It is not a direct free. Two calls/fields, fourteen CC.
 
-At the pause checkpoint,42D9D0/42E6B0 still lacked source. The later
-[continuation checkpoint](PAUSE_CONTINUE_MENU.md) supplies42D9D0/3192;42E6B0
-remains source-open with an unreviewed3179-byte default. The call graph remains
-incomplete. Original TU, nominal classes, private ABI,
-native-product closure and runtime behavior remain unproved.
+At the original pause checkpoint,42D9D0/42E6B0 still lacked source. Both
+neighbors have since gained maintained source: the continuation owner is3192
+bytes and non-exact; the game-over owner is3208 bytes with a reviewed boundary
+and remains non-exact. See [PAUSE_CONTINUE_MENU](PAUSE_CONTINUE_MENU.md) and
+[PAUSE_GAME_OVER_MENU](PAUSE_GAME_OVER_MENU.md). The call graph remains
+incomplete. Original TU, nominal classes, private ABI, native-product closure
+and runtime behavior remain unproved.
 
 ## Exact event6 helper (2026-11-13)
 

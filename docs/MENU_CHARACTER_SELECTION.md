@@ -122,8 +122,8 @@ ActorInstructions/HUD/gameplay/debug sources does not implement those owners.
 No canonical exact dependency changed. Rebuild the public character-selection
 recipe before a new measurement.
 
-Subsequent pause checkpoint:42C8D0 now has a complete reviewed3212-byte source
-owner.42D9D0 was subsequently reconstructed as a3192-byte continuation owner;
-42E6B0 remains source-open. See [PAUSE_CONTINUE_MENU](PAUSE_CONTINUE_MENU.md) for the
-current caller inventory; the counts and experiments above describe this topic's
-earlier checkpoint.
+Subsequent pause checkpoints:42C8D0 now has a complete reviewed3212-byte source
+owner, and42D9D0 has a maintained3192-byte continuation owner (still non-exact).
+The formerly open42E6B0 game-over menu now has maintained source and a reviewed
+3208-byte boundary, but remains non-exact; see [PAUSE_GAME_OVER_MENU](PAUSE_GAME_OVER_MENU.md).
+The counts and experiments above describe this topic's earlier checkpoint.

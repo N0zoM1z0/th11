@@ -15,17 +15,22 @@ remote publication. Use direct Ghidra through `scripts/ghidra.py`, not REA.
 
 ## Verified state and trust boundaries
 
-[Generated progress](PROGRESS.md) and `config/` are authoritative. As of this
-handoff, after `ce2d51d`, the tracking validator reports:
+[Generated progress](PROGRESS.md) and `config/` are authoritative. At the
+start of this handoff cleanup the repository was clean at `d3a0f8c`
+(`gpt-web: isolate exact secondary draw publisher ABI`), on `main`, one local
+commit ahead of `origin/main`. Regenerated `docs/PROGRESS.md` reports:
 
-| Scope | Verified checkpoint |
+| Scope | Current checkpoint |
 | --- | ---: |
 | Function candidates (provisional inventory) | 2,157 |
-| Reviewed boundaries | 758 |
-| Source-present function mappings | 732 |
-| Strict canonical exact functions | **384** |
-| Strict exact codegen bytes | **41,719** |
+| Reviewed boundaries | 760 |
+| Source-present function mappings | 734 |
+| Canonical exact functions | **385** |
+| Canonical exact codegen bytes | **41,842** |
 | Exact with confirmed authored origin | 53 |
+
+Use `docs/PROGRESS.md` for the complete generated breakdown; do not copy these
+counts into the SVG or ledgers by hand.
 
 **Exact** means a unique whole-function owner, pinned original/compiler,
 exhaustive reviewed address fields, current cold receipt and zero differing
@@ -58,7 +63,7 @@ but are **not exact**, unless a specific child is separately listed above.
 | `0x4356E0` **1,380-byte secondary replay initializer** | Scoped 1247/1380 after restoring selected-stage cleanup; recover private stream/constructor registers. [Replay](SECONDARY_PATTERN.md) |
 | `0x4396C0` **561-byte title destructor** | 561-byte real-context candidate, still 231 positional nonaddress differences. Investigate actual record destruction and chain lock scope. [Title](TITLE_MENU_LIFECYCLE.md) |
 | `0x435C50` **429-byte replay record destructor** | Complete 429/429-byte, 114-instruction/14-call candidate; six bytes are the order of independent `ECX=element` / `EDX=manager` moves at +A8/+AA, +F7/+F9 and +143/+145. Manager-first and noinline variants did not improve it. [Record lifetime](REPLAY_RECORD_LIFECYCLE.md) |
-| `0x42D9D0` **3,192-byte continue menu** | 2026-11-13 scoped candidate: 3196 bytes, 162/162 fields, 88/88 calls, 15/15 RET4 paths and native 0x58 frame; 2636 full byte differences remain. Case13 now retains branch-specific result expressions and native score-compare order. Recover ESI hidden-result/register and ESP+0x20/+0x14 lifetime allocation. [Continue](PAUSE_CONTINUE_MENU.md) |
+| `0x42D9D0` **3,192-byte continue menu** | Best tracked 63-support `/GL` diagnostic: 3172/3192 bytes, 160/162 fields, 88/88 calls, 15/15 RET4 paths, 0x54/0x58 frame and 2767 full byte differences after field replay. The real-caller-expanded candidate is 3128/3192 with 159 fields, 86 calls and 14 returns; narrow helper-context candidates at 3192/3196 bytes are not full-caller builds. Native case13 uses ESI result slots at ESP+0x20/+0x14; the maintained C++ still lowers to a different hidden-result register/lifetime schedule. The native record preparer also receives its menu in ESI, not as a stack argument. [Continue](PAUSE_CONTINUE_MENU.md) |
 | `0x441910` **336-byte THA1 directory loader** | Complete 15-call source, scoped 380/336; native private header decode/stack scheduling. [Directory](PBG_DIRECTORY_LOADER.md) |
 | `0x441A60` **363-byte directory entry parser** | Complete `new[]`, ctor/dtor, double name scans and signed 4-byte alignment; 341/363 scoped. [Directory](PBG_DIRECTORY_LOADER.md) |
 | `0x4421E0` / `0x4422C0` **218/202-byte resource APIs** | Source complete; normal 195/183, full real `/GL` 172/165. Resolve EH owner and unoptimized local file lifetimes. [Pbg lookup](PBG_RESOURCE_LOOKUP.md) |
@@ -67,21 +72,49 @@ but are **not exact**, unless a specific child is separately listed above.
 | `0x443140` **181-byte frame-tick worker** | Newly preserved packed-state source; dynamic `/GL` about 183/181 and real clock variant 168/181. Recover x87 stack scheduling and alignment. [Frame clock](FRAME_CLOCK.md) |
 | `0x4593E0` **36-byte ThreadInf deleting destructor** | Actual `/GL` emits matching code but dual `??_E`/`??_G` MAP aliases make owner ambiguous. A separate normal-COFF trial was 37/36 and is not adopted. [ThreadInf](THREADINF_LIFECYCLE.md) |
 
-The 33-byte `CommitPauseMenuScore` leaf is now strict exact: its dedicated
-VC9 `/GL` primary-TU owner is 33/33 bytes, 8/8 instructions and all four
-reviewed DIR32 fields replay with zero differences. A minimal inline-assembly
-body preserves the native EAX/ECX schedule and lets VC9 emit the single RET.
-The typed HUD `+0x43E4` field view remains statically asserted. The other
-continue support leaves remain exact as well.
-`SignalPauseMenuChild` is also now strict exact at 70/70 bytes with two reviewed
-fields. A natural `AnimationVmId` value materialization restores the native EAX
-ID, EDX renderer and ECX event registers under its dynamic two-ID caller.
-`SetSecondaryGameplayRuntimeMode` is also 30/30 exact, and the canonical
-`CreateDefaultSecondaryDrawAnimationVmId` unit is 105/105 exact. On 2026-11-13,
-six selected units (runtime mode, score publication, continue close,
-animation-tree visibility, default draw factory, and event6 child signaling)
-were cold-replayed successfully; no full cohort was run. The 3192-byte boss remains non-exact. Additional substantial, separately
-documented work includes replay playback
+The pause/secondary-draw work now has these strict canonical exact owners
+(the origin of each native function remains indeterminate unless separately
+classified):
+
+| Owner | Native bytes | Canonical unit |
+| --- | ---: | --- |
+| `CommitPauseMenuScore` `0x42BA20` | 33/33 | `commit-pause-menu-score` |
+| `SignalPauseMenuChild` `0x42F380` | 70/70 | `signal-pause-menu-child` |
+| `ClosePauseContinueMenu` `0x42D7F0` | 92/92 | `close-pause-continue-menu` |
+| `ShowPauseMenuAnimationTree` `0x456610` | 64/64 | `show-pause-menu-animation-tree` |
+| `SetSecondaryGameplayRuntimeMode` `0x40DEA0` | 30/30 | `set-secondary-gameplay-runtime-mode` |
+| `PublishSecondaryDrawAnimationVm` `0x4557E0` | 123/123 | `publish-secondary-draw-animation-vm` |
+| `CreateSecondaryEmitterAnimationVmId` `0x455BC0` | 112/112 | `create-secondary-emitter-animation-vm-id` |
+| `CreateDefaultSecondaryDrawAnimationVmId` `0x455D80` | 105/105 | `create-default-secondary-draw-animation-vm-id` |
+| `CreateSecondaryDrawAnimationVmId` `0x455DF0` | 112/112 | `create-secondary-draw-animation-vm-id` |
+| `ResetSecondaryPatternSlot` `0x4355F0` | 24/24 | `reset-secondary-pattern-slot` |
+
+The score leaf is 8/8 instructions with four reviewed DIR32 fields; its small
+inline-assembly body preserves the native EAX/ECX order and the HUD mirror at
+`+0x43E4`. `SignalPauseMenuChild` has two reviewed fields. The 123-byte
+secondary append publisher uses the private EBX=VM / EAX=hidden-result-slot
+ABI. The two secondary append factories use the same private publisher; the
+default factory remains in `PauseContinueMenuSupport.cpp`, while the explicit-
+layer factory and publisher are in `SecondaryDrawPublisher.cpp`.
+
+The five-unit selected replay run for the new secondary append path passed:
+`publish-secondary-draw-animation-vm`,
+`create-secondary-emitter-animation-vm-id`,
+`create-secondary-draw-animation-vm-id`,
+`create-default-secondary-draw-animation-vm-id`, and
+`reset-secondary-pattern-slot`. Earlier selected runs also covered the score,
+child signal, close/tree helpers and runtime-mode leaf. No full-cohort cold
+replay was run. The 3192-byte continue boss remains non-exact.
+
+The native original TU/class/library authorship of these recovered owners is
+not established. A local commit is a source checkpoint, not an Oracle receipt.
+The Factory accepted-snapshot adapter currently rejects this repo's VC9 family
+(`unsupported Windows toolchain family: Microsoft Visual C++ 2008 RTM (VC9)`);
+use the repository's pinned-toolchain validators and selected
+`scripts/replay-exact-units.py --unit NAME` workflow, and do not treat that
+adapter limitation as a codegen result.
+
+Additional substantial, separately documented work includes replay playback
 factory 198 bytes (source codegen equal but private EH-field ownership open),
 417-byte replay frame writer, 761-byte debug overlay, 872-byte text alpha
 fill, and 12,056-byte animation VM interpreter. Use the
@@ -110,22 +143,32 @@ default.** Prose-only cleanup needs only a diff/link check, not compilation.
 Read [AGENTS.md](../AGENTS.md), [workflow](RE_WORKFLOW.md) and
 [Oracle rules](ORACLES.md) before adding claims or changing validation code.
 
-## Local storage after 2026-11-13 cleanup
+## Local storage and cleanup
 
-Only ignored diagnostic caches were removed: 364 regenerated
-`build/probe-ltcg/` contexts and `build/probe/` scratch objects, saving
-**150,640 KiB (~147 MiB)**. `build/` fell from 293,240 KiB (~286 MiB) to
-142,600 KiB (~139 MiB). Five expensive historical contexts remain, including
-`build/probe-ltcg/PauseContinueMenuOwner`; see [artifact rules](ARTIFACTS.md).
-All **canonical** `build/match-linked/` and `build/match/` receipts, private
-original, locked `.tools/` compiler/Wine state, `ghidra-project/`, source,
-Git history and locally useful `.analysis/` recipes/logs were retained.
-**Deleted probe binaries are regenerable**; a historical note is not proof
-that its old ignored PE/PDB directory still exists. Do not erase canonical
-receipts, the original, toolchain, Ghidra project or local evidence for space.
+Two targeted ignored-cache cleanups were performed on 2026-11-13. The first
+removed 364 old probe contexts (about 147 MiB). The handoff cleanup then
+removed 156 additional exploratory `build/probe-ltcg/` directories, six loose
+files and 2,028 KiB of scratch `build/probes/` objects. `build/` fell from
+318,428 KiB to 159,728 KiB, reclaiming **158,700 KiB (~155 MiB)**. Exact
+before/after sizes and the full removal list are recorded in
+`.analysis/handoff-storage-cleanup-20261113b.txt` and summarized in
+[ARTIFACTS.md](ARTIFACTS.md).
 
-At this checkpoint the working tree is clean; always recheck it on resume.
-The private `.analysis/handoff-threadinf-deletingview-20261113/` keeps a
-rejected duplicate deleting-owner experiment so it does not confuse active
-`src/`. Useful private evidence can remain local/ignored; commits preserve
-authoritative natural source, probes, documentation and ledgers only.
+The nine retained diagnostic contexts are the five previously documented
+history caches plus `PauseContinueSameTuScore-20261113`,
+`PauseContinueAllRealCallersFinal-20261113`,
+`PauseContinueDynamicModeSupport-20261113` and
+`PauseContinueDynamicFactorySupport-20261113`. These preserve the current
+63-support boss baseline, real-caller-expanded comparison and dynamic helper
+support objects. All canonical `build/match-linked/`
+and `build/match/` receipts, the private original, `.tools/` compiler/Wine
+state, `ghidra-project/`, source, Git history and `.analysis/` recipes/reviews
+were preserved. Deleted probe binaries are regenerable; a historical note is
+not proof its old ignored PE/PDB directory still exists. Do not erase
+canonical receipts, the original, toolchain or Ghidra project for space.
+
+The working tree was clean at the start of cleanup; recheck status and HEAD on
+resume. The private `.analysis/handoff-threadinf-deletingview-20261113/` keeps
+a rejected duplicate deleting-owner experiment out of active `src/`. Commits
+preserve authoritative source, reusable probes, documentation and ledgers;
+ignored build outputs remain local and disposable.
