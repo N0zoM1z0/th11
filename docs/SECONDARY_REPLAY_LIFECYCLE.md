@@ -21,6 +21,9 @@ result is recorded without claiming an accepted Factory fact.
 
 ## Stage-lifecycle owner (`0x436DA0`, 388 bytes)
 
+**Canonical local codegen:** 388/388 bytes, 108/108 instructions, five calls,
+two returns, 23 replayed fields, zero non-field differences.
+
 `UpdateSecondaryReplayStage` is maintained in
 `src/SecondaryReplayStageLifecycle.cpp`. It marks the update, auxiliary-update,
 and draw chain nodes pending. In recording mode it clears the selected stage
@@ -32,12 +35,12 @@ selected embedded stage link, restores the integer position through the exact
 and calls `ResetSecondaryPlayerEmitters` twice when the saved multiplier is
 nonzero. Both paths reset the frame counter.
 
-The native body is 388 bytes / 108 instructions / five calls / two returns.
-The focused VC9 RTM `/GL` candidate is 377 bytes / 106 instructions with the
-same five calls and two returns. It is a complete semantic source reconstruction
-but remains non-exact; the remaining 11-byte gap is code generation, not a
-missing mode branch. The canonical target boundary is reviewed and the
-original class/TU provenance remains unknown.
+The naked VC9 RTM `/GL` source emits the complete native 388-byte body and all
+108 instructions. The canonical local linked-PE unit
+`secondary-replay-stage-lifecycle` replays all 23 independently reviewed
+absolute/relative fields and has zero non-field byte differences. Factory
+receipt acceptance is tracked separately. The canonical target boundary is
+reviewed; original class/TU provenance remains unknown.
 
 ## Shared replay-state and stage-link layout
 
@@ -60,9 +63,9 @@ The initializer's playback restore also reads the selected stage header through
 ## Main initializer (`0x4356E0`, 1380 bytes)
 
 `InitializeSecondaryReplay` remains a distinct three-mode owner (record,
-playback, validation). The current focused `/GL` candidates are 1257 bytes in
-the independent context, 1245 with the real chain-registration dependency,
-and 1249 with the real writer dependency, against 1380 native bytes. Each
+playback, validation). The current focused `/GL` candidates are 1308 bytes in
+the independent context and 1299 bytes with the real chain-registration and
+writer dependencies, against 1380 native bytes. Each
 retains 22 calls and four returns. The source and producer contexts remain
 non-exact; the typed stage-link restore and shared replay-state work now close
 important data-flow gaps without treating the initializer as an isolated

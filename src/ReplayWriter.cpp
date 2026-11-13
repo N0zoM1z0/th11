@@ -92,26 +92,64 @@ unsigned char *__stdcall CompressReplayData(const void *input, int size, int *co
 
 // 00437300: append a newly allocated chunk to the current stage's intrusive
 // list. The node lives at offset 18A4 inside its 18B0-byte allocation.
-ReplayWriteSegmentNode *__stdcall AppendReplayWriteSegment(ReplayWriteState *state, int stage)
+extern "C" void *__cdecl ReplayAllocate(unsigned int size);
+extern "C" void *__cdecl ReplayMemset(void *destination, int value, unsigned int size);
+#pragma comment(linker, "/alternatename:_ReplayAllocate=??2@YAPAXI@Z")
+#pragma comment(linker, "/alternatename:_ReplayMemset=_memset")
+
+// Native 00437300 is a private EBX/EDI routine, not a stack-argument C++
+// function. Keep the exact allocation, zeroing, cursor initialization and
+// generic intrusive-list splice in one naked body so no ABI save/restore code
+// is introduced around the two live registers.
+__declspec(naked) ReplayWriteSegmentNode *__stdcall AppendReplayWriteSegment()
 {
-    ReplayWriteSegment *chunk = new ReplayWriteSegment;
-    // Preserve the generic doubly linked-list append, including its
-    // conditional splice of an already present following node.
-    ReplayWriteSegmentNode *tail = reinterpret_cast<ReplayWriteSegmentNode *>(
-        reinterpret_cast<unsigned char *>(&state->streams[stage].first) -
-        offsetof(ReplayWriteSegmentNode, next));
-    while (tail->next)
-        tail = tail->next;
-    ReplayWriteSegmentNode *node = &chunk->node;
-    if (tail->next)
-    {
-        node->next = tail->next;
-        tail->next->previous = node;
+    __asm {
+        push esi
+        push 18B0h
+        call ReplayAllocate
+        mov esi, eax
+        add esp, 4
+        test esi, esi
+        jz allocation_failed
+        push 18B0h
+        push 0
+        push esi
+        call ReplayMemset
+        mov dword ptr [esi+1518h], esi
+        lea eax, [esi+151Ch]
+        mov dword ptr [esi+18A0h], eax
+        add esp, 0Ch
+        mov dword ptr [esi+18A4h], esi
+        mov dword ptr [esi+18A8h], 0
+        mov dword ptr [esi+18ACh], 0
+        jmp allocation_complete
+    allocation_failed:
+        xor esi, esi
+    allocation_complete:
+        lea ecx, [edi+edi*2+0Fh]
+        cmp dword ptr [ebx+ecx*4+4], 0
+        lea ecx, [ebx+ecx*4]
+        lea eax, [esi+18A4h]
+        pop esi
+        jz append_tail
+        align 16
+    append_walk:
+        mov ecx, dword ptr [ecx+4]
+        cmp dword ptr [ecx+4], 0
+        jne append_walk
+    append_tail:
+        mov edx, dword ptr [ecx+4]
+        test edx, edx
+        jz append_link
+        mov dword ptr [eax+4], edx
+        mov edx, dword ptr [ecx+4]
+        mov dword ptr [edx+8], eax
+    append_link:
+        mov dword ptr [ecx+4], eax
+        mov dword ptr [eax+8], ecx
+        inc dword ptr [ebx+0A0h]
+        ret
     }
-    tail->next = node;
-    node->previous = tail;
-    ++state->segmentCount;
-    return &chunk->node;
 }
 
 namespace
@@ -173,7 +211,16 @@ void __fastcall WritePauseMenuReplay(const char *filename, const char *name, int
         end[2] = -1;
         last->eventEnd += 6;
         if (EventBytes(last) / 6 >= 900)
-            state->streams[7].last = AppendReplayWriteSegment(state, state->recordingStage);
+        {
+            ReplayWriteSegmentNode *segment;
+            __asm {
+                mov ebx, state
+                mov edi, dword ptr [ebx+1D4h]
+                call AppendReplayWriteSegment
+                mov segment, eax
+            }
+            state->streams[7].last = segment;
+        }
     }
 
     _mkdir("replay");

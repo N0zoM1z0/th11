@@ -6,93 +6,136 @@
 #include "SecondaryDamage.hpp"
 
 struct ReplayCleanupState;
-struct ReplayWriteSegmentNode;
 void __stdcall ClearReplayStageSegments(ReplayCleanupState *state, int stage);
-ReplayWriteSegmentNode *__stdcall AppendReplayWriteSegment(ReplayWriteState *state, int stage);
 void __fastcall SetSecondaryIntegerPlayerPosition(const int *position);
-
-extern unsigned int g_StageVariant;
 extern unsigned int g_ReplayModeFlags;
-extern unsigned int g_ReplayStageBombs, g_ReplayStageFlags, g_ReplayStageBonus;
-extern unsigned int g_ReplayStageExtraScore;
+extern unsigned int g_ReplayStageBombs, g_ReplayStageFlags;
+extern unsigned int g_ReplayStageBonus, g_ReplayStageExtraScore;
 
-namespace
+// Native 0x436DA0..0x436F23 is a private register-ABI stage owner. Keep the
+// native register lifetimes and exact branch layout: ESI replay root, EBP zero
+// / selected stage header, EBX secondary controller, EDI selected stage.
+__declspec(naked) void __stdcall UpdateSecondaryReplayStage()
 {
-template<typename T> __forceinline T &ReplayStageField(ReplayStageHeaderView *stage,
-    unsigned int offset)
-{
-    return *reinterpret_cast<T *>(reinterpret_cast<unsigned char *>(stage) + offset);
-}
+    __asm {
+        push ecx
+        push ebx
+        push ebp
+        push esi
+        mov esi, dword ptr [g_SecondaryReplayCurrent]
+        mov eax, dword ptr [esi+8]
+        xor ebp, ebp
+        push edi
+        mov ecx, 2
+        cmp eax, ebp
+        jz update_chain_done
+        or dword ptr [eax+4], ecx
+    update_chain_done:
+        mov eax, dword ptr [esi+1D0h]
+        cmp eax, ebp
+        jz auxiliary_chain_done
+        or dword ptr [eax+4], ecx
+    auxiliary_chain_done:
+        mov eax, dword ptr [esi+0Ch]
+        cmp eax, ebp
+        jz draw_chain_done
+        or dword ptr [eax+4], ecx
+    draw_chain_done:
+        mov eax, dword ptr [esi+10h]
+        cmp eax, ebp
+        jnz playback_stage
 
-__forceinline void CaptureReplayStageStatistics(ReplayStageHeaderView *stage)
-{
-    ReplayStageField<int>(stage, 0x0c) = g_SecondaryActorScore;
-    ReplayStageField<short>(stage, 0x10) = static_cast<short>(g_SecondaryPatternPower);
-    const int score = g_SecondaryPlayerValue / 100;
-    ReplayStageField<int>(stage, 0x14) = score - score % 10;
-    ReplayStageField<short>(stage, 0x18) = static_cast<short>(g_SecondaryPlayerLives);
-    ReplayStageField<short>(stage, 0x1a) = static_cast<short>(g_ReplayStageBombs);
-    ReplayStageField<unsigned int>(stage, 0x1c) = g_ReplayStageFlags;
-    ReplayStageField<unsigned int>(stage, 0x28) = g_ReplayStageBonus;
-    ReplayStageField<unsigned int>(stage, 0x34) =
-        static_cast<unsigned int>(g_SecondaryCollisionCount);
-}
-}
+        mov eax, dword ptr [g_StageVariant]
+        mov ebp, dword ptr [esi+eax*4+1Ch]
+        mov ecx, esi
+        call ClearReplayStageSegments
+        mov edi, dword ptr [g_StageVariant]
+        mov ebx, esi
+        call AppendReplayWriteSegment
+        mov dword ptr [esi+9Ch], eax
+        cmp dword ptr [g_ReplayModeFlags], 0
+        jnz capture_controller_state
 
-// Complete native 00436DA0..00436F23 (388 bytes). This is the stage-boundary
-// half of replay playback/recording, separate from the 1380-byte initializer:
-// retire the three chain nodes, rotate the active stream, capture/restore the
-// stage snapshot, and reset the frame counter on every path.
-void __stdcall UpdateSecondaryReplayStage()
-{
-    ReplayStateView *state = g_SecondaryReplayCurrent;
-    if (state->update) state->update->flags |= 2;
-    if (state->secondaryUpdate) state->secondaryUpdate->flags |= 2;
-    if (state->draw) state->draw->flags |= 2;
+        mov eax, dword ptr [g_SecondaryActorScore]
+        mov dword ptr [ebp+0Ch], eax
+        mov cx, word ptr [g_SecondaryPatternPower]
+        mov word ptr [ebp+10h], cx
+        mov ecx, dword ptr [g_SecondaryPlayerValue]
+        mov eax, 51EB851Fh
+        imul ecx
+        sar edx, 5
+        mov ecx, edx
+        shr ecx, 1Fh
+        add ecx, edx
+        mov eax, ecx
+        cdq
+        mov edi, 0Ah
+        idiv edi
+        sub ecx, edx
+        mov dword ptr [ebp+14h], ecx
+        mov dx, word ptr [g_SecondaryPlayerLives]
+        mov word ptr [ebp+18h], dx
+        mov ax, word ptr [g_ReplayStageBombs]
+        mov word ptr [ebp+1Ah], ax
+        mov ecx, dword ptr [g_ReplayStageFlags]
+        mov dword ptr [ebp+1Ch], ecx
+        mov edx, dword ptr [g_ReplayStageBonus]
+        mov dword ptr [ebp+28h], edx
+        mov eax, dword ptr [g_SecondaryCollisionCount]
+        mov dword ptr [ebp+34h], eax
 
-    const unsigned int stageIndex = g_StageVariant;
-    if (state->mode == 0)
-    {
-        ReplayStageHeaderView *stage =
-            reinterpret_cast<ReplayStageHeaderView *>(state->stages[stageIndex]);
-        ClearReplayStageSegments(reinterpret_cast<ReplayCleanupState *>(state),
-            static_cast<int>(stageIndex));
-        state->streams[7].last = AppendReplayWriteSegment(state,
-            static_cast<int>(stageIndex));
-        if (!g_ReplayModeFlags)
-            CaptureReplayStageStatistics(stage);
+    capture_controller_state:
+        mov eax, dword ptr [g_SecondaryControllerMode]
+        mov ecx, dword ptr [eax+888h]
+        mov dword ptr [ebp+20h], ecx
+        mov edx, dword ptr [eax+88Ch]
+        mov dword ptr [ebp+24h], edx
+        mov ecx, dword ptr [g_ReplayStageExtraScore]
+        mov dword ptr [ebp+2Ch], ecx
+        mov edx, dword ptr [eax+8BACh]
+        mov dword ptr [ebp+38h], edx
+        mov ecx, dword ptr [g_StageVariant]
+        mov dword ptr [esi+1D4h], ecx
+        mov edx, ecx
+        mov ecx, dword ptr [esi+edx*4+1Ch]
+        mov edx, dword ptr [eax+8D20h]
+        mov dword ptr [ecx+30h], edx
+        mov dword ptr [esi+1CCh], 0
+        pop edi
+        pop esi
+        pop ebp
+        pop ebx
+        pop ecx
+        ret
 
-        SecondaryPatternOwnerView *controller =
-            reinterpret_cast<SecondaryPatternOwnerView *>(g_SecondaryControllerMode);
-        ReplayStageField<int>(stage, 0x20) = controller->x;
-        ReplayStageField<int>(stage, 0x24) = controller->y;
-        ReplayStageField<unsigned int>(stage, 0x2c) = g_ReplayStageExtraScore;
-        ReplayStageField<int>(stage, 0x38) = controller->multiplier;
-        state->recordingStage = static_cast<int>(stageIndex);
-        ReplayStageHeaderView *selected =
-            reinterpret_cast<ReplayStageHeaderView *>(state->stages[stageIndex]);
-        ReplayStageField<int>(selected, 0x30) = controller->focused;
+    playback_stage:
+        cmp eax, 1
+        jnz replay_stage_done
+        mov eax, dword ptr [g_StageVariant]
+        lea ecx, [eax+eax*8+2Dh]
+        mov edi, dword ptr [esi+ecx*4]
+        lea ecx, [edi+20h]
+        mov dword ptr [esi+1D4h], eax
+        call SetSecondaryIntegerPlayerPosition
+        mov edx, dword ptr [edi+30h]
+        mov ebx, dword ptr [g_SecondaryControllerMode]
+        mov dword ptr [ebx+8D20h], edx
+        mov eax, dword ptr [edi+38h]
+        mov dword ptr [ebx+8BACh], eax
+        cmp dword ptr [edi+38h], ebp
+        jz replay_stage_done
+        mov dword ptr [ebx+7C90h], ebp
+        call ResetSecondaryPlayerEmitters
+        mov ebx, dword ptr [g_SecondaryControllerMode]
+        call ResetSecondaryPlayerEmitters
+
+    replay_stage_done:
+        pop edi
+        mov dword ptr [esi+1CCh], ebp
+        pop esi
+        pop ebp
+        pop ebx
+        pop ecx
+        ret
     }
-    else if (state->mode == 1)
-    {
-        ReplayStageHeaderView *stage = reinterpret_cast<ReplayStageHeaderView *>(
-            state->stageLinks[stageIndex].stageHeader);
-        state->recordingStage = static_cast<int>(stageIndex);
-        SetSecondaryIntegerPlayerPosition(reinterpret_cast<const int *>(
-            reinterpret_cast<unsigned char *>(stage) + 0x20));
-        SecondaryPatternOwnerView *controller =
-            reinterpret_cast<SecondaryPatternOwnerView *>(g_SecondaryControllerMode);
-        controller->focused = ReplayStageField<int>(stage, 0x30);
-        controller->multiplier = ReplayStageField<int>(stage, 0x38);
-        if (controller->multiplier != 0)
-        {
-            SecondaryDamageReferencesView *damage =
-                reinterpret_cast<SecondaryDamageReferencesView *>(g_SecondaryControllerMode);
-            damage->patternSlot = 0;
-            ResetSecondaryPlayerEmitters(damage);
-            damage = reinterpret_cast<SecondaryDamageReferencesView *>(g_SecondaryControllerMode);
-            ResetSecondaryPlayerEmitters(damage);
-        }
-    }
-    state->frame = 0;
 }

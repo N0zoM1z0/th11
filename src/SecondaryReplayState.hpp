@@ -43,7 +43,20 @@ struct ReplayStateView
 
 typedef ReplayStateView ReplayWriteState;
 typedef ReplayStateView ReplayInitStateView;
+
+// The initializer is a private thiscall: ECX is the filename/resource source,
+// the replay-state pointer is its sole stack argument, and EAX carries mode.
+struct ReplayInitContext
+{
+    int InitializeSecondaryReplay(ReplayInitStateView *state);
+};
 extern ReplayStateView *g_SecondaryReplayCurrent;
+
+// 0x437300 is a private no-stack-argument ABI: EBX is the recorder, EDI the
+// stage index, and EAX returns the new node. Call it directly from owners that
+// already hold the native register pair; do not interpose a stack-ABI thunk.
+struct ReplayWriteSegmentNode;
+ReplayWriteSegmentNode *__stdcall AppendReplayWriteSegment();
 
 typedef char ReplayStateHeaderOffset[(offsetof(ReplayStateView, header) == 0x18) ? 1 : -1];
 typedef char ReplayStateStagesOffset[(offsetof(ReplayStateView, stages) == 0x1c) ? 1 : -1];

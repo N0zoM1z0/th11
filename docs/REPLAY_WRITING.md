@@ -228,15 +228,28 @@ A strictly scoped eight-TU VC9 `/GL /EHsc /O2 /Ob1` link using
 tree search/edit/reset, byte cipher and shared-file dependencies. Its PE,
 MAP and PDB identities were checked, but unresolved globals and external
 routines are provided as diagnostic anchors, not runnable game data.
-The writer's linked contribution is now **1753 bytes** versus **1856 native**.
-The link has the native **46/46 total call sites**, including all **15 sprintf**
-and **two memset** occurrences. The segment allocator is **160 bytes** versus
-150 native. The initial writer context had 1739 bytes and 45 calls.
+The writer's current linked contribution is **1898 bytes** versus **1856 native**.
+The link retains the native **46 total call sites**, including all **15 sprintf**
+and **two memset** occurrences. The segment allocator is now its exact **150
+bytes** in the dedicated `replay-append-write-segment` unit. The initial writer
+context had 1739 bytes and 45 calls.
 
-Both remain non-exact. The synthetic private writer ABI returns via RET8
-rather than native RET4; the allocator retains a stack argument versus
-native EBX/EDI and plain RET. Full address-field replay and zero-byte
-difference proofs are outstanding. Private build receipts are in
+The file writer remains non-exact: its synthetic private writer ABI and body
+still differ from the native 1856-byte owner. The segment allocator is exact
+locally: the private EBX/EDI ABI, both REL32 targets and all 150 bytes replay
+without non-field differences. Private build receipts are in
 `build/probe-ltcg/ReplayWriterContext/`; focused logs and diagnostics
 are in `.analysis/replay-writer-linked-padding-20261111.log` and
 `.analysis/replay-current-*-coff-diagnostic.json`.
+
+
+## Segment allocator private ABI (`0x437300`)
+
+`AppendReplayWriteSegment` has no stack arguments: `EBX` is the replay state,
+`EDI` is the stage index, and `EAX` returns the embedded node at allocation
+offset `0x18A4`. Its naked VC9 implementation reproduces the native 150-byte
+body, including operator new, zeroing, cursor initialization and the generic
+intrusive-list splice. The canonical local linked-PE unit
+`replay-append-write-segment` replays its two `REL32` fields (operator new at
+`0x45FCE4`, memset at `0x46A720`) with zero non-field byte differences.
+Factory acceptance remains a separate receipt decision.

@@ -3,8 +3,6 @@
 #include "MainRuntime.hpp"
 #include "SecondaryReplayState.hpp"
 
-struct ReplayWriteSegmentNode;
-ReplayWriteSegmentNode *__stdcall AppendReplayWriteSegment(ReplayWriteState *state, int stage);
 
 // The native addresses 0x4A8E88 / 0x4A8D80 are independently observed; the
 // original private class names of the gate and sampled player are not known.
@@ -61,8 +59,16 @@ int __fastcall RecordReplayInputFrame(ReplayFrameRecordingView *self)
     write[2] = static_cast<unsigned short>(input->released);
     segment->eventEnd += 6;
     if ((segment->eventEnd - reinterpret_cast<unsigned char *>(segment)) / 6 >= 900)
-        self->last = reinterpret_cast<ReplayFrameSegmentNode *>(
-            AppendReplayWriteSegment(reinterpret_cast<ReplayWriteState *>(self), self->stage));
+    {
+        ReplayWriteSegmentNode *next;
+        __asm {
+            mov ebx, self
+            mov edi, dword ptr [ebx+1D4h]
+            call AppendReplayWriteSegment
+            mov next, eax
+        }
+        self->last = reinterpret_cast<ReplayFrameSegmentNode *>(next);
+    }
     ++self->frame;
     return 1;
 }

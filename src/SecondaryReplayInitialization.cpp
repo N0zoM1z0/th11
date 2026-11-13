@@ -8,9 +8,6 @@
 
 // The replay writer owns structurally equivalent types in ReplayWriter.cpp;
 // these are narrowly scoped physical views of the original initializing TU.
-struct ReplayWriteSegmentNode;
-ReplayWriteSegmentNode *__stdcall AppendReplayWriteSegment(ReplayWriteState *, int);
-
 struct ReplayInitFileHeaderView { unsigned char bytes[0x24]; };
 struct ReplayInitHeaderView { unsigned char bytes[0x70]; };
 typedef ReplayStageHeaderView ReplayInitStageView;
@@ -171,9 +168,10 @@ __forceinline void RestoreReplayState(ReplayInitStateView *state)
 // Native 004356E0..00435C43 (1380 bytes, four exits): mode 0 records a
 // fresh replay, mode 1 loads the saved replay and restores stage state,
 // and mode 2 checks a replay stream without publishing a new chain.
-int __stdcall InitializeSecondaryReplay(ReplayInitStateView *state,
-    int mode, void *source)
+int ReplayInitContext::InitializeSecondaryReplay(ReplayInitStateView *state)
 {
+    int mode;
+    __asm { mov mode, eax }
     state->mode = mode;
     if (mode == 0)
     {
@@ -183,8 +181,14 @@ int __stdcall InitializeSecondaryReplay(ReplayInitStateView *state,
         // its result is published in the separate +0x9C tail slot.
         ClearReplayStageSegments(reinterpret_cast<ReplayCleanupState *>(state),
             static_cast<int>(g_StageVariant));
-        state->streams[7].last = AppendReplayWriteSegment(
-            reinterpret_cast<ReplayWriteState *>(state), static_cast<int>(g_StageVariant));
+        ReplayWriteSegmentNode *segment;
+        __asm {
+            mov ebx, state
+            mov edi, dword ptr [g_StageVariant]
+            call AppendReplayWriteSegment
+            mov segment, eax
+        }
+        state->streams[7].last = segment;
         state->fileHeader = NewFileHeader();
         state->header = NewHeader();
         state->stages[g_StageVariant] = NewStage();
@@ -199,7 +203,7 @@ int __stdcall InitializeSecondaryReplay(ReplayInitStateView *state,
     if (mode == 1)
     {
         g_SecondaryReplayCurrent = state;
-        if (LoadReplayStageData(state, source) != 0) return -1;
+        if (LoadReplayStageData(state, this) != 0) return -1;
         RestoreReplayState(state);
         state->update = ReplayChain(state, ReplayPlaybackUpdate, false);
         state->secondaryUpdate = ReplayChain(state, ReplayAuxiliaryUpdate, false);
@@ -207,7 +211,7 @@ int __stdcall InitializeSecondaryReplay(ReplayInitStateView *state,
         state->recordingStage = -1;
         return 0;
     }
-    if (mode == 2 && LoadReplayStageData(state, source) != 0)
+    if (mode == 2 && LoadReplayStageData(state, this) != 0)
         return -1;
     return 0;
 }

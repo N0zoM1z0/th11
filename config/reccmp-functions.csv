@@ -718,6 +718,7 @@ UpdateSecondaryProjectileHoming,0x00434E30,function
 UpdateSecondaryProjectileHomingLong,0x00435080,function
 UpdateSecondaryProjectilePatternTimer,0x00434380,function
 UpdateSecondaryProjectiles,0x00434440,function
+UpdateSecondaryReplayStage,0x00436DA0,function
 UpdateSecondaryScripts,0x0045D420,function
 UpdateStage,0x00402AA0,function
 UpdateStageObjects,0x004040F0,function
