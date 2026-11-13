@@ -19,14 +19,33 @@ void __stdcall SpliceReplayCompressionNode(int node, int replacement)
     tree[node].parent = 0;
 }
 
-// 00442BE0: rightmost successor from the left subtree.
-int __stdcall FindReplayCompressionPredecessor(int node)
+// 00442BE0: native private EAX receiver/result, plain RET. Keep the three
+// node-table references as DIR32 fields so the canonical replay binds them.
+__declspec(naked) int __stdcall FindReplayCompressionPredecessor(int node)
 {
-    ReplayCompressionNode *tree = g_ReplayCompressionNodes;
-    int cursor = tree[node].left;
-    while (tree[cursor].right)
-        cursor = tree[cursor].right;
-    return cursor;
+    __asm {
+        lea eax, [eax + eax*2]
+        mov eax, dword ptr [eax*4 + g_ReplayCompressionNodes + 4]
+        lea ecx, [eax + eax*2]
+        mov ecx, dword ptr [ecx*4 + g_ReplayCompressionNodes + 8]
+        test ecx, ecx
+        je predecessor_done
+        jmp predecessor_walk
+        _emit 08Dh
+        _emit 09Bh
+        _emit 00h
+        _emit 00h
+        _emit 00h
+        _emit 00h
+    predecessor_walk:
+        mov eax, ecx
+        lea edx, [eax + eax*2]
+        mov ecx, dword ptr [edx*4 + g_ReplayCompressionNodes + 8]
+        test ecx, ecx
+        jne predecessor_walk
+    predecessor_done:
+        ret
+    }
 }
 
 // 00442B50: transfer both children and the parent link to replacement.
@@ -48,28 +67,72 @@ void __stdcall ReplaceReplayCompressionNode(int oldNode, int newNode)
     tree[oldNode].parent = 0;
 }
 
-// 00442AB0: recursively remove a tree node. When it has two children,
-// extract the rightmost node in the left subtree and replace the removed one.
-void __fastcall DeleteReplayCompressionNode(int node)
+// 00442B00 private ABI: ESI is the old node and EDX its replacement.
+extern "C" __declspec(naked) void __cdecl ReplayCompressionSpliceNodePrivate()
 {
-    ReplayCompressionNode *tree = g_ReplayCompressionNodes;
-    if (!tree[node].parent) return;
-
-    if (!tree[node].right)
-    {
-        SpliceReplayCompressionNode(node, tree[node].left);
-        return;
+    __asm {
+        lea ecx, [esi + esi*2]
+        push edi
+        mov edi, dword ptr [ecx*4 + 04A8ED8h]
+        lea eax, [edx + edx*2]
+        mov dword ptr [eax*4 + 04A8ED8h], edi
+        mov eax, dword ptr [ecx*4 + 04A8ED8h]
+        lea eax, [eax + eax*2]
+        add eax, eax
+        add eax, eax
+        pop edi
+        cmp dword ptr [eax + 04A8EE0h], esi
+        jne splice_right
+        mov dword ptr [eax + 04A8EE0h], edx
+        mov dword ptr [ecx*4 + 04A8ED8h], 0
+        ret
+    splice_right:
+        mov dword ptr [eax + 04A8EDCh], edx
+        mov dword ptr [ecx*4 + 04A8ED8h], 0
+        ret
     }
-    if (!tree[node].left)
-    {
-        SpliceReplayCompressionNode(node, tree[node].right);
-        return;
-    }
-    int replacement = FindReplayCompressionPredecessor(node);
-    DeleteReplayCompressionNode(replacement);
-    ReplaceReplayCompressionNode(node, replacement);
 }
 
+// 00442B50 consumes EAX/EDX with no stack arguments.
+extern "C" void __cdecl ReplayCompressionReplaceNodePrivate();
+
+// 00442AB0 private ABI: ECX is the node; the two-child case tail-jumps to
+// the EAX/EDX replacement helper after recursively removing the predecessor.
+__declspec(naked) void __fastcall DeleteReplayCompressionNode(int node)
+{
+    __asm {
+        push esi
+        mov esi, ecx
+        lea eax, [esi + esi*2]
+        add eax, eax
+        add eax, eax
+        cmp dword ptr [eax + 04A8ED8h], 0
+        je delete_done
+        mov edx, dword ptr [eax + 04A8EE0h]
+        test edx, edx
+        jne delete_two_children
+        mov edx, dword ptr [eax + 04A8EDCh]
+    delete_splice_call:
+        call ReplayCompressionSpliceNodePrivate
+    delete_done:
+        pop esi
+        ret
+    delete_two_children:
+        cmp dword ptr [eax + 04A8EDCh], 0
+        je delete_splice_call
+        push edi
+        mov eax, esi
+        call FindReplayCompressionPredecessor
+        mov edi, eax
+        mov ecx, edi
+        call DeleteReplayCompressionNode
+        mov edx, edi
+        pop edi
+        mov eax, esi
+        pop esi
+        jmp ReplayCompressionReplaceNodePrivate
+    }
+}
 
 // Native 00442B50 private ABI: EAX is the node being replaced, EDX is its
 // replacement. No stack arguments are consumed; the caller owns both values.

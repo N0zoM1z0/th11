@@ -127,36 +127,28 @@ tree helpers once they have source.
 
 ## Dictionary tree update helpers (00442AB0..00442C10)
 
-Four linked-tree operations are maintained together in
-`src/ReplayCompressionTreeOps.cpp`. They implement recursive
-node deletion, parent/child splicing (including the original zero-node
-sentinel), full node replacement and rightmost-predecessor search.
-Direct original Ghidra review and independent complete PE disassembly
-establish all four boundaries and neighboring padding; the original
-functions use privately optimized ECX/ESI/EDX/EAX argument registers.
-Source code deliberately uses normal typed parameters instead.
+The four tree-edit helpers are now instruction-exact in the maintained
+`src/ReplayCompressionTreeOps.cpp`, alongside the 49-byte predecessor.
+Their private register contracts are preserved explicitly rather than
+replaced by stack-argument wrappers:
 
-| Operation | Original bytes | VC9 normal COFF | Address fields |
-| --- | ---: | ---: | ---: |
-| DeleteReplayCompressionNode | 79 | 95 | 9 |
-| SpliceReplayCompressionNode | 80 | 97 | 8 |
-| ReplaceReplayCompressionNode | 134 | 144 | 14 |
-| FindReplayCompressionPredecessor | 49 | 51 | 3 |
+| Owner | Native ABI | Bytes | Strict unit | Result |
+| --- | --- | ---: | --- | --- |
+| `DeleteReplayCompressionNode` | ECX node; plain RET / tail JMP | 79 | `replay-compression-delete-private` | Exact; 3 REL32 calls |
+| `SpliceReplayCompressionNode` | ESI old node, EDX replacement | 80 | `replay-compression-splice-private` | Exact; no fields |
+| `ReplaceReplayCompressionNode` | EAX old node, EDX replacement | 134 | `replay-compression-replace-private` | Exact; no fields |
+| `FindReplayCompressionPredecessor` | EAX input/result | 49 | `replay-compression-predecessor` | Exact; 3 DIR32 fields |
 
-All four operations compile with the pinned VC9 /O2 toolchain; none
-matches as a normal COFF function. A scoped VC9 /GL build of the tree
-predecessor now **reproduces all 49 native bytes exactly** in a complete
-primary-TU PDB contribution. Cold source/tool/build receipts and all three
-independently reviewed DIR32 fields pass the strict linked Oracle
-(unit `replay-compression-predecessor`). The natural C++ loop restores the
-native EAX receiver and plain RET without lying about the declared ABI.
-The private EAX/EDX replacement owner at `442B50` is now independently
-exact at 134/134 bytes. The 79-byte delete owner and 80-byte splice owner
-remain non-exact, as does the 416-byte match finder. Together with the
-52-byte reset and 49-byte predecessor, the compressor now has exact proofs
-for its main encoder, replacement helper, reset and predecessor. Candidate
-objects and complete diagnostics remain ignored under `build/` and
-`.analysis/`.
+Each is a complete primary-TU PDB contribution from a scoped pinned VC9
+RTM `/GL` link. Strict replay confirms every native byte, including the
+three call fields in recursive delete, and no whole-image replay is needed.
+The delete routine retains its native self-recursion, single-child splice,
+predecessor search and tail transfer to the EAX/EDX replacement helper.
+The splice helper retains both native RET exits and the shared zero-node
+sentinel behavior. The replacement helper transfers parent/left/right links
+and repairs both child-parent links. The predecessor walks the rightmost
+node in the left subtree. Original class/TU authorship remains a separate
+provenance question from byte exactness.
 
 ## Compression core (004423A0..004426BA)
 
@@ -187,10 +179,9 @@ stripped base relocations.
 The native replacement helper at `442B50` is independently exact as well.
 `replay-compression-replace-private` proves the complete 134-byte, 30-
 instruction EAX-old-node/EDX-successor owner with zero byte differences and
-no relocation fields. The 52-byte dictionary reset and 49-byte predecessor
-remain independently exact. The 416-byte match finder and the 79-byte delete
-and 80-byte splice helpers remain non-exact; their private register contracts
-are now reflected in the maintained declarations. The earlier normal-COFF
+no relocation fields. The 52-byte dictionary reset and all four tree-edit helpers (79, 80, 134
+and 49 bytes) are independently exact. The 416-byte match finder remains the
+next unresolved large owner in this compression call graph. The earlier normal-COFF
 trials and the 760-byte high-level compressor link are historical
 measurements, not the current implementation.
 

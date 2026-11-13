@@ -7940,3 +7940,48 @@ symbol = "_ReplayCompressionReplaceNodePrivate"
 target_address = 0x00442B50
 size = 134
 linkages = []
+
+# The native delete helper uses ECX for its node and tail-jumps to the
+# EAX/EDX replacement routine; the recursive self-call is local to its owner.
+[units.replay-compression-delete-private]
+artifact_kind = "linked-pe"
+source = "src/ReplayCompressionTreeOps.cpp"
+inputs = []
+support_sources = [
+  "src/ReplayCompressionEncoder.cpp",
+  "src/ReplayCompressionSearch.cpp",
+  "src/ReplayCompressionTree.cpp",
+  "probes/replay-compression-context.cpp",
+]
+output_dir = "build/match-linked/ReplayCompressionPrivateDelete"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "ReplayCompressionProbe@12"
+functions = ["DeleteReplayCompressionNode"]
+symbol = "?DeleteReplayCompressionNode@@YIXH@Z"
+target_address = 0x00442AB0
+size = 79
+linkages = [
+  { offset = 36, type = "REL32", symbol = "_ReplayCompressionSpliceNodePrivate", target = 0x00442B00 },
+  { offset = 55, type = "REL32", symbol = "?FindReplayCompressionPredecessor@@YGHH@Z", target = 0x00442BE0 },
+  { offset = 75, type = "REL32", symbol = "_ReplayCompressionReplaceNodePrivate", target = 0x00442B50 },
+]
+
+# Native 442B00 uses ESI for the old node and EDX for its replacement.
+[units.replay-compression-splice-private]
+artifact_kind = "linked-pe"
+source = "src/ReplayCompressionTreeOps.cpp"
+inputs = []
+support_sources = [
+  "src/ReplayCompressionEncoder.cpp",
+  "src/ReplayCompressionSearch.cpp",
+  "src/ReplayCompressionTree.cpp",
+  "probes/replay-compression-context.cpp",
+]
+output_dir = "build/match-linked/ReplayCompressionPrivateSplice"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "ReplayCompressionProbe@12"
+functions = ["SpliceReplayCompressionNode"]
+symbol = "_ReplayCompressionSpliceNodePrivate"
+target_address = 0x00442B00
+size = 80
+linkages = []
