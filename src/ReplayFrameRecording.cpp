@@ -1,8 +1,8 @@
 #include "ReplayFrameRecording.hpp"
 #include "InputBackend.hpp"
 #include "MainRuntime.hpp"
+#include "SecondaryReplayState.hpp"
 
-struct ReplayWriteState;
 struct ReplayWriteSegmentNode;
 ReplayWriteSegmentNode *__stdcall AppendReplayWriteSegment(ReplayWriteState *state, int stage);
 

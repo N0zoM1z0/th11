@@ -1,5 +1,6 @@
 #include "PauseMenu.hpp"
 #include "SecondaryPlayerController.hpp"
+#include "SecondaryReplayState.hpp"
 #include "SecondaryActorRuntime.hpp"
 #include "SharedFile.hpp"
 #include "ByteCipher.hpp"
@@ -9,8 +10,8 @@
 #include <string.h>
 #include <time.h>
 
-// The recorder is distinct from the playback view: these layouts describe
-// only fields read by 00436420 and its segment allocator at 00437300.
+// The writer and playback loader share the same physical replay-state root.
+// The stage-link table is also populated by the original 00436B60 file loader.
 #pragma pack(push, 4)
 struct ReplayWriteHeader
 {
@@ -59,23 +60,9 @@ struct ReplayWriteSegment
     unsigned char *secondaryEnd;
     ReplayWriteSegmentNode node;
 };
-struct ReplayWriteStream
-{
-    ReplayWriteSegmentNode *first, *unknown, *last;
-};
-struct ReplayWriteState
-{
-    unsigned char unknown000[0x14];
-    ReplayWriteFileHeader *fileHeader;
-    ReplayWriteHeader *header;
-    ReplayWriteStage *stages[8];
-    unsigned char unknown03c[4];
-    ReplayWriteStream streams[8];
-    int segmentCount;
-    unsigned char unknown0a4[0x1d4 - 0xa4];
-    int recordingStage;
-    unsigned int flags;
-};
+typedef ReplayStateView ReplayWriteState;
+typedef ReplayStageStreamView ReplayWriteStream;
+extern ReplayWriteState *g_SecondaryReplayCurrent;
 typedef char ReplayHeaderStride[(sizeof(ReplayWriteHeader) == 0x70) ? 1 : -1];
 typedef char ReplayStageStride[(sizeof(ReplayWriteStage) == 0x90) ? 1 : -1];
 typedef char ReplaySegmentStride[(sizeof(ReplayWriteSegment) == 0x18b0) ? 1 : -1];
@@ -161,8 +148,11 @@ __forceinline unsigned int AlignFour(unsigned int length)
 // optimized ABIs of its helper functions as source declarations.
 void __fastcall WritePauseMenuReplay(const char *filename, const char *name, int mode)
 {
-    ReplayWriteState *state = reinterpret_cast<ReplayWriteState *>(g_SecondaryControllerMode);
-    ReplayWriteHeader *header = state->header;
+    // 00436420 reads the current replay root from 004A8EB8. The adjacent
+    // 004A8EB4 slot is the secondary controller, not the writer state.
+    ReplayWriteState *state = g_SecondaryReplayCurrent;
+    ReplayWriteHeader *header = reinterpret_cast<ReplayWriteHeader *>(state->header);
+    ReplayWriteFileHeader *fileHeader = reinterpret_cast<ReplayWriteFileHeader *>(state->fileHeader);
 
     strcpy(header->name, name);
     int nameLength = static_cast<int>(strlen(name));
@@ -175,7 +165,8 @@ void __fastcall WritePauseMenuReplay(const char *filename, const char *name, int
 
     if (!(state->flags & 1) && mode)
     {
-        ReplayWriteSegment *last = state->streams[7].last->segment;
+        ReplayWriteSegmentNode *current = reinterpret_cast<ReplayWriteSegmentNode *>(state->streams[7].last);
+        ReplayWriteSegment *last = current->segment;
         short *end = reinterpret_cast<short *>(last->eventEnd);
         end[0] = -1;
         end[1] = -1;
@@ -193,14 +184,14 @@ void __fastcall WritePauseMenuReplay(const char *filename, const char *name, int
     int firstStage = 0, lastStage = 0, stageCount = 0;
     for (int i = 0; i < 8; ++i)
     {
-        ReplayWriteStage *stage = state->stages[i];
+        ReplayWriteStage *stage = reinterpret_cast<ReplayWriteStage *>(state->stages[i]);
         if (!stage) continue;
         if (!firstStage) firstStage = i;
         lastStage = i;
         ++stageCount;
         rawSize += 0x90;
         if (!(state->flags & 1)) stage->bytes = 0;
-        for (ReplayWriteSegmentNode *node = state->streams[i].first; node; node = node->next)
+        for (ReplayWriteSegmentNode *node = reinterpret_cast<ReplayWriteSegmentNode *>(state->streams[i].first); node; node = node->next)
         {
             ReplayWriteSegment *chunk = node->segment;
             int eventBytes = EventBytes(chunk);
@@ -225,19 +216,19 @@ void __fastcall WritePauseMenuReplay(const char *filename, const char *name, int
     int position = 0x70;
     for (int i = 0; i < 8; ++i)
     {
-        ReplayWriteStage *stage = state->stages[i];
+        ReplayWriteStage *stage = reinterpret_cast<ReplayWriteStage *>(state->stages[i]);
         if (!stage) continue;
         memcpy(raw + position, stage, 0x90);
         position += 0x90;
 
-        for (ReplayWriteSegmentNode *node = state->streams[i].first; node; node = node->next)
+        for (ReplayWriteSegmentNode *node = reinterpret_cast<ReplayWriteSegmentNode *>(state->streams[i].first); node; node = node->next)
         {
             ReplayWriteSegment *chunk = node->segment;
             int size = EventBytes(chunk);
             memcpy(raw + position, chunk->events, size);
             position += size;
         }
-        for (ReplayWriteSegmentNode *node = state->streams[i].first; node; node = node->next)
+        for (ReplayWriteSegmentNode *node = reinterpret_cast<ReplayWriteSegmentNode *>(state->streams[i].first); node; node = node->next)
         {
             ReplayWriteSegment *chunk = node->segment;
             int size = ExtraBytes(chunk);
@@ -252,11 +243,11 @@ void __fastcall WritePauseMenuReplay(const char *filename, const char *name, int
     GatherXorBlocks(packed, packedSize, 0x3d, 0x7a, 0x40, packedSize);
     GatherXorBlocks(packed, packedSize, 0xaa, 0xe1, 0x800, packedSize);
 
-    state->fileHeader->rawSize = position;
-    state->fileHeader->compressedSize = packedSize;
-    state->fileHeader->dataEnd = packedSize + 0x24;
+    fileHeader->rawSize = position;
+    fileHeader->compressedSize = packedSize;
+    fileHeader->dataEnd = packedSize + 0x24;
     OpenSharedFileForWrite(path);
-    WriteReplaySection(state->fileHeader, 0x24);
+    WriteReplaySection(fileHeader, 0x24);
     WriteReplaySection(packed, packedSize);
     if (packed) free(packed);
 

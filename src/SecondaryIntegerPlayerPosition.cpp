@@ -5,7 +5,7 @@
 // controller-region flags; keep the register-level ABI and operation order.
 extern const double g_SecondaryIntegerPositionScale;
 
-void __fastcall SetSecondaryIntegerPlayerPosition(const int *position)
+__declspec(noinline) void __fastcall SetSecondaryIntegerPlayerPosition(const int *position)
 {
     __asm {
         mov eax, dword ptr [g_SecondaryControllerMode]

@@ -1,8 +1,8 @@
 #include "ReplayRecordFactories.hpp"
+#include "SecondaryReplayState.hpp"
 #include <new>
 #include <string.h>
 
-struct ReplayInitStateView;
 int __stdcall LoadReplayStageData(ReplayInitStateView *state, void *source);
 
 namespace

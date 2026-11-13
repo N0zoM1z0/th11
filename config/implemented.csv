@@ -717,6 +717,7 @@ UpdateSecondaryProjectileHoming
 UpdateSecondaryProjectileHomingLong
 UpdateSecondaryProjectilePatternTimer
 UpdateSecondaryProjectiles
+UpdateSecondaryReplayStage
 UpdateSecondaryScripts
 UpdateStage
 UpdateStageObjects

@@ -2,44 +2,21 @@
 #include "SecondaryPlayerController.hpp"
 #include "SecondaryActorRuntime.hpp"
 #include "Random.hpp"
+#include "SecondaryReplayState.hpp"
 #include <new>
 #include <string.h>
 
 // The replay writer owns structurally equivalent types in ReplayWriter.cpp;
 // these are narrowly scoped physical views of the original initializing TU.
-struct ReplayWriteState;
 struct ReplayWriteSegmentNode;
 ReplayWriteSegmentNode *__stdcall AppendReplayWriteSegment(ReplayWriteState *, int);
 
 struct ReplayInitFileHeaderView { unsigned char bytes[0x24]; };
 struct ReplayInitHeaderView { unsigned char bytes[0x70]; };
-struct ReplayInitStageView { unsigned char bytes[0x90]; };
-struct ReplayInitStreamView { void *first, *middle, *last; };
-struct ReplayInitStateView
-{
-    unsigned char unknown000[8];
-    ChainElement *update, *draw;
-    int mode;
-    ReplayInitFileHeaderView *fileHeader;
-    ReplayInitHeaderView *header;
-    ReplayInitStageView *stages[8];
-    unsigned char unknown03c[4];
-    ReplayInitStreamView streams[8];
-    int segmentCount;
-    unsigned char unknown0a4[0x1d0 - 0xa4];
-    ChainElement *secondaryUpdate;
-    int recordingStage;
-    unsigned int flags;
-};
-typedef char ReplayInitStageStride[(sizeof(ReplayInitStageView) == 0x90) ? 1 : -1];
-typedef char ReplayInitStateHeaderOffset[(offsetof(ReplayInitStateView, header) == 0x18) ? 1 : -1];
-typedef char ReplayInitStateStreamsOffset[(offsetof(ReplayInitStateView, streams) == 0x40) ? 1 : -1];
-typedef char ReplayInitStateLastStream[(offsetof(ReplayInitStateView, streams) + 7 * sizeof(ReplayInitStreamView) + 8 == 0x9c) ? 1 : -1];
-typedef char ReplayInitStateRecordingStage[(offsetof(ReplayInitStateView, recordingStage) == 0x1d4) ? 1 : -1];
+typedef ReplayStageHeaderView ReplayInitStageView;
 
 // These data roots/callbacks are directly observed in the Japanese PE.
 // Their actual class/TU names and ownership have not been established.
-extern ReplayInitStateView *g_SecondaryReplayCurrent;
 extern unsigned int g_ReplayModeFlags, g_ReplayStatusMask;
 extern unsigned int g_ReplayStageCharacter, g_ReplayStageScore, g_ReplayStageExtra;
 extern unsigned int g_ReplayStageDifficult, g_ReplayStageFlags, g_ReplayStageBonus;
@@ -123,7 +100,7 @@ __forceinline ReplayInitStageView *NewStage()
 __forceinline void CaptureReplayStart(ReplayInitStateView *state,
     ReplayInitStageView *stage)
 {
-    ReplayInitHeaderView *header = state->header;
+    ReplayInitHeaderView *header = reinterpret_cast<ReplayInitHeaderView *>(state->header);
     At<int>(header, 0x5c) = g_MeshEffectSelection0;
     At<int>(header, 0x60) = g_MeshEffectSelection1;
     At<unsigned int>(header, 0x64) = g_ReplayStageCharacter;
@@ -167,11 +144,11 @@ __forceinline void RestoreReplayState(ReplayInitStateView *state)
     memcpy(reinterpret_cast<unsigned char *>(g_SecondaryControllerMode) + 0x24,
         &At<unsigned char>(state->header, 0x18), 15 * 4);
     unsigned int selected = g_StageVariant;
-    unsigned char *stream = reinterpret_cast<unsigned char *>(state) + 0xa4 + selected * 0x24;
-    At<unsigned int>(stream, 8) = At<unsigned int>(stream, 4);
-    At<unsigned int>(stream, 0xc) = At<unsigned int>(stream, 8);
-    unsigned char *stage = At<unsigned char *>(stream, 0x10);
-    At<unsigned int>(stream, 0x14) = 0;
+    ReplayRecordStageLink &link = state->stageLinks[selected];
+    link.eventsBeginCopy = link.eventsBegin;
+    link.eventsEndCopy = link.eventsEnd;
+    ReplayInitStageView *stage = reinterpret_cast<ReplayInitStageView *>(link.stageHeader);
+    link.unknown014 = 0;
     g_MeshEffectSelection0 = At<int>(state->header, 0x5c);
     g_MeshEffectSelection1 = At<int>(state->header, 0x60);
     g_ReplayStageCharacter = At<unsigned int>(state->header, 0x64);
@@ -186,7 +163,7 @@ __forceinline void RestoreReplayState(ReplayInitStateView *state)
     g_ReplayStageBombs = At<short>(stage, 0x1a);
     g_ReplayStageFlags = At<unsigned int>(stage, 0x1c);
     g_ReplayStageBonus = At<unsigned int>(stage, 0x28);
-    g_ReplayStageExtraScore = At<unsigned int>(state->stages[selected], 0x2c);
+    g_ReplayStageExtraScore = At<unsigned int>(stage, 0x2c);
     g_SecondaryCollisionCount = At<unsigned int>(stage, 0x34);
 }
 }
@@ -211,7 +188,8 @@ int __stdcall InitializeSecondaryReplay(ReplayInitStateView *state,
         state->fileHeader = NewFileHeader();
         state->header = NewHeader();
         state->stages[g_StageVariant] = NewStage();
-        CaptureReplayStart(state, state->stages[g_StageVariant]);
+        CaptureReplayStart(state, reinterpret_cast<ReplayInitStageView *>(
+            state->stages[g_StageVariant]));
         state->update = ReplayChain(state, ReplayRecordUpdate, false);
         state->secondaryUpdate = ReplayChain(state, ReplayAuxiliaryUpdate, false);
         state->draw = ReplayChain(state, ReplayDrawCallback, true);

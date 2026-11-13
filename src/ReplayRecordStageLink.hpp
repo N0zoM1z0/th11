@@ -10,10 +10,16 @@ struct ReplayRecordStageNode
 };
 struct ReplayRecordStageLink
 {
-    unsigned char unknown000[0x18];
+    unsigned char *eventsBegin;
+    unsigned char *eventsBeginCopy;
+    unsigned char *eventsEnd;
+    unsigned char *eventsEndCopy;
+    void *stageHeader;
+    unsigned int unknown014;
     ReplayRecordStageNode link;
     ReplayRecordStageLink();
     ~ReplayRecordStageLink();
 };
 typedef char ReplayStageLinkSize[(sizeof(ReplayRecordStageLink) == 0x24) ? 1 : -1];
 typedef char ReplayStageLinkPrevOffset[(offsetof(ReplayRecordStageLink, link) == 0x18) ? 1 : -1];
+typedef char ReplayStageLinkHeaderOffset[(offsetof(ReplayRecordStageLink, stageHeader) == 0x10) ? 1 : -1];

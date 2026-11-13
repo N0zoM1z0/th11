@@ -80,4 +80,4 @@ typedef char SecondaryControllerStatusOffset[(offsetof(SecondaryPlayerController
 typedef char SecondaryControllerScaledBounds[(offsetof(SecondaryPlayerControllerView, scaledMinimum) == 0x8bcc) ? 1 : -1];
 typedef char SecondaryControllerAngleOffset[(offsetof(SecondaryPlayerControllerView, angle) == 0x8c14) ? 1 : -1];
 typedef char SecondaryControllerFocusOffset[(offsetof(SecondaryPlayerControllerView, focused) == 0x8d20) ? 1 : -1];
-void __fastcall SetSecondaryIntegerPlayerPosition(const int *position);
+__declspec(noinline) void __fastcall SetSecondaryIntegerPlayerPosition(const int *position);

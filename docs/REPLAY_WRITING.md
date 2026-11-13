@@ -6,6 +6,14 @@ now has maintained source in `src/ReplayWriter.cpp`, alongside the
 non-exact**. The writer is a substantial 1856-byte owner, not a leaf.
 Original TU/LTCG partition, data ownership and runtime fidelity are open.
 
+The shared state view is maintained in `src/SecondaryReplayState.hpp`.
+`WritePauseMenuReplay` reads the replay-state pointer at `0x4A8EB8`
+(`g_SecondaryReplayCurrent`); the adjacent `0x4A8EB4` pointer is the secondary
+controller and is not the writer root. The prior source used that adjacent
+controller pointer, which confused the state prefix with the controller
+object. The writer, loader, frame recorder and initializer now share the same
+physical state layout and typed playback stage-link table.
+
 ## Boundaries and dependencies
 
 Hash-pinned direct Ghidra review covers the writer's 1850 body bytes,
@@ -220,7 +228,7 @@ A strictly scoped eight-TU VC9 `/GL /EHsc /O2 /Ob1` link using
 tree search/edit/reset, byte cipher and shared-file dependencies. Its PE,
 MAP and PDB identities were checked, but unresolved globals and external
 routines are provided as diagnostic anchors, not runnable game data.
-The writer's linked contribution is now **1765 bytes** versus **1856 native**.
+The writer's linked contribution is now **1753 bytes** versus **1856 native**.
 The link has the native **46/46 total call sites**, including all **15 sprintf**
 and **two memset** occurrences. The segment allocator is **160 bytes** versus
 150 native. The initial writer context had 1739 bytes and 45 calls.

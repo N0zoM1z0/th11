@@ -3,11 +3,11 @@
 #include "ResourceFile.hpp"
 #include "ByteCipher.hpp"
 #include "Archive.hpp"
+#include "SecondaryReplayState.hpp"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-struct ReplayInitStateView;
 extern unsigned int g_ReplayStatusMask;
 
 // Two independently bounded shared-file helpers: the first reads an EDI-sized
@@ -39,7 +39,7 @@ template<typename T> __forceinline T &ReplayAt(void *base, unsigned int offset)
 int __stdcall LoadReplayStageData(ReplayInitStateView *state, void *source)
 {
     const char *filename = static_cast<const char *>(source);
-    char *targetName = &ReplayAt<char>(state, 0x1dc);
+    char *targetName = reinterpret_cast<char *>(state) + 0x1dc;
     const char *read = filename;
     do
     {
@@ -55,7 +55,7 @@ int __stdcall LoadReplayStageData(ReplayInitStateView *state, void *source)
             return -1;
         ReplayLoadFileHeader *file =
             reinterpret_cast<ReplayLoadFileHeader *>(ReadSharedReplayBytes(0x24));
-        ReplayAt<ReplayLoadFileHeader *>(state, 0x14) = file;
+        state->fileHeader = file;
         if (file->magic != 0x72313174 || file->version != 4)
         {
             CloseSharedReplayReader();
@@ -67,18 +67,17 @@ int __stdcall LoadReplayStageData(ReplayInitStateView *state, void *source)
     else
     {
         unsigned char *resource = LoadResourceFile(filename, 0, 0);
-        ReplayAt<ReplayLoadFileHeader *>(state, 0x14) =
-            reinterpret_cast<ReplayLoadFileHeader *>(resource);
+        state->fileHeader = reinterpret_cast<ReplayLoadFileHeader *>(resource);
         packed = resource + 0x24;
     }
 
-    ReplayLoadFileHeader *file = ReplayAt<ReplayLoadFileHeader *>(state, 0x14);
+    ReplayLoadFileHeader *file = reinterpret_cast<ReplayLoadFileHeader *>(state->fileHeader);
     unsigned char *unpacked = static_cast<unsigned char *>(malloc(file->rawSize));
-    ReplayAt<unsigned char *>(state, 0x1c4) = unpacked;
+    state->unpackedData = unpacked;
     ScatterXorBlocks(packed, file->packedSize, 0xaa, 0xe1, 0x800, file->packedSize);
     ScatterXorBlocks(packed, file->packedSize, 0x3d, 0x7a, 0x40, file->packedSize);
     DecompressArchiveData(file->rawSize, packed, file->packedSize, unpacked);
-    ReplayAt<unsigned char *>(state, 0x18) = unpacked;
+    state->header = unpacked;
 
     unsigned char *cursor = unpacked + 0x70;
     int count = ReplayAt<int>(unpacked, 0x58);
@@ -87,10 +86,10 @@ int __stdcall LoadReplayStageData(ReplayInitStateView *state, void *source)
     {
         short stage = ReplayAt<short>(cursor, 0);
         unsigned char *events = cursor + 0x90;
-        ReplayAt<unsigned char *>(state, static_cast<unsigned int>(stage + 5) * 0x24) = cursor;
-        ReplayAt<unsigned char *>(state, 0xa4 + static_cast<unsigned int>(stage) * 0x24) = events;
-        ReplayAt<unsigned char *>(state, 0xac + static_cast<unsigned int>(stage) * 0x24) =
-            events + ReplayAt<int>(cursor, 4) * 6;
+        ReplayRecordStageLink &link = state->stageLinks[stage];
+        link.stageHeader = cursor;
+        link.eventsBegin = events;
+        link.eventsEnd = events + ReplayAt<int>(cursor, 4) * 6;
         cursor += 0x90 + ReplayAt<int>(cursor, 8);
     }
     if (!(g_ReplayStatusMask & 0x20) && packed)

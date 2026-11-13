@@ -1,6 +1,6 @@
-#include "../src/SecondaryPattern.hpp"
-struct ReplayInitStateView;
-extern int __stdcall InitializeSecondaryReplay(ReplayInitStateView *, int, void *);
+#include "../src/SecondaryReplayState.hpp"
+extern int __stdcall InitializeSecondaryReplay(ReplayInitStateView *state,
+    int mode, void *source);
 extern "C" int __stdcall SecondaryReplayInitializationProbe(ReplayInitStateView *state,
     int mode, void *source)
 {
