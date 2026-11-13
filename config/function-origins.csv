@@ -493,12 +493,12 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0042BF30,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042BFE0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042C150,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0042C620,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0042C620,unknown,SecondaryPlayerController,indeterminate,unknown,secondary-controller-callee-origin-2026-11-13
 0x0042C760,unknown,SecondaryPlayerController,indeterminate,unknown,secondary-controller-callee-origin-2026-10-29
 0x0042C880,unknown,PauseMenu,indeterminate,unknown,pause-menu-origin-2026-11-06
 0x0042C8D0,unknown,PauseMenu,indeterminate,unknown,pause-menu-origin-2026-11-06
 0x0042D560,unknown,SecondaryPlayerController,indeterminate,unknown,secondary-controller-callee-origin-2026-10-29
-0x0042D6B0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0042D6B0,unknown,SecondaryPlayerController,indeterminate,unknown,secondary-controller-callee-origin-2026-11-13
 0x0042D7F0,unknown,PauseMenu,indeterminate,unknown,pause-continue-menu-origin-2026-11-06
 0x0042D850,unknown,PauseMenu,indeterminate,unknown,pause-continue-menu-origin-2026-11-06
 0x0042D9D0,unknown,PauseMenu,indeterminate,unknown,pause-continue-menu-origin-2026-11-06

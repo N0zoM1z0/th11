@@ -185,6 +185,30 @@ reached strict zero-difference acceptance. Reproduce with the bounded private
 `.analysis/probe-secondary-pause-entry-20261112.py`; its public producer is
 `probes/secondary-pause-entry-context.cpp`. No full cold replay was performed.
 
+Two neighboring native entry owners are now also source-present in
+`SecondaryPauseEntry.cpp`, rather than being left as unclassified Ghidra
+candidates:
+
+- `EnterSecondaryPauseMenu` at42C620 is the complete308-byte state-1 entry.
+  It initializes both timers, sets scene flag10, creates backdrop script4B and
+  the dialogue-mode-selected root script59/5A, captures the overlay, queues
+  the conditional `Pause` sound and saves audio/time state. Its native owner
+  has one return and six calls.
+- `EnterSecondaryGameOverPracticeMenu` at42D6B0 is the complete320-byte owner
+  adjacent to, but distinct from, `EnterSecondaryGameOverMenu` at42D560. It
+  preserves the mode-1 runtime-only return; otherwise it enters state21,
+  creates the backdrop, queues `bgm/th10_17.wav`, conditionally queues sound4,
+  unconditionally queues sound2, sets the +0x2DE0B game-over flag and saves
+  audio state1. Its native owner has two returns and five calls.
+
+Both newly added functions were included in the scoped all-six-real-caller
+VC9 RTM `/GL` PE/MAP/PDB link. The new state-1 owner contributes301/308 bytes
+and the state21 owner320/320 bytes; both retain their native call/return counts,
+but neither is byte-exact. Their extents and native references/returns have
+now been reviewed and recorded; original source/TU authorship remains
+indeterminate. The complete candidate remains non-exact, and these additions
+do not change the exact ledger.
+
 The game-over entry's observed music helper at 42A0D0 has since been
 reconstructed as the complete **123-byte strict exact**
 `QueueMusicWaveRequest`. `SecondaryPauseEntry.cpp` now calls that actual
