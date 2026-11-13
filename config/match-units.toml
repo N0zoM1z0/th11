@@ -7375,3 +7375,22 @@ size = 11
 relocations = [
   { offset = 7, type = "REL32", symbol = "_free", target = 0x0045FC3B },
 ]
+
+# Complete 110-byte fixed-point position publication. The two absolute fields
+# are the original controller singleton and the shared 1/128 double constant.
+[units.secondary-integer-player-position]
+artifact_kind = "linked-pe"
+source = "src/SecondaryIntegerPlayerPosition.cpp"
+inputs = ["src/SecondaryPlayerController.hpp"]
+support_sources = ["probes/secondary-integer-player-position-context.cpp"]
+output_dir = "build/match-linked/SecondaryIntegerPlayerPosition"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryIntegerPlayerPositionProbe@4"
+functions = ["SetSecondaryIntegerPlayerPosition"]
+symbol = "?SetSecondaryIntegerPlayerPosition@@YIXPBH@Z"
+target_address = 0x00435630
+size = 110
+linkages = [
+  { offset = 1, type = "DIR32", symbol = "?g_SecondaryControllerMode@@3PAUSecondaryControllerModeView@@A", target = 0x004A8EB4 },
+  { offset = 30, type = "DIR32", symbol = "?g_SecondaryIntegerPositionScale@@3NB", target = 0x00497ED0 },
+]

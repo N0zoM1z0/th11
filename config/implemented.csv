@@ -594,6 +594,7 @@ SetSecondaryCounterScaled
 SetSecondaryGameplayRuntimeMode
 SetSecondaryHostFlag03C
 SetSecondaryIntegerPair
+SetSecondaryIntegerPlayerPosition
 SetSecondaryPairDuration
 SetSecondaryPairInitial
 SetSecondaryPairMode
