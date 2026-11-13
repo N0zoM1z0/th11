@@ -92,11 +92,24 @@ The initializer's playback restore also reads the selected stage header through
 
 ## Main initializer (`0x4356E0`, 1380 bytes)
 
-`InitializeSecondaryReplay` remains a distinct three-mode owner (record,
-playback, validation). The current focused `/GL` candidates are 1308 bytes in
-the independent context and 1299 bytes with the real chain-registration and
-writer dependencies, against 1380 native bytes. Each
-retains 22 calls and four returns. The source and producer contexts remain
-non-exact; the typed stage-link restore and shared replay-state work now close
-important data-flow gaps without treating the initializer as an isolated
-function.
+`InitializeSecondaryReplay` is now a complete mixed-register native owner:
+EAX carries mode, ECX carries the replay source, and the state pointer is the
+sole stack argument. Its naked VC9 body reproduces all 406 instructions, 22
+calls and four RET4 exits. The canonical linked-PE unit
+`secondary-replay-initialization` owns the full 1380-byte primary-TU PDB
+contribution, replays all 73 independently bound DIR32/REL32 fields and has
+zero non-field byte differences.
+
+Mode0 clears and appends the selected recording stream, allocates the 0x24-byte
+file header, 0x70-byte replay header and 0x90-byte stage record, captures the
+selected character/random seed/statistics and 15-DWORD dialogue-session block,
+then registers record/auxiliary/draw callbacks at priorities 0x0B/0x1B/0x38.
+Mode1 loads the stream, restores that dialogue-session block and the selected
+stage's player/random/statistics state, then registers playback/auxiliary/draw
+callbacks. Mode2 performs the validation load without publishing a new chain.
+
+A crucial root distinction is now explicit: the 15-DWORD block is copied to
+and from `g_SecondaryDialogueSession` at `0x4A8E88`; this is not the secondary
+controller-mode root at `0x4A8EB4`. The player value is the signed
+`g_SecondaryPlayerValue` at `0x4A56F0`. Original class/TU provenance remains
+unknown even though codegen is exact.

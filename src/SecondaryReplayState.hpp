@@ -44,12 +44,7 @@ struct ReplayStateView
 typedef ReplayStateView ReplayWriteState;
 typedef ReplayStateView ReplayInitStateView;
 
-// The initializer is a private thiscall: ECX is the filename/resource source,
-// the replay-state pointer is its sole stack argument, and EAX carries mode.
-struct ReplayInitContext
-{
-    int InitializeSecondaryReplay(ReplayInitStateView *state);
-};
+// The initializer receives the source in ECX, mode in EAX and state on stack.
 extern ReplayStateView *g_SecondaryReplayCurrent;
 
 // 0x437300 is a private no-stack-argument ABI: EBX is the recorder, EDI the
