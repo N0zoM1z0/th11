@@ -77,3 +77,24 @@ immediates (16 versus20); the natural linked caller produces the target's
 
 Only this new unit was cold-replayed for its addition. Existing exact functions
 were not rebuilt. Full game build and native runtime validation remain open.
+
+## 181-byte frame-tick worker handoff (2026-11-13)
+
+A distinct 181-byte timing thread at `0x443140..0x4431F4` is now mapped to
+`src/FrameTickWorker.cpp/.hpp` and the dynamic compile-only consumer
+`probes/frame-tick-worker-context.cpp`. It sets running bit 1 of the worker
+flags at `0x4A5790`, checks stop-request bit 0, repeatedly samples the
+**independently exact** `GetFrameClockSeconds` function, adjusts the running
+1/60-second target, counts frames and calls `Sleep(13)`. State fields occur at
+`0x4A5794`, `0x4A579C`, `0x4A57A4` and `0x4A57BC`, so the partial view
+requires four-byte packing for the double fields.
+
+The original span includes a reached 2-byte forward jump and 6-byte
+`LEA EBX,[EBX]` alignment at `0x443168..0x44316F`. Current source compiles
+under pinned VC9; scoped dynamic `/GL` produces 183/181 bytes and an
+independent real-clock `/GL` producer 168/181 bytes, with x87 scheduling and
+exit-path differences. This is **source-present, nonexact** and carries **no
+new exact credit**. Relevant local evidence is in
+`.analysis/probe-frame-tick-worker-ltcg-20261113.py` and
+`.analysis/probe-frame-tick-worker-shapes-20261113.py`; the mapped original
+Ghidra review is `.analysis/media-timing-thread-native-20261113.txt`.

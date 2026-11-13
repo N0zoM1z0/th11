@@ -718,7 +718,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00442F90,unknown,PbgWinResourceMemoryFile,indeterminate,unknown,pbg-winresource-memfile-origin-2026-11-13
 0x00442FD0,unknown,PbgWinResourceMemoryFile,indeterminate,unknown,pbg-winresource-memfile-origin-2026-11-13
 0x004430C0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00443140,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00443140,unknown,FrameClock,indeterminate,unknown,frame-tick-worker-origin-2026-11-13
 0x00443230,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00443260,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004432C0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

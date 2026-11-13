@@ -729,3 +729,4 @@ DeletePbgWinResourceMemoryFile
 DestroyPbgWinResourceMemoryFile
 OpenPbgWinResourceMemoryFile
 SeekPbgMemoryFile
+RunFrameTickWorker

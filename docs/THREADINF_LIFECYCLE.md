@@ -68,3 +68,11 @@ that physical operation. Pinned VC9 normal-COFF produces a unique 11-byte
 owner and its single reviewed DIR32 field at +2. The canonical
 `runtime-thread-global-flag-a577c` unit strictly replays all bytes and the
 field with zero differences, without inferring behavioral semantics.
+
+A separate `ThreadInfDeletingView` experiment was checked during the
+2026-11-13 handoff cleanup. Its ordinary VC9 COFF candidate was **37/36
+bytes**, so it does not resolve the existing 36-byte `??_E`/`??_G` MAP alias
+ambiguity. The duplicate nominal source was **not** added alongside the
+already maintained `ThreadInfView`. The small experimental files are retained
+under ignored `.analysis/handoff-threadinf-deletingview-20261113/` for local
+reference, and the canonical deleting owner remains **nonexact**.
