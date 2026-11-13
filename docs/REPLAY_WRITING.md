@@ -138,6 +138,7 @@ replaced by stack-argument wrappers:
 | `SpliceReplayCompressionNode` | ESI old node, EDX replacement | 80 | `replay-compression-splice-private` | Exact; no fields |
 | `ReplaceReplayCompressionNode` | EAX old node, EDX replacement | 134 | `replay-compression-replace-private` | Exact; no fields |
 | `FindReplayCompressionPredecessor` | EAX input/result | 49 | `replay-compression-predecessor` | Exact; 3 DIR32 fields |
+| `FindReplayCompressionMatch` | ECX alias, EDX position, stack output | 416 | `replay-compression-match-search` | Exact; 18 DIR32 + 1 REL32 |
 
 Each is a complete primary-TU PDB contribution from a scoped pinned VC9
 RTM `/GL` link. Strict replay confirms every native byte, including the
@@ -190,12 +191,12 @@ measurements, not the current implementation.
 The earlier high-level C++ encoder produced a 760-byte contribution and
 preserved five call sites, but it did not match the original. It is superseded
 by `replay-compression-main`, whose canonical strict replay now verifies the
-complete 795-byte owner and all five call fields. The older 414-byte match
-finder and 90-byte delete contribution remain non-exact. The diagnostic PE
-is not runnable game data and does not establish the original production
-translation-unit partition or class authorship. No full-image cold replay
-was run; only the changed compressor and its affected predecessor proof were
-rebuilt. Recovery outputs remain under `build/probe-ltcg/` and
+complete 795-byte owner and all five call fields. The older 414-byte match-finder and 90-byte delete contributions are
+superseded by the complete416-byte and79-byte native private-ABI owners.
+The diagnostic PE is not runnable game data and does not establish the
+original production translation-unit partition or class authorship. No
+full-image cold replay was run; only the changed compressor, match finder
+and affected tree owners were rebuilt. Recovery outputs remain under `build/probe-ltcg/` and
 `build/match-linked/`.
 
 ## Replay writer codegen corrections (2026-11-11)
