@@ -6,7 +6,7 @@
 #include "Archive.hpp"
 
 extern unsigned int g_ReplayStatusMask;
-extern const char g_ReplayPathFormat[];
+extern const char g_ReplayPathFormat[] = "replay/%s";
 extern "C" unsigned int __security_cookie;
 extern "C" void __fastcall __security_check_cookie(unsigned int value);
 extern "C" int __cdecl sprintf(char *destination, const char *format, ...);
