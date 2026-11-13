@@ -32,6 +32,15 @@ unsigned char PbgLowLevelFileView::Write(const void *source, unsigned int length
     return length == written;
 }
 
+// Native complete 0x441EF0..0x441F08, vtable slot +0x10.
+// Invalid files report offset zero; otherwise SetFilePointer seeks relative
+// to the current position without changing it.
+unsigned int PbgLowLevelFileView::Tell()
+{
+    if (handle == INVALID_HANDLE_VALUE) return 0;
+    return SetFilePointer(handle, 0, 0, FILE_CURRENT);
+}
+
 // 0x441F10..0x441F24: invalid handles have size zero, not INVALID_FILE_SIZE.
 unsigned int PbgLowLevelFileView::Size()
 {

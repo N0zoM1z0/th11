@@ -138,3 +138,18 @@ VC9 isolated COFF candidate is **223/238 bytes** (still nonexact), so this
 is a behavioral and ABI correction rather than a byte-level exact claim.
 The previously exact low-level 46/66-byte destructors and the 121-byte path
 resolver are independently reverified after the signature change.
+
+## Exact 25-byte Tell/current file position slot (2026-11-13)
+
+The previously omitted original virtual slot 4 at `0x441EF0..0x441F08` is
+now implemented as `PbgLowLevelFileView::Tell()` in the actual low-level I/O
+source. It returns 0 for `INVALID_HANDLE_VALUE`; otherwise it returns
+`SetFilePointer(handle,0,0,FILE_CURRENT)`. This is the position function
+called by the independently exact 145-byte `ReadWhole` owner, and it is a
+separate complete 25-byte vtable member rather than part of Size/Seek.
+
+The pinned VC9 normal-COFF contribution reproduces the complete **25/25
+original bytes**. The sole decoded native field is a DIR32 import at +0x14
+for `SetFilePointer` `0x48B09C`. No other bytes are ignored, and this new
+canonical `pbg-file-tell` unit is cold-replayed with the six existing exact
+I/O functions affected by its shared header.

@@ -111,3 +111,18 @@ destructor included in `/GL` are retained in
 not improve the 134-byte File or 101-byte ResFile owners, and linking the
 trace no-op into their producer would remove native calls, so the canonical
 109-byte cleanup continues to use its real opaque trace boundary.
+
+## Narrowed path-copy ABI experiment (2026-11-13)
+
+The original 47-byte `DuplicatePbgResourcePath` carries its input in a private
+EDI register and exits with ordinary `RET`. Independent normal-COFF
+`__cdecl`, `__stdcall` and `__fastcall` source views were tested with manual
+length scanning, `strlen`, pointer-delta copying and indexed copying. The
+fast-call/pointer-delta alternative can preserve the 47-byte *length* in
+isolation but does not match the original receiver bytes. Linking it with
+the actual File/ResFile session caller yields 44 bytes, still nonexact.
+No non-native ABI is promoted into the maintained source. The bounded
+experimental dynamic caller is preserved as
+`probes/pbg-resource-path-context.cpp`, with supporting diagnostic evidence
+in `.analysis/probe-pbg-path-private-abi-20261113.log` and
+`.analysis/probe-pbg-path-real-caller-20261113.log`.

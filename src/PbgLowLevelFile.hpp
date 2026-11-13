@@ -17,6 +17,7 @@ struct PbgLowLevelFileView
     void Close();
     unsigned int Read(void *destination, unsigned int length);
     unsigned char Write(const void *source, unsigned int length);
+    unsigned int Tell();
     unsigned int Size();
     unsigned char Seek(int offset, unsigned int origin);
     void *ReadWhole(unsigned int maximumSize);

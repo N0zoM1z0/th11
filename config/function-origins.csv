@@ -687,7 +687,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00441E40,unknown,PbgLowLevelFile,indeterminate,unknown,pbg-low-level-io-origin-2026-11-13
 0x00441E70,unknown,PbgLowLevelFile,indeterminate,unknown,pbg-low-level-io-origin-2026-11-13
 0x00441EB0,unknown,PbgLowLevelFile,indeterminate,unknown,pbg-low-level-io-origin-2026-11-13
-0x00441EF0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00441EF0,unknown,PbgLowLevelFile,indeterminate,unknown,pbg-low-file-tell-origin-2026-11-13
 0x00441F10,unknown,PbgLowLevelFile,indeterminate,unknown,pbg-low-level-io-origin-2026-11-13
 0x00441F30,unknown,PbgLowLevelFile,indeterminate,unknown,pbg-low-level-io-origin-2026-11-13
 0x00441F60,unknown,PbgLowLevelFile,indeterminate,unknown,pbg-low-level-io-origin-2026-11-13

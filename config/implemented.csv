@@ -715,3 +715,4 @@ GetPbgResourceSizeByName
 LoadPbgSessionDirectory
 ConstructPbgResourceEntry
 ParsePbgDirectoryEntries
+TellPbgLowLevelFile
