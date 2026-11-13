@@ -1,10 +1,12 @@
 # Replay writing and stream-chunk allocation
 
 The original Japanese TH11 v1.00a replay writer at `00436420..00436B5F`
-now has maintained source in `src/ReplayWriter.cpp`, alongside the
-`00437300..00437395` stream allocator. Both are **source-present,
-non-exact**. The writer is a substantial 1856-byte owner, not a leaf.
-Original TU/LTCG partition, data ownership and runtime fidelity are open.
+now has a complete instruction-level implementation in `src/ReplayWriter.cpp`
+and a strict pinned VC9 RTM `/GL` linked-PE proof. The **1856-byte writer is
+locally exact**: 564/564 instructions, 46/46 calls, 93/93 independently bound
+address fields and zero full-byte differences. Its 150-byte stream allocator
+at `00437300..00437395` is independently exact as well. Original TU/class
+authorship and Factory acceptance remain separate from local codegen exactness.
 
 The shared state view is maintained in `src/SecondaryReplayState.hpp`.
 `WritePauseMenuReplay` reads the replay-state pointer at `0x4A8EB8`
@@ -72,23 +74,33 @@ payload and two four-byte-aligned USER metadata sections: Shift-JIS
 replay summary and Japanese comment prompt. It closes the file and
 marks the recorder finalized.
 
-## Current codegen and next work
+## Exact linked writer and remaining dependencies
 
-Pinned VC9 normal-COFF compilation with
-`/O2 /Ob1 /Gy /MT /EHsc` succeeds, but the full function
-diagnostics are not exact:
+The canonical `replay-writer-main` unit uses the pinned VC9 RTM `/GL`
+compiler/linker and the genuine compressor, tree, cipher and shared-file
+support sources. Its public primary-TU PDB contribution is exactly **1856
+bytes** at the native owner extent. Strict replay verifies **93 fields**
+(**61 DIR32 and 32 REL32**) covering the replay root, score/timing state,
+format strings, CRT routines, compressor, cipher, shared-file helpers, IAT
+slots and security cookie. There are **zero non-field byte differences**;
+the complete owner decodes to **564 instructions, 46 calls and one RET4**.
+No whole-game cold replay was run.
 
-| Owner | Native span | Source COFF | Relocations | Matched comparable bytes |
-| --- | ---: | ---: | ---: | ---: |
-| WritePauseMenuReplay | 1856 | 1684 | 94 | 70 / 1480 |
-| AppendReplayWriteSegment | 150 | 160 | 2 | 34 / 142 |
+The source retains the native mixed-register entry (ECX filename, EDX display
+name, one stack mode argument), EBP replay root, 0x11C-byte frame, cookie
+prologue/epilogue, x87 slowdown arithmetic, and helper-private register
+contracts. Three alignment instructions are explicitly emitted at their
+original six-, three- and seven-byte encodings because VC9's assembler would
+otherwise shorten the no-op LEAs and shift every following field. This is an
+instruction-level reconstruction of the complete owner, not a claim that the
+original C++ translation unit or class identity has been recovered.
 
-Masked similarity is diagnostic only. Address fields require
-independent binding before exact credit. A focused linked /GL context now exists (details below); its output is a
-non-runnable diagnostic, not the original game. Next: recover the caller-specific
-private registers and lifetime allocation rather than changing the nominal ABI.
-Private recovery evidence is in `.analysis/replay-writer-*`
-and `.analysis/replay-deps-*`.
+The normal-COFF measurements below are historical diagnostics from earlier
+source forms; they are superseded by the strict linked-PE result above. The
+795-byte compressor and 416-byte match finder remain source-present but
+non-exact, making the compressor tree and bitstream helpers the next large
+bosses. The separate 150-byte `AppendReplayWriteSegment` already has its own
+strict linked proof (`replay-append-write-segment`).
 
 ## Compression match search (00442910)
 
@@ -223,24 +235,14 @@ Direct original-PE review revealed three source-level gaps, corrected in
   `do/while` loop. The earlier `for` form optimized to an extra
   `memset` call; the revised loop retains only the two native memset sites.
 
-A strictly scoped eight-TU VC9 `/GL /EHsc /O2 /Ob1` link using
-`probes/replay-writer-context.cpp` includes only the writer, compressor,
-tree search/edit/reset, byte cipher and shared-file dependencies. Its PE,
-MAP and PDB identities were checked, but unresolved globals and external
-routines are provided as diagnostic anchors, not runnable game data.
-The writer's current linked contribution is **1898 bytes** versus **1856 native**.
-The link retains the native **46 total call sites**, including all **15 sprintf**
-and **two memset** occurrences. The segment allocator is now its exact **150
-bytes** in the dedicated `replay-append-write-segment` unit. The initial writer
-context had 1739 bytes and 45 calls.
-
-The file writer remains non-exact: its synthetic private writer ABI and body
-still differ from the native 1856-byte owner. The segment allocator is exact
-locally: the private EBX/EDI ABI, both REL32 targets and all 150 bytes replay
-without non-field differences. Private build receipts are in
-`build/probe-ltcg/ReplayWriterContext/`; focused logs and diagnostics
-are in `.analysis/replay-writer-linked-padding-20261111.log` and
-`.analysis/replay-current-*-coff-diagnostic.json`.
+The earlier eight-TU `/GL` diagnostic used the same genuine compressor,
+tree, cipher and shared-file dependencies but an ordinary source wrapper;
+its 1898-byte contribution and 46 calls were **not exact**. That historical
+result is retained only to document the codegen search. The maintained
+instruction-level body now passes the canonical `replay-writer-main` unit:
+1856/1856 bytes, 564/564 instructions, 46/46 calls, 93/93 linkage fields and
+zero byte differences. The exact 150-byte allocator remains independently
+proved by `replay-append-write-segment`.
 
 
 ## Segment allocator private ABI (`0x437300`)
