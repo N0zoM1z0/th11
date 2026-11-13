@@ -52,3 +52,22 @@ fields**: security cookie `0x4A2088`, `strchr` `0x4604A0`, `.dat` suffix
 `__security_check_cookie` `0x45FC2C`. The full cold replay reports zero
 byte differences. This is exact code generation for this 203-byte boss,
 without claiming the complete Pbg archive manager has been reconstructed.
+
+## Exact 51-byte per-archive decompressed size owner
+
+At `0x441890..0x4418C2`, a separate native member walks a selected archive's
+16-byte entries and compares the requested basename using `_stricmp`. It
+returns the matching entry's uncompressed size at +8 or zero when no entry
+matches. The full 51-byte body includes the original one-byte alignment NOP
+at `0x44189F` and a single `_stricmp` call at `0x4418A4`.
+
+The maintainable `GetPbgArchivedResourceSize` in
+`src/PbgArchivedResourceSize.cpp` uses a real `ArchiveStateView` and ordinary
+C++ loop. Standalone compilation did not recover the original private EAX
+archive / EBX filename convention. When `src/ArchiveLookup.cpp` participates
+in the genuine dynamic VC9 `/GL` producer, the compiler emits **51/51 native
+bytes**, 28 native instructions and exactly one independently bound REL32 at
++0x15 to `_stricmp` `0x4616F8`. Canonical `pbg-archive-resource-size` verifies
+the complete public PDB/MAP primary-TU contribution and all bytes without
+masked differences. The larger 202-byte resource-size API that calls this
+function remains separately nonexact.

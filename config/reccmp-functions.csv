@@ -710,3 +710,4 @@ SeekPbgLowLevelFile,0x00441F30,function
 ReadWholePbgLowLevelFile,0x00441F60,function
 DeletePbgResFile,0x00442090,function
 FindPbgResourceRecord,0x004420E0,function
+GetPbgArchivedResourceSize,0x00441890,function

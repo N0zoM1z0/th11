@@ -709,3 +709,4 @@ SeekPbgLowLevelFile
 ReadWholePbgLowLevelFile
 DeletePbgResFile
 FindPbgResourceRecord
+GetPbgArchivedResourceSize
