@@ -1,8 +1,9 @@
 # Continue/game-over follow-up menu
 
-This is the last reconstruction draft before the2026-11-06 handoff cleanup.
-It is source-present and cold-compiled, not byte-exact. Further codegen work was
-stopped when the operator requested handoff preparation.
+The full state machine remains source-present and non-exact. Code-generation
+work resumed on 2026-11-13; the latest scoped candidate restores the native
+frame, call count, return count and address-field count, but still differs by
+2636 bytes after complete address-field replay.
 
 ## Target and source scope
 
@@ -76,18 +77,24 @@ Required support observations, without independent exact units:
 | CommitPauseMenuScore42BA20 |33/31|21|4|
 | ClosePauseContinueMenu42D7F0 |92/92|0|4|
 | ShowPauseMenuAnimationTree456610 |64/64|0|2|
-| CreateDefaultSecondaryDrawAnimationVmId455D80 |105/107|69|11|
+| CreateDefaultSecondaryDrawAnimationVmId455D80 |105/106|43|11|
 
 The factory preserves the default layer and uses secondary-list append4557E0;
-it must not substitute the primary-list publisher or add a layer20 store.
+it must not substitute the primary-list publisher or add a layer20 store. The
+106-byte full-menu-context diagnostic is not the canonical factory result:
+`create-default-secondary-draw-animation-vm-id` independently replays the
+complete 105-byte owner exactly, with all 11 reviewed fields. The menu context
+changes its private result-register allocation because it has a different
+whole-program caller set.
 Close restores scale but does not restore pause's saved audio200. The score
 pair is host-selection-state0/4 (best/current), not the unrelated actor-score
 global; its HUD mirror is the field at HUD+43E4.
 
-All254 prior frozen inputs are unchanged; four new files extend to258. All19
-previously inspected menu/support contributions remain byte-identical after
-full field replay. Shared child finder remains76/native70/41 with script stack/
-RET4 versus native EBX/plain RET. No canonical exact unit is affected or added.
+All254 prior frozen inputs were unchanged at the earlier checkpoint; four new
+files extended that snapshot to258. All19 previously inspected menu/support
+contributions remained byte-identical after full field replay. Shared child
+finder remains76/native70/41 with script stack/RET4 versus native EBX/plain RET.
+No canonical exact unit was modified by the continuation experiments.
 
 Private recovery: `.analysis/verify-pause-continue-checkpoint.py`,
 `pause-continue-checkpoint-proof.json`, `pause-continue-source-freeze.json`,
@@ -97,6 +104,52 @@ insertion callee and the 1856-byte writer have since gained source; all remain
 non-exact (see REPLAY_WRITING.md). The large child-finder caller42E6B0 still
 has its unreviewed default3179-byte boundary. Original class/TU, whole product,
 runtime and portability are unproved.
+
+## Continued boss code-generation recovery (2026-11-13)
+
+The real 3192-byte owner was resumed with the pinned VC9 `/GL` context and the
+existing 63 support objects. A dynamic `SetSecondaryGameplayRuntimeMode`
+caller prevents constant-only specialization of the runtime/mode helper; a
+separate dynamic default-draw caller supplies both the file and script at run
+time. The latter matters because the two explicit arguments must remain on the
+stack for the native `RET 8` ABI.
+
+The latest maintained state-13 source keeps its two equivalent factory
+expressions in a conditional result initializer. VC9/LTCG folds them to one
+call site while retaining branch-specific hidden-result temporaries. The
+practice high-score comparison is written as `CurrentScore() > *record`, which
+emits the native operand order (`CMP current,[record]` / `JLE`) rather than the
+reversed but equivalent comparison.
+
+The selected full-context candidate now measures **3196 bytes**, **162/162
+address fields**, **88/88 calls**, **15/15 RET4 paths**, a **0x58 stack frame**,
+and the complete **48-byte switch-table** extent. Its 3129 reachable code
+bytes and 19 alignment bytes still differ from the native 3122/22 split; after
+replaying all 162 reviewed fields, **2636 byte differences** remain. It is
+therefore still **non-exact**. The result-register convention at the shared
+factory call (candidate EDI versus native ESI), branch-specific stack offsets,
+and the remaining code schedule are still open.
+
+The default draw factory is independently canonical-exact at **105/105 bytes**
+under `create-default-secondary-draw-animation-vm-id`; its isolated real
+initializer/publisher producer preserves ESI and EBX. In the larger menu
+context its diagnostic body is 106 bytes because the expanded caller set
+changes register allocation. The runtime-mode helper is independently
+**30/30 exact**. The score commit helper remains **31/33**, with its four
+address fields replayed and 21 full differences. The 92-byte close helper and
+64-byte animation-tree visibility helper remain exact.
+
+On 2026-11-13, only four relevant canonical units were cold-replayed:
+`set-secondary-gameplay-runtime-mode`, `close-pause-continue-menu`,
+`show-pause-menu-animation-tree`, and
+`create-default-secondary-draw-animation-vm-id`. All four passed with zero
+byte differences. No full-cohort cold replay was run, and no runtime behavior
+claim is made for the 3192-byte boss.
+
+Evidence: `.analysis/gpt-web-pause-continue-tracked-updated-20261113-proof.json`,
+`.analysis/gpt-web-pause-continue-tracked-updated-20261113-UpdatePauseContinueMenu-source-instructions.txt`,
+`.analysis/secondary-gameplay-mode-strict-20261111.log`, and the four scoped
+canonical replay receipts under `.analysis/`.
 
 ## Record preparation and high-score insertion (2026-11-11)
 

@@ -95,6 +95,7 @@ void __stdcall UpdatePauseContinueMenu(PauseContinueMenuView *owner)
         }
         break;
     case 13:
+    {
         if (self->time.current < 10) break;
         CommitPauseMenuScore();
         if (g_StageResourceFlags & 0x10)
@@ -102,7 +103,7 @@ void __stdcall UpdatePauseContinueMenu(PauseContinueMenuView *owner)
             unsigned int character = static_cast<unsigned int>(g_MeshEffectSelection0) * 3u + g_MeshEffectSelection1;
             unsigned int stage = static_cast<unsigned int>(g_SecondaryActorDifficulty) * 6u + g_StageVariant;
             int *record = reinterpret_cast<int *>(g_SecondaryGameplayStatistics + character * 0x68d4u + stage * 8u + 0x5a4);
-            if (*record < CurrentScore()) *record = CurrentScore();
+            if (CurrentScore() > *record) *record = CurrentScore();
         }
         else
         {
@@ -115,8 +116,12 @@ void __stdcall UpdatePauseContinueMenu(PauseContinueMenuView *owner)
                 return;
             }
         }
-        // Native case 13 has one factory call shared by the two branches.
-        self->root = CreateDefaultSecondaryDrawAnimationVmId(owner->file, 0x62);
+        // Keep the branch-specific hidden result lifetimes explicit. VC9/LTCG
+        // folds these equivalent calls to one native call site.
+        AnimationVmId created = (g_StageResourceFlags & 0x10)
+            ? CreateDefaultSecondaryDrawAnimationVmId(owner->file, 0x62)
+            : CreateDefaultSecondaryDrawAnimationVmId(owner->file, 0x62);
+        self->root = created;
         self->state = 14;
         self->selection.count = 4;
         self->selection.wrapEnabled = 1;
@@ -124,6 +129,7 @@ void __stdcall UpdatePauseContinueMenu(PauseContinueMenuView *owner)
         ClearSecondaryProjectileHit(&self->root.value);
         SignalChoice(self);
         break;
+    }
     case 14:
         Vertical(&self->selection);
         if (self->selection.previous != self->selection.current)
