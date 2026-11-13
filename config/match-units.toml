@@ -7490,6 +7490,69 @@ linkages = [
 [units.secondary-replay-initialization]
 artifact_kind = "linked-pe"
 source = "src/SecondaryReplayInitialization.cpp"
+inputs = [
+  "src/AnimationDocument.hpp",
+  "src/AnimationProjectedQuad.hpp",
+  "src/AnimationQuad.hpp",
+  "src/AnimationSpriteBinding.hpp",
+  "src/AnimationVm.hpp",
+  "src/AnimationVmDraw.hpp",
+  "src/AnimationVmFactory.hpp",
+  "src/AnimationVmId.hpp",
+  "src/AsciiLifecycle.hpp",
+  "src/AsciiManager.hpp",
+  "src/ByteCipher.hpp",
+  "src/Camera.hpp",
+  "src/Chain.hpp",
+  "src/ChainRegistration.hpp",
+  "src/ConfigurationAudioMenu.hpp",
+  "src/FormattedTextureText.hpp",
+  "src/FrameLoop.hpp",
+  "src/InputBackend.hpp",
+  "src/InputState.hpp",
+  "src/MainRuntime.hpp",
+  "src/MenuController.hpp",
+  "src/MeshEffects.hpp",
+  "src/OutlinedText.hpp",
+  "src/PauseMenu.hpp",
+  "src/PerspectiveCamera.hpp",
+  "src/Random.hpp",
+  "src/RenderBatch.hpp",
+  "src/ReplayAllocator.hpp",
+  "src/ReplayHeaderStorageInitialization.hpp",
+  "src/ReplayRecordStageLink.hpp",
+  "src/SecondaryActor.hpp",
+  "src/SecondaryActorInstructionAnimation.hpp",
+  "src/SecondaryActorInstructionControl.hpp",
+  "src/SecondaryActorInstructions.hpp",
+  "src/SecondaryActorRuntime.hpp",
+  "src/SecondaryActorState.hpp",
+  "src/SecondaryClearing.hpp",
+  "src/SecondaryCounter.hpp",
+  "src/SecondaryDamage.hpp",
+  "src/SecondaryDialogue.hpp",
+  "src/SecondaryEmitterAnimation.hpp",
+  "src/SecondaryGameplay.hpp",
+  "src/SecondaryIntegerPair.hpp",
+  "src/SecondaryPairAccess.hpp",
+  "src/SecondaryPattern.hpp",
+  "src/SecondaryPlayerController.hpp",
+  "src/SecondaryPlayerMovement.hpp",
+  "src/SecondaryPlayerWrapItems.hpp",
+  "src/SecondaryProjectile.hpp",
+  "src/SecondaryReplayState.hpp",
+  "src/SecondaryScript.hpp",
+  "src/SharedFile.hpp",
+  "src/StageMesh.hpp",
+  "src/StageResource.hpp",
+  "src/StageScript.hpp",
+  "src/StageUpdate.hpp",
+  "src/TextDrawing.hpp",
+  "src/TextSurface.hpp",
+  "src/TitleMenuRecord.hpp",
+  "src/VmBindings.hpp",
+]
+
 support_sources = ["probes/secondary-replay-initialization-context.cpp", "src/ChainRegistration.cpp", "src/ReplayStageSegmentCleanup.cpp", "src/ReplayWriter.cpp", "src/ReplayHeaderStorageInitialization.cpp"]
 output_dir = "build/match-linked/SecondaryReplayInitialization"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -7579,6 +7642,18 @@ linkages = [
 [units.secondary-replay-load]
 artifact_kind = "linked-pe"
 source = "src/SecondaryReplayLoad.cpp"
+inputs = [
+  "src/Archive.hpp",
+  "src/ByteCipher.hpp",
+  "src/Chain.hpp",
+  "src/FileSystem.hpp",
+  "src/MainRuntime.hpp",
+  "src/ReplayRecordStageLink.hpp",
+  "src/ResourceFile.hpp",
+  "src/SecondaryReplayState.hpp",
+  "src/SharedFile.hpp",
+]
+
 support_sources = ["probes/secondary-replay-load-context.cpp"]
 output_dir = "build/match-linked/SecondaryReplayLoad"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
