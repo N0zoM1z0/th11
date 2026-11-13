@@ -714,9 +714,9 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00442DB0,unknown,PbgMemoryFile,indeterminate,unknown,pbg-memfile-origin-2026-11-13
 0x00442DC0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00442E40,unknown,Win32Process,indeterminate,unknown,child-process-helper-origin-2026-11-13
-0x00442F40,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00442F90,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00442FD0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00442F40,unknown,PbgWinResourceMemoryFile,indeterminate,unknown,pbg-winresource-memfile-origin-2026-11-13
+0x00442F90,unknown,PbgWinResourceMemoryFile,indeterminate,unknown,pbg-winresource-memfile-origin-2026-11-13
+0x00442FD0,unknown,PbgWinResourceMemoryFile,indeterminate,unknown,pbg-winresource-memfile-origin-2026-11-13
 0x004430C0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00443140,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00443230,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

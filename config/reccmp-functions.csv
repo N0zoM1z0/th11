@@ -726,3 +726,6 @@ SizePbgMemoryFile,0x00442DB0,function
 OpenPbgMemoryFile,0x00442CE0,function
 ReadPbgMemoryFile,0x00442D40,function
 LaunchPbgChildProcess,0x00442E40,function
+DeletePbgWinResourceMemoryFile,0x00442F40,function
+DestroyPbgWinResourceMemoryFile,0x00442F90,function
+OpenPbgWinResourceMemoryFile,0x00442FD0,function

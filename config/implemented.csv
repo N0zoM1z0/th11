@@ -725,3 +725,6 @@ SizePbgMemoryFile
 OpenPbgMemoryFile
 ReadPbgMemoryFile
 LaunchPbgChildProcess
+DeletePbgWinResourceMemoryFile
+DestroyPbgWinResourceMemoryFile
+OpenPbgWinResourceMemoryFile
