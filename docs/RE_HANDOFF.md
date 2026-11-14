@@ -45,10 +45,20 @@ requires a reviewed boundary, so extend review, but tie it to reconstruction:
    [KNOWLEDGE_BASE](KNOWLEDGE_BASE.md) "CRT library code"). 889 functions are
    library. About 139 CRT-region rows (12.5 KB) remain unmatched, plus 116
    library rows with split extents (mostly SEH funclets).
-1a. **Rewrite the 26 withdrawn claims in C++.** Their sources were `__asm`
-   copies of the target or volatile-forced; the match units still measure them.
-   Start with the small ones (pair leaves 419510/4195E0, 435FC0, 442BE0,
-   442AB0, 42BA20), then the replay writer, compressor and replay initializer.
+1a. **Rewrite the withdrawn claims in C++.** 29 exact claims had `__asm`
+   bodies, asm-symbol units or volatile casts. Done so far: the five LZSS tree
+   helpers and the stage-link constructor are exact again. Plain C++ but still
+   non-exact: compressor 166/240, writer 446/564, segment append 38/40, frame
+   recorder 94/108, music thread 54/63, pair leaves, score commit. Still asm:
+   replay initializer/loader/stage lifecycle (4356E0, 436B60, 436DA0), record
+   factories (435E00/435EF0), header storage 420D80, score insertion/preparation
+   (42BA80, 42D850), draw publishers (455D80/455DF0/4557E0), statistics writer
+   437A70, title record destructor 435C50, integer player position 435630,
+   pause deletion 435FC0, plus `__asm` blocks inside the three pause menus.
+   Private register conventions (EBX/EDI append, ESI deletion) only appear
+   when every caller is C++ (see the KB), so convert caller and callee
+   families together. The 436D20 thiscall forwarder to the recorder is
+   uninventoried.
 2. **Inventory the uncovered gaps.** Classify each as dead inline copy,
    padding, data or thunk. Dead copies are quick exact wins with the method
    above (store-shape search for users, inline helper in the owning TU).
@@ -112,11 +122,11 @@ scripts/repo-python scripts/replay-exact-units.py --unit secondary-actor-instruc
 | --- | --- | --- |
 | `0x45B860` secondary interpreter (7,093 B) | 7,193-byte candidate with the inline pop; VM receiver ESI vs native EDI | [SECONDARY_SCRIPT](SECONDARY_SCRIPT.md) |
 | `0x430290` player movement (2,896 B) | 2,920 bytes, 85 aligned instructions after the pair types | [SECONDARY_PATTERN](SECONDARY_PATTERN.md) |
-| `0x4356E0` secondary replay initializer (1,380 B) | 1,247/1,380 diagnostic | [SECONDARY_PATTERN](SECONDARY_PATTERN.md) |
+| `0x4356E0` secondary replay initializer (1,380 B) | still an `__asm` body (exact claim withdrawn) | [SECONDARY_PATTERN](SECONDARY_PATTERN.md) |
 | `0x42D9D0` continue menu (3,192 B) | 3,184/3,192, 2,008 non-address differences | [PAUSE_CONTINUE_MENU](PAUSE_CONTINUE_MENU.md) |
 | `0x42E6B0` game-over menu (3,208 B) | 3,212-byte candidate, 2,040 non-address differences | [PAUSE_GAME_OVER_MENU](PAUSE_GAME_OVER_MENU.md) |
 | `0x4396C0` title-menu destructor (561 B) | 561 bytes, 231 non-address differences | [TITLE_MENU_LIFECYCLE](TITLE_MENU_LIFECYCLE.md) |
-| `0x436420` replay writer (1,856 B) | source-present, non-exact | [REPLAY_WRITING](REPLAY_WRITING.md) |
+| `0x436420` replay writer (1,856 B) | natural C++, 446/564 aligned; raw-buffer reload placement in the copy loop | [REPLAY_WRITING](REPLAY_WRITING.md) |
 
 Keep source natural and ABI evidence-based. Never add target bytes, padding,
 fake returns, guessed register declarations, volatile accesses or invented

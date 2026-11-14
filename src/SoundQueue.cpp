@@ -244,22 +244,18 @@ DWORD WINAPI MusicStreamingThread(void *)
 {
     BOOL done = FALSE;
     MSG message;
-    // These three shared-pointer reads are distinct in the native worker.
-    MusicControllerView *volatile &shared =
-        *reinterpret_cast<MusicControllerView *volatile *>(&g_MusicController);
     do
     {
         DWORD wake = MsgWaitForMultipleObjects(1, &g_MusicEvent, FALSE, INFINITE, 0x4bf);
-        MusicControllerView *current = shared;
-        if (!current) done = TRUE;
+        if (!g_MusicController) done = TRUE;
         switch (wake)
         {
         case WAIT_OBJECT_0:
-            if (current && current->active)
+            if (g_MusicController && g_MusicController->active)
             {
-                current->busy = 1;
-                UpdateMusicStream(shared);
-                shared->busy = 0;
+                g_MusicController->busy = 1;
+                UpdateMusicStream(g_MusicController);
+                g_MusicController->busy = 0;
             }
             break;
         case WAIT_OBJECT_0 + 1:
