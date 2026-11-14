@@ -152,10 +152,13 @@ real double cdecl floor; this resolves dependency identity, not wrapper codegen.
 ## Exact proof, reproduction and scope
 
 Eight canonical units close130 complete target bytes: mode4, initial11, target12,
-timer52, duration getter4, stop8, subtraction16 and scaling23. The sole relocation
-is timer offset31 DIR32 g_AnimationTimeScale->4A7948 with zero addend. Independent
-native instruction decoding and prior scale ownership establish this binding.
-Strict cold proof requires full unique public primary-TU PDB contributions,
+timer52, duration getter4, stop8, subtraction16 and scaling23. The timer leaf's
+native entry receives its pair pointer in EAX; the complete host's `/GL` support
+list includes this real implementation so all five pair-tween reset call sites
+retain the no-push register form. The sole relocation is timer offset31 DIR32
+g_AnimationTimeScale->4A7948 with zero addend. Independent native instruction
+decoding and prior scale ownership establish this binding. Strict cold proof
+requires full unique public primary-TU PDB contributions,
 exhaustive fields and complete zero-byte comparison with current source/header/
 support/tool/producer/PE/MAP/PDB receipts. It passes for all eight owners.
 

@@ -1,13 +1,14 @@
 # Complete secondary actor instruction dispatcher
 
-The large host dispatcher at412E30 owns16,556 bytes, not the initial15,780-byte
-code-only inventory span. Its complete boundary, tables, control flow and call
-graph are reviewed. `src/SecondaryActorInstructions.cpp` now supplies the complete
-ordinary state-member dispatcher and manager adapter, using four source fragments
-for all154 handled values. A scoped diagnostic naturally reproduces native frame/
-EH and scratch-slot layout; the real VM context still changes register pressure.
-Original array capacity and whole-host exact byte proof remain open.
-The existing7,093-byte RunSecondaryScript reconstruction remains non-exact.
+The native owner at `0x412E30` spans16,556 bytes including its dispatch data;
+its executable code interval is15,780 bytes. Its complete boundary, tables,
+control flow and call graph are reviewed. `src/SecondaryActorInstructions.cpp`
+now provides the ordinary state-member dispatcher and manager adapter, with four
+fragments covering all154 handled opcode values. The canonical VC9 `/GL` context
+includes the real VM readers, actor creation/lifetime/animation/update and pair
+access implementations. Its current code interval is15,272 bytes with a0x328
+frame versus native15,780 bytes and0x310; the host remains non-exact. The original
+decoder capacity is still a hypothesis. `RunSecondaryScript` remains non-exact.
 
 ## Full extent and entry contract
 
@@ -46,21 +47,18 @@ exception frame with handler48AA9E and installs security-cookie checks. These ar
 target observations. Source lifetimes, EH/funclet ownership, original TU partition
 and linked acceptance remain open; no constructor or forced frame is invented.
 
-## Why this changes the interpreter work
+## Interpreter and real-owner context
 
-The complete owner has465 direct call sites to64 targets, two indirect callbacks
-and one RET. Among its direct calls are83 ReadSecondaryIntArgument and107
-ReadSecondaryFloatArgument sites. It also uses the host-state argument adapters
-at417D80/417DD0/417DF0/417E30 and calls SecondaryFloatDestination once.
-
-The current interpreter diagnostic includes the actual UpdateSecondaryScripts
-caller and independent API inputs, but has no complete source for this large host owner.
-Thus it omits most real argument-reader call sites. This is a concrete context
-gap, not proof that adding this owner will fix register allocation or tail sharing.
-Source work is reconstructing the complete host switch and its actual
-argument/data contracts; a synthetic caller that imitates register choices would
-not establish original LTCG context. Keep all tables in the extent and retain
-the established /GL owners.
+The native owner has465 direct call sites to64 targets, two indirect callbacks
+and one RET. Its calls include the direct VM readers, the host-state adapters at
+`0x417D80`/`0x417DD0`/`0x417DF0`/`0x417E30`, and `SecondaryFloatDestination`.
+The current canonical context includes the complete host source plus the real
+`SecondaryScript.cpp`, argument adapters, actor factory/lifetime/animation/update
+and pair-access translation units under `/GL`. This restores the actual host-to-
+factory-to-state-update-to-script-update-to-virtual-host cycle in the diagnostic
+link; it does not establish the game's original TU partition or close the native
+product. The interpreter remains a separate non-exact owner (see the current
+measurements below).
 
 Two targeted compiler hypotheses preceding this review are rejected. Replacing
 the union-based integer pop wrapper with a typed int-pointer implementation leaves
@@ -73,9 +71,9 @@ No broad behavior harness or runtime comparison was run.
 
 `src/SecondaryActorInstructionMotion.inc` implements all28 values118..133,
 covering16 physical primary targets and a4,517-byte union of entry intervals.
-This is a source fragment for inclusion inside the complete host switch. It
-does not define a partial native host, replace missing instructions with a
-default success return or add a complete source mapping for412E30.
+This fragment is included inside the complete state-member switch in
+`src/SecondaryActorInstructions.cpp`; compiling it alone is only a diagnostic
+probe, not a replacement for that complete owner.
 
 The natural C++ retains local/offset position changes, vector and pair tweens,
 mirrored/shortest-path angles, polar/elliptic centers and radii, bounded random
@@ -100,22 +98,12 @@ Key source details required instruction-level checks:
   comparison and upper-Y reflection remain ordered. The inner shortest-path
   branch likewise uses greater-than/else rather than a <= substitution.
 
-`probes/secondary-host-motion-context.cpp` is a compile-only context for this
-fragment. Cold pinned VC9 /GL compilation produces its complete4,368-byte probe
-contribution, including its own16 dispatch cells and28 selectors. The opcode
-partition agrees with the corresponding native groups. Both graphs contain89
-physical direct call sites; every opcode's reachable call multiplicities and
-normalized CFG call/index trace set agree, including fallthrough12A/12B.
-Literal indices and the two reused zero-register indices are checked against
-their reaching definitions; no guessed private-register declaration is used.
-
-This is static structural evidence. Field stores/FP predicates are reviewed
-against target instructions; call traces alone do not establish full semantic
-equivalence. The probe is not the16,556-byte native owner and is never used as a
-cropped exact-comparison unit. No whole-host byte match, original inline/TU
-ownership, runtime or product closure is claimed. Remaining host opcode values
-and EH lifetimes still need source before the real interpreter context can be
-compiled. No additional leaf-function implementation or exact credit is added.
+`probes/secondary-host-motion-context.cpp` is an earlier isolated compile-only
+probe for this fragment. Its4,368-byte contribution and89-call trace comparison
+remain useful historical evidence for the28 motion opcodes, including the
+12A/12B fallthrough. It is not the current complete-member build or an exact
+comparison lane. The maintained fragments now cover all154 handled values and
+are compiled through the actual state member in the canonical owner context.
 
 ## Creation and animation source inside the same owner
 
@@ -180,8 +168,8 @@ from complete-owner acceptance.
 `src/SecondaryActorInstructionControl.inc` implements all53 values140..174,
 covering49 primary targets/2,663 entry-interval bytes. Combined source covers
 103/154 handled values and87/134 nondefault primary targets at this stage.
-The records group below completes opcode coverage; there is still no complete-host
-source mapping.
+The records group completes opcode coverage; all four fragments are included in
+the complete state-member source mapping described below.
 
 The fragment retains extent/bounds stores, ten animation-ID updates, effect
 parameter indexing and mirrored ID remapping, counter/HUD gauges, actor slots,
@@ -238,7 +226,7 @@ entry. Independent selector replay proves that the four fragments now contain
 every154 handled value exactly once and all134 nondefault primary targets.
 The entry intervals total15,613 bytes;129 prologue and38 epilogue bytes account
 for the remainder of the15,780-byte native code interval. This is coverage
-accounting, not a native function implementation or cropped comparison lane.
+accounting for the full member source, not a separate cropped comparison lane.
 
 The new physical views assert complete214-byte records, eighteen24-byte pattern
 entries,1E4-byte basic packets and204-byte advanced packets. Record-copy19B uses
@@ -277,9 +265,8 @@ Target details that must survive later codegen work:
 Cold /GL `probes/secondary-host-records-context.cpp` produces5,568 bytes, including
 204 dispatch-table bytes. Both target and candidate have186 direct/2 indirect
 physical call sites, equal per-callee counts and all51 acyclic call/index skeleton
-sets.29 static record/copy/FP/arithmetic/EH checks pass. The source remains a
-fragment and its probe remains a diagnostic, not a full native mapping or proof
-of every field and predicate.
+sets.29 static record/copy/FP/arithmetic/EH checks pass. This isolated probe is
+historical; the records fragment is now part of the complete state-member source.
 
 Direct attested Ghidra review and independent PE decoding identify the host's
 FuncInfo at49FE58: magic19930522, one unwind entry at49FE50 and no try blocks.
@@ -320,6 +307,9 @@ native constructor ABI. More real context is needed; do not encode those private
 register choices in declarations or manufacture throwing helpers.
 
 ## Complete member source and recovered stack lifetimes
+
+The following compiler-size and call-count snapshots are intermediate history.
+Use the final canonical checkpoint at the end of this document for current values.
 
 The manager's ordinary virtual ExecuteInstruction returns state.ExecuteInstruction.
 The state member captures owner.current.instruction itself, then executes the full
@@ -362,7 +352,8 @@ Differences in that scoped context include opcode/cache register selection, the
 decoder's spilled byte keys and length reload, FP scheduling/temporary stores,
 call sharing and the EH cleanup's saved allocation offset: candidate EBP-310
 versus native EBP-2F4. Entry-interval deltas are diagnostic attribution only;
-12D/12F's790 versus663 bytes and the spawn joins are substantial next targets.
+The earlier 12D/12F 790-versus663-byte interval predates the final pointer
+staging and real pair-access TU; it is superseded by the current comparison below.
 Original array capacity and specialized EH ownership remain unproved.
 
 The public owner context keeps the actual manager-to-state member call visible.
@@ -403,6 +394,9 @@ new129-input whole-owner source freeze and affected-unit results. No full cohort
 runtime suite is required for this declaration and owner work.
 
 ## Real argument bodies in the complete host context
+
+The figures in this section are intermediate checkpoints, superseded by the
+current full-context measurements at the end of this document.
 
 At the argument-body checkpoint, the canonical family added SecondaryHostArguments.cpp as real /GL support,
 without changing the public stdcall declarations or removing /GL. Direct Ghidra
@@ -483,58 +477,68 @@ compiler context;418460/189 remains source-open. See
 [SECONDARY_GAMEPLAY](SECONDARY_GAMEPLAY.md). Native TU/caller context is still
 not proved by the partial diagnostic link.
 
-The12D/12F branch previously constructed each initial pair before selecting its
-target, with aggregate X/Y selection order and one common tween index. Native
-selects motion plus three tween pointers before argument reads. After six rounded
-real reads, each family selects target Y then X, stages its target pair and then
-captures its initial pair; only then are duration/mode read and three tween resets
-called. The maintained source now expresses those pointer selections and float
-stages directly. Its69 x87 instructions match native operation order, operand
-widths and register forms after erasing memory addresses; the previous source
-has57. This comparison deliberately does not prove memory aliases, stack slots,
-predicates, original vector classes or full bytes. No constructor, volatile,
-forced ABI or padding is introduced to obtain it.
+## Current canonical host checkpoint (2026-11-14)
 
-The current canonical host PDB contribution is15,952 bytes/frame328, still
-non-exact. Its actual code interval ends at the primary jump table:15,176 bytes
-versus15,780 native code bytes, a604-byte code gap. The extra tail in the PDB
-contribution is the adjacent dispatch data, not executable function body.
+The `0x12D`/`0x12F` source now selects the motion record and three independent
+pair-tween pointers before reading its six real arguments. It stages the three
+initial/target pairs before reading duration and mode, then resets all three
+pair timers. The source no longer derives all three tween addresses from one
+shared `pairIndex`; that form let VC9 fold the native independent selections.
 
-The 0x12D/0x12F source now selects motion and all three pair-tween pointers before
-reading the six real arguments. Each target is staged Y-then-X, followed by its
-initial pair; duration/mode are read only after all three pairs have been staged,
-then all three timer resets run. Keeping the pointer selections as independent
-expressions avoids the compiler's one-pair-index fold. The entry interval is now
-769/native790 bytes (209/216 decoded instructions), improving from651/187 in the
-previous direct-store version. The remaining21-byte branch gap is concentrated
-in opcode-register preservation, x87 sentinel predicates, scratch-slot reuse and
-pair-field store scheduling. The stack frame remains0x328 versus native0x310.
-This is structural progress, not exact acceptance.
+The canonical `/GL` support list now includes `src/SecondaryPairAccess.cpp`.
+This matters for the native 52-byte `ResetSecondaryPairTimer` leaf at
+`0x419520`: its pair pointer is passed in EAX, not on the stack. With the real
+leaf definition visible to LTCG, all three `0x12D`/`0x12F` and both
+`0x121`/`0x123` call sites use that no-push EAX form.
+The timer leaf is independently strict-exact as part of the eight pair-access
+leaves; see [pair math](SECONDARY_PAIR_MATH.md).
 
-The discarded 0x3C aggregate experiment is retained as
-`.analysis/SecondaryActorInstructionMotion-scratch-uncommitted-20261114.inc`:
-it restored the native0x310 frame but expanded the whole owner to16,032 bytes.
-It was replaced rather than padded or hidden. The128-byte decoder capacity
-remains a hypothesis; the current full host is still not byte-exact. The
-independent11-byte manager adapter remains exact; no full-host exact credit is
-claimed. The three pointer comparisons, spawn/name scratch reuse, scalar preset
-reloads, register allocation and remaining stack storage are the next targets.
+Current cold canonical build (`build/match-linked/SecondaryActorInstructions/`):
 
-All195 selector groups, acyclic call/index skeletons, projection roles and return
-sets continue to agree. Physical body direct sites are464/457, versus prior455: float107/106,
-integer83/82, supplied integer11/9, object creator4/3 and missing-animation
-clear6/4 remain different. All three actor creator and all six emitter sites
-now agree after the factory ABI recovery. Indirect2/2 and GS1/1 remain.
-These structural checks do not establish complete semantics or byte equality.
+| Measure | Native | Candidate |
+| --- | ---: | ---: |
+| Full owner extent / PDB contribution | 16,556 B | 16,048 B |
+| Executable code before dispatch data | 15,780 B | 15,272 B |
+| Stack allocation | `0x310` | `0x328` |
+| Direct calls | 465 | 459 |
+| Indirect callbacks | 2 | 2 |
 
-Real state-update support restores RunSecondaryScript's fixed120 frame in the
-current family: complete6989/native7093, VM ESI versus EDI. All89 selectors,
-physical case groups and both RET4 paths agree. Native32/source31 push sites,
-unary84's merged paths and82/87's shared float destination remain. The4083-byte
-state-update support contribution is still non-exact against4230. Neither support
-contribution has primary-TU acceptance in this family.
+The candidate PDB contribution includes the same776-byte dispatch-data tail;
+its code interval is508 bytes shorter than native. All154 handled selector values
+are present in the member source. The separate11-byte manager adapter remains
+strict-exact; a fresh selected cold replay after adding pair-access support
+passed its sole REL32 field with zero byte differences. The complete host is
+not exact.
 
-Only secondary-actor-instruction-adapter was affected among earlier exact
-units; its complete11 bytes/one REL32 passed cold replay with zero differences.
-The gameplay context changed Creation.cpp/Gameplay.hpp and added Support.cpp
-and StageDrawing.hpp. See [SECONDARY_GAMEPLAY](SECONDARY_GAMEPLAY.md).
+Largest current entry-interval size differences (native to candidate) are:
+
+| Opcode group | Native | Candidate | Delta |
+| --- | ---: | ---: | ---: |
+| `0x105` | 82 B | 196 B | +114 B |
+| `0x1A7` | 136 B | 216 B | +80 B |
+| `0x1AA` | 118 B | 171 B | +53 B |
+| `0x101` | 133 B | 185 B | +52 B |
+| `0x15E`, `0x161` (each) | 121 B | 170 B | +49 B |
+| `0x12D` / `0x12F` | 790 B | 812 B | +22 B |
+| `0x100` | 392 B | 268 B | -124 B |
+| `0x104` | 222 B | 100 B | -122 B |
+| `0x191` | 244 B | 183 B | -61 B |
+| `0x195` | 74 B | 15 B | -59 B |
+
+The `0x12D`/`0x12F` interval is212/216 decoded instructions with13 calls;
+`0x121`/`0x123` is127/138 instructions with9 calls. These interval sizes are
+triage data, not semantic or exactness measures. Prioritize the large positive
+deltas and compare full instruction/field behavior before changing source.
+The code-size shrink in `0x100`/`0x104` also needs explanation rather than being
+assumed to be an improvement.
+
+The current host still differs in opcode/register preservation, x87 sentinel
+predicates, spawn/name scratch reuse, FP scheduling, pair-field store order and
+stack allocation. The native frame is `0x310`; the canonical candidate remains
+`0x328`. The current `RunSecondaryScript` context is6,989/7,093 bytes with its
+native0x120 frame but uses VM ESI rather than native EDI; it is also non-exact.
+
+For the next pass, keep the complete member and real `/GL` support context. Do
+not use the deleted scratch aggregates, invent an ABI, force volatile accesses,
+add padding, or compare a cropped owner. Build/replay only the affected canonical
+unit; the complete host still has no exact acceptance.
