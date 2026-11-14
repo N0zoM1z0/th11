@@ -90,25 +90,22 @@ __forceinline CameraVector &RecordLocal(SecondaryActorStateView *self, int index
 { return reinterpret_cast<CameraVector *>(self->unknown1414)[index]; }
 __forceinline CameraVector &RecordOffset(SecondaryActorStateView *self, int index)
 { return reinterpret_cast<CameraVector *>(self->unknown1414 + 0x60)[index]; }
-__forceinline CameraVector RecordPosition(SecondaryActorStateView *self, int index)
+__forceinline void StoreRecordPosition(CameraVector &output, SecondaryActorStateView *self, int index)
 {
     const CameraVector &local = RecordLocal(self, index);
     const CameraVector &offset = RecordOffset(self, index);
-    CameraVector result;
     if (offset.z > 0.89999997615814209)
     {
-        result.x = offset.x + local.x;
-        result.y = offset.y + local.y;
-        result.z = offset.z + local.z;
-        result.z = 0.0f;
+        CameraVector position = {offset.x + local.x, offset.y + local.y, offset.z + local.z};
+        output = position;
+        output.z = 0.0f;
     }
     else
     {
-        result.x = local.x + self->world.position.x;
-        result.y = local.y + self->world.position.y;
-        result.z = local.z + self->world.position.z;
+        CameraVector position = {local.x + self->world.position.x,
+            local.y + self->world.position.y, local.z + self->world.position.z};
+        output = position;
     }
-    return result;
 }
 __forceinline float &ProjectileScale()
 { return *reinterpret_cast<float *>(reinterpret_cast<unsigned char *>(g_SceneClearPool) + 0x60); }

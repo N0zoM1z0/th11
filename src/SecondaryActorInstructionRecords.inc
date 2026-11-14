@@ -23,7 +23,7 @@ case 0x191:
 {
     int index = Integer(self, 0);
     SecondaryHostRecord *item = Record(self, index);
-    item->position = RecordPosition(self, index);
+    StoreRecordPosition(item->position, self, index);
     ProjectileScale() = *reinterpret_cast<float *>(&self->unknown1590);
     EmitSecondaryHostRecord(item);
     ProjectileScale() = 0.0f;
@@ -107,7 +107,7 @@ case 0x1af:
     SecondaryHostBasicPacket packet;
     memset(&packet, 0, sizeof(packet));
     if (opcode == 0x1af) packet.patterns = Record(self, 0)->patterns;
-    packet.position = RecordPosition(self, 0);
+    StoreRecordPosition(packet.position, self, 0);
     packet.type = static_cast<short>(ReadSecondaryHostInteger(self, 0));
     packet.subtype = static_cast<short>(ReadSecondaryHostInteger(self, 1));
     packet.angle = NormalizeAngle(Real(self, 2));
@@ -129,7 +129,7 @@ case 0x1b0:
     ResetSecondaryHostAdvancedPacket(&packet);
     int *destination = 0;
     if (opcode == 0x1b0) packet.patterns = Record(self, 0)->patterns;
-    packet.position = RecordPosition(self, 0);
+    StoreRecordPosition(packet.position, self, 0);
     packet.type = static_cast<short>(ReadSecondaryHostInteger(self, 1));
     packet.subtype = static_cast<short>(ReadSecondaryHostInteger(self, 2));
     packet.angle = NormalizeAngle(Real(self, 3));
@@ -347,7 +347,7 @@ case 0x1b1:
     SecondaryHostBasicPacket packet;
     memset(&packet, 0, sizeof(packet));
     if (opcode == 0x1b1) packet.patterns = Record(self, 0)->patterns;
-    packet.position = RecordPosition(self, 0);
+    StoreRecordPosition(packet.position, self, 0);
     packet.type = static_cast<short>(ReadSecondaryHostInteger(self, 0));
     packet.subtype = static_cast<short>(ReadSecondaryHostInteger(self, 1));
     packet.angle = Real(self, 2);
@@ -369,7 +369,7 @@ case 0x1b2:
     ResetSecondaryHostAdvancedPacket(&packet);
     int *destination = SecondaryHostIntegerDestination(self);
     if (instruction->opcode == 0x1b2) packet.patterns = Record(self, 0)->patterns;
-    packet.position = RecordPosition(self, 0);
+    StoreRecordPosition(packet.position, self, 0);
     packet.type = static_cast<short>(ReadSecondaryHostInteger(self, 1));
     packet.subtype = static_cast<short>(ReadSecondaryHostInteger(self, 2));
     packet.angle = Real(self, 3);

@@ -572,3 +572,10 @@ tail-merges into 0x195's store (120/112, 144/136). Total interval error over
 all opcodes fell from 1627 to 1381 bytes. The same rewrite of the count
 setters 0x1A9/0x1AA fixed 0x1A9 (166/165) but VC9 did not cross-jump 0x1AA
 into it (183/118), so the earlier `goto` form is kept there for now.
+
+Record positions are assigned inside each branch (`StoreRecordPosition`):
+native has two complete store sequences, one adding the record offset (then
+zeroing z) and one adding the world position. Computing a value and storing
+it once merged them. With per-branch stores the five users move toward native
+(0x191 217/244, 0x1AD/0x1B2 493/510); total interval error 1271 bytes, owner
+16340/16556.
