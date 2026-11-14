@@ -214,3 +214,9 @@ or `top + -sizeof(DWORD)` all give `sub ecx,4`. The frame pop uses the same
 form (`if (top - 4 >= 0) { top -= 4; ... }`). With the inline pop the
 interpreter candidate is 7193/7093 bytes but aligns more instructions
 (819, from 774).
+
+`PushSecondaryValue` 45DC30 (called, non-exact) is one instruction off: native
+forms the slot address (`add ecx,eax`) before storing the value, VC9 folds it
+into `mov [eax+ecx],edx`. `memcpy`, a direct `DWORD` store, a slot pointer
+local, reading the value first, `&data[top]` and a `SecondaryValue` union
+assignment all give the folded form.
