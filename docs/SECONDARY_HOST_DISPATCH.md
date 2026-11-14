@@ -579,3 +579,15 @@ zeroing z) and one adding the world position. Computing a value and storing
 it once merged them. With per-branch stores the five users move toward native
 (0x191 217/244, 0x1AD/0x1B2 493/510); total interval error 1271 bytes, owner
 16340/16556.
+
+Spawn arguments are indexed, not addressed through a pointer: native keeps the
+instruction in EDI and reads `payload[words + k]` (`[edi+esi*4+10h]`) after
+computing `words = (payload[0] + 4) / 4` once. Building a `values` pointer
+moved the instruction to the stack and blocked VC9's cross-jump of 0x105 into
+0x104. With `SpawnPayload(instruction)[words + k]` the spawn cases are
+384/93/226/86 against native 392/133/222/82, total interval error 1163 bytes,
+owner 16244 bytes, 1053 aligned instructions.
+
+Tried and reverted: selecting the 0x119/0x11B motion and tween targets with
+two separate `if` statements reproduces native's second opcode compare but
+spills `opcode` to the stack for the whole function (total error 1342).

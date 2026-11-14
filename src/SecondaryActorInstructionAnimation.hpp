@@ -66,12 +66,10 @@ __forceinline SecondaryActorAnimationView *AnimationState(AnimationVmView *vm)
 { return reinterpret_cast<SecondaryActorAnimationView *>(vm); }
 __forceinline const CameraVector &SceneOffset()
 { return *reinterpret_cast<const CameraVector *>(g_SecondaryHostProjectionRenderer.camera.unknown000); }
-__forceinline const SecondaryValue *SpawnValues(SecondaryInstruction *instruction)
-{
-    const SecondaryValue *payload = reinterpret_cast<const SecondaryValue *>(instruction + 1);
-    int words = AddInteger(payload[0].integer, 4) / 4;
-    return payload + words;
-}
+__forceinline const SecondaryValue *SpawnPayload(SecondaryInstruction *instruction)
+{ return reinterpret_cast<const SecondaryValue *>(instruction + 1); }
+__forceinline int SpawnWords(SecondaryInstruction *instruction)
+{ return AddInteger(SpawnPayload(instruction)[0].integer, 4) / 4; }
 __forceinline void SpawnParameters(SecondaryActorStateView *self, SecondaryHostSpawnArguments *arguments)
 {
     arguments->parameters = *reinterpret_cast<const SecondaryHostSpawnParameters *>(self->unknown124);

@@ -4,26 +4,26 @@
 // before the other opcode families, allowing the native scratch-slot reuse.
 {
 SecondaryHostSpawnArguments arguments;
-const SecondaryValue *values;
+int words;
 case 0x109:
     if (g_SecondaryMaster->Slot(0)) break;
 case 0x100:
 {
-    values = SpawnValues(instruction);
+    words = SpawnWords(instruction);
     memset(&arguments, 0, sizeof(arguments));
     float x = self->world.position.x;
     if (!(self->flags & 0x400000))
     {
-        arguments.position.x = ReadSecondaryHostRealValue(self, 1, values[0].real) + x;
+        arguments.position.x = ReadSecondaryHostRealValue(self, 1, SpawnPayload(instruction)[words + 0].real) + x;
         float y = self->world.position.y;
-        arguments.position.y = ReadSecondaryHostRealValue(self, 2, values[1].real) + y;
+        arguments.position.y = ReadSecondaryHostRealValue(self, 2, SpawnPayload(instruction)[words + 1].real) + y;
     }
     else
     {
         CameraVector position;
-        position.x = ReadSecondaryHostRealValue(self, 1, values[0].real) + x;
+        position.x = ReadSecondaryHostRealValue(self, 1, SpawnPayload(instruction)[words + 0].real) + x;
         float y = self->world.position.y;
-        position.y = ReadSecondaryHostRealValue(self, 2, values[1].real) + y;
+        position.y = ReadSecondaryHostRealValue(self, 2, SpawnPayload(instruction)[words + 1].real) + y;
         position.z = self->world.position.z;
         SelectSecondaryHostCamera(&g_SecondaryHostProjectionRenderer, 0);
         CameraView &camera = g_SecondaryHostProjectionRenderer.camera;
@@ -33,9 +33,9 @@ case 0x100:
         arguments.position.y = static_cast<float>(arguments.position.y - 16.0);
         arguments.position.z = 0.0f;
     }
-    arguments.value014 = ReadSecondaryHostIntegerValue(self, 3, values[2].integer);
-    arguments.value00c = ReadSecondaryHostIntegerValue(self, 4, values[3].integer);
-    arguments.value010 = ReadSecondaryHostIntegerValue(self, 5, values[4].integer);
+    arguments.value014 = ReadSecondaryHostIntegerValue(self, 3, SpawnPayload(instruction)[words + 2].integer);
+    arguments.value00c = ReadSecondaryHostIntegerValue(self, 4, SpawnPayload(instruction)[words + 3].integer);
+    arguments.value010 = ReadSecondaryHostIntegerValue(self, 5, SpawnPayload(instruction)[words + 4].integer);
     SpawnParameters(self, &arguments);
     SpawnActor(instruction, &arguments);
     break;
@@ -44,13 +44,13 @@ case 0x10a:
     if (g_SecondaryMaster->Slot(0)) break;
 case 0x101:
 {
-    values = SpawnValues(instruction);
+    words = SpawnWords(instruction);
     memset(&arguments, 0, sizeof(arguments));
-    arguments.position.x = ReadSecondaryHostRealValue(self, 1, values[0].real);
-    arguments.position.y = ReadSecondaryHostRealValue(self, 2, values[1].real);
-    arguments.value014 = ReadSecondaryHostIntegerValue(self, 3, values[2].integer);
-    arguments.value00c = ReadSecondaryHostIntegerValue(self, 4, values[3].integer);
-    arguments.value010 = ReadSecondaryHostIntegerValue(self, 5, values[4].integer);
+    arguments.position.x = ReadSecondaryHostRealValue(self, 1, SpawnPayload(instruction)[words + 0].real);
+    arguments.position.y = ReadSecondaryHostRealValue(self, 2, SpawnPayload(instruction)[words + 1].real);
+    arguments.value014 = ReadSecondaryHostIntegerValue(self, 3, SpawnPayload(instruction)[words + 2].integer);
+    arguments.value00c = ReadSecondaryHostIntegerValue(self, 4, SpawnPayload(instruction)[words + 3].integer);
+    arguments.value010 = ReadSecondaryHostIntegerValue(self, 5, SpawnPayload(instruction)[words + 4].integer);
     SpawnParameters(self, &arguments);
     SpawnActor(instruction, &arguments);
     break;
@@ -85,15 +85,15 @@ case 0x10b:
     if (g_SecondaryMaster->Slot(0)) break;
 case 0x104:
 {
-    values = SpawnValues(instruction);
+    words = SpawnWords(instruction);
     memset(&arguments, 0, sizeof(arguments));
     float x = self->world.position.x;
-    arguments.position.x = ReadSecondaryHostRealValue(self, 1, values[0].real) + x;
+    arguments.position.x = ReadSecondaryHostRealValue(self, 1, SpawnPayload(instruction)[words + 0].real) + x;
     float y = self->world.position.y;
-    arguments.position.y = ReadSecondaryHostRealValue(self, 2, values[1].real) + y;
-    arguments.value014 = ReadSecondaryHostIntegerValue(self, 3, values[2].integer);
-    arguments.value00c = ReadSecondaryHostIntegerValue(self, 4, values[3].integer);
-    arguments.value010 = ReadSecondaryHostIntegerValue(self, 5, values[4].integer);
+    arguments.position.y = ReadSecondaryHostRealValue(self, 2, SpawnPayload(instruction)[words + 1].real) + y;
+    arguments.value014 = ReadSecondaryHostIntegerValue(self, 3, SpawnPayload(instruction)[words + 2].integer);
+    arguments.value00c = ReadSecondaryHostIntegerValue(self, 4, SpawnPayload(instruction)[words + 3].integer);
+    arguments.value010 = ReadSecondaryHostIntegerValue(self, 5, SpawnPayload(instruction)[words + 4].integer);
     SpawnParameters(self, &arguments);
     arguments.mirrored = 1;
     SpawnActor(instruction, &arguments);
@@ -103,13 +103,13 @@ case 0x10c:
     if (g_SecondaryMaster->Slot(0)) break;
 case 0x105:
 {
-    values = SpawnValues(instruction);
+    words = SpawnWords(instruction);
     memset(&arguments, 0, sizeof(arguments));
-    arguments.position.x = ReadSecondaryHostRealValue(self, 1, values[0].real);
-    arguments.position.y = ReadSecondaryHostRealValue(self, 2, values[1].real);
-    arguments.value014 = ReadSecondaryHostIntegerValue(self, 3, values[2].integer);
-    arguments.value00c = ReadSecondaryHostIntegerValue(self, 4, values[3].integer);
-    arguments.value010 = ReadSecondaryHostIntegerValue(self, 5, values[4].integer);
+    arguments.position.x = ReadSecondaryHostRealValue(self, 1, SpawnPayload(instruction)[words + 0].real);
+    arguments.position.y = ReadSecondaryHostRealValue(self, 2, SpawnPayload(instruction)[words + 1].real);
+    arguments.value014 = ReadSecondaryHostIntegerValue(self, 3, SpawnPayload(instruction)[words + 2].integer);
+    arguments.value00c = ReadSecondaryHostIntegerValue(self, 4, SpawnPayload(instruction)[words + 3].integer);
+    arguments.value010 = ReadSecondaryHostIntegerValue(self, 5, SpawnPayload(instruction)[words + 4].integer);
     SpawnParameters(self, &arguments);
     arguments.mirrored = 1;
     SpawnActor(instruction, &arguments);
@@ -174,16 +174,16 @@ case 0x10f:
     if (g_SecondaryMaster->Slot(0)) break;
 case 0x10e:
 {
-    values = SpawnValues(instruction);
+    words = SpawnWords(instruction);
     memset(&arguments, 0, sizeof(arguments));
-    float x = ReadSecondaryHostRealValue(self, 1, values[0].real);
+    float x = ReadSecondaryHostRealValue(self, 1, SpawnPayload(instruction)[words + 0].real);
     arguments.position.x = x + SceneOffset().x;
-    float y = ReadSecondaryHostRealValue(self, 2, values[1].real);
+    float y = ReadSecondaryHostRealValue(self, 2, SpawnPayload(instruction)[words + 1].real);
     arguments.position.y = y + SceneOffset().y;
-    arguments.position.z = ReadSecondaryHostRealValue(self, 3, values[2].real);
-    arguments.value014 = ReadSecondaryHostIntegerValue(self, 4, values[3].integer);
-    arguments.value00c = ReadSecondaryHostIntegerValue(self, 5, values[4].integer);
-    arguments.value010 = ReadSecondaryHostIntegerValue(self, 6, values[5].integer);
+    arguments.position.z = ReadSecondaryHostRealValue(self, 3, SpawnPayload(instruction)[words + 2].real);
+    arguments.value014 = ReadSecondaryHostIntegerValue(self, 4, SpawnPayload(instruction)[words + 3].integer);
+    arguments.value00c = ReadSecondaryHostIntegerValue(self, 5, SpawnPayload(instruction)[words + 4].integer);
+    arguments.value010 = ReadSecondaryHostIntegerValue(self, 6, SpawnPayload(instruction)[words + 5].integer);
     SpawnParameters(self, &arguments);
     arguments.flags |= 1;
     SpawnActor(instruction, &arguments);
