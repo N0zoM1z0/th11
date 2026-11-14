@@ -36,17 +36,19 @@ before editing. In short:
 
 ## Roadmap
 
-Measured backlog (2026-11-14): 1,393 functions (268 KB) still have
-unreviewed boundaries, 955 of them ≤128 bytes and none with source; 464
-`.text` gaps larger than 16 bytes (62.7 KB) are outside the inventory; origin
-is pending for 1,432 functions and confirmed authored for only 90, so the
-authored denominator is still open. Exact credit requires a reviewed boundary,
-so extend review, but tie it to reconstruction:
+Measured backlog (2026-11-14, after the CRT scan): 624 functions still have
+unreviewed boundaries and origin is pending for 546. The game's own code ends
+at 0x45FC2B; everything matched above it is VC9 library code. Exact credit
+requires a reviewed boundary, so extend review, but tie it to reconstruction:
 
-1. **Classify library code mechanically.** The pinned VC9 toolchain ships the
-   CRT libraries the game linked (`libcmt.lib`). Matching their object code
-   against the image (FLIRT-style) should mark most of 0x46xxxx–0x48xxxx as
-   `library` and fix the authored denominator without hand review.
+1. **Library classification is done** (`scripts/scan-library-code.py`;
+   [KNOWLEDGE_BASE](KNOWLEDGE_BASE.md) "CRT library code"). 889 functions are
+   library. About 139 CRT-region rows (12.5 KB) remain unmatched, plus 116
+   library rows with split extents (mostly SEH funclets).
+1a. **Rewrite the 26 withdrawn claims in C++.** Their sources were `__asm`
+   copies of the target or volatile-forced; the match units still measure them.
+   Start with the small ones (pair leaves 419510/4195E0, 435FC0, 442BE0,
+   442AB0, 42BA20), then the replay writer, compressor and replay initializer.
 2. **Inventory the uncovered gaps.** Classify each as dead inline copy,
    padding, data or thunk. Dead copies are quick exact wins with the method
    above (store-shape search for users, inline helper in the owning TU).

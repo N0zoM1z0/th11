@@ -20,6 +20,36 @@ compiler observations and useful failed approaches.
 - Rebuild affected exact contexts through `config/match-units.toml`. Cache
   retention is described in [ARTIFACTS](ARTIFACTS.md).
 
+## CRT library code and withdrawn asm claims (2026-11-14)
+
+`scripts/scan-library-code.py` matches every code section of the pinned VC9
+`libcmt.lib` and `libcpmt.lib` against the image with relocated fields masked.
+A section counts only with a single hit, or with several hits where a checked
+REL32 picks the right member. Every checked REL32 must also land on the
+callee's matched address. It classifies 889 inventory functions
+(150,480 bytes) as library code. All of them lie at 0x45FC2C or above, so the
+game's own code ends at 0x45FC2B. 773 rows equal their archive symbol's extent
+and are now boundary-reviewed. The other 116 sit inside a matched section but
+are split differently, mostly SEH `__finally` blocks and one-byte tail
+differences. They keep library origin but still need boundary review. About 139
+CRT-region rows (12.5 KB) remain unmatched: `entry`, tiny duplicated wrappers
+and code from objects outside these two archives.
+
+The scan showed that the "exact" 0x45FD49 `FreeHeapBlock` is libcmt
+`operator delete` (`delete.obj`), and that its source was a naked `__asm` copy
+of the target. A sweep found the same pattern behind 24 exact claims
+(8,310 bytes). Those included the replay writer, compressor, replay
+initializer/loader/stage, record factories, score insertion/preparation, draw
+publishers, pair leaves and `DestroyTitleMenuRecord`, which is aliased through
+`/alternatename` to a naked destructor that uses `_emit`. Two more claims forced
+their reads through volatile casts: `ConstructReplayRecordStageLink` 437490 and
+`MusicStreamingThread` 44A900. All 26 claims are withdrawn, and their
+`functions.csv` notes say why. Their match units remain only as measuring
+harnesses for real C++ rewrites. The continue, game-over and pause menus and
+`RecordReplayInputFrame` still contain `__asm` (including the
+`DeletePauseMenuReplayRecord` helper in `PauseMenu.hpp`), so measurements of
+those owners are not evidence of a C++ shape.
+
 ## Inline definitions and opaque COMDAT callees (2026-11-14)
 
 - VC9 LTCG uses a callee's real register usage only for ordinary functions.
