@@ -7522,30 +7522,31 @@ relocations = [
   { offset = 211, type = "DIR32", symbol = "?g_SecondaryActorDifficulty@@3HA", target = 0x004A5720 },
   { offset = 236, type = "REL32", symbol = "__time64", target = 0x004608B7 },
   { offset = 241, type = "DIR32", symbol = "?g_SecondaryActorDifficulty@@3HA", target = 0x004A5720 },
-  { offset = 247, type = "DIR32", symbol = "?g_PauseRecordEmptyName@@3QBDB", target = 0x00495244 },
-  { offset = 276, type = "DIR32", symbol = "?g_PauseRecordEmptyName@@3QBDB", target = 0x00495244, addend = 4 },
-  { offset = 286, type = "DIR32", symbol = "?g_PauseRecordEmptyName@@3QBDB", target = 0x00495244, addend = 8 },
+  { offset = 247, type = "DIR32", symbol = "??_C@_08GGFKNFHG@?5?5?5?5?5?5?5?5?$AA@", target = 0x00495244 },
+  { offset = 276, type = "DIR32", symbol = "??_C@_08GGFKNFHG@?5?5?5?5?5?5?5?5?$AA@", target = 0x00495244, addend = 4 },
+  { offset = 286, type = "DIR32", symbol = "??_C@_08GGFKNFHG@?5?5?5?5?5?5?5?5?$AA@", target = 0x00495244, addend = 8 },
   { offset = 294, type = "DIR32", symbol = "?g_PauseRecordTiming@@3PAUPauseRecordTimingView@@A", target = 0x004A8D80 },
   { offset = 309, type = "DIR32", symbol = "?g_SecondaryActorDifficulty@@3HA", target = 0x004A5720 },
-  { offset = 340, type = "DIR32", symbol = "?g_PauseRecordHundred@@3NB", target = 0x00497E50 },
+  { offset = 340, type = "DIR32", symbol = "__real@4059000000000000", target = 0x00497E50 },
 ]
 
-# Full380-byte native ESI-receiver record preparer; its two callers do not
-# push a menu argument. The caller-side inline bridge restores ESI directly.
+
 [units.prepare-pause-continue-records]
-artifact_kind = "coff"
+artifact_kind = "linked-pe"
 source = "src/PauseContinueRecords.cpp"
-inputs = ["src/PauseContinueMenu.hpp", "src/PauseMenu.hpp", "src/ReplayAllocator.hpp", "src/TitleMenuRecord.hpp", "src/MenuController.hpp", "src/SecondaryActorRuntime.hpp", "src/SecondaryGameplay.hpp", "src/StageResource.hpp"]
-object = "build/match/PauseContinueRecords.obj"
-profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc"]
+inputs = ["src/PauseContinueMenu.hpp", "src/PauseMenu.hpp", "src/MenuController.hpp", "src/SecondaryActorRuntime.hpp", "src/SecondaryGameplay.hpp", "src/StageResource.hpp"]
+support_sources = ["probes/pause-continue-records-context.cpp", "src/PauseRecordInsertion.cpp", "src/ConfigurationMenuSelection.cpp"]
+output_dir = "build/match-linked/PauseContinueRecords"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "PauseContinueRecordsProbe@4"
 functions = ["PreparePauseContinueRecords"]
-symbol = "?PreparePauseContinueRecords@@YGXXZ"
+symbol = "?PreparePauseContinueRecords@@YGXPAUPauseMenuView@@@Z"
 target_address = 0x0042D850
 size = 380
-relocations = [
+linkages = [
   { offset = 8, type = "DIR32", symbol = "?g_StageVariant@@3IA", target = 0x004A5728 },
   { offset = 30, type = "DIR32", symbol = "?g_SecondaryGameplaySelectionEC8@@3PAUSecondaryGameplaySelectionView@@A", target = 0x004A8EC8 },
-  { offset = 34, type = "DIR32", symbol = "?g_MenuStageSelections@@3PAEA", target = 0x004A39E8, addend = 0x40 },
+  { offset = 34, type = "DIR32", symbol = "?g_MenuStageSelections@@3PAEA", target = 0x004A39E8, addend = 64 },
   { offset = 39, type = "DIR32", symbol = "?g_StageVariant@@3IA", target = 0x004A5728 },
   { offset = 44, type = "DIR32", symbol = "?g_MenuPreviousVariant@@3HA", target = 0x004A572C },
   { offset = 49, type = "DIR32", symbol = "?g_MeshEffectSelection0@@3HA", target = 0x004A5710 },
@@ -7558,13 +7559,10 @@ relocations = [
   { offset = 114, type = "DIR32", symbol = "?g_StageVariant@@3IA", target = 0x004A5728 },
   { offset = 120, type = "DIR32", symbol = "?g_MenuPreviousVariant@@3HA", target = 0x004A572C },
   { offset = 205, type = "DIR32", symbol = "?g_SecondaryGameplayStatistics@@3PAEA", target = 0x004A8EBC },
-  { offset = 262, type = "DIR32", symbol = "?g_PauseRecordEmptyName@@3QBDB", target = 0x00495244 },
+  { offset = 262, type = "DIR32", symbol = "??_C@_08GGFKNFHG@?5?5?5?5?5?5?5?5?$AA@", target = 0x00495244 },
   { offset = 318, type = "REL32", symbol = "?MoveSecondaryDebugSelection@@YGHPAUSecondaryDebugSelectionView@@H@Z", target = 0x00459160 },
 ]
 
-
-# 18-byte private-ESI replay deletion leaf: native stack-this destructor call
-# followed by the exact 11-byte heap-free wrapper.
 [units.delete-pause-menu-replay]
 artifact_kind = "coff"
 source = "src/PauseMenuSupport.cpp"

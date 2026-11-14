@@ -19,5 +19,4 @@ void __stdcall ShowPauseMenuAnimationTree(const AnimationVmId &id);
 AnimationVmId __stdcall CreateDefaultSecondaryDrawAnimationVmId(AnimationFileView *file, int script);
 
 // Full380-byte native helper at42D850: menu receiver is ESI, no stack argument.
-void __stdcall PreparePauseContinueRecords();
-extern const char g_PauseRecordEmptyName[9];
+void __stdcall PreparePauseContinueRecords(PauseMenuView *self);
