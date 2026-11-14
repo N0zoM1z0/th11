@@ -85,7 +85,7 @@ output views do not assert an original constructor or aggregate-return ABI.
 | GetSecondaryEmitter | 433F30 | 14 | Exact |
 | CopySecondaryEmitterId | 433F40 | 16 | Exact |
 | ConvertSecondaryIntegerPair | 433DB0 | 26 | Exact |
-| AddAssignSecondaryIntegerPair | 433DD0 | 23 | Source23/6 |
+| AddAssignSecondaryIntegerPair | 433DD0 | 23 | Exact (inline member, movement TU) |
 | SecondaryIntegerPairNonzero | 433DF0 | 20 | Exact |
 | SubtractSecondaryIntegerPair | 433E10 | 18 | Exact (inline member, movement TU) |
 | ScaleSecondaryIntegerPair | 433E30 | 19 | Exact (inline member, movement TU) |
@@ -123,9 +123,12 @@ That TU then emits the dead copies itself. `-`, `*`, `/` (LTCG specializes the
 divisor to 100) and `+` are exact units in the SecondaryPlayerMovement family.
 The earlier free-function versions of these four were removed.
 
-Still open: `+=` (433DD0) comes out with its second load scheduled one
-instruction earlier; native's copy behaves as if `this` and the operand may
-alias, so look for an aliasing `+=` use elsewhere. The copy-returning
+`+=` (433DD0) is exact too. Its copy keeps loads and adds in order only when
+some use passes operands that may alias. The native use is the per-frame
+player step: the movement view's `stepX/stepY` are a pair `step` at +8B8, and
+`owner->fixedPosition += owner->step` (same base pointer) reproduces the copy
+and brings the movement owner closer (83 vs 47 aligned instructions). With a
+local operand VC9 schedules the second load early. The copy-returning
 `operator=` (433F10) needs its real native use; a user
 `operator=` changes every pair assignment, so check exact consumers first.
 

@@ -11,7 +11,7 @@ struct SecondaryPlayerMovementView
     SecondaryIntegerPair fixedPosition;
     int normalSpeed, focusedSpeed, normalDiagonalSpeed, focusedDiagonalSpeed;
     CameraVector movement, rememberedMovement;
-    int stepX, stepY;
+    SecondaryIntegerPair step;
     unsigned char unknown8c0[0x914 - 0x8c0];
     int previousX, previousY, direction, fireCount, unknown924, mode;
     SecondaryPatternConfigurationView *configuration;

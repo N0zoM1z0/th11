@@ -8,17 +8,6 @@ CameraVector *__stdcall ConvertSecondaryIntegerPair(CameraVector *output, const 
     return output;
 }
 
-SecondaryIntegerPair *__stdcall AddAssignSecondaryIntegerPair(SecondaryIntegerPair *output,
-    SecondaryIntegerPair *left, const SecondaryIntegerPair *right)
-{
-    left->x = static_cast<int>(static_cast<unsigned int>(left->x) + right->x);
-    left->y = static_cast<int>(static_cast<unsigned int>(left->y) + right->y);
-    int x = left->x, y = left->y;
-    output->x = x;
-    output->y = y;
-    return output;
-}
-
 int __stdcall SecondaryIntegerPairNonzero(const SecondaryIntegerPair *value)
 {
     return value->x || value->y ? 1 : 0;

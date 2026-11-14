@@ -5,7 +5,6 @@ extern "C" int __stdcall SecondaryIntegerPairProbe(SecondaryIntegerPair *left,
     int factor, int x, int y)
 {
     ConvertSecondaryIntegerPair(position, right);
-    AddAssignSecondaryIntegerPair(output, left, right);
     int result = SecondaryIntegerPairNonzero(right);
     SetSecondaryIntegerPair(output, x, y);
     AssignSecondaryIntegerPair(output, left, right);

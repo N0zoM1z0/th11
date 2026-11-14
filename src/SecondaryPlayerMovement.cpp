@@ -153,12 +153,9 @@ int __stdcall UpdateSecondaryPlayerMovement(SecondaryDamageReferencesView *self)
     owner->movement.x = dx * g_AnimationTimeScale;
     owner->movement.y = dy * g_AnimationTimeScale;
     if (owner->direction) owner->rememberedMovement = owner->movement;
-    int stepX = static_cast<int>(owner->movement.x);
-    owner->stepX = stepX;
-    int stepY = static_cast<int>(owner->movement.y);
-    owner->fixedPosition.x = Add(owner->fixedPosition.x, stepX);
-    owner->fixedPosition.y = Add(owner->fixedPosition.y, stepY);
-    owner->stepY = stepY;
+    owner->step.x = static_cast<int>(owner->movement.x);
+    owner->step.y = static_cast<int>(owner->movement.y);
+    owner->fixedPosition += owner->step;
     if (!Selection()) UpdateSecondaryPlayerHorizontalWrap(self);
     if (Selection() == 1)
     {

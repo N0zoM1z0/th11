@@ -44,8 +44,6 @@ struct SecondaryIntegerPair
 };
 
 CameraVector *__stdcall ConvertSecondaryIntegerPair(CameraVector *output, const SecondaryIntegerPair *input);
-SecondaryIntegerPair *__stdcall AddAssignSecondaryIntegerPair(SecondaryIntegerPair *output,
-    SecondaryIntegerPair *left, const SecondaryIntegerPair *right);
 int __stdcall SecondaryIntegerPairNonzero(const SecondaryIntegerPair *value);
 SecondaryIntegerPair *__stdcall SetSecondaryIntegerPair(SecondaryIntegerPair *output, int x, int y);
 SecondaryIntegerPair *__stdcall AssignSecondaryIntegerPair(SecondaryIntegerPair *output,
