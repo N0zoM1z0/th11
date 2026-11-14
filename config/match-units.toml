@@ -8496,3 +8496,31 @@ symbol = "?AddSecondaryPair@@YGPAUSecondaryVector2@@PAU1@PBU1@1@Z"
 target_address = 0x004195E0
 size = 16
 linkages = []
+
+[units.secondary-hud-update-callback]
+artifact_kind = "coff"
+source = "src/SecondaryHudCallbacks.cpp"
+inputs = ["src/SecondaryHud.hpp"]
+object = "build/match/SecondaryHudCallbacks.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc"]
+functions = ["SecondaryHudUpdateCallback"]
+symbol = "?SecondaryHudUpdateCallback@@YIHPAUSecondaryHudView@@@Z"
+target_address = 0x0041CFB0
+size = 7
+relocations = [
+  { offset = 2, type = "REL32", symbol = "?UpdateSecondaryHud@@YGHPAUSecondaryHudView@@@Z", target = 0x0041B380 },
+]
+
+[units.secondary-gameplay-update-callback]
+artifact_kind = "coff"
+source = "src/SecondaryGameplayCallbacks.cpp"
+inputs = ["src/SecondaryGameplay.hpp"]
+object = "build/match/SecondaryGameplayCallbacks.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc"]
+functions = ["SecondaryGameplayUpdateCallback"]
+symbol = "?SecondaryGameplayUpdateCallback@@YIHPAUSecondaryGameplayView@@@Z"
+target_address = 0x00420840
+size = 7
+relocations = [
+  { offset = 2, type = "REL32", symbol = "?UpdateSecondaryGameplay@@YGHPAUSecondaryGameplayView@@@Z", target = 0x00420390 },
+]
