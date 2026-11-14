@@ -52,6 +52,12 @@ those owners are not evidence of a C++ shape.
 
 ## Inline definitions and opaque COMDAT callees (2026-11-14)
 
+- An inline-asm `call F` anywhere in the link makes LTCG keep `F` on the
+  standard ABI. `AppendReplayWriteSegment` stayed on stack arguments until the
+  asm writer was stubbed out; with C++ callers it gets native's EBX/EDI. So a
+  private register convention can only be reproduced once every caller is C++.
+  A probe that tail-calls `F` with its own stack arguments also pins it.
+
 - VC9 LTCG uses a callee's real register usage only for ordinary functions.
   The out-of-line COMDAT of an `inline` function whose inlining was declined is
   treated as a standard call. Native callers that keep `this` in ESI and

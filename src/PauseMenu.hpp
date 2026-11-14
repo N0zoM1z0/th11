@@ -45,4 +45,4 @@ __forceinline void DeletePauseMenuReplayRecord(TitleMenuRecordView *record)
 }
 
 // Reviewed source-open replay writer at 436420; return value is not consumed here.
-void __fastcall WritePauseMenuReplay(const char *filename, const char *name, int mode);
+int __fastcall WritePauseMenuReplay(const char *filename, const char *name, int mode);

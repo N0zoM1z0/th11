@@ -76,11 +76,13 @@ typedef char ReplaySegmentEventEndOffset[(offsetof(ReplayWriteSegment, eventEnd)
 typedef char ReplaySegmentSecondaryEndOffset[(offsetof(ReplayWriteSegment, secondaryEnd) == 0x18a0) ? 1 : -1];
 
 
+#pragma pack(push, 4)
 struct PauseRecordTimingView
 {
     unsigned char unknown000[0x24];
     double elapsed, limit;
 };
+#pragma pack(pop)
 extern PauseRecordTimingView *g_PauseRecordTiming;
 
 // These two name tables are observed at 004A3A88 and 004A3AA0.
@@ -144,7 +146,7 @@ __forceinline void WriteReplaySection(const void *buffer, unsigned int size)
         return;
     DWORD written;
     WriteFile(g_SharedFile, buffer, size, &written, 0);
-    if (written != size)
+    if (size != written)
     {
         CloseHandle(g_SharedFile);
         UnlockSharedFile();
@@ -156,658 +158,178 @@ __forceinline unsigned int AlignFour(unsigned int length)
 }
 }
 
-// 00436420..00436B5F. Conventional fastcall signature follows the observed
-// ECX filename / EDX name / stack mode entry, without modeling private
-// optimized ABIs of its helper functions as source declarations.
-
-// The original writer is a 1856-byte mixed-register owner. Keep the native
-// EAX/ECX/EDX entry, EBP replay root, stack-cookie frame, and private calls.
-extern unsigned int g_InputRuntimeFlags;
-extern CRITICAL_SECTION g_FileCriticalSection;
-extern unsigned char g_FileCriticalDepth;
-extern const double g_ReplayWriterPercentScale;
-extern const char g_ReplayWriterString_4955A0[];
-extern const char g_ReplayWriterString_4955A8[];
-extern const char g_ReplayWriterString_4955F4[];
-extern const char g_ReplayWriterString_495618[];
-extern const char g_ReplayWriterString_495620[];
-extern const char g_ReplayWriterString_495630[];
-extern const char g_ReplayWriterString_49563C[];
-extern const char g_ReplayWriterString_49565C[];
-extern const char g_ReplayWriterString_495668[];
-extern const char g_ReplayWriterString_495674[];
-extern const char g_ReplayWriterString_495688[];
-extern const char g_ReplayWriterString_49569C[];
-extern const char g_ReplayWriterString_4956AC[];
-extern const char g_ReplayWriterString_4956B8[];
-extern const char g_ReplayWriterString_4956CC[];
-extern const char g_ReplayWriterString_4956D8[];
-extern const char g_ReplayWriterString_4956EC[];
-extern void *g_ReplayWriterIat_48B088;
-extern void *g_ReplayWriterIat_48B0A0;
-extern void *g_ReplayWriterIat_48B0A8;
-extern "C" unsigned int __security_cookie;
-extern "C" void __fastcall __security_check_cookie(unsigned int value);
-extern "C" int __cdecl ReplayMakeDirectory(const char *path);
-extern "C" tm *__cdecl ReplayLocaltime64(__time64_t *value);
-
-// 00436420..00436B5F: exact native 1856-byte writer body.
-__declspec(naked) void __fastcall WritePauseMenuReplay(const char *filename,
-    const char *name, int mode)
+namespace
 {
-    __asm {
-        sub esp, 11Ch
-        mov eax, dword ptr [__security_cookie]
-        xor eax, esp
-        mov dword ptr [esp + 118h], eax
-        push ebx
-        push ebp
-        mov ebp, dword ptr [g_SecondaryReplayCurrent]
-        push esi
-        push edi
-        xor ebx, ebx
-        mov edi, edx
-        mov esi, ecx
-        mov ecx, dword ptr [ebp + 18h]
-        mov dword ptr [esp + 24h], ebx
-        mov dword ptr [esp + 20h], ebx
-        mov eax, edi
-    loc_00436451:
-        mov dl, byte ptr [eax]
-        mov byte ptr [ecx], dl
-        inc eax
-        inc ecx
-        test dl, dl
-        jne loc_00436451
-        mov eax, edi
-        lea edx, [eax + 1]
-    loc_00436460:
-        mov cl, byte ptr [eax]
-        inc eax
-        test cl, cl
-        jne loc_00436460
-        sub eax, edx
-        cmp eax, 8
-        jge loc_0043647d
-        mov edi, edi
-    loc_00436470:
-        mov ecx, dword ptr [ebp + 18h]
-        mov byte ptr [eax + ecx], 20h
-        inc eax
-        cmp eax, 8
-        jl loc_00436470
-    loc_0043647d:
-        test byte ptr [ebp + 1D8h], 1
-        jne loc_004364f2
-        cmp dword ptr [esp + 130h], ebx
-        je loc_004364f2
-        mov edx, dword ptr [ebp + 9Ch]
-        mov eax, dword ptr [edx]
-        mov ecx, dword ptr [eax + 1518h]
-        mov edx, 0FFFFh
-        mov word ptr [ecx], dx
-        mov ecx, dword ptr [eax + 1518h]
-        mov word ptr [ecx + 2], dx
-        mov ecx, dword ptr [eax + 1518h]
-        mov word ptr [ecx + 4], dx
-        add dword ptr [eax + 1518h], 6
-        mov ecx, dword ptr [eax + 1518h]
-        sub ecx, eax
-        mov eax, 2AAAAAABh
-        imul ecx
-        mov eax, edx
-        shr eax, 1Fh
-        add eax, edx
-        cmp eax, 384h
-        jl loc_004364f2
-        mov edi, dword ptr [ebp + 1D4h]
-        mov ebx, ebp
-        call AppendReplayWriteSegment
-        mov dword ptr [ebp + 9Ch], eax
-        xor ebx, ebx
-    loc_004364f2:
-        push offset g_ReplayWriterString_4955A0
-        call ReplayMakeDirectory
-        push esi
-        lea ecx, [esp + 30h]
-        push offset g_ReplayWriterString_4955A8
-        push ecx
-        call sprintf
-        add esp, 10h
-        xor ecx, ecx
-        lea eax, [ebp + 40h]
-        mov dword ptr [esp + 1Ch], ebx
-        mov esi, 70h
-        mov dword ptr [esp + 10h], ecx
-        lea ebx, [ebp + 1Ch]
-        mov dword ptr [esp + 14h], eax
-        jmp loc_00436530
-        // Preserve the original six-byte alignment LEA, including disp32=0.
-        _emit 08Dh
-        _emit 09Bh
-        _emit 00h
-        _emit 00h
-        _emit 00h
-        _emit 00h
-    loc_00436530:
-        mov eax, dword ptr [ebx]
-        test eax, eax
-        je loc_0043660c
-        cmp dword ptr [esp + 24h], 0
-        jne loc_00436545
-        mov dword ptr [esp + 24h], ecx
-    loc_00436545:
-        test byte ptr [ebp + 1D8h], 1
-        mov dword ptr [esp + 20h], ecx
-        jne loc_00436559
-        mov dword ptr [eax + 8], 0
-    loc_00436559:
-        mov edx, dword ptr [esp + 14h]
-        mov edi, dword ptr [edx]
-        add esi, 90h
-        test edi, edi
-        je loc_00436608
-        // Original alignment instruction is LEA ECX,[ECX+disp8 0].
-        _emit 08Dh
-        _emit 049h
-        _emit 00h
-    loc_00436570:
-        mov ecx, dword ptr [edi]
-        mov edx, dword ptr [ecx + 1518h]
-        sub edx, ecx
-        mov eax, 2AAAAAABh
-        imul edx
-        mov eax, edx
-        shr eax, 1Fh
-        add eax, edx
-        mov edx, dword ptr [ecx + 18A0h]
-        lea eax, [eax + eax*2]
-        lea eax, [edx + eax*2]
-        sub eax, ecx
-        test byte ptr [ebp + 1D8h], 1
-        lea edx, [esi + eax - 151Ch]
-        mov dword ptr [esp + 18h], edx
-        jne loc_004365f5
-        mov edx, dword ptr [ecx + 1518h]
-        mov esi, dword ptr [ebx]
-        sub edx, ecx
-        mov eax, 2AAAAAABh
-        imul edx
-        mov eax, edx
-        shr eax, 1Fh
-        add eax, edx
-        mov edx, dword ptr [ecx + 18A0h]
-        lea eax, [eax + eax*2]
-        lea eax, [edx + eax*2]
-        sub eax, ecx
-        sub eax, 151Ch
-        add dword ptr [esi + 8], eax
-        mov eax, dword ptr [edi]
-        mov ecx, dword ptr [eax + 1518h]
-        mov esi, dword ptr [ebx]
-        sub ecx, eax
-        mov eax, 2AAAAAABh
-        imul ecx
-        mov ecx, edx
-        shr ecx, 1Fh
-        add ecx, edx
-        add dword ptr [esi + 4], ecx
-    loc_004365f5:
-        mov edi, dword ptr [edi + 4]
-        mov esi, dword ptr [esp + 18h]
-        test edi, edi
-        jne loc_00436570
-        mov ecx, dword ptr [esp + 10h]
-    loc_00436608:
-        inc dword ptr [esp + 1Ch]
-    loc_0043660c:
-        add dword ptr [esp + 14h], 0Ch
-        inc ecx
-        add ebx, 4
-        cmp ecx, 8
-        mov dword ptr [esp + 10h], ecx
-        jl loc_00436530
-        mov edx, dword ptr [ebp + 18h]
-        mov eax, dword ptr [esp + 1Ch]
-        mov dword ptr [edx + 58h], eax
-        mov ecx, dword ptr [ebp + 18h]
-        mov edx, dword ptr [g_SecondaryActorScore]
-        mov eax, dword ptr [g_PauseRecordTiming]
-        mov dword ptr [ecx + 14h], edx
-        fld qword ptr [eax + 24h]
-        fdiv qword ptr [eax + 2Ch]
-        mov eax, dword ptr [ebp + 18h]
-        push esi
-        fstp dword ptr [esp + 14h]
-        fld dword ptr [esp + 14h]
-        fld qword ptr [g_ReplayWriterPercentScale]
-        fmul st(1), st(0)
-        fsubrp st(1), st(0)
-        fstp dword ptr [esp + 14h]
-        fld dword ptr [esp + 14h]
-        fstp dword ptr [eax + 54h]
-        call malloc
-        mov esi, dword ptr [ebp + 18h]
-        mov edx, eax
-        lea eax, [ebp + 40h]
-        mov dword ptr [esp + 18h], eax
-        mov ecx, 1Ch
-        mov edi, edx
-        lea eax, [ebp + 1Ch]
-        add esp, 4
-        mov dword ptr [esp + 1Ch], edx
-        rep movsd
-        mov ebx, 70h
-        mov dword ptr [esp + 10h], eax
-        mov dword ptr [esp + 18h], 8
-        // Preserve the native seven-byte SIB/disp32 alignment LEA.
-        _emit 08Dh
-        _emit 0A4h
-        _emit 024h
-        _emit 00h
-        _emit 00h
-        _emit 00h
-        _emit 00h
-    loc_004366a0:
-        mov esi, dword ptr [eax]
-        test esi, esi
-        je loc_0043675c
-        lea edi, [edx + ebx]
-        mov ecx, 24h
-        rep movsd
-        mov ecx, dword ptr [esp + 14h]
-        mov edi, dword ptr [ecx]
-        add ebx, 90h
-        test edi, edi
-        je loc_00436715
-    loc_004366c4:
-        mov esi, dword ptr [edi]
-        mov ecx, dword ptr [esi + 1518h]
-        sub ecx, esi
-        mov eax, 2AAAAAABh
-        imul ecx
-        mov eax, edx
-        shr eax, 1Fh
-        add eax, edx
-        lea edx, [eax + eax*2]
-        mov eax, dword ptr [esp + 1Ch]
-        add edx, edx
-        push edx
-        add eax, ebx
-        push esi
-        push eax
-        call ReplayMemcpy
-        mov ecx, dword ptr [esi + 1518h]
-        mov edi, dword ptr [edi + 4]
-        sub ecx, esi
-        mov eax, 2AAAAAABh
-        imul ecx
-        mov eax, edx
-        shr eax, 1Fh
-        add eax, edx
-        add esp, 0Ch
-        lea ecx, [eax + eax*2]
-        lea ebx, [ebx + ecx*2]
-        test edi, edi
-        jne loc_004366c4
-    loc_00436715:
-        mov edx, dword ptr [esp + 14h]
-        mov edi, dword ptr [edx]
-        test edi, edi
-        je loc_0043675c
-        nop
-    loc_00436720:
-        mov esi, dword ptr [edi]
-        mov eax, dword ptr [esi + 18A0h]
-        mov edx, dword ptr [esp + 1Ch]
-        sub eax, esi
-        sub eax, 151Ch
-        push eax
-        lea ecx, [esi + 151Ch]
-        push ecx
-        add edx, ebx
-        push edx
-        call ReplayMemcpy
-        mov eax, dword ptr [esi + 18A0h]
-        mov edi, dword ptr [edi + 4]
-        sub eax, esi
-        add esp, 0Ch
-        lea ebx, [ebx + eax - 151Ch]
-        test edi, edi
-        jne loc_00436720
-    loc_0043675c:
-        mov eax, dword ptr [esp + 10h]
-        add dword ptr [esp + 14h], 0Ch
-        mov edx, dword ptr [esp + 1Ch]
-        add eax, 4
-        sub dword ptr [esp + 18h], 1
-        mov dword ptr [esp + 10h], eax
-        jne loc_004366a0
-        lea ecx, [esp + 18h]
-        push ecx
-        push ebx
-        push edx
-        call CompressReplayData
-        mov esi, eax
-        mov eax, dword ptr [esp + 1Ch]
-        push eax
-        mov dword ptr [esp + 14h], esi
-        call free
-        mov edi, dword ptr [esp + 1Ch]
-        add esp, 4
-        push edi
-        push 40h
-        push 7Ah
-        push edi
-        push esi
-        mov al, 3Dh
-        call GatherXorBlocks
-        push edi
-        push 800h
-        push 0E1h
-        push edi
-        push esi
-        mov al, 0AAh
-        call GatherXorBlocks
-        mov ecx, dword ptr [ebp + 14h]
-        mov dword ptr [ecx + 20h], ebx
-        mov edx, dword ptr [ebp + 14h]
-        mov dword ptr [edx + 1Ch], edi
-        mov eax, dword ptr [ebp + 14h]
-        mov ecx, dword ptr [eax + 1Ch]
-        add ecx, 24h
-        lea esi, [esp + 28h]
-        mov dword ptr [eax + 0Ch], ecx
-        call OpenSharedFileForWrite
-        mov eax, dword ptr [g_SharedFile]
-        cmp eax, -1
-        je loc_0043687f
-        mov ecx, dword ptr [ebp + 14h]
-        mov esi, dword ptr [g_ReplayWriterIat_48B0A8]
-        push 0
-        lea edx, [esp + 1Ch]
-        push edx
-        push 24h
-        push ecx
-        push eax
-        call esi
-        cmp dword ptr [esp + 18h], 24h
-        je loc_00436836
-        mov edx, dword ptr [g_SharedFile]
-        push edx
-        call dword ptr [g_ReplayWriterIat_48B0A0]
-        test dword ptr [g_InputRuntimeFlags], 8000h
-        je loc_00436836
-        push offset g_FileCriticalSection
-        call dword ptr [g_ReplayWriterIat_48B088]
-        dec byte ptr [g_FileCriticalDepth]
-    loc_00436836:
-        mov eax, dword ptr [g_SharedFile]
-        cmp eax, -1
-        je loc_0043687f
-        mov edx, dword ptr [esp + 10h]
-        push 0
-        lea ecx, [esp + 18h]
-        push ecx
-        push edi
-        push edx
-        push eax
-        call esi
-        cmp edi, dword ptr [esp + 14h]
-        je loc_0043687f
-        mov eax, dword ptr [g_SharedFile]
-        push eax
-        call dword ptr [g_ReplayWriterIat_48B0A0]
-        test dword ptr [g_InputRuntimeFlags], 8000h
-        je loc_0043687f
-        push offset g_FileCriticalSection
-        call dword ptr [g_ReplayWriterIat_48B088]
-        dec byte ptr [g_FileCriticalDepth]
-    loc_0043687f:
-        mov eax, dword ptr [esp + 10h]
-        test eax, eax
-        je loc_00436890
-        push eax
-        call free
-        add esp, 4
-    loc_00436890:
-        push 0FFFFh
-        call malloc
-        push 0FFFFh
-        mov edi, eax
-        push 0
-        push edi
-        call ReplayMemset
-        lea ebx, [edi + 0Ch]
-        mov esi, ebx
-        push offset g_ReplayWriterString_4955F4
-        push esi
-        mov dword ptr [edi], 52455355h
-        mov byte ptr [edi + 8], 0
-        call sprintf
-        push offset g_ReplayWriterString_495618
-        add esi, eax
-        push offset g_ReplayWriterString_495620
-        push esi
-        call sprintf
-        mov ecx, dword ptr [ebp + 18h]
-        push ecx
-        add esi, eax
-        push offset g_ReplayWriterString_495630
-        push esi
-        call sprintf
-        add esi, eax
-        mov eax, dword ptr [ebp + 18h]
-        add eax, 0Ch
-        push eax
-        call ReplayLocaltime64
-        mov edx, dword ptr [eax + 4]
-        mov ecx, dword ptr [eax + 8]
-        push edx
-        mov edx, dword ptr [eax + 0Ch]
-        push ecx
-        mov ecx, dword ptr [eax + 10h]
-        mov eax, dword ptr [eax + 14h]
-        push edx
-        inc ecx
-        push ecx
-        cdq
-        mov ecx, 64h
-        idiv ecx
-        push edx
-        push offset g_ReplayWriterString_49563C
-        push esi
-        call sprintf
-        add esi, eax
-        mov eax, dword ptr [ebp + 18h]
-        mov ecx, dword ptr [eax + 5Ch]
-        lea edx, [ecx + ecx*2]
-        add edx, dword ptr [eax + 60h]
-        add esp, 50h
-        mov eax, dword ptr [edx*4 + g_ReplayCharacterNames]
-        push eax
-        push offset g_ReplayWriterString_49565C
-        push esi
-        call sprintf
-        mov ecx, dword ptr [ebp + 18h]
-        mov edx, dword ptr [ecx + 64h]
-        add esi, eax
-        mov eax, dword ptr [edx*4 + g_ReplayDifficultyNames]
-        push eax
-        push offset g_ReplayWriterString_495668
-        push esi
-        call sprintf
-        mov edx, dword ptr [ebp + 18h]
-        mov ecx, 7
-        add esp, 18h
-        add esi, eax
-        cmp dword ptr [edx + 68h], ecx
-        jle loc_00436993
-        cmp dword ptr [esp + 24h], ecx
-        jne loc_00436983
-        push offset g_ReplayWriterString_495674
-        push esi
-        call sprintf
-        add esp, 8
-        jmp loc_004369d4
-    loc_00436983:
-        push offset g_ReplayWriterString_495688
-        push esi
-        call sprintf
-        add esp, 8
-        jmp loc_004369d4
-    loc_00436993:
-        mov eax, dword ptr [esp + 24h]
-        mov edx, dword ptr [esp + 20h]
-        cmp eax, edx
-        jne loc_004369c4
-        cmp eax, ecx
-        jne loc_004369b3
-        push offset g_ReplayWriterString_49569C
-        push esi
-        call sprintf
-        add esp, 8
-        jmp loc_004369d4
-    loc_004369b3:
-        push eax
-        push offset g_ReplayWriterString_4956AC
-        push esi
-        call sprintf
-        add esp, 0Ch
-        jmp loc_004369d4
-    loc_004369c4:
-        push edx
-        push eax
-        push offset g_ReplayWriterString_4956B8
-        push esi
-        call sprintf
-        add esp, 10h
-    loc_004369d4:
-        add esi, eax
-        mov eax, dword ptr [ebp + 18h]
-        mov ecx, dword ptr [eax + 14h]
-        push ecx
-        push offset g_ReplayWriterString_4956CC
-        push esi
-        call sprintf
-        mov edx, dword ptr [ebp + 18h]
-        fld dword ptr [edx + 54h]
-        add esp, 4
-        fstp qword ptr [esp]
-        add esi, eax
-        push offset g_ReplayWriterString_4956D8
-        push esi
-        call sprintf
-        lea esi, [esi + eax + 1]
-        mov eax, esi
-        sub eax, edi
-        add esp, 10h
-        and eax, 80000003h
-        jns loc_00436a18
-        dec eax
-        or eax, 0FFFFFFFCh
-        inc eax
-    loc_00436a18:
-        je loc_00436a23
-        mov ecx, 4
-        sub ecx, eax
-        add esi, ecx
-    loc_00436a23:
-        mov eax, dword ptr [g_SharedFile]
-        sub esi, edi
-        mov dword ptr [edi + 4], esi
-        cmp eax, -1
-        je loc_00436a71
-        push 0
-        lea edx, [esp + 24h]
-        push edx
-        push esi
-        push edi
-        push eax
-        call dword ptr [g_ReplayWriterIat_48B0A8]
-        cmp esi, dword ptr [esp + 20h]
-        je loc_00436a71
-        mov eax, dword ptr [g_SharedFile]
-        push eax
-        call dword ptr [g_ReplayWriterIat_48B0A0]
-        test dword ptr [g_InputRuntimeFlags], 8000h
-        je loc_00436a71
-        push offset g_FileCriticalSection
-        call dword ptr [g_ReplayWriterIat_48B088]
-        dec byte ptr [g_FileCriticalDepth]
-    loc_00436a71:
-        push 0FFFFh
-        push 0
-        push edi
-        call ReplayMemset
-        push offset g_ReplayWriterString_4956EC
-        push ebx
-        mov dword ptr [edi], 52455355h
-        mov byte ptr [edi + 8], 1
-        call sprintf
-        lea esi, [ebx + eax + 1]
-        mov eax, esi
-        sub eax, edi
-        add esp, 14h
-        and eax, 80000003h
-        jns loc_00436aaa
-        dec eax
-        or eax, 0FFFFFFFCh
-        inc eax
-    loc_00436aaa:
-        je loc_00436ab5
-        mov ecx, 4
-        sub ecx, eax
-        add esi, ecx
-    loc_00436ab5:
-        mov ebx, dword ptr [g_SharedFile]
-        sub esi, edi
-        mov dword ptr [edi + 4], esi
-        cmp ebx, -1
-        je loc_00436b0a
-        push 0
-        lea edx, [esp + 24h]
-        push edx
-        push esi
-        push edi
-        push ebx
-        call dword ptr [g_ReplayWriterIat_48B0A8]
-        cmp esi, dword ptr [esp + 20h]
-        je loc_00436b04
-        mov eax, dword ptr [g_SharedFile]
-        push eax
-        call dword ptr [g_ReplayWriterIat_48B0A0]
-        test dword ptr [g_InputRuntimeFlags], 8000h
-        je loc_00436b04
-        push offset g_FileCriticalSection
-        call dword ptr [g_ReplayWriterIat_48B088]
-        dec byte ptr [g_FileCriticalDepth]
-    loc_00436b04:
-        mov ebx, dword ptr [g_SharedFile]
-    loc_00436b0a:
-        push edi
-        call free
-        add esp, 4
-        cmp ebx, -1
-        je loc_00436b3c
-        push ebx
-        call dword ptr [g_ReplayWriterIat_48B0A0]
-        test dword ptr [g_InputRuntimeFlags], 8000h
-        je loc_00436b3c
-        push offset g_FileCriticalSection
-        call dword ptr [g_ReplayWriterIat_48B088]
-        dec byte ptr [g_FileCriticalDepth]
-    loc_00436b3c:
-        or dword ptr [ebp + 1D8h], 1
-        mov ecx, dword ptr [esp + 128h]
-        pop edi
-        pop esi
-        pop ebp
-        pop ebx
-        xor ecx, esp
-        xor eax, eax
-        call __security_check_cookie
-        add esp, 11Ch
-        ret 4
+inline ReplayWriteHeader *HeaderOf(ReplayWriteState *state)
+{
+    return static_cast<ReplayWriteHeader *>(state->header);
+}
+inline ReplayWriteFileHeader *FileHeaderOf(ReplayWriteState *state)
+{
+    return static_cast<ReplayWriteFileHeader *>(state->fileHeader);
+}
+inline ReplayWriteStage *StageOf(ReplayWriteState *state, int index)
+{
+    return static_cast<ReplayWriteStage *>(state->stages[index]);
+}
+inline ReplayWriteSegmentNode *FirstSegment(ReplayWriteState *state, int index)
+{
+    return static_cast<ReplayWriteSegmentNode *>(state->streams[index].first);
+}
+inline int EventCount(const ReplayWriteSegment *chunk)
+{
+    return static_cast<int>(chunk->eventEnd - reinterpret_cast<const unsigned char *>(chunk)) / 6;
+}
+inline void AddReplayEvent(ReplayWriteSegment *segment, unsigned short current,
+    unsigned short pressed, unsigned short released)
+{
+    reinterpret_cast<unsigned short *>(segment->eventEnd)[0] = current;
+    reinterpret_cast<unsigned short *>(segment->eventEnd)[1] = pressed;
+    reinterpret_cast<unsigned short *>(segment->eventEnd)[2] = released;
+    segment->eventEnd += 6;
+}
+}
+
+// 00436420..00436B5F. ECX filename, EDX display name, stack mode.
+int __fastcall WritePauseMenuReplay(const char *filename, const char *name, int mode)
+{
+    ReplayWriteState *state = g_SecondaryReplayCurrent;
+    int firstStage = 0;
+    int lastStage = 0;
+    strcpy(HeaderOf(state)->name, name);
+    int length = static_cast<int>(strlen(name));
+    while (length < 8)
+        HeaderOf(state)->name[length++] = ' ';
+
+    if (!(state->flags & 1) && mode)
+    {
+        ReplayWriteSegment *segment = static_cast<ReplayWriteSegmentNode *>(state->streams[7].last)->segment;
+        AddReplayEvent(segment, 0xffff, 0xffff, 0xffff);
+        if ((segment->eventEnd - reinterpret_cast<unsigned char *>(segment)) / 6 >= 900)
+            state->streams[7].last = AppendReplayWriteSegment(state, state->recordingStage);
     }
+
+    _mkdir("replay");
+    char path[256];
+    sprintf(path, "replay/%s", filename);
+
+    int stageCount = 0;
+    int rawSize = 0x70;
+    for (int i = 0; i < 8; ++i)
+    {
+        if (!state->stages[i]) continue;
+        if (!firstStage) firstStage = i;
+        lastStage = i;
+        if (!(state->flags & 1)) StageOf(state, i)->bytes = 0;
+        rawSize += 0x90;
+        for (ReplayWriteSegmentNode *node = FirstSegment(state, i); node; node = node->next)
+        {
+            rawSize += EventBytes(node->segment) + ExtraBytes(node->segment);
+            if (!(state->flags & 1))
+            {
+                StageOf(state, i)->bytes += EventBytes(node->segment) + ExtraBytes(node->segment);
+                StageOf(state, i)->eventCount += EventCount(node->segment);
+            }
+        }
+        ++stageCount;
+    }
+
+    HeaderOf(state)->stageCount = stageCount;
+    HeaderOf(state)->score = g_SecondaryActorScore;
+    float progress = static_cast<float>(g_PauseRecordTiming->elapsed / g_PauseRecordTiming->limit);
+    float slowRate = static_cast<float>(100.0 - progress * 100.0);
+    HeaderOf(state)->slowRate = slowRate;
+
+    unsigned char *raw = static_cast<unsigned char *>(malloc(rawSize));
+    memcpy(raw, state->header, 0x70);
+    int position = 0x70;
+    for (int i = 0; i < 8; ++i)
+    {
+        if (state->stages[i])
+        {
+            memcpy(raw + position, state->stages[i], 0x90);
+            position += 0x90;
+            for (ReplayWriteSegmentNode *node = FirstSegment(state, i); node; node = node->next)
+            {
+                ReplayWriteSegment *chunk = node->segment;
+                memcpy(raw + position, chunk->events, EventBytes(chunk));
+                position += EventBytes(chunk);
+            }
+            for (ReplayWriteSegmentNode *node = FirstSegment(state, i); node; node = node->next)
+            {
+                ReplayWriteSegment *chunk = node->segment;
+                memcpy(raw + position, chunk->secondary, ExtraBytes(chunk));
+                position += ExtraBytes(chunk);
+            }
+        }
+    }
+
+    int packedSize;
+    unsigned char *packed = CompressReplayData(raw, position, &packedSize);
+    free(raw);
+    GatherXorBlocks(packed, packedSize, 0x3d, 0x7a, 0x40, packedSize);
+    GatherXorBlocks(packed, packedSize, 0xaa, 0xe1, 0x800, packedSize);
+    FileHeaderOf(state)->rawSize = position;
+    FileHeaderOf(state)->compressedSize = packedSize;
+    FileHeaderOf(state)->dataEnd = FileHeaderOf(state)->compressedSize + 0x24;
+    OpenSharedFileForWrite(path);
+    WriteReplaySection(FileHeaderOf(state), 0x24);
+    WriteReplaySection(packed, packedSize);
+    if (packed) free(packed);
+
+    // Two USER sections: a printable information block and the comment prompt.
+    unsigned char *text = static_cast<unsigned char *>(malloc(0xffff));
+    memset(text, 0, 0xffff);
+    char *cursor = reinterpret_cast<char *>(text + 12);
+    *reinterpret_cast<unsigned int *>(text) = 0x52455355; // "USER"
+    text[8] = 0;
+    cursor += sprintf(cursor, "\x93\x8c\x95\xfb\x92\x6e\x97\xec\x93\x61\x20\x83\x8a\x83\x76\x83\x8c\x83\x43\x83\x74\x83\x40\x83\x43\x83\x8b\x8f\xee\x95\xf1\r\n");
+    cursor += sprintf(cursor, "Version %s\r\n", "1.00a");
+    cursor += sprintf(cursor, "Name %s\r\n", HeaderOf(state)->name);
+    tm *date = _localtime64(&HeaderOf(state)->timestamp);
+    cursor += sprintf(cursor, "Date %.2d/%.2d/%.2d %.2d:%.2d\r\n", date->tm_year % 100,
+        date->tm_mon + 1, date->tm_mday, date->tm_hour, date->tm_min);
+    cursor += sprintf(cursor, "Chara %s\r\n",
+        g_ReplayCharacterNames[HeaderOf(state)->character * 3 + HeaderOf(state)->shot]);
+    cursor += sprintf(cursor, "Rank %s\r\n", g_ReplayDifficultyNames[HeaderOf(state)->difficulty]);
+    int printed;
+    if (HeaderOf(state)->stage > 7)
+    {
+        if (firstStage == 7)
+            printed = sprintf(cursor, "Extra Stage Clear\r\n");
+        else
+            printed = sprintf(cursor, "Stage All Clear\r\n");
+    }
+    else if (firstStage == lastStage)
+    {
+        if (firstStage == 7)
+            printed = sprintf(cursor, "Extra Stage\r\n");
+        else
+            printed = sprintf(cursor, "Stage %d\r\n", firstStage);
+    }
+    else
+        printed = sprintf(cursor, "Stage %d \x81\x60 %d\r\n", firstStage, lastStage);
+    cursor += printed;
+    cursor += sprintf(cursor, "Score %d\r\n", HeaderOf(state)->score);
+    cursor += sprintf(cursor, "Slow Rate %2.2f\r\n", HeaderOf(state)->slowRate) + 1;
+    if ((cursor - reinterpret_cast<char *>(text)) % 4)
+        cursor += 4 - (cursor - reinterpret_cast<char *>(text)) % 4;
+    unsigned int size = static_cast<unsigned int>(cursor - reinterpret_cast<char *>(text));
+    *reinterpret_cast<unsigned int *>(text + 4) = size;
+    WriteReplaySection(text, size);
+
+    memset(text, 0, 0xffff);
+    *reinterpret_cast<unsigned int *>(text) = 0x52455355; // "USER"
+    text[8] = 1;
+    cursor = reinterpret_cast<char *>(text + 12);
+    cursor += sprintf(cursor, "\x83\x52\x83\x81\x83\x93\x83\x67\x82\xf0\x8f\x91\x82\xaf\x82\xdc\x82\xb7") + 1;
+    if ((cursor - reinterpret_cast<char *>(text)) % 4)
+        cursor += 4 - (cursor - reinterpret_cast<char *>(text)) % 4;
+    size = static_cast<unsigned int>(cursor - reinterpret_cast<char *>(text));
+    *reinterpret_cast<unsigned int *>(text + 4) = size;
+    WriteReplaySection(text, size);
+    free(text);
+    CloseSharedFile();
+    state->flags |= 1;
+    return 0;
 }

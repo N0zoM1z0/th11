@@ -78,8 +78,17 @@ marks the recorder finalized.
 
 The writer (436420), segment allocator (437300) and compressor (4423A0) had
 been credited exact from naked `__asm` copies of the target. That is not a
-reconstruction and the credit is withdrawn. The writer and allocator still
-carry those asm bodies and need C++.
+reconstruction and the credit is withdrawn. All three are natural C++ again.
+
+The writer follows native statement order (446/564 aligned instructions,
+1877/1856 bytes). Native re-reads `state->header`, `state->stages[i]` and
+`node->segment` in the sizing loop, but keeps `chunk` locals in the copy loops.
+The end marker uses the recorder's three-store event helper. The timing doubles
+sit at +0x24/+0x2C (4-byte packing), the write check is `size != written`, and
+the function returns 0. The allocator gets native's EBX/EDI convention only when
+no inline-asm caller remains in the link; in the writer unit it is 38/40
+aligned instructions, differing only in the segment constructor's store
+schedule.
 
 ## LZSS compressor (004423A0..00442C10)
 
