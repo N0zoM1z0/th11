@@ -46,6 +46,12 @@ compiler observations and useful failed approaches.
   453440, 459C60, 45DC80, 45DD50 (scan: E8/E9 targets plus little-endian
   address search over the attested image). The integer-pair group is already
   reproduced this way; see [SECONDARY_PATTERN](SECONDARY_PATTERN.md).
+- The length/angle copies 435400/435430/435460 do not reproduce as plain
+  inline-copy probes. Native realigns their frame (`push ebp; and esp,-8`)
+  around `_CIsqrt`/`_CIatan2`; probes with `sqrt(double)`, the float `sqrt`/
+  `atan2` overloads, `sqrtf` or explicit double temporaries all give the
+  unaligned 33/34/19-byte form. The alignment probably comes from LTCG's
+  stack-alignment choice for the real (inlined) callers, so find those first.
 - A global `/Ob2` is rejected: it inlines `ResetMusicDecoder` into the exact
   `ConfigureMusicDecoder`. Keep `/Ob1`; prefer source `inline` over
   `__forceinline` when testing why native inlined a helper.
