@@ -46,19 +46,20 @@ requires a reviewed boundary, so extend review, but tie it to reconstruction:
    library. About 139 CRT-region rows (12.5 KB) remain unmatched, plus 116
    library rows with split extents (mostly SEH funclets).
 1a. **Rewrite the withdrawn claims in C++.** 29 exact claims had `__asm`
-   bodies, asm-symbol units or volatile casts. Done so far: the five LZSS tree
-   helpers and the stage-link constructor are exact again. Plain C++ but still
-   non-exact: compressor 166/240, writer 446/564, segment append 38/40, frame
-   recorder 94/108, music thread 54/63, pair leaves, score commit. Still asm:
-   replay initializer/loader/stage lifecycle (4356E0, 436B60, 436DA0), record
-   factories (435E00/435EF0), header storage 420D80, score insertion/preparation
-   (42BA80, 42D850), draw publishers (455D80/455DF0/4557E0), statistics writer
-   437A70, title record destructor 435C50, integer player position 435630,
-   pause deletion 435FC0, plus `__asm` blocks inside the three pause menus.
-   Private register conventions (EBX/EDI append, ESI deletion) only appear
-   when every caller is C++ (see the KB), so convert caller and callee
-   families together. The 436D20 thiscall forwarder to the recorder is
-   uninventoried.
+   bodies, asm-symbol units or volatile casts. Exact again from natural C++:
+   the five LZSS tree helpers, the stage-link constructor, both draw-VM
+   creators (455D80/455DF0), score insertion 42BA80 and record preparation
+   42D850. Plain C++ but non-exact: compressor 166/240, writer 446/564,
+   segment append 38/40, frame recorder 94/108, music thread 54/63, draw
+   publisher 4557E0 (id re-test), header storage 420D80 30/40, integer
+   position 435630 19/22, pair leaves, score commit. Byte-identical apart from
+   fields but SEH-framed (no EH acceptance yet): record destructor 435C50,
+   Ascii destructor 401210. Still asm: replay initializer/loader/stage lifecycle
+   (4356E0, 436B60, 436DA0), record factory owner units (435E00/435EF0; C++
+   exists in `ReplayRecordFactories.cpp`), statistics writer 437A70, pause
+   deletion 435FC0, plus `__asm` blocks in the three pause menus. Private
+   register conventions only appear when every caller is C++, and a probe must
+   give shared callees live arguments, or LTCG folds constants into them.
 2. **Inventory the uncovered gaps.** Classify each as dead inline copy,
    padding, data or thunk. Dead copies are quick exact wins with the method
    above (store-shape search for users, inline helper in the owning TU).
