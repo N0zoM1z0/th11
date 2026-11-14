@@ -184,3 +184,14 @@ public primary-TU contributions/296 bytes. Exhaustive decoding finds no address
 fields; every byte agrees. All nine passed replay after the header/inline
 changes. Wider trace-declaration dependencies are recorded in
 [SECONDARY_EXTENSION](SECONDARY_EXTENSION.md).
+
+## 2026-11-14: RestartSecondaryScript (45DD50)
+
+45DD50 is the uncalled dead copy of `SecondaryManager::Restart(name)`: native
+inlines `current->instruction = FindSecondarySubroutine(program, name);
+current->time = 0` in `EnterSecondaryScriptFrame` (45B7F0, through
+`owner->current`) and twice in `UpdateSecondaryActorState`. Defining
+`Restart` inline in `SecondaryScript.hpp` and using it at those sites emits a
+28-byte copy from the script TU, but VC9 passes `name` in EAX where native
+uses ECX (6/10 instructions aligned), with or without the actor-update uses.
+The change was reverted; find what fixes the parameter register first.
