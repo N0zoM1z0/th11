@@ -15,8 +15,8 @@ void __stdcall ReplaceReplayCompressionNode(int oldNode, int newNode);
 unsigned char *__stdcall CompressReplayData(const void *data, int size, int *compressedSize)
 {
     const unsigned char *input = static_cast<const unsigned char *>(data);
-    int bits = 0;
     unsigned char mask = 0x80;
+    int bits = 0;
     unsigned char *output = static_cast<unsigned char *>(malloc(size * 2));
     if (!output) return 0;
     unsigned char *out = output;
@@ -25,14 +25,15 @@ unsigned char *__stdcall CompressReplayData(const void *data, int size, int *com
 
     const unsigned char *cursor = input;
     int position = 1;
-    int length;
+    int count;
     int c;
-    for (length = 0; length < 18; ++length)
+    for (count = 0; count < 18; ++count)
     {
         c = cursor - input < size ? *cursor++ : -1;
         if (c == -1) break;
-        g_ReplayCompressionWindow[position + length] = static_cast<unsigned char>(c);
+        g_ReplayCompressionWindow[position + count] = static_cast<unsigned char>(c);
     }
+    int length = count;
     int matchLength = 0;
     int matchPosition = 0;
     g_ReplayCompressionRoot = 1;
@@ -68,8 +69,7 @@ unsigned char *__stdcall CompressReplayData(const void *data, int size, int *com
                 if (!(mask >>= 1)) { *out++ = static_cast<unsigned char>(bits); bits = 0; mask = 0x80; }
             }
         }
-        int advance = matchLength;
-        for (int i = 0; i < advance; ++i)
+        for (int i = matchLength; i > 0; --i)
         {
             int end = (position + 18) & 0x1fff;
                     if (g_ReplayCompressionNodes[end].parent)

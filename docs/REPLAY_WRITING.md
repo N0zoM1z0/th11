@@ -101,7 +101,7 @@ local `tree` pointer, as the earlier C++ did, changes the addressing and
 register choice in every helper. Separate field-wise copies in Replace give
 23/30 aligned instructions instead of the struct copy's 30/30.
 
-The encoder is natural C++ but not exact yet (783/795 bytes, 142/240
+The encoder is natural C++ but not exact yet (795/795 bytes, 166/240
 aligned instructions). Native code shows how the source is shaped:
 
 - Input is read through a `getc`-style expression,
@@ -114,6 +114,13 @@ aligned instructions). Native code shows how the source is shaped:
   custom register conventions, so they are not `inline` functions.
 - The bit buffer is an `int` in EBX and the mask an `unsigned char` on the
   stack. The bit selectors are unsigned (`shr`).
+- The preload loop has its own counter that is copied into `length`
+  (native copies EAX into ECX and a stack slot); this gives 150/240. The inner
+  loop counts down from `matchLength` (`for (i = matchLength; i > 0; --i)`)
+  rather than through an `advance` copy, which reaches the native size.
+- Declaration order of the bit state and match variables, a `do`/`while`
+  outer loop, and initialising the match variables after the root setup
+  made no difference.
 
 The remaining encoder gap is register allocation. Native keeps `matchLength`
 in ESI and spills `length` to the stack (it reuses ESI as the constant 1 in
