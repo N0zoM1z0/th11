@@ -8129,11 +8129,11 @@ symbol = "?CompressReplayData@@YGPAEPBXHPAH@Z"
 target_address = 0x004423A0
 size = 795
 linkages = [
-  { offset = 21, type = "REL32", symbol = "_ReplayCompressionMalloc", target = 0x00460192 },
+  { offset = 21, type = "REL32", symbol = "_malloc", target = 0x00460192 },
   { offset = 59, type = "REL32", symbol = "?ResetReplayCompressionTree@@YAXXZ", target = 0x004428D0 },
   { offset = 601, type = "REL32", symbol = "?DeleteReplayCompressionNode@@YIXH@Z", target = 0x00442AB0 },
-  { offset = 610, type = "REL32", symbol = "_ReplayCompressionReplaceNodePrivate", target = 0x00442B50 },
-  { offset = 693, type = "REL32", symbol = "?FindReplayCompressionMatch@@YIHPAHH0@Z", target = 0x00442910 },
+  { offset = 610, type = "REL32", symbol = "?ReplaceReplayCompressionNode@@YGXHH@Z", target = 0x00442B50 },
+  { offset = 693, type = "REL32", symbol = "?FindReplayCompressionMatch@@YGHHPAH@Z", target = 0x00442910 },
 ]
 
 # The native EAX/EDX replacement helper is also a complete exact owner.
@@ -8151,10 +8151,26 @@ output_dir = "build/match-linked/ReplayCompressionPrivateReplace"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
 entry = "ReplayCompressionProbe@12"
 functions = ["ReplaceReplayCompressionNode"]
-symbol = "_ReplayCompressionReplaceNodePrivate"
+symbol = "?ReplaceReplayCompressionNode@@YGXHH@Z"
 target_address = 0x00442B50
 size = 134
-linkages = []
+linkages = [
+  { offset = 9, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8 },
+  { offset = 22, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8, addend = 4 },
+  { offset = 30, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8, addend = 4 },
+  { offset = 38, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8, addend = 8 },
+  { offset = 45, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8 },
+  { offset = 57, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8 },
+  { offset = 64, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8, addend = 4 },
+  { offset = 72, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8, addend = 4 },
+  { offset = 79, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8, addend = 8 },
+  { offset = 85, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8, addend = 8 },
+  { offset = 91, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8, addend = 4 },
+  { offset = 101, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8 },
+  { offset = 107, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8, addend = 8 },
+  { offset = 117, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8 },
+  { offset = 124, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8 },
+]
 
 # The native delete helper uses ECX for its node and tail-jumps to the
 # EAX/EDX replacement routine; the recursive self-call is local to its owner.
@@ -8176,9 +8192,13 @@ symbol = "?DeleteReplayCompressionNode@@YIXH@Z"
 target_address = 0x00442AB0
 size = 79
 linkages = [
-  { offset = 36, type = "REL32", symbol = "_ReplayCompressionSpliceNodePrivate", target = 0x00442B00 },
+  { offset = 12, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8 },
+  { offset = 21, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8, addend = 8 },
+  { offset = 31, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8, addend = 4 },
+  { offset = 36, type = "REL32", symbol = "?SpliceReplayCompressionNode@@YGXHH@Z", target = 0x00442B00 },
+  { offset = 44, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8, addend = 4 },
   { offset = 55, type = "REL32", symbol = "?FindReplayCompressionPredecessor@@YGHH@Z", target = 0x00442BE0 },
-  { offset = 75, type = "REL32", symbol = "_ReplayCompressionReplaceNodePrivate", target = 0x00442B50 },
+  { offset = 75, type = "REL32", symbol = "?ReplaceReplayCompressionNode@@YGXHH@Z", target = 0x00442B50 },
 ]
 
 # Native 442B00 uses ESI for the old node and EDX for its replacement.
@@ -8196,10 +8216,19 @@ output_dir = "build/match-linked/ReplayCompressionPrivateSplice"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
 entry = "ReplayCompressionProbe@12"
 functions = ["SpliceReplayCompressionNode"]
-symbol = "_ReplayCompressionSpliceNodePrivate"
+symbol = "?SpliceReplayCompressionNode@@YGXHH@Z"
 target_address = 0x00442B00
 size = 80
-linkages = []
+linkages = [
+  { offset = 7, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8 },
+  { offset = 17, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8 },
+  { offset = 24, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8 },
+  { offset = 38, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8, addend = 8 },
+  { offset = 46, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8, addend = 8 },
+  { offset = 53, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8 },
+  { offset = 64, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8, addend = 4 },
+  { offset = 71, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8 },
+]
 
 # Complete 416-byte native match finder. Its private ABI is ECX (unused alias),
 # EDX (ring position), and one stack output pointer; it calls EAX/EDX replace.
@@ -8217,7 +8246,7 @@ output_dir = "build/match-linked/ReplayCompressionMatchSearch"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
 entry = "ReplayCompressionProbe@12"
 functions = ["FindReplayCompressionMatch"]
-symbol = "?FindReplayCompressionMatch@@YIHPAHH0@Z"
+symbol = "?FindReplayCompressionMatch@@YGHHPAH@Z"
 target_address = 0x00442910
 size = 416
 linkages = [
@@ -8236,7 +8265,7 @@ linkages = [
   { offset = 262, type = "DIR32", symbol = "?g_ReplayCompressionWindow@@3PAEA", target = 0x004C0EE8 },
   { offset = 332, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8, addend = 8 },
   { offset = 341, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8, addend = 4 },
-  { offset = 359, type = "REL32", symbol = "_ReplayCompressionReplaceNodePrivate", target = 0x00442B50 },
+  { offset = 359, type = "REL32", symbol = "?ReplaceReplayCompressionNode@@YGXHH@Z", target = 0x00442B50 },
   { offset = 385, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8 },
   { offset = 394, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8, addend = 8 },
   { offset = 404, type = "DIR32", symbol = "?g_ReplayCompressionNodes@@3PAUReplayCompressionNode@@A", target = 0x004A8ED8, addend = 4 },

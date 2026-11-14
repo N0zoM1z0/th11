@@ -74,117 +74,50 @@ payload and two four-byte-aligned USER metadata sections: Shift-JIS
 replay summary and Japanese comment prompt. It closes the file and
 marks the recorder finalized.
 
-## Exact linked writer and remaining dependencies
+## Status after the 2026-11-14 asm withdrawal
 
-The canonical `replay-writer-main` unit uses the pinned VC9 RTM `/GL`
-compiler/linker and the genuine compressor, tree, cipher and shared-file
-support sources. Its public primary-TU PDB contribution is exactly **1856
-bytes** at the native owner extent. Strict replay verifies **93 fields**
-(**61 DIR32 and 32 REL32**) covering the replay root, score/timing state,
-format strings, CRT routines, compressor, cipher, shared-file helpers, IAT
-slots and security cookie. There are **zero non-field byte differences**;
-the complete owner decodes to **564 instructions, 46 calls and one RET4**.
-No whole-game cold replay was run.
+The writer (436420), segment allocator (437300) and compressor (4423A0) had
+been credited exact from naked `__asm` copies of the target. That is not a
+reconstruction and the credit is withdrawn. The writer and allocator still
+carry those asm bodies and need C++.
 
-The source retains the native mixed-register entry (ECX filename, EDX display
-name, one stack mode argument), EBP replay root, 0x11C-byte frame, cookie
-prologue/epilogue, x87 slowdown arithmetic, and helper-private register
-contracts. Three alignment instructions are explicitly emitted at their
-original six-, three- and seven-byte encodings because VC9's assembler would
-otherwise shorten the no-op LEAs and shift every following field. This is an
-instruction-level reconstruction of the complete owner, not a claim that the
-original C++ translation unit or class identity has been recovered.
+## LZSS compressor (004423A0..00442C10)
 
-The normal-COFF measurements below are historical diagnostics from earlier
-source forms; they are superseded by the strict linked-PE result above. The
-795-byte compressor and 416-byte match finder remain source-present but
-non-exact, making the compressor tree and bitstream helpers the next large
-bosses. The separate 150-byte `AppendReplayWriteSegment` already has its own
-strict linked proof (`replay-append-write-segment`).
+The compressor is Okumura-style LZSS: an 8-KiB ring, an 18-byte lookahead and
+an 8193-node binary tree `{parent, left, right}`. Natural C++ now reproduces
+the tree code exactly; each function is a cold `/GL` primary-TU proof with all
+relocated fields reviewed:
 
-## Compression match search (00442910)
+| Owner | Bytes | Unit | Source shape that matters |
+| --- | ---: | --- | --- |
+| `FindReplayCompressionMatch` 442910 | 416 | `replay-compression-match-search` | plain `for (length < 18)` loop, which VC9 unrolls by six; `bestLength = length` before `*matchPosition = candidate` |
+| `DeleteReplayCompressionNode` 442AB0 | 79 | `replay-compression-delete-private` | `__fastcall` (native ECX, plain RET); recursive |
+| `SpliceReplayCompressionNode` 442B00 | 80 | `replay-compression-splice-private` | ordinary function; LTCG picks ESI/EDX |
+| `ReplaceReplayCompressionNode` 442B50 | 134 | `replay-compression-replace-private` | whole-node copy `nodes[new] = nodes[old]` |
+| `FindReplayCompressionPredecessor` 442BE0 | 49 | `replay-compression-predecessor` | rightmost node of the left subtree |
 
-The 416-byte longest-prefix tree search is now maintained in
-`src/ReplayCompressionSearch.cpp`. The search compares circular 8-KiB
-window positions in explicitly unrolled groups of six until at most
-18 bytes have been compared. It records the best matching source position,
-walks the left/right children according to the signed byte difference,
-inserts a new node when a child is missing, and calls the node-replacement
-helper at `442B50` when the longest match reaches 18 bytes.
+All of them index `g_ReplayCompressionNodes[...]` directly. Going through a
+local `tree` pointer, as the earlier C++ did, changes the addressing and
+register choice in every helper. Separate field-wise copies in Replace give
+23/30 aligned instructions instead of the struct copy's 30/30.
 
-The direct target review establishes a contiguous 416-byte owner with
-113 instructions, three RET4 exits, one node replacement call,
-no interior foreign entry and no table. A conventional VC9 normal-COFF
-source with a simple inner character loop produces 247 bytes. Restoring
-the explicit six-comparison structure produces **416 bytes** and
-270/340 matching relocation-masked diagnostic bytes with 19 fields.
-This is **not exact**: the native optimized /GL ABI passes the position
-in EDX and one output pointer on the stack, whereas the faithful
-ordinary source declaration uses two stack arguments. Do not falsify
-its ABI to make the normal COFF probe match. The next meaningful test is
-a focused linked /GL compilation with the genuine compressor caller and
-tree helpers once they have source.
+The encoder is natural C++ but not exact yet (783/795 bytes, 142/240
+aligned instructions). Native code shows how the source is shaped:
 
-## Dictionary tree update helpers (00442AB0..00442C10)
+- Input is read through a `getc`-style expression,
+  `cursor - input < size ? *cursor++ : -1`, followed by a test against -1.
+  VC9 rebuilds the consumed count as `cursor - input` before the inner loop.
+- The tree unlink is written out in the encoder, Okumura style: pick the
+  replacement with `if (!right) ... else if (!left) ... else`, where the
+  two-child branch walks to the predecessor, calls `Delete` and `Replace`,
+  and skips the shared splice. Native `Delete`, `Splice` and `Predecessor` use
+  custom register conventions, so they are not `inline` functions.
+- The bit buffer is an `int` in EBX and the mask an `unsigned char` on the
+  stack. The bit selectors are unsigned (`shr`).
 
-The four tree-edit helpers are now instruction-exact in the maintained
-`src/ReplayCompressionTreeOps.cpp`, alongside the 49-byte predecessor.
-Their private register contracts are preserved explicitly rather than
-replaced by stack-argument wrappers:
-
-| Owner | Native ABI | Bytes | Strict unit | Result |
-| --- | --- | ---: | --- | --- |
-| `DeleteReplayCompressionNode` | ECX node; plain RET / tail JMP | 79 | `replay-compression-delete-private` | Exact; 3 REL32 calls |
-| `SpliceReplayCompressionNode` | ESI old node, EDX replacement | 80 | `replay-compression-splice-private` | Exact; no fields |
-| `ReplaceReplayCompressionNode` | EAX old node, EDX replacement | 134 | `replay-compression-replace-private` | Exact; no fields |
-| `FindReplayCompressionPredecessor` | EAX input/result | 49 | `replay-compression-predecessor` | Exact; 3 DIR32 fields |
-| `FindReplayCompressionMatch` | ECX alias, EDX position, stack output | 416 | `replay-compression-match-search` | Exact; 18 DIR32 + 1 REL32 |
-
-Each is a complete primary-TU PDB contribution from a scoped pinned VC9
-RTM `/GL` link. Strict replay confirms every native byte, including the
-three call fields in recursive delete, and no whole-image replay is needed.
-The delete routine retains its native self-recursion, single-child splice,
-predecessor search and tail transfer to the EAX/EDX replacement helper.
-The splice helper retains both native RET exits and the shared zero-node
-sentinel behavior. The replacement helper transfers parent/left/right links
-and repairs both child-parent links. The predecessor walks the rightmost
-node in the left subtree. Original class/TU authorship remains a separate
-provenance question from byte exactness.
-
-## Compression core (004423A0..004426BA)
-
-The main encoder is now **exact**. Its complete native extent is 795 bytes,
-with 768 Ghidra-owned instruction bytes in five sparse ranges plus 27 layout
-bytes. Independent Capstone decodes 240 instructions. Both incoming callers
-at `436782` and `437B98`, all five native callees and adjacent padding were
-reviewed. The canonical `replay-compression-main` unit compiles a scoped
-VC9 RTM `/GL` link and proves a unique 795-byte primary-TU PDB contribution:
-all five `REL32` calls are independently bound (malloc, tree reset, delete,
-private replacement and match search), with **zero non-field byte
-differences**. The full owner is 240/240 instructions, five calls and two
-`RET 12` exits.
-
-`src/ReplayCompressionEncoder.cpp` now retains the original naked x86 body
-rather than relying on high-level C++ codegen. It preserves the `0x24` stack
-frame and three-stack-argument `__stdcall` ABI; preloads up to 18 literal
-bytes at ring index 1; seeds the 8193-node tree sentinel; emits a one-bit
-literal selector plus eight data bits, or a zero selector plus 13-bit
-position and four-bit length-minus-three; removes outgoing tree positions;
-refills the 8-KiB ring; and emits the 14-bit zero EOF token. The original
-zero-extended byte comparisons against `-1` are retained verbatim, including
-their inability to recognize `0xFF` as a sentinel. There are no added
-zero-length, bounds or allocation guards. Fixed-image absolute data operands
-and native alignment encodings remain explicit because the original PE has
-stripped base relocations.
-
-The native replacement helper at `442B50` is independently exact as well.
-`replay-compression-replace-private` proves the complete 134-byte, 30-
-instruction EAX-old-node/EDX-successor owner with zero byte differences and
-no relocation fields. The 52-byte dictionary reset and all four tree-edit helpers (79, 80, 134
-and 49 bytes) are independently exact. The 416-byte match finder remains the
-next unresolved large owner in this compression call graph. The earlier normal-COFF
-trials and the 760-byte high-level compressor link are historical
-measurements, not the current implementation.
+The remaining encoder gap is register allocation. Native keeps `matchLength`
+in ESI and spills `length` to the stack (it reuses ESI as the constant 1 in
+the inner loop), and the candidate does the opposite.
 
 ## Historical VC9 /GL compressor diagnostic (2026-11-11)
 
