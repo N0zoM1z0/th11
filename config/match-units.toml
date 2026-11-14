@@ -7770,12 +7770,12 @@ inputs = [
   "src/VmBindings.hpp",
 ]
 
-support_sources = ["probes/secondary-replay-initialization-context.cpp", "src/ChainRegistration.cpp", "src/ReplayStageSegmentCleanup.cpp", "src/ReplayWriter.cpp", "src/ReplayHeaderStorageInitialization.cpp"]
+support_sources = ["probes/secondary-replay-initialization-context.cpp", "src/ChainRegistration.cpp", "src/ReplayStageSegmentCleanup.cpp", "src/ReplayWriter.cpp", "src/ReplayHeaderStorageInitialization.cpp", "src/ReplayRecordFactories.cpp", "src/ReplayRecordStageConstructor.cpp", "src/ReplayRecordStageLink.cpp", "src/TitleMenuRecord.cpp", "src/ChainRemove.cpp", "src/SecondaryReplayLoad.cpp", "src/FileSystem.cpp", "src/SharedFile.cpp", "src/SharedFileReadHelpers.cpp", "src/ResourceFile.cpp", "src/ByteCipher.cpp", "src/ArchiveDecompress.cpp", "src/ReplayCompressionEncoder.cpp", "src/ReplayCompressionSearch.cpp", "src/ReplayCompressionTreeOps.cpp", "src/ReplayCompressionTree.cpp"]
 output_dir = "build/match-linked/SecondaryReplayInitialization"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
-entry = "SecondaryReplayInitializationProbe@12"
+entry = "SecondaryReplayInitializationProbe@8"
 functions = ["InitializeSecondaryReplay"]
-symbol = "?InitializeSecondaryReplay@@YGHPAUReplayStateView@@@Z"
+symbol = "?InitializeRecord@ReplayRecordRegistryView@@QAEHPAUTitleMenuRecordView@@H@Z"
 target_address = 0x004356E0
 size = 1380
 linkages = [
@@ -8402,12 +8402,12 @@ linkages = [
 # frame, EH vector construction, memset, secondary registration and unwind.
 [units.title-replay-recording-factory]
 artifact_kind = "linked-pe"
-source = "src/ReplayRecordFactoryOwners.cpp"
+source = "src/ReplayRecordFactories.cpp"
 inputs = ["src/TitleMenuRecord.hpp", "src/SecondaryReplayState.hpp", "src/ReplayRecordStageLink.hpp"]
-support_sources = ["probes/title-replay-record-factory-recording-context.cpp"]
-output_dir = "build/match-linked/TitleReplayRecordingFactory"
+support_sources = ["probes/secondary-replay-initialization-context.cpp", "src/SecondaryReplayInitialization.cpp", "src/ChainRegistration.cpp", "src/ReplayStageSegmentCleanup.cpp", "src/ReplayWriter.cpp", "src/ReplayHeaderStorageInitialization.cpp", "src/ReplayRecordStageConstructor.cpp", "src/ReplayRecordStageLink.cpp", "src/TitleMenuRecord.cpp", "src/ChainRemove.cpp", "src/SecondaryReplayLoad.cpp", "src/FileSystem.cpp", "src/SharedFile.cpp", "src/SharedFileReadHelpers.cpp", "src/ResourceFile.cpp", "src/ByteCipher.cpp", "src/ArchiveDecompress.cpp", "src/ReplayCompressionEncoder.cpp", "src/ReplayCompressionSearch.cpp", "src/ReplayCompressionTreeOps.cpp", "src/ReplayCompressionTree.cpp"]
+output_dir = "build/match-linked/ReplayRecordFactories"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
-entry = "TitleReplayRecordFactoryRecordingProbe@4"
+entry = "SecondaryReplayInitializationProbe@8"
 functions = ["CreateReplayRecording"]
 symbol = "?CreateReplayRecording@@YGPAUTitleMenuRecordView@@H@Z"
 target_address = 0x00435E00
@@ -8430,12 +8430,12 @@ linkages = [
 # EH vector constructor and cleanup but loads replay data instead of registering.
 [units.title-replay-playback-factory]
 artifact_kind = "linked-pe"
-source = "src/ReplayRecordFactoryOwners.cpp"
+source = "src/ReplayRecordFactories.cpp"
 inputs = ["src/TitleMenuRecord.hpp", "src/SecondaryReplayState.hpp", "src/ReplayRecordStageLink.hpp"]
-support_sources = ["probes/title-replay-record-factory-playback-context.cpp"]
-output_dir = "build/match-linked/TitleReplayPlaybackFactory"
+support_sources = ["probes/secondary-replay-initialization-context.cpp", "src/SecondaryReplayInitialization.cpp", "src/ChainRegistration.cpp", "src/ReplayStageSegmentCleanup.cpp", "src/ReplayWriter.cpp", "src/ReplayHeaderStorageInitialization.cpp", "src/ReplayRecordStageConstructor.cpp", "src/ReplayRecordStageLink.cpp", "src/TitleMenuRecord.cpp", "src/ChainRemove.cpp", "src/SecondaryReplayLoad.cpp", "src/FileSystem.cpp", "src/SharedFile.cpp", "src/SharedFileReadHelpers.cpp", "src/ResourceFile.cpp", "src/ByteCipher.cpp", "src/ArchiveDecompress.cpp", "src/ReplayCompressionEncoder.cpp", "src/ReplayCompressionSearch.cpp", "src/ReplayCompressionTreeOps.cpp", "src/ReplayCompressionTree.cpp"]
+output_dir = "build/match-linked/ReplayRecordFactories"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
-entry = "TitleReplayRecordFactoryPlaybackProbe@4"
+entry = "SecondaryReplayInitializationProbe@8"
 functions = ["CreateReplayPlayback"]
 symbol = "?CreateReplayPlayback@@YGPAUTitleMenuRecordView@@PBD@Z"
 target_address = 0x00435EF0

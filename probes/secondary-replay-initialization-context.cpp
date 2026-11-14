@@ -1,15 +1,10 @@
-#include "../src/SecondaryReplayState.hpp"
-extern int __stdcall InitializeSecondaryReplay(ReplayInitStateView *state);
-extern "C" int __stdcall SecondaryReplayInitializationProbe(
-    ReplayInitStateView *state, int mode, void *source)
+#include "../src/ReplayRecordFactories.hpp"
+
+// Non-runnable link context: the recording and playback factories own the
+// registry calls.
+extern "C" int __stdcall SecondaryReplayInitializationProbe(int mode, const char *filename)
 {
-    int result;
-    __asm {
-        mov eax, mode
-        mov ecx, source
-        push state
-        call InitializeSecondaryReplay
-        mov result, eax
-    }
-    return result;
+    TitleMenuRecordView *recording = CreateReplayRecording(mode);
+    TitleMenuRecordView *playback = CreateReplayPlayback(filename);
+    return (recording != 0) + (playback != 0);
 }
