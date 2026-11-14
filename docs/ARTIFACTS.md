@@ -137,3 +137,37 @@ Post-cleanup measured sizes (`du -sk`):
 
 No tracked build files were removed. The source tree was restored to the
 committed `e7e1f13` baseline before this documentation-only handoff update.
+
+
+## Secondary actor host experiment cleanup — 2026-11-14
+
+The complete secondary-actor host is now built in the canonical
+`build/match-linked/SecondaryActorInstructions/` family. Its one-off opcode,
+frame, scratch-layout and tween variants were no longer useful as active build
+caches. A tracked-file check found no tracked files in the selected paths; the
+cleanup removed only39 ignored `build/probe-ltcg/SecondaryActorHost-*`
+directories and105 top-level `.analysis/` scratch source/probe variants. The
+removed host links contained70,815,964 apparent bytes (70,108 KiB allocated);
+the loose scratch files contained another611,013 apparent bytes. No other
+`build/probe-ltcg/` context was removed.
+
+| Path | Before | After |
+| --- | ---: | ---: |
+| Entire `build/` | 261,532 KiB | 191,424 KiB |
+| `.analysis/` | 34,384 KiB | 33,536 KiB |
+| Remaining `build/probe-ltcg/` | — | 56,600 KiB |
+| Canonical `build/match/` | — | 440 KiB |
+| Canonical `build/match-linked/` | — | 134,380 KiB |
+
+The cleanup reclaimed70,108 KiB from `build/` and848 KiB from `.analysis/`
+(about69.3 MiB combined). It retained the original executable, the TH11 Ghidra
+project, `.tools/`, all canonical match caches and receipts, the current host
+PE/MAP/PDB, native Ghidra output and the reproducible
+`.analysis/probe-secondary-host-with-pair-access-ltcg.py` recipe. The remaining
+probe cache contains unrelated diagnostics from other reconstruction areas;
+its count is not the old 11-context snapshot from the 2026-11-13 cleanup.
+
+A short ignored cleanup receipt is kept at
+`.analysis/handoff-storage-cleanup-20261114.txt`. The canonical host build was
+rebuilt and its11-byte manager adapter passed selected cold replay after the
+pair-access support list changed. No full replay was run.
