@@ -154,13 +154,15 @@ the loose scratch files contained another611,013 apparent bytes. No other
 | Path | Before | After |
 | --- | ---: | ---: |
 | Entire `build/` | 261,532 KiB | 191,424 KiB |
-| `.analysis/` | 34,384 KiB | 33,536 KiB |
+| `.analysis/` | 34,384 KiB | 33,540 KiB |
 | Remaining `build/probe-ltcg/` | — | 56,600 KiB |
 | Canonical `build/match/` | — | 440 KiB |
 | Canonical `build/match-linked/` | — | 134,380 KiB |
 
-The cleanup reclaimed70,108 KiB from `build/` and848 KiB from `.analysis/`
-(about69.3 MiB combined). It retained the original executable, the TH11 Ghidra
+The cleanup removed848 KiB of allocated scratch files from `.analysis/`; the
+4 KiB cleanup receipt leaves a net `.analysis/` reduction of844 KiB. Together
+with70,108 KiB removed from `build/`, the net saving is about69.3 MiB. It
+retained the original executable, the TH11 Ghidra
 project, `.tools/`, all canonical match caches and receipts, the current host
 PE/MAP/PDB, native Ghidra output and the reproducible
 `.analysis/probe-secondary-host-with-pair-access-ltcg.py` recipe. The remaining
