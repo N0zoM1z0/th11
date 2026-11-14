@@ -43,6 +43,12 @@ Near-exact step functions to finish next:
   the owning TU (likely the game-over menu) so the copies are emitted from the
   real primary source; see [PAUSE_GAME_OVER_MENU](PAUSE_GAME_OVER_MENU.md).
 
+- Dead inline copies: 20 non-exact leaves have no callers or stored address
+  (list in the knowledge base). In-class inline members whose calls are all
+  inlined reproduce the nine integer-pair bodies 433DB0..433F26 exactly in a
+  probe; landing them needs the real owning TU to use the operators (see
+  [SECONDARY_PATTERN](SECONDARY_PATTERN.md)). Check the others the same way.
+
 `scripts/validate-tracking.py` already fails on clean HEAD at 0x00435630
 (indeterminate origin without an individual reason); not caused by this change.
 Local diagnostic helpers (disassembly, masked diff, quick LTCG link) are kept in

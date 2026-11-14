@@ -94,6 +94,25 @@ output views do not assert an original constructor or aggregate-return ABI.
 | AddSecondaryIntegerPair | 433EA0 | 18 | Source20/16 |
 | AssignSecondaryIntegerPair | 433F10 | 23 | Source20/11 |
 
+**2026-11-14: the integer-pair bodies are dead inline copies.** None of the nine
+pair functions at 433DB0..433F26 has a direct call or a stored address. An
+in-class inline pair type whose every use is inlined leaves dead COMDAT copies
+(the link keeps unreferenced COMDATs), and those copies reproduce **all nine**
+native bodies at native sizes and in native order: constructor `(x, y)`,
+`ToFloat` (x/128, y/128, 0), `operator+=` returning a copy, nonzero test,
+`operator-`, `operator*(int)`, divide-by-100, `operator+` and `operator=`
+returning a copy. Eight are raw-identical; `ToFloat` differs only in its
+double-constant address. The six non-exact rows above are fixed by this form;
+the free-function output-pointer form cannot choose the dead copies' register
+conventions. Probe: `.analysis/IntegerPair-inline-20261114.cpp`.
+
+Canonical units need the copies to come from the real owning TU, which
+precedes `SpawnSecondaryProjectile` at 433F90 and so must use these operators
+inline. Move `SecondaryIntegerPair` to an inline member class in its header,
+express the pattern/emitter code with its operators where native inlined them,
+and rebuild the unit family with that TU as primary. Do not add an invented
+caller to force emission.
+
 Tracked-target435030/73 also closes after the two length helpers explicitly call
 the double sqrt API and narrow its result to float. Their own33/34-byte bodies
 remain unchanged/non-exact, while VC9 restores the tracked callback's native

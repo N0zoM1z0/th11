@@ -39,6 +39,13 @@ compiler observations and useful failed approaches.
   42F340/42F350 comparison islands byte for byte (see
   [PAUSE_GAME_OVER_MENU](PAUSE_GAME_OVER_MENU.md)) and the timer `>=` copy at
   405AC0 has the same shape.
+- 20 source-present non-exact leaves have no direct calls and no stored
+  address, so they are probably dead inline copies whose register conventions
+  LTCG chose freely: 40FFC0, 410530, 42F340, 42F350, 433DD0, 433E10, 433E30,
+  433E50, 433EA0, 433F10, 4353A0, 4353E0, 435430, 435460, 441650, 44ED70,
+  453440, 459C60, 45DC80, 45DD50 (scan: E8/E9 targets plus little-endian
+  address search over the attested image). The integer-pair group is already
+  reproduced this way; see [SECONDARY_PATTERN](SECONDARY_PATTERN.md).
 - A global `/Ob2` is rejected: it inlines `ResetMusicDecoder` into the exact
   `ConfigureMusicDecoder`. Keep `/Ob1`; prefer source `inline` over
   `__forceinline` when testing why native inlined a helper.
