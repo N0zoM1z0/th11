@@ -8524,3 +8524,36 @@ size = 7
 relocations = [
   { offset = 2, type = "REL32", symbol = "?UpdateSecondaryGameplay@@YGHPAUSecondaryGameplayView@@@Z", target = 0x00420390 },
 ]
+
+[units.create-secondary-hud-screen-effect]
+artifact_kind = "linked-pe"
+source = "src/ScreenEffectInitialization.cpp"
+inputs = ["src/SecondaryHud.hpp", "src/ChainRegistration.hpp"]
+support_sources = ["src/SecondaryGameplay.cpp", "src/SecondaryActorInstructions.cpp", "src/SecondaryEclDebug.cpp", "src/SecondaryScript.cpp", "src/SecondaryHostArguments.cpp", "src/SecondaryActorCreation.cpp", "src/SecondaryActorLifetime.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorUpdate.cpp", "src/StageLifecycle.cpp", "src/StageTween.cpp", "src/FrameRuntime.cpp", "src/SecondaryGameplayCallbacks.cpp", "src/SecondaryGameplaySupport.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryDialogueAnimation.cpp", "src/StageMesh.cpp", "src/AnimationSpriteBinding.cpp", "src/FormattedTextureText.cpp", "src/SecondaryDamageSupport.cpp", "src/SecondaryPlayerMovement.cpp", "src/MeshEffects.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryActorCounters.cpp", "src/OutlinedTextureText.cpp", "src/TextTextureDispatch.cpp", "src/TextDrawing.cpp", "src/TextProcessing.cpp", "src/SecondaryDialogue.cpp", "src/SecondaryHudCallbacks.cpp", "probes/screen-effect-initialization-context.cpp", "src/SecondaryHud.cpp", "src/AnimationExecutionArguments.cpp", "src/AnimationExecutionSupport.cpp", "src/AnimationTween.cpp", "src/SecondaryEmitterAnimation.cpp", "src/Random.cpp", "src/AngleMath.cpp", "src/AnimationFan.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationImmediateDraw.cpp", "src/AnimationVmDraw.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp", "src/SecondaryProjectileCallbacks.cpp", "src/AnimationExecution.cpp", "src/ChainRegistration.cpp"]
+output_dir = "build/match-linked/ScreenEffectInitialization"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryHudOwnersProbe@12"
+functions = ["CreateSecondaryHudScreenEffect"]
+symbol = "?CreateSecondaryHudScreenEffect@@YGPAUSecondaryHudScreenEffect@@HHHHH@Z"
+target_address = 0x004489E0
+size = 80
+normal_support_sources = ["src/SecondaryGameplayCallbacks.cpp", "src/SecondaryHudCallbacks.cpp", "probes/screen-effect-initialization-context.cpp"]
+linkages = [
+  { offset = 4, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x0045FCE4 },
+  { offset = 27, type = "REL32", symbol = "_memset", target = 0x0046A720 },
+  { offset = 64, type = "REL32", symbol = "?InitializeSecondaryHudScreenEffect@@YGXPAUSecondaryHudScreenEffect@@HHHHH@Z", target = 0x00448A90 },
+]
+
+[units.is-menu-extra-unlocked]
+artifact_kind = "coff"
+source = "src/MenuPrimarySupport.cpp"
+inputs = ["src/MenuPrimary.hpp", "src/AnimationVmFactory.hpp", "src/SecondaryActorRuntime.hpp", "src/VmBindings.hpp"]
+object = "build/match/MenuPrimarySupport.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc"]
+functions = ["IsMenuExtraUnlocked"]
+symbol = "?IsMenuExtraUnlocked@@YAHXZ"
+target_address = 0x00439350
+size = 64
+relocations = [
+  { offset = 1, type = "DIR32", symbol = "?g_SecondaryGameplayStatistics@@3PAEA", target = 0x004A8EBC },
+]
