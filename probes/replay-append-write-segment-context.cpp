@@ -1,14 +1,14 @@
 #include "../src/SecondaryReplayState.hpp"
 
-// The native allocator is called with its state and stage in EBX/EDI, not on
-// the stack. This probe preserves that register ABI while exposing the symbol
-// to the public linked-PE owner receipt.
-extern "C" void __stdcall ReplayAppendWriteSegmentProbe(
+extern unsigned int g_StageVariant;
+
+// Non-runnable link context: append for the current stage, as the replay
+// stage owners do, and keep working after the call.
+extern "C" int __stdcall ReplayAppendWriteSegmentProbe(
     ReplayStateView *state, int stage)
 {
-    __asm {
-        mov ebx, state
-        mov edi, stage
-        call AppendReplayWriteSegment
-    }
+    if (stage)
+        AppendReplayWriteSegment(state, g_StageVariant);
+    AppendReplayWriteSegment(g_SecondaryReplayCurrent, g_StageVariant);
+    return state->segmentCount;
 }

@@ -99,59 +99,32 @@ extern "C" void *__cdecl ReplayMemcpy(void *destination, const void *source, uns
 #pragma comment(linker, "/alternatename:_ReplayMemset=_memset")
 #pragma comment(linker, "/alternatename:_ReplayMemcpy=_memcpy")
 
-// Native 00437300 is a private EBX/EDI routine, not a stack-argument C++
-// function. Keep the exact allocation, zeroing, cursor initialization and
-// generic intrusive-list splice in one naked body so no ABI save/restore code
-// is introduced around the two live registers.
-__declspec(naked) ReplayWriteSegmentNode *__stdcall AppendReplayWriteSegment()
+namespace
 {
-    __asm {
-        push esi
-        push 18B0h
-        call ReplayAllocate
-        mov esi, eax
-        add esp, 4
-        test esi, esi
-        jz allocation_failed
-        push 18B0h
-        push 0
-        push esi
-        call ReplayMemset
-        mov dword ptr [esi+1518h], esi
-        lea eax, [esi+151Ch]
-        mov dword ptr [esi+18A0h], eax
-        add esp, 0Ch
-        mov dword ptr [esi+18A4h], esi
-        mov dword ptr [esi+18A8h], 0
-        mov dword ptr [esi+18ACh], 0
-        jmp allocation_complete
-    allocation_failed:
-        xor esi, esi
-    allocation_complete:
-        lea ecx, [edi+edi*2+0Fh]
-        cmp dword ptr [ebx+ecx*4+4], 0
-        lea ecx, [ebx+ecx*4]
-        lea eax, [esi+18A4h]
-        pop esi
-        jz append_tail
-        align 16
-    append_walk:
-        mov ecx, dword ptr [ecx+4]
-        cmp dword ptr [ecx+4], 0
-        jne append_walk
-    append_tail:
-        mov edx, dword ptr [ecx+4]
-        test edx, edx
-        jz append_link
-        mov dword ptr [eax+4], edx
-        mov edx, dword ptr [ecx+4]
-        mov dword ptr [edx+8], eax
-    append_link:
-        mov dword ptr [ecx+4], eax
-        mov dword ptr [eax+8], ecx
-        inc dword ptr [ebx+0A0h]
-        ret
+inline void InsertReplaySegmentAfter(ReplayWriteSegmentNode *self, ReplayWriteSegmentNode *node)
+{
+    if (self->next)
+    {
+        node->next = self->next;
+        self->next->previous = node;
     }
+    self->next = node;
+    node->previous = self;
+}
+}
+
+// 00437300. Each stage owns a list head {segment, next, previous} at
+// 0x3C + 12 * stage; a new segment goes at the tail.
+ReplayWriteSegmentNode *__stdcall AppendReplayWriteSegment(ReplayWriteState *state, int stage)
+{
+    ReplayWriteSegment *segment = new ReplayWriteSegment;
+    ReplayWriteSegmentNode *node = &segment->node;
+    ReplayWriteSegmentNode *tail = reinterpret_cast<ReplayWriteSegmentNode *>(state->unknown03c) + stage;
+    while (tail->next)
+        tail = tail->next;
+    InsertReplaySegmentAfter(tail, node);
+    ++state->segmentCount;
+    return node;
 }
 
 namespace
