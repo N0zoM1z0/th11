@@ -24,16 +24,6 @@ __forceinline void SetTweenTimer(StageTimerView *self, int frame)
     self->previous = static_cast<int>(static_cast<unsigned int>(frame) - 1);
     self->fraction = static_cast<float>(frame);
 }
-struct HermiteWeights { float a, b, c, d; };
-__forceinline HermiteWeights Hermite(float progress)
-{
-    HermiteWeights result = {
-        static_cast<float>((2.0 * progress + 1.0) * ((progress - 1.0) * (progress - 1.0))),
-        static_cast<float>((3.0 - 2.0 * progress) * (progress * progress)),
-        static_cast<float>((1.0 - progress) * (1.0 - progress) * progress),
-        static_cast<float>((progress - 1.0) * progress * progress)};
-    return result;
-}
 __forceinline AnimationIntVector Add(const AnimationIntVector &left, const AnimationIntVector &right)
 {
     AnimationIntVector result(AddInt(left.x, right.x), AddInt(left.y, right.y), AddInt(left.z, right.z));

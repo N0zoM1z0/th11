@@ -477,7 +477,13 @@ compiler context;418460/189 remains source-open. See
 [SECONDARY_GAMEPLAY](SECONDARY_GAMEPLAY.md). Native TU/caller context is still
 not proved by the partial diagnostic link.
 
-## Current canonical host checkpoint (2026-11-14)
+## Earlier host checkpoint (start of 2026-11-14)
+
+Superseded by the sections below: the spawn, rank-select, record-speed,
+record-position and pair-tween rewrites reduced the total interval error from
+1,831 to 1,102 bytes. The current measurements are in
+[RE_HANDOFF](RE_HANDOFF.md).
+
 
 The `0x12D`/`0x12F` source now selects the motion record and three independent
 pair-tween pointers before reading its six real arguments. It stages the three

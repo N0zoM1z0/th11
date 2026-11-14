@@ -2,14 +2,11 @@
 
 **Start here, then continue the code.** This repository reconstructs only the
 original Japanese TH11 v1.00a executable at `resources/th11.exe` (ignored),
-SHA-256 `2978b17f6184d100d249d4311348dd30c5c32ec75c014b667a525b797d3d8813`.
-The compiler candidate is VC9 / Visual C++ 2008 RTM build 21022. Preserve
-`/GL` in established LTCG owners. Do not substitute `th11c.exe`, TH10 codegen,
-or a different compiler.
-
-## Checkpoint and current inventory
-
-Start with:
+SHA-256 `2978b17f6184d100d249d4311348dd30c5c32ec75c014b667a525b797d3d8813`,
+with VC9 / Visual C++ 2008 RTM build 21022. Preserve `/GL` in established
+LTCG owners; all units use `/O2 /Ob1` (a global `/Ob2` is ruled out, see the
+knowledge base). Do not substitute `th11c.exe`, TH10 codegen or another
+compiler.
 
 ```bash
 git status --short --branch
@@ -18,143 +15,93 @@ scripts/repo-python scripts/verify-target.py
 scripts/repo-python scripts/verify-toolchain.py --check
 ```
 
-The current branch is `main`. Commits from this agent use the
-`claude-opus-5.5-high: ...` prefix; earlier ones use `gpt-web: ...`.
+Commits use the `claude-opus-5.5-high: ...` prefix (earlier history uses
+`gpt-web: ...`). `docs/PROGRESS.md` is the generated inventory authority;
+regenerate it with `scripts/repo-python scripts/progress.py` instead of copying
+counts here.
 
-Latest checkpoint (2026-11-14): the three fog operators `SubtractStageFog`,
-`ScaleStageFog` and `AddStageFog` (0x4059D0/0x405A10/0x405A50) are exact.
-The key finding is general: native callers that keep `this` in ESI and reload
-ECX around a thiscall point to an `inline` callee whose out-of-line COMDAT LTCG
-treats as opaque. `Pack`, `SetStageTimer` and the operators are now defined
-`inline` in `src/StageTween.cpp`; `pack-stage-fog` moved into the StageTween
-family. All 42 units in the 12 affected families cold-replayed with zero
-differences. See [STAGE_TWEEN](STAGE_TWEEN.md) and the knowledge-base section
-"Inline definitions and opaque COMDAT callees".
+## How recent gains were found
 
-Near-exact step functions to finish next:
+Read the knowledge-base section "Inline definitions and opaque COMDAT callees"
+before editing. In short:
 
-- `StepStageFogTween` 0x4055D0: 794/737 bytes, structurally native except that
-  mode 17's second addition is inlined where native calls the operator.
-- `StepStageVectorTween` 0x405240: 882/883 bytes; try a TU-local vector type
-  with D3DX-style inline operators (mode-7 NRVO store order, mode-8 coefficient
-  scheduling).
-- 42F340/42F350 comparison islands: dead copies of fully inlined in-class
-  members reproduce them byte for byte in a probe. Find their inlined uses in
-  the owning TU (likely the game-over menu) so the copies are emitted from the
-  real primary source; see [PAUSE_GAME_OVER_MENU](PAUSE_GAME_OVER_MENU.md).
+- A callee that native callers treat as an opaque thiscall (they keep `this`
+  in ESI and reload ECX) is an `inline` function whose inlining was declined.
+- Uncalled, unreferenced leaves are usually dead copies of inline helpers.
+  They reproduce only when the helper is inline in the real owning TU and that
+  TU's code uses it. Find the users by searching the native image for the
+  copy's store shape or for calls to its callee.
+- Native writes switch cases out in full and lets VC9 cross-jump identical
+  tails; source `goto`s into shared blocks are usually wrong.
 
-- Dead inline copies: 20 non-exact leaves have no callers or stored address
-  (list in the knowledge base). In-class inline members whose calls are all
-  inlined reproduce the nine integer-pair bodies 433DB0..433F26. All six
-  (`-`, `*`, `/100`, `+`, `+=`, `=`) are now exact from the movement TU (see [SECONDARY_PATTERN](SECONDARY_PATTERN.md)). The three pixel
-  accumulators (453440..4534B4) are exact from the transparent-pixel fixer.
-  Check the other dead leaves the same way.
+## Near-exact work to finish
 
-`scripts/validate-tracking.py` already fails on clean HEAD at 0x00435630
-(indeterminate origin without an individual reason); not caused by this change.
-Local diagnostic helpers (disassembly, masked diff, quick LTCG link) are kept in
-ignored `.analysis/tool-*-20261114.py`.
+| Target | State | Remaining gap | Note |
+| --- | --- | --- | --- |
+| `PushSecondaryValue` 45DC30 | 20/21 instructions | native forms the slot address before the store | [SECONDARY_SCRIPT](SECONDARY_SCRIPT.md) |
+| `SecondaryManager::Restart` 45DD50 | 28/28 bytes as an inline copy | name arrives in EAX, native ECX; change reverted | [SECONDARY_SCRIPT](SECONDARY_SCRIPT.md) |
+| `StepStageFogTween` 4055D0 | 794/737 bytes | mode 17's second add is inlined; native calls `operator+` | [STAGE_TWEEN](STAGE_TWEEN.md) |
+| `StepStageVectorTween` 405240 | 887/883 bytes, 267/280 aligned | mode-7/17 store order, add operand order | [STAGE_TWEEN](STAGE_TWEEN.md) |
+| `StepAnimationIntScalarTween` 44E7C0 | 97/120 aligned | native spills `1-t` before loading 3.0 | [ANIMATION_TWEEN_DISPATCH](ANIMATION_TWEEN_DISPATCH.md) |
+| `StepAnimationFloatPairTween` 44E910 | 217/221 aligned | one mode-8 multiply schedule | [ANIMATION_TWEEN_DISPATCH](ANIMATION_TWEEN_DISPATCH.md) |
+| 42F340/42F350 comparisons | byte-identical as inline copies in a probe | need their real inlined uses | [PAUSE_GAME_OVER_MENU](PAUSE_GAME_OVER_MENU.md) |
+| Other dead leaves (410530, 44ED70, 435400/30/60, ...) | open | find real users; list in the knowledge base | [KNOWLEDGE_BASE](KNOWLEDGE_BASE.md) |
 
-`docs/PROGRESS.md` is the generated inventory authority; regenerate it rather
-than copying counts here.
+## Actor dispatcher 412E30 (16,556 bytes)
 
-## Current priority: complete secondary actor dispatcher
+Not exact. Candidate PDB contribution 16,276 bytes, frame `0x328` (native
+`0x310`), masked alignment 1,053 instructions. Total per-opcode interval error
+is 1,102 bytes (it was 1,831 at the start of 2026-11-14). Largest remaining
+intervals, native → candidate:
 
-The native host owner starts at `0x412E30`, spans 16,556 bytes including dispatch
-data, and contains15,780 bytes of executable code. `src/SecondaryActorInstructions.cpp`
-now provides the complete state member and manager adapter; the four included
-fragments cover all154 handled opcode values (`0x100..0x1C2`). The complete
-source and current compiler measurements are documented in
-[SECONDARY_HOST_DISPATCH](SECONDARY_HOST_DISPATCH.md).
-
-The canonical VC9 `/GL` family includes the real VM readers, `SecondaryScript.cpp`,
-host argument adapters, actor creation/lifetime/animation/update, and
-`SecondaryPairAccess.cpp`. The last TU is important: native
-`ResetSecondaryPairTimer` (`0x419520`, 52 bytes) receives the pair pointer in EAX.
-Including the real body restores the no-push register call at all pair-tween call
-sites. The eight pair-access leaves total 130 bytes and are strictly exact; see
-[SECONDARY_PAIR_MATH](SECONDARY_PAIR_MATH.md).
-
-Current canonical owner measurement:
-
-| Measure | Native | Candidate |
-| --- | ---: | ---: |
-| Executable code | 15,780 B | 15,272 B |
-| PDB contribution including dispatch data | 16,556 B | 16,048 B |
-| Stack allocation | `0x310` | `0x328` |
-| Direct calls | 465 | 459 |
-| Indirect callbacks | 2 | 2 |
-
-The complete host is **not exact**. The separate11-byte manager adapter at
-`0x412E20` is exact; its fresh selected cold replay passed its sole REL32 field
-with zero differences. Do not promote the full host from that adapter result.
-
-Largest current entry-interval differences (native -> candidate):
-
-| Opcode | Native | Candidate | Delta |
+| Opcode | Native | Candidate | Gap |
 | --- | ---: | ---: | ---: |
-| `0x105` | 82 B | 196 B | +114 B |
-| `0x1A7` | 136 B | 216 B | +80 B |
-| `0x1AA` | 118 B | 171 B | +53 B |
-| `0x101` | 133 B | 185 B | +52 B |
-| `0x15E`, `0x161` (each) | 121 B | 170 B | +49 B |
-| `0x12D` / `0x12F` | 790 B | 812 B | +22 B |
-| `0x100` | 392 B | 268 B | -124 B |
-| `0x104` | 222 B | 100 B | -122 B |
+| `0x1AA` | 118 | 171 | +53 |
+| `0x1A6` | 112 | 140 | +28 |
+| `0x10E` | 233 | 253 | +20 |
+| `0x119`/`0x11B` | 315 | 271 | -44 |
+| `0x101` | 133 | 93 | -40 |
+| `0x121`/`0x123` | 509 | 475 | -34 |
+| `0x199` | 181 | 149 | -32 |
 
-Start with the large positive deltas and explain the unexpectedly short `0x100`
-and `0x104` intervals. For `0x12D/0x12F`, motion and all three tween pointers
-are now selected before the six real reads; the interval is212/216 instructions
-with 13 calls. `0x121/0x123` is 473/509 bytes, 127/138 instructions and 9 calls.
-The pair reset calls now use the native no-push EAX form, but field scheduling,
-x87 predicates, register preservation and the0x328 frame remain open.
-
-The current `RunSecondaryScript` context is 6,989/7,093 bytes with the native
-0x120 frame, but its VM receiver is ESI rather than native EDI; it is also
-non-exact. Do not infer interpreter exactness from the host's source coverage.
-
-Useful focused commands (no full cold replay):
+Open causes: native keeps repeated identical opcode tests (motion/tween
+selection) that VC9 threads into one branch here; separate `if`s spill
+`opcode` for the whole function. 0x1AA's branches should cross-jump into
+0x1A9's store block. Details and ruled-out variants are in
+[SECONDARY_HOST_DISPATCH](SECONDARY_HOST_DISPATCH.md). Measure with:
 
 ```bash
-scripts/repo-python scripts/build-match-unit.py --check
 scripts/repo-python scripts/build-match-unit.py --unit secondary-actor-instruction-adapter
-scripts/repo-python scripts/replay-exact-units.py --unit secondary-actor-instruction-adapter
+scripts/repo-python scripts/replay-exact-units.py --unit secondary-actor-instruction-adapter \
+  --unit initialize-secondary-hud-screen-effect
 ```
 
-After source changes, build and replay only the changed exact unit and direct
-exact consumers. Compare complete affected owners/fields; never crop an extent.
-The host diagnostic link is useful for register/codegen analysis, not an exact
-acceptance lane.
-
-## Other substantial open owners
-
-These are still non-exact; consult each linked note for its latest complete
-measurements and retained experiments before editing:
+## Other large open owners
 
 | Native owner | Current checkpoint | Detail |
 | --- | --- | --- |
-| `0x4356E0` secondary replay initializer (1,380 B) | 1,247/1,380 diagnostic; 22 calls/four returns preserved | [SECONDARY_PATTERN](SECONDARY_PATTERN.md) |
-| `0x42D9D0` continue menu (3,192 B) | 3,184/3,192; 162 fields, 88 calls, 15 RET4 paths, 2,008 non-address differences | [PAUSE_CONTINUE_MENU](PAUSE_CONTINUE_MENU.md) |
-| `0x42E6B0` game-over menu (3,208 B) | retained 3,212-byte candidate; 154 fields, 88 calls, 14 RET4 paths, 2,040 non-address differences | [PAUSE_GAME_OVER_MENU](PAUSE_GAME_OVER_MENU.md) |
-| `0x4396C0` title-menu destructor (561 B) | 561-byte candidate; 231 non-address differences | [TITLE_MENU_LIFECYCLE](TITLE_MENU_LIFECYCLE.md) |
+| `0x45B860` secondary interpreter (7,093 B) | 7,193-byte candidate with the inline pop; VM receiver ESI vs native EDI | [SECONDARY_SCRIPT](SECONDARY_SCRIPT.md) |
+| `0x430290` player movement (2,896 B) | 2,920 bytes, 85 aligned instructions after the pair types | [SECONDARY_PATTERN](SECONDARY_PATTERN.md) |
+| `0x4356E0` secondary replay initializer (1,380 B) | 1,247/1,380 diagnostic | [SECONDARY_PATTERN](SECONDARY_PATTERN.md) |
+| `0x42D9D0` continue menu (3,192 B) | 3,184/3,192, 2,008 non-address differences | [PAUSE_CONTINUE_MENU](PAUSE_CONTINUE_MENU.md) |
+| `0x42E6B0` game-over menu (3,208 B) | 3,212-byte candidate, 2,040 non-address differences | [PAUSE_GAME_OVER_MENU](PAUSE_GAME_OVER_MENU.md) |
+| `0x4396C0` title-menu destructor (561 B) | 561 bytes, 231 non-address differences | [TITLE_MENU_LIFECYCLE](TITLE_MENU_LIFECYCLE.md) |
 | `0x436420` replay writer (1,856 B) | source-present, non-exact | [REPLAY_WRITING](REPLAY_WRITING.md) |
 
-Large owners and their important leaves both deserve real work; do not spend a
-whole session only on small helpers. Keep source natural and ABI evidence-based.
-Never add target bytes, padding, fake returns, guessed register declarations,
-or volatile accesses just to move a diff count.
+Keep source natural and ABI evidence-based. Never add target bytes, padding,
+fake returns, guessed register declarations, volatile accesses or invented
+callers to force emission.
 
-## Evidence, tools and storage
+## Verification and storage
 
-Use direct Ghidra through `scripts/ghidra.py`, not REA. Preserve the original,
-`.tools/` compiler/Wine state, `ghidra-project/`, canonical `build/match/` and
-`build/match-linked/` receipts, source and useful `.analysis/` Ghidra reviews.
-The 2026-11-14 storage pass removed only disposable `SecondaryActorHost-*`
-probe links and obsolete host-switch scratch variants; it kept the canonical
-owner build and the reproducible `.analysis/probe-secondary-host-with-pair-access-ltcg.py`
-recipe. The remaining unrelated diagnostic contexts are not a full replay
-requirement. See [ARTIFACTS](ARTIFACTS.md) for the cleanup inventory.
+After a source or header change, cold-replay every unit whose source/support
+closure includes the changed files (shared headers such as `Chain.hpp`,
+`SecondaryPattern.hpp` or `SecondaryScript.hpp` reach 30–220 units). A comment
+edit in a support source also invalidates receipts.
 
-Native product closure, broad runtime comparisons and portability remain later
-work. A successful build or local commit is a checkpoint, not an Oracle receipt.
-The Factory shell has no network/push; describe commits as local checkpoints.
+`scripts/validate-tracking.py` already fails on clean HEAD at 0x00435630
+(indeterminate origin without an individual reason). Local diagnostic helpers
+(disassembly, masked diff, quick LTCG link) are in ignored
+`.analysis/tool-*-20261114.py`; the probes cited by topic notes are kept beside
+them. Preserve `.tools/`, `ghidra-project/` and canonical `build/match*/`
+receipts. See [ARTIFACTS](ARTIFACTS.md) for earlier storage passes.
