@@ -1,6 +1,9 @@
 #include "../src/SecondaryPlayerController.hpp"
-extern void __fastcall SetSecondaryIntegerPlayerPosition(const int *position);
-extern "C" void __stdcall SecondaryIntegerPlayerPositionProbe(const int *position)
+
+// Non-runnable link context: the stage owner passes a pointer into its
+// current stage record.
+extern "C" void __stdcall SecondaryIntegerPlayerPositionProbe(unsigned char **stages, int stage)
 {
-    SetSecondaryIntegerPlayerPosition(position);
+    SetSecondaryIntegerPlayerPosition(reinterpret_cast<const int *>(stages[stage] + 0x20));
+    stages[stage][0] = 1;
 }

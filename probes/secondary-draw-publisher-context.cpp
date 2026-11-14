@@ -1,13 +1,11 @@
 #include "../src/SecondaryEmitterAnimation.hpp"
+#include "../src/PauseContinueMenu.hpp"
 
-extern "C" void __stdcall SecondaryDrawPublisherProbe(
-    AnimationVmView *vm, AnimationVmId *result)
+// Non-runnable link context: the two draw-list creators share the publisher.
+extern "C" int __stdcall SecondaryDrawPublisherProbe(
+    AnimationFileView *file, int script)
 {
-    __asm {
-        push ebx
-        mov ebx, vm
-        mov eax, result
-        call PublishSecondaryDrawAnimationVmNative
-        pop ebx
-    }
+    AnimationVmId first = CreateSecondaryDrawAnimationVmId(file, script, 3);
+    AnimationVmId second = CreateDefaultSecondaryDrawAnimationVmId(file, script);
+    return first.value + second.value;
 }

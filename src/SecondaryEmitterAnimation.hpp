@@ -8,7 +8,6 @@ AnimationVmId __stdcall CreateSecondaryEmitterAnimationVmId(AnimationFileView *f
 // Conventional position-preserving secondary-append adapter.
 AnimationVmId __stdcall PublishSecondaryDrawAnimationVm(AnimationVmView *vm);
 // Native private ABI: EBX=VM node, EAX=hidden result slot; no stack arguments.
-AnimationVmId __stdcall PublishSecondaryDrawAnimationVmNative();
 AnimationVmId __stdcall CreateSecondaryDrawAnimationVmId(AnimationFileView *file, int script, int layer);
 
 // Independently reviewed prepend owner and its default/explicit-layer factories.

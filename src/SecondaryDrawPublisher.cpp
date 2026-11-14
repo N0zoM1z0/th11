@@ -1,4 +1,5 @@
 #include "SecondaryEmitterAnimation.hpp"
+#include "AnimationVmFactory.hpp"
 #include "RenderBatch.hpp"
 #include "MainRuntime.hpp"
 
@@ -13,83 +14,52 @@ struct EmitterVmRegistryView
 };
 }
 
-// Native 0x4557E0 private ABI: EBX carries the VM node and EAX points at
-// the caller's AnimationVmId result slot. The two native factory callers
-// share this register-passed append routine; it has no stack arguments.
-__declspec(naked) AnimationVmId __stdcall PublishSecondaryDrawAnimationVmNative()
+// 004557E0. Append to the second (draw) VM list and assign the next nonzero id.
+AnimationVmId __stdcall PublishSecondaryDrawAnimationVm(AnimationVmView *vm)
 {
-    __asm {
-        mov ecx, dword ptr [g_RenderBatch]
-        lea edx, [ebx+4]
-        mov dword ptr [edx], ebx
-        mov dword ptr [edx+4], 0
-        mov dword ptr [edx+8], 0
-        cmp dword ptr [ecx+7b5634h], 0
-        jne has_second_tail
-        mov dword ptr [ecx+7b5634h], edx
-        jmp update_second_tail
-    has_second_tail:
-        push esi
-        mov esi, dword ptr [ecx+7b5638h]
-        push edi
-        mov edi, dword ptr [esi+4]
-        test edi, edi
-        je no_second_next
-        mov dword ptr [edx+4], edi
-        mov edi, dword ptr [esi+4]
-        mov dword ptr [edi+8], edx
-    no_second_next:
-        mov dword ptr [esi+4], edx
-        pop edi
-        mov dword ptr [edx+8], esi
-        pop esi
-    update_second_tail:
-        mov dword ptr [ecx+7b5638h], edx
-        mov edx, 1
-        add dword ptr [ecx+7bd888h], edx
-        cmp dword ptr [ecx+7bd888h], 0
-        jne no_id_wrap
-        add dword ptr [ecx+7bd888h], edx
-    no_id_wrap:
-        mov edx, dword ptr [ecx+7bd888h]
-        mov dword ptr [ebx], edx
-        mov ecx, dword ptr [ecx+7bd888h]
-        mov dword ptr [eax], ecx
-        ret
+    EmitterVmRegistryView *registry = reinterpret_cast<EmitterVmRegistryView *>(g_RenderBatch);
+    AnimationVmNode *node = &vm->updateNode;
+    node->vm = vm;
+    node->next = 0;
+    node->previous = 0;
+    if (!registry->second)
+        registry->second = node;
+    else
+    {
+        AnimationVmNode *tail = registry->secondTail;
+        if (tail->next)
+        {
+            node->next = tail->next;
+            tail->next->previous = node;
+        }
+        tail->next = node;
+        node->previous = tail;
     }
+    registry->secondTail = node;
+    ++registry->nextId;
+    if (!registry->nextId)
+        ++registry->nextId;
+    vm->unknown000 = registry->nextId;
+    return AnimationVmId(registry->nextId);
 }
 
-__declspec(naked) AnimationVmId __stdcall CreateSecondaryDrawAnimationVmId(
-    AnimationFileView *file, int script, int layer)
+// 00455DF0. Create a draw-list VM on a layer under the VM lock.
+AnimationVmId __stdcall CreateSecondaryDrawAnimationVmId(AnimationFileView *file, int script, int layer)
 {
-    __asm {
-        test dword ptr [g_MainRuntime+590h], 8000h
-        je no_draw_lock
-        push offset g_MainRuntime+8e8h
-        call dword ptr [EnterCriticalSection]
-        inc byte ptr [g_MainRuntime+939h]
-    no_draw_lock:
-        push ebx
-        call AllocateSceneAnimationVm
-        mov ecx, dword ptr [esp+8]
-        mov edx, dword ptr [esp+0ch]
-        mov ebx, eax
-        mov eax, dword ptr [esp+10h]
-        or dword ptr [ebx+404h], 40000000h
-        mov dword ptr [ebx+20h], eax
-        push ecx
-        mov eax, ebx
-        call InitializeSceneAnimationVm
-        mov eax, esi
-        call PublishSecondaryDrawAnimationVmNative
-        test dword ptr [g_MainRuntime+590h], 8000h
-        pop ebx
-        je draw_done
-        push offset g_MainRuntime+8e8h
-        call dword ptr [LeaveCriticalSection]
-        dec byte ptr [g_MainRuntime+939h]
-        mov eax, esi
-    draw_done:
-        ret 0ch
+    if (g_MainRuntime.flags & 0x8000)
+    {
+        EnterCriticalSection(&g_MainRuntime.criticalSections[9]);
+        ++g_MainRuntime.criticalDepth[9];
     }
+    AnimationVmView *vm = AllocateSceneAnimationVm();
+    vm->flags.value |= 0x40000000;
+    vm->persistent020 = layer;
+    InitializeSceneAnimationVm(vm, file, script);
+    AnimationVmId id = PublishSecondaryDrawAnimationVm(vm);
+    if (g_MainRuntime.flags & 0x8000)
+    {
+        LeaveCriticalSection(&g_MainRuntime.criticalSections[9]);
+        --g_MainRuntime.criticalDepth[9];
+    }
+    return id;
 }

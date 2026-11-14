@@ -4113,12 +4113,12 @@ linkages = [
 artifact_kind = "linked-pe"
 source = "src/SecondaryDrawPublisher.cpp"
 inputs = ["src/SecondaryEmitterAnimation.hpp", "src/RenderBatch.hpp", "src/MainRuntime.hpp", "src/AnimationVmId.hpp"]
-support_sources = ["probes/secondary-draw-publisher-context.cpp"]
+support_sources = ["probes/secondary-draw-publisher-context.cpp", "src/AnimationVmFactory.cpp", "src/PauseContinueMenuSupport.cpp"]
 output_dir = "build/match-linked/SecondaryDrawPublisher"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "SecondaryDrawPublisherProbe@8"
 functions = ["PublishSecondaryDrawAnimationVm"]
-symbol = "?PublishSecondaryDrawAnimationVmNative@@YG?AUAnimationVmId@@XZ"
+symbol = "?PublishSecondaryDrawAnimationVm@@YG?AUAnimationVmId@@PAUAnimationVmView@@@Z"
 target_address = 0x004557E0
 size = 123
 linkages = [
@@ -4164,17 +4164,17 @@ symbol = "?CreateSecondaryDrawAnimationVmId@@YG?AUAnimationVmId@@PAUAnimationFil
 target_address = 0x455df0
 size = 112
 linkages = [
-  { offset = 2, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x590 },
-  { offset = 13, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8e8 },
-  { offset = 19, type = "DIR32", symbol = "__imp__EnterCriticalSection@4", target = 0x48b084, addend = 0x0 },
-  { offset = 25, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x939 },
-  { offset = 31, type = "REL32", symbol = "?AllocateSceneAnimationVm@@YGPAUAnimationVmView@@XZ", target = 0x4569c0, addend = 0x0 },
-  { offset = 66, type = "REL32", symbol = "?InitializeSceneAnimationVm@@YGXPAUAnimationVmView@@PAUAnimationFileView@@H@Z", target = 0x456910, addend = 0x0 },
-  { offset = 73, type = "REL32", symbol = "?PublishSecondaryDrawAnimationVmNative@@YG?AUAnimationVmId@@XZ", target = 0x4557e0, addend = 0x0 },
-  { offset = 79, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x590 },
-  { offset = 91, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8e8 },
-  { offset = 97, type = "DIR32", symbol = "__imp__LeaveCriticalSection@4", target = 0x48b088, addend = 0x0 },
-  { offset = 103, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x939 },
+  { offset = 2, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 1424 },
+  { offset = 13, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 2280 },
+  { offset = 19, type = "DIR32", symbol = "__imp__EnterCriticalSection@4", target = 0x0048B084 },
+  { offset = 25, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 2361 },
+  { offset = 31, type = "REL32", symbol = "?AllocateSceneAnimationVm@@YGPAUAnimationVmView@@XZ", target = 0x004569C0 },
+  { offset = 66, type = "REL32", symbol = "?InitializeSceneAnimationVm@@YGXPAUAnimationVmView@@PAUAnimationFileView@@H@Z", target = 0x00456910 },
+  { offset = 73, type = "REL32", symbol = "?PublishSecondaryDrawAnimationVm@@YG?AUAnimationVmId@@PAUAnimationVmView@@@Z", target = 0x004557E0 },
+  { offset = 79, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 1424 },
+  { offset = 91, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 2280 },
+  { offset = 97, type = "DIR32", symbol = "__imp__LeaveCriticalSection@4", target = 0x0048B088 },
+  { offset = 103, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 2361 },
 ]
 
 [units.reset-secondary-pattern-slot]
@@ -6057,17 +6057,17 @@ symbol = "?CreateDefaultSecondaryDrawAnimationVmId@@YG?AUAnimationVmId@@PAUAnima
 target_address = 0x00455D80
 size = 105
 linkages = [
-  { offset = 0x02, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x590 },
-  { offset = 0x0D, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x8E8 },
-  { offset = 0x13, type = "DIR32", symbol = "__imp__EnterCriticalSection@4", target = 0x0048B084 },
-  { offset = 0x19, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x939 },
-  { offset = 0x1F, type = "REL32", symbol = "?AllocateSceneAnimationVm@@YGPAUAnimationVmView@@XZ", target = 0x004569C0 },
-  { offset = 0x3B, type = "REL32", symbol = "?InitializeSceneAnimationVm@@YGXPAUAnimationVmView@@PAUAnimationFileView@@H@Z", target = 0x00456910 },
-  { offset = 0x42, type = "REL32", symbol = "?PublishSecondaryDrawAnimationVmNative@@YG?AUAnimationVmId@@XZ", target = 0x004557E0 },
-  { offset = 0x48, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x590 },
-  { offset = 0x54, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x8E8 },
-  { offset = 0x5A, type = "DIR32", symbol = "__imp__LeaveCriticalSection@4", target = 0x0048B088 },
-  { offset = 0x60, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x939 },
+  { offset = 2, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 1424 },
+  { offset = 13, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 2280 },
+  { offset = 19, type = "DIR32", symbol = "__imp__EnterCriticalSection@4", target = 0x0048B084 },
+  { offset = 25, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 2361 },
+  { offset = 31, type = "REL32", symbol = "?AllocateSceneAnimationVm@@YGPAUAnimationVmView@@XZ", target = 0x004569C0 },
+  { offset = 59, type = "REL32", symbol = "?InitializeSceneAnimationVm@@YGXPAUAnimationVmView@@PAUAnimationFileView@@H@Z", target = 0x00456910 },
+  { offset = 66, type = "REL32", symbol = "?PublishSecondaryDrawAnimationVm@@YG?AUAnimationVmId@@PAUAnimationVmView@@@Z", target = 0x004557E0 },
+  { offset = 72, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 1424 },
+  { offset = 84, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 2280 },
+  { offset = 90, type = "DIR32", symbol = "__imp__LeaveCriticalSection@4", target = 0x0048B088 },
+  { offset = 96, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 2361 },
 ]
 
 # Full native 123-byte music-wave filename queue wrapper. Dynamic audio queue
@@ -7604,9 +7604,9 @@ inputs = ["src/SecondaryPlayerController.hpp"]
 support_sources = ["probes/secondary-integer-player-position-context.cpp"]
 output_dir = "build/match-linked/SecondaryIntegerPlayerPosition"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
-entry = "SecondaryIntegerPlayerPositionProbe@4"
+entry = "SecondaryIntegerPlayerPositionProbe@8"
 functions = ["SetSecondaryIntegerPlayerPosition"]
-symbol = "?SetSecondaryIntegerPlayerPosition@@YIXPBH@Z"
+symbol = "?SetSecondaryIntegerPlayerPosition@@YGXPBH@Z"
 target_address = 0x00435630
 size = 110
 linkages = [
@@ -7668,7 +7668,7 @@ linkages = [
   { offset = 235, type = "DIR32", symbol = "?g_ReplayStageExtraScore@@3IA", target = 0x004A5750 },
   { offset = 253, type = "DIR32", symbol = "?g_StageVariant@@3IA", target = 0x004A5728 },
   { offset = 300, type = "DIR32", symbol = "?g_StageVariant@@3IA", target = 0x004A5728 },
-  { offset = 321, type = "REL32", symbol = "?SetSecondaryIntegerPlayerPosition@@YIXPBH@Z", target = 0x00435630 },
+  { offset = 321, type = "REL32", symbol = "?SetSecondaryIntegerPlayerPosition@@YGXPBH@Z", target = 0x00435630 },
   { offset = 330, type = "DIR32", symbol = "?g_SecondaryControllerMode@@3PAUSecondaryControllerModeView@@A", target = 0x004A8EB4 },
   { offset = 361, type = "REL32", symbol = "?ResetSecondaryPlayerEmitters@@YGXPAUSecondaryDamageReferencesView@@@Z", target = 0x00432CC0 },
   { offset = 367, type = "DIR32", symbol = "?g_SecondaryControllerMode@@3PAUSecondaryControllerModeView@@A", target = 0x004A8EB4 },
@@ -7687,7 +7687,7 @@ output_dir = "build/match-linked/ReplayHeaderStorageInitialization"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "ReplayHeaderStorageInitializationProbe@4"
 functions = ["InitializeReplayHeaderStorage"]
-symbol = "?InitializeReplayHeaderStorage@@YGXXZ"
+symbol = "?InitializeReplayHeaderStorage@@YGXPAUReplayHeaderStorageView@@@Z"
 target_address = 0x00420D80
 size = 137
 linkages = [
@@ -7788,7 +7788,7 @@ linkages = [
   { offset = 48, type = "REL32", symbol = "?AppendReplayWriteSegment@@YGPAUReplayWriteSegmentNode@@XZ", target = 0x00437300 },
   { offset = 61, type = "REL32", symbol = "_ReplayInitAllocate", target = 0x0045FCE4 },
   { offset = 127, type = "REL32", symbol = "_ReplayInitAllocate", target = 0x0045FCE4 },
-  { offset = 144, type = "REL32", symbol = "?InitializeReplayHeaderStorage@@YGXXZ", target = 0x00420D80 },
+  { offset = 144, type = "REL32", symbol = "?InitializeReplayHeaderStorage@@YGXPAUReplayHeaderStorageView@@@Z", target = 0x00420D80 },
   { offset = 154, type = "REL32", symbol = "_ReplayInitMemset", target = 0x0046A720 },
   { offset = 176, type = "REL32", symbol = "_ReplayInitAllocate", target = 0x0045FCE4 },
   { offset = 197, type = "REL32", symbol = "_ReplayInitMemset", target = 0x0046A720 },

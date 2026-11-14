@@ -7,7 +7,7 @@
 
 struct ReplayCleanupState;
 void __stdcall ClearReplayStageSegments(ReplayCleanupState *state, int stage);
-void __fastcall SetSecondaryIntegerPlayerPosition(const int *position);
+void __stdcall SetSecondaryIntegerPlayerPosition(const int *position);
 extern unsigned int g_ReplayModeFlags;
 extern unsigned int g_ReplayStageBombs, g_ReplayStageFlags;
 extern unsigned int g_ReplayStageBonus, g_ReplayStageExtraScore;
