@@ -495,18 +495,26 @@ has57. This comparison deliberately does not prove memory aliases, stack slots,
 predicates, original vector classes or full bytes. No constructor, volatile,
 forced ABI or padding is introduced to obtain it.
 
-The complete current canonical host is15,952 bytes/frame328, not exact. PacketsA4, shared
-spawn/name2AC, cookie330 and EH registration338 differ from native8C/294/318/320;
-cleanup is EBP-328 versus native EBP-2F4. The128-byte decoder capacity remains a
-hypothesis; its132-byte cookie distance persists. The earlier310 frame was
-compatible with the older floating storage representation, not proof of final
-source correctness. Do not shrink or pad storage to preserve that earlier result.
-The12D/12F entry interval is757/native790, a diagnostic attribution only. VC9
-consolidates the four native pointer-selection comparisons into one; scalar
-preset reloads, register allocation and stack storage remain concrete gaps.
-Separate if statements compile identically to the ternaries; two manually shared
-working floats worsen the frame to330 and are not retained. A private reordering
-of all154 cases by native physical entry also leaves the excess sharing unresolved.
+The complete current canonical host is15,840 bytes/frame318, still non-exact.
+The 0x12D/0x12F source now stages the six reader values directly into the three
+pair targets/initials rather than materializing three `SecondaryVector2` pairs
+or a 0x3C scratch aggregate. Against the previous 15,952-byte/frame328 candidate,
+this removes112 bytes and16 bytes of frame while retaining all three timer resets,
+all three pair-control copies and the native Y-then-X value selection order. The
+complete owner still exceeds the native15,780 bytes by60 bytes and its frame is
+8 bytes above native0x310. The 0x12D/0x12F entry interval is now651/native790 bytes
+(187/216 decoded instructions): VC9 shares the three pointer selections through
+one pair index, while the native retains three independent comparisons. This is
+a concrete remaining codegen gap, not exact acceptance.
+
+The discarded 0x3C aggregate experiment is retained as
+`.analysis/SecondaryActorInstructionMotion-scratch-uncommitted-20261114.inc`:
+it restored the native0x310 frame but expanded the whole owner to16,032 bytes.
+It was replaced rather than padded or hidden. The128-byte decoder capacity
+remains a hypothesis; the current full host is still not byte-exact. The
+independent11-byte manager adapter remains exact; no full-host exact credit is
+claimed. The three pointer comparisons, spawn/name scratch reuse, scalar preset
+reloads, register allocation and remaining stack storage are the next targets.
 
 All195 selector groups, acyclic call/index skeletons, projection roles and return
 sets continue to agree. Physical body direct sites are464/457, versus prior455: float107/106,
