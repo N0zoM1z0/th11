@@ -22,7 +22,7 @@ struct SecondaryEmitterObjectView
     unsigned char unknown004[0x1c - 4];
     SecondaryEmitterFloatPair polar[2];
     unsigned char unknown02c[0x54 - 0x2c];
-    int pendingX, pendingY, x, y;
+    SecondaryIntegerPair pending, position;
     SecondaryIntegerPair offsets[7];
     unsigned char unknown09c[0xa8 - 0x9c];
     float angle;
@@ -99,7 +99,7 @@ int __stdcall SpawnSecondaryProjectile(SecondaryDamageReferencesView *self,
 typedef char SecondaryEmitterAngleOffset[(offsetof(SecondaryEmitterView, angle) == 0x4c) ? 1 : -1];
 typedef char SecondaryEmitterIdOffset[(offsetof(SecondaryEmitterView, id) == 0x54) ? 1 : -1];
 typedef char SecondaryEmitterObjectSize[(sizeof(SecondaryEmitterObjectView) == 0xe4) ? 1 : -1];
-typedef char SecondaryEmitterObjectCoordinates[(offsetof(SecondaryEmitterObjectView, x) == 0x5c) ? 1 : -1];
+typedef char SecondaryEmitterObjectCoordinates[(offsetof(SecondaryEmitterObjectView, position) == 0x5c) ? 1 : -1];
 typedef char SecondaryEmitterObjectOffsets[(offsetof(SecondaryEmitterObjectView, offsets) == 0x64) ? 1 : -1];
 typedef char SecondaryEmitterObjectIndex[(offsetof(SecondaryEmitterObjectView, index) == 0xd0) ? 1 : -1];
 typedef char SecondaryEmitterObjectCallback[(offsetof(SecondaryEmitterObjectView, onDraw) == 0xe0) ? 1 : -1];

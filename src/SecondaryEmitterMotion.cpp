@@ -23,21 +23,21 @@ void __stdcall OrbitSecondaryEmitter(SecondaryEmitterObjectView *self)
     SecondaryEmitterPolarVector position;
     position.SetPolar(self->angle, radius);
     int x = static_cast<int>(position.x * -128.0);
-    self->pendingX = Subtract(Player()->x, x);
+    self->pending.x = Subtract(Player()->x, x);
     int y = static_cast<int>(position.y * -128.0);
-    self->pendingY = Subtract(Player()->y, y);
+    self->pending.y = Subtract(Player()->y, y);
     self->angle = NormalizeAngle(static_cast<float>(self->angle + static_cast<double>(0.10471976f)));
-    if (self->pendingX < -0x6600)
+    if (self->pending.x < -0x6600)
     {
         self->flags |= 1;
         self->refresh = 1;
-        self->pendingX = static_cast<int>(static_cast<unsigned int>(self->pendingX) + 0xcc00);
+        self->pending.x = static_cast<int>(static_cast<unsigned int>(self->pending.x) + 0xcc00);
         return;
     }
-    if (self->pendingX > 0x6600)
+    if (self->pending.x > 0x6600)
     {
         self->refresh = 1;
-        self->pendingX = Subtract(self->pendingX, 0xcc00);
+        self->pending.x = Subtract(self->pending.x, 0xcc00);
         self->flags |= 1;
         return;
     }
@@ -73,9 +73,9 @@ void __stdcall AimSecondaryEmitter(SecondaryEmitterObjectView *self)
     SecondaryEmitterPolarVector position;
     position.SetPolar(angle, self->polar[player->focused].y);
     int x = static_cast<int>(position.x * -128.0);
-    self->pendingX = Subtract(Player()->x, x);
+    self->pending.x = Subtract(Player()->x, x);
     int y = static_cast<int>(position.y * -128.0);
-    self->pendingY = Subtract(Player()->y, y);
+    self->pending.y = Subtract(Player()->y, y);
 }
 
 float __stdcall SecondaryDamageAngleDifference(float target, float current)

@@ -87,9 +87,9 @@ output views do not assert an original constructor or aggregate-return ABI.
 | ConvertSecondaryIntegerPair | 433DB0 | 26 | Exact |
 | AddAssignSecondaryIntegerPair | 433DD0 | 23 | Source23/6 |
 | SecondaryIntegerPairNonzero | 433DF0 | 20 | Exact |
-| SubtractSecondaryIntegerPair | 433E10 | 18 | Source20/16 |
-| ScaleSecondaryIntegerPair | 433E30 | 19 | Source21/16 |
-| DivideSecondaryIntegerPair100 | 433E50 | 51 | Source49/50 |
+| SubtractSecondaryIntegerPair | 433E10 | 18 | Exact (inline member, movement TU) |
+| ScaleSecondaryIntegerPair | 433E30 | 19 | Exact (inline member, movement TU) |
+| DivideSecondaryIntegerPair100 | 433E50 | 51 | Exact (inline member, movement TU) |
 | SetSecondaryIntegerPair | 433E90 | 6 | Exact |
 | AddSecondaryIntegerPair | 433EA0 | 18 | Source20/16 |
 | AssignSecondaryIntegerPair | 433F10 | 23 | Source20/11 |
@@ -106,12 +106,26 @@ double-constant address. The six non-exact rows above are fixed by this form;
 the free-function output-pointer form cannot choose the dead copies' register
 conventions. Probe: `.analysis/IntegerPair-inline-20261114.cpp`.
 
-Canonical units need the copies to come from the real owning TU, which
-precedes `SpawnSecondaryProjectile` at 433F90 and so must use these operators
-inline. Move `SecondaryIntegerPair` to an inline member class in its header,
-express the pattern/emitter code with its operators where native inlined them,
-and rebuild the unit family with that TU as primary. Do not add an invented
-caller to force emission.
+`SecondaryIntegerPair` now has inline member operators (`+=`, `-`, `*`, `/`,
+`+`; no constructors, so it stays an aggregate), and the emitter's four
+coordinates are two pairs, `pending` and `position`. The emitter blend in
+`UpdateSecondaryPlayerMovement` is written as native computes it inline:
+
+```cpp
+SecondaryIntegerPair delta = (emitter->pending - emitter->position) * owner->blend / 100;
+if (delta.x || delta.y) emitter->position += delta;
+else emitter->position = emitter->pending;
+```
+
+That TU then emits the dead copies itself. `-`, `*` and `/` (LTCG specializes
+the divisor to 100) are exact units in the SecondaryPlayerMovement family. The
+earlier free-function versions of these three were removed.
+
+Still open: `+=` (433DD0) comes out with its second load scheduled one
+instruction earlier; native's copy behaves as if `this` and the operand may
+alias, so look for an aliasing `+=` use elsewhere. `+` (433EA0) and the
+copy-returning `operator=` (433F10) need their real native uses; a user
+`operator=` changes every pair assignment, so check exact consumers first.
 
 Tracked-target435030/73 also closes after the two length helpers explicitly call
 the double sqrt API and narrow its result to float. Their own33/34-byte bodies

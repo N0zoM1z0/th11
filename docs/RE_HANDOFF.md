@@ -45,9 +45,10 @@ Near-exact step functions to finish next:
 
 - Dead inline copies: 20 non-exact leaves have no callers or stored address
   (list in the knowledge base). In-class inline members whose calls are all
-  inlined reproduce the nine integer-pair bodies 433DB0..433F26 exactly in a
-  probe; landing them needs the real owning TU to use the operators (see
-  [SECONDARY_PATTERN](SECONDARY_PATTERN.md)). Check the others the same way.
+  inlined reproduce the nine integer-pair bodies 433DB0..433F26. Three
+  (`-`, `*`, `/100`) are now exact from the movement TU; `+=`, `+` and `=`
+  remain (see [SECONDARY_PATTERN](SECONDARY_PATTERN.md)). Check the other
+  dead leaves the same way.
 
 `scripts/validate-tracking.py` already fails on clean HEAD at 0x00435630
 (indeterminate origin without an individual reason); not caused by this change.

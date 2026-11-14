@@ -67,10 +67,10 @@ __forceinline void PositionEmitter(SecondaryEmitterObjectView *emitter, Secondar
     SecondaryIntegerPair *offset = owner->focused ? &emitter->offsets[1] : &emitter->offsets[0];
     int x = static_cast<int>(static_cast<unsigned int>(owner->x) + offset->x);
     int y = static_cast<int>(static_cast<unsigned int>(owner->y) + offset->y);
-    emitter->pendingX = x;
-    emitter->pendingY = y;
-    emitter->x = x;
-    emitter->y = y;
+    emitter->pending.x = x;
+    emitter->pending.y = y;
+    emitter->position.x = x;
+    emitter->position.y = y;
 }
 }
 
@@ -108,8 +108,8 @@ void __stdcall ResetSecondaryPlayerEmitters(SecondaryDamageReferencesView *self)
     for (; i < count; ++i)
     {
         SecondaryEmitterObjectView *emitter = &owner->emitters[i];
-        emitter->x = owner->x;
-        emitter->y = owner->y;
+        emitter->position.x = owner->x;
+        emitter->position.y = owner->y;
         ReleaseEmitterVm(emitter->idB0);
         emitter->idB0 = 0;
         emitter->index = i;
@@ -155,8 +155,8 @@ void __stdcall ResetSecondaryPlayerEmitters(SecondaryDamageReferencesView *self)
             ReadFixedPoint(&emitter->offsets[6], owner, table, count, i, 0x168);
             {
                 SecondaryIntegerPair *offset = owner->focused ? &emitter->offsets[1] : &emitter->offsets[0];
-                emitter->pendingX = static_cast<int>(static_cast<unsigned int>(owner->x) + offset->x);
-                emitter->pendingY = static_cast<int>(static_cast<unsigned int>(owner->y) + offset->y);
+                emitter->pending.x = static_cast<int>(static_cast<unsigned int>(owner->x) + offset->x);
+                emitter->pending.y = static_cast<int>(static_cast<unsigned int>(owner->y) + offset->y);
             }
             emitter->idB0 = CreateAnimationVmId(self->file,
                 static_cast<int>(static_cast<unsigned int>(owner->multiplier) + 0x22), 0xb).value;

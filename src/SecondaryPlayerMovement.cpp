@@ -224,14 +224,14 @@ int __stdcall UpdateSecondaryPlayerMovement(SecondaryDamageReferencesView *self)
         if (!(owner->flags & 8))
         {
             SecondaryIntegerPair *offset = owner->focused ? &emitter->offsets[1] : &emitter->offsets[0];
-            emitter->pendingX = Add(owner->x, offset->x);
-            emitter->pendingY = Add(owner->y, offset->y);
+            emitter->pending.x = Add(owner->x, offset->x);
+            emitter->pending.y = Add(owner->y, offset->y);
             if (emitter->onUpdate) emitter->onUpdate(emitter);
         }
         else
         {
-            emitter->pendingX = owner->x;
-            emitter->pendingY = owner->y;
+            emitter->pending.x = owner->x;
+            emitter->pending.y = owner->y;
             if (owner->collapseFrames >= 30)
             {
                 emitter->state = 0;
@@ -244,18 +244,17 @@ int __stdcall UpdateSecondaryPlayerMovement(SecondaryDamageReferencesView *self)
         if (emitter->refresh)
         {
             emitter->refresh = 0;
-            emitter->x = emitter->pendingX;
-            emitter->y = emitter->pendingY;
+            emitter->position.x = emitter->pending.x;
+            emitter->position.y = emitter->pending.y;
         }
         else if (owner->blend >= 30)
         {
-            int x = Product(Subtract(emitter->pendingX, emitter->x), owner->blend) / 100;
-            int y = Product(Subtract(emitter->pendingY, emitter->y), owner->blend) / 100;
-            if (!x && !y) { emitter->x = emitter->pendingX; emitter->y = emitter->pendingY; }
-            else { emitter->x = Add(emitter->x, x); emitter->y = Add(emitter->y, y); }
+            SecondaryIntegerPair delta = (emitter->pending - emitter->position) * owner->blend / 100;
+            if (delta.x || delta.y) emitter->position += delta;
+            else emitter->position = emitter->pending;
         }
-        CameraVector position = { static_cast<float>(emitter->x * (1.0 / 128.0)),
-            static_cast<float>(emitter->y * (1.0 / 128.0)), 0.0f };
+        CameraVector position = { static_cast<float>(emitter->position.x * (1.0 / 128.0)),
+            static_cast<float>(emitter->position.y * (1.0 / 128.0)), 0.0f };
         PositionSecondaryAnimation(emitter->idB0, &position);
         PositionSecondaryAnimation(emitter->idB4, &position);
         renderer = g_RenderBatch;
