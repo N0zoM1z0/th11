@@ -4,138 +4,97 @@
 #include "SecondaryActorRuntime.hpp"
 #include "SecondaryPattern.hpp"
 #include "SecondaryDamage.hpp"
+#include <stddef.h>
 
 struct ReplayCleanupState;
 void __stdcall ClearReplayStageSegments(ReplayCleanupState *state, int stage);
-void __stdcall SetSecondaryIntegerPlayerPosition(const int *position);
 extern unsigned int g_ReplayModeFlags;
 extern unsigned int g_ReplayStageBombs, g_ReplayStageFlags;
 extern unsigned int g_ReplayStageBonus, g_ReplayStageExtraScore;
 
-// Native 0x436DA0..0x436F23 is a private register-ABI stage owner. Keep the
-// native register lifetimes and exact branch layout: ESI replay root, EBP zero
-// / selected stage header, EBX secondary controller, EDI selected stage.
-__declspec(naked) void __stdcall UpdateSecondaryReplayStage()
+namespace
 {
-    __asm {
-        push ecx
-        push ebx
-        push ebp
-        push esi
-        mov esi, dword ptr [g_SecondaryReplayCurrent]
-        mov eax, dword ptr [esi+8]
-        xor ebp, ebp
-        push edi
-        mov ecx, 2
-        cmp eax, ebp
-        jz update_chain_done
-        or dword ptr [eax+4], ecx
-    update_chain_done:
-        mov eax, dword ptr [esi+1D0h]
-        cmp eax, ebp
-        jz auxiliary_chain_done
-        or dword ptr [eax+4], ecx
-    auxiliary_chain_done:
-        mov eax, dword ptr [esi+0Ch]
-        cmp eax, ebp
-        jz draw_chain_done
-        or dword ptr [eax+4], ecx
-    draw_chain_done:
-        mov eax, dword ptr [esi+10h]
-        cmp eax, ebp
-        jnz playback_stage
+// One 0x90-byte stage record of the replay file.
+struct ReplayStageRecordView
+{
+    unsigned char unknown000[0xc];
+    int score;
+    unsigned short power;
+    unsigned char unknown012[2];
+    int value;
+    unsigned short lives, bombs;
+    unsigned int flags;
+    int positionX, positionY;
+    unsigned int bonus, extraScore;
+    unsigned int focus, collisions, special;
+};
+typedef char ReplayStageRecordSpecialOffset[(offsetof(ReplayStageRecordView, special) == 0x38) ? 1 : -1];
 
-        mov eax, dword ptr [g_StageVariant]
-        mov ebp, dword ptr [esi+eax*4+1Ch]
-        mov ecx, esi
-        call ClearReplayStageSegments
-        mov edi, dword ptr [g_StageVariant]
-        mov ebx, esi
-        call AppendReplayWriteSegment
-        mov dword ptr [esi+9Ch], eax
-        cmp dword ptr [g_ReplayModeFlags], 0
-        jnz capture_controller_state
+struct ReplayStageControllerView
+{
+    unsigned char unknown000[0x888];
+    int integerX, integerY;
+    unsigned char unknown890[0x7c90 - 0x890];
+    unsigned int emitterState;
+    unsigned char unknown7c94[0x8bac - 0x7c94];
+    unsigned int special;
+    unsigned char unknown8bb0[0x8d20 - 0x8bb0];
+    unsigned int focus;
+};
+typedef char ReplayStageControllerFocusOffset[(offsetof(ReplayStageControllerView, focus) == 0x8d20) ? 1 : -1];
 
-        mov eax, dword ptr [g_SecondaryActorScore]
-        mov dword ptr [ebp+0Ch], eax
-        mov cx, word ptr [g_SecondaryPatternPower]
-        mov word ptr [ebp+10h], cx
-        mov ecx, dword ptr [g_SecondaryPlayerValue]
-        mov eax, 51EB851Fh
-        imul ecx
-        sar edx, 5
-        mov ecx, edx
-        shr ecx, 1Fh
-        add ecx, edx
-        mov eax, ecx
-        cdq
-        mov edi, 0Ah
-        idiv edi
-        sub ecx, edx
-        mov dword ptr [ebp+14h], ecx
-        mov dx, word ptr [g_SecondaryPlayerLives]
-        mov word ptr [ebp+18h], dx
-        mov ax, word ptr [g_ReplayStageBombs]
-        mov word ptr [ebp+1Ah], ax
-        mov ecx, dword ptr [g_ReplayStageFlags]
-        mov dword ptr [ebp+1Ch], ecx
-        mov edx, dword ptr [g_ReplayStageBonus]
-        mov dword ptr [ebp+28h], edx
-        mov eax, dword ptr [g_SecondaryCollisionCount]
-        mov dword ptr [ebp+34h], eax
+inline ReplayStageControllerView *ReplayController()
+{
+    return reinterpret_cast<ReplayStageControllerView *>(g_SecondaryControllerMode);
+}
+}
 
-    capture_controller_state:
-        mov eax, dword ptr [g_SecondaryControllerMode]
-        mov ecx, dword ptr [eax+888h]
-        mov dword ptr [ebp+20h], ecx
-        mov edx, dword ptr [eax+88Ch]
-        mov dword ptr [ebp+24h], edx
-        mov ecx, dword ptr [g_ReplayStageExtraScore]
-        mov dword ptr [ebp+2Ch], ecx
-        mov edx, dword ptr [eax+8BACh]
-        mov dword ptr [ebp+38h], edx
-        mov ecx, dword ptr [g_StageVariant]
-        mov dword ptr [esi+1D4h], ecx
-        mov edx, ecx
-        mov ecx, dword ptr [esi+edx*4+1Ch]
-        mov edx, dword ptr [eax+8D20h]
-        mov dword ptr [ecx+30h], edx
-        mov dword ptr [esi+1CCh], 0
-        pop edi
-        pop esi
-        pop ebp
-        pop ebx
-        pop ecx
-        ret
-
-    playback_stage:
-        cmp eax, 1
-        jnz replay_stage_done
-        mov eax, dword ptr [g_StageVariant]
-        lea ecx, [eax+eax*8+2Dh]
-        mov edi, dword ptr [esi+ecx*4]
-        lea ecx, [edi+20h]
-        mov dword ptr [esi+1D4h], eax
-        call SetSecondaryIntegerPlayerPosition
-        mov edx, dword ptr [edi+30h]
-        mov ebx, dword ptr [g_SecondaryControllerMode]
-        mov dword ptr [ebx+8D20h], edx
-        mov eax, dword ptr [edi+38h]
-        mov dword ptr [ebx+8BACh], eax
-        cmp dword ptr [edi+38h], ebp
-        jz replay_stage_done
-        mov dword ptr [ebx+7C90h], ebp
-        call ResetSecondaryPlayerEmitters
-        mov ebx, dword ptr [g_SecondaryControllerMode]
-        call ResetSecondaryPlayerEmitters
-
-    replay_stage_done:
-        pop edi
-        mov dword ptr [esi+1CCh], ebp
-        pop esi
-        pop ebp
-        pop ebx
-        pop ecx
-        ret
+// 00436DA0. At a stage boundary hide the replay's chains, then either start
+// a new recording segment and snapshot the stage state, or restore the
+// player state from the replay's stage record.
+void __stdcall UpdateSecondaryReplayStage()
+{
+    ReplayStateView *state = g_SecondaryReplayCurrent;
+    if (state->update) state->update->flags |= 2;
+    if (state->secondaryUpdate) state->secondaryUpdate->flags |= 2;
+    if (state->draw) state->draw->flags |= 2;
+    if (!state->mode)
+    {
+        ReplayStageRecordView *stage = static_cast<ReplayStageRecordView *>(state->stages[g_StageVariant]);
+        ClearReplayStageSegments(reinterpret_cast<ReplayCleanupState *>(state), g_StageVariant);
+        state->streams[7].last = AppendReplayWriteSegment(state, g_StageVariant);
+        if (!g_ReplayModeFlags)
+        {
+            stage->score = g_SecondaryActorScore;
+            stage->power = static_cast<unsigned short>(g_SecondaryPatternPower);
+            stage->value = g_SecondaryPlayerValue / 100 - g_SecondaryPlayerValue / 100 % 10;
+            stage->lives = static_cast<unsigned short>(g_SecondaryPlayerLives);
+            stage->bombs = static_cast<unsigned short>(g_ReplayStageBombs);
+            stage->flags = g_ReplayStageFlags;
+            stage->bonus = g_ReplayStageBonus;
+            stage->collisions = g_SecondaryCollisionCount;
+        }
+        stage->positionX = ReplayController()->integerX;
+        stage->positionY = ReplayController()->integerY;
+        stage->extraScore = g_ReplayStageExtraScore;
+        stage->special = ReplayController()->special;
+        state->recordingStage = g_StageVariant;
+        static_cast<ReplayStageRecordView *>(state->stages[g_StageVariant])->focus = ReplayController()->focus;
     }
+    else if (state->mode == 1)
+    {
+        state->recordingStage = g_StageVariant;
+        ReplayStageRecordView *stage =
+            static_cast<ReplayStageRecordView *>(state->stageLinks[g_StageVariant].stageHeader);
+        SetSecondaryIntegerPlayerPosition(&stage->positionX);
+        ReplayController()->focus = stage->focus;
+        ReplayController()->special = stage->special;
+        if (stage->special)
+        {
+            ReplayController()->emitterState = 0;
+            ResetSecondaryPlayerEmitters(reinterpret_cast<SecondaryDamageReferencesView *>(g_SecondaryControllerMode));
+            ResetSecondaryPlayerEmitters(reinterpret_cast<SecondaryDamageReferencesView *>(g_SecondaryControllerMode));
+        }
+    }
+    state->frame = 0;
 }
