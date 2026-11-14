@@ -51,8 +51,12 @@ case 0x194:
     break;
 }
 case 0x195:
-    recordIndex = Integer(self, 0);
-    goto secondary_host_record_real_low;
+{
+    SecondaryHostRecord *item = Record(self, Integer(self, 0));
+    item->speed = Real(self, 1);
+    item->speed2 = Real(self, 2);
+    break;
+}
 case 0x196:
 {
     SecondaryHostRecord *item = Record(self, Integer(self, 0));
@@ -213,46 +217,63 @@ case 0x1a5:
     break;
 }
 case 0x1a6:
-    recordIndex = Integer(self, 0);
-    if (g_SecondaryHostSelectionValue >= 512) goto secondary_host_record_real_middle;
-    if (g_SecondaryHostSelectionValue < -512) goto secondary_host_record_real_low;
-    goto secondary_host_record_real_lower;
+{
+    int index = Integer(self, 0);
+    if (g_SecondaryHostSelectionValue >= 512)
+    {
+        SecondaryHostRecord *item = Record(self, index);
+        item->speed = Real(self, 5);
+        item->speed2 = Real(self, 6);
+    }
+    else if (g_SecondaryHostSelectionValue >= -512)
+    {
+        SecondaryHostRecord *item = Record(self, index);
+        item->speed = Real(self, 3);
+        item->speed2 = Real(self, 4);
+    }
+    else
+    {
+        SecondaryHostRecord *item = Record(self, index);
+        item->speed = Real(self, 1);
+        item->speed2 = Real(self, 2);
+    }
+    break;
+}
 case 0x1a7:
-    recordIndex = ReadSecondaryHostInteger(self, 0);
+{
+    int index = ReadSecondaryHostInteger(self, 0);
     if (g_SecondaryHostSelectionValue >= 600)
     {
-        record = Record(self, recordIndex);
-        firstReal = Real(self, 9);
-        secondIndex = 10;
+        SecondaryHostRecord *item = Record(self, index);
+        item->speed = Real(self, 9);
+        item->speed2 = Real(self, 10);
     }
     else if (g_SecondaryHostSelectionValue >= 200)
     {
-        record = Record(self, recordIndex);
-        firstReal = Real(self, 7);
-        secondIndex = 8;
+        SecondaryHostRecord *item = Record(self, index);
+        item->speed = Real(self, 7);
+        item->speed2 = Real(self, 8);
     }
-    else if (g_SecondaryHostSelectionValue >= -200) goto secondary_host_record_real_middle;
-    else if (g_SecondaryHostSelectionValue < -600) goto secondary_host_record_real_low;
-    else goto secondary_host_record_real_lower;
-    goto secondary_host_record_real_store;
-secondary_host_record_real_low:
-    record = Record(self, recordIndex);
-    firstReal = Real(self, 1);
-    secondIndex = 2;
-    goto secondary_host_record_real_store;
-secondary_host_record_real_lower:
-    record = Record(self, recordIndex);
-    firstReal = Real(self, 3);
-    secondIndex = 4;
-    goto secondary_host_record_real_store;
-secondary_host_record_real_middle:
-    record = Record(self, recordIndex);
-    firstReal = Real(self, 5);
-    secondIndex = 6;
-secondary_host_record_real_store:
-    record->speed = firstReal;
-    record->speed2 = Real(self, secondIndex);
+    else if (g_SecondaryHostSelectionValue >= -200)
+    {
+        SecondaryHostRecord *item = Record(self, index);
+        item->speed = Real(self, 5);
+        item->speed2 = Real(self, 6);
+    }
+    else if (g_SecondaryHostSelectionValue >= -600)
+    {
+        SecondaryHostRecord *item = Record(self, index);
+        item->speed = Real(self, 3);
+        item->speed2 = Real(self, 4);
+    }
+    else
+    {
+        SecondaryHostRecord *item = Record(self, index);
+        item->speed = Real(self, 1);
+        item->speed2 = Real(self, 2);
+    }
     break;
+}
 case 0x1a8:
 {
     int index = ReadSecondaryHostInteger(self, 0);

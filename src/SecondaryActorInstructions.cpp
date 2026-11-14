@@ -14,8 +14,7 @@ int SecondaryActorStateView::ExecuteInstruction()
     AnimationVmView *angleVm;
     int angleIndex;
     SecondaryHostRecord *record;
-    int recordIndex, secondIndex;
-    float firstReal;
+    int secondIndex;
     short firstCount;
     switch (static_cast<short>(opcode))
     {

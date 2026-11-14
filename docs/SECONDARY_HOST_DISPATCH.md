@@ -563,3 +563,12 @@ and leave a dead `cmp eax,-512` in native); 0x15E is
 `>= 600 -> 4, >= 200 -> 3, >= -200 -> 2, >= -400 -> 1, else 0`, and VC9
 cross-jumps its arg2/arg0 blocks into 0x15D's. All four now match their native
 intervals (70/121 bytes); the owner aligns 1041 instructions.
+
+The record speed setters follow the same rule. 0x195 is the plain
+`speed = Real(1); speed2 = Real(2)` block (72/74 bytes), and 0x1A6/0x1A7 are
+plain rank chains (`>=512 -> 5, >=-512 -> 3, else 1` and
+`>=600 -> 9, >=200 -> 7, >=-200 -> 5, >=-600 -> 3, else 1`) that VC9
+tail-merges into 0x195's store (120/112, 144/136). Total interval error over
+all opcodes fell from 1627 to 1381 bytes. The same rewrite of the count
+setters 0x1A9/0x1AA fixed 0x1A9 (166/165) but VC9 did not cross-jump 0x1AA
+into it (183/118), so the earlier `goto` form is kept there for now.
