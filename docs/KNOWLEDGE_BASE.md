@@ -43,8 +43,9 @@ initializer/loader/stage, record factories, score insertion/preparation, draw
 publishers, pair leaves and `DestroyTitleMenuRecord`, which is aliased through
 `/alternatename` to a naked destructor that uses `_emit`. Two more claims forced
 their reads through volatile casts: `ConstructReplayRecordStageLink` 437490 and
-`MusicStreamingThread` 44A900. All 26 claims are withdrawn, and their
-`functions.csv` notes say why. Their match units remain only as measuring
+`MusicStreamingThread` 44A900. All 26 claims (29 after a symbol-level re-sweep) are withdrawn, and their
+`functions.csv` notes say why. By the end of 2026-11-14 every one of these
+sources was rewritten in plain C++ and no `__asm` remains. Their match units remain only as measuring
 harnesses for real C++ rewrites. The continue, game-over and pause menus and
 `RecordReplayInputFrame` still contain `__asm` (including the
 `DeletePauseMenuReplayRecord` helper in `PauseMenu.hpp`), so measurements of

@@ -45,21 +45,17 @@ requires a reviewed boundary, so extend review, but tie it to reconstruction:
    [KNOWLEDGE_BASE](KNOWLEDGE_BASE.md) "CRT library code"). 889 functions are
    library. About 139 CRT-region rows (12.5 KB) remain unmatched, plus 116
    library rows with split extents (mostly SEH funclets).
-1a. **Rewrite the withdrawn claims in C++.** 29 exact claims had `__asm`
-   bodies, asm-symbol units or volatile casts. Exact again from natural C++:
-   the five LZSS tree helpers, the stage-link constructor, both draw-VM
-   creators (455D80/455DF0), score insertion 42BA80 and record preparation
-   42D850. Plain C++ but non-exact: compressor 166/240, writer 446/564,
-   segment append 38/40, frame recorder 94/108, music thread 54/63, draw
-   publisher 4557E0 (id re-test), header storage 420D80 30/40, integer
-   position 435630 19/22, pair leaves, score commit. Byte-identical apart from
-   fields but SEH-framed (no EH acceptance yet): record destructor 435C50,
-   Ascii destructor 401210. Still asm: replay initializer/loader/stage lifecycle
-   (4356E0, 436B60, 436DA0), record factory owner units (435E00/435EF0; C++
-   exists in `ReplayRecordFactories.cpp`), statistics writer 437A70, pause
-   deletion 435FC0, plus `__asm` blocks in the three pause menus. Private
-   register conventions only appear when every caller is C++, and a probe must
-   give shared callees live arguments, or LTCG folds constants into them.
+1a. **Finish the withdrawn claims.** No `__asm` remains in `src` or `probes`.
+   Of the 29 withdrawn claims, these are exact again from natural C++: the five
+   LZSS tree helpers, the stage-link constructor, both draw-VM creators,
+   score insertion 42BA80 and record preparation 42D850. The rest are plain C++
+   with known gaps (`functions.csv` notes). Replay initializer 4356E0 305/406,
+   loader 436B60 131/137, statistics writer 437A70 178/201, writer 436420
+   446/564, stage lifecycle 436DA0 47/108, compressor 166/240. Record and
+   Ascii destructors match apart from fields but are SEH-framed, as are the
+   factories. Pause deletion 435FC0 needs a linked unit with C++ pause-menu
+   callers to get native ESI. Probes must give shared callees live arguments,
+   or LTCG folds constants into them.
 2. **Inventory the uncovered gaps.** Classify each as dead inline copy,
    padding, data or thunk. Dead copies are quick exact wins with the method
    above (store-shape search for users, inline helper in the owning TU).
