@@ -495,17 +495,21 @@ has57. This comparison deliberately does not prove memory aliases, stack slots,
 predicates, original vector classes or full bytes. No constructor, volatile,
 forced ABI or padding is introduced to obtain it.
 
-The complete current canonical host is15,840 bytes/frame318, still non-exact.
-The 0x12D/0x12F source now stages the six reader values directly into the three
-pair targets/initials rather than materializing three `SecondaryVector2` pairs
-or a 0x3C scratch aggregate. Against the previous 15,952-byte/frame328 candidate,
-this removes112 bytes and16 bytes of frame while retaining all three timer resets,
-all three pair-control copies and the native Y-then-X value selection order. The
-complete owner still exceeds the native15,780 bytes by60 bytes and its frame is
-8 bytes above native0x310. The 0x12D/0x12F entry interval is now651/native790 bytes
-(187/216 decoded instructions): VC9 shares the three pointer selections through
-one pair index, while the native retains three independent comparisons. This is
-a concrete remaining codegen gap, not exact acceptance.
+The current canonical host PDB contribution is15,952 bytes/frame328, still
+non-exact. Its actual code interval ends at the primary jump table:15,176 bytes
+versus15,780 native code bytes, a604-byte code gap. The extra tail in the PDB
+contribution is the adjacent dispatch data, not executable function body.
+
+The 0x12D/0x12F source now selects motion and all three pair-tween pointers before
+reading the six real arguments. Each target is staged Y-then-X, followed by its
+initial pair; duration/mode are read only after all three pairs have been staged,
+then all three timer resets run. Keeping the pointer selections as independent
+expressions avoids the compiler's one-pair-index fold. The entry interval is now
+769/native790 bytes (209/216 decoded instructions), improving from651/187 in the
+previous direct-store version. The remaining21-byte branch gap is concentrated
+in opcode-register preservation, x87 sentinel predicates, scratch-slot reuse and
+pair-field store scheduling. The stack frame remains0x328 versus native0x310.
+This is structural progress, not exact acceptance.
 
 The discarded 0x3C aggregate experiment is retained as
 `.analysis/SecondaryActorInstructionMotion-scratch-uncommitted-20261114.inc`:

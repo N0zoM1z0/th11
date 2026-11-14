@@ -229,36 +229,36 @@ case 0x12d:
 case 0x12f:
 {
     SecondaryMotionView *motion = opcode == 0x12d ? &self->local : &self->offset;
-    int pairIndex = opcode == 0x12d ? 0 : 1;
+    // Keep the three tween selections independent. The combined pair-index
+    // expression folds these into one branch and loses the native staging.
+    SecondaryPairTween *angular = instruction->opcode == 0x12d ? &self->pairTweens[0] : &self->pairTweens[1];
+    SecondaryPairTween *radial = static_cast<short>(opcode) == 0x12d ? &self->pairTweens[2] : &self->pairTweens[3];
+    // This case group contains only 12d and 12f; the inverted test preserves
+    // the third independent pointer selection in the native branch.
+    SecondaryPairTween *ellipse = instruction->opcode != 0x12f ? &self->pairTweens[4] : &self->pairTweens[5];
     float angle = Real(self, 2);
     float speed = Real(self, 3);
     float radius = Real(self, 4);
     float radialVelocity = Real(self, 5);
     float tilt = Real(self, 6);
     float ellipseRatio = Real(self, 7);
-    // The native stages each target and initial pair before reading duration
-    // and mode. Keep those writes explicit so the six source values can reuse
-    // the switch's scratch slots rather than materializing three pair structs.
-    SecondaryPairTween *angular = &self->pairTweens[pairIndex];
-    SecondaryPairTween *radial = &self->pairTweens[pairIndex + 2];
-    SecondaryPairTween *ellipse = &self->pairTweens[pairIndex + 4];
-    angular->target.y = Present(speed) ? speed : motion->speed;
-    angular->target.x = Present(angle) ? angle : motion->angle;
-    angular->initial.x = motion->angle;
-    angular->initial.y = motion->speed;
-    radial->target.y = Present(radialVelocity) ? radialVelocity : motion->radialVelocity;
-    radial->target.x = Present(radius) ? radius : motion->radius;
-    radial->initial.x = motion->radius;
-    radial->initial.y = motion->radialVelocity;
-    ellipse->target.y = Present(ellipseRatio) ? ellipseRatio : motion->ellipseRatio;
-    ellipse->target.x = Present(tilt) ? tilt : motion->tilt;
-    ellipse->initial.x = motion->tilt;
-    ellipse->initial.y = motion->ellipseRatio;
+    if (!Present(speed)) speed = motion->speed;
+    if (!Present(angle)) angle = motion->angle;
+    SecondaryVector2 angularInitial = { motion->angle, motion->speed };
+    SecondaryVector2 angularTarget = { angle, speed };
+    if (!Present(radialVelocity)) radialVelocity = motion->radialVelocity;
+    if (!Present(radius)) radius = motion->radius;
+    SecondaryVector2 radialInitial = { motion->radius, motion->radialVelocity };
+    SecondaryVector2 radialTarget = { radius, radialVelocity };
+    if (!Present(ellipseRatio)) ellipseRatio = motion->ellipseRatio;
+    if (!Present(tilt)) tilt = motion->tilt;
+    SecondaryVector2 ellipseInitial = { motion->tilt, motion->ellipseRatio };
+    SecondaryVector2 ellipseTarget = { tilt, ellipseRatio };
     int duration = Integer(self, 0);
     int mode = Integer(self, 1);
-    angular->duration = duration; PairControls(angular); angular->mode = mode; ResetSecondaryPairTimer(angular);
-    radial->duration = duration; PairControls(radial); radial->mode = mode; ResetSecondaryPairTimer(radial);
-    ellipse->duration = duration; PairControls(ellipse); ellipse->mode = mode; ResetSecondaryPairTimer(ellipse);
+    Pair(angular, angularInitial, angularTarget, duration, mode);
+    Pair(radial, radialInitial, radialTarget, duration, mode);
+    Pair(ellipse, ellipseInitial, ellipseTarget, duration, mode);
     motion->velocity = motion->position;
     motion->flags |= 3;
     RecomposeSecondaryHostMotion(motion);
