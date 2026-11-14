@@ -137,7 +137,12 @@ Fog stepping is now 794/737 bytes; everything matches structurally except one
 gap: native calls the out-of-line `operator+` for mode 17's second addition
 (`control2 + target`), while VC9 here inlines all three mode-7/17 additions.
 Nested inline timer helpers, a default constructor, channel loops and
-statement rewrites did not change this. A six-float constructor used by the
+statement rewrites did not change this. Two more levers were ruled out on
+2026-11-14: a plain-`inline` Hermite helper (no change), and an inline
+`operator+=` written as `*this = *this + other`. Used only for mode 17's second
+statement it matches native's instruction count (220) but VC9 calls the `+=`
+copy instead of inlining it and calling `operator+`; used for all three
+mode-7/17 additions it is never inlined (542 bytes). A six-float constructor used by the
 operators changes their bodies (temporary spills) and is wrong.
 
 Vector stepping: with explicit float weight locals in mode 8 (the form that
