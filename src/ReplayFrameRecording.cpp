@@ -9,6 +9,18 @@
 extern void *g_ReplayRecordingGate;
 extern ReplayFramePlayerSampleView *g_ReplayFramePlayerSample;
 
+namespace
+{
+inline void AddReplayFrameEvent(ReplayFrameSegment *segment, unsigned short current,
+    unsigned short pressed, unsigned short released)
+{
+    reinterpret_cast<unsigned short *>(segment->eventEnd)[0] = current;
+    reinterpret_cast<unsigned short *>(segment->eventEnd)[1] = pressed;
+    reinterpret_cast<unsigned short *>(segment->eventEnd)[2] = released;
+    segment->eventEnd += 6;
+}
+}
+
 // Complete 0x435FE0..0x436180: input processing plus 30-frame sample and
 // 6-byte frame events. The callback's private EAX receiver is compiled from
 // a natural callable C++ pointer rather than fabricated register bindings.
@@ -46,27 +58,19 @@ int __fastcall RecordReplayInputFrame(ReplayFrameRecordingView *self)
     if (self->frame % 30 == 0)
     {
         const double rounded = static_cast<double>(g_ReplayFramePlayerSample->sample) + 0.5;
-        const unsigned char value = rounded >= 256.0 ? 0xff :
+        const int value = rounded >= 256.0 ? 0xff :
             static_cast<unsigned char>(static_cast<int>(rounded));
         ReplayFrameSegment *segment = self->last->segment;
-        *segment->sampleEnd++ = value;
+        *segment->sampleEnd++ = static_cast<unsigned char>(value);
     }
 
     ReplayFrameSegment *segment = self->last->segment;
-    unsigned short *write = reinterpret_cast<unsigned short *>(segment->eventEnd);
-    write[0] = static_cast<unsigned short>(input->current);
-    write[1] = static_cast<unsigned short>(input->pressed);
-    write[2] = static_cast<unsigned short>(input->released);
-    segment->eventEnd += 6;
+    AddReplayFrameEvent(segment, static_cast<unsigned short>(input->current),
+        static_cast<unsigned short>(input->pressed), static_cast<unsigned short>(input->released));
     if ((segment->eventEnd - reinterpret_cast<unsigned char *>(segment)) / 6 >= 900)
     {
-        ReplayWriteSegmentNode *next;
-        __asm {
-            mov ebx, self
-            mov edi, dword ptr [ebx+1D4h]
-            call AppendReplayWriteSegment
-            mov next, eax
-        }
+        ReplayWriteSegmentNode *next = AppendReplayWriteSegment(
+            reinterpret_cast<ReplayStateView *>(self), self->stage);
         self->last = reinterpret_cast<ReplayFrameSegmentNode *>(next);
     }
     ++self->frame;
