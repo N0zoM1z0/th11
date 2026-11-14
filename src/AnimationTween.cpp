@@ -132,9 +132,12 @@ int __stdcall StepAnimationIntScalarTween(AnimationIntScalarTween *self)
     }
     if (self->mode == 8)
     {
-        HermiteWeights weights = Hermite(self->time.fraction / self->duration);
-        return static_cast<int>(weights.a * self->initial + weights.b * self->target +
-            weights.c * self->control1 + weights.d * self->control2);
+        float t = self->time.fraction / self->duration;
+        return static_cast<int>(
+            static_cast<float>((t - 1.0) * (t - 1.0) * (2.0 * t + 1.0)) * self->initial +
+            static_cast<float>(t * t * (3.0 - 2.0 * t)) * self->target +
+            static_cast<float>((1.0 - t) * (1.0 - t) * t) * self->control1 +
+            static_cast<float>((t - 1.0) * t * t) * self->control2);
     }
     int initial = self->initial;
     float factor = AnimationIntScalarTweenFactor(self);
@@ -206,9 +209,12 @@ float __stdcall StepAnimationFloatScalarTween(AnimationFloatScalarTween *self)
     }
     if (self->mode == 8)
     {
-        HermiteWeights weights = Hermite(self->time.fraction / self->duration);
-        return static_cast<float>(weights.a * self->initial + weights.b * self->target +
-            weights.c * self->control1 + weights.d * self->control2);
+        float t = self->time.fraction / self->duration;
+        return static_cast<float>(
+            static_cast<float>((t - 1.0) * (t - 1.0) * (2.0 * t + 1.0)) * self->initial +
+            static_cast<float>(t * t * (3.0 - 2.0 * t)) * self->target +
+            static_cast<float>((1.0 - t) * (1.0 - t) * t) * self->control1 +
+            static_cast<float>((t - 1.0) * t * t) * self->control2);
     }
     float factor = AnimationFloatScalarTweenFactor(self);
     return static_cast<float>((self->target - self->initial) * factor + self->initial);

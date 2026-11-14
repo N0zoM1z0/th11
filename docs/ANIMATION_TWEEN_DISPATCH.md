@@ -343,7 +343,26 @@ findings from the stage fog step carry over:
   `a = (p-1)*(p-1)*(2p+1)` and `b = p*p*(3-2p)`, so the operand order is not
   uniform across instantiations.
 
-Current family measurements: int vector 768/768 bytes (254/274 instructions
+**StepAnimationFloatScalarTween 44EBD0 (331 bytes) is exact** (unit
+`step-animation-float-scalar-tween`). Its mode 8 does not precompute the
+weights: each is written inline in the sum and rounded to float,
+
+```cpp
+float t = self->time.fraction / self->duration;
+return static_cast<float>(
+    static_cast<float>((t - 1.0) * (t - 1.0) * (2.0 * t + 1.0)) * self->initial +
+    static_cast<float>(t * t * (3.0 - 2.0 * t)) * self->target +
+    static_cast<float>((1.0 - t) * (1.0 - t) * t) * self->control1 +
+    static_cast<float>((t - 1.0) * t * t) * self->control2);
+```
+
+The other operand orders for the first two weights produce 95..100/124
+aligned instructions; only this one spills `1-t` as a double exactly as native.
+The int scalar step uses the same form but VC9 avoids that spill here
+(324/332 bytes, 97/120); operand-order and `int * weight` variants did not
+change it.
+
+Previous family measurements: int vector 768/768 bytes (254/274 instructions
 aligned; final-add register scheduling remains), float pair 673/673 (217/221;
 one mode-8 scaling schedule), int scalar 321/332, float scalar 324/331. None
 is exact yet. The scalar setter 44ED70 is an uncalled dead copy with the
