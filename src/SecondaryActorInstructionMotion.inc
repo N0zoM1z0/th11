@@ -111,7 +111,8 @@ case 0x121:
 case 0x123:
 {
     SecondaryMotionView *motion = opcode == 0x121 ? &self->local : &self->offset;
-    int pairIndex = opcode == 0x121 ? 0 : 1;
+    SecondaryPairTween *angularTween = opcode == 0x121 ? &self->pairTweens[0] : &self->pairTweens[1];
+    SecondaryPairTween *radialTween = opcode == 0x121 ? &self->pairTweens[2] : &self->pairTweens[3];
     float speed = Real(self, 2);
     float radius = Real(self, 3);
     float radialVelocity = Real(self, 4);
@@ -124,8 +125,8 @@ case 0x123:
     };
     int duration = Integer(self, 0);
     int mode = Integer(self, 1);
-    Pair(&self->pairTweens[pairIndex], angularInitial, angularTarget, duration, mode);
-    Pair(&self->pairTweens[pairIndex + 2], radialInitial, radialTarget, duration, mode);
+    Pair(angularTween, angularInitial, angularTarget, duration, mode);
+    Pair(radialTween, radialInitial, radialTarget, duration, mode);
     motion->flags |= 1;
     RecomposeSecondaryHostMotion(motion);
     UpdateSecondaryActorPosition(self);

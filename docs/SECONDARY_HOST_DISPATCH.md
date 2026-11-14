@@ -591,3 +591,9 @@ owner 16244 bytes, 1053 aligned instructions.
 Tried and reverted: selecting the 0x119/0x11B motion and tween targets with
 two separate `if` statements reproduces native's second opcode compare but
 spills `opcode` to the stack for the whole function (total error 1342).
+
+0x121/0x123 select three pointers (motion, angular pair tween, radial pair
+tween) with three opcode tests in native. Writing three pointer ternaries
+instead of one ternary plus a pair index brings both to 475/509 bytes (total
+interval error 1102). VC9 still threads the three identical tests into one
+branch here, while native keeps all three compares; the cause is open.
