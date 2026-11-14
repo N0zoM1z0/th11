@@ -14,14 +14,6 @@ AudioAdjacentNode *__fastcall FindAudioAdjacentListNode(AudioAdjacentNode *head,
     return head;
 }
 
-void __fastcall InitializeAudioAdjacentTween(AudioAdjacentNode *receiver,
-    int value)
-{
-    receiver->payload = value;
-    receiver->resetA = 0;
-    receiver->resetB = 0;
-}
-
 extern float g_AudioAdjacentScratchMatrix[16];
 
 float *__stdcall SetAudioAdjacentScratchMatrix(

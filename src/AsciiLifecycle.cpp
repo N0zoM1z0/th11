@@ -38,9 +38,7 @@ struct AsciiChainElement : ChainElement
 __forceinline AsciiChainElement *MakeAsciiChain(ChainCallback callback, AsciiManagerObject *self)
 {
     AsciiChainElement *element = new AsciiChainElement;
-    element->callback = callback;
-    element->unknown0c = 0;
-    element->auxiliaryCallback = 0;
+    element->SetCallback(callback);
     element->context = self;
     element->flags = (element->flags & ~2u) | 1;
     return element;

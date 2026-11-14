@@ -127,7 +127,7 @@ unchanged. Whole-game linking/runtime and original TU/data ownership remain open
 
 `src/AudioAdjacentHelpers.cpp` now implements all three independently
 reviewed audio-adjacent owners: `FindAudioAdjacentListNode` at `0x459C40`
-(18 bytes), `InitializeAudioAdjacentTween` at `0x459C60` (12 bytes), and
+(18 bytes), `ChainElementSetCallback` at `0x459C60` (12 bytes; see CALLBACK_CHAIN, previously misnamed InitializeAudioAdjacentTween), and
 `SetAudioAdjacentScratchMatrix` at `0x459C70` (168 bytes). The first two
 compile to full 18/18 and 12/12 lengths but remain non-exact because the
 original uses private EAX/ECX inputs rather than the ordinary fastcall

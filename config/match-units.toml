@@ -1626,6 +1626,20 @@ linkages = [
   { offset = 309, type = "DIR32", symbol = "__real@4020000000000000", target = 0x4981d0, addend = 0x0 },
 ]
 
+[units.chain-element-set-callback]
+artifact_kind = "linked-pe"
+source = "src/AsciiLifecycle.cpp"
+inputs = ["src/AsciiLifecycle.hpp", "src/Chain.hpp"]
+support_sources = ["probes/ascii-lifecycle-context.cpp", "src/StageLifecycle.cpp", "src/ChainRegistration.cpp", "src/AnimationVm.cpp", "src/AnimationDocument.cpp", "src/ErrorLog.cpp", "src/AnimationSpriteBinding.cpp"]
+output_dir = "build/match-linked/AsciiLifecycle"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AsciiLifecycleProbe@16"
+functions = ["ChainElementSetCallback"]
+symbol = "?SetCallback@ChainElement@@QAEXP6IHPAX@Z@Z"
+target_address = 0x459c60
+size = 12
+linkages = []
+
 [units.ascii-manager-constructor]
 artifact_kind = "linked-pe"
 source = "src/AsciiLifecycle.cpp"

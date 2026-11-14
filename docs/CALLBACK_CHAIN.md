@@ -142,3 +142,14 @@ scripts/repo-python scripts/replay-exact-units.py \
 
 Only these changed registration units were rebuilt; the prior nine exact
 units were not replayed.
+
+
+## ChainElement::SetCallback (459C60)
+
+The 12-byte uncalled function at 459C60 is the dead out-of-line copy of an
+inline `ChainElement::SetCallback(value)` that stores the callback and clears
+the +0C and +10 callbacks. Chain registrations throughout the game inline it.
+Declared in `Chain.hpp` and used by the ASCII lifecycle's chain helper, its
+copy is byte-identical; the unit lives in the AsciiLifecycle family. Other
+registrations still spell the three stores out and can switch to the member
+when their owners are revisited.

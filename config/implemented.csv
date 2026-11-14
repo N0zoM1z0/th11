@@ -106,6 +106,7 @@ BuildRotatedAnimationVmQuad
 BuildUnroundedAnimationVmQuad
 CapturePauseOverlayFromVm
 CaptureScreenshot
+ChainElementSetCallback
 ChangeSecondaryAnimationScript
 ChangeSecondaryDialogueSprite
 CheckSecondaryActorCollision
@@ -306,7 +307,6 @@ HideMenuAnimationTree
 IncrementSecondaryCollisionCount
 InitializeAnimationWorldBuffer
 InitializeAsciiManager
-InitializeAudioAdjacentTween
 InitializeColumnMeshEffect
 InitializeD3DDevice
 InitializeFanAnimationVm

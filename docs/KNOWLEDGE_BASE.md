@@ -46,6 +46,11 @@ compiler observations and useful failed approaches.
   453440, 459C60, 45DC80, 45DD50 (scan: E8/E9 targets plus little-endian
   address search over the attested image). The integer-pair group is already
   reproduced this way; see [SECONDARY_PATTERN](SECONDARY_PATTERN.md).
+- 459C60 is `ChainElement::SetCallback` (callback=value, +0C=+10=0), not an
+  audio helper: the same three stores are inlined in about two dozen chain
+  registrations. As an inline member used by the ASCII lifecycle's chain
+  helper it is exact (unit `chain-element-set-callback`). Searching the image
+  for a dead copy's store shape is an effective way to find its real users.
 - The length/angle copies 435400/435430/435460 do not reproduce as plain
   inline-copy probes. Native realigns their frame (`push ebp; and esp,-8`)
   around `_CIsqrt`/`_CIatan2`; probes with `sqrt(double)`, the float `sqrt`/

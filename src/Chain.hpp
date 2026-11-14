@@ -19,6 +19,13 @@ struct ChainElement
     ChainCallback auxiliaryCallback;
     ChainNode link;
     void *context;
+
+    void SetCallback(ChainCallback value)
+    {
+        callback = value;
+        unknown0c = 0;
+        auxiliaryCallback = 0;
+    }
 };
 
 struct ChainManagerView

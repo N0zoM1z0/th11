@@ -107,6 +107,7 @@ BuildRotatedAnimationVmQuad,0x004503D0,function
 BuildUnroundedAnimationVmQuad,0x004500F0,function
 CapturePauseOverlayFromVm,0x0042F480,function
 CaptureScreenshot,0x00429CA0,function
+ChainElementSetCallback,0x00459C60,function
 ChangeSecondaryAnimationScript,0x00456770,function
 ChangeSecondaryDialogueSprite,0x004566D0,function
 CheckSecondaryActorCollision,0x00431F70,function
@@ -307,7 +308,6 @@ HideMenuAnimationTree,0x00456650,function
 IncrementSecondaryCollisionCount,0x0040BB10,function
 InitializeAnimationWorldBuffer,0x00453220,function
 InitializeAsciiManager,0x00401080,function
-InitializeAudioAdjacentTween,0x00459C60,function
 InitializeColumnMeshEffect,0x00406920,function
 InitializeD3DDevice,0x00446D30,function
 InitializeFanAnimationVm,0x004520F0,function
