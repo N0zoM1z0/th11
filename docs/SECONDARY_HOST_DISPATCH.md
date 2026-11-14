@@ -555,3 +555,11 @@ gives 0x100/0x101/0x104/0x105 = 379/92/222/200 and the owner 16160 bytes (from
 backward `goto` from 0x105 into a label after 0x104 is laid out after 0x105
 again (375/131/100/196, 1002 aligned) and was not kept. Still open: making
 VC9 merge 0x105's tail into 0x104 while keeping 0x101's own.
+
+Rank-selected value opcodes 0x15D/0x15E (float) and 0x160/0x161 (integer)
+are plain if/else chains, not `goto`s into shared blocks. 0x15D is
+`>= 512 -> arg2, >= -512 -> arg0, else arg0` (the two identical branches merge
+and leave a dead `cmp eax,-512` in native); 0x15E is
+`>= 600 -> 4, >= 200 -> 3, >= -200 -> 2, >= -400 -> 1, else 0`, and VC9
+cross-jumps its arg2/arg0 blocks into 0x15D's. All four now match their native
+intervals (70/121 bytes); the owner aligns 1041 instructions.

@@ -200,10 +200,23 @@ case 0x15b:
     break;
 }
 case 0x15d:
-    if (g_SecondaryHostSelectionValue < 512) goto secondary_host_real_low;
-    goto secondary_host_real_middle;
+    if (g_SecondaryHostSelectionValue >= 512)
+    {
+        float *destination = SecondaryHostFloatDestination(self);
+        *destination = ReadSecondaryHostReal(self, 2);
+    }
+    else if (g_SecondaryHostSelectionValue >= -512)
+    {
+        float *destination = SecondaryHostFloatDestination(self);
+        *destination = ReadSecondaryHostReal(self, 0);
+    }
+    else
+    {
+        float *destination = SecondaryHostFloatDestination(self);
+        *destination = ReadSecondaryHostReal(self, 0);
+    }
+    break;
 case 0x15e:
-{
     if (g_SecondaryHostSelectionValue >= 600)
     {
         float *destination = SecondaryHostFloatDestination(self);
@@ -214,27 +227,22 @@ case 0x15e:
         float *destination = SecondaryHostFloatDestination(self);
         *destination = ReadSecondaryHostReal(self, 3);
     }
-    else if (g_SecondaryHostSelectionValue >= -200) goto secondary_host_real_middle;
-    else if (g_SecondaryHostSelectionValue < -400) goto secondary_host_real_low;
-    else
+    else if (g_SecondaryHostSelectionValue >= -200)
+    {
+        float *destination = SecondaryHostFloatDestination(self);
+        *destination = ReadSecondaryHostReal(self, 2);
+    }
+    else if (g_SecondaryHostSelectionValue >= -400)
     {
         float *destination = SecondaryHostFloatDestination(self);
         *destination = ReadSecondaryHostReal(self, 1);
     }
+    else
+    {
+        float *destination = SecondaryHostFloatDestination(self);
+        *destination = ReadSecondaryHostReal(self, 0);
+    }
     break;
-}
-secondary_host_real_low:
-{
-    float *destination = SecondaryHostFloatDestination(self);
-    *destination = ReadSecondaryHostReal(self, 0);
-    break;
-}
-secondary_host_real_middle:
-{
-    float *destination = SecondaryHostFloatDestination(self);
-    *destination = ReadSecondaryHostReal(self, 2);
-    break;
-}
 case 0x15f:
 {
     float lower = ReadSecondaryHostReal(self, 1);
@@ -246,10 +254,23 @@ case 0x15f:
     break;
 }
 case 0x160:
-    if (g_SecondaryHostSelectionValue < 512) goto secondary_host_integer_low;
-    goto secondary_host_integer_middle;
+    if (g_SecondaryHostSelectionValue >= 512)
+    {
+        int *destination = SecondaryHostIntegerDestination(self);
+        *destination = ReadSecondaryHostInteger(self, 2);
+    }
+    else if (g_SecondaryHostSelectionValue >= -512)
+    {
+        int *destination = SecondaryHostIntegerDestination(self);
+        *destination = ReadSecondaryHostInteger(self, 0);
+    }
+    else
+    {
+        int *destination = SecondaryHostIntegerDestination(self);
+        *destination = ReadSecondaryHostInteger(self, 0);
+    }
+    break;
 case 0x161:
-{
     if (g_SecondaryHostSelectionValue >= 600)
     {
         int *destination = SecondaryHostIntegerDestination(self);
@@ -260,27 +281,22 @@ case 0x161:
         int *destination = SecondaryHostIntegerDestination(self);
         *destination = ReadSecondaryHostInteger(self, 3);
     }
-    else if (g_SecondaryHostSelectionValue >= -200) goto secondary_host_integer_middle;
-    else if (g_SecondaryHostSelectionValue < -400) goto secondary_host_integer_low;
-    else
+    else if (g_SecondaryHostSelectionValue >= -200)
+    {
+        int *destination = SecondaryHostIntegerDestination(self);
+        *destination = ReadSecondaryHostInteger(self, 2);
+    }
+    else if (g_SecondaryHostSelectionValue >= -400)
     {
         int *destination = SecondaryHostIntegerDestination(self);
         *destination = ReadSecondaryHostInteger(self, 1);
     }
+    else
+    {
+        int *destination = SecondaryHostIntegerDestination(self);
+        *destination = ReadSecondaryHostInteger(self, 0);
+    }
     break;
-}
-secondary_host_integer_low:
-{
-    int *destination = SecondaryHostIntegerDestination(self);
-    *destination = ReadSecondaryHostInteger(self, 0);
-    break;
-}
-secondary_host_integer_middle:
-{
-    int *destination = SecondaryHostIntegerDestination(self);
-    *destination = ReadSecondaryHostInteger(self, 2);
-    break;
-}
 case 0x162:
 {
     int lower = ReadSecondaryHostInteger(self, 1);
