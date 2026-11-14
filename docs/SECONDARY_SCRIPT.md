@@ -195,3 +195,14 @@ current->time = 0` in `EnterSecondaryScriptFrame` (45B7F0, through
 28-byte copy from the script TU, but VC9 passes `name` in EAX where native
 uses ECX (6/10 instructions aligned), with or without the actor-update uses.
 The change was reverted; find what fixes the parameter register first.
+
+## 2026-11-14: stack pop/frame dead copies
+
+`PopSecondaryValue` 45DC80 and `EndSecondaryStackFrame` 45DD20 are uncalled
+dead copies. Making the pop an inline function used by the interpreter's
+pop wrappers emits an 83-byte copy from the script TU with 29/30 instructions
+matching; the only difference is native `add ecx,-4` against VC9's
+`sub ecx,4` (End shows the same pair). `Add(top, -4)`, `top + -4`,
+`top + -sizeof(DWORD)` and a plain-`inline` `Add` all give `sub`, so the
+original decrement spelling is still unknown. Reverted; once that spelling is
+found, both copies should close together.
