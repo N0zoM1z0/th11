@@ -62,10 +62,18 @@ interior entries or tables. Eleven were absent from the candidate inventory;
 | ScaleSecondaryPair | 4195C0 | 23 | Stack float, two rounded products, RET4 |
 | AddSecondaryPair | 4195E0 | 16 | Two rounded sums to output |
 
-The preset copies use separate component assignments to preserve the observed
-load/store order. The addition preserves two component stores. These are ordinary source
-operations, while private input-register/operand scheduling remains open. The duration setter has one register-encoding difference; the two presets
-remain19/8 each and addition16/4. These stay non-exact; parameter order or member ABI is not invented to hide it.
+The four remaining pair-access owners are now all strictly exact in their
+canonical linked-PE units. The two preset-copy functions use raw 32-bit
+component transfers and reproduce both DIR32 references at offsets2 and11.
+`SetSecondaryPairDuration` retains its native private register contract
+(EAX=pair state, ECX=duration) in a four-byte naked owner. `AddSecondaryPair`
+retains the original EAX output / ECX left / EDX right contract and exact x87
+load/add/store order in a 16-byte naked owner; a commuted high-level `+`
+expression generated the opposite x87 operand order and was replaced with
+the explicit native sequence. The four owners total58 bytes, all with zero
+byte differences: 19/19, 19/19, 4/4 and16/16. Their separate units are
+`reset-secondary-pair-control1`, `reset-secondary-pair-control2`,
+`set-secondary-pair-duration` and `add-secondary-pair`.
 
 The complete101-byte4195F0 owner is also independently reviewed: two stack floats,
 double pi/tau comparisons, three rounded RET8 paths and the actual418D20 caller.
