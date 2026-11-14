@@ -8129,3 +8129,114 @@ linkages = [
   { offset = 613, type = "REL32", symbol = "_SecondaryStatisticsFree", target = 0x0045FC3B },
   { offset = 622, type = "REL32", symbol = "_SecondaryStatisticsFree", target = 0x0045FC3B },
 ]
+
+# Full native title replay-record destructor. The source uses a private
+# naked stdcall body aliased to the original member-destructor symbol so the
+# complete SEH frame and native ECX/EDX chain-removal order are explicit.
+[units.title-menu-record-destructor]
+artifact_kind = "linked-pe"
+source = "src/TitleMenuRecord.cpp"
+inputs = ["src/TitleMenuRecord.hpp", "src/TitleMenuRecordDestructorView.hpp", "src/Chain.hpp", "src/ReplayRecordStageLink.hpp"]
+support_sources = ["probes/title-replay-record-context.cpp", "src/ReplayRecordFactories.cpp", "src/ReplayRecordStageConstructor.cpp", "src/ReplayRecordStageLink.cpp"]
+output_dir = "build/match-linked/TitleMenuRecordDestructor"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "TitleReplayRecordProbe@4"
+functions = ["TitleRecordDestructorPrivate"]
+symbol = "_TitleRecordDestructorPrivate@4"
+target_address = 0x00435C50
+size = 429
+linkages = [
+  { offset = 3, type = "DIR32", symbol = "_TitleRecordExceptionHandler", target = 0x0048A348 },
+  { offset = 19, type = "DIR32", symbol = "_TitleRecordSecurityCookie", target = 0x004A2088 },
+  { offset = 51, type = "REL32", symbol = "_TitleRecordFreeHeapBlock", target = 0x0045FD49 },
+  { offset = 69, type = "REL32", symbol = "_TitleRecordClearReplayStageSegments", target = 0x00437420 },
+  { offset = 84, type = "REL32", symbol = "_TitleRecordFreeHeapBlock", target = 0x0045FD49 },
+  { offset = 106, type = "REL32", symbol = "_TitleRecordFreeHeapBlock", target = 0x0045FD49 },
+  { offset = 130, type = "DIR32", symbol = "_TitleRecordIatEnterCriticalSection", target = 0x0048B084 },
+  { offset = 138, type = "DIR32", symbol = "_TitleRecordRuntimeFlags", target = 0x004C3810 },
+  { offset = 148, type = "DIR32", symbol = "_TitleRecordChainManager", target = 0x004C3234 },
+  { offset = 155, type = "DIR32", symbol = "_TitleRecordCriticalSection", target = 0x004C3A90 },
+  { offset = 163, type = "DIR32", symbol = "_TitleRecordCriticalDepth", target = 0x004C3BB0 },
+  { offset = 172, type = "REL32", symbol = "_TitleRecordUnregisterChainElement", target = 0x00457080 },
+  { offset = 178, type = "DIR32", symbol = "_TitleRecordRuntimeFlags", target = 0x004C3810 },
+  { offset = 189, type = "DIR32", symbol = "_TitleRecordCriticalSection", target = 0x004C3A90 },
+  { offset = 195, type = "DIR32", symbol = "_TitleRecordIatLeaveCriticalSection", target = 0x0048B088 },
+  { offset = 201, type = "DIR32", symbol = "_TitleRecordCriticalDepth", target = 0x004C3BB0 },
+  { offset = 217, type = "DIR32", symbol = "_TitleRecordRuntimeFlags", target = 0x004C3810 },
+  { offset = 227, type = "DIR32", symbol = "_TitleRecordChainManager", target = 0x004C3234 },
+  { offset = 234, type = "DIR32", symbol = "_TitleRecordCriticalSection", target = 0x004C3A90 },
+  { offset = 242, type = "DIR32", symbol = "_TitleRecordCriticalDepth", target = 0x004C3BB0 },
+  { offset = 251, type = "REL32", symbol = "_TitleRecordUnregisterChainElement", target = 0x00457080 },
+  { offset = 257, type = "DIR32", symbol = "_TitleRecordRuntimeFlags", target = 0x004C3810 },
+  { offset = 268, type = "DIR32", symbol = "_TitleRecordCriticalSection", target = 0x004C3A90 },
+  { offset = 274, type = "DIR32", symbol = "_TitleRecordIatLeaveCriticalSection", target = 0x0048B088 },
+  { offset = 280, type = "DIR32", symbol = "_TitleRecordCriticalDepth", target = 0x004C3BB0 },
+  { offset = 293, type = "DIR32", symbol = "_TitleRecordRuntimeFlags", target = 0x004C3810 },
+  { offset = 303, type = "DIR32", symbol = "_TitleRecordChainManager", target = 0x004C3234 },
+  { offset = 310, type = "DIR32", symbol = "_TitleRecordCriticalSection", target = 0x004C3A90 },
+  { offset = 318, type = "DIR32", symbol = "_TitleRecordCriticalDepth", target = 0x004C3BB0 },
+  { offset = 327, type = "REL32", symbol = "_TitleRecordUnregisterChainElement", target = 0x00457080 },
+  { offset = 333, type = "DIR32", symbol = "_TitleRecordRuntimeFlags", target = 0x004C3810 },
+  { offset = 344, type = "DIR32", symbol = "_TitleRecordCriticalSection", target = 0x004C3A90 },
+  { offset = 350, type = "DIR32", symbol = "_TitleRecordIatLeaveCriticalSection", target = 0x0048B088 },
+  { offset = 356, type = "DIR32", symbol = "_TitleRecordCriticalDepth", target = 0x004C3BB0 },
+  { offset = 362, type = "DIR32", symbol = "_TitleRecordSingleton", target = 0x004A8EB8 },
+  { offset = 370, type = "DIR32", symbol = "_TitleRecordSingleton", target = 0x004A8EB8 },
+  { offset = 379, type = "DIR32", symbol = "_TitleRecordStageLinkDestructor", target = 0x004374D0 },
+  { offset = 403, type = "REL32", symbol = "_TitleRecordVectorDestructorIterator", target = 0x00460066 },
+]
+
+# Complete native 199-byte recording factory, including the original SEH
+# frame, EH vector construction, memset, secondary registration and unwind.
+[units.title-replay-recording-factory]
+artifact_kind = "linked-pe"
+source = "src/ReplayRecordFactoryOwners.cpp"
+inputs = ["src/TitleMenuRecord.hpp", "src/SecondaryReplayState.hpp", "src/ReplayRecordStageLink.hpp"]
+support_sources = ["probes/title-replay-record-factory-recording-context.cpp"]
+output_dir = "build/match-linked/TitleReplayRecordingFactory"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "TitleReplayRecordFactoryRecordingProbe@4"
+functions = ["CreateReplayRecording"]
+symbol = "?CreateReplayRecording@@YGPAUTitleMenuRecordView@@H@Z"
+target_address = 0x00435E00
+size = 199
+linkages = [
+  { offset = 3, type = "DIR32", symbol = "_TitleFactoryRecordingExceptionHandler", target = 0x0048A8AB },
+  { offset = 17, type = "DIR32", symbol = "_TitleFactorySecurityCookie", target = 0x004A2088 },
+  { offset = 40, type = "REL32", symbol = "_TitleFactoryAllocate", target = 0x0045FCE4 },
+  { offset = 66, type = "DIR32", symbol = "_TitleFactoryStageDestructor", target = 0x004374D0 },
+  { offset = 71, type = "DIR32", symbol = "_TitleFactoryStageConstructor", target = 0x00437490 },
+  { offset = 87, type = "REL32", symbol = "_TitleFactoryVectorConstructorIterator", target = 0x0045FF91 },
+  { offset = 100, type = "REL32", symbol = "_TitleFactoryMemset", target = 0x0046A720 },
+  { offset = 117, type = "DIR32", symbol = "_TitleFactoryReplayRegistry", target = 0x004A8D88 },
+  { offset = 130, type = "REL32", symbol = "_TitleFactoryInitializeSecondaryReplay", target = 0x004356E0 },
+  { offset = 144, type = "REL32", symbol = "_TitleFactoryDestroyTitleMenuRecord", target = 0x00435C50 },
+  { offset = 150, type = "REL32", symbol = "_TitleFactoryFreeHeapBlock", target = 0x0045FD49 },
+]
+
+# Complete native 198-byte playback factory. It shares the allocator,
+# EH vector constructor and cleanup but loads replay data instead of registering.
+[units.title-replay-playback-factory]
+artifact_kind = "linked-pe"
+source = "src/ReplayRecordFactoryOwners.cpp"
+inputs = ["src/TitleMenuRecord.hpp", "src/SecondaryReplayState.hpp", "src/ReplayRecordStageLink.hpp"]
+support_sources = ["probes/title-replay-record-factory-playback-context.cpp"]
+output_dir = "build/match-linked/TitleReplayPlaybackFactory"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "TitleReplayRecordFactoryPlaybackProbe@4"
+functions = ["CreateReplayPlayback"]
+symbol = "?CreateReplayPlayback@@YGPAUTitleMenuRecordView@@PBD@Z"
+target_address = 0x00435EF0
+size = 198
+linkages = [
+  { offset = 3, type = "DIR32", symbol = "_TitleFactoryPlaybackExceptionHandler", target = 0x0048A87B },
+  { offset = 17, type = "DIR32", symbol = "_TitleFactorySecurityCookie", target = 0x004A2088 },
+  { offset = 40, type = "REL32", symbol = "_TitleFactoryAllocate", target = 0x0045FCE4 },
+  { offset = 66, type = "DIR32", symbol = "_TitleFactoryStageDestructor", target = 0x004374D0 },
+  { offset = 71, type = "DIR32", symbol = "_TitleFactoryStageConstructor", target = 0x00437490 },
+  { offset = 87, type = "REL32", symbol = "_TitleFactoryVectorConstructorIterator", target = 0x0045FF91 },
+  { offset = 100, type = "REL32", symbol = "_TitleFactoryMemset", target = 0x0046A720 },
+  { offset = 133, type = "REL32", symbol = "_TitleFactoryLoadReplayStageData", target = 0x00436B60 },
+  { offset = 143, type = "REL32", symbol = "_TitleFactoryDestroyTitleMenuRecord", target = 0x00435C50 },
+  { offset = 149, type = "REL32", symbol = "_TitleFactoryFreeHeapBlock", target = 0x0045FD49 },
+]

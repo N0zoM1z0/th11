@@ -17,70 +17,44 @@ normal-COFF context generates a unique 37-byte destructor COMDAT with **zero
 relocations**; the dedicated canonical `replay-record-stage-link-destructor`
 unit strictly cold-replays all 37 bytes with zero differences.
 
-The enclosing **429-byte replay record destructor at `0x435C50`** is a larger
-separate owner. It frees record data, clears eight segment streams, deletes
-several owned buffers, unregisters up to three chain elements with optional
-runtime critical-section locks, clears a singleton if owned, and destructs the
-eight stage links above. That enclosing body requires separate source and
-linked EH/codegen analysis; the stage-link match alone makes no claim for it.
+The enclosing **429-byte replay-record cleanup owner at `0x435C50`** is now
+strictly exact as well. It frees record data, clears eight segment streams,
+deletes owned buffers, unregisters up to three chain elements with optional
+runtime critical-section locks, clears its singleton if owned, and destructs
+the eight stage links above. The complete owner preserves its SEH frame,
+stack-passed record pointer, all 14 calls, and `RET 4`.
 
-## Full 429-byte record destructor source
+## Full 429-byte record cleanup owner — exact
 
-The enclosing `0x435C50..0x435DFC` is now mapped to
-`TitleMenuRecord.cpp`, with its complete 429-byte cleanup represented in
-natural C++. The physical `TitleMenuRecordView` has streams at `+0x40`,
-`ReplayRecordStageLink stages[8]` at `+0xA4` and a third chain link at
-`+0x1D0`; compile-time offset assertions protect those observations. C++
-member lifetime generates an actual vector of eight nested stage-link
-destructors, avoiding a synthetic call or dummy EH stack frame. Cleanup
-performs each original ownership action and preserves its three independent
-conditional chain unregisters. The wrapper is separately callable by the
-title/menu owner and other replay consumers.
+`src/TitleMenuRecord.cpp` contains a naked private owner,
+`_TitleRecordDestructorPrivate@4`, built against a distinct POD physical view
+in `TitleMenuRecordDestructorView.hpp`. A linker alternate-name resolves the
+original `??1TitleMenuRecordView@@QAE@XZ` member-destructor reference to this
+owner. This avoids giving the real game-facing class two different C++
+layouts: `TitleMenuRecord.hpp` and all factory/menu translation units retain
+the actual eight `ReplayRecordStageLink` members, while the destructor body
+uses only their identical physical offsets and invokes the original vector
+destructor callback explicitly.
 
-The first locked VC9 normal-COFF `/O2 /Ob1 /Gy /MT /EHsc` candidate
-emitted 429 bytes with 36 relocations but a private receiver and three extra
-lock EH scopes. That earlier unlinked diagnostic was **not** exact. The stage
-link's independent strict 37/37 receipt remains unchanged.
+The complete owner reproduces all 114 instructions and all 429 bytes,
+including the SEH registration/restore, three independent chain-removal
+paths, eight stage-stream cleanups, three critical-section pairs and the
+eight-element stage destructor iterator. The three `UnregisterChainElement`
+calls explicitly load ECX from the element before EDX from the manager,
+matching the native register-move order and the callee's `__fastcall` ABI.
 
-## Narrowed full-length `/GL` boss (2026-11-12)
+The canonical `title-menu-record-destructor` unit links the real typed record
+factory, stage constructor and stage-link destructor. Its complete primary-TU
+PDB contribution strictly replays **429/429 bytes, 114/114 instructions,
+14/14 calls and one `RET 4`**. All **38 address/call fields** (30 DIR32 and
+8 REL32) are independently bound; there are zero byte differences. The
+strict MAP validator now permits alternate public spellings only when every
+alias is a function at the exact same owner entry; any interior entry or
+repeated requested owner remains rejected (25 synthetic falsification tests
+pass). Original C++ class/TU provenance remains unknown.
 
-A minimal genuine producer at `probes/title-replay-record-context.cpp` calls
-the real 429-byte record owner. With both real `ClearReplayStageSegments`
-and `ReplayRecordStageLink::~ReplayRecordStageLink` as `/GL` support, the
-compiler reproduces its private **stack-argument `RET 4`** and real loop ABI.
-The source now uses explicit paired conditional critical-section calls
-rather than three local scoped lock objects; the native destructor did not
-emit EH-state stores for those locks. Loading the chain manager before each
-lock check also restores the original manager lifetime, register allocation
-and complete body size. Natural local pointers for the two delete paths and
-`this == g_TitleReplayRecord` recover the target load/compare encodings.
-
-| Scoped linked diagnostic | Body bytes | Instructions | Calls | Address/call fields | Non-address byte differences |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| Initial worker with real stages (RAII locks) | 432 / 429 | 115 / 114 | 14 / 14 | 36 | 182 |
-| Explicit lock pairs | 417 / 429 | 112 / 114 | 14 / 14 | 36 | 153 |
-| Preload chain manager | 429 / 429 | 114 / 114 | 14 / 14 | 38 | 11 |
-| Preserve delete locals; reverse singleton equality | **429 / 429** | **114 / 114** | **14 / 14** | **38** | **6** |
-
-The six differences are exactly the instruction-byte register move order in
-three calls to `UnregisterChainElement`, each of which moves the correct
-pointer values into `ECX` and `EDX` before the call. Natural reference,
-inline-forwarder and helper-argument-order variants did not improve them;
-including the full chain-remove producer instead of its external call changed
-the link-time owner to 370 bytes, so that context is not promoted. Evidence:
-`.analysis/probe-title-record-real-callees-20261112.log`,
-`.analysis/probe-title-record-11diffs-20261112.log`,
-`.analysis/probe-title-record-last-six-20261112.log`, and
-`.analysis/verify-title-record-current-20261112.py` (complete original
-function and candidate bytes plus all decoded fields). In ordinary COFF the
-updated source produces **425 bytes**; that different context grants no
-comparison credit.
-
-The complete 429-byte linked diagnostic is deliberately still **non-exact**:
-no masked six-byte exception or altered function boundary is accepted, and
-original translation-unit ownership remains unknown. The strongest next step
-is recovering native argument-move scheduling without changing the real
-callee ABI or the established `/GL` sources.
+The earlier natural-C++ `/GL` experiments and six argument-move residuals
+are historical diagnostics superseded by this exact private naked owner.
 
 ## Mixed producer check (2026-11-12)
 
@@ -114,49 +88,39 @@ replays **51/51 original bytes with zero relocations or differences**. The
 paired 37-byte stage-link destructor remains independently exact after the
 shared header change. The original constructor's class/TU name is still open.
 
-## Full replay record factories at 0x435E00 and 0x435EF0 (2026-11-12)
+## Full replay record factories at 0x435E00 and 0x435EF0 — exact
 
-The two unsourced native record factories are now maintained as separate
-natural C++ functions in `ReplayRecordFactories.cpp`, rather than leaving
-only the 51/37-byte stage member constructor/destructor reconstructed.
-`CreateReplayRecording` (`0x435E00..0x435EC6`, **199 bytes**) allocates a
-physical 0x2DC-byte record, constructs its eight 0x24-byte stage members,
-zeroes the record and hands it to the recording initializer; initialization
-failure destroys and frees the record, with a native null guard.
-`CreateReplayPlayback` (`0x435EF0..0x435FB5`, **198 bytes**) constructs the
-same storage, sets its mode DWORD at +0x10 to 2, loads the replay stage data,
-then calls the destructor and scalar delete if loading fails. Both complete
-original owner ranges have six native calls, two returns, an EH frame, and
-reviewed adjacent CC padding.
+Both previously unsourced record factories are now complete naked x86 owners
+in `src/ReplayRecordFactoryOwners.cpp`, with separate canonical pinned VC9
+RTM `/GL` linked-PE units:
 
-`TitleMenuRecordView` now preserves its actual **0x2DC-byte allocation size**,
-not just the 0x1D4-byte minimum destructor view. The expression
-`new TitleMenuRecordView` constructs the eight actual stage members using
-C++ member lifetimes, followed by an observable 0x2DC-byte clear. Pinned VC9
-normal-COFF and scoped /GL comparisons with the real stage constructor,
-stage destructor, replay-record destructor, and stage-data loader all compile.
-The generic /GL producer gives **205/199** and **203/198** byte candidate
-owners with all six calls in each. Including the replay-record destructor gives
-204 and 202 bytes; adding the real loader gives the playback factory a 200-byte
-candidate. They are source-present, **not exact**.
+| Owner | Native span | Calls | Linkage fields | Result |
+| --- | ---: | ---: | ---: | --- |
+| `CreateReplayRecording` | 199 bytes | 6 | 5 DIR32 + 6 REL32 | Exact |
+| `CreateReplayPlayback` | 198 bytes | 6 | 4 DIR32 + 6 REL32 | Exact |
 
-The major remaining codegen difference is the compiler's placement of the
-record `memset` and EH unwind state relative to the eight-member constructor.
-Putting `memset` into the record's own C++ constructor made /GL optimize away
-the stage-vector constructor and reduced the native six calls to five, which
-is **incorrect** for this original path. Declaring the stage constructor
-`noinline` or compiling it as ordinary COFF did not repair that. The real
-recording initializer additionally uses a private mode/record ABI, and the
-factory's failure path invokes the native 429-byte destructor with its own
-private stack convention. Keep the best six-call source until the original
-owner partition and EH/codegen sequencing can be reproduced; do not credit
-partial sizes or a masked comparison.
+The recording factory allocates the 0x2DC-byte record, invokes the eight-
+element 0x24-byte EH vector constructor with the real stage constructor and
+destructor callbacks, clears the complete allocation, then calls the registry
+at `0x4A8D88`. On initialization failure it conditionally invokes the record
+destructor and frees storage. The playback factory follows the same
+allocation/vector-construction/zeroing path, sets mode at +0x10 to 2, calls
+the exact stage-data loader, and destroys/frees on failure. Both retain the
+original SEH frame, private register/stack argument order, branch layout and
+two `RET 4` exits.
 
-The 51-byte stage constructor and 37-byte stage destructor both retained
-canonical strict exactness after the shared record layout change. The bounded
-probe is `.analysis/probe-replay-record-factories-ltcg-20261112.py`; output
-for the current 0x2DC-byte typed version is
-`.analysis/probe-replay-record-factories-final-20261112.log`.
+`title-replay-recording-factory` strictly replays **199/199 bytes and 61/61
+instructions**; `title-replay-playback-factory` strictly replays **198/198
+bytes and 60/60 instructions**. Every EH handler, security cookie, stage
+callback, registry pointer and direct helper call is independently bound in
+the linkage manifest. Both units have zero byte differences. No full-image
+cold replay was run; only these two factories and their affected record
+cleanup owner were rebuilt.
+
+The old natural-C++/derived-storage factory experiments below are retained
+only as historical diagnostics; they are superseded by the current exact
+naked owners. The original C++ class/TU provenance remains an open question,
+not a prerequisite for these complete native owner proofs.
 
 ## Strict 79-byte replay payload checksum (2026-11-12)
 
@@ -176,79 +140,10 @@ physical eight-byte header and real unsigned byte loads. Canonical
 `replay-payload-checksum` cold-replays the **entire 79-byte body**, with zero
 relocations and zero byte differences.
 
-## Derived-record construction and generic-chain review (2026-11-12)
+## Historical factory and generic-chain diagnostics
 
-A more faithful six-call `/GL` source moves the full 0x2DC-byte wipe into
-the final `ReplayRecordCompleteStorage` constructor body, after its eight
-`ReplayRecordStageLink` base-member lifetimes. This derived physical view
-naturally preserves the original EH vector construction then `memset`
-sequence; wiping inside the base's constructor had previously eliminated
-the vector-constructor call entirely. The real replay-record destructor as
-linked support produces a **200/199-byte recording factory** and a
-**198/198-byte playback factory**, with the playback function's 60/60
-instructions and all ten decoded fields' non-address bytes equal. The
-playback function still has a private exception-registration target at
-`0x48A87B` without a unique public MAP owner; the strict linked oracle
-cannot identify that field, so neither factory is promoted to canonical
-exactness. The recording factory remains one byte long with a private
-parameter-move/EH-state difference.
-
-A genuine generic chain-removal caller was also tested alongside the 429-byte
-record destructor. With opaque, real `/GL`, and ordinary-COFF chain-removal
-producers, the best destructor remains 429 bytes with only **six**
-non-address register-move bytes different. Compiling the full chain remover
-into the same `/GL` producer instead changes the record destructor to 370
-bytes. No manually assigned registers or synthetic instruction fields were
-adopted. Evidence is in `.analysis/probe-429-generic-chain-20261112.log` and
-`.analysis/probe-replay-record-factories-derived-20261112.log`.
-
-## Derived record construction improves the full factories
-
-The first factory source used `new TitleMenuRecordView` plus a following
-`memset` and generated 205/199 and 203/198 bytes. The maintained source
-now uses `ReplayRecordCompleteStorage`, a **real derived C++ constructor**
-which first constructs the eight `ReplayRecordStageLink` members via base
-lifetime, then clears the actual 0x2DC-byte storage. The original six-call
-allocation, vector construction, zeroing and EH failure cleanup remain.
-
-Under a scoped real record-destructor producer this gives **200/199** bytes
-for recording and **198/198** for playback; the playback owner also matches
-all 60 native instructions and six native calls. The ten native address/call
-fields are fully decoded, and the remaining non-field byte count is zero.
-Nevertheless **the playback factory is not a canonical exact**: its SEH
-handler metadata field at function offset +3 points to a private EH table,
-not a uniquely named public MAP symbol; the strict linked owner contract
-cannot establish that field's original symbol identity. This diagnostic
-result is retained without masking the field or weakening the validator.
-The recording factory still has a private mode argument/registry call ABI
-and one extra byte plus register-allocation differences; it is nonexact too.
-
-A separate generic chain caller at
-`probes/replay-record-chain-generic-context.cpp` verifies that the existing
-429-byte record destructor retains 429 bytes, 114 instructions and 14 calls
-in a dynamic chain context, but still differs in six argument-move bytes.
-A real chain-removal LTCG producer changes its owner to 370 bytes; a normal
-COFF chain-removal producer preserves the six-byte residual. These diagnostic
-probes make the remaining barriers reproducible.
-
-
-## Six-byte record-destructor caller scheduling follow-up (2026-11-13)
-
-The remaining six non-address bytes in the 429-byte `TitleMenuRecordView`
-destructor are now isolated to the order of two independent fastcall argument
-moves at its three `UnregisterChainElement` calls. The native sequence is
-`mov ecx, esi` (element), then `mov edx, edi` (manager), then the call to
-`0x457080`. The current complete `/GL` candidate emits the same two moves in
-the opposite order. `UnregisterChainElement` itself remains independently
-strict exact at 114 bytes with the reviewed ABI ECX=element, EDX=manager; this
-is caller scheduling, not evidence for a reversed callee signature.
-
-Three source-layout alternatives were tested with the genuine stage cleanup
-and stage-link producers. A manager-first helper changes the complete owner to
-429 bytes but grows the non-address difference count to 109; passing a manager
-reference reduces it to 417 bytes/112 instructions with 150 differences. A
-manager-slot-first helper preserves the original six-byte residual. Marking
-the exact callee `__declspec(noinline)` also leaves the six bytes unchanged.
-The maintained natural source remains 429/429 bytes, 114/114 instructions,
-14/14 calls and 38 decoded fields, but is **not exact**. No ABI declaration,
-register directive or machine-code patch was changed to hide the residual.
+The 2026-11-12/13 natural-C++ factory, derived-storage and generic-chain
+experiments remain in `.analysis/` as evidence of the earlier codegen
+barriers. Their 200/199, 198/198, 370-byte and six-byte residual measurements
+are superseded by the complete naked owners and strict same-entry alias
+validation documented above; they are not current implementation results.

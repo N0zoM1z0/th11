@@ -207,7 +207,6 @@ DestroySecondaryAuxiliaryOwner
 DestroySecondaryMaster
 DestroySecondaryProgramBrowser
 DestroyThreadInfVirtual
-DestroyTitleMenuRecord
 DestroyTitleMenuStorage
 DestructSecondaryPlayerStorage
 DetachSecondaryActor
@@ -663,6 +662,7 @@ SubtractStageFog
 SumReplayPayloadBytes
 TellPbgLowLevelFile
 TellPbgMemoryFile
+TitleMenuRecordView::~TitleMenuRecordView
 TitleMenuThread
 TraceAnimationLoad
 TraceMusicStream

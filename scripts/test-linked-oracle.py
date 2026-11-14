@@ -68,9 +68,12 @@ class LinkedControls(unittest.TestCase):
             with self.subTest(contributions=contributions), self.assertRaises(ValueError):
                 self.replay()
 
-    def test_interior_or_duplicate_map_owner_rejected(self):
+    def test_exact_entry_alias_allowed_but_interior_or_duplicate_owner_rejected(self):
         baseline = list(self.e.publics)
-        for extra in [row('_Interior', 5), row('_Alias', 0), row('_unit', 0)]:
+        self.e.publics = baseline + [row('_Alias', 0)]
+        self.write()
+        self.assertEqual(self.replay()['result'], 'exact')
+        for extra in [row('_Interior', 5), row('_unit', 0)]:
             self.e.publics = baseline + [extra]
             self.write()
             with self.subTest(extra=extra), self.assertRaises(ValueError):

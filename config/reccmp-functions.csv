@@ -208,7 +208,6 @@ DestroySecondaryAuxiliaryOwner,0x0040E190,function
 DestroySecondaryMaster,0x00410E90,function
 DestroySecondaryProgramBrowser,0x00438710,function
 DestroyThreadInfVirtual,0x00459410,function
-DestroyTitleMenuRecord,0x00435C50,function
 DestroyTitleMenuStorage,0x004396C0,function
 DestructSecondaryPlayerStorage,0x00430010,function
 DetachSecondaryActor,0x00410B60,function
@@ -664,6 +663,7 @@ SubtractStageFog,0x004059D0,function
 SumReplayPayloadBytes,0x00437500,function
 TellPbgLowLevelFile,0x00441EF0,function
 TellPbgMemoryFile,0x00442DA0,function
+TitleMenuRecordView::~TitleMenuRecordView,0x00435C50,function
 TitleMenuThread,0x004394F0,function
 TraceAnimationLoad,0x00456AD0,function
 TraceMusicStream,0x0045B5A0,function

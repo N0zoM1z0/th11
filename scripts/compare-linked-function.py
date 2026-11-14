@@ -78,7 +78,14 @@ def owner(image: PEImage, map_path: Path, pdb_path: Path, symbol: str, size: int
     publics = map_publics(map_path)
     address = int(function['address'], 0)
     inside = [r for r in publics if address <= int(r['address']) < address + size]
-    if len(inside) != 1 or inside[0]['symbol'] != symbol or 'f' not in inside[0]['flags']:
+    # A linker alternate-name can expose multiple public spellings for the
+    # same entry (for example a source-level naked owner aliased to the
+    # original C++ destructor). Such aliases are not interior entry points:
+    # permit them only when every public resolves to the exact owner start,
+    # every spelling is a function, and the requested owner symbol is unique.
+    requested = [r for r in inside if r['symbol'] == symbol]
+    if (not inside or len(requested) != 1
+            or any(int(r['address']) != address or 'f' not in r['flags'] for r in inside)):
         raise ValueError('ambiguous MAP owner or interior public entry')
     return function
 
