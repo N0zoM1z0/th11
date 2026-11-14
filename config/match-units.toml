@@ -7900,42 +7900,6 @@ linkages = [
   { offset = 428, type = "REL32", symbol = "@__security_check_cookie@4", target = 0x0045FC2C },
 ]
 
-# Complete native 441-byte replay loader. Preserve the original stack-cookie
-# frame and the mixed ESI/EDI/EAX/AL helper ABI instead of C++ stack wrappers.
-[units.secondary-replay-load-stage-data]
-artifact_kind = "linked-pe"
-source = "src/SecondaryReplayLoad.cpp"
-support_sources = ["probes/secondary-replay-load-context.cpp"]
-output_dir = "build/match-linked/SecondaryReplayLoadStageData"
-profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
-entry = "SecondaryReplayLoadProbe@8"
-functions = ["LoadReplayStageData"]
-symbol = "?LoadReplayStageData@@YGHPAUReplayStateView@@PAX@Z"
-target_address = 0x00436B60
-size = 441
-linkages = [
-  { offset = 7, type = "DIR32", symbol = "___security_cookie", target = 0x004A2088 },
-  { offset = 61, type = "DIR32", symbol = "?g_ReplayStatusMask@@3IA", target = 0x004A5758 },
-  { offset = 74, type = "DIR32", symbol = "?g_ReplayPathFormat@@3QBDB", target = 0x004955A8 },
-  { offset = 80, type = "REL32", symbol = "_sprintf", target = 0x0046025C },
-  { offset = 93, type = "REL32", symbol = "?FileExists@@YGHPBD@Z", target = 0x004585E0 },
-  { offset = 106, type = "REL32", symbol = "?OpenSharedFileForRead@@YGHPBD@Z", target = 0x00458860 },
-  { offset = 118, type = "REL32", symbol = "?ReadSharedReplayBytes@@YGPAEI@Z", target = 0x00458980 },
-  { offset = 134, type = "REL32", symbol = "?CloseSharedReplayReader@@YAHXZ", target = 0x004589D0 },
-  { offset = 157, type = "REL32", symbol = "?ReadSharedReplayBytes@@YGPAEI@Z", target = 0x00458980 },
-  { offset = 164, type = "REL32", symbol = "?CloseSharedReplayReader@@YAHXZ", target = 0x004589D0 },
-  { offset = 178, type = "REL32", symbol = "?LoadResourceFile@@YGPAEPBDPAIH@Z", target = 0x00458400 },
-  { offset = 196, type = "REL32", symbol = "_malloc", target = 0x00460192 },
-  { offset = 231, type = "REL32", symbol = "?ScatterXorBlocks@@YGPAEPAEHEEHH@Z", target = 0x004581C0 },
-  { offset = 251, type = "REL32", symbol = "?ScatterXorBlocks@@YGPAEPAEHEEHH@Z", target = 0x004581C0 },
-  { offset = 274, type = "REL32", symbol = "?DecompressArchiveData@@YGPAEIPAEH0@Z", target = 0x004426C0 },
-  { offset = 392, type = "DIR32", symbol = "?g_ReplayStatusMask@@3IA", target = 0x004A5758 },
-  { offset = 406, type = "REL32", symbol = "_free", target = 0x0045FC3B },
-  { offset = 428, type = "REL32", symbol = "@__security_check_cookie@4", target = 0x0045FC2C },
-]
-
-# Full native pause-menu replay writer. The naked body retains the original
-# mixed-register ABI, stack cookie, alignment encodings, and every native call.
 [units.replay-writer-main]
 artifact_kind = "linked-pe"
 source = "src/ReplayWriter.cpp"
