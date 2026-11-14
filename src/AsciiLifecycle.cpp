@@ -116,6 +116,11 @@ AsciiManagerObject::~AsciiManagerObject()
     g_AsciiManager = 0;
 }
 
+unsigned int AsciiManagerObject::StorageSize()
+{
+    return sizeof(AsciiManagerObject);
+}
+
 int __fastcall AsciiManagerDrawCallback(AsciiManagerObject *self)
 {
     return DrawAsciiManager(self, 0);

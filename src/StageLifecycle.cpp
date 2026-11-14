@@ -11,13 +11,6 @@ StageEmbeddedVm::StageEmbeddedVm()
     marker39c = -1;
 }
 
-StageEmbeddedVm::~StageEmbeddedVm()
-{
-    if (storage400)
-        free(storage400);
-    storage400 = 0;
-}
-
 StageResourceView::StageResourceView()
 {
     memset(this, 0, sizeof(*this));

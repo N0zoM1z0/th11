@@ -68,6 +68,15 @@ those owners are not evidence of a C++ shape.
   the swap, the replay record destructor 435C50 matches byte for byte apart from
   relocated fields. The lock/unregister block also appears in the Ascii
   (401210) and stage (402740) destructors.
+- `AsciiManagerObject`'s only virtual is a size method (vtable 0x4938C8 ->
+  401DD0, `mov eax,0x184BC; ret`). The destructor is not virtual, which lets
+  LTCG pass `this` on the stack as native does. `StageEmbeddedVm`'s destructor
+  is an inline header member: native inlines it in the Ascii destructor and
+  keeps the 402170 copy for array teardown. With both corrections the Ascii
+  destructor matches 475/475 bytes apart from IAT fields.
+- The record, Ascii and stage destructors are all SEH-framed. The linked
+  oracle binds only public symbols and does not compare FuncInfo data, so
+  these destructors cannot take exact credit until EH acceptance is designed.
 
 - VC9 LTCG uses a callee's real register usage only for ordinary functions.
   The out-of-line COMDAT of an `inline` function whose inlining was declined is

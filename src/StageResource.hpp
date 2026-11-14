@@ -4,6 +4,7 @@
 #include "Chain.hpp"
 #include "PerspectiveCamera.hpp"
 #include "VmBindings.hpp"
+#include <stdlib.h>
 
 extern float g_AnimationTimeScale;
 
@@ -62,7 +63,12 @@ struct StageEmbeddedVm
     unsigned char unknown404[0x434 - 0x404];
 
     StageEmbeddedVm();
-    ~StageEmbeddedVm();
+    ~StageEmbeddedVm()
+    {
+        if (storage400)
+            free(storage400);
+        storage400 = 0;
+    }
 };
 
 struct StageCameraView

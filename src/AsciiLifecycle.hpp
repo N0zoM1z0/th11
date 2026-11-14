@@ -6,8 +6,8 @@
 struct AnimationVmView;
 
 // Lifecycle view of the same 0x184BC-byte object as AsciiManagerView.
-// The virtual destructor and two actual embedded VM lifetimes are observed
-// independently of the caller's LTCG register assignments.
+// The single vtable slot (0x4938C8 -> 401DD0) returns the object size; the
+// destructor is not virtual.
 struct AsciiManagerObject
 {
     unsigned int flags, unknown008;
@@ -27,7 +27,8 @@ struct AsciiManagerObject
     ChainElement *overlayChain;
 
     AsciiManagerObject();
-    virtual ~AsciiManagerObject();
+    ~AsciiManagerObject();
+    virtual unsigned int StorageSize();
 };
 
 typedef char AsciiManagerObjectSize[(sizeof(AsciiManagerObject) == 0x184bc) ? 1 : -1];
