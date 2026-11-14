@@ -8,22 +8,13 @@ extern "C" float __stdcall SecondaryPairAccessProbe(SecondaryPairTween *self,
     SetSecondaryPairTarget(self, input);
     ResetSecondaryPairControl1(self);
     ResetSecondaryPairControl2(self);
-    __asm {
-        mov eax, self
-        mov ecx, mode
-        call SetSecondaryPairDuration
-    }
+    SetSecondaryPairDuration(self, mode);
     ResetSecondaryPairTimer(self);
     int duration = GetSecondaryPairDuration(self);
     StopSecondaryPairTween(self);
     SubtractSecondaryPair(output, input, &self->target);
     ScaleSecondaryPair(output, input, scale);
     SecondaryVector2 *right = &self->initial;
-    __asm {
-        mov eax, output
-        mov ecx, input
-        mov edx, right
-        call AddSecondaryPair
-    }
+    AddSecondaryPair(output, input, right);
     return output->x + output->y + duration;
 }

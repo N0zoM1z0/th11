@@ -31,15 +31,9 @@ void __stdcall ResetSecondaryPairControl2(SecondaryPairTween *self)
     control[1] = preset[1];
 }
 
-// Native private register ABI: EAX is the pair state and ECX is duration.
-// Keep the original decorated symbol while expressing the four-byte owner
-// directly; this leaf is not a normal stack-argument C++ call target.
-__declspec(naked) void __stdcall SetSecondaryPairDuration(SecondaryPairTween *, int)
+void __stdcall SetSecondaryPairDuration(SecondaryPairTween *self, int duration)
 {
-    __asm {
-        mov dword ptr [eax + 34h], ecx
-        ret
-    }
+    self->duration = duration;
 }
 
 void __stdcall ResetSecondaryPairTimer(SecondaryPairTween *self)
@@ -83,18 +77,10 @@ SecondaryVector2 *__stdcall ScaleSecondaryPair(SecondaryVector2 *output,
     return output;
 }
 
-// Native private register ABI: EAX=output, ECX=left, EDX=right.
-// The x87 evaluation order is observable in the original 16-byte leaf.
-__declspec(naked) SecondaryVector2 *__stdcall AddSecondaryPair(
-    SecondaryVector2 *, const SecondaryVector2 *, const SecondaryVector2 *)
+SecondaryVector2 *__stdcall AddSecondaryPair(SecondaryVector2 *output,
+    const SecondaryVector2 *left, const SecondaryVector2 *right)
 {
-    __asm {
-        fld dword ptr [ecx]
-        fadd dword ptr [edx]
-        fstp dword ptr [eax]
-        fld dword ptr [ecx + 4]
-        fadd dword ptr [edx + 4]
-        fstp dword ptr [eax + 4]
-        ret
-    }
+    output->x = left->x + right->x;
+    output->y = left->y + right->y;
+    return output;
 }
