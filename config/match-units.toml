@@ -7871,7 +7871,7 @@ inputs = [
   "src/SharedFile.hpp",
 ]
 
-support_sources = ["probes/secondary-replay-load-context.cpp"]
+support_sources = ["probes/secondary-replay-load-context.cpp", "src/FileSystem.cpp", "src/SharedFile.cpp", "src/SharedFileReadHelpers.cpp", "src/ResourceFile.cpp", "src/ByteCipher.cpp", "src/ArchiveDecompress.cpp", "src/ReplayRecordFactories.cpp", "src/ReplayRecordStageConstructor.cpp", "src/ReplayRecordStageLink.cpp", "src/TitleMenuRecord.cpp", "src/ReplayStageSegmentCleanup.cpp", "src/ChainRemove.cpp"]
 output_dir = "build/match-linked/SecondaryReplayLoad"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "SecondaryReplayLoadProbe@8"
