@@ -35,7 +35,10 @@ case 0x100:
     }
     arguments.value014 = ReadSecondaryHostIntegerValue(self, 3, values[2].integer);
     arguments.value00c = ReadSecondaryHostIntegerValue(self, 4, values[3].integer);
-    goto hostSpawnLastValue;
+    arguments.value010 = ReadSecondaryHostIntegerValue(self, 5, values[4].integer);
+    SpawnParameters(self, &arguments);
+    SpawnActor(instruction, &arguments);
+    break;
 }
 case 0x10a:
     if (g_SecondaryMaster->Slot(0)) break;
@@ -47,12 +50,11 @@ case 0x101:
     arguments.position.y = ReadSecondaryHostRealValue(self, 2, values[1].real);
     arguments.value014 = ReadSecondaryHostIntegerValue(self, 3, values[2].integer);
     arguments.value00c = ReadSecondaryHostIntegerValue(self, 4, values[3].integer);
-}
-hostSpawnLastValue:
     arguments.value010 = ReadSecondaryHostIntegerValue(self, 5, values[4].integer);
     SpawnParameters(self, &arguments);
     SpawnActor(instruction, &arguments);
     break;
+}
 case 0x102:
     Selection(self).file = Integer(self, 0);
     break;
@@ -89,7 +91,13 @@ case 0x104:
     arguments.position.x = ReadSecondaryHostRealValue(self, 1, values[0].real) + x;
     float y = self->world.position.y;
     arguments.position.y = ReadSecondaryHostRealValue(self, 2, values[1].real) + y;
-    goto hostSpawnMirroredValues;
+    arguments.value014 = ReadSecondaryHostIntegerValue(self, 3, values[2].integer);
+    arguments.value00c = ReadSecondaryHostIntegerValue(self, 4, values[3].integer);
+    arguments.value010 = ReadSecondaryHostIntegerValue(self, 5, values[4].integer);
+    SpawnParameters(self, &arguments);
+    arguments.mirrored = 1;
+    SpawnActor(instruction, &arguments);
+    break;
 }
 case 0x10c:
     if (g_SecondaryMaster->Slot(0)) break;
@@ -99,8 +107,6 @@ case 0x105:
     memset(&arguments, 0, sizeof(arguments));
     arguments.position.x = ReadSecondaryHostRealValue(self, 1, values[0].real);
     arguments.position.y = ReadSecondaryHostRealValue(self, 2, values[1].real);
-}
-hostSpawnMirroredValues:
     arguments.value014 = ReadSecondaryHostIntegerValue(self, 3, values[2].integer);
     arguments.value00c = ReadSecondaryHostIntegerValue(self, 4, values[3].integer);
     arguments.value010 = ReadSecondaryHostIntegerValue(self, 5, values[4].integer);
@@ -108,6 +114,7 @@ hostSpawnMirroredValues:
     arguments.mirrored = 1;
     SpawnActor(instruction, &arguments);
     break;
+}
 case 0x106:
 {
     int slot = Integer(self, 0);

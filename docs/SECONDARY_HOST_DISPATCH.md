@@ -542,3 +542,16 @@ For the next pass, keep the complete member and real `/GL` support context. Do
 not use the deleted scratch aggregates, invent an ABI, force volatile accesses,
 add padding, or compare a cropped owner. Build/replay only the affected canonical
 unit; the complete host still has no exact acceptance.
+
+## 2026-11-14: spawn-case tails
+
+The per-opcode "entry interval" deltas above are partly layout artifacts:
+cases that share a tail by `goto` move the tail's bytes into whichever block
+VC9 lays it after. Native 0x104 (222 bytes) holds the mirrored spawn tail and
+0x105 (82 bytes) jumps into it; 0x100 (392) and 0x101 (133) each keep their own
+tail. Writing the four spawn cases without `goto`, each with its complete tail,
+gives 0x100/0x101/0x104/0x105 = 379/92/222/200 and the owner 16160 bytes (from
+16048; native 16556), with 1016 masked-aligned instructions (from 977). A
+backward `goto` from 0x105 into a label after 0x104 is laid out after 0x105
+again (375/131/100/196, 1002 aligned) and was not kept. Still open: making
+VC9 merge 0x105's tail into 0x104 while keeping 0x101's own.
