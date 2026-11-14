@@ -38,8 +38,10 @@ Near-exact step functions to finish next:
 - `StepStageVectorTween` 0x405240: 882/883 bytes; try a TU-local vector type
   with D3DX-style inline operators (mode-7 NRVO store order, mode-8 coefficient
   scheduling).
-- 42F340/42F350 comparison islands: test them as dead inline-function COMDATs
-  (same EDX pattern as the timer `>=` copy at 405AC0).
+- 42F340/42F350 comparison islands: dead copies of fully inlined in-class
+  members reproduce them byte for byte in a probe. Find their inlined uses in
+  the owning TU (likely the game-over menu) so the copies are emitted from the
+  real primary source; see [PAUSE_GAME_OVER_MENU](PAUSE_GAME_OVER_MENU.md).
 
 `scripts/validate-tracking.py` already fails on clean HEAD at 0x00435630
 (indeterminate origin without an individual reason); not caused by this change.

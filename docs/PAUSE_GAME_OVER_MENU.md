@@ -181,3 +181,17 @@ for each. The two remaining differences are ECX-vs-EDX register choices
 in the load and compare, not address fields. Neither is exact and no
 vendor/game attribution is claimed. The adjacent 42F360/42F370 wrappers
 are still unclassified.
+
+**2026-11-14: the EDX form is reproduced.** Defining both members inline in
+the class and calling them only from code where LTCG inlines every call leaves
+dead out-of-line COMDAT copies (the link keeps unreferenced COMDATs). Those
+copies are byte-identical to native: `8B11 33C0 3B542404 0F95C0/0F9CC0
+C20400`. A non-inline or address-taken definition uses ECX and stays 12/14.
+So these islands are leftover copies of inline helpers whose calls were all
+inlined, most likely in the game-over menu TU that precedes them. Probe:
+`.analysis/PauseSelectionComparisons-inlined-20261114.cpp`.
+
+To make them canonical exact units, the inline class must live in the header
+used by the real owner, and the owner's source must call the helpers where
+native has inlined comparisons; the copies would then be emitted from that
+primary TU. Do not add an invented caller to force emission.

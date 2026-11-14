@@ -33,10 +33,12 @@ compiler observations and useful failed approaches.
   shared header (`SetStageTimer`, `Pack`).
 - The image keeps unreferenced COMDAT copies of inline helpers. Small
   uninventoried islands next to their users, such as 405A90..405B6F and
-  405C20, are such copies. The 42F340/42F350 comparison islands share the
-  `mov edx,[ecx+N]` pattern of the timer `>=` copy at 405AC0, so they are
-  probably dead inline copies too; their EDX allocation is worth testing in
-  that form.
+  405C20, are such copies. When every call to an inline member is inlined
+  under LTCG, its dead copy allocates EDX for the loaded field and keeps ECX;
+  an address-taken or non-inline definition uses ECX. This reproduces the
+  42F340/42F350 comparison islands byte for byte (see
+  [PAUSE_GAME_OVER_MENU](PAUSE_GAME_OVER_MENU.md)) and the timer `>=` copy at
+  405AC0 has the same shape.
 - A global `/Ob2` is rejected: it inlines `ResetMusicDecoder` into the exact
   `ConfigureMusicDecoder`. Keep `/Ob1`; prefer source `inline` over
   `__forceinline` when testing why native inlined a helper.
