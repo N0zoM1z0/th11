@@ -34,6 +34,34 @@ before editing. In short:
 - Native writes switch cases out in full and lets VC9 cross-jump identical
   tails; source `goto`s into shared blocks are usually wrong.
 
+## Roadmap
+
+Measured backlog (2026-11-14): 1,393 functions (268 KB) still have
+unreviewed boundaries, 955 of them ≤128 bytes and none with source; 464
+`.text` gaps larger than 16 bytes (62.7 KB) are outside the inventory; origin
+is pending for 1,432 functions and confirmed authored for only 90, so the
+authored denominator is still open. Exact credit requires a reviewed boundary,
+so extend review, but tie it to reconstruction:
+
+1. **Classify library code mechanically.** The pinned VC9 toolchain ships the
+   CRT libraries the game linked (`libcmt.lib`). Matching their object code
+   against the image (FLIRT-style) should mark most of 0x46xxxx–0x48xxxx as
+   `library` and fix the authored denominator without hand review.
+2. **Inventory the uncovered gaps.** Classify each as dead inline copy,
+   padding, data or thunk. Dead copies are quick exact wins with the method
+   above (store-shape search for users, inline helper in the owning TU).
+3. **Review and reconstruct by TU region.** Take a contiguous range next to
+   existing exact units (tween, script, chain, pattern areas), review boundary
+   and origin together, write its small leaves and prove them in that
+   region's family. Native layout follows source order, so neighbours share
+   headers, inline helpers and ownership.
+4. **Close the near-misses below**, each of which has one known gap.
+5. **Large owners**: the dispatcher (techniques known, 1,102 B interval
+   error), then the secondary interpreter and the pause/continue menus.
+
+Avoid a review-only sweep: it yields no exact bytes, and boundaries reviewed
+far from current work tend to need revisiting once the source shape is known.
+
 ## Near-exact work to finish
 
 | Target | State | Remaining gap | Note |
