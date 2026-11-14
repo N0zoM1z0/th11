@@ -7,6 +7,12 @@ struct SecondaryIntegerPair
 {
     int x, y;
 
+    SecondaryIntegerPair operator=(const SecondaryIntegerPair &other)
+    {
+        x = other.x;
+        y = other.y;
+        return *this;
+    }
     SecondaryIntegerPair operator+=(const SecondaryIntegerPair &other)
     {
         x += other.x;
@@ -46,7 +52,5 @@ struct SecondaryIntegerPair
 CameraVector *__stdcall ConvertSecondaryIntegerPair(CameraVector *output, const SecondaryIntegerPair *input);
 int __stdcall SecondaryIntegerPairNonzero(const SecondaryIntegerPair *value);
 SecondaryIntegerPair *__stdcall SetSecondaryIntegerPair(SecondaryIntegerPair *output, int x, int y);
-SecondaryIntegerPair *__stdcall AssignSecondaryIntegerPair(SecondaryIntegerPair *output,
-    SecondaryIntegerPair *left, const SecondaryIntegerPair *right);
 
 typedef char SecondaryIntegerPairSize[(sizeof(SecondaryIntegerPair) == 8) ? 1 : -1];

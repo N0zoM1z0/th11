@@ -45,9 +45,8 @@ Near-exact step functions to finish next:
 
 - Dead inline copies: 20 non-exact leaves have no callers or stored address
   (list in the knowledge base). In-class inline members whose calls are all
-  inlined reproduce the nine integer-pair bodies 433DB0..433F26. Five
-  (`-`, `*`, `/100`, `+`, `+=`) are now exact from the movement TU; `=`
-  remains (see [SECONDARY_PATTERN](SECONDARY_PATTERN.md)). The three pixel
+  inlined reproduce the nine integer-pair bodies 433DB0..433F26. All six
+  (`-`, `*`, `/100`, `+`, `+=`, `=`) are now exact from the movement TU (see [SECONDARY_PATTERN](SECONDARY_PATTERN.md)). The three pixel
   accumulators (453440..4534B4) are exact from the transparent-pixel fixer.
   Check the other dead leaves the same way.
 

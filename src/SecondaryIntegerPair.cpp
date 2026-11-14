@@ -19,14 +19,3 @@ SecondaryIntegerPair *__stdcall SetSecondaryIntegerPair(SecondaryIntegerPair *ou
     output->y = y;
     return output;
 }
-
-SecondaryIntegerPair *__stdcall AssignSecondaryIntegerPair(SecondaryIntegerPair *output,
-    SecondaryIntegerPair *left, const SecondaryIntegerPair *right)
-{
-    left->x = right->x;
-    left->y = right->y;
-    int x = left->x, y = left->y;
-    output->x = x;
-    output->y = y;
-    return output;
-}

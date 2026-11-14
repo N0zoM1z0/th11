@@ -4377,6 +4377,21 @@ target_address = 0x433dd0
 size = 23
 linkages = []
 
+[units.assign-secondary-integer-pair]
+artifact_kind = "linked-pe"
+source = "src/SecondaryPlayerMovement.cpp"
+inputs = ["src/SecondaryPlayerMovement.hpp", "src/SecondaryPlayerController.hpp", "src/SecondaryPattern.hpp", "src/SecondaryIntegerPair.hpp"]
+support_sources = ["probes/secondary-player-movement-context.cpp", "src/SecondaryPlayerController.cpp", "src/SecondaryPlayerControllerHelpers.cpp", "src/SecondaryPlayerCallbacks.cpp", "src/StageTween.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryMotionMath.cpp", "src/StageMesh.cpp", "src/AngleMath.cpp", "src/AnimationImmediateDraw.cpp", "src/SecondaryDamageSupport.cpp", "src/SecondaryPatternDispatch.cpp", "src/SecondaryPattern.cpp", "src/Random.cpp", "src/SecondaryProjectileMath.cpp", "src/SecondaryProjectile.cpp", "src/ResourceFile.cpp", "src/SecondaryEmitterReset.cpp", "src/SecondaryEmitterAnimation.cpp", "src/AnimationVmFactory.cpp", "src/AnimationVm.cpp", "src/AnimationSpriteBinding.cpp", "src/SecondaryEmitterMotion.cpp", "src/SecondaryEmitterCallbacks.cpp"]
+normal_support_sources = ["src/SecondaryPlayerCallbacks.cpp", "src/AngleMath.cpp"]
+output_dir = "build/match-linked/SecondaryPlayerMovement"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryPlayerMovementProbe@16"
+functions = ["AssignSecondaryIntegerPair"]
+symbol = "??4SecondaryIntegerPair@@QAE?AU0@ABU0@@Z"
+target_address = 0x433f10
+size = 23
+linkages = []
+
 [units.subtract-secondary-integer-pair]
 artifact_kind = "linked-pe"
 source = "src/SecondaryPlayerMovement.cpp"

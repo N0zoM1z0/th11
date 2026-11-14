@@ -92,7 +92,7 @@ output views do not assert an original constructor or aggregate-return ABI.
 | DivideSecondaryIntegerPair100 | 433E50 | 51 | Exact (inline member, movement TU) |
 | SetSecondaryIntegerPair | 433E90 | 6 | Exact |
 | AddSecondaryIntegerPair | 433EA0 | 18 | Exact (inline member, movement TU) |
-| AssignSecondaryIntegerPair | 433F10 | 23 | Source20/11 |
+| AssignSecondaryIntegerPair | 433F10 | 23 | Exact (inline member, movement TU) |
 
 **2026-11-14: the integer-pair bodies are dead inline copies.** None of the nine
 pair functions at 433DB0..433F26 has a direct call or a stored address. An
@@ -129,8 +129,12 @@ player step: the movement view's `stepX/stepY` are a pair `step` at +8B8, and
 `owner->fixedPosition += owner->step` (same base pointer) reproduces the copy
 and brings the movement owner closer (83 vs 47 aligned instructions). With a
 local operand VC9 schedules the second load early. The copy-returning
-`operator=` (433F10) needs its real native use; a user
-`operator=` changes every pair assignment, so check exact consumers first.
+`operator=` (433F10) is also exact: the type declares a user copy-assignment
+that returns a copy, and the movement TU's pair assignments emit its dead
+copy. All 86 units in the affected families stayed exact with it. All seven
+pair operators besides the three probe-proved helpers (`ToFloat`, nonzero,
+constructor) are now exact from their real owner; the movement owner is
+2920/2896 bytes with 85 aligned instructions.
 
 Tracked-target435030/73 also closes after the two length helpers explicitly call
 the double sqrt API and narrow its result to float. Their own33/34-byte bodies
