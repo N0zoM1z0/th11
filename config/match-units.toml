@@ -1257,13 +1257,13 @@ linkages = [
 
 [units.pack-stage-fog]
 artifact_kind = "linked-pe"
-source = "src/StageScript.cpp"
-inputs = ["src/StageScript.hpp"]
-support_sources = ["probes/stage-script-context.cpp", "src/StageTween.cpp", "probes/stage-tween-context.cpp", "src/StageEasing.cpp", "src/StageMesh.cpp", "src/AnimationVmFactory.cpp", "src/AngleMath.cpp"]
+source = "src/StageTween.cpp"
+inputs = ["src/StageTween.hpp", "src/StageScript.hpp"]
+support_sources = ["probes/stage-tween-context.cpp", "src/StageScript.cpp", "src/StageEasing.cpp", "src/StageMesh.cpp", "src/AnimationVmFactory.cpp", "src/AngleMath.cpp"]
 normal_support_sources = ["src/AngleMath.cpp"]
-output_dir = "build/match-linked/StageScript"
+output_dir = "build/match-linked/StageTween"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
-entry = "StageScriptProbe@12"
+entry = "StageTweenProbe@24"
 functions = ["PackStageFog"]
 symbol = "?Pack@StageFogView@@QAEXXZ"
 target_address = 0x405b70
@@ -1352,6 +1352,57 @@ target_address = 0x405960
 size = 39
 linkages = [
   { offset = 27, type = "REL32", symbol = "?EvaluateStageEasing@@YGMHM@Z", target = 0x459730, addend = 0x0 },
+]
+
+[units.subtract-stage-fog]
+artifact_kind = "linked-pe"
+source = "src/StageTween.cpp"
+inputs = ["src/StageTween.hpp", "src/StageScript.hpp"]
+support_sources = ["probes/stage-tween-context.cpp", "src/StageScript.cpp", "src/StageEasing.cpp", "src/StageMesh.cpp", "src/AnimationVmFactory.cpp", "src/AngleMath.cpp"]
+normal_support_sources = ["src/AngleMath.cpp"]
+output_dir = "build/match-linked/StageTween"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageTweenProbe@24"
+functions = ["SubtractStageFog"]
+symbol = "??GStageFogView@@QBE?AU0@ABU0@@Z"
+target_address = 0x4059d0
+size = 61
+linkages = [
+  { offset = 54, type = "REL32", symbol = "?Pack@StageFogView@@QAEXXZ", target = 0x405b70, addend = 0x0 },
+]
+
+[units.scale-stage-fog]
+artifact_kind = "linked-pe"
+source = "src/StageTween.cpp"
+inputs = ["src/StageTween.hpp", "src/StageScript.hpp"]
+support_sources = ["probes/stage-tween-context.cpp", "src/StageScript.cpp", "src/StageEasing.cpp", "src/StageMesh.cpp", "src/AnimationVmFactory.cpp", "src/AngleMath.cpp"]
+normal_support_sources = ["src/AngleMath.cpp"]
+output_dir = "build/match-linked/StageTween"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageTweenProbe@24"
+functions = ["ScaleStageFog"]
+symbol = "??DStageFogView@@QBE?AU0@M@Z"
+target_address = 0x405a10
+size = 64
+linkages = [
+  { offset = 55, type = "REL32", symbol = "?Pack@StageFogView@@QAEXXZ", target = 0x405b70, addend = 0x0 },
+]
+
+[units.add-stage-fog]
+artifact_kind = "linked-pe"
+source = "src/StageTween.cpp"
+inputs = ["src/StageTween.hpp", "src/StageScript.hpp"]
+support_sources = ["probes/stage-tween-context.cpp", "src/StageScript.cpp", "src/StageEasing.cpp", "src/StageMesh.cpp", "src/AnimationVmFactory.cpp", "src/AngleMath.cpp"]
+normal_support_sources = ["src/AngleMath.cpp"]
+output_dir = "build/match-linked/StageTween"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageTweenProbe@24"
+functions = ["AddStageFog"]
+symbol = "??HStageFogView@@QBE?AU0@ABU0@@Z"
+target_address = 0x405a50
+size = 61
+linkages = [
+  { offset = 54, type = "REL32", symbol = "?Pack@StageFogView@@QAEXXZ", target = 0x405b70, addend = 0x0 },
 ]
 
 [units.stage-fog-tween-factor]

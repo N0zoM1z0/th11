@@ -16,7 +16,9 @@ int __stdcall AdvanceStageTimer(StageTimerView *self)
     return self->current;
 }
 
-void __stdcall SetStageTimer(StageTimerView *self, int frame)
+// SetStageTimer, Pack and the fog operators are inline only in this TU; other
+// TUs see the plain header declarations and call the out-of-line copies.
+inline void __stdcall SetStageTimer(StageTimerView *self, int frame)
 {
     if (!(self->flags & 1))
     {
@@ -31,7 +33,16 @@ void __stdcall SetStageTimer(StageTimerView *self, int frame)
     self->fraction = static_cast<float>(frame);
 }
 
-StageFogView StageFogView::operator+(const StageFogView &other) const
+inline void StageFogView::Pack()
+{
+    unsigned char *bytes = reinterpret_cast<unsigned char *>(&packed);
+    bytes[0] = static_cast<unsigned char>(static_cast<int>(channels[0]));
+    bytes[1] = static_cast<unsigned char>(static_cast<int>(channels[1]));
+    bytes[2] = static_cast<unsigned char>(static_cast<int>(channels[2]));
+    bytes[3] = static_cast<unsigned char>(static_cast<int>(channels[3]));
+}
+
+inline StageFogView StageFogView::operator+(const StageFogView &other) const
 {
     StageFogView result;
     result.start = start + other.start;
@@ -44,7 +55,7 @@ StageFogView StageFogView::operator+(const StageFogView &other) const
     return result;
 }
 
-StageFogView StageFogView::operator-(const StageFogView &other) const
+inline StageFogView StageFogView::operator-(const StageFogView &other) const
 {
     StageFogView result;
     result.start = start - other.start;
@@ -57,7 +68,7 @@ StageFogView StageFogView::operator-(const StageFogView &other) const
     return result;
 }
 
-StageFogView StageFogView::operator*(float scale) const
+inline StageFogView StageFogView::operator*(float scale) const
 {
     StageFogView result;
     result.start = start * scale;
@@ -104,25 +115,24 @@ static __forceinline CameraVector SubtractTweenVector(const CameraVector &left, 
 
 static __forceinline void HermiteCoefficients(float progress, float &a, float &b, float &c, float &d)
 {
-    double t = progress;
-    a = static_cast<float>((t - 1.0) * (t - 1.0) * (t + t + 1.0));
-    b = static_cast<float>((3.0 - (t + t)) * (t * t));
-    c = static_cast<float>((1.0 - t) * (1.0 - t) * t);
-    d = static_cast<float>((t - 1.0) * t * t);
+    a = static_cast<float>((2.0 * progress + 1.0) * ((progress - 1.0) * (progress - 1.0)));
+    b = static_cast<float>((3.0 - 2.0 * progress) * (progress * progress));
+    c = static_cast<float>((1.0 - progress) * (1.0 - progress) * progress);
+    d = static_cast<float>((progress - 1.0) * progress * progress);
 }
 
 CameraVector __stdcall StepStageVectorTween(StageVectorTween *self)
 {
-    int duration = self->duration;
-    if (duration > 0)
+    if (self->duration > 0)
     {
         AdvanceStageTimer(&self->time);
-        duration = self->duration;
-        if (self->time.current >= duration)
+        if (self->time.current >= self->duration)
         {
-            SetStageTimer(&self->time, duration);
+            SetStageTimer(&self->time, self->duration);
             self->duration = 0;
-            return self->mode == 7 ? self->initial : self->target;
+            if (self->mode != 7)
+                return self->target;
+            return self->initial;
         }
     }
     if (self->mode == 7)
@@ -135,13 +145,15 @@ CameraVector __stdcall StepStageVectorTween(StageVectorTween *self)
     }
     if (self->mode == 17)
     {
-        self->initial = AddTweenVector(self->initial, self->control2);
+        CameraVector previous = self->initial;
+        CameraVector result = AddTweenVector(previous, self->control2);
+        self->initial = result;
         self->control2 = AddTweenVector(self->control2, self->target);
-        return self->initial;
+        return result;
     }
     if (self->mode == 8)
     {
-        float progress = self->time.fraction / duration;
+        float progress = self->time.fraction / self->duration;
         float a, b, c, d;
         HermiteCoefficients(progress, a, b, c, d);
         return AddTweenVector(AddTweenVector(AddTweenVector(
@@ -154,34 +166,36 @@ CameraVector __stdcall StepStageVectorTween(StageVectorTween *self)
 
 StageFogView __stdcall StepStageFogTween(StageFogTween *self)
 {
-    int duration = self->duration;
-    if (duration > 0)
+    if (self->duration > 0)
     {
         AdvanceStageTimer(&self->time);
-        duration = self->duration;
-        if (self->time.current >= duration)
+        if (self->time.current >= self->duration)
         {
-            SetStageTimer(&self->time, duration);
+            SetStageTimer(&self->time, self->duration);
             self->duration = 0;
-            return self->mode == 7 ? self->initial : self->target;
+            if (self->mode != 7)
+                return self->target;
+            return self->initial;
         }
     }
     if (self->mode == 7)
     {
-        StageFogView result = self->initial + self->target;
+        StageFogView previous = self->initial;
+        StageFogView result = previous + self->target;
         self->initial = result;
         return result;
     }
     if (self->mode == 17)
     {
-        StageFogView result = self->initial + self->control2;
+        StageFogView previous = self->initial;
+        StageFogView result = previous + self->control2;
         self->initial = result;
         self->control2 = self->control2 + self->target;
         return result;
     }
     if (self->mode == 8)
     {
-        float progress = self->time.fraction / duration;
+        float progress = self->time.fraction / self->duration;
         float a, b, c, d;
         HermiteCoefficients(progress, a, b, c, d);
         return ((self->initial * a + self->target * b) + self->control1 * c) + self->control2 * d;

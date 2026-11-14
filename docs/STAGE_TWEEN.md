@@ -7,13 +7,14 @@ without embedded tables or external interior references.
 
 | Function | Address | Target bytes | Source bytes | State |
 | --- | --- | ---: | ---: | --- |
-| StepStageVectorTween | 00405240 | 883 | 785 | Non-exact |
-| StepStageFogTween | 004055D0 | 737 | 536 | Non-exact |
+| StepStageVectorTween | 00405240 | 883 | 882 | Non-exact |
+| StepStageFogTween | 004055D0 | 737 | 794 | Non-exact |
 | StageVectorTweenFactor | 00405960 | 39 | 39 | Exact linked unit |
 | StageFogTweenFactor | 00405990 | 45 | 45 | Exact linked unit |
-| SubtractStageFog | 004059D0 | 61 | 59 | Non-exact |
-| ScaleStageFog | 00405A10 | 64 | 62 | Non-exact |
-| AddStageFog | 00405A50 | 61 | 59 | Non-exact |
+| SubtractStageFog | 004059D0 | 61 | 61 | Exact linked unit |
+| ScaleStageFog | 00405A10 | 64 | 64 | Exact linked unit |
+| AddStageFog | 00405A50 | 61 | 61 | Exact linked unit |
+| PackStageFog | 00405B70 | 171 | 171 | Exact linked unit (now in this TU) |
 | SetStageTimer | 00406100 | 59 | 59 | Exact linked unit |
 | AdvanceStageTimer | 00459270 | 83 | 83 | Non-exact |
 
@@ -76,42 +77,88 @@ with32-bit wrap, current=frame and fraction=float(frame).
 
 ## Code generation and exact proof
 
-Native vector stepping takes state in EDI and hidden output in EBX; fog takes
-state in EBX and output on stack. Both return the output pointer in EAX. Fog
-operators use ESI for output; subtraction uses ECX left minus EAX right. The
-factor helpers take state in EAX and return ST0. Advance takes ESI and returns
-EAX; assignment takes EAX plus a stack frame argument. Ordinary declarations
-and an exported test wrapper accommodate the compiler's actual private ABIs;
-no false prototypes, byte blobs or padding were introduced.
+### Inline definitions in the tween TU (2026-11-14)
 
-The source fog operators save two bytes by using a different output register.
-Advance has eight address-masked diagnostic differences despite equal83-byte
-size: native INC EDX/store EDX/MOV EAX,EDX versus candidate LEA EAX/store EAX.
-Linking the real easing dispatcher now recovers its EAX-curve/stack-progress
-private ABI naturally. Conditional-expression returns retain the getters' final
-float rounding point and reproduce both39/45-byte bodies. Their exact units
-each bind one REL32 to459730; see [STAGE_EASING.md](STAGE_EASING.md).
-The large step functions remain non-exact; none receives masked-match credit.
+The native layout and call graph fit one model: `SetStageTimer`, the fog
+operators and `StageFogView::Pack` are defined `inline` in the tween .cpp,
+while the shared header keeps plain declarations. Evidence:
 
-SetStageTimer is a complete non-EH public primary-TU PDB contribution in
-`build/match-linked/StageTween`. Its sole DIR32 field at+36 resolves the global
-scale symbol to004A7948 with zero addend. Cold source/tool/producer receipts,
-PE/MAP/PDB identity, contribution ownership, exhaustive field replay and all59
-bytes pass the linked Oracle. The affected existing171-byte pack unit also
-passes in the rebuilt script family:
+- `SetStageTimer` (0x406100) is inlined into both step functions but called
+  out of line from about 90 sites in other TUs, including small functions such
+  as 0x434380 (183 bytes) whose inlining budget would not be exhausted. Those
+  TUs therefore never see an inline definition.
+- `Pack` (0x405B70) sits between the fog operators and the timer helpers, not
+  with the stage interpreter, so its out-of-line copy belongs to this TU.
+- Every native caller of `Pack` keeps its object in ESI and reloads ECX
+  before the call (`mov ecx,esi; call Pack; mov eax,esi`). That is the
+  standard thiscall clobber assumption. When `Pack` is an ordinary LTCG
+  function, VC9 uses its known register usage instead and produces an ECX
+  output ABI for the operators (59/59/62 bytes, non-exact). When `Pack` is an
+  inline function whose inlining is declined, its COMDAT copy is treated as
+  opaque and the operators come out at the native 61/64/61 bytes with ESI
+  output. A non-/GL Pack object gives the same result, but would contradict
+  the tween-region placement, so the inline model is kept and /GL is
+  unchanged.
+- The region 0x405A90..0x405B6F and 0x405C20 holds uninventoried dead copies
+  of small inline helpers (vector scale, timer `>=`, fraction getter, a tail
+  jump to AdvanceStageTimer, and a six-float fog builder that calls Pack).
+  The game was linked without discarding unreferenced COMDATs. These copies
+  are a useful map of the original inline helper set.
+
+With these definitions the three operators are exact in the StageTween family
+(units `subtract-stage-fog`, `scale-stage-fog`, `add-stage-fog`), each with
+one REL32 to Pack. `pack-stage-fog` moved to the same family and remains exact.
+The family probe no longer calls the operators directly, because extra callers
+change the LTCG register convention that the native step function imposes.
+
+`/Ob2` was tested as an alternative explanation. It produces the same step
+inlining, but in the MusicStream family it also inlines `ResetMusicDecoder`
+into the exact `ConfigureMusicDecoder`, which native does not. A global
+`/Ob2` is therefore rejected; all units keep `/Ob1`.
+
+### Step-function source corrections
+
+Both step functions now follow these native details:
+
+- No `duration` local. Native keeps the loaded `self->duration` in one stack
+  slot and stores it again as the inlined `SetStageTimer` argument; reading
+  `self->duration` at each use reproduces both stores and the mode-8 `fidiv`.
+- The terminal endpoint uses `if (mode != 7) return target; return initial;`.
+  The ternary form modified EBX and forced the state into EAX with an extra
+  save; separate returns let the state arrive in EBX as in native.
+- Modes 7 and 17 copy `initial` into a local before the first addition. Native
+  copies the whole value with `rep movsd` before adding; operating on
+  `self->initial` directly does not.
+- Hermite coefficients use the float `progress` directly with `2.0 * progress`
+  and `a = (2t+1) * ((t-1)*(t-1))`. This reproduces native's `fadd st0,st0`,
+  the square-before-sum scheduling and the shared `2t` subexpression.
+
+Fog stepping is now 794/737 bytes; everything matches structurally except one
+gap: native calls the out-of-line `operator+` for mode 17's second addition
+(`control2 + target`), while VC9 here inlines all three mode-7/17 additions.
+Nested inline timer helpers, a default constructor, channel loops and
+statement rewrites did not change this. A six-float constructor used by the
+operators changes their bodies (temporary spills) and is wrong.
+
+Vector stepping is 882/883 bytes. Remaining gaps: mode 7 stores the output
+before `initial` (native looks like NRVO into the hidden result), and mode 8
+evaluates all four coefficients before scaling, as D3DX-style inline vector
+operators would. The next step is a small `CameraVector`-local helper type with
+inline D3DX-style operators for this TU, without changing the shared
+aggregate.
+
+AdvanceStageTimer keeps its earlier eight-byte INC/LEA difference.
+
+The factor helpers take state in EAX and return ST0; their exact units each
+bind one REL32 to 459730; see [STAGE_EASING.md](STAGE_EASING.md).
+`SetStageTimer` remains exact with its DIR32 to 004A7948. Verify the family
+with:
 
 ```bash
-scripts/repo-python scripts/replay-exact-units.py \
-  --unit set-stage-timer --unit pack-stage-fog
+scripts/repo-python scripts/replay-exact-units.py --source src/StageTween.cpp
 ```
 
-All affected primary units retain `/TP /O2 /Ob1 /Gy /MT /Isrc /EHsc /GL`.
-AngleMath is normal-COFF support in the tween/script families. Sources, entries and complete contexts are declared in
-`config/match-units.toml`. Other exact families have unchanged inputs and were
-not replayed. Totals are109 source mappings and55 exact/11,554 bytes:8 COFF,
-47 linked PE. Diagnostic executables still contain unresolved data anchors.
-
-
-The complete easing dispatcher is exact; see [STAGE_EASING.md](STAGE_EASING.md).
-Large step functions, fog operators and AdvanceStageTimer retain the codegen
-gaps above. Broad behavioral matrices are not part of the exact workflow.
+All units retain `/TP /O2 /Ob1 /Gy /MT /Isrc /EHsc /GL`; AngleMath is
+normal-COFF support. The 2026-11-14 change cold-replayed all 42 units in the
+12 families that compile StageTween.cpp or StageScript.cpp, with zero
+differences.

@@ -18,23 +18,36 @@ scripts/repo-python scripts/verify-target.py
 scripts/repo-python scripts/verify-toolchain.py --check
 ```
 
-The current branch is `main`; recent local commits use the required
-`gpt-web: ...` prefix. The latest source/config checkpoint is `17ebdf8`; this
-handoff and artifact-policy refresh is the documentation checkpoint immediately
-above it. Recent code checkpoints include:
+The current branch is `main`. Commits from this agent use the
+`claude-opus-5.5-high: ...` prefix; earlier ones use `gpt-web: ...`.
 
-- `17ebdf8` — include the real pair timer in the host LTCG context;
-- `1257ea0` — stage the native three-pointer selection for pair tween `0x12D/0x12F`;
-- `0e2ba3d` — reconstruct eight exact secondary pair-access leaves;
-- `fb5d414` — tighten secondary-host motion staging;
-- `210431b` — reconstruct exact replay record factories;
-- `654f5fc` — reconstruct the secondary statistics writer.
+Latest checkpoint (2026-11-14): the three fog operators `SubtractStageFog`,
+`ScaleStageFog` and `AddStageFog` (0x4059D0/0x405A10/0x405A50) are exact.
+The key finding is general: native callers that keep `this` in ESI and reload
+ECX around a thiscall point to an `inline` callee whose out-of-line COMDAT LTCG
+treats as opaque. `Pack`, `SetStageTimer` and the operators are now defined
+`inline` in `src/StageTween.cpp`; `pack-stage-fog` moved into the StageTween
+family. All 42 units in the 12 affected families cold-replayed with zero
+differences. See [STAGE_TWEEN](STAGE_TWEEN.md) and the knowledge-base section
+"Inline definitions and opaque COMDAT callees".
 
-`docs/PROGRESS.md` is the generated inventory authority. At this checkpoint it
-reports 2,157 tracked candidates, 761 reviewed boundaries, 735 source-present
-mappings, 389 canonical exact functions/42,616 exact bytes, and 90 confirmed
-authored functions. The denominator remains provisional; do not edit generated
-counts by hand.
+Near-exact step functions to finish next:
+
+- `StepStageFogTween` 0x4055D0: 794/737 bytes, structurally native except that
+  mode 17's second addition is inlined where native calls the operator.
+- `StepStageVectorTween` 0x405240: 882/883 bytes; try a TU-local vector type
+  with D3DX-style inline operators (mode-7 NRVO store order, mode-8 coefficient
+  scheduling).
+- 42F340/42F350 comparison islands: test them as dead inline-function COMDATs
+  (same EDX pattern as the timer `>=` copy at 405AC0).
+
+`scripts/validate-tracking.py` already fails on clean HEAD at 0x00435630
+(indeterminate origin without an individual reason); not caused by this change.
+Local diagnostic helpers (disassembly, masked diff, quick LTCG link) are kept in
+ignored `.analysis/tool-*-20261114.py`.
+
+`docs/PROGRESS.md` is the generated inventory authority; regenerate it rather
+than copying counts here.
 
 ## Current priority: complete secondary actor dispatcher
 

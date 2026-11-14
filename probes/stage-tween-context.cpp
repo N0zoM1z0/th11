@@ -6,9 +6,6 @@ extern "C" int __stdcall StageTweenProbe(StageVectorTween *vector,
 {
     *vectorOutput = StepStageVectorTween(vector);
     *fogOutput = StepStageFogTween(fog);
-    *fogOutput = *fogOutput + *operand;
-    *fogOutput = *fogOutput - *operand;
-    *fogOutput = *fogOutput * scale;
     int result = AdvanceStageTimer(&vector->time);
     SetStageTimer(&vector->time, vector->duration);
     return result;
@@ -23,9 +20,6 @@ extern "C" __declspec(dllexport) int __stdcall StageTweenTestEntry(int kind,
     {
     case 0: *static_cast<CameraVector *>(output) = StepStageVectorTween(vector); break;
     case 1: *static_cast<StageFogView *>(output) = StepStageFogTween(fog); break;
-    case 2: *static_cast<StageFogView *>(output) = fog->initial + *operand; break;
-    case 3: *static_cast<StageFogView *>(output) = fog->initial - *operand; break;
-    case 4: *static_cast<StageFogView *>(output) = fog->initial * scale; break;
     case 5: *static_cast<float *>(output) = StageVectorTweenFactor(vector); break;
     case 6: *static_cast<float *>(output) = StageFogTweenFactor(fog); break;
     case 7: return AdvanceStageTimer(timer);

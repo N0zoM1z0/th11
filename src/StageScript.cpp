@@ -4,15 +4,6 @@
 #include <math.h>
 #include <new>
 
-void StageFogView::Pack()
-{
-    unsigned char *bytes = reinterpret_cast<unsigned char *>(&packed);
-    bytes[0] = static_cast<unsigned char>(static_cast<int>(channels[0]));
-    bytes[1] = static_cast<unsigned char>(static_cast<int>(channels[1]));
-    bytes[2] = static_cast<unsigned char>(static_cast<int>(channels[2]));
-    bytes[3] = static_cast<unsigned char>(static_cast<int>(channels[3]));
-}
-
 static __forceinline StageScriptStateView &ScriptState(StageResourceView *self)
 {
     return *reinterpret_cast<StageScriptStateView *>(self);

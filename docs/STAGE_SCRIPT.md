@@ -7,7 +7,7 @@ section and reconciled its full extent, instruction flow, callers and tables.
 | Function | Full target owner | Source contribution | State |
 | --- | ---: | ---: | --- |
 | ExecuteStageScript,0x00404470 | 2,736 bytes through0x00404F1F | 2,728 bytes | Non-exact; EH ownership open |
-| PackStageFog,0x00405B70 | 171 bytes through0x00405C1A | 171 bytes | Exact linked-PE unit `pack-stage-fog` |
+| PackStageFog,0x00405B70 | 171 bytes through0x00405C1A | 171 bytes | Exact; defined inline in StageTween.cpp (see [STAGE_TWEEN](STAGE_TWEEN.md)) |
 
 The interpreter's Ghidra code body ends at404EB8 and contains2,633 bytes.
 Three alignment bytes follow. Its18-entry instruction table occupies
@@ -135,10 +135,9 @@ exhaustive field replay are checked by the canonical linked Oracle:
 scripts/repo-python scripts/replay-exact-units.py --unit pack-stage-fog
 ```
 
-Its canonical family is `build/match-linked/StageScript`, primary
-`src/StageScript.cpp`, supporting `probes/stage-script-context.cpp`, `src/StageTween.cpp`,
-`probes/stage-tween-context.cpp`, `src/StageEasing.cpp`, `src/StageMesh.cpp` and
-`src/AngleMath.cpp` (normal COFF), entry `StageScriptProbe@12`, primary profile
-`/TP /O2 /Ob1 /Gy /MT /Isrc /EHsc /GL`. The normal support keeps the same
-switches except GL. The constructor and other unresolved
-dependencies are diagnostic data anchors; this PE is not a runnable game.
+Since 2026-11-14 `Pack` is defined `inline` in `src/StageTween.cpp`, matching
+its native placement in the tween region, and its canonical family is
+`build/match-linked/StageTween` (entry `StageTweenProbe@24`). The interpreter
+still calls it out of line through the plain header declaration, as native
+does. See [STAGE_TWEEN](STAGE_TWEEN.md) for why the inline definition is
+needed by the fog operators.

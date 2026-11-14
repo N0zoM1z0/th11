@@ -20,6 +20,27 @@ compiler observations and useful failed approaches.
 - Rebuild affected exact contexts through `config/match-units.toml`. Cache
   retention is described in [ARTIFACTS](ARTIFACTS.md).
 
+## Inline definitions and opaque COMDAT callees (2026-11-14)
+
+- VC9 LTCG uses a callee's real register usage only for ordinary functions.
+  The out-of-line COMDAT of an `inline` function whose inlining was declined is
+  treated as a standard call. Native callers that keep `this` in ESI and
+  reload ECX around a thiscall (`mov ecx,esi; call; mov eax,esi`) point to an
+  inline callee. This made the three fog operators exact; see
+  [STAGE_TWEEN](STAGE_TWEEN.md).
+- A function inlined in one TU but called out of line everywhere else, even
+  from small callers, is defined `inline` in that .cpp and only declared in the
+  shared header (`SetStageTimer`, `Pack`).
+- The image keeps unreferenced COMDAT copies of inline helpers. Small
+  uninventoried islands next to their users, such as 405A90..405B6F and
+  405C20, are such copies. The 42F340/42F350 comparison islands share the
+  `mov edx,[ecx+N]` pattern of the timer `>=` copy at 405AC0, so they are
+  probably dead inline copies too; their EDX allocation is worth testing in
+  that form.
+- A global `/Ob2` is rejected: it inlines `ResetMusicDecoder` into the exact
+  `ConfigureMusicDecoder`. Keep `/Ob1`; prefer source `inline` over
+  `__forceinline` when testing why native inlined a helper.
+
 ## Latest continuation menu3192
 
 42D9D0 owns3192 bytes through42E647, not its old3141 default. Full flow has872
