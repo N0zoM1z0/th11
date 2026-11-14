@@ -14,14 +14,14 @@ inline void RemoveTitleRecordChain(ChainElement *element)
     ChainManagerView *manager = g_ChainManager;
     if (g_MainRuntime.flags & 0x8000)
     {
-        EnterCriticalSection(&g_MainRuntime.criticalSections[1]);
-        ++g_MainRuntime.criticalDepth[1];
+        EnterCriticalSection(&g_MainRuntime.criticalSections[0]);
+        ++g_MainRuntime.criticalDepth[0];
     }
-    UnregisterChainElement(element, manager);
+    UnregisterChainElement(manager, element);
     if (g_MainRuntime.flags & 0x8000)
     {
-        LeaveCriticalSection(&g_MainRuntime.criticalSections[1]);
-        --g_MainRuntime.criticalDepth[1];
+        LeaveCriticalSection(&g_MainRuntime.criticalSections[0]);
+        --g_MainRuntime.criticalDepth[0];
     }
 }
 }

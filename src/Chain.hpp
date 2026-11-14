@@ -41,5 +41,5 @@ typedef char ChainElementSize[(sizeof(ChainElement) == 0x24) ? 1 : -1];
 typedef char ChainNodeSize[(sizeof(ChainNode) == 12) ? 1 : -1];
 
 extern ChainManagerView *g_ChainManager;
-void __fastcall UnregisterChainElement(ChainElement *element, ChainManagerView *manager);
+void __stdcall UnregisterChainElement(ChainManagerView *manager, ChainElement *element);
 int ExecuteDrawChain();

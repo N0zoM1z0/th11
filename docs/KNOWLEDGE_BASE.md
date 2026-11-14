@@ -60,11 +60,14 @@ those owners are not evidence of a C++ shape.
 - LTCG can pass `this` on the stack. The replay record destructor 435C50 is an
   ordinary out-of-line destructor (`ret 4`, `this` at `[esp+4]`), and callers
   call it directly rather than through a wrapper.
-- Every native call to `UnregisterChainElement` 457080 sets ECX (element)
-  before EDX (manager), while VC9 here loads EDX first for both `__fastcall` and
-  LTCG-converted `__stdcall` declarations. The same lock/unregister block
-  appears in the Ascii (401210), stage (402740) and replay record (435C50)
-  destructors, so finding that spelling should help all of them.
+- `UnregisterChainElement` 457080 is `__stdcall (manager, element)` in
+  source. LTCG passes element in ECX and manager in EDX, and right-to-left
+  argument evaluation makes callers set ECX first, as every native caller with
+  both values in registers does. The former `__fastcall (element, manager)`
+  reproduced the body as normal COFF but put EDX first at every call site. With
+  the swap, the replay record destructor 435C50 matches byte for byte apart from
+  relocated fields. The lock/unregister block also appears in the Ascii
+  (401210) and stage (402740) destructors.
 
 - VC9 LTCG uses a callee's real register usage only for ordinary functions.
   The out-of-line COMDAT of an `inline` function whose inlining was declined is

@@ -66,7 +66,7 @@ __forceinline void RemoveTitleMenuChain(ChainElement *chain)
         EnterCriticalSection(&g_MainRuntime.criticalSections[0]);
         ++g_MainRuntime.criticalDepth[0];
     }
-    UnregisterChainElement(chain, manager);
+    UnregisterChainElement(manager, chain);
     if (g_MainRuntime.flags & 0x8000)
     {
         LeaveCriticalSection(&g_MainRuntime.criticalSections[0]);

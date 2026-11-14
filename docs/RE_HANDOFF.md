@@ -78,6 +78,9 @@ far from current work tend to need revisiting once the source shape is known.
 
 | Target | State | Remaining gap | Note |
 | --- | --- | --- | --- |
+| Replay record destructor 435C50 | byte-identical apart from fields | SEH handler DIR32 cannot be bound by the public-symbol oracle (EH contexts open) | [KNOWLEDGE_BASE](KNOWLEDGE_BASE.md) |
+| `AppendReplayWriteSegment` 437300 | 38/40 with C++ callers | segment constructor store schedule | [REPLAY_WRITING](REPLAY_WRITING.md) |
+| `RecordReplayInputFrame` 435FE0 | 94/108, no unit | native loads `heldFrames[0]` into ECX instead of sharing the constant 5 | [REPLAY_WRITING](REPLAY_WRITING.md) |
 | `PushSecondaryValue` 45DC30 | 20/21 instructions | native forms the slot address before the store | [SECONDARY_SCRIPT](SECONDARY_SCRIPT.md) |
 | `SecondaryManager::Restart` 45DD50 | 28/28 bytes as an inline copy | name arrives in EAX, native ECX; change reverted | [SECONDARY_SCRIPT](SECONDARY_SCRIPT.md) |
 | `StepStageFogTween` 4055D0 | 794/737 bytes | mode 17's second add is inlined; native calls `operator+` | [STAGE_TWEEN](STAGE_TWEEN.md) |

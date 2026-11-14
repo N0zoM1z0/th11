@@ -47,7 +47,7 @@ executeAgain:
                 switch (result)
                 {
                 case 0:
-                    UnregisterChainElement(element, manager);
+                    UnregisterChainElement(manager, element);
                     break;
                 case 2:
                     goto executeAgain;
@@ -102,7 +102,7 @@ executeAgain:
                 switch (result)
                 {
                 case 0:
-                    UnregisterChainElement(element, this);
+                    UnregisterChainElement(this, element);
                     ++count;
                     node = next;
                     continue;

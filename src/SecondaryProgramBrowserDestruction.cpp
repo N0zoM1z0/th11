@@ -50,7 +50,7 @@ __forceinline void RemoveBrowserChain(ChainElement *element)
     if (element)
     {
         ScopedBrowserChainLock lock;
-        UnregisterChainElement(element, manager);
+        UnregisterChainElement(manager, element);
     }
 }
 

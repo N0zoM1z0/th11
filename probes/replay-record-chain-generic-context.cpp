@@ -6,6 +6,6 @@ extern "C" void __stdcall ReplayRecordChainGenericProbe(
     ChainElement *second, ChainManagerView *manager)
 {
     record->~TitleMenuRecordView();
-    UnregisterChainElement(first, manager);
-    if (second) UnregisterChainElement(second, manager);
+    UnregisterChainElement(manager, first);
+    if (second) UnregisterChainElement(manager, second);
 }

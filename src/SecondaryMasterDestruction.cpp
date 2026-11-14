@@ -30,7 +30,7 @@ __forceinline void UnregisterMasterChain(ChainElement *element)
         EnterCriticalSection(&g_MainRuntime.criticalSections[0]);
         ++g_MainRuntime.criticalDepth[0];
     }
-    UnregisterChainElement(element, manager);
+    UnregisterChainElement(manager, element);
     if (g_MainRuntime.flags & 0x8000)
     {
         LeaveCriticalSection(&g_MainRuntime.criticalSections[0]);

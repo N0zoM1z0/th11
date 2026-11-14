@@ -1,7 +1,7 @@
 #include "Chain.hpp"
 #include <new>
 
-void __fastcall UnregisterChainElement(ChainElement *element, ChainManagerView *manager)
+void __stdcall UnregisterChainElement(ChainManagerView *manager, ChainElement *element)
 {
     if (!element)
         return;

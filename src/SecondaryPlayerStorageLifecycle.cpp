@@ -76,7 +76,7 @@ static __forceinline void RemovePlayerChain(ChainElement *element)
         return;
     ChainManagerView *manager = g_ChainManager;
     ScopedPlayerChainLock lock;
-    UnregisterChainElement(element, manager);
+    UnregisterChainElement(manager, element);
 }
 }
 
