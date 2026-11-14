@@ -198,11 +198,19 @@ The change was reverted; find what fixes the parameter register first.
 
 ## 2026-11-14: stack pop/frame dead copies
 
-`PopSecondaryValue` 45DC80 and `EndSecondaryStackFrame` 45DD20 are uncalled
-dead copies. Making the pop an inline function used by the interpreter's
-pop wrappers emits an 83-byte copy from the script TU with 29/30 instructions
-matching; the only difference is native `add ecx,-4` against VC9's
-`sub ecx,4` (End shows the same pair). `Add(top, -4)`, `top + -4`,
-`top + -sizeof(DWORD)` and a plain-`inline` `Add` all give `sub`, so the
-original decrement spelling is still unknown. Reverted; once that spelling is
-found, both copies should close together.
+`PopSecondaryValue` 45DC80 and `EndSecondaryStackFrame` 45DD20 are exact.
+Both are uncalled. The pop is an inline function used by the interpreter's
+pop wrappers, so the script TU emits its dead copy. The key detail is native's
+`add ecx,-4`: of ten decrement spellings only "test the decremented value,
+then decrement the member" produces it,
+
+```cpp
+if (stack->top - 4 < 0) return -1;
+stack->top -= 4;
+```
+
+whereas computing `top - 4` into a local first, `top += -4`, `Add(top, -4)`
+or `top + -sizeof(DWORD)` all give `sub ecx,4`. The frame pop uses the same
+form (`if (top - 4 >= 0) { top -= 4; ... }`). With the inline pop the
+interpreter candidate is 7193/7093 bytes but aligns more instructions
+(819, from 774).

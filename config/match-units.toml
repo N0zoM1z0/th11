@@ -1768,8 +1768,7 @@ functions = ["SetAnimationSpriteUv"]
 symbol = "?SetAnimationSpriteUv@@YGXPAUAnimationVmView@@PAUAnimationSpriteView@@@Z"
 target_address = 0x401e40
 size = 81
-linkages = [
-]
+linkages = []
 
 [units.scale-animation-color-channel]
 artifact_kind = "linked-pe"
@@ -2969,6 +2968,36 @@ linkages = [
   { offset = 2, type = "DIR32", symbol = "??_7MusicControllerView@@6B@", target = 0x497cbc, addend = 0x0 },
   { offset = 7, type = "REL32", symbol = "??1MusicSoundBaseView@@UAE@XZ", target = 0x45a660, addend = 0x0 },
 ]
+
+[units.pop-secondary-value]
+artifact_kind = "linked-pe"
+source = "src/SecondaryScript.cpp"
+inputs = ["src/SecondaryScript.hpp"]
+support_sources = ["probes/secondary-script-context.cpp"]
+output_dir = "build/match-linked/SecondaryScript"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryScriptProbe@32"
+functions = ["PopSecondaryValue"]
+symbol = "?PopSecondaryValue@@YGHPAUSecondaryStack@@DPAX@Z"
+target_address = 0x45dc80
+size = 83
+linkages = [
+  { offset = 74, type = "REL32", symbol = "__ftol2_sse", target = 0x4864e0, addend = 0x0 },
+]
+
+[units.end-secondary-stack-frame]
+artifact_kind = "linked-pe"
+source = "src/SecondaryScript.cpp"
+inputs = ["src/SecondaryScript.hpp"]
+support_sources = ["probes/secondary-script-context.cpp"]
+output_dir = "build/match-linked/SecondaryScript"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryScriptProbe@32"
+functions = ["EndSecondaryStackFrame"]
+symbol = "?EndSecondaryStackFrame@@YGHPAUSecondaryStack@@@Z"
+target_address = 0x45dd20
+size = 41
+linkages = []
 
 [units.secondary-stack-relative-address]
 artifact_kind = "linked-pe"
@@ -4174,8 +4203,7 @@ functions = ["RefreshSecondaryPlayerEmitters"]
 symbol = "?RefreshSecondaryPlayerEmitters@@YGXPAUSecondaryDamageReferencesView@@@Z"
 target_address = 0x410610
 size = 54
-linkages = [
-]
+linkages = []
 
 [units.secondary-player-aim-angle]
 artifact_kind = "linked-pe"
@@ -4358,8 +4386,7 @@ functions = ["UpdateSecondaryLivesDisplay"]
 symbol = "?UpdateSecondaryLivesDisplay@@YGXPAUSecondaryActorHudView@@HH@Z"
 target_address = 0x41a060
 size = 144
-linkages = [
-]
+linkages = []
 
 [units.add-secondary-integer-pair]
 artifact_kind = "linked-pe"

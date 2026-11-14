@@ -38,16 +38,17 @@ __forceinline SecondaryValue *Argument(SecondaryVm *self, int index)
 // Pinned VC9/x86 lowers the variable count to the target hardware-masked CL shift.
 __forceinline unsigned int ReferenceMask(int index) { return 1u << index; }
 __forceinline int Add(int a, int b) { return static_cast<int>(static_cast<unsigned int>(a) + b); }
-__forceinline int PopValue(SecondaryStack *stack, char requested, void *output)
+}
+
+inline int __stdcall PopSecondaryValue(SecondaryStack *stack, char requested, void *output)
 {
-    int top = Add(stack->top, -4);
-    if (top < 0) return -1;
-    stack->top = top;
+    if (stack->top - 4 < 0) return -1;
+    stack->top -= 4;
     SecondaryValue *value = static_cast<SecondaryValue *>(output);
-    value->bits = *reinterpret_cast<DWORD *>(stack->data + top);
+    value->bits = *reinterpret_cast<DWORD *>(stack->data + stack->top);
     if (requested)
     {
-        stack->top = Add(stack->top, -4);
+        stack->top -= 4;
         char type = static_cast<char>(stack->data[stack->top]);
         if (type != 'f')
         {
@@ -57,12 +58,15 @@ __forceinline int PopValue(SecondaryStack *stack, char requested, void *output)
     }
     return 0;
 }
+
+namespace
+{
 __forceinline bool PopRaw(SecondaryStack *stack, void *output)
-{ return PopValue(stack, 0, output) == 0; }
+{ return ::PopSecondaryValue(stack, 0, output) == 0; }
 __forceinline bool PopInt(SecondaryStack *stack, int *output)
-{ return PopValue(stack, 'i', output) == 0; }
+{ return ::PopSecondaryValue(stack, 'i', output) == 0; }
 __forceinline bool PopFloat(SecondaryStack *stack, float *output)
-{ return PopValue(stack, 'f', output) == 0; }
+{ return ::PopSecondaryValue(stack, 'f', output) == 0; }
 __forceinline void PushRaw(SecondaryStack *stack, DWORD value)
 {
     if (Add(stack->top, 4) < 4096)
@@ -97,10 +101,6 @@ int __stdcall PushSecondaryValue(SecondaryStack *self, char type, const void *va
     self->top = Add(self->top, 4);
     return 0;
 }
-int __stdcall PopSecondaryValue(SecondaryStack *self, char type, void *value)
-{
-    return PopValue(self, type, value);
-}
 int __stdcall BeginSecondaryStackFrame(SecondaryStack *self, int bytes)
 {
     int previous = self->top;
@@ -113,13 +113,11 @@ int __stdcall BeginSecondaryStackFrame(SecondaryStack *self, int bytes)
 }
 int __stdcall EndSecondaryStackFrame(SecondaryStack *self)
 {
-    int top = self->top;
-    top += -4;
     int previous = self->frame;
-    if (top >= 0)
+    if (self->top - 4 >= 0)
     {
-        self->top = top;
-        self->frame = *reinterpret_cast<int *>(self->data + top);
+        self->top -= 4;
+        self->frame = *reinterpret_cast<int *>(self->data + self->top);
     }
     self->top = previous;
     return 0;

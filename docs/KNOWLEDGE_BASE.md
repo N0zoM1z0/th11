@@ -51,6 +51,9 @@ compiler observations and useful failed approaches.
   registrations. As an inline member used by the ASCII lifecycle's chain
   helper it is exact (unit `chain-element-set-callback`). Searching the image
   for a dead copy's store shape is an effective way to find its real users.
+- VC9 emits `add r,-4` (rather than `sub r,4`) for `if (x - 4 < 0) ...; x -= 4;`
+  on a member: the test is formed on the unmodified member. Locals,
+  `x += -4` and helper calls all canonicalize to `sub`.
 - The length/angle copies 435400/435430/435460 do not reproduce as plain
   inline-copy probes. Native realigns their frame (`push ebp; and esp,-8`)
   around `_CIsqrt`/`_CIatan2`; probes with `sqrt(double)`, the float `sqrt`/

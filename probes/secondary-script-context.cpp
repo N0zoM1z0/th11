@@ -28,7 +28,6 @@ extern "C" int __stdcall SecondaryScriptProbe(int kind, SecondaryVm *vm,
     case 18: StartSecondaryThread(manager, offset, static_cast<int>(delta)); break;
     case 19: return reinterpret_cast<int>(FindSecondaryThread(manager, offset));
     case 20: StopSecondaryThreads(manager); break;
-    case 21: return PopSecondaryValue(&vm->stack, static_cast<char>(offset), real);
     case 22: manager->SecondaryManager::~SecondaryManager(); break;
     }
     return 0;
