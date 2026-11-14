@@ -1,4 +1,4 @@
-#include "AnimationTexture.hpp"
+#include "AnimationPixelHelpers.hpp"
 
 struct AnimationPixel32
 {
@@ -44,42 +44,19 @@ void __stdcall FixAnimationTextureTransparentPixels(AnimationDocumentTextureView
             {
                 if (!pixel->alpha)
                 {
-                    unsigned int red = 0, green = 0, blue = 0, count = 0;
-                    if (column > 0 && pixel[-1].alpha)
-                    {
-                        red = pixel[-1].red; green = pixel[-1].green; blue = pixel[-1].blue;
-                        count = 1;
-                    }
-                    if (column < description.Width - 1 && pixel[1].alpha)
-                    {
-                        red += pixel[1].red; green += pixel[1].green; blue += pixel[1].blue;
-                        ++count;
-                    }
-                    if (row > 0)
-                    {
-                        AnimationPixel32 *above = pixel - locked.Pitch / 4;
-                        if (above->alpha)
-                        {
-                            red += above->red; green += above->green; blue += above->blue;
-                            ++count;
-                        }
-                    }
-                    if (row < description.Height - 1)
-                    {
-                        AnimationPixel32 *below = pixel + locked.Pitch / 4;
-                        if (below->alpha)
-                        {
-                            red += below->red; green += below->green; blue += below->blue;
-                            ++count;
-                        }
-                    }
+                    AnimationPixelSums sums = {0, 0, 0};
+                    unsigned int count = 0;
+                    if (column > 0) AccumulateAnimationArgbPixel(&sums, reinterpret_cast<const AnimationArgbPixel *>(pixel - 1), &count);
+                    if (column < description.Width - 1) AccumulateAnimationArgbPixel(&sums, reinterpret_cast<const AnimationArgbPixel *>(pixel + 1), &count);
+                    if (row > 0) AccumulateAnimationArgbPixel(&sums, reinterpret_cast<const AnimationArgbPixel *>(pixel - locked.Pitch / 4), &count);
+                    if (row < description.Height - 1) AccumulateAnimationArgbPixel(&sums, reinterpret_cast<const AnimationArgbPixel *>(pixel + locked.Pitch / 4), &count);
                     if (count > 1)
                     {
-                        red /= count; green /= count; blue /= count;
+                        sums.red /= count; sums.green /= count; sums.blue /= count;
                     }
-                    pixel->red = static_cast<unsigned char>(red);
-                    pixel->green = static_cast<unsigned char>(green);
-                    pixel->blue = static_cast<unsigned char>(blue);
+                    pixel->red = static_cast<unsigned char>(sums.red);
+                    pixel->green = static_cast<unsigned char>(sums.green);
+                    pixel->blue = static_cast<unsigned char>(sums.blue);
                 }
             }
         }
@@ -93,42 +70,19 @@ void __stdcall FixAnimationTextureTransparentPixels(AnimationDocumentTextureView
             {
                 if (!pixel->a1.alpha)
                 {
-                    unsigned int red = 0, green = 0, blue = 0, count = 0;
-                    if (column > 0 && pixel[-1].a1.alpha)
-                    {
-                        red = pixel[-1].a1.red; green = pixel[-1].a1.green; blue = pixel[-1].a1.blue;
-                        count = 1;
-                    }
-                    if (column < description.Width - 1 && pixel[1].a1.alpha)
-                    {
-                        red += pixel[1].a1.red; green += pixel[1].a1.green; blue += pixel[1].a1.blue;
-                        ++count;
-                    }
-                    if (row > 0)
-                    {
-                        AnimationPixel16 *above = pixel - locked.Pitch / 2;
-                        if (above->a1.alpha)
-                        {
-                            red += above->a1.red; green += above->a1.green; blue += above->a1.blue;
-                            ++count;
-                        }
-                    }
-                    if (row < description.Height - 1)
-                    {
-                        AnimationPixel16 *below = pixel + locked.Pitch / 2;
-                        if (below->a1.alpha)
-                        {
-                            red += below->a1.red; green += below->a1.green; blue += below->a1.blue;
-                            ++count;
-                        }
-                    }
+                    AnimationPixelSums sums = {0, 0, 0};
+                    unsigned int count = 0;
+                    if (column > 0) AccumulateAnimationA1Pixel(&sums, reinterpret_cast<const unsigned short *>(pixel - 1), &count);
+                    if (column < description.Width - 1) AccumulateAnimationA1Pixel(&sums, reinterpret_cast<const unsigned short *>(pixel + 1), &count);
+                    if (row > 0) AccumulateAnimationA1Pixel(&sums, reinterpret_cast<const unsigned short *>(pixel - locked.Pitch / 2), &count);
+                    if (row < description.Height - 1) AccumulateAnimationA1Pixel(&sums, reinterpret_cast<const unsigned short *>(pixel + locked.Pitch / 2), &count);
                     if (count > 1)
                     {
-                        red /= count; green /= count; blue /= count;
+                        sums.red /= count; sums.green /= count; sums.blue /= count;
                     }
-                    pixel->a1.red = static_cast<unsigned char>(red);
-                    pixel->a1.green = static_cast<unsigned char>(green);
-                    pixel->a1.blue = static_cast<unsigned char>(blue);
+                    pixel->a1.red = static_cast<unsigned char>(sums.red);
+                    pixel->a1.green = static_cast<unsigned char>(sums.green);
+                    pixel->a1.blue = static_cast<unsigned char>(sums.blue);
                 }
             }
         }
@@ -142,42 +96,19 @@ void __stdcall FixAnimationTextureTransparentPixels(AnimationDocumentTextureView
             {
                 if (!pixel->a4.alpha)
                 {
-                    unsigned int red = 0, green = 0, blue = 0, count = 0;
-                    if (column > 0 && pixel[-1].a4.alpha)
-                    {
-                        red = pixel[-1].a4.red; green = pixel[-1].a4.green; blue = pixel[-1].a4.blue;
-                        count = 1;
-                    }
-                    if (column < description.Width - 1 && pixel[1].a4.alpha)
-                    {
-                        red += pixel[1].a4.red; green += pixel[1].a4.green; blue += pixel[1].a4.blue;
-                        ++count;
-                    }
-                    if (row > 0)
-                    {
-                        AnimationPixel16 *above = pixel - locked.Pitch / 2;
-                        if (above->a4.alpha)
-                        {
-                            red += above->a4.red; green += above->a4.green; blue += above->a4.blue;
-                            ++count;
-                        }
-                    }
-                    if (row < description.Height - 1)
-                    {
-                        AnimationPixel16 *below = pixel + locked.Pitch / 2;
-                        if (below->a4.alpha)
-                        {
-                            red += below->a4.red; green += below->a4.green; blue += below->a4.blue;
-                            ++count;
-                        }
-                    }
+                    AnimationPixelSums sums = {0, 0, 0};
+                    unsigned int count = 0;
+                    if (column > 0) AccumulateAnimationA4Pixel(&sums, reinterpret_cast<const unsigned short *>(pixel - 1), &count);
+                    if (column < description.Width - 1) AccumulateAnimationA4Pixel(&sums, reinterpret_cast<const unsigned short *>(pixel + 1), &count);
+                    if (row > 0) AccumulateAnimationA4Pixel(&sums, reinterpret_cast<const unsigned short *>(pixel - locked.Pitch / 2), &count);
+                    if (row < description.Height - 1) AccumulateAnimationA4Pixel(&sums, reinterpret_cast<const unsigned short *>(pixel + locked.Pitch / 2), &count);
                     if (count > 1)
                     {
-                        red /= count; green /= count; blue /= count;
+                        sums.red /= count; sums.green /= count; sums.blue /= count;
                     }
-                    pixel->a4.red = static_cast<unsigned char>(red);
-                    pixel->a4.green = static_cast<unsigned char>(green);
-                    pixel->a4.blue = static_cast<unsigned char>(blue);
+                    pixel->a4.red = static_cast<unsigned char>(sums.red);
+                    pixel->a4.green = static_cast<unsigned char>(sums.green);
+                    pixel->a4.blue = static_cast<unsigned char>(sums.blue);
                 }
             }
         }

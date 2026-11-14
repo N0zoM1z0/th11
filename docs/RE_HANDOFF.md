@@ -47,8 +47,9 @@ Near-exact step functions to finish next:
   (list in the knowledge base). In-class inline members whose calls are all
   inlined reproduce the nine integer-pair bodies 433DB0..433F26. Four
   (`-`, `*`, `/100`, `+`) are now exact from the movement TU; `+=` and `=`
-  remain (see [SECONDARY_PATTERN](SECONDARY_PATTERN.md)). Check the other
-  dead leaves the same way.
+  remain (see [SECONDARY_PATTERN](SECONDARY_PATTERN.md)). The three pixel
+  accumulators (453440..4534B4) are exact from the transparent-pixel fixer.
+  Check the other dead leaves the same way.
 
 `scripts/validate-tracking.py` already fails on clean HEAD at 0x00435630
 (indeterminate origin without an individual reason); not caused by this change.

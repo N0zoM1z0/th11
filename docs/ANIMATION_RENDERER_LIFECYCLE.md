@@ -20,9 +20,18 @@ private database or replacing maintained inventory rows.
 | InitializeAnimationWorldBuffer | 453220 | 487 | Exact;25 independently reviewed fields |
 | DestroyRendererAnimationVm | 4558E0 | 273 | Exact;4 fields |
 | ResolveAnimationTextureFormat | 453410 | 40 | Exact;2 fields |
-| AccumulateAnimationArgbPixel | 453440 | 30 | Source; candidate30 /6 |
-| AccumulateAnimationA1Pixel | 453460 | 45 | Exact; no fields |
-| AccumulateAnimationA4Pixel | 453490 | 45 | Exact; no fields |
+| AccumulateAnimationArgbPixel | 453440 | 30 | Exact; no fields (inline helper, fixer TU) |
+| AccumulateAnimationA1Pixel | 453460 | 45 | Exact; no fields (inline helper, fixer TU) |
+| AccumulateAnimationA4Pixel | 453490 | 45 | Exact; no fields (inline helper, fixer TU) |
+
+The three accumulators have no native callers. They are inline helpers that
+`FixAnimationTextureTransparentPixels` (4534C0) calls for each of the four
+neighbors of a transparent pixel; native keeps their dead out-of-line copies.
+With the helpers inline in `AnimationPixelHelpers.hpp` and the fixer using
+them, the fixer TU emits all three byte-identically, including the formerly
+non-exact ARGB one. Their units live in the AnimationTransparentPixels family
+(entry `AnimationTransparentPixelsProbe@4`). The fixer itself stays non-exact
+(1403/1427 bytes, previously 1411 in the same context).
 
 ## Complete object lifetime
 
