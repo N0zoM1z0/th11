@@ -93,17 +93,17 @@ void __stdcall UpdateSecondaryPlayerHorizontalWrap(SecondaryDamageReferencesView
         {
             if (state == 99)
             {
-                if (owner->x <= -0x6800)
+                if (owner->fixedPosition.x <= -0x6800)
                 {
-                    owner->x = Add(owner->x, 0xd000);
+                    owner->fixedPosition.x = Add(owner->fixedPosition.x, 0xd000);
                     Refresh(owner);
                 }
             }
             else if (state == 100)
             {
-                if (owner->x >= 0x6800)
+                if (owner->fixedPosition.x >= 0x6800)
                 {
-                    owner->x = Add(owner->x, -0xd000);
+                    owner->fixedPosition.x = Add(owner->fixedPosition.x, -0xd000);
                     Refresh(owner);
                 }
             }

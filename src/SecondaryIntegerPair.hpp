@@ -48,8 +48,6 @@ SecondaryIntegerPair *__stdcall AddAssignSecondaryIntegerPair(SecondaryIntegerPa
     SecondaryIntegerPair *left, const SecondaryIntegerPair *right);
 int __stdcall SecondaryIntegerPairNonzero(const SecondaryIntegerPair *value);
 SecondaryIntegerPair *__stdcall SetSecondaryIntegerPair(SecondaryIntegerPair *output, int x, int y);
-SecondaryIntegerPair *__stdcall AddSecondaryIntegerPair(SecondaryIntegerPair *output,
-    const SecondaryIntegerPair *left, const SecondaryIntegerPair *right);
 SecondaryIntegerPair *__stdcall AssignSecondaryIntegerPair(SecondaryIntegerPair *output,
     SecondaryIntegerPair *left, const SecondaryIntegerPair *right);
 

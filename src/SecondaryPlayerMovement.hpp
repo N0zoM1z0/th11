@@ -8,7 +8,8 @@ struct SecondaryPlayerMovementView
     short primarySprite;
     unsigned char unknown3b2[0x87c - 0x3b2];
     CameraVector position;
-    int x, y, normalSpeed, focusedSpeed, normalDiagonalSpeed, focusedDiagonalSpeed;
+    SecondaryIntegerPair fixedPosition;
+    int normalSpeed, focusedSpeed, normalDiagonalSpeed, focusedDiagonalSpeed;
     CameraVector movement, rememberedMovement;
     int stepX, stepY;
     unsigned char unknown8c0[0x914 - 0x8c0];

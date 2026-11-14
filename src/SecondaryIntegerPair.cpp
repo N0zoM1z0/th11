@@ -31,16 +31,6 @@ SecondaryIntegerPair *__stdcall SetSecondaryIntegerPair(SecondaryIntegerPair *ou
     return output;
 }
 
-SecondaryIntegerPair *__stdcall AddSecondaryIntegerPair(SecondaryIntegerPair *output,
-    const SecondaryIntegerPair *left, const SecondaryIntegerPair *right)
-{
-    int x = static_cast<int>(static_cast<unsigned int>(left->x) + right->x);
-    int y = static_cast<int>(static_cast<unsigned int>(left->y) + right->y);
-    output->x = x;
-    output->y = y;
-    return output;
-}
-
 SecondaryIntegerPair *__stdcall AssignSecondaryIntegerPair(SecondaryIntegerPair *output,
     SecondaryIntegerPair *left, const SecondaryIntegerPair *right)
 {

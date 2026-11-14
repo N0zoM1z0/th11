@@ -156,8 +156,8 @@ int __stdcall UpdateSecondaryPlayerMovement(SecondaryDamageReferencesView *self)
     int stepX = static_cast<int>(owner->movement.x);
     owner->stepX = stepX;
     int stepY = static_cast<int>(owner->movement.y);
-    owner->x = Add(owner->x, stepX);
-    owner->y = Add(owner->y, stepY);
+    owner->fixedPosition.x = Add(owner->fixedPosition.x, stepX);
+    owner->fixedPosition.y = Add(owner->fixedPosition.y, stepY);
     owner->stepY = stepY;
     if (!Selection()) UpdateSecondaryPlayerHorizontalWrap(self);
     if (Selection() == 1)
@@ -171,21 +171,21 @@ int __stdcall UpdateSecondaryPlayerMovement(SecondaryDamageReferencesView *self)
     }
     if (owner->fireCount < 99)
     {
-        if (owner->x < -0x5c00)
+        if (owner->fixedPosition.x < -0x5c00)
         {
             if (!owner->fireCount && !Selection()) { owner->fireCount = 1; owner->unknown924 = 0; }
-            owner->x = -0x5c00;
+            owner->fixedPosition.x = -0x5c00;
         }
-        else if (owner->x > 0x5c00)
+        else if (owner->fixedPosition.x > 0x5c00)
         {
             if (!owner->fireCount && !Selection()) { owner->fireCount = 3; owner->unknown924 = 0; }
-            owner->x = 0x5c00;
+            owner->fixedPosition.x = 0x5c00;
         }
-        if (owner->y < 0x1000) owner->y = 0x1000;
-        else if (owner->y > 0xd800) owner->y = 0xd800;
+        if (owner->fixedPosition.y < 0x1000) owner->fixedPosition.y = 0x1000;
+        else if (owner->fixedPosition.y > 0xd800) owner->fixedPosition.y = 0xd800;
     }
-    owner->position.x = static_cast<float>(owner->x * (1.0 / 128.0));
-    owner->position.y = static_cast<float>(owner->y * (1.0 / 128.0));
+    owner->position.x = static_cast<float>(owner->fixedPosition.x * (1.0 / 128.0));
+    owner->position.y = static_cast<float>(owner->fixedPosition.y * (1.0 / 128.0));
     if (!FindAnimationVmById(g_RenderBatch, AnimationVmId(owner->focusedId))) owner->focusedId = 0;
     else
     {
@@ -224,14 +224,13 @@ int __stdcall UpdateSecondaryPlayerMovement(SecondaryDamageReferencesView *self)
         if (!(owner->flags & 8))
         {
             SecondaryIntegerPair *offset = owner->focused ? &emitter->offsets[1] : &emitter->offsets[0];
-            emitter->pending.x = Add(owner->x, offset->x);
-            emitter->pending.y = Add(owner->y, offset->y);
+            emitter->pending = owner->fixedPosition + *offset;
             if (emitter->onUpdate) emitter->onUpdate(emitter);
         }
         else
         {
-            emitter->pending.x = owner->x;
-            emitter->pending.y = owner->y;
+            emitter->pending.x = owner->fixedPosition.x;
+            emitter->pending.y = owner->fixedPosition.y;
             if (owner->collapseFrames >= 30)
             {
                 emitter->state = 0;

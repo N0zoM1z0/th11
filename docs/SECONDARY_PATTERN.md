@@ -91,7 +91,7 @@ output views do not assert an original constructor or aggregate-return ABI.
 | ScaleSecondaryIntegerPair | 433E30 | 19 | Exact (inline member, movement TU) |
 | DivideSecondaryIntegerPair100 | 433E50 | 51 | Exact (inline member, movement TU) |
 | SetSecondaryIntegerPair | 433E90 | 6 | Exact |
-| AddSecondaryIntegerPair | 433EA0 | 18 | Source20/16 |
+| AddSecondaryIntegerPair | 433EA0 | 18 | Exact (inline member, movement TU) |
 | AssignSecondaryIntegerPair | 433F10 | 23 | Source20/11 |
 
 **2026-11-14: the integer-pair bodies are dead inline copies.** None of the nine
@@ -117,14 +117,16 @@ if (delta.x || delta.y) emitter->position += delta;
 else emitter->position = emitter->pending;
 ```
 
-That TU then emits the dead copies itself. `-`, `*` and `/` (LTCG specializes
-the divisor to 100) are exact units in the SecondaryPlayerMovement family. The
-earlier free-function versions of these three were removed.
+The movement view's fixed-point player position is also a pair
+(`fixedPosition`), so the emitter target is `owner->fixedPosition + *offset`.
+That TU then emits the dead copies itself. `-`, `*`, `/` (LTCG specializes the
+divisor to 100) and `+` are exact units in the SecondaryPlayerMovement family.
+The earlier free-function versions of these four were removed.
 
 Still open: `+=` (433DD0) comes out with its second load scheduled one
 instruction earlier; native's copy behaves as if `this` and the operand may
-alias, so look for an aliasing `+=` use elsewhere. `+` (433EA0) and the
-copy-returning `operator=` (433F10) need their real native uses; a user
+alias, so look for an aliasing `+=` use elsewhere. The copy-returning
+`operator=` (433F10) needs its real native use; a user
 `operator=` changes every pair assignment, so check exact consumers first.
 
 Tracked-target435030/73 also closes after the two length helpers explicitly call

@@ -45,8 +45,8 @@ Near-exact step functions to finish next:
 
 - Dead inline copies: 20 non-exact leaves have no callers or stored address
   (list in the knowledge base). In-class inline members whose calls are all
-  inlined reproduce the nine integer-pair bodies 433DB0..433F26. Three
-  (`-`, `*`, `/100`) are now exact from the movement TU; `+=`, `+` and `=`
+  inlined reproduce the nine integer-pair bodies 433DB0..433F26. Four
+  (`-`, `*`, `/100`, `+`) are now exact from the movement TU; `+=` and `=`
   remain (see [SECONDARY_PATTERN](SECONDARY_PATTERN.md)). Check the other
   dead leaves the same way.
 
