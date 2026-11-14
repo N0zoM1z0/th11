@@ -8292,10 +8292,10 @@ inputs = [
   "src/StageUpdate.hpp",
   "src/VmBindings.hpp",
  ]
-support_sources = ["probes/secondary-gameplay-statistics-writer-context.cpp"]
+support_sources = ["probes/secondary-gameplay-statistics-writer-context.cpp", "src/ReplayPayloadChecksum.cpp", "src/ReplayCompressionEncoder.cpp", "src/ReplayCompressionSearch.cpp", "src/ReplayCompressionTreeOps.cpp", "src/ReplayCompressionTree.cpp", "src/ByteCipher.cpp", "src/SharedFile.cpp", "src/ErrorLog.cpp"]
 output_dir = "build/match-linked/SecondaryGameplayStatisticsWriter"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
-entry = "SecondaryGameplayStatisticsWriterProbe"
+entry = "SecondaryGameplayStatisticsWriterProbe@12"
 functions = ["SaveSecondaryGameplayStatisticsFile"]
 symbol = "?SaveSecondaryGameplayStatisticsFile@@YAHXZ"
 target_address = 0x00437A70
