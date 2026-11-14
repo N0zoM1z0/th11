@@ -367,3 +367,6 @@ aligned; final-add register scheduling remains), float pair 673/673 (217/221;
 one mode-8 scaling schedule), int scalar 321/332, float scalar 324/331. None
 is exact yet. The scalar setter 44ED70 is an uncalled dead copy with the
 EAX-this/ECX-value convention; it needs its real inlined use in this TU.
+Using it inline only for the scalar step's `duration = 0` makes LTCG
+constant-propagate the zero into the copy (`mov [eax+24],0`), so native must
+also have a use with a variable duration (probably the script setter path).
