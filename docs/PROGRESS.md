@@ -14,7 +14,7 @@ inventory is provisional; reviewed boundary and origin states are counted below.
 | Confirmed authored code bytes | 30,705 |
 | Classified exclusions | 900 |
 | Reviewed, origin indeterminate | 621 |
-| Source-present mappings | 739 |
+| Source-present mappings | 738 |
 | Source-present with authored origin | 90 |
 | Source-present origin review pending | 38 |
 | Source-present origin indeterminate | 610 |

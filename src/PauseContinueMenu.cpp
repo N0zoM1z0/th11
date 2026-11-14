@@ -80,6 +80,18 @@ __forceinline int &RuntimeMode()
 }
 }
 
+namespace
+{
+inline void RecordPracticeBestScore()
+{
+    int *best = reinterpret_cast<int *>(g_SecondaryGameplayStatistics +
+        (g_MeshEffectSelection0 * 3 + g_MeshEffectSelection1) * 0x68d4 + 0x5a4 +
+        (g_SecondaryActorDifficulty * 6 + g_StageVariant) * 8);
+    if (g_SecondaryActorScore > *best)
+        *best = g_SecondaryActorScore;
+}
+}
+
 void __stdcall UpdatePauseContinueMenu(PauseContinueMenuView *owner)
 {
     PauseMenuView *self = &owner->pause;
@@ -99,39 +111,11 @@ void __stdcall UpdatePauseContinueMenu(PauseContinueMenuView *owner)
     {
         if (self->time.current < 10) break;
         CommitPauseMenuScore();
-        unsigned int practiceResult;
-        unsigned int normalResult;
-        unsigned int *resultSlot;
         if (g_StageResourceFlags & 0x10)
-        {
-            __asm
-            {
-                mov eax, dword ptr [g_MeshEffectSelection0]
-                mov edx, dword ptr [g_MeshEffectSelection1]
-                lea ecx, [edx + eax * 2]
-                add ecx, eax
-                imul ecx, ecx, 68D4h
-                add ecx, dword ptr [g_SecondaryGameplayStatistics]
-                mov eax, dword ptr [g_SecondaryActorDifficulty]
-                lea edx, [eax + eax * 2]
-                mov eax, dword ptr [g_StageVariant]
-                lea edx, [eax + edx * 2]
-                lea eax, [ecx + edx * 8 + 5A4h]
-                mov ecx, dword ptr [g_SecondaryActorScore]
-                cmp ecx, dword ptr [eax]
-                jle practice_score_done
-                mov dword ptr [eax], ecx
-            practice_score_done:
-                lea esi, practiceResult
-            }
-        }
+            RecordPracticeBestScore();
         else
         {
-            __asm
-            {
-                mov esi, ebx
-                call PreparePauseContinueRecords
-            }
+            PreparePauseContinueRecords(self);
             SetStageTimer(&self->time, 0);
             if (!self->unknown1f8)
             {
@@ -139,20 +123,8 @@ void __stdcall UpdatePauseContinueMenu(PauseContinueMenuView *owner)
                 HideMenuAnimationTree(self->root);
                 return;
             }
-            __asm
-            {
-                lea esi, normalResult
-            }
         }
-        __asm
-        {
-            mov eax, dword ptr [ebx + 2DCh]
-            push 62h
-            push eax
-            call CreateDefaultSecondaryDrawAnimationVmId
-            mov resultSlot, eax
-        }
-        self->root.value = *resultSlot;
+        self->root = CreateDefaultSecondaryDrawAnimationVmId(owner->file, 0x62);
         self->state = 14;
         self->selection.count = 4;
         self->selection.wrapEnabled = 1;
@@ -261,7 +233,7 @@ void __stdcall UpdatePauseContinueMenu(PauseContinueMenuView *owner)
                 if (replay)
                 {
                     replay->~TitleMenuRecordView();
-                    FreeHeapBlock(replay);
+                    ::operator delete(replay);
                 }
                 self->replays[i] = 0;
             }
@@ -312,7 +284,7 @@ void __stdcall UpdatePauseContinueMenu(PauseContinueMenuView *owner)
                 {
                     QueueMeshEffectSound(44);
                     sprintf(filename, "th11_%.2d.rpy", self->selection.current + 1);
-                    DeletePauseMenuReplayRecord(self->replays[self->selection.current]);
+                    DeletePauseMenuReplay(self->replays[self->selection.current]);
                     WritePauseMenuReplay(filename, self->name, 0);
                     int slot = self->selection.current;
                     self->replays[slot] = CreateReplayPlayback(filename);

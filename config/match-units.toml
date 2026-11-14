@@ -7566,11 +7566,11 @@ linkages = [
 [units.delete-pause-menu-replay]
 artifact_kind = "coff"
 source = "src/PauseMenuSupport.cpp"
-inputs = ["src/PauseMenu.hpp", "src/ReplayAllocator.hpp", "src/TitleMenuRecord.hpp", "src/SoundQueue.hpp", "src/VmBindings.hpp"]
+inputs = ["src/PauseMenu.hpp", "src/TitleMenuRecord.hpp", "src/SoundQueue.hpp", "src/VmBindings.hpp"]
 object = "build/match/PauseMenuSupportDeleteReplay.obj"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc"]
 functions = ["DeletePauseMenuReplay"]
-symbol = "?DeletePauseMenuReplay@@YGXXZ"
+symbol = "?DeletePauseMenuReplay@@YGXPAUTitleMenuRecordView@@@Z"
 target_address = 0x00435FC0
 size = 18
 relocations = [
@@ -7578,23 +7578,6 @@ relocations = [
   { offset = 12, type = "REL32", symbol = "_FreeHeapBlock", target = 0x0045FD49 },
 ]
 
-# 11-byte hotpatchable CRT free wrapper, retained as a named source thunk.
-[units.free-heap-block]
-artifact_kind = "coff"
-source = "src/PauseMenuSupport.cpp"
-inputs = ["src/PauseMenu.hpp", "src/ReplayAllocator.hpp", "src/TitleMenuRecord.hpp", "src/SoundQueue.hpp", "src/VmBindings.hpp"]
-object = "build/match/FreeHeapBlock.obj"
-profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc"]
-functions = ["FreeHeapBlock"]
-symbol = "_FreeHeapBlock"
-target_address = 0x0045FD49
-size = 11
-relocations = [
-  { offset = 7, type = "REL32", symbol = "_free", target = 0x0045FC3B },
-]
-
-# Complete 110-byte fixed-point position publication. The two absolute fields
-# are the original controller singleton and the shared 1/128 double constant.
 [units.secondary-integer-player-position]
 artifact_kind = "linked-pe"
 source = "src/SecondaryIntegerPlayerPosition.cpp"
@@ -7735,7 +7718,6 @@ inputs = [
   "src/PerspectiveCamera.hpp",
   "src/Random.hpp",
   "src/RenderBatch.hpp",
-  "src/ReplayAllocator.hpp",
   "src/ReplayHeaderStorageInitialization.hpp",
   "src/ReplayRecordStageLink.hpp",
   "src/SecondaryActor.hpp",
@@ -7930,7 +7912,6 @@ inputs = [
   "src/PerspectiveCamera.hpp",
   "src/Random.hpp",
   "src/RenderBatch.hpp",
-  "src/ReplayAllocator.hpp",
   "src/ReplayRecordStageLink.hpp",
   "src/SecondaryActor.hpp",
   "src/SecondaryActorInstructionAnimation.hpp",

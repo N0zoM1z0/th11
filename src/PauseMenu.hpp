@@ -2,7 +2,6 @@
 #include "MenuController.hpp"
 #include "SecondaryDialogue.hpp"
 #include "TitleMenuRecord.hpp"
-#include "ReplayAllocator.hpp"
 
 // Observed pause-menu storage; neither the original class nor its full size is known.
 struct PauseMenuView
@@ -33,16 +32,8 @@ typedef char PauseMenuSavedScaleOffset[(offsetof(PauseMenuView, savedTimeScale) 
 void __stdcall UpdatePauseMenu(PauseMenuView *self);
 void __stdcall ResumePauseMenu(PauseMenuView *self);
 void __stdcall SignalPauseMenuChild(const AnimationVmId &id);
-// Native 435FC0 receives its record in ESI and has no stack arguments.
-void __stdcall DeletePauseMenuReplay();
-__forceinline void DeletePauseMenuReplayRecord(TitleMenuRecordView *record)
-{
-    __asm
-    {
-        mov esi, record
-        call DeletePauseMenuReplay
-    }
-}
+// 435FC0; LTCG passes the record in ESI.
+void __stdcall DeletePauseMenuReplay(TitleMenuRecordView *record);
 
 // Reviewed source-open replay writer at 436420; return value is not consumed here.
 int __fastcall WritePauseMenuReplay(const char *filename, const char *name, int mode);

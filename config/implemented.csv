@@ -293,7 +293,6 @@ FormatCenteredTextureText
 FormatRightAlignedTextureText
 FormatTextureText
 FreeAnimationDocumentSlot
-FreeHeapBlock
 GatherXorBlocks
 GetFrameClockSeconds
 GetPbgArchivedResourceSize

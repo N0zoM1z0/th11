@@ -288,7 +288,7 @@ void __stdcall UpdatePauseMenu(PauseMenuView *self)
             SignalChoice(self, 7);
             for (int i = 0; i < 25; ++i)
             {
-                DeletePauseMenuReplayRecord(self->replays[i]);
+                DeletePauseMenuReplay(self->replays[i]);
                 self->replays[i] = 0;
             }
             self->state = 4;
@@ -348,7 +348,7 @@ void __stdcall UpdatePauseMenu(PauseMenuView *self)
             {
                 QueueMeshEffectSound(44);
                 sprintf(filename, "th11_%.2d.rpy", self->selection.current + 1);
-                DeletePauseMenuReplayRecord(self->replays[self->selection.current]);
+                DeletePauseMenuReplay(self->replays[self->selection.current]);
                 WritePauseMenuReplay(filename, self->name, 1);
                 int slot = self->selection.current;
                 self->replays[slot] = CreateReplayPlayback(filename);

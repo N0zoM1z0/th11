@@ -1,9 +1,9 @@
 #include "PauseMenu.hpp"
 #include "SoundQueue.hpp"
 #include "VmBindings.hpp"
+#include "TitleMenuRecord.hpp"
+#include <new>
 
-extern "C" void __cdecl DestroyTitleRecordStorage(TitleMenuRecordView *record);
-#pragma comment(linker, "/alternatename:_DestroyTitleRecordStorage=??1TitleMenuRecordView@@QAE@XZ")
 
 void __stdcall ResumePauseMenu(PauseMenuView *self)
 {
@@ -29,31 +29,8 @@ void __stdcall SignalPauseMenuChild(const AnimationVmId &id)
     }
 }
 
-__declspec(naked) void __stdcall DeletePauseMenuReplay()
+// 00435FC0.
+void __stdcall DeletePauseMenuReplay(TitleMenuRecordView *record)
 {
-    __asm
-    {
-        test esi, esi
-        jz replay_delete_done
-        push esi
-        call DestroyTitleRecordStorage
-        push esi
-        call FreeHeapBlock
-        pop ecx
-    replay_delete_done:
-        ret
-    }
-}
-
-
-extern "C" __declspec(naked) void __cdecl FreeHeapBlock(void *record)
-{
-    __asm
-    {
-        mov edi, edi
-        push ebp
-        mov ebp, esp
-        pop ebp
-        jmp free
-    }
+    delete record;
 }
