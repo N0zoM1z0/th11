@@ -4,6 +4,7 @@
 #include "SecondaryActorRuntime.hpp"
 #include "ChainRegistration.hpp"
 #include "ErrorLog.hpp"
+#include "TitleMenuRecord.hpp"
 #include <new>
 #include <process.h>
 #include <stdlib.h>
@@ -179,7 +180,7 @@ TitleMenuView::~TitleMenuView()
         TitleMenuRecordView *record = records[i];
         if (record)
         {
-            DestroyTitleMenuRecord(record);
+            record->~TitleMenuRecordView();
             ::operator delete(record);
         }
     }

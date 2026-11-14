@@ -35,5 +35,3 @@ typedef char TitleReplayRecordStagesOffset[(offsetof(TitleMenuRecordView, stages
 typedef char TitleReplayRecordSecondaryOffset[(offsetof(TitleMenuRecordView, secondaryChain) == 0x1d0) ? 1 : -1];
 
 typedef char ReplayRecordStorageSize[(sizeof(TitleMenuRecordView) == 0x2dc) ? 1 : -1];
-
-void __stdcall DestroyTitleMenuRecord(TitleMenuRecordView *record);

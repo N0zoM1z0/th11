@@ -57,6 +57,14 @@ those owners are not evidence of a C++ shape.
   asm writer was stubbed out; with C++ callers it gets native's EBX/EDI. So a
   private register convention can only be reproduced once every caller is C++.
   A probe that tail-calls `F` with its own stack arguments also pins it.
+- LTCG can pass `this` on the stack. The replay record destructor 435C50 is an
+  ordinary out-of-line destructor (`ret 4`, `this` at `[esp+4]`), and callers
+  call it directly rather than through a wrapper.
+- Every native call to `UnregisterChainElement` 457080 sets ECX (element)
+  before EDX (manager), while VC9 here loads EDX first for both `__fastcall` and
+  LTCG-converted `__stdcall` declarations. The same lock/unregister block
+  appears in the Ascii (401210), stage (402740) and replay record (435C50)
+  destructors, so finding that spelling should help all of them.
 
 - VC9 LTCG uses a callee's real register usage only for ordinary functions.
   The out-of-line COMDAT of an `inline` function whose inlining was declined is

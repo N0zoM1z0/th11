@@ -8380,13 +8380,13 @@ linkages = [
 [units.title-menu-record-destructor]
 artifact_kind = "linked-pe"
 source = "src/TitleMenuRecord.cpp"
-inputs = ["src/TitleMenuRecord.hpp", "src/TitleMenuRecordDestructorView.hpp", "src/Chain.hpp", "src/ReplayRecordStageLink.hpp"]
-support_sources = ["probes/title-replay-record-context.cpp", "src/ReplayRecordFactories.cpp", "src/ReplayRecordStageConstructor.cpp", "src/ReplayRecordStageLink.cpp"]
+inputs = ["src/TitleMenuRecord.hpp", "src/Chain.hpp", "src/ReplayRecordStageLink.hpp", "src/MainRuntime.hpp", "src/SecondaryReplayState.hpp"]
+support_sources = ["probes/title-replay-record-context.cpp", "src/ReplayRecordFactories.cpp", "src/ReplayRecordStageConstructor.cpp", "src/ReplayRecordStageLink.cpp", "src/ReplayStageSegmentCleanup.cpp", "src/ChainRemove.cpp"]
 output_dir = "build/match-linked/TitleMenuRecordDestructor"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "TitleReplayRecordProbe@4"
-functions = ["TitleRecordDestructorPrivate"]
-symbol = "_TitleRecordDestructorPrivate@4"
+functions = ["DestroyTitleMenuRecord"]
+symbol = "??1TitleMenuRecordView@@QAE@XZ"
 target_address = 0x00435C50
 size = 429
 linkages = [
