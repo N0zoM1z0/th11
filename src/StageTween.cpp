@@ -154,8 +154,10 @@ CameraVector __stdcall StepStageVectorTween(StageVectorTween *self)
     if (self->mode == 8)
     {
         float progress = self->time.fraction / self->duration;
-        float a, b, c, d;
-        HermiteCoefficients(progress, a, b, c, d);
+        float a = static_cast<float>((2.0 * progress + 1.0) * ((progress - 1.0) * (progress - 1.0)));
+        float b = static_cast<float>((3.0 - 2.0 * progress) * (progress * progress));
+        float c = static_cast<float>((1.0 - progress) * (1.0 - progress) * progress);
+        float d = static_cast<float>((progress - 1.0) * progress * progress);
         return AddTweenVector(AddTweenVector(AddTweenVector(
             ScaleTweenVector(self->initial, a), ScaleTweenVector(self->target, b)),
             ScaleTweenVector(self->control1, c)), ScaleTweenVector(self->control2, d));

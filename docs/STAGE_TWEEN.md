@@ -7,7 +7,7 @@ without embedded tables or external interior references.
 
 | Function | Address | Target bytes | Source bytes | State |
 | --- | --- | ---: | ---: | --- |
-| StepStageVectorTween | 00405240 | 883 | 882 | Non-exact |
+| StepStageVectorTween | 00405240 | 883 | 887 | Non-exact (267/280 aligned) |
 | StepStageFogTween | 004055D0 | 737 | 794 | Non-exact |
 | StageVectorTweenFactor | 00405960 | 39 | 39 | Exact linked unit |
 | StageFogTweenFactor | 00405990 | 45 | 45 | Exact linked unit |
@@ -140,7 +140,11 @@ Nested inline timer helpers, a default constructor, channel loops and
 statement rewrites did not change this. A six-float constructor used by the
 operators changes their bodies (temporary spills) and is wrong.
 
-Vector stepping is 882/883 bytes. Remaining gaps: mode 7 stores the output
+Vector stepping: with explicit float weight locals in mode 8 (the form that
+matches the animation int-vector step) instead of the reference-output helper,
+the candidate is 887/883 bytes with 267/280 instructions aligned (previously
+234). Commuting operands inside the add helper or building `result`
+member-wise changes nothing. Remaining gaps: mode 7 stores the output
 before `initial` (native looks like NRVO into the hidden result), and mode 8
 evaluates all four coefficients before scaling, as D3DX-style inline vector
 operators would. The next step is a small `CameraVector`-local helper type with
