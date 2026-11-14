@@ -327,3 +327,24 @@ header changed, the two directly affected old units (buffer487/reclaim273)
 were also cold-replayed, retaining760 bytes and29 fields. The17-unit selection
 contains only15 new and these two affected old owners. No full cohort or broad
 behavior suite was run; Oracle/build infrastructure is unchanged.
+
+## 2026-11-14: shared tween template corrections
+
+The four animation step functions (44E4B0, 44E7C0, 44E910, 44EBD0) follow the
+same template as the stage tweens (see [STAGE_TWEEN](STAGE_TWEEN.md)). Two
+findings from the stage fog step carry over:
+
+- There is no `duration` local. Reading `self->duration` at each use
+  reproduces native's reload into ECX and the extra stack store for the inlined
+  timer reset.
+- Hermite weights use the float progress directly with `2.0 * progress`. The
+  float pair and scalar steps use `a = (2p+1)*((p-1)*(p-1))` and
+  `b = (3-2p)*(p*p)`; the int-vector step instead matches
+  `a = (p-1)*(p-1)*(2p+1)` and `b = p*p*(3-2p)`, so the operand order is not
+  uniform across instantiations.
+
+Current family measurements: int vector 768/768 bytes (254/274 instructions
+aligned; final-add register scheduling remains), float pair 673/673 (217/221;
+one mode-8 scaling schedule), int scalar 321/332, float scalar 324/331. None
+is exact yet. The scalar setter 44ED70 is an uncalled dead copy with the
+EAX-this/ECX-value convention; it needs its real inlined use in this TU.

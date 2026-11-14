@@ -27,12 +27,11 @@ __forceinline void SetTweenTimer(StageTimerView *self, int frame)
 struct HermiteWeights { float a, b, c, d; };
 __forceinline HermiteWeights Hermite(float progress)
 {
-    double t = progress;
     HermiteWeights result = {
-        static_cast<float>((t - 1.0) * (t - 1.0) * (t + t + 1.0)),
-        static_cast<float>(t * t * (3.0 - (t + t))),
-        static_cast<float>((1.0 - t) * (1.0 - t) * t),
-        static_cast<float>((t - 1.0) * t * t)};
+        static_cast<float>((2.0 * progress + 1.0) * ((progress - 1.0) * (progress - 1.0))),
+        static_cast<float>((3.0 - 2.0 * progress) * (progress * progress)),
+        static_cast<float>((1.0 - progress) * (1.0 - progress) * progress),
+        static_cast<float>((progress - 1.0) * progress * progress)};
     return result;
 }
 __forceinline AnimationIntVector Add(const AnimationIntVector &left, const AnimationIntVector &right)
@@ -70,12 +69,10 @@ __forceinline AnimationFloatPair Scale(const AnimationFloatPair &value, float sc
 
 AnimationIntVector __stdcall StepAnimationIntVectorTween(AnimationIntVectorTween *self)
 {
-    int duration = self->duration;
-    if (duration > 0)
+    if (self->duration > 0)
     {
         AdvanceStageTimer(&self->time);
-        duration = self->duration;
-        if (self->time.current >= duration)
+        if (self->time.current >= self->duration)
         {
             SetTweenTimer(&self->time, self->duration);
             self->duration = 0;
@@ -100,12 +97,11 @@ AnimationIntVector __stdcall StepAnimationIntVectorTween(AnimationIntVectorTween
     }
     if (self->mode == 8)
     {
-        float progress = self->time.fraction / duration;
-        double t = progress;
-        float a = static_cast<float>((t - 1.0) * (t - 1.0) * (t + t + 1.0));
-        float b = static_cast<float>(t * t * (3.0 - (t + t)));
-        float c = static_cast<float>((1.0 - t) * (1.0 - t) * t);
-        float d = static_cast<float>((t - 1.0) * t * t);
+        float progress = self->time.fraction / self->duration;
+        float a = static_cast<float>((progress - 1.0) * (progress - 1.0) * (2.0 * progress + 1.0));
+        float b = static_cast<float>(progress * progress * (3.0 - 2.0 * progress));
+        float c = static_cast<float>((1.0 - progress) * (1.0 - progress) * progress);
+        float d = static_cast<float>((progress - 1.0) * progress * progress);
         return Add(Add(Add(Scale(self->initial, a), Scale(self->target, b)),
             Scale(self->control1, c)), Scale(self->control2, d));
     }
@@ -115,12 +111,10 @@ AnimationIntVector __stdcall StepAnimationIntVectorTween(AnimationIntVectorTween
 
 int __stdcall StepAnimationIntScalarTween(AnimationIntScalarTween *self)
 {
-    int duration = self->duration;
-    if (duration > 0)
+    if (self->duration > 0)
     {
         AdvanceStageTimer(&self->time);
-        duration = self->duration;
-        if (self->time.current >= duration)
+        if (self->time.current >= self->duration)
         {
             SetTweenTimer(&self->time, self->duration);
             self->duration = 0;
@@ -138,7 +132,7 @@ int __stdcall StepAnimationIntScalarTween(AnimationIntScalarTween *self)
     }
     if (self->mode == 8)
     {
-        HermiteWeights weights = Hermite(self->time.fraction / duration);
+        HermiteWeights weights = Hermite(self->time.fraction / self->duration);
         return static_cast<int>(weights.a * self->initial + weights.b * self->target +
             weights.c * self->control1 + weights.d * self->control2);
     }
@@ -149,12 +143,10 @@ int __stdcall StepAnimationIntScalarTween(AnimationIntScalarTween *self)
 
 AnimationFloatPair __stdcall StepAnimationFloatPairTween(AnimationFloatPairTween *self)
 {
-    int duration = self->duration;
-    if (duration > 0)
+    if (self->duration > 0)
     {
         AdvanceStageTimer(&self->time);
-        duration = self->duration;
-        if (self->time.current >= duration)
+        if (self->time.current >= self->duration)
         {
             SetTweenTimer(&self->time, self->duration);
             self->duration = 0;
@@ -177,12 +169,11 @@ AnimationFloatPair __stdcall StepAnimationFloatPairTween(AnimationFloatPairTween
     }
     if (self->mode == 8)
     {
-        float progress = self->time.fraction / duration;
-        double t = progress;
-        float a = static_cast<float>((t - 1.0) * (t - 1.0) * (t + t + 1.0));
-        float b = static_cast<float>(t * t * (3.0 - (t + t)));
-        float c = static_cast<float>((1.0 - t) * (1.0 - t) * t);
-        float d = static_cast<float>((t - 1.0) * t * t);
+        float progress = self->time.fraction / self->duration;
+        float a = static_cast<float>((2.0 * progress + 1.0) * ((progress - 1.0) * (progress - 1.0)));
+        float b = static_cast<float>((3.0 - 2.0 * progress) * (progress * progress));
+        float c = static_cast<float>((1.0 - progress) * (1.0 - progress) * progress);
+        float d = static_cast<float>((progress - 1.0) * progress * progress);
         AnimationFloatPair result = Add(Add(Add(Scale(self->initial, a), Scale(self->target, b)),
             Scale(self->control1, c)), Scale(self->control2, d));
         return result;
@@ -194,12 +185,10 @@ AnimationFloatPair __stdcall StepAnimationFloatPairTween(AnimationFloatPairTween
 
 float __stdcall StepAnimationFloatScalarTween(AnimationFloatScalarTween *self)
 {
-    int duration = self->duration;
-    if (duration > 0)
+    if (self->duration > 0)
     {
         AdvanceStageTimer(&self->time);
-        duration = self->duration;
-        if (self->time.current >= duration)
+        if (self->time.current >= self->duration)
         {
             SetTweenTimer(&self->time, self->duration);
             self->duration = 0;
@@ -217,7 +206,7 @@ float __stdcall StepAnimationFloatScalarTween(AnimationFloatScalarTween *self)
     }
     if (self->mode == 8)
     {
-        HermiteWeights weights = Hermite(self->time.fraction / duration);
+        HermiteWeights weights = Hermite(self->time.fraction / self->duration);
         return static_cast<float>(weights.a * self->initial + weights.b * self->target +
             weights.c * self->control1 + weights.d * self->control2);
     }
