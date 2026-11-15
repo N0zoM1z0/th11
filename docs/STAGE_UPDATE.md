@@ -21,9 +21,13 @@ selected object-walker context, the candidate is1710 bytes versus1677 native
 bytes, with320/443 target instructions aligned by the diagnostic comparator.
 The two wave phase locals are copied with `memcpy` so VC9 preserves their raw
 float bit patterns through the native integer-register loads instead of
-introducing x87 load/store round trips. This is a four-instruction-alignment
-improvement over the previous316/443 candidate; it does not close the private
-EAX-entry mismatch or grant exactness. `UpdateStageObjects` inherits the stage
+introducing x87 load/store round trips, improving the earlier316/443 result to
+320/443. A follow-up source-only experiment hoisted the column counter and
+removed the row register hint; an A/B build produced the identical 1,710-byte
+function hash (`418b3eb1…`) and the same320/443 alignment, so that neutral form
+was discarded rather than counted as progress. The remaining differences do
+not close the private EAX-entry mismatch or grant exactness.
+`UpdateStageObjects` inherits the stage
 in EBX, returns zero in EAX and uses
 RET. Its naked VC9 body retains the original EBP frame, stack layout, signed
 primitive walk and VM call boundary; its one REL32 to `ExecuteAnimationVm` is
@@ -134,7 +138,7 @@ The exact `update-stage-objects` context builds `StageUpdate.cpp` as the primary
 VC9 RTM `/O2 /Oy- /Ob1 /Gy /MT /EHsc /GL` contribution. It proves the complete
 153-byte object-walker owner with one reviewed REL32 call to
 `ExecuteAnimationVm`. The same linked image also contains the diagnostic
-`UpdateStage` contribution at1710 bytes (native1677; 316/443 instructions
+`UpdateStage` contribution at1710 bytes (native1677; 320/443 instructions
 aligned). Keep this measurement in the selected context: an isolated frontier
 root set changes LTCG output and is not a comparable candidate. The exact
 `stage-update-callback` context separately proves the seven-byte ECX-to-EAX
