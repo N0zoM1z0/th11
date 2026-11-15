@@ -5,7 +5,7 @@ The joystick page has three owners, all natural C++:
 | Owner | Address | Bytes | State |
 | --- | --- | ---: | --- |
 | `UpdateMenuPage04` | 43B9D0 | 908 (885 code, 3 alignment, 20-byte table) | Not exact |
-| `ApplyMenuJoystickBindings` | 43BD60 | 2439 | Strict linked match (`apply-menu-joystick-bindings`); cold replay pending |
+| `ApplyMenuJoystickBindings` | 43BD60 | 2439 | Exact (`apply-menu-joystick-bindings`) |
 | `AssignMenuJoystickButton` | 43C6F0 | 200 | Not exact |
 
 ## Boundaries
@@ -72,5 +72,5 @@ the canonical audio graph.
 
 ## Open work
 
-- Page 43B9D0 and assignment 43C6F0 have not been measured in the wide
-  context; try them there next.
+- In the wide context the page is 880/908 bytes (98/225 instructions aligned)
+  and the assignment helper 195/200 bytes (30/48).
