@@ -98,19 +98,18 @@ __declspec(naked) int __stdcall UpdateStageObjects(void)
     }
 }
 
-int __stdcall UpdateStage()
+int __fastcall UpdateStage(StageResourceView *self)
 {
-    register StageResourceView *self;
-    __asm
-    {
-        mov ebx, eax
-        mov self, ebx
-    }
-    if ((self->flags2ff0 & 8) ||
-        ((self->flags2ff0 & 4) && self->timer2ff4.current >= 60))
+    if (self->flags2ff0 & 8)
         return 1;
+    if (self->flags2ff0 & 4)
+    {
+        if (self->timer2ff4.current >= 60)
+            return 1;
+    }
 
-    self->camera.view.offsetX = self->camera.view.offsetY = 0.0f;
+    *reinterpret_cast<volatile float *>(&self->camera.view.offsetX) = 0.0f;
+    *reinterpret_cast<volatile float *>(&self->camera.view.offsetY) = 0.0f;
     CameraVector displacement = {0.0f, 0.0f, 0.0f};
     self->camera.updateOffset = displacement;
     D3DXVec3Normalize(reinterpret_cast<CameraVector *>(self->camera.view.unknown024),
@@ -143,8 +142,8 @@ int __stdcall UpdateStage()
         if (self->distortionMode == 1)
         {
             ResetStageMesh(StageMesh(self), -192.0f, 0.0f, 384.0f, 448.0f);
-            RenderVertex *vertex = StageMesh(self)->vertices;
-            for (int row = 0; row < StageMesh(self)->rows; ++row)
+            register RenderVertex *vertex = StageMesh(self)->vertices;
+            for (register int row = 0; row < StageMesh(self)->rows; ++row)
             {
                 if (StageMesh(self)->columns > 0)
                 {
@@ -176,8 +175,8 @@ int __stdcall UpdateStage()
                 self->radius = static_cast<float>(self->radius - 2.0);
             float diameter = static_cast<float>(radius * 2.0);
             ResetStageMesh(StageMesh(self), -radius, static_cast<float>(224.0 - radius), diameter, diameter);
-            RenderVertex *vertex = StageMesh(self)->vertices;
-            for (int row = 0; row < StageMesh(self)->rows; ++row)
+            register RenderVertex *vertex = StageMesh(self)->vertices;
+            for (register int row = 0; row < StageMesh(self)->rows; ++row)
             {
                 double radiusSquared = radius * radius;
                 for (int column = 0; column < StageMesh(self)->columns; ++column, ++position, ++vertex)

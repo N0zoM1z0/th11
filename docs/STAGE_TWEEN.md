@@ -7,7 +7,7 @@ without embedded tables or external interior references.
 
 | Function | Address | Target bytes | Source bytes | State |
 | --- | --- | ---: | ---: | --- |
-| StepStageVectorTween | 00405240 | 883 | 887 | Non-exact (267/280 aligned) |
+| StepStageVectorTween | 00405240 | 883 | 887 | Non-exact (270/280 aligned) |
 | StepStageFogTween | 004055D0 | 737 | 737 | Exact in the wide secondary link (`step-stage-fog-tween`) |
 | StageVectorTweenFactor | 00405960 | 39 | 39 | Exact linked unit |
 | StageFogTweenFactor | 00405990 | 45 | 45 | Exact linked unit |
@@ -147,14 +147,13 @@ operators changes their bodies (temporary spills) and is wrong.
 
 Vector stepping: with explicit float weight locals in mode 8 (the form that
 matches the animation int-vector step) instead of the reference-output helper,
-the candidate is 887/883 bytes with 267/280 instructions aligned (previously
-234). Commuting operands inside the add helper or building `result`
-member-wise changes nothing. Remaining gaps: mode 7 stores the output
-before `initial` (native looks like NRVO into the hidden result), and mode 8
-evaluates all four coefficients before scaling, as D3DX-style inline vector
-operators would. The next step is a small `CameraVector`-local helper type with
-inline D3DX-style operators for this TU, without changing the shared
-aggregate.
+the candidate is 887/883 bytes with 270/280 instructions aligned (previously
+266). Reversing the commutative mode-7 add operands to `target + previous`
+brings that whole block into alignment without changing the vector result.
+Remaining differences are concentrated in mode17's returned/updated vectors,
+mode8's x87 coefficient and scale scheduling, and the final interpolation
+fallback. The next step is to close those remaining expression/temporary
+boundaries without changing the shared `CameraVector` aggregate.
 
 AdvanceStageTimer keeps its earlier eight-byte INC/LEA difference.
 

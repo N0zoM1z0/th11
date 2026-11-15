@@ -165,7 +165,7 @@ StageResourceView *__stdcall CreateStageResource(const char *filename);
 int __fastcall StageUpdateCallback(void *context);
 int __fastcall StageDrawCallback(void *context);
 int __fastcall StageOverlayCallback(void *context);
-int __stdcall UpdateStage();
+int __fastcall UpdateStage(StageResourceView *self);
 int __stdcall DrawStage(StageResourceView *self);
 int __stdcall DrawStageOverlay(StageResourceView *self);
 void __stdcall DestroyAnimationDocument(AnimationDocumentView *file);

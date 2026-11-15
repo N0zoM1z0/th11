@@ -138,8 +138,7 @@ CameraVector __stdcall StepStageVectorTween(StageVectorTween *self)
     if (self->mode == 7)
     {
         CameraVector previous = self->initial;
-        CameraVector result = {previous.x + self->target.x,
-            previous.y + self->target.y, previous.z + self->target.z};
+        CameraVector result = AddTweenVector(self->target, previous);
         self->initial = result;
         return result;
     }

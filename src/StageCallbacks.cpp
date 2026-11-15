@@ -1,9 +1,12 @@
 #include "StageResource.hpp"
 
-int __fastcall StageUpdateCallback(void *context)
+__declspec(naked) int __fastcall StageUpdateCallback(void *context)
 {
-    __asm mov eax, ecx
-    return UpdateStage();
+    __asm
+    {
+        mov eax, ecx
+        jmp UpdateStage
+    }
 }
 
 int __fastcall StageDrawCallback(void *context)

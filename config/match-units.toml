@@ -9368,7 +9368,7 @@ symbol = "?StageUpdateCallback@@YIHPAX@Z"
 target_address = 0x403900
 size = 7
 linkages = [
-  { offset = 3, type = "REL32", symbol = "?UpdateStage@@YGHXZ", target = 0x402AA0 },
+  { offset = 3, type = "REL32", symbol = "?UpdateStage@@YIHPAUStageResourceView@@@Z", target = 0x402AA0 },
 ]
 
 # Exact private-EBX object traversal leaf in the primary StageUpdate TU.
@@ -9378,7 +9378,7 @@ source = "src/StageUpdate.cpp"
 inputs = ["src/StageUpdate.hpp", "src/StageResource.hpp", "src/AnimationVm.hpp", "src/Camera.hpp", "src/Random.hpp", "src/MainRuntime.hpp", "src/AngleMath.hpp"]
 support_sources = ["probes/stage-update-context.cpp"]
 output_dir = "build/match-linked/StageUpdateObjects"
-profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+profile = ["/TP", "/O2", "/Oy-", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "StageUpdateProbe@0"
 functions = ["UpdateStageObjects"]
 symbol = "?UpdateStageObjects@@YGHXZ"
@@ -9387,3 +9387,20 @@ size = 153
 linkages = [
   { offset = 0x52, type = "REL32", symbol = "?ExecuteAnimationVm@@YGHPAUAnimationVmView@@@Z", target = 0x0044B4B0 },
 ]
+
+
+# Large StageUpdate boss frontier, built in the same primary TU as the exact object walker.
+[units.update-stage]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/StageUpdate.cpp"
+inputs = ["src/StageUpdate.hpp", "src/StageResource.hpp", "src/AnimationVm.hpp", "src/Camera.hpp", "src/Random.hpp", "src/MainRuntime.hpp", "src/AngleMath.hpp"]
+support_sources = ["probes/stage-update-context.cpp"]
+output_dir = "build/match-linked/UpdateStage"
+profile = ["/TP", "/O2", "/Oy-", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageUpdateProbe@0"
+functions = ["UpdateStage"]
+symbol = "?UpdateStage@@YIHPAUStageResourceView@@@Z"
+target_address = 0x00402AA0
+size = 1677
+linkages = []

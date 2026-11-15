@@ -6,19 +6,25 @@ text section and checked the full owners, branches, callers and neighbors.
 
 | Function | Reviewed target owner | Current primary contribution | State |
 | --- | ---: | ---: | --- |
-| UpdateStage,0x00402AA0 | 1,677 bytes through0x0040312C | 1,823 bytes | Non-exact; large-body codegen open |
+| UpdateStage,0x00402AA0 | 1,677 bytes through0x0040312C | 1,710 bytes | Non-exact; 33-byte codegen gap |
 | UpdateStageObjects,0x004040F0 | 153 bytes through0x00404188 | 153 bytes | canonical linked-PE exact |
 
 Both bodies are contiguous and include internal alignment. Neither contains
-tables or has external interior references. `UpdateStage` receives the stage in
-EAX and returns status in EAX with RET. Its seven-byte callback at403900 moves
-ECX to EAX and tail-jumps into that private entry; the callback is now a
-canonical exact unit. `UpdateStageObjects` inherits the stage in EBX, returns
-zero in EAX and uses RET. Its naked VC9 body retains the original EBP frame,
-stack layout, signed primitive walk and VM call boundary; its one REL32 to
-`ExecuteAnimationVm` is independently replayed. The two exact units prove the
-leaf and callback without claiming that the 1,677-byte `UpdateStage` body is
-finished. Original TU ownership remains unknown; origin is authored game logic.
+tables or has external interior references. The native `UpdateStage` entry
+receives the stage in EAX and returns status in EAX with RET. Its seven-byte
+callback at403900 moves ECX to EAX and tail-jumps into that entry; the callback
+is a canonical exact unit. The current C++ candidate declares `UpdateStage`
+`__fastcall`, consuming the still-preserved ECX value instead of the native
+EAX value. The callback remains semantically compatible because both registers
+hold the same context, but the callee's entry ABI is not byte-exact. In the
+selected object-walker context, the candidate is1710 bytes versus1677 native
+bytes, with316/443 target instructions aligned by the diagnostic comparator.
+`UpdateStageObjects` inherits the stage in EBX, returns zero in EAX and uses
+RET. Its naked VC9 body retains the original EBP frame, stack layout, signed
+primitive walk and VM call boundary; its one REL32 to `ExecuteAnimationVm` is
+independently replayed. These exact leaf/adapter proofs do not imply that the
+1,677-byte `UpdateStage` boss is finished. Original TU ownership remains
+unknown; origin is authored game logic.
 
 ## Update order
 
@@ -110,11 +116,14 @@ indices/strides and null payloads are not sanitized.
 ## Code generation and remaining work
 
 The exact `update-stage-objects` context builds `StageUpdate.cpp` as the primary
-VC9 RTM `/O2 /Ob1 /Gy /MT /EHsc /GL` contribution. It proves the complete153-byte
-owner with one reviewed REL32 call to `ExecuteAnimationVm`. The exact
+VC9 RTM `/O2 /Oy- /Ob1 /Gy /MT /EHsc /GL` contribution. It proves the complete
+153-byte object-walker owner with one reviewed REL32 call to
+`ExecuteAnimationVm`. The same linked image also contains the diagnostic
+`UpdateStage` contribution at1710 bytes (native1677; 316/443 instructions
+aligned). Keep this measurement in the selected context: an isolated frontier
+root set changes LTCG output and is not a comparable candidate. The exact
 `stage-update-callback` context separately proves the seven-byte ECX-to-EAX
-tail adapter. Both are part of the selected-unit replay lane; no full cold
-replay is needed for these checkpoints. Re-run only these two owners with:
+tail adapter. Re-run only these two exact owners with:
 
 ```bash
 scripts/repo-python scripts/replay-exact-units.py \
@@ -122,14 +131,15 @@ scripts/repo-python scripts/replay-exact-units.py \
   --unit stage-update-callback
 ```
 
-`UpdateStage` now has the correct private EAX entry in source and is called
-through the exact callback, while `UpdateStageObjects` is called without a
-stack argument and inherits EBX. The remaining large-body candidate is1823
-bytes versus the native1677. Its current compiler frame/local-pointer lowering
-and float/register scheduling still differ; the next work is to recover the
-native EBX-held stage throughout the body, then close the float and mesh
-register/stack order. Do not mark `UpdateStage` exact from its corrected ABI
-alone.
+`UpdateStage` is currently a `__fastcall` C++ candidate because this allows
+VC9 `/Oy-` to keep the stage base in EBX through most of the body. Native
+receives EAX; the callback copies ECX to EAX but preserves ECX, so the candidate
+uses that preserved ECX. The remaining 33 bytes are concentrated in the local
+vector/stack layout, the mesh-loop register allocation and the final float
+scheduling. A separate no-argument EAX-local experiment grew to1800 bytes and
+was rejected. The next work is to recover the native EAX-to-EBX entry without
+reintroducing pointer spills, then close the 33-byte mesh/float gap. Do not
+mark `UpdateStage` exact from the callback proof or the improved size alone.
 
 ExecuteStageScript404470 has complete non-exact source and a reviewed2,736-byte
 owner; see [STAGE_SCRIPT.md](STAGE_SCRIPT.md). ResetStageMesh40E6C0 and its
