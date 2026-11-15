@@ -22,18 +22,22 @@ void __stdcall StopMenuAnimation(MenuControllerView *self, int script)
     MenuAnimationId(self, script) = AnimationVmId(0);
 }
 
+namespace
+{
+inline AnimationVmView *FindMenuChild(AnimationVmView *parent, int script)
+{
+    for (AnimationVmNode *node = &parent->drawNode; node; node = node->next)
+        if (static_cast<short>(node->vm->scriptId) == script)
+            return node->vm;
+    return 0;
+}
+}
+
 void __stdcall SignalLockedMenuEntry(MenuControllerView *self, int script)
 {
     AnimationVmView *parent = FindAnimationVmById(g_RenderBatch, self->page.primaryVmId);
     if (!parent) self->page.primaryVmId = AnimationVmId(0);
-    AnimationVmView *child = 0;
-    for (AnimationVmNode *node = &parent->drawNode; node; node = node->next)
-        if (static_cast<short>(node->vm->scriptId) == script)
-        {
-            child = node->vm;
-            break;
-        }
-    reinterpret_cast<SecondaryActorAnimationView *>(child)->event = 0x1d;
+    reinterpret_cast<SecondaryActorAnimationView *>(FindMenuChild(parent, script))->event = 0x1d;
 }
 
 int __cdecl IsMenuExtraUnlocked()

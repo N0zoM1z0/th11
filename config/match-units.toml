@@ -8544,20 +8544,6 @@ linkages = [
   { offset = 64, type = "REL32", symbol = "?InitializeSecondaryHudScreenEffect@@YGXPAUSecondaryHudScreenEffect@@HHHHH@Z", target = 0x00448A90 },
 ]
 
-[units.is-menu-extra-unlocked]
-artifact_kind = "coff"
-source = "src/MenuPrimarySupport.cpp"
-inputs = ["src/MenuPrimary.hpp", "src/AnimationVmFactory.hpp", "src/SecondaryActorRuntime.hpp", "src/VmBindings.hpp"]
-object = "build/match/MenuPrimarySupport.obj"
-profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc"]
-functions = ["IsMenuExtraUnlocked"]
-symbol = "?IsMenuExtraUnlocked@@YAHXZ"
-target_address = 0x00439350
-size = 64
-relocations = [
-  { offset = 1, type = "DIR32", symbol = "?g_SecondaryGameplayStatistics@@3PAEA", target = 0x004A8EBC },
-]
-
 [units.animation-distance-root]
 artifact_kind = "linked-pe"
 source = "src/AnimationProjectedQuad.cpp"
@@ -8832,4 +8818,70 @@ target_address = 0x00417E30
 size = 57
 linkages = [
   { offset = 42, type = "REL32", symbol = "?ReadSecondaryFloatReference@@YGMPAUSecondaryVm@@M@Z", target = 0x0045D670 },
+]
+
+[units.start-menu-animation]
+artifact_kind = "linked-pe"
+source = "src/MenuPrimarySupport.cpp"
+inputs = ["src/MenuPrimary.hpp", "src/MenuController.hpp", "src/AnimationVmFactory.hpp", "src/SecondaryActorRuntime.hpp", "src/VmBindings.hpp"]
+support_sources = ["probes/menu-primary-support-context.cpp", "src/MenuPrimary.cpp", "src/AnimationVmFactory.cpp", "src/RenderBatch.cpp", "src/StageMesh.cpp"]
+output_dir = "build/match-linked/MenuPrimarySupport"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "MenuPrimaryProbe@4"
+functions = ["StartMenuAnimation"]
+symbol = "?StartMenuAnimation@@YGXPAUMenuControllerView@@H@Z"
+target_address = 0x004391A0
+size = 30
+linkages = [
+  { offset = 14, type = "REL32", symbol = "?CreateAnimationVmId@@YG?AUAnimationVmId@@PAUAnimationFileView@@HH@Z", target = 0x00455A00 },
+]
+
+[units.stop-menu-animation]
+artifact_kind = "linked-pe"
+source = "src/MenuPrimarySupport.cpp"
+inputs = ["src/MenuPrimary.hpp", "src/MenuController.hpp", "src/AnimationVmFactory.hpp", "src/SecondaryActorRuntime.hpp", "src/VmBindings.hpp"]
+support_sources = ["probes/menu-primary-support-context.cpp", "src/MenuPrimary.cpp", "src/AnimationVmFactory.cpp", "src/RenderBatch.cpp", "src/StageMesh.cpp"]
+output_dir = "build/match-linked/MenuPrimarySupport"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "MenuPrimaryProbe@4"
+functions = ["StopMenuAnimation"]
+symbol = "?StopMenuAnimation@@YGXPAUMenuControllerView@@H@Z"
+target_address = 0x004391C0
+size = 80
+linkages = [
+  { offset = 9, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x004C3268 },
+  { offset = 15, type = "REL32", symbol = "?FindAnimationVmById@@YGPAUAnimationVmView@@PAURenderBatchView@@UAnimationVmId@@@Z", target = 0x004561E0 },
+]
+
+[units.signal-locked-menu-entry]
+artifact_kind = "linked-pe"
+source = "src/MenuPrimarySupport.cpp"
+inputs = ["src/MenuPrimary.hpp", "src/MenuController.hpp", "src/AnimationVmFactory.hpp", "src/SecondaryActorRuntime.hpp", "src/VmBindings.hpp"]
+support_sources = ["probes/menu-primary-support-context.cpp", "src/MenuPrimary.cpp", "src/AnimationVmFactory.cpp", "src/RenderBatch.cpp", "src/StageMesh.cpp"]
+output_dir = "build/match-linked/MenuPrimarySupport"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "MenuPrimaryProbe@4"
+functions = ["SignalLockedMenuEntry"]
+symbol = "?SignalLockedMenuEntry@@YGXPAUMenuControllerView@@H@Z"
+target_address = 0x00439260
+size = 83
+linkages = [
+  { offset = 8, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x004C3268 },
+  { offset = 14, type = "REL32", symbol = "?FindAnimationVmById@@YGPAUAnimationVmView@@PAURenderBatchView@@UAnimationVmId@@@Z", target = 0x004561E0 },
+]
+
+[units.is-menu-extra-unlocked]
+artifact_kind = "linked-pe"
+source = "src/MenuPrimarySupport.cpp"
+inputs = ["src/MenuPrimary.hpp", "src/MenuController.hpp", "src/AnimationVmFactory.hpp", "src/SecondaryActorRuntime.hpp", "src/VmBindings.hpp"]
+support_sources = ["probes/menu-primary-support-context.cpp", "src/MenuPrimary.cpp", "src/AnimationVmFactory.cpp", "src/RenderBatch.cpp", "src/StageMesh.cpp"]
+output_dir = "build/match-linked/MenuPrimarySupport"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "MenuPrimaryProbe@4"
+functions = ["IsMenuExtraUnlocked"]
+symbol = "?IsMenuExtraUnlocked@@YAHXZ"
+target_address = 0x00439350
+size = 64
+linkages = [
+  { offset = 1, type = "DIR32", symbol = "?g_SecondaryGameplayStatistics@@3PAEA", target = 0x004A8EBC },
 ]

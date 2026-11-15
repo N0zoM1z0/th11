@@ -1,12 +1,7 @@
-#include "MenuPrimary.hpp"
-
-// Compile-only arbitrary inputs preserve the shared helpers' real interfaces.
-extern "C" __declspec(dllexport) int __stdcall MenuPrimarySupportProbe(
-    MenuControllerView *menu, int script, int value,
-    SecondaryDebugSelectionView *selection)
+// Non-runnable link context: the title menu page drives the primary-menu
+// helpers; the stage mesh supplies other live callers of the VM factory.
+#include "../src/MenuController.hpp"
+extern "C" int __stdcall MenuPrimaryProbe(MenuControllerView *self)
 {
-    StartMenuAnimation(menu, script);
-    StopMenuAnimation(menu, script);
-    SignalLockedMenuEntry(menu, script);
-    return SelectMenuItem(value, selection) + IsMenuExtraUnlocked();
+    return UpdateMenuPage01(self);
 }
