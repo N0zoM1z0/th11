@@ -2,7 +2,8 @@
 
 int __fastcall StageUpdateCallback(void *context)
 {
-    return UpdateStage(static_cast<StageResourceView *>(context));
+    __asm mov eax, ecx
+    return UpdateStage();
 }
 
 int __fastcall StageDrawCallback(void *context)

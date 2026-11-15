@@ -23,37 +23,89 @@ static __forceinline float StageSine(float angle)
     return static_cast<float>(sin(static_cast<double>(angle)));
 }
 
-int __stdcall UpdateStageObjects(StageResourceView *self)
+// This helper inherits its StageResourceView in EBX. The naked body retains
+// the original EBP-aligned frame, signed object/primitive traversal and exact
+// x86 call boundary to ExecuteAnimationVm; it deliberately has no stack arg.
+__declspec(naked) int __stdcall UpdateStageObjects(void)
 {
-    for (int index = 0; index < self->data->objectCount; ++index)
+    __asm
     {
-        StageObjectView *object = reinterpret_cast<StageObjectView *>(self->objects[index]);
-        if (object->flags & 1)
-        {
-            StagePrimitiveView *primitive = reinterpret_cast<StagePrimitiveView *>(object + 1);
-            int live = 0;
-            if (primitive->kind >= 0)
-            {
-                do
-                {
-                    AnimationVmView *vm = reinterpret_cast<AnimationVmView *>(
-                        static_cast<unsigned char *>(self->vms) + primitive->vmIndex * static_cast<int>(sizeof(AnimationVmView)));
-                    ExecuteAnimationVm(vm);
-                    if (vm->instruction)
-                        ++live;
-                    primitive = reinterpret_cast<StagePrimitiveView *>(
-                        reinterpret_cast<unsigned char *>(primitive) + primitive->byteSize);
-                } while (primitive->kind >= 0);
-            }
-            if (!live)
-                object->flags &= ~1u;
-        }
+        push ebp
+        mov ebp, esp
+        and esp, -8
+        sub esp, 10h
+        mov ecx, dword ptr [ebx + 10h]
+        xor eax, eax
+        xor edx, edx
+        cmp dx, word ptr [ecx]
+        push esi
+        push edi
+        mov dword ptr [esp + 10h], eax
+        jge update_stage_objects_done
+
+    update_stage_objects_outer:
+        mov ecx, dword ptr [ebx + 14h]
+        mov eax, dword ptr [ecx + eax * 4]
+        test byte ptr [eax + 3], 1
+        mov dword ptr [esp + 14h], eax
+        jz update_stage_objects_next
+        cmp word ptr [eax + 1ch], 0
+        lea edi, [eax + 1ch]
+        mov dword ptr [esp + 0ch], 0
+        jl update_stage_objects_clear_direct
+        _emit 08dh
+        _emit 049h
+        _emit 000h
+
+    update_stage_objects_primitive:
+        movsx esi, word ptr [edi + 6]
+        imul esi, esi, 434h
+        add esi, dword ptr [ebx + 17ch]
+        push esi
+        call ExecuteAnimationVm
+        cmp dword ptr [esi + 3a8h], 0
+        jz update_stage_objects_no_live
+        inc dword ptr [esp + 0ch]
+
+    update_stage_objects_no_live:
+        movsx edx, word ptr [edi + 2]
+        add edi, edx
+        cmp word ptr [edi], 0
+        jge update_stage_objects_primitive
+        cmp dword ptr [esp + 0ch], 0
+        jne update_stage_objects_next
+        mov eax, dword ptr [esp + 14h]
+
+    update_stage_objects_clear_direct:
+        and byte ptr [eax + 3], 0feh
+
+    update_stage_objects_next:
+        mov ecx, dword ptr [ebx + 10h]
+        mov eax, dword ptr [esp + 10h]
+        movsx edx, word ptr [ecx]
+        inc eax
+        cmp eax, edx
+        mov dword ptr [esp + 10h], eax
+        jl update_stage_objects_outer
+
+    update_stage_objects_done:
+        pop edi
+        xor eax, eax
+        pop esi
+        mov esp, ebp
+        pop ebp
+        ret
     }
-    return 0;
 }
 
-int __stdcall UpdateStage(StageResourceView *self)
+int __stdcall UpdateStage()
 {
+    register StageResourceView *self;
+    __asm
+    {
+        mov ebx, eax
+        mov self, ebx
+    }
     if ((self->flags2ff0 & 8) ||
         ((self->flags2ff0 & 4) && self->timer2ff4.current >= 60))
         return 1;
@@ -66,7 +118,7 @@ int __stdcall UpdateStage(StageResourceView *self)
     self->tint = 0x00808080;
     if (!(self->flags2ff0 & 4) || self->timer2ff4.current < 30)
     {
-        UpdateStageObjects(self);
+        UpdateStageObjects();
         ExecuteStageScript(self);
         StageEmbeddedVm *vm = self->vms180;
         for (int i = 0; i < 8; ++i, ++vm)

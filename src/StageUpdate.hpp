@@ -30,7 +30,7 @@ struct StagePrimitiveView
     short kind, byteSize, unknown004, vmIndex;
 };
 
-int __stdcall UpdateStageObjects(StageResourceView *self);
+int __stdcall UpdateStageObjects();
 int __stdcall ExecuteStageScript(StageResourceView *self);
 void __stdcall ResetStageMesh(StageMeshView *self, float x, float y, float width, float height);
 extern RandomStateView g_TextRandomState;

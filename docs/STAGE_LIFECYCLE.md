@@ -12,7 +12,7 @@ part of the reconstruction, not a closed native game build.
 | InitializeStageResource | 0x004024C0..0x00402735, 630 bytes | 630 | canonical linked-PE exact |
 | StageResourceDestructor | 0x00402740..0x0040299A, 603 bytes | 597 | non-exact; EH owner also open |
 | CreateStageResource | 0x004029C0..0x00402A5E, 159 bytes | 159 | diagnostic address-field match; EH owner remains open |
-| StageUpdateCallback | 0x00403900..0x00403906, 7 bytes | 7 | non-exact private callee ABI |
+| StageUpdateCallback | 0x00403900..0x00403906, 7 bytes | 7 | canonical linked-PE exact |
 | StageDrawCallback | 0x00403910..0x00403916, 7 bytes | 7 | canonical linked-PE exact |
 | StageOverlayCallback | 0x00403920..0x00403926, 7 bytes | 7 | canonical linked-PE exact |
 
@@ -108,17 +108,19 @@ scripts/repo-python scripts/replay-exact-units.py \
   --unit stage-embedded-vm-constructor \
   --unit stage-embedded-vm-destructor \
   --unit stage-draw-callback \
-  --unit stage-overlay-callback
+  --unit stage-overlay-callback \
+  --unit stage-update-callback
 ```
 
-These five non-EH public primary-TU contributions add779 exact bytes.
-Initializer bindings number21; VM construction/destruction and the two drawing
-callbacks have one each, for25 independently reviewed fields. Sources, headers,
-tools, producer and PE/MAP/PDB identity/ownership are receipt-bound; complete
-extents and all bytes agree after exhaustive replay. The four float constant
-contents were separately checked against the target. Callback proofs use
-StageCallbacks.cpp as primary, not a borrowed support-TU owner. Earlier45 exact
-contexts were unchanged and were not replayed.
+These six non-EH public primary-TU contributions add786 exact bytes.
+The initializer has21 reviewed bindings; the VM constructor/destructor and
+three callback adapters contribute five more, for26 independently reviewed
+fields. Sources, headers, tools, producer and PE/MAP/PDB
+identity/ownership are receipt-bound; complete extents and all bytes agree
+after exhaustive replay. The four float constant contents were separately
+checked against the target. Callback proofs use StageCallbacks.cpp as primary,
+not a borrowed support-TU owner. Earlier45 exact contexts were unchanged and
+were not replayed.
 
 Constructor/destructor/factory EH and specialized-owner gaps remain open.
 The older loader contexts remain non-exact:297/434/131 source bytes. The new

@@ -4,21 +4,21 @@
 and object traversal. Direct local Ghidra review attested the complete mapped
 text section and checked the full owners, branches, callers and neighbors.
 
-| Function | Reviewed target owner | Source contribution | State |
+| Function | Reviewed target owner | Current primary contribution | State |
 | --- | ---: | ---: | --- |
-| UpdateStage,0x00402AA0 | 1,677 bytes through0x0040312C | 1,705 bytes | Non-exact |
-| UpdateStageObjects,0x004040F0 | 153 bytes through0x00404188 | 151 bytes | Non-exact |
+| UpdateStage,0x00402AA0 | 1,677 bytes through0x0040312C | 1,823 bytes | Non-exact; large-body codegen open |
+| UpdateStageObjects,0x004040F0 | 153 bytes through0x00404188 | 153 bytes | canonical linked-PE exact |
 
 Both bodies are contiguous and include internal alignment. Neither contains
-tables or has external interior references. The update entry receives stage
-in EAX and returns with RET; its callback403900 adapts ECX to EAX. Object
-traversal receives stage in EBX, returns zero and uses RET. The ordinary source
-signatures retain stdcall. The current integrated compiler context naturally
-uses private EBX for UpdateStage and stack/RET4 for UpdateStageObjects; its
-address-escaped fastcall callback uses EBX save/call/restore and is10 bytes.
-No fake ABI or instruction padding was introduced. The primary contributions
-have1,398/98 diagnostic address-masked differences, granting no exact credit.
-Original TU ownership remains unknown; origin is authored game logic.
+tables or has external interior references. `UpdateStage` receives the stage in
+EAX and returns status in EAX with RET. Its seven-byte callback at403900 moves
+ECX to EAX and tail-jumps into that private entry; the callback is now a
+canonical exact unit. `UpdateStageObjects` inherits the stage in EBX, returns
+zero in EAX and uses RET. Its naked VC9 body retains the original EBP frame,
+stack layout, signed primitive walk and VM call boundary; its one REL32 to
+`ExecuteAnimationVm` is independently replayed. The two exact units prove the
+leaf and callback without claiming that the 1,677-byte `UpdateStage` body is
+finished. Original TU ownership remains unknown; origin is authored game logic.
 
 ## Update order
 
@@ -109,13 +109,27 @@ indices/strides and null payloads are not sanitized.
 
 ## Code generation and remaining work
 
-The maintained diagnostic context builds the public primary TU
-with VC9 RTM `/O2 /Ob1 /Gy /MT /EHsc /GL`. Its context includes the maintained
-fastcall callback, angle math and random source. The probe publishes the
-callback address to preserve its ordinary indirect-call contract; a direct-only
-probe had allowed a specialized five-byte callback. Neither context reproduces
-the target callback/update private convention, so neither grants exact credit.
+The exact `update-stage-objects` context builds `StageUpdate.cpp` as the primary
+VC9 RTM `/O2 /Ob1 /Gy /MT /EHsc /GL` contribution. It proves the complete153-byte
+owner with one reviewed REL32 call to `ExecuteAnimationVm`. The exact
+`stage-update-callback` context separately proves the seven-byte ECX-to-EAX
+tail adapter. Both are part of the selected-unit replay lane; no full cold
+replay is needed for these checkpoints. Re-run only these two owners with:
 
+```bash
+scripts/repo-python scripts/replay-exact-units.py \
+  --unit update-stage-objects \
+  --unit stage-update-callback
+```
+
+`UpdateStage` now has the correct private EAX entry in source and is called
+through the exact callback, while `UpdateStageObjects` is called without a
+stack argument and inherits EBX. The remaining large-body candidate is1823
+bytes versus the native1677. Its current compiler frame/local-pointer lowering
+and float/register scheduling still differ; the next work is to recover the
+native EBX-held stage throughout the body, then close the float and mesh
+register/stack order. Do not mark `UpdateStage` exact from its corrected ABI
+alone.
 
 ExecuteStageScript404470 has complete non-exact source and a reviewed2,736-byte
 owner; see [STAGE_SCRIPT.md](STAGE_SCRIPT.md). ResetStageMesh40E6C0 and its

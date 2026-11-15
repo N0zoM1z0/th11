@@ -9330,3 +9330,60 @@ symbol = "?UpdateSecondaryProgramBrowser@@YIHPAUSecondaryProgramBrowserView@@@Z"
 target_address = 0x00438AC0
 size = 934
 linkages = []
+
+# Diagnostic frontier for the large stage-vector tween owner. The context is
+# shared with the exact stage-tween leaves; no exact claim is made here.
+[units.step-stage-vector-tween]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/StageTween.cpp"
+inputs = ["src/StageTween.hpp", "src/StageScript.hpp"]
+support_sources = ["probes/stage-tween-context.cpp", "src/StageScript.cpp", "src/StageEasing.cpp", "src/StageMesh.cpp", "src/AnimationVmFactory.cpp", "src/AngleMath.cpp"]
+normal_support_sources = ["src/AngleMath.cpp"]
+output_dir = "build/match-linked/StageTween"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageTweenProbe@24"
+functions = ["StepStageVectorTween"]
+symbol = "?StepStageVectorTween@@YG?AUCameraVector@@PAUStageVectorTween@@@Z"
+target_address = 0x405240
+size = 883
+linkages = [
+  { offset = 23, type = "REL32", symbol = "?AdvanceStageTimer@@YGHPAUStageTimerView@@@Z", target = 0x459270 },
+  { offset = 74, type = "DIR32", symbol = "?g_AnimationTimeScale@@3MA", target = 0x4A7948 },
+  { offset = 456, type = "DIR32", symbol = "__real@4008000000000000", target = 0x498168 },
+  { offset = 755, type = "REL32", symbol = "?StageVectorTweenFactor@@YGMPAUStageVectorTween@@@Z", target = 0x405960 },
+]
+
+# Exact 7-byte ECX-to-EAX adapter into the private-EAX stage updater.
+[units.stage-update-callback]
+artifact_kind = "linked-pe"
+source = "src/StageCallbacks.cpp"
+inputs = ["src/StageResource.hpp", "src/StageUpdate.hpp"]
+support_sources = ["src/StageLifecycle.cpp", "probes/stage-lifecycle-context.cpp", "src/StageResource.cpp", "src/AnimationDocument.cpp", "src/ErrorLog.cpp", "src/LogBuffer.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/VmBindings.cpp", "src/StageUpdate.cpp"]
+output_dir = "build/match-linked/StageUpdateCallback"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageLifecycleProbe@24"
+functions = ["StageUpdateCallback"]
+symbol = "?StageUpdateCallback@@YIHPAX@Z"
+target_address = 0x403900
+size = 7
+linkages = [
+  { offset = 3, type = "REL32", symbol = "?UpdateStage@@YGHXZ", target = 0x402AA0 },
+]
+
+# Exact private-EBX object traversal leaf in the primary StageUpdate TU.
+[units.update-stage-objects]
+artifact_kind = "linked-pe"
+source = "src/StageUpdate.cpp"
+inputs = ["src/StageUpdate.hpp", "src/StageResource.hpp", "src/AnimationVm.hpp", "src/Camera.hpp", "src/Random.hpp", "src/MainRuntime.hpp", "src/AngleMath.hpp"]
+support_sources = ["probes/stage-update-context.cpp"]
+output_dir = "build/match-linked/StageUpdateObjects"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageUpdateProbe@0"
+functions = ["UpdateStageObjects"]
+symbol = "?UpdateStageObjects@@YGHXZ"
+target_address = 0x004040F0
+size = 153
+linkages = [
+  { offset = 0x52, type = "REL32", symbol = "?ExecuteAnimationVm@@YGHPAUAnimationVmView@@@Z", target = 0x0044B4B0 },
+]
