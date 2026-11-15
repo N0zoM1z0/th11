@@ -130,8 +130,7 @@ void __cdecl UpdateMeshEffectSpellState()
     }
 }
 
-AnimationVmId __stdcall CreatePositionedAnimationVmId(AnimationFileView *file,
-    const CameraVector *position, int script, int layer)
+AnimationVmId AnimationFileView::CreatePositionedVmId(const CameraVector *position, int script, int layer)
 {
     if (g_MainRuntime.flags & 0x8000)
     {
@@ -145,7 +144,7 @@ AnimationVmId __stdcall CreatePositionedAnimationVmId(AnimationFileView *file,
     vmPosition.x = static_cast<float>(position->x + 32.0 + 192.0);
     vmPosition.y = static_cast<float>(position->y + 16.0);
     vmPosition.z = position->z;
-    BindAnimationScript(file, script, vm);
+    BindAnimationScript(this, script, vm);
     AnimationVmId id = PublishSceneAnimationVm(vm);
     if (g_MainRuntime.flags & 0x8000)
     {
@@ -162,7 +161,7 @@ int __stdcall InitializeColumnMeshEffect(MeshEffectControllerView *self)
     MeshEffectActorView *actor = g_MeshEffectActor;
     self->origin = actor->position;
     self->origin.y = static_cast<float>(self->origin.y - 32.0);
-    self->vmId = CreatePositionedAnimationVmId(actor->file, &self->origin, 0x2b, 0x16);
+    self->vmId = actor->file->CreatePositionedVmId(&self->origin, 0x2b, 0x16);
     CameraVector origin = self->origin;
     origin.x = static_cast<float>(origin.x - 60.0);
     origin.y = static_cast<float>(origin.y + 64.0);
@@ -217,7 +216,7 @@ int __stdcall InitializeSquareMeshEffect(MeshEffectControllerView *self)
     MeshEffectActorView *actor = g_MeshEffectActor;
     self->origin = actor->position;
     QueueMeshEffectSound(0x31);
-    self->vmId = CreatePositionedAnimationVmId(actor->file, &self->origin, 0x25, 0x16);
+    self->vmId = actor->file->CreatePositionedVmId(&self->origin, 0x25, 0x16);
     AnimationVmView *vm = FindAnimationVmById(g_RenderBatch, self->vmId);
     if (!vm)
         self->vmId = 0;

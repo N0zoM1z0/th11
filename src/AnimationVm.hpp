@@ -5,6 +5,8 @@
 
 struct AnimationVmView;
 struct AnimationFileView;
+struct AnimationVmId;
+struct CameraVector;
 struct AnimationVmNode
 {
     AnimationVmView *vm;
@@ -125,6 +127,9 @@ struct AnimationFileView
     unsigned char **scripts;
     AnimationTextureEntry *textures;
     int bindingDisabled;
+
+    // 00455B10; native callers pass this before the hidden result.
+    AnimationVmId CreatePositionedVmId(const CameraVector *position, int script, int layer);
 };
 
 typedef char AnimationVmSize[(sizeof(AnimationVmView) == 0x434) ? 1 : -1];

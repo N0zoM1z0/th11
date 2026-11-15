@@ -75,7 +75,7 @@ selection pointer across the call in the compiled candidate.
 
 ## Cold compilation
 
-The public recipe is `probes/menu-character-selection-context.json`. It keeps
+The context is the frontier unit `menu-character-selection` in `config/match-units.toml`. It keeps
 VC9 RTM21022 /O2 /Ob1 /MT /EHsc /GL, the real controller callback and53 support
 sources, with the same two established normal menu supports. It includes the
 complete partner/practice/player-data/music owners and the existing dialogue

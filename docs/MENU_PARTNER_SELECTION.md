@@ -76,7 +76,7 @@ is introduced for these paths.
 
 ## Cold compiler context
 
-`probes/menu-partner-selection-context.json` retains VC9 RTM21022 and
+frontier unit `menu-partner-selection` retains VC9 RTM21022 and
 /O2 /Ob1 /MT /EHsc /GL. It uses the real controller callback and52 support
 sources, including the existing child finder and both full practice/player-data
 callers; the same two established normal supports remain unchanged. Missing

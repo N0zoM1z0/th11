@@ -2450,6 +2450,7 @@ linkages = [
 ]
 
 [units.music-streaming-thread]
+frontier = true
 artifact_kind = "linked-pe"
 source = "src/SoundQueue.cpp"
 inputs = ["src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/MusicStream.hpp", "src/SoundDevice.hpp"]
@@ -4107,6 +4108,7 @@ linkages = [
 ]
 
 [units.publish-secondary-draw-animation-vm]
+frontier = true
 artifact_kind = "linked-pe"
 source = "src/SecondaryEmitterAnimation.cpp"
 inputs = ["src/SecondaryEmitterAnimation.hpp", "src/RenderBatch.hpp", "src/MainRuntime.hpp", "src/AnimationVmId.hpp"]
@@ -4604,6 +4606,26 @@ linkages = [
   { offset = 29, type = "DIR32", symbol = "__real@4068000000000000", target = 0x497ea0, addend = 0x0 },
   { offset = 51, type = "DIR32", symbol = "__real@0000000000000000", target = 0x497ec0, addend = 0x0 },
   { offset = 67, type = "DIR32", symbol = "__real@407c000000000000", target = 0x497eb8, addend = 0x0 },
+]
+
+[units.clear-scene-projectile]
+artifact_kind = "linked-pe"
+source = "src/SecondaryClearing.cpp"
+inputs = ["src/SecondaryClearing.hpp"]
+support_sources = ["probes/secondary-clearing-context.cpp", "src/MeshEffects.cpp", "src/AnimationVmFactory.cpp", "src/AnimationRendererDispatch.cpp", "src/AnimationVm.cpp"]
+output_dir = "build/match-linked/SecondaryClearing"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryClearingProbe@36"
+functions = ["ClearSceneProjectile"]
+symbol = "?ClearSceneProjectile@@YGHPAUSceneClearProjectileView@@@Z"
+target_address = 0x0040AE90
+size = 242
+linkages = [
+  { offset = 26, type = "DIR32", symbol = "__real@41000000", target = 0x00497FDC },
+  { offset = 47, type = "REL32", symbol = "?SceneClearOutside@@YGHPBUCameraVector@@MM@Z", target = 0x0040B8A0 },
+  { offset = 95, type = "DIR32", symbol = "?g_SecondaryActorFiles@@3PAUSecondaryActorFilesView@@A", target = 0x004A8D68 },
+  { offset = 117, type = "REL32", symbol = "?CreatePositionedVmId@AnimationFileView@@QAE?AUAnimationVmId@@PBUCameraVector@@HH@Z", target = 0x00455B10 },
+  { offset = 168, type = "DIR32", symbol = "?g_AnimationTimeScale@@3MA", target = 0x004A7948 },
 ]
 
 [units.clear-secondary-objects-in-radius]
@@ -5918,6 +5940,7 @@ linkages = [
 ]
 
 [units.commit-pause-menu-score]
+frontier = true
 artifact_kind = "linked-pe"
 source = "src/PauseContinueMenuSupport.cpp"
 inputs = ["src/PauseContinueMenu.hpp", "src/PauseMenu.hpp", "src/VmBindings.hpp", "src/MainRuntime.hpp", "src/SecondaryActorRuntime.hpp", "src/SecondaryActorInstructionControl.hpp", "src/AnimationVmId.hpp"]
@@ -7548,6 +7571,7 @@ linkages = [
 ]
 
 [units.delete-pause-menu-replay]
+frontier = true
 artifact_kind = "coff"
 source = "src/PauseMenuSupport.cpp"
 inputs = ["src/PauseMenu.hpp", "src/TitleMenuRecord.hpp", "src/SoundQueue.hpp", "src/VmBindings.hpp"]
@@ -7563,6 +7587,7 @@ relocations = [
 ]
 
 [units.secondary-integer-player-position]
+frontier = true
 artifact_kind = "linked-pe"
 source = "src/SecondaryIntegerPlayerPosition.cpp"
 inputs = ["src/SecondaryPlayerController.hpp"]
@@ -7580,6 +7605,7 @@ linkages = [
 ]
 
 [units.replay-append-write-segment]
+frontier = true
 artifact_kind = "linked-pe"
 source = "src/ReplayWriter.cpp"
 inputs = ["src/ReplayWriter.cpp", "src/SecondaryReplayState.hpp", "src/SecondaryPlayerController.hpp", "src/PauseMenu.hpp", "src/SecondaryActorRuntime.hpp", "src/SharedFile.hpp", "src/ByteCipher.hpp"]
@@ -7597,6 +7623,7 @@ linkages = [
 ]
 
 [units.secondary-replay-stage-lifecycle]
+frontier = true
 artifact_kind = "linked-pe"
 source = "src/SecondaryReplayStageLifecycle.cpp"
 inputs = ["src/SecondaryReplayState.hpp", "src/SecondaryReplayStageLifecycle.hpp", "src/SecondaryPlayerController.hpp", "src/SecondaryActorRuntime.hpp", "src/SecondaryPattern.hpp", "src/SecondaryDamage.hpp"]
@@ -7635,6 +7662,7 @@ linkages = [
 ]
 
 [units.replay-header-storage-initialization]
+frontier = true
 artifact_kind = "linked-pe"
 source = "src/ReplayHeaderStorageInitialization.cpp"
 inputs = ["src/ReplayHeaderStorageInitialization.hpp"]
@@ -7656,6 +7684,7 @@ linkages = [
 ]
 
 [units.secondary-replay-initialization]
+frontier = true
 artifact_kind = "linked-pe"
 source = "src/SecondaryReplayInitialization.cpp"
 inputs = [
@@ -7805,6 +7834,7 @@ linkages = [
 ]
 
 [units.secondary-replay-load]
+frontier = true
 artifact_kind = "linked-pe"
 source = "src/SecondaryReplayLoad.cpp"
 inputs = [
@@ -7849,6 +7879,7 @@ linkages = [
 ]
 
 [units.replay-writer-main]
+frontier = true
 artifact_kind = "linked-pe"
 source = "src/ReplayWriter.cpp"
 inputs = [
@@ -8023,6 +8054,7 @@ linkages = [
 ]
 
 [units.replay-compression-main]
+frontier = true
 artifact_kind = "linked-pe"
 source = "src/ReplayCompressionEncoder.cpp"
 inputs = []
@@ -8177,6 +8209,7 @@ linkages = [
 ]
 
 [units.secondary-gameplay-statistics-writer]
+frontier = true
 artifact_kind = "linked-pe"
 source = "src/SecondaryGameplayStatisticsWriter.cpp"
 inputs = [
@@ -8280,6 +8313,7 @@ linkages = [
 # Byte-identical apart from fields, but not claimed: its SEH handler and
 # FuncInfo data are outside what the linked oracle compares.
 [units.title-menu-record-destructor]
+frontier = true
 artifact_kind = "linked-pe"
 source = "src/TitleMenuRecord.cpp"
 inputs = ["src/TitleMenuRecord.hpp", "src/Chain.hpp", "src/ReplayRecordStageLink.hpp", "src/MainRuntime.hpp", "src/SecondaryReplayState.hpp"]
@@ -8333,6 +8367,7 @@ linkages = [
 ]
 
 [units.title-replay-recording-factory]
+frontier = true
 artifact_kind = "linked-pe"
 source = "src/ReplayRecordFactories.cpp"
 inputs = ["src/TitleMenuRecord.hpp", "src/SecondaryReplayState.hpp", "src/ReplayRecordStageLink.hpp"]
@@ -8359,6 +8394,7 @@ linkages = [
 ]
 
 [units.title-replay-playback-factory]
+frontier = true
 artifact_kind = "linked-pe"
 source = "src/ReplayRecordFactories.cpp"
 inputs = ["src/TitleMenuRecord.hpp", "src/SecondaryReplayState.hpp", "src/ReplayRecordStageLink.hpp"]
@@ -8419,6 +8455,7 @@ linkages = [
 ]
 
 [units.set-secondary-pair-duration]
+frontier = true
 artifact_kind = "linked-pe"
 source = "src/SecondaryPairAccess.cpp"
 inputs = ["src/SecondaryPairAccess.hpp", "src/SecondaryActorState.hpp"]
@@ -8433,6 +8470,7 @@ size = 4
 linkages = []
 
 [units.add-secondary-pair]
+frontier = true
 artifact_kind = "linked-pe"
 source = "src/SecondaryPairAccess.cpp"
 inputs = ["src/SecondaryPairAccess.hpp", "src/SecondaryActorState.hpp"]
@@ -9100,3 +9138,195 @@ linkages = [
   { offset = 9, type = "DIR32", symbol = "?g_SceneClearPool@@3PAUSceneClearPoolView@@A", target = 0x004A8D68 },
   { offset = 80, type = "REL32", symbol = "?ClearSceneProjectile@@YGHPAUSceneClearProjectileView@@@Z", target = 0x0040AE90 },
 ]
+
+# Frontier contexts for open menu owners (formerly probes/*.json recipes).
+
+[units.menu-character-selection]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/MenuCharacterSelection.cpp"
+inputs = ["src/MenuCharacterSelection.hpp"]
+support_sources = ["src/MenuPartnerSelection.cpp", "src/MenuPracticeStage.cpp", "src/MenuPlayerData.cpp", "src/MenuMusicRoom.cpp", "src/MenuJoystickDisplay.cpp", "src/ConfigurationAudioMenu.cpp", "src/SoundQueue.cpp", "src/MusicStream.cpp", "probes/sound-queue-context.cpp", "src/StageMesh.cpp", "probes/stage-mesh-context.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryPlayerMovement.cpp", "src/SecondaryDamageSupport.cpp", "src/MeshEffects.cpp", "src/ConfigurationMenuSelection.cpp", "src/ConfigurationMenuAnimation.cpp", "probes/configuration-menu-support-context.cpp", "src/AnimationExecution.cpp", "src/MenuControllerSupport.cpp", "src/MenuControllerCallbacks.cpp", "probes/menu-controller-context.cpp", "src/SecondaryActorAnimation.cpp", "src/MenuController.cpp", "src/MenuPrimarySupport.cpp", "src/StageTween.cpp", "probes/menu-primary-support-context.cpp", "src/MenuPrimarySelection.cpp", "src/MenuPrimary.cpp", "src/MenuJoystick.cpp", "src/MenuJoystickAssignment.cpp", "src/JoystickButtons.cpp", "src/MenuMusicRoomSupport.cpp", "src/FormattedTextureText.cpp", "src/OutlinedTextureText.cpp", "src/TextTextureDispatch.cpp", "src/TextDrawing.cpp", "src/TextProcessing.cpp", "src/ResourceFile.cpp", "src/Archive.cpp", "src/ArchiveDecompress.cpp", "src/ArchiveLookup.cpp", "src/ByteCipher.cpp", "src/RuntimeCritical.cpp", "probes/resource-file-context.cpp", "probes/archive-read-context.cpp", "src/MenuPlayerDataRecords.cpp", "src/MenuPlayerDataSupport.cpp", "src/MenuPracticeStageSupport.cpp", "src/SecondaryDialogueAnimation.cpp", "src/MenuPartnerSelectionSupport.cpp", "src/SecondaryDialogue.cpp"]
+normal_support_sources = ["src/MenuControllerCallbacks.cpp", "src/MenuPrimarySelection.cpp"]
+output_dir = "build/probe-ltcg/MenuCharacterSelectionOwner"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "MenuControllerProbe@4"
+functions = ["UpdateMenuPage06"]
+symbol = "?UpdateMenuPage06@@YGHPAUMenuControllerView@@@Z"
+target_address = 0x0043CBE0
+size = 1228
+linkages = []
+
+[units.menu-controller]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/MenuController.cpp"
+inputs = ["src/MenuController.hpp", "src/ConfigurationAudioMenu.hpp"]
+support_sources = ["src/ConfigurationAudioMenu.cpp", "src/SoundQueue.cpp", "src/MusicStream.cpp", "probes/sound-queue-context.cpp", "src/StageMesh.cpp", "probes/stage-mesh-context.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryPlayerMovement.cpp", "src/SecondaryDamageSupport.cpp", "src/MeshEffects.cpp", "src/ConfigurationMenuSelection.cpp", "src/ConfigurationMenuAnimation.cpp", "probes/configuration-menu-support-context.cpp", "src/AnimationExecution.cpp", "src/MenuControllerSupport.cpp", "src/MenuControllerCallbacks.cpp", "probes/menu-controller-context.cpp", "src/SecondaryActorAnimation.cpp"]
+normal_support_sources = ["src/MenuControllerCallbacks.cpp"]
+output_dir = "build/probe-ltcg/MenuControllerOwner"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "MenuControllerProbe@4"
+functions = ["UpdateMenuController"]
+symbol = "?UpdateMenuController@@YGHPAUMenuControllerView@@@Z"
+target_address = 0x004399B0
+size = 1224
+linkages = []
+
+[units.menu-difficulty-selection]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/MenuDifficultySelection.cpp"
+inputs = ["src/MenuDifficultySelection.hpp"]
+support_sources = ["src/MenuCharacterSelection.cpp", "src/MenuPartnerSelection.cpp", "src/MenuPracticeStage.cpp", "src/MenuPlayerData.cpp", "src/MenuMusicRoom.cpp", "src/MenuJoystickDisplay.cpp", "src/ConfigurationAudioMenu.cpp", "src/SoundQueue.cpp", "src/MusicStream.cpp", "probes/sound-queue-context.cpp", "src/StageMesh.cpp", "probes/stage-mesh-context.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryPlayerMovement.cpp", "src/SecondaryDamageSupport.cpp", "src/MeshEffects.cpp", "src/ConfigurationMenuSelection.cpp", "src/ConfigurationMenuAnimation.cpp", "probes/configuration-menu-support-context.cpp", "src/AnimationExecution.cpp", "src/MenuControllerSupport.cpp", "src/MenuControllerCallbacks.cpp", "probes/menu-controller-context.cpp", "src/SecondaryActorAnimation.cpp", "src/MenuController.cpp", "src/MenuPrimarySupport.cpp", "src/StageTween.cpp", "probes/menu-primary-support-context.cpp", "src/MenuPrimarySelection.cpp", "src/MenuPrimary.cpp", "src/MenuJoystick.cpp", "src/MenuJoystickAssignment.cpp", "src/JoystickButtons.cpp", "src/MenuMusicRoomSupport.cpp", "src/FormattedTextureText.cpp", "src/OutlinedTextureText.cpp", "src/TextTextureDispatch.cpp", "src/TextDrawing.cpp", "src/TextProcessing.cpp", "src/ResourceFile.cpp", "src/Archive.cpp", "src/ArchiveDecompress.cpp", "src/ArchiveLookup.cpp", "src/ByteCipher.cpp", "src/RuntimeCritical.cpp", "probes/resource-file-context.cpp", "probes/archive-read-context.cpp", "src/MenuPlayerDataRecords.cpp", "src/MenuPlayerDataSupport.cpp", "src/MenuPracticeStageSupport.cpp", "src/SecondaryDialogueAnimation.cpp", "src/MenuPartnerSelectionSupport.cpp", "src/SecondaryDialogue.cpp", "src/MenuDifficultySelectionSupport.cpp"]
+normal_support_sources = ["src/MenuControllerCallbacks.cpp", "src/MenuPrimarySelection.cpp"]
+output_dir = "build/probe-ltcg/MenuDifficultySelectionOwner"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "MenuControllerProbe@4"
+functions = ["UpdateMenuPage05"]
+symbol = "?UpdateMenuPage05@@YGHPAUMenuControllerView@@@Z"
+target_address = 0x0043C7C0
+size = 1056
+linkages = []
+
+[units.menu-music-room]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/MenuMusicRoom.cpp"
+inputs = ["src/MenuMusicRoom.hpp"]
+support_sources = ["src/MenuJoystickDisplay.cpp", "src/ConfigurationAudioMenu.cpp", "src/SoundQueue.cpp", "src/MusicStream.cpp", "probes/sound-queue-context.cpp", "src/StageMesh.cpp", "probes/stage-mesh-context.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryPlayerMovement.cpp", "src/SecondaryDamageSupport.cpp", "src/MeshEffects.cpp", "src/ConfigurationMenuSelection.cpp", "src/ConfigurationMenuAnimation.cpp", "probes/configuration-menu-support-context.cpp", "src/AnimationExecution.cpp", "src/MenuControllerSupport.cpp", "src/MenuControllerCallbacks.cpp", "probes/menu-controller-context.cpp", "src/SecondaryActorAnimation.cpp", "src/MenuController.cpp", "src/MenuPrimarySupport.cpp", "src/StageTween.cpp", "probes/menu-primary-support-context.cpp", "src/MenuPrimarySelection.cpp", "src/MenuPrimary.cpp", "src/MenuJoystick.cpp", "src/MenuJoystickAssignment.cpp", "src/JoystickButtons.cpp", "src/MenuMusicRoomSupport.cpp", "src/FormattedTextureText.cpp", "src/OutlinedTextureText.cpp", "src/TextTextureDispatch.cpp", "src/TextDrawing.cpp", "src/TextProcessing.cpp", "src/ResourceFile.cpp", "src/Archive.cpp", "src/ArchiveDecompress.cpp", "src/ArchiveLookup.cpp", "src/ByteCipher.cpp", "src/RuntimeCritical.cpp", "probes/resource-file-context.cpp", "probes/archive-read-context.cpp"]
+normal_support_sources = ["src/MenuControllerCallbacks.cpp", "src/MenuPrimarySelection.cpp"]
+output_dir = "build/probe-ltcg/MenuMusicRoomOwner"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "MenuControllerProbe@4"
+functions = ["UpdateMenuPage0D"]
+symbol = "?UpdateMenuPage0D@@YGHPAUMenuControllerView@@@Z"
+target_address = 0x004408F0
+size = 2668
+linkages = []
+
+[units.menu-partner-selection]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/MenuPartnerSelection.cpp"
+inputs = ["src/MenuPartnerSelection.hpp"]
+support_sources = ["src/MenuPracticeStage.cpp", "src/MenuPlayerData.cpp", "src/MenuMusicRoom.cpp", "src/MenuJoystickDisplay.cpp", "src/ConfigurationAudioMenu.cpp", "src/SoundQueue.cpp", "src/MusicStream.cpp", "probes/sound-queue-context.cpp", "src/StageMesh.cpp", "probes/stage-mesh-context.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryPlayerMovement.cpp", "src/SecondaryDamageSupport.cpp", "src/MeshEffects.cpp", "src/ConfigurationMenuSelection.cpp", "src/ConfigurationMenuAnimation.cpp", "probes/configuration-menu-support-context.cpp", "src/AnimationExecution.cpp", "src/MenuControllerSupport.cpp", "src/MenuControllerCallbacks.cpp", "probes/menu-controller-context.cpp", "src/SecondaryActorAnimation.cpp", "src/MenuController.cpp", "src/MenuPrimarySupport.cpp", "src/StageTween.cpp", "probes/menu-primary-support-context.cpp", "src/MenuPrimarySelection.cpp", "src/MenuPrimary.cpp", "src/MenuJoystick.cpp", "src/MenuJoystickAssignment.cpp", "src/JoystickButtons.cpp", "src/MenuMusicRoomSupport.cpp", "src/FormattedTextureText.cpp", "src/OutlinedTextureText.cpp", "src/TextTextureDispatch.cpp", "src/TextDrawing.cpp", "src/TextProcessing.cpp", "src/ResourceFile.cpp", "src/Archive.cpp", "src/ArchiveDecompress.cpp", "src/ArchiveLookup.cpp", "src/ByteCipher.cpp", "src/RuntimeCritical.cpp", "probes/resource-file-context.cpp", "probes/archive-read-context.cpp", "src/MenuPlayerDataRecords.cpp", "src/MenuPlayerDataSupport.cpp", "src/MenuPracticeStageSupport.cpp", "src/SecondaryDialogueAnimation.cpp", "src/MenuPartnerSelectionSupport.cpp", "src/SecondaryDialogue.cpp"]
+normal_support_sources = ["src/MenuControllerCallbacks.cpp", "src/MenuPrimarySelection.cpp"]
+output_dir = "build/probe-ltcg/MenuPartnerSelectionOwner"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "MenuControllerProbe@4"
+functions = ["UpdateMenuPage07"]
+symbol = "?UpdateMenuPage07@@YGHPAUMenuControllerView@@@Z"
+target_address = 0x0043D0B0
+size = 1516
+linkages = []
+
+[units.menu-player-data]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/MenuPlayerData.cpp"
+inputs = ["src/MenuPlayerData.hpp"]
+support_sources = ["src/MenuMusicRoom.cpp", "src/MenuJoystickDisplay.cpp", "src/ConfigurationAudioMenu.cpp", "src/SoundQueue.cpp", "src/MusicStream.cpp", "probes/sound-queue-context.cpp", "src/StageMesh.cpp", "probes/stage-mesh-context.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryPlayerMovement.cpp", "src/SecondaryDamageSupport.cpp", "src/MeshEffects.cpp", "src/ConfigurationMenuSelection.cpp", "src/ConfigurationMenuAnimation.cpp", "probes/configuration-menu-support-context.cpp", "src/AnimationExecution.cpp", "src/MenuControllerSupport.cpp", "src/MenuControllerCallbacks.cpp", "probes/menu-controller-context.cpp", "src/SecondaryActorAnimation.cpp", "src/MenuController.cpp", "src/MenuPrimarySupport.cpp", "src/StageTween.cpp", "probes/menu-primary-support-context.cpp", "src/MenuPrimarySelection.cpp", "src/MenuPrimary.cpp", "src/MenuJoystick.cpp", "src/MenuJoystickAssignment.cpp", "src/JoystickButtons.cpp", "src/MenuMusicRoomSupport.cpp", "src/FormattedTextureText.cpp", "src/OutlinedTextureText.cpp", "src/TextTextureDispatch.cpp", "src/TextDrawing.cpp", "src/TextProcessing.cpp", "src/ResourceFile.cpp", "src/Archive.cpp", "src/ArchiveDecompress.cpp", "src/ArchiveLookup.cpp", "src/ByteCipher.cpp", "src/RuntimeCritical.cpp", "probes/resource-file-context.cpp", "probes/archive-read-context.cpp", "src/MenuPlayerDataRecords.cpp", "src/MenuPlayerDataSupport.cpp", "src/MenuPracticeStage.cpp", "src/MenuPracticeStageSupport.cpp"]
+normal_support_sources = ["src/MenuControllerCallbacks.cpp", "src/MenuPrimarySelection.cpp"]
+output_dir = "build/probe-ltcg/MenuPlayerDataOwner"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "MenuControllerProbe@4"
+functions = ["UpdateMenuPage0A"]
+symbol = "?UpdateMenuPage0A@@YGHPAUMenuControllerView@@@Z"
+target_address = 0x0043E790
+size = 2448
+linkages = []
+
+[units.menu-practice-stage]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/MenuPracticeStage.cpp"
+inputs = ["src/MenuPracticeStage.hpp"]
+support_sources = ["src/MenuPlayerData.cpp", "src/MenuMusicRoom.cpp", "src/MenuJoystickDisplay.cpp", "src/ConfigurationAudioMenu.cpp", "src/SoundQueue.cpp", "src/MusicStream.cpp", "probes/sound-queue-context.cpp", "src/StageMesh.cpp", "probes/stage-mesh-context.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryPlayerMovement.cpp", "src/SecondaryDamageSupport.cpp", "src/MeshEffects.cpp", "src/ConfigurationMenuSelection.cpp", "src/ConfigurationMenuAnimation.cpp", "probes/configuration-menu-support-context.cpp", "src/AnimationExecution.cpp", "src/MenuControllerSupport.cpp", "src/MenuControllerCallbacks.cpp", "probes/menu-controller-context.cpp", "src/SecondaryActorAnimation.cpp", "src/MenuController.cpp", "src/MenuPrimarySupport.cpp", "src/StageTween.cpp", "probes/menu-primary-support-context.cpp", "src/MenuPrimarySelection.cpp", "src/MenuPrimary.cpp", "src/MenuJoystick.cpp", "src/MenuJoystickAssignment.cpp", "src/JoystickButtons.cpp", "src/MenuMusicRoomSupport.cpp", "src/FormattedTextureText.cpp", "src/OutlinedTextureText.cpp", "src/TextTextureDispatch.cpp", "src/TextDrawing.cpp", "src/TextProcessing.cpp", "src/ResourceFile.cpp", "src/Archive.cpp", "src/ArchiveDecompress.cpp", "src/ArchiveLookup.cpp", "src/ByteCipher.cpp", "src/RuntimeCritical.cpp", "probes/resource-file-context.cpp", "probes/archive-read-context.cpp", "src/MenuPlayerDataRecords.cpp", "src/MenuPlayerDataSupport.cpp", "src/MenuPracticeStageSupport.cpp"]
+normal_support_sources = ["src/MenuControllerCallbacks.cpp", "src/MenuPrimarySelection.cpp"]
+output_dir = "build/probe-ltcg/MenuPracticeStageOwner"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "MenuControllerProbe@4"
+functions = ["UpdateMenuPage08"]
+symbol = "?UpdateMenuPage08@@YGHPAUMenuControllerView@@@Z"
+target_address = 0x0043D6A0
+size = 1024
+linkages = []
+
+[units.menu-primary]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/MenuPrimary.cpp"
+inputs = ["src/MenuPrimary.hpp"]
+support_sources = ["src/ConfigurationAudioMenu.cpp", "src/SoundQueue.cpp", "src/MusicStream.cpp", "probes/sound-queue-context.cpp", "src/StageMesh.cpp", "probes/stage-mesh-context.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryPlayerMovement.cpp", "src/SecondaryDamageSupport.cpp", "src/MeshEffects.cpp", "src/ConfigurationMenuSelection.cpp", "src/ConfigurationMenuAnimation.cpp", "probes/configuration-menu-support-context.cpp", "src/AnimationExecution.cpp", "src/MenuControllerSupport.cpp", "src/MenuControllerCallbacks.cpp", "probes/menu-controller-context.cpp", "src/SecondaryActorAnimation.cpp", "src/MenuController.cpp", "src/MenuPrimarySupport.cpp", "src/StageTween.cpp", "probes/menu-primary-support-context.cpp", "src/MenuPrimarySelection.cpp"]
+normal_support_sources = ["src/MenuControllerCallbacks.cpp", "src/MenuPrimarySelection.cpp"]
+output_dir = "build/probe-ltcg/MenuPrimaryOwner"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "MenuControllerProbe@4"
+functions = ["UpdateMenuPage01"]
+symbol = "?UpdateMenuPage01@@YGHPAUMenuControllerView@@@Z"
+target_address = 0x0043A0A0
+size = 1608
+linkages = []
+
+[units.pause-continue-menu]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/PauseContinueMenu.cpp"
+inputs = ["src/PauseContinueMenu.hpp"]
+support_sources = ["src/PauseMenu.cpp", "src/MenuDifficultySelection.cpp", "src/MenuCharacterSelection.cpp", "src/MenuPartnerSelection.cpp", "src/MenuPracticeStage.cpp", "src/MenuPlayerData.cpp", "src/MenuMusicRoom.cpp", "src/MenuJoystickDisplay.cpp", "src/ConfigurationAudioMenu.cpp", "src/SoundQueue.cpp", "src/MusicStream.cpp", "probes/sound-queue-context.cpp", "src/StageMesh.cpp", "probes/stage-mesh-context.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryPlayerMovement.cpp", "src/SecondaryDamageSupport.cpp", "src/MeshEffects.cpp", "src/ConfigurationMenuSelection.cpp", "src/ConfigurationMenuAnimation.cpp", "probes/configuration-menu-support-context.cpp", "src/AnimationExecution.cpp", "src/MenuControllerSupport.cpp", "src/MenuControllerCallbacks.cpp", "probes/menu-controller-context.cpp", "src/SecondaryActorAnimation.cpp", "src/MenuController.cpp", "src/MenuPrimarySupport.cpp", "src/StageTween.cpp", "probes/menu-primary-support-context.cpp", "src/MenuPrimarySelection.cpp", "src/MenuPrimary.cpp", "src/MenuJoystick.cpp", "src/MenuJoystickAssignment.cpp", "src/JoystickButtons.cpp", "src/MenuMusicRoomSupport.cpp", "src/FormattedTextureText.cpp", "src/OutlinedTextureText.cpp", "src/TextTextureDispatch.cpp", "src/TextDrawing.cpp", "src/TextProcessing.cpp", "src/ResourceFile.cpp", "src/Archive.cpp", "src/ArchiveDecompress.cpp", "src/ArchiveLookup.cpp", "src/ByteCipher.cpp", "src/RuntimeCritical.cpp", "probes/resource-file-context.cpp", "probes/archive-read-context.cpp", "src/MenuPlayerDataRecords.cpp", "src/MenuPlayerDataSupport.cpp", "src/MenuPracticeStageSupport.cpp", "src/SecondaryDialogueAnimation.cpp", "src/MenuPartnerSelectionSupport.cpp", "src/SecondaryDialogue.cpp", "src/MenuDifficultySelectionSupport.cpp", "src/PauseMenuSupport.cpp", "probes/pause-menu-context.cpp", "src/SecondaryGameplaySupport.cpp", "src/PauseContinueMenuSupport.cpp", "src/SecondaryDrawPublisher.cpp", "probes/pause-continue-menu-context.cpp"]
+normal_support_sources = ["src/MenuControllerCallbacks.cpp", "src/MenuPrimarySelection.cpp"]
+output_dir = "build/probe-ltcg/PauseContinueMenuOwner"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "PauseContinueMenuProbe@4"
+functions = ["UpdatePauseContinueMenu"]
+symbol = "?UpdatePauseContinueMenu@@YGXPAUPauseContinueMenuView@@@Z"
+target_address = 0x0042D9D0
+size = 3192
+linkages = []
+
+[units.pause-menu]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/PauseMenu.cpp"
+inputs = ["src/PauseMenu.hpp"]
+support_sources = ["src/MenuDifficultySelection.cpp", "src/MenuCharacterSelection.cpp", "src/MenuPartnerSelection.cpp", "src/MenuPracticeStage.cpp", "src/MenuPlayerData.cpp", "src/MenuMusicRoom.cpp", "src/MenuJoystickDisplay.cpp", "src/ConfigurationAudioMenu.cpp", "src/SoundQueue.cpp", "src/MusicStream.cpp", "probes/sound-queue-context.cpp", "src/StageMesh.cpp", "probes/stage-mesh-context.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryPlayerMovement.cpp", "src/SecondaryDamageSupport.cpp", "src/MeshEffects.cpp", "src/ConfigurationMenuSelection.cpp", "src/ConfigurationMenuAnimation.cpp", "probes/configuration-menu-support-context.cpp", "src/AnimationExecution.cpp", "src/MenuControllerSupport.cpp", "src/MenuControllerCallbacks.cpp", "probes/menu-controller-context.cpp", "src/SecondaryActorAnimation.cpp", "src/MenuController.cpp", "src/MenuPrimarySupport.cpp", "src/StageTween.cpp", "probes/menu-primary-support-context.cpp", "src/MenuPrimarySelection.cpp", "src/MenuPrimary.cpp", "src/MenuJoystick.cpp", "src/MenuJoystickAssignment.cpp", "src/JoystickButtons.cpp", "src/MenuMusicRoomSupport.cpp", "src/FormattedTextureText.cpp", "src/OutlinedTextureText.cpp", "src/TextTextureDispatch.cpp", "src/TextDrawing.cpp", "src/TextProcessing.cpp", "src/ResourceFile.cpp", "src/Archive.cpp", "src/ArchiveDecompress.cpp", "src/ArchiveLookup.cpp", "src/ByteCipher.cpp", "src/RuntimeCritical.cpp", "probes/resource-file-context.cpp", "probes/archive-read-context.cpp", "src/MenuPlayerDataRecords.cpp", "src/MenuPlayerDataSupport.cpp", "src/MenuPracticeStageSupport.cpp", "src/SecondaryDialogueAnimation.cpp", "src/MenuPartnerSelectionSupport.cpp", "src/SecondaryDialogue.cpp", "src/MenuDifficultySelectionSupport.cpp", "src/PauseMenuSupport.cpp", "probes/pause-menu-context.cpp", "src/SecondaryGameplaySupport.cpp"]
+normal_support_sources = ["src/MenuControllerCallbacks.cpp", "src/MenuPrimarySelection.cpp"]
+output_dir = "build/probe-ltcg/PauseMenuOwner"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "PauseMenuProbe@4"
+functions = ["UpdatePauseMenu"]
+symbol = "?UpdatePauseMenu@@YGXPAUPauseMenuView@@@Z"
+target_address = 0x0042C8D0
+size = 3212
+linkages = []
+
+[units.animation-surface-copy]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/AnimationSurfaceCopy.cpp"
+inputs = []
+support_sources = ["src/AnimationSurfaceDispatch.cpp", "src/RenderBatch.cpp", "src/ScreenshotHotkey.cpp", "probes/animation-surface-copy-real-context.cpp"]
+output_dir = "build/probe-ltcg/AnimationSurfaceCopyTracked"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationSurfaceCopyProbe@0"
+functions = ["CopyAnimationTextureSurface"]
+symbol = "?CopyAnimationTextureSurface@@YGXPAURenderBatchView@@PBUAnimationSurfaceCopyView@@@Z"
+target_address = 0x00454EC0
+size = 313
+linkages = []
+
+[units.secondary-program-browser]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/SecondaryProgramBrowser.cpp"
+inputs = []
+support_sources = ["probes/secondary-program-browser-context.cpp", "src/SecondaryProgramManagerFactory.cpp", "src/SecondaryScript.cpp", "src/ConfigurationMenuSelection.cpp", "src/SecondaryGameplaySupport.cpp", "src/SecondaryEclDebug.cpp", "probes/secondary-gameplay-mode-dynamic-context.cpp", "src/SecondaryDebugThread.cpp", "src/FrameRuntime.cpp", "probes/secondary-debug-thread-context.cpp"]
+output_dir = "build/probe-ltcg/SecondaryBrowserModeThreadTracked"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryProgramBrowserProbe@4"
+functions = ["UpdateSecondaryProgramBrowser"]
+symbol = "?UpdateSecondaryProgramBrowser@@YIHPAUSecondaryProgramBrowserView@@@Z"
+target_address = 0x00438AC0
+size = 934
+linkages = []

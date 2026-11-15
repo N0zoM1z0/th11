@@ -9,6 +9,16 @@ import tomllib
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def select_units(units: dict, names: list[str], sources: list[str]) -> list[str]:
+    """Units named with --unit, else exact units matching --source (all when unscoped).
+
+    Frontier (nonexact) units are built only when named explicitly.
+    """
+    return [name for name, unit in units.items()
+            if name in names
+            or (not unit.get('frontier') and ((not names and not sources) or unit['source'] in sources))]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--unit', action='append', default=[])
@@ -18,7 +28,7 @@ def main() -> int:
         units = tomllib.load(stream).get('units', {})
     if set(args.unit) - set(units) or set(args.source) - {row['source'] for row in units.values()}:
         parser.error('unknown unit/source selector')
-    selected = [name for name, unit in units.items() if (not args.unit and not args.source) or name in args.unit or unit['source'] in args.source]
+    selected = select_units(units, args.unit, args.source)
     command = [sys.executable, str(ROOT / 'scripts/build-match-unit.py')]
     for name in selected:
         command.extend(['--unit', name])

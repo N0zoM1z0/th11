@@ -74,7 +74,7 @@ must not be replaced by the zero-position initializer456910.
 
 ## Cold compilation
 
-The public diagnostic recipe is `probes/menu-practice-stage-context.json`.
+The context is the frontier unit `menu-practice-stage` in `config/match-units.toml`.
 It retains VC9 RTM21022, /O2 /Ob1 /MT /EHsc /GL and the real controller callback
 route, with48 support sources and the same two established normal supports.
 Complete PE/MAP/PDB contributions and every address field are compared; no

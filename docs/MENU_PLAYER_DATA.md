@@ -100,7 +100,7 @@ operations; the diagnostic has not executed them against game data.
 
 ## Compilation and remaining work
 
-Public `probes/menu-player-data-context.json` keeps VC9 RTM21022 and the pinned
+Public frontier unit `menu-player-data` keeps VC9 RTM21022 and the pinned
 /O2 /Ob1 /MT /EHsc /GL profile, real controller callback and two established
 normal supports. It now includes the complete practice-stage caller and its
 required operations, for48 supports. Cold receipts bind sources, tools,

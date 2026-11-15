@@ -181,7 +181,7 @@ Its settings array at actor offsets **+0x2580/+0x2584/+0x2588** controls
 independent sound, script and animation-file indices. When the sound index
 is nonnegative, the original calls `QueueSecondaryActorSound` at `0x44A260`
 with the horizontal world position; a nonnegative script index calls the
-native `CreatePositionedAnimationVmId` (`0x455B10`) with layer 3 and the
+native `AnimationFileView::CreatePositionedVmId` (`0x455B10`) with layer 3 and the
 animation file fetched from master `+0x40 + 4*fileIndex` (not a fixed file).
 
 It then checks the ID at actor+0x2544; a positive ID triggers the real

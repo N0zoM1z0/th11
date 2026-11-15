@@ -115,22 +115,14 @@ retains9 differences. Their canonical acceptance and receipts remain separate.
 
 ## Reproduction
 
-The public compile-only recipe is probes/menu-primary-context.json. It includes
+The context is the frontier unit `menu-primary` in `config/match-units.toml`. It includes
 the actual menu controller and normal callback, the shared animation/sound bodies,
 the real stage timer, and arbitrary-input support calls that preserve general
 helper interfaces. Diagnostic unresolved-symbol data anchors are never executed.
-Use the existing cold producer from the repository root:
+Build it with:
 
 ```sh
-scripts/repo-python - <<'PY'
-import importlib.util, json, sys
-from pathlib import Path
-sys.path.insert(0, 'scripts')
-spec = importlib.util.spec_from_file_location('builder', 'scripts/build-match-unit.py')
-module = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(module)
-module.build(json.loads(Path('probes/menu-primary-context.json').read_text()))
-PY
+scripts/repo-python scripts/build-match-unit.py --unit menu-primary
 ```
 
 Complete PE/MAP/PDB contributions and the cold source/tool/producer/artifact

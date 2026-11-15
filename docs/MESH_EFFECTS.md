@@ -14,7 +14,7 @@ There are no embedded tables or external interior references in these owners.
 | InitializeSquareMeshEffect | 407BB0 | 342 | 343 | Non-exact; EH |
 | SquareMeshVmCallback | 408070 | 398 | 398 | Exact |
 | QueueMeshEffectSound | 44A1E0 | 125 | 126 | Non-exact |
-| CreatePositionedAnimationVmId | 455B10 | 171 | 169 | Non-exact |
+| AnimationFileView::CreatePositionedVmId | 455B10 | 171 | 169 | Non-exact |
 
 These are complete compiler contributions and address-normalized diagnostics,
 not cropped comparisons. The two initializers have real C++ allocation cleanup;

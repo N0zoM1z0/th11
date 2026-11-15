@@ -168,9 +168,8 @@ pointer would force stack input/RET4 and is not the target's observed interface.
 
 ## Reproduction and evidence limits
 
-The public compile-only context is probes/configuration-audio-menu-context.json.
-It shares the canonical unit's source/profile/support/entry/output contract and
-includes the selected real /GL implementations plus arbitrary-input probes. The
+The context is the exact unit `apply-configuration-audio-menu` in
+`config/match-units.toml`. It includes the selected real /GL implementations plus arbitrary-input probes. The
 authoritative110-field acceptance list is in config/match-units.toml. This
 diagnostic image is not a game executable. From the repository root:
 

@@ -1,15 +1,18 @@
 # Complete scene and secondary-object clearing
 
-Seven complete source mappings cover 1,291 target bytes. Four owners are exact
-(334 bytes). `ClearSceneProjectiles` is exact only in the wide link
-(`probes/wide-context.cpp`); the others use the clearing family. Scene
+Seven complete source mappings cover 1,291 target bytes. Five owners are exact
+(576 bytes). `ClearSceneProjectiles` is exact only in the wide link
+(`probes/wide-context.cpp`); the others use the clearing family.
+`ClearSceneProjectile` became exact once 455B10 was declared as the member
+`AnimationFileView::CreatePositionedVmId`: native callers push the file
+before the hidden result pointer, which is the member-function order. Scene
 projectiles are the2000-record pool at global4A8D68+64/stride910; these are distinct
 from the player's256 records of6C bytes. Original class/TU and game-versus-engine
 origins remain indeterminate.
 
 | Owner | Address | Full target | Current result |
 | --- | --- | ---: | --- |
-| ClearSceneProjectile |40AE90 |242 |241 bytes, 50/57 aligned (wide link) |
+| ClearSceneProjectile |40AE90 |242 | Exact (clearing family); five fields |
 | ClearSceneProjectilesInRadius |40AF90 |334 |328 bytes, 68/93 aligned (wide link) |
 | ClearSceneProjectiles |40B5C0 |99 | Exact (wide link); three fields |
 | SceneClearOutside |40B8A0 |93 | Exact; four fields |

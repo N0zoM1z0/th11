@@ -191,8 +191,12 @@ def validate() -> dict[str, int]:
                 raise ValueError(f"exact unit {unit_name!r} differs from source ledger")
         if boundaries_by_address[address]["state"] != "reviewed":
             raise ValueError(f"exact unit {unit_name!r} lacks a reviewed boundary")
-    if matched_units != set(configured_units):
-        missing = sorted(set(configured_units) - matched_units)
+    # Frontier units are open diagnostic builds of nonexact functions.
+    frontier_units = {name for name, unit in configured_units.items() if unit.get("frontier")}
+    if matched_units & frontier_units:
+        raise ValueError(f"frontier unit has an exact claim: {sorted(matched_units & frontier_units)!r}")
+    if matched_units != set(configured_units) - frontier_units:
+        missing = sorted(set(configured_units) - frontier_units - matched_units)
         extra = sorted(matched_units - set(configured_units))
         raise ValueError(
             f"canonical units and exact ledger differ: missing={missing!r} extra={extra!r}"

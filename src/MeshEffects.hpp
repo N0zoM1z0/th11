@@ -32,5 +32,3 @@ int __stdcall InitializeSquareMeshEffect(MeshEffectControllerView *self);
 int __fastcall SquareMeshVmCallback(AnimationVmView *vm);
 void __cdecl UpdateMeshEffectSpellState();
 void __stdcall QueueMeshEffectSound(int sound);
-AnimationVmId __stdcall CreatePositionedAnimationVmId(AnimationFileView *file,
-    const CameraVector *position, int script, int layer);

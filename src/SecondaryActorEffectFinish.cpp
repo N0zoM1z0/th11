@@ -23,7 +23,7 @@ int __stdcall FinishSecondaryActorEffect(SecondaryActorManagerView *self)
         AnimationFileView *file = *reinterpret_cast<AnimationFileView **>(
             reinterpret_cast<unsigned char *>(g_SecondaryMaster) + 0x40 +
             static_cast<unsigned int>(settings[2]) * 4);
-        CreatePositionedAnimationVmId(file, position, settings[1], 3);
+        file->CreatePositionedVmId(position, settings[1], 3);
     }
 
     SecondaryActorEffectView *effect = &state.effect;

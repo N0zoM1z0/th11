@@ -16,8 +16,8 @@ int __stdcall ClearSceneProjectile(SceneClearProjectileView *projectile)
         projectile->state = 3;
         reinterpret_cast<SecondaryActorAnimationView *>(&projectile->animation)->event = 1;
         if (projectile->clearScript >= 0)
-            CreatePositionedAnimationVmId(g_SecondaryActorFiles->file,
-                &projectile->position, projectile->clearScript, 0x16);
+            g_SecondaryActorFiles->file->CreatePositionedVmId(&projectile->position,
+                projectile->clearScript, 0x16);
         projectile->clearTime.SetFrame(-1);
         return 1;
     }

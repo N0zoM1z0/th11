@@ -87,8 +87,7 @@ int __stdcall SpawnSecondaryPlayerDrop(SecondaryControllerDropManager *manager,
     }
     if (kind == 5)
     {
-        CreatePositionedAnimationVmId(g_SecondaryActorFiles->file,
-            &entry->position, 0x73, 0x16);
+        g_SecondaryActorFiles->file->CreatePositionedVmId(&entry->position, 0x73, 0x16);
         QueueMeshEffectSound(0x34);
     }
     entry->kind = kind;

@@ -26,7 +26,7 @@ extern "C" __declspec(dllexport) int __stdcall MeshEffectsProbe(int kind, void *
 extern "C" __declspec(dllexport) AnimationVmId __stdcall PositionedVmProbe(
     AnimationFileView *file, const CameraVector *position, int script, int layer)
 {
-    return CreatePositionedAnimationVmId(file, position, script, layer);
+    return file->CreatePositionedVmId(position, script, layer);
 }
 
 extern "C" __declspec(dllexport) unsigned int __stdcall RandomProbe(RandomStateView *a,

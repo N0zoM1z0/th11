@@ -75,9 +75,9 @@ backbuffer-to-texture direction, independent read after the opaque transfer,
 all RECT source/destination fields and the original COM release order;
 it does not cache the texture across D3D calls.
 
-The tracked **scoped, real-parent** producer is now
-`scripts/repo-python scripts/probe-animation-surface-copy.py`, with ordinary
-source caller `probes/animation-surface-copy-real-context.cpp`, real
+The real-parent context is the frontier unit `animation-surface-copy`
+(`scripts/repo-python scripts/build-match-unit.py --unit animation-surface-copy`),
+with ordinary source caller `probes/animation-surface-copy-real-context.cpp`, real
 `AnimationSurfaceDispatch.cpp`, `RenderBatch.cpp` and `ScreenshotHotkey.cpp`.
 It compiles pinned VC9 `/O2 /Ob1 /Gy /MT /EHsc /GL`, checks the complete
 source.ltcg.obj PDB/MAP/PE code contribution and compares to the original
@@ -104,14 +104,9 @@ cold replay was run for this diagnostic.
 
 ## Bounded screenshot parent and child matrix (2026-11-13)
 
-Previously untracked compile-only dynamic caller experiments have been
-preserved in `probes/animation-screenshot-flush-context.cpp` and
-`probes/animation-screenshot-flush-only-context.cpp`, with the reproducible
-`/GL` runner `scripts/probe-screenshot-flush.py`. This runner builds only
-the scoped parent and its directly requested support sources, examines the
-unique primary-TU PDB/MAP code contribution and reports actual whole-function
-byte differences (excluding only decoded address fields). No full-game or
-full cold replay is involved.
+Earlier screenshot-flush caller experiments (four link variants around
+`AnimationSurfaceDispatch.cpp`) were removed on 2026-11-15; the
+`animation-surface-copy` frontier unit also links `FlushScreenshotResources`.
 
 | Real scoped producer | Scanner / native 48 | Child / native 313 | Finding |
 | --- | ---: | ---: | --- |

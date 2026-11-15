@@ -71,7 +71,7 @@ harness is introduced for this exact-codegen work.
 
 ## Compiler context and gaps
 
-`probes/menu-difficulty-selection-context.json` retains VC9 RTM21022,
+frontier unit `menu-difficulty-selection` retains VC9 RTM21022,
 /O2 /Ob1 /MT /EHsc /GL, the real controller callback and55 supports with the same
 two normal menu supports. Missing callee/data anchors keep it diagnostic. Full
 public PDB contributions and all fields are replayed without cropping, normalized

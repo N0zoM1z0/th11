@@ -63,7 +63,7 @@ The following 3048-byte/2770-difference measurement is the earlier pre-score-
 leaf/pre-publisher-isolation baseline; it is retained only to explain the
 history of the investigation. It is not the current candidate.
 
-`probes/pause-continue-menu-context.json` retains VC9 RTM21022, /GL and63
+frontier unit `pause-continue-menu` retains VC9 RTM21022, /GL and63
 supports, with the same two normal menu supports. The full public primary-TU
 PDB contribution is3048 bytes:827 instructions/2979 code,21 layout and48 table.
 All158 address fields are replayed;2770 full byte differences remain. Local

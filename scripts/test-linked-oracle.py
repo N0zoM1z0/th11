@@ -340,5 +340,22 @@ class BuildGraphControls(unittest.TestCase):
             self.assertEqual(len(driver.units()), 2)
 
 
+class ReplaySelectionTests(unittest.TestCase):
+    def setUp(self):
+        spec = importlib.util.spec_from_file_location('replay', Path(__file__).with_name('replay-exact-units.py'))
+        self.replay = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(self.replay)
+        self.units = {'a': {'source': 'src/A.cpp'}, 'b': {'source': 'src/B.cpp'},
+                      'open': {'source': 'src/A.cpp', 'frontier': True}}
+
+    def test_unscoped_and_source_replay_skip_frontier_units(self):
+        self.assertEqual(self.replay.select_units(self.units, [], []), ['a', 'b'])
+        self.assertEqual(self.replay.select_units(self.units, [], ['src/A.cpp']), ['a'])
+
+    def test_named_frontier_unit_is_selected(self):
+        self.assertEqual(self.replay.select_units(self.units, ['open'], []), ['open'])
+        self.assertEqual(self.replay.select_units(self.units, ['open'], ['src/B.cpp']), ['b', 'open'])
+
+
 if __name__ == '__main__':
     unittest.main()

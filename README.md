@@ -32,7 +32,7 @@ The localized `th11c.exe` is a different target.
 ```bash
 scripts/repo-python scripts/verify-target.py
 scripts/repo-python scripts/validate-tracking.py --require-target
-scripts/repo-python scripts/report-reconstruction-status.py
+scripts/repo-python scripts/progress.py
 ```
 
 Original executables, game data, Ghidra databases, decompiler output, compiler

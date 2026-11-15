@@ -12,7 +12,7 @@ extern "C" int __stdcall SecondaryClearingProbe(const CameraVector *position,
     ClearSecondaryActorsInRadius(position, radius, effects);
     total += ClearSecondaryObjectsInRadius(position, radius, mode, flags);
     total += ClearSecondaryObjects(mode, flags);
-    CreatePositionedAnimationVmId(file, position, mode, flags);
+    file->CreatePositionedVmId(position, mode, flags);
     BindAnimationScript(file, mode, &projectile->animation);
     return static_cast<int>(total);
 }

@@ -94,21 +94,13 @@ audio acceptance remains its existing public primary-TU unit and receipts.
 
 ## Reproduction and limits
 
-The public compile-only context is probes/menu-controller-context.json. It
+The context is the frontier unit `menu-controller` in `config/match-units.toml`. It
 selects19 supporting sources, with only the real callback compiled normally;
 the controller and established owners retain /GL. All dependencies are public
-source. Build through the existing cold producer from the repository root:
+source. Build it with:
 
 ```sh
-scripts/repo-python - <<'PY'
-import importlib.util, json, sys
-from pathlib import Path
-sys.path.insert(0, 'scripts')
-spec = importlib.util.spec_from_file_location('builder', 'scripts/build-match-unit.py')
-module = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(module)
-module.build(json.loads(Path('probes/menu-controller-context.json').read_text()))
-PY
+scripts/repo-python scripts/build-match-unit.py --unit menu-controller
 ```
 
 The receipt binds source, tools, producer and PE/MAP/PDB artifacts. Unresolved

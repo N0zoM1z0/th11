@@ -490,8 +490,8 @@ flow retains distinct zero, positive and negative branches. Merely
 reordering the three equivalent `if`/`goto` branches did not restore them;
 those unsuccessful probes were not applied to canonical source.
 
-Reproduce this scoped, NON-FULL producer diagnostic with
-`scripts/repo-python scripts/probe-secondary-browser-mode-thread.py`, which
+Reproduce it with
+`scripts/repo-python scripts/build-match-unit.py --unit secondary-program-browser`, which
 uses the actual pinned VC9 `/GL` TUs, the two tracked independent callers,
 and verified native target bytes. Recorded result:
 `.analysis/browser-mode-thread-tracked-20261111.log`. Its linked image

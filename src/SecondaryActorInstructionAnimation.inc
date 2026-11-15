@@ -195,7 +195,7 @@ case 0x110:
     {
         int script = Integer(self, 1);
         int file = Integer(self, 0);
-        CreatePositionedAnimationVmId(File(file), &self->world.position, script, 8);
+        File(file)->CreatePositionedVmId(&self->world.position, script, 8);
     }
     else
     {

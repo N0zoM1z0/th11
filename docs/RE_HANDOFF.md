@@ -138,8 +138,11 @@ closure includes the changed files (shared headers such as `Chain.hpp`,
 `SecondaryPattern.hpp` or `SecondaryScript.hpp` reach 30–220 units). A comment
 edit in a support source also invalidates receipts.
 
-`scripts/validate-tracking.py` already fails on clean HEAD at 0x00435630
-(indeterminate origin without an individual reason). Local diagnostic helpers
+`scripts/repo-python scripts/ci.py` runs in under a second and must stay green.
+Nonexact units in `config/match-units.toml` carry `frontier = true`: they are
+buildable diagnostic contexts (`build-match-unit.py --unit NAME`), the
+validator refuses an exact claim on them, and an unscoped replay skips them.
+Drop the flag when recording a unit as exact. Local diagnostic helpers
 (disassembly, masked diff, quick LTCG link) are in ignored
 `.analysis/tool-*-20261114.py`; the probes cited by topic notes are kept beside
 them. Preserve `.tools/`, `ghidra-project/` and canonical `build/match*/`

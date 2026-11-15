@@ -167,7 +167,7 @@ int __stdcall UpdateSecondaryActorState(SecondaryActorStateView *self)
             if ((self->flags & 0x200) && result == 2 && self->frame.current % 3 == 0)
             {
                 IncrementSecondaryCollisionCount();
-                CreatePositionedAnimationVmId(g_SecondaryActorFiles->file,
+                g_SecondaryActorFiles->file->CreatePositionedVmId(
                     &g_SecondaryActorReferences->position, 0x9c, 0x16);
                 AddSecondaryCollisionValue(g_SecondaryActorCollisionValues[g_SecondaryActorDifficulty]);
                 QueueSecondaryActorSound(0x1c, g_SecondaryActorReferences->position.x);

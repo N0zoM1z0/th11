@@ -61,7 +61,7 @@ refreshes all twenty digits and queues sound 10.
 
 The display is exact only in the wide link (`probes/wide-context.cpp`, 214
 supports) that combines the secondary HUD owners with the full menu context.
-In the earlier joystick-only recipe (`probes/menu-joystick-context.json`) VC9
+In the earlier joystick-only context (since removed) VC9
 pushed the file argument at every bind and dropped the final tail jump. With
 the real menu and animation callers present, LTCG gives `BindAnimationSprite`
 its native register convention and the tail call reappears.

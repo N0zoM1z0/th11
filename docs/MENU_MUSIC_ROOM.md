@@ -73,7 +73,7 @@ indexed heard byte after enqueueing playback; its full body is not mapped here.
 
 ## Compilation and open gaps
 
-The public compile-only recipe is `probes/menu-music-room-context.json`.
+The context is the frontier unit `menu-music-room` in `config/match-units.toml`.
 It uses the pinned VC9 RTM21022 profile and real controller callback route,
 with43 support sources and the existing two normal supports; established linked owners retain /GL.
 Cold source/tool/producer/PE/MAP/PDB receipts bind the diagnostic image. Existing
