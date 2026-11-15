@@ -145,7 +145,9 @@ CameraVector __stdcall StepStageVectorTween(StageVectorTween *self)
     if (self->mode == 17)
     {
         CameraVector previous = self->initial;
-        CameraVector result = AddTweenVector(previous, self->control2);
+        const volatile CameraVector &control = self->control2;
+        CameraVector result = {control.x + previous.x,
+            control.y + previous.y, control.z + previous.z};
         self->initial = result;
         self->control2 = AddTweenVector(self->control2, self->target);
         return result;
