@@ -13,10 +13,7 @@ int __stdcall CountMenuSpellsForDifficulty(int difficulty)
 void __cdecl UnlockMenuPlayerDataEntries()
 {
     unsigned char *statistics = g_SecondaryGameplayStatistics;
-    *reinterpret_cast<unsigned int *>(statistics + 0x2ddea) = 0x11111111;
-    *reinterpret_cast<unsigned int *>(statistics + 0x2ddee) = 0x11111111;
-    *reinterpret_cast<unsigned int *>(statistics + 0x2ddf2) = 0x11111111;
-    *reinterpret_cast<unsigned int *>(statistics + 0x2ddf6) = 0x11111111;
+    memset(statistics + 0x2ddea, 0x11, 16);
     unsigned char *character = statistics + 0x5b1;
     for (int i = 0; i < 6; ++i)
     {

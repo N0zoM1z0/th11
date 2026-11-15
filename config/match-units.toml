@@ -8943,3 +8943,19 @@ linkages = [
   { offset = 44, type = "DIR32", symbol = "?g_MenuSpellDifficulties@@3PACA", target = 0x004A3E10, addend = 3 },
   { offset = 56, type = "DIR32", symbol = "?g_MenuSpellDifficulties@@3PACA", target = 0x004A3E10, addend = 4 },
 ]
+
+[units.unlock-menu-player-data-entries]
+artifact_kind = "linked-pe"
+source = "src/MenuPlayerDataSupport.cpp"
+inputs = ["src/MenuController.hpp"]
+support_sources = ["src/MenuCharacterSelection.cpp", "src/MenuController.cpp", "src/MenuControllerCallbacks.cpp", "src/MenuControllerDraw.cpp", "src/MenuControllerDrawCallback.cpp", "src/MenuControllerSupport.cpp", "src/MenuDifficultySelection.cpp", "src/MenuDifficultySelectionSupport.cpp", "src/MenuJoystick.cpp", "src/MenuJoystickAssignment.cpp", "src/MenuJoystickDisplay.cpp", "src/MenuMusicRoom.cpp", "src/MenuMusicRoomSupport.cpp", "src/MenuPartnerSelection.cpp", "src/MenuPartnerSelectionSupport.cpp", "src/MenuPlayerData.cpp", "src/MenuPlayerDataRecords.cpp", "src/MenuPracticeStage.cpp", "src/MenuPracticeStageDraw.cpp", "src/MenuPracticeStageSupport.cpp", "src/MenuPrimary.cpp", "src/MenuPrimarySelection.cpp", "src/MenuPrimarySupport.cpp", "src/MenuReplayRecordsDraw.cpp", "src/AnimationVmFactory.cpp", "src/RenderBatch.cpp", "src/StageMesh.cpp", "probes/menu-all-context.cpp"]
+output_dir = "build/match-linked/MenuAllMenuPlayerDataSupport"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "MenuAllProbe@4"
+functions = ["UnlockMenuPlayerDataEntries"]
+symbol = "?UnlockMenuPlayerDataEntries@@YAXXZ"
+target_address = 0x004393B0
+size = 99
+linkages = [
+  { offset = 1, type = "DIR32", symbol = "?g_SecondaryGameplayStatistics@@3PAEA", target = 0x004A8EBC },
+]
