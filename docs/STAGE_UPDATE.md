@@ -6,7 +6,7 @@ text section and checked the full owners, branches, callers and neighbors.
 
 | Function | Reviewed target owner | Current primary contribution | State |
 | --- | ---: | ---: | --- |
-| UpdateStage,0x00402AA0 | 1,677 bytes through0x0040312C | 1,710 bytes | Non-exact; 33-byte codegen gap |
+| UpdateStage,0x00402AA0 | 1,677 bytes through0x0040312C | 1,726 bytes | Non-exact; 49-byte codegen gap |
 | UpdateStageObjects,0x004040F0 | 153 bytes through0x00404188 | 153 bytes | canonical linked-PE exact |
 
 Both bodies are contiguous and include internal alignment. Neither contains
@@ -17,17 +17,20 @@ is a canonical exact unit. The current C++ candidate declares `UpdateStage`
 `__fastcall`, consuming the still-preserved ECX value instead of the native
 EAX value. The callback remains semantically compatible because both registers
 hold the same context, but the callee's entry ABI is not byte-exact. In the
-selected object-walker context, the candidate is1710 bytes versus1677 native
-bytes, with321/443 target instructions aligned by the diagnostic comparator.
+selected object-walker context, the candidate is1726 bytes versus1677 native
+bytes, with348/443 target instructions aligned by the diagnostic comparator.
 The two wave phase locals are copied with memcpy so VC9 preserves their raw
 float bit patterns through the native integer-register loads instead of
 introducing x87 load/store round trips, improving the earlier316/443 result to
-320/443. Declaring each ordinary row counter before its vertex pointer, rather
-than as a register-hinted for-loop initializer, moves one more instruction
-into alignment (321/443) without changing row or column traversal order. The
+320/443. Declaring the row counter before its vertex pointer adds one more
+aligned instruction (321/443). Splitting the camera `updateOffset` vector from
+the mesh displacement vector then moves the three camera-copy temporaries to
+the native `[esp+44]`, `[esp+48]` and `[esp+4c]` slots. The mesh vector's Z
+component is initialized only on entry to radial mode, since wave mode writes
+only X/Y and radial mode overwrites X/Y before use. This preserves the original
+math while improving the diagnostic alignment from321/443 to348/443. The
 remaining differences do not close the private EAX-entry mismatch or grant
 exactness.
-not close the private EAX-entry mismatch or grant exactness.
 `UpdateStageObjects` inherits the stage
 in EBX, returns zero in EAX and uses
 RET. Its naked VC9 body retains the original EBP frame, stack layout, signed
@@ -139,7 +142,7 @@ The exact `update-stage-objects` context builds `StageUpdate.cpp` as the primary
 VC9 RTM `/O2 /Oy- /Ob1 /Gy /MT /EHsc /GL` contribution. It proves the complete
 153-byte object-walker owner with one reviewed REL32 call to
 `ExecuteAnimationVm`. The same linked image also contains the diagnostic
-`UpdateStage` contribution at1710 bytes (native1677; 320/443 instructions
+`UpdateStage` contribution at1726 bytes (native1677; 348/443 instructions
 aligned). Keep this measurement in the selected context: an isolated frontier
 root set changes LTCG output and is not a comparable candidate. The exact
 `stage-update-callback` context separately proves the seven-byte ECX-to-EAX

@@ -111,8 +111,8 @@ int __fastcall UpdateStage(StageResourceView *self)
 
     *reinterpret_cast<volatile float *>(&self->camera.view.offsetX) = 0.0f;
     *reinterpret_cast<volatile float *>(&self->camera.view.offsetY) = 0.0f;
-    CameraVector displacement = {0.0f, 0.0f, 0.0f};
-    self->camera.updateOffset = displacement;
+    CameraVector cameraOffset = {0.0f, 0.0f, 0.0f};
+    self->camera.updateOffset = cameraOffset;
     D3DXVec3Normalize(reinterpret_cast<CameraVector *>(self->camera.view.unknown024),
         &self->camera.view.targetOffset);
     self->tint = 0x00808080;
@@ -137,6 +137,7 @@ int __fastcall UpdateStage(StageResourceView *self)
     *reinterpret_cast<StageCameraView *>(reinterpret_cast<unsigned char *>(&g_MainRuntime) + 0x434) = self->camera;
     if (self->bindings)
     {
+        CameraVector displacement;
         CameraVector *position = StageMesh(self)->positions;
         float phaseX;
         float phaseY;
@@ -174,6 +175,7 @@ int __fastcall UpdateStage(StageResourceView *self)
         }
         else if (self->distortionMode == 2)
         {
+            displacement.z = 0.0f;
             float radius = self->radius;
             if (self->minimumRadius < self->radius)
                 self->radius = static_cast<float>(self->radius - 2.0);
