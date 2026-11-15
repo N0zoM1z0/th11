@@ -8,9 +8,10 @@ char *__stdcall DecodeSecondaryDialogueText(const unsigned char *text)
     unsigned char value;
     do
     {
-        value = *text++ ^ key;
+        value = *text ^ key;
         key += step;
         *output++ = value;
+        ++text;
         step += 0x10;
     } while (value);
     return reinterpret_cast<char *>(g_SecondaryDialogueDecodedText);

@@ -39,7 +39,5 @@ int __stdcall ReadSecondaryHostIntegerValue(SecondaryActorStateView *self, int i
 float __stdcall ReadSecondaryHostRealValue(SecondaryActorStateView *self, int index, float value)
 {
     SecondaryVm *vm = self->owner->current;
-    if (vm->instruction->references & (1u << index))
-        value = ReadSecondaryFloatReference(vm, value);
-    return value;
+    return vm->instruction->references & (1u << index) ? ReadSecondaryFloatReference(vm, value) : value;
 }
