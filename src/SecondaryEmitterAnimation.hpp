@@ -5,9 +5,8 @@ struct CameraVector;
 
 AnimationVmId __stdcall PublishSecondaryEmitterAnimationVm(AnimationVmView *vm);
 AnimationVmId __stdcall CreateSecondaryEmitterAnimationVmId(AnimationFileView *file, int script, int layer);
-// Conventional position-preserving secondary-append adapter.
+// 004557E0; LTCG passes the VM in EBX and the hidden result in EAX.
 AnimationVmId __stdcall PublishSecondaryDrawAnimationVm(AnimationVmView *vm);
-// Native private ABI: EBX=VM node, EAX=hidden result slot; no stack arguments.
 AnimationVmId __stdcall CreateSecondaryDrawAnimationVmId(AnimationFileView *file, int script, int layer);
 
 // Independently reviewed prepend owner and its default/explicit-layer factories.

@@ -1,4 +1,4 @@
-# TH11 reconstruction — next-agent handoff (2026-11-14)
+# TH11 reconstruction — next-agent handoff (2026-11-15)
 
 **Start here, then continue the code.** This repository reconstructs only the
 original Japanese TH11 v1.00a executable at `resources/th11.exe` (ignored),
@@ -121,7 +121,7 @@ scripts/repo-python scripts/replay-exact-units.py --unit secondary-actor-instruc
 | --- | --- | --- |
 | `0x45B860` secondary interpreter (7,093 B) | 7,193-byte candidate with the inline pop; VM receiver ESI vs native EDI | [SECONDARY_SCRIPT](SECONDARY_SCRIPT.md) |
 | `0x430290` player movement (2,896 B) | 2,920 bytes, 85 aligned instructions after the pair types | [SECONDARY_PATTERN](SECONDARY_PATTERN.md) |
-| `0x4356E0` secondary replay initializer (1,380 B) | still an `__asm` body (exact claim withdrawn) | [SECONDARY_PATTERN](SECONDARY_PATTERN.md) |
+| `0x4356E0` secondary replay initializer (1,380 B) | natural C++, 305/406 aligned; stage-pointer reload and snapshot store schedule | [SECONDARY_REPLAY_LIFECYCLE](SECONDARY_REPLAY_LIFECYCLE.md) |
 | `0x42D9D0` continue menu (3,192 B) | 3,184/3,192, 2,008 non-address differences | [PAUSE_CONTINUE_MENU](PAUSE_CONTINUE_MENU.md) |
 | `0x42E6B0` game-over menu (3,208 B) | 3,212-byte candidate, 2,040 non-address differences | [PAUSE_GAME_OVER_MENU](PAUSE_GAME_OVER_MENU.md) |
 | `0x4396C0` title-menu destructor (561 B) | 561 bytes, 231 non-address differences | [TITLE_MENU_LIFECYCLE](TITLE_MENU_LIFECYCLE.md) |

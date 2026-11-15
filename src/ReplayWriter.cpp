@@ -92,15 +92,6 @@ extern const char *g_ReplayDifficultyNames[];
 // The native compressor is 004423A0; its original ownership is unresolved.
 unsigned char *__stdcall CompressReplayData(const void *input, int size, int *compressedSize);
 
-// 00437300: append a newly allocated chunk to the current stage's intrusive
-// list. The node lives at offset 18A4 inside its 18B0-byte allocation.
-extern "C" void *__cdecl ReplayAllocate(unsigned int size);
-extern "C" void *__cdecl ReplayMemset(void *destination, int value, unsigned int size);
-extern "C" void *__cdecl ReplayMemcpy(void *destination, const void *source, unsigned int size);
-#pragma comment(linker, "/alternatename:_ReplayAllocate=??2@YAPAXI@Z")
-#pragma comment(linker, "/alternatename:_ReplayMemset=_memset")
-#pragma comment(linker, "/alternatename:_ReplayMemcpy=_memcpy")
-
 namespace
 {
 inline void InsertReplaySegmentAfter(ReplayWriteSegmentNode *self, ReplayWriteSegmentNode *node)

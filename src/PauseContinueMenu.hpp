@@ -18,5 +18,5 @@ void __stdcall ClosePauseContinueMenu(PauseMenuView *self);
 void __stdcall ShowPauseMenuAnimationTree(const AnimationVmId &id);
 AnimationVmId __stdcall CreateDefaultSecondaryDrawAnimationVmId(AnimationFileView *file, int script);
 
-// Full380-byte native helper at42D850: menu receiver is ESI, no stack argument.
+// 0042D850; LTCG passes the menu in ESI.
 void __stdcall PreparePauseContinueRecords(PauseMenuView *self);
