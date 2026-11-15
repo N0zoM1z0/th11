@@ -9425,3 +9425,25 @@ linkages = [
   { offset = 0x631, type = "REL32", symbol = "?NormalizeAngle@@YGMM@Z", target = 0x00458ED0 },
   { offset = 0x641, type = "REL32", symbol = "?RandomNext32@@YGIPAURandomStateView@@@Z", target = 0x00458C30 },
 ]
+
+# Standalone private-ESI timer owner. Kept out of StageTween's LTCG context so
+# its exact leaf proof cannot perturb the vector-tween caller's register layout.
+[units.advance-stage-timer]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/StageTimerExact.cpp"
+inputs = ["src/StageTween.hpp"]
+support_sources = []
+output_dir = "build/match-linked/AdvanceStageTimer"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageTimerProbe@4"
+functions = ["AdvanceStageTimer"]
+symbol = "?AdvanceStageTimer@@YGHPAUStageTimerView@@@Z"
+target_address = 0x00459270
+size = 83
+linkages = [
+  { offset = 0x0D, type = "DIR32", symbol = "_g_StageTimerScaleLower", target = 0x00497F28 },
+  { offset = 0x1A, type = "DIR32", symbol = "_g_StageTimerScaleUpper", target = 0x00497F24 },
+  { offset = 0x2D, type = "DIR32", symbol = "_g_StageTimerOne", target = 0x00497E48 },
+  { offset = 0x4A, type = "REL32", symbol = "__ftol2_sse", target = 0x004864E0 },
+]

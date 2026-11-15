@@ -1,6 +1,6 @@
 # Stage interpolation and timers
 
-Nine complete functions now have natural C++ source in `src/StageTween.cpp`.
+The StageTween family has nine complete function owners with natural C++ source in src/StageTween.cpp. AdvanceStageTimer additionally has an isolated private-ESI translation unit in src/StageTimerExact.cpp that reproduces its complete 83-byte native owner without changing the vector-tween LTCG context.
 Direct local Ghidra review attested the mapped text hash and reconciled full
 flows, returns, references and neighbors. These nine owners are contiguous,
 without embedded tables or external interior references.
@@ -16,7 +16,7 @@ without embedded tables or external interior references.
 | AddStageFog | 00405A50 | 61 | 61 | Exact linked unit |
 | PackStageFog | 00405B70 | 171 | 171 | Exact linked unit (now in this TU) |
 | SetStageTimer | 00406100 | 59 | 59 | Exact linked unit |
-| AdvanceStageTimer | 00459270 | 83 | 83 | Non-exact |
+| AdvanceStageTimer | 00459270 | 83 | 83 | Exact linked-PE unit (advance-stage-timer) |
 
 The generic timer bodies' and factor getters' original provenance remains
 indeterminate. Fresh review finds the same factor pattern across five other
@@ -155,7 +155,15 @@ mode8's x87 coefficient and scale scheduling, and the final interpolation
 fallback. The next step is to close those remaining expression/temporary
 boundaries without changing the shared `CameraVector` aggregate.
 
-AdvanceStageTimer keeps its earlier eight-byte INC/LEA difference.
+AdvanceStageTimer is exact in the isolated advance-stage-timer linked-PE
+unit. The body preserves the private ESI input, ECX save/restore, previous-frame
+copy, strict near-one scale comparisons, x87 tick branch and _ftol2_sse
+fractional conversion. Four reviewed relocations bind the original 0.99f,
+1.01f, 1.0 constants and CRT conversion routine. Keeping this proof in its own
+translation unit prevents its private register convention from perturbing
+StepStageVectorTween's LTCG caller allocation. Replay it with:
+scripts/repo-python scripts/replay-exact-units.py --unit advance-stage-timer
+
 
 The factor helpers take state in EAX and return ST0; their exact units each
 bind one REL32 to 459730; see [STAGE_EASING.md](STAGE_EASING.md).
