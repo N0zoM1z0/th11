@@ -6,7 +6,7 @@ text section and checked the full owners, branches, callers and neighbors.
 
 | Function | Reviewed target owner | Current primary contribution | State |
 | --- | ---: | ---: | --- |
-| UpdateStage,0x00402AA0 | 1,677 bytes through0x0040312C | 1,726 bytes | Non-exact; 49-byte codegen gap |
+| UpdateStage,0x00402AA0 | 1,677 bytes through0x0040312C | 1,710 bytes | Non-exact; 33-byte codegen gap |
 | UpdateStageObjects,0x004040F0 | 153 bytes through0x00404188 | 153 bytes | canonical linked-PE exact |
 
 Both bodies are contiguous and include internal alignment. Neither contains
@@ -17,8 +17,8 @@ is a canonical exact unit. The current C++ candidate declares `UpdateStage`
 `__fastcall`, consuming the still-preserved ECX value instead of the native
 EAX value. The callback remains semantically compatible because both registers
 hold the same context, but the callee's entry ABI is not byte-exact. In the
-selected object-walker context, the candidate is1726 bytes versus1677 native
-bytes, with348/443 target instructions aligned by the diagnostic comparator.
+selected object-walker context, the candidate is1710 bytes versus1677 native
+bytes, with241/443 target instructions aligned by the diagnostic comparator.
 The two wave phase locals are copied with memcpy so VC9 preserves their raw
 float bit patterns through the native integer-register loads instead of
 introducing x87 load/store round trips, improving the earlier316/443 result to

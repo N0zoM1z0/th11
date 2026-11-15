@@ -198,11 +198,10 @@ int __fastcall UpdateStage(StageResourceView *self)
                     {
                         float factor = static_cast<float>(remaining / radiusSquared);
                         vertex->color = 0xffffffff;
-                        unsigned char *color = reinterpret_cast<unsigned char *>(&vertex->color);
-                        color[3] = 0x60;
-                        color[2] = static_cast<unsigned char>(static_cast<int>(255.0 - (255 - color[2]) * factor));
-                        color[1] = static_cast<unsigned char>(static_cast<int>(255.0 - (255 - color[1]) * factor));
-                        color[0] = static_cast<unsigned char>(static_cast<int>(255.0 - (255 - color[0]) * factor));
+                        reinterpret_cast<unsigned char *>(&vertex->color)[3] = 0x60;
+                        reinterpret_cast<unsigned char *>(&vertex->color)[2] = static_cast<unsigned char>(static_cast<int>(255.0 - (255 - reinterpret_cast<unsigned char *>(&vertex->color)[2]) * factor));
+                        reinterpret_cast<unsigned char *>(&vertex->color)[1] = static_cast<unsigned char>(static_cast<int>(255.0 - (255 - reinterpret_cast<unsigned char *>(&vertex->color)[1]) * factor));
+                        reinterpret_cast<unsigned char *>(&vertex->color)[0] = static_cast<unsigned char>(static_cast<int>(255.0 - (255 - reinterpret_cast<unsigned char *>(&vertex->color)[0]) * factor));
                         float magnitude = static_cast<float>(factor * 32.0);
                         D3DXVec3Normalize(&direction, &direction);
                         direction.x *= magnitude;
