@@ -33,7 +33,7 @@ inline void __stdcall SetStageTimer(StageTimerView *self, int frame)
     self->fraction = static_cast<float>(frame);
 }
 
-inline void StageFogView::Pack()
+__declspec(noinline) inline void StageFogView::Pack()
 {
     unsigned char *bytes = reinterpret_cast<unsigned char *>(&packed);
     bytes[0] = static_cast<unsigned char>(static_cast<int>(channels[0]));

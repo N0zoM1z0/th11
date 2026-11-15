@@ -9447,3 +9447,57 @@ linkages = [
   { offset = 0x2D, type = "DIR32", symbol = "_g_StageTimerOne", target = 0x00497E48 },
   { offset = 0x4A, type = "REL32", symbol = "__ftol2_sse", target = 0x004864E0 },
 ]
+
+# Diagnostic primary-TU context for the stage-script boss. Keep StageScript.cpp
+# as the owner and mirror the native frame-pointer profile independently of
+# the vector-tween frontier.
+[units.execute-stage-script-frontier]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/StageScript.cpp"
+inputs = [
+  "probes/stage-script-context.cpp",
+  "probes/stage-tween-context.cpp",
+  "src/AngleMath.cpp",
+  "src/AngleMath.hpp",
+  "src/AnimationDocument.hpp",
+  "src/AnimationVm.hpp",
+  "src/AnimationVmFactory.cpp",
+  "src/AnimationVmFactory.hpp",
+  "src/AnimationVmId.hpp",
+  "src/Camera.hpp",
+  "src/Chain.hpp",
+  "src/MainRuntime.hpp",
+  "src/PerspectiveCamera.hpp",
+  "src/Random.hpp",
+  "src/RenderBatch.hpp",
+  "src/StageEasing.cpp",
+  "src/StageMesh.cpp",
+  "src/StageMesh.hpp",
+  "src/StageResource.hpp",
+  "src/StageScript.cpp",
+  "src/StageScript.hpp",
+  "src/StageTween.cpp",
+  "src/StageTween.hpp",
+  "src/StageUpdate.hpp",
+  "src/VmBindings.hpp",
+]
+support_sources = [
+  "probes/stage-script-context.cpp",
+  "probes/stage-tween-context.cpp",
+  "src/StageTween.cpp",
+  "src/StageEasing.cpp",
+  "src/StageMesh.cpp",
+  "src/AnimationVmFactory.cpp",
+  "src/AngleMath.cpp",
+]
+normal_support_sources = ["src/AngleMath.cpp"]
+support_profiles = { "src/StageTween.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"] }
+output_dir = "build/match-linked/StageScriptFrontier"
+profile = ["/TP", "/O2", "/Oy-", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageScriptProbe@12"
+functions = ["ExecuteStageScript"]
+symbol = "?ExecuteStageScript@@YGHPAUStageResourceView@@@Z"
+target_address = 0x00404470
+size = 2736
+linkages = []

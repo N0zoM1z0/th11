@@ -62,29 +62,46 @@ int __stdcall ExecuteStageScript(StageResourceView *self)
                 self->section008 + state.instruction->args.words[0]);
             continue;
         case 2:
-            self->camera.updateOffset = self->camera.view.position;
+        {
+            CameraVector cameraOffset = self->camera.view.position;
             ScriptVector(self->camera.view.position, values);
-            self->camera.updateOffset.x = self->camera.view.position.x - self->camera.updateOffset.x;
-            self->camera.updateOffset.y = self->camera.view.position.y - self->camera.updateOffset.y;
-            self->camera.updateOffset.z = self->camera.view.position.z - self->camera.updateOffset.z;
+            cameraOffset.x = self->camera.view.position.x - cameraOffset.x;
+            cameraOffset.y = self->camera.view.position.y - cameraOffset.y;
+            cameraOffset.z = self->camera.view.position.z - cameraOffset.z;
+            self->camera.updateOffset = cameraOffset;
             break;
+        }
         case 3:
+        {
             state.positionTween.duration = words[0];
             state.positionTween.mode = words[1];
             state.positionTween.initial = self->camera.view.position;
-            ScriptVector(state.positionTween.target, values + 2);
+            volatile float targetX = values[2];
+            volatile float targetY = values[3];
+            volatile float targetZ = values[4];
+            state.positionTween.target.x = targetX;
+            state.positionTween.target.y = targetY;
+            state.positionTween.target.z = targetZ;
             state.positionTween.time.SetFrame(-1);
             break;
+        }
         case 4:
             ScriptVector(self->camera.view.targetOffset, values);
             break;
         case 5:
+        {
             state.targetTween.duration = words[0];
             state.targetTween.mode = words[1];
             state.targetTween.initial = self->camera.view.targetOffset;
-            ScriptVector(state.targetTween.target, values + 2);
+            volatile float targetX = values[2];
+            volatile float targetY = values[3];
+            volatile float targetZ = values[4];
+            state.targetTween.target.x = targetX;
+            state.targetTween.target.y = targetY;
+            state.targetTween.target.z = targetZ;
             state.targetTween.time.SetFrame(-1);
             break;
+        }
         case 6:
             ScriptVector(self->camera.view.up, values);
             break;

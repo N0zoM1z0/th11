@@ -6,7 +6,7 @@ section and reconciled its full extent, instruction flow, callers and tables.
 
 | Function | Full target owner | Source contribution | State |
 | --- | ---: | ---: | --- |
-| ExecuteStageScript,0x00404470 | 2,736 bytes through0x00404F1F | 2,728 bytes | Non-exact; EH ownership open |
+| ExecuteStageScript,0x00404470 | 2,736 bytes through0x00404F1F | 2,744 bytes | Non-exact; EH ownership open |
 | PackStageFog,0x00405B70 | 171 bytes through0x00405C1A | 171 bytes | Exact; defined inline in StageTween.cpp (see [STAGE_TWEEN](STAGE_TWEEN.md)) |
 
 The interpreter's Ghidra code body ends at404EB8 and contains2,633 bytes.
@@ -111,8 +111,15 @@ fractional, infinite and NaN inputs were checked against the actual bodies.
 
 ## Code generation and proofs
 
-The current real-tween support context produces a2,728-byte primary
-interpreter contribution with a0x68-byte local reservation versus native0x98.
+The current primary StageScript frontier produces a2,744-byte interpreter
+contribution (8 bytes larger than native) with a0x68-byte local reservation
+versus native0x98. Its primary TU uses /Oy-; the StageTween support TU keeps
+the normal /O2 /Ob1 /Gy /MT /EHsc /GL profile so Pack remains its exact
+171-byte owner. Opcode3 and opcode5 now spill the three target-vector float
+arguments through distinct volatile local slots before copying them to the
+tween state, reproducing the native x87 stack-temporary path. The current
+instruction diagnostic aligns303/610 target instructions; this is not an
+exactness percentage.
 The preceding opaque-tween context produced2,740 bytes. An initial
 aggregate-return helper produced3,048 bytes/0x120; a hybrid with aggregate tween
 vectors produced2,924 bytes/0xF8. Retained direct writes pass the same full-body
@@ -121,10 +128,9 @@ load order or improve the3,048-byte baseline and was reverted. An all-GL angle-m
 minimum-radius comparison by proving the callee could not change it. Using the
 existing normal-COFF angle source restores that comparison while preserving
 GL on the primary interpreter. This supports an opaque-callee hypothesis; it
-does not establish the original TU partition. Current2,217
-address-masked diagnostic positions differ; shifting instructions make this
-count unsuitable as a completion percentage. The interpreter receives no exact
-credit, including for its unresolved EH/funclet context.
+does not establish the original TU partition. The interpreter remains
+non-exact; its unresolved EH/funclet context and the remaining code-generation
+differences receive no exact credit.
 
 Fog packing is a non-EH public primary-TU PDB contribution. A cold pinned VC9
 build has identical171 bytes and no linked address fields. PE/MAP/PDB identity,
