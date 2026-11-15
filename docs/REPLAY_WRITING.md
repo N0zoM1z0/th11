@@ -175,13 +175,11 @@ zero byte differences. The exact 150-byte allocator remains independently
 proved by `replay-append-write-segment`.
 
 
-## Segment allocator private ABI (`0x437300`)
+## Segment allocator (`0x437300`)
 
-`AppendReplayWriteSegment` has no stack arguments: `EBX` is the replay state,
-`EDI` is the stage index, and `EAX` returns the embedded node at allocation
-offset `0x18A4`. Its naked VC9 implementation reproduces the native 150-byte
-body, including operator new, zeroing, cursor initialization and the generic
-intrusive-list splice. The canonical local linked-PE unit
-`replay-append-write-segment` replays its two `REL32` fields (operator new at
-`0x45FCE4`, memset at `0x46A720`) with zero non-field byte differences.
-Factory acceptance remains a separate receipt decision.
+`AppendReplayWriteSegment(state, stage)` allocates and constructs a segment,
+walks the stage's list to the tail and links the node through an inline
+insert-after. In native, LTCG passes the state in EBX and the stage in EDI.
+That convention appears only when no caller is inline asm. In the writer and
+initializer contexts it is 38/40 aligned; the segment constructor's store
+schedule differs.

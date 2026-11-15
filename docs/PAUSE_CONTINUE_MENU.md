@@ -150,12 +150,10 @@ the candidate retains 88 calls, 15 RET4 exits and all 162 address fields.
 Further work must recover the native EBP/ESP frame schedule, the final eight
 bytes of owner extent, and the remaining 2008 non-address codegen differences.
 
-The record preparer's private entry ABI is now recovered: `0x42D850` receives
-the menu pointer in ESI, has no stack arguments and exits through two plain
-`RET`s. `src/PauseContinueRecords.cpp` expresses the complete owner as a naked
-VC9 body, and both the continuation and game-over callers now load ESI and
-call it directly. Its canonical normal-COFF unit is **380/380 bytes exact**
-with all **17/17** relocation fields reviewed.
+The record preparer `0x42D850` is plain C++ and exact
+(`prepare-pause-continue-records`, linked). LTCG passes the menu in ESI. Its two
+selections use a clamp setter and a three-way reset, the score block is held in
+a local, and the probe gives `MoveSecondaryDebugSelection` a live amount.
 
 The focused `/GL` boss context now retains **88/88 calls**, **15/15 RET4 paths**
 and all **162/162 address fields**. With branch-local result slots and `/Oy`,
@@ -217,27 +215,18 @@ boss's EBP/ESI register schedule and branch-specific hidden-result lifetimes,
 then investigate the still non-exact 1856-byte replay writer436420 (see
 REPLAY_WRITING.md) without unrelated full-build validation.
 
-## Exact score-insertion leaf (2026-11-13)
+## Score insertion leaf
 
-The score insertion owner `0x42BA80..0x42BBEC` is now a canonical exact
-normal-COFF unit: **365/365 bytes**, with **17/17 DIR32/REL32 fields** reviewed
-and replayed. The unit is `insert-pause-continue-score`; the receipt binds the
-source, direct headers, pinned VC9 RTM compiler and object. No full cold replay
-was run.
-
-The exact source keeps the native private ABI explicit in a naked VC9 body.
-It preserves the scan's signed score comparison, the separate loop-exhaustion
-and post-match failure `RET 4` exits, the successful `RET 4`, the conditional
-seven-DWORD backwards record shift, and the per-field difficulty/row address
-recalculation. It also retains the `_time64` call, the shared nine-byte
-space-name data at `0x495244`, and the original x87 completion expression using
-the shared `100.0` constant at `0x497E50`.
+`InsertPauseContinueScore` 0x42BA80 (365 bytes) is plain C++ and exact as
+normal COFF (`insert-pause-continue-score`). It runs a descending search,
+shifts 28-byte records by struct copy, stores the score, shot, stage and time,
+writes the blank name with `strcpy` of a literal (bound to native 0x495244) and
+stores the completion rate (100.0 at 0x497E50).
 
 `PauseRecordTimingView` is explicitly four-byte packed, with compile-time
 checks for `elapsed=+0x24` and `limit=+0x2C`. The previous default alignment
 placed these fields at `+0x28/+0x30`; the exact assembly now reads the native
-operands. The insertion leaf and its 380-byte record-preparer caller are both now
-independently exact normal-COFF units. The 3192-byte continuation boss at
+operands. The insertion leaf and the record preparer are both exact. The 3192-byte continuation boss at
 `0x42D9D0` remains non-exact; its focused private-ESI `/GL` context now has
 162 reviewed fields and 2380 non-address byte differences. The other insertion
 caller at `0x43F802` is not yet part of a full runtime-equivalence proof.
@@ -381,22 +370,14 @@ This exact leaf is separate from the 92-byte close helper and the
 still-non-exact 3192-byte continuation owner.
 
 
-## 33-byte pause score commit — strict exact (2026-11-13)
+## Pause score commit (0x42BA20, 33 bytes)
 
-`CommitPauseMenuScore` at `0x42BA20` is now strict canonical exact:
-**33/33 bytes, 8/8 instructions, four reviewed DIR32 fields and zero byte
-differences** in the dedicated VC9 `/GL` primary-TU owner. The native order is
-HUD pointer to EAX, current score to ECX, HUD mirror store at `+0x43E4`, copy
-ECX to EAX, signed comparison against the best score, then conditional update.
-
-`src/PauseContinueMenuSupport.cpp` keeps the HUD field view and compile-time
-`+0x43E4` assertion. A minimal inline-assembly body preserves the native
-EAX/ECX schedule while VC9 emits the single plain RET. The old 31/33-byte
-candidate and volatile-pointer experiments are superseded; do not describe
-the score leaf as open or non-exact. Canonical unit:
-`commit-pause-menu-score` (`build/match-linked/PauseMenuScore`). The close and
-animation-tree helpers in the same source file remain separate 92/92 and
-64/64 exact owners.
+`CommitPauseMenuScore` is plain C++ and not exact (its former inline-asm body
+was withdrawn). It stores the score into the HUD mirror at +0x43E4 and raises
+the best score. Native loads the HUD pointer into EAX and copies the score from
+ECX to EAX before the compare. A score local, a HUD local, an inline helper, an
+`int` return and comparing against the stored HUD value all produce the swapped
+31-byte form.
 
 ## Replay teardown leaf and continuation boss follow-up (2026-11-13)
 

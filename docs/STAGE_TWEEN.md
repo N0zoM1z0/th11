@@ -8,7 +8,7 @@ without embedded tables or external interior references.
 | Function | Address | Target bytes | Source bytes | State |
 | --- | --- | ---: | ---: | --- |
 | StepStageVectorTween | 00405240 | 883 | 887 | Non-exact (267/280 aligned) |
-| StepStageFogTween | 004055D0 | 737 | 794 | Non-exact |
+| StepStageFogTween | 004055D0 | 737 | 737 | Exact in the wide secondary link (`step-stage-fog-tween`) |
 | StageVectorTweenFactor | 00405960 | 39 | 39 | Exact linked unit |
 | StageFogTweenFactor | 00405990 | 45 | 45 | Exact linked unit |
 | SubtractStageFog | 004059D0 | 61 | 61 | Exact linked unit |

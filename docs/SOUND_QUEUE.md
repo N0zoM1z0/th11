@@ -15,7 +15,7 @@ missing from the original inventory.
 | Owner | Address | Full bytes | State |
 | --- | --- | ---: | --- |
 | ProcessSoundQueue | 44A340 | 1,460 | Source; candidate1,556 /1,085 diagnostic differences |
-| MusicStreamingThread | 44A900 | 177 | Exact;7 fields |
+| MusicStreamingThread | 44A900 | 177 | Source; 54/63 aligned (exact claim withdrawn: it relied on a volatile cast) |
 | EnqueueSoundCommand | 44A9C0 | 151 | Exact;8 fields |
 | FirstMusicBuffer | 45AA00 | 19 | Source; candidate19 /13 |
 | SetMusicBufferVolume | 45AAF0 | 125 | Exact;4 fields |

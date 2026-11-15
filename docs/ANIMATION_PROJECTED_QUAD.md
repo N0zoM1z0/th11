@@ -9,7 +9,7 @@ remain indeterminate; the five import thunks are exclusions.
 
 | Owner | Address | Target bytes | State |
 | --- | --- | ---: | --- |
-| AnimationDistanceRoot | 4196E0 | 31 | Complete source; non-exact |
+| AnimationDistanceRoot | 4196E0 | 31 | Exact (`animation-distance-root`) |
 | DrawAdaptiveUnroundedAnimationVm | 450690 | 111 | Complete source; non-exact |
 | BuildBillboardAnimationVmQuad | 450700 | 976 | Complete review; source open |
 | DrawBillboardAnimationVm | 450AD0 | 33 | Complete source; non-exact |

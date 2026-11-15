@@ -67,14 +67,11 @@ function-pointer owners Ghidra missed in its initial inventory:
   spans were directly reviewed, and the title resource setup uses this
   callback rather than inventing a no-op.
 
-The 429-byte replay-record member destructor called from title destruction
-is now **strictly exact**: 114 instructions, 14 calls, 38 independently bound
-fields and zero byte differences. A same-entry linker alias keeps the original
-member symbol while its naked private owner uses a separate POD physical view;
-the factory translation unit retains the real typed stage array and EH vector
-construction. The 199-byte recording factory and 198-byte playback factory
-are now independently strict exact as well. The separate 165-byte thread is
-also an independently exact unit.
+The 429-byte replay-record destructor called from title destruction is a
+plain C++ destructor that matches native byte for byte apart from relocated
+fields. It is SEH-framed and not claimed; see
+[REPLAY_RECORD_LIFECYCLE](REPLAY_RECORD_LIFECYCLE.md). The separate 165-byte
+thread is an independently exact unit.
 
 ## Exact 165-byte title worker callback (2026-11-12)
 

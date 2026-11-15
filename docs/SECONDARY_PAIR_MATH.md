@@ -62,18 +62,14 @@ interior entries or tables. Eleven were absent from the candidate inventory;
 | ScaleSecondaryPair | 4195C0 | 23 | Stack float, two rounded products, RET4 |
 | AddSecondaryPair | 4195E0 | 16 | Two rounded sums to output |
 
-The four remaining pair-access owners are now all strictly exact in their
-canonical linked-PE units. The two preset-copy functions use raw 32-bit
-component transfers and reproduce both DIR32 references at offsets2 and11.
-`SetSecondaryPairDuration` retains its native private register contract
-(EAX=pair state, ECX=duration) in a four-byte naked owner. `AddSecondaryPair`
-retains the original EAX output / ECX left / EDX right contract and exact x87
-load/add/store order in a 16-byte naked owner; a commuted high-level `+`
-expression generated the opposite x87 operand order and was replaced with
-the explicit native sequence. The four owners total58 bytes, all with zero
-byte differences: 19/19, 19/19, 4/4 and16/16. Their separate units are
-`reset-secondary-pair-control1`, `reset-secondary-pair-control2`,
-`set-secondary-pair-duration` and `add-secondary-pair`.
+The two preset-copy functions use raw 32-bit component transfers and
+reproduce both DIR32 references at offsets 2 and 11.
+`SetSecondaryPairDuration` (419510) and `AddSecondaryPair` (4195E0) are
+uncalled dead copies. Their former naked bodies were withdrawn on 2026-11-14.
+As plain C++ they get a register convention from LTCG, but with the registers
+assigned differently (ECX/EAX and EDX/ECX). They need the real inlining owner,
+probably the dispatcher's pair setup. The two preset copies are exact
+(`reset-secondary-pair-control1`, `reset-secondary-pair-control2`).
 
 The complete101-byte4195F0 owner is also independently reviewed: two stack floats,
 double pi/tau comparisons, three rounded RET8 paths and the actual418D20 caller.
@@ -166,7 +162,7 @@ The actual previous receipts select19 affected old units through StageTween,
 StageScript, AnimationTween, SecondaryPairTween and SecondaryActorMotion. Final
 selected cold replay passes27 units across6 linked families. Source hashes are
 frozen before compilation and unchanged afterward; no full cohort is replayed.
-The four remaining pair leaves and all large/math owners remain non-exact.
+The duration setter, the add leaf and the large math owners remain non-exact.
 
 This adds14 source mappings/373 target bytes,11 omitted pair candidates and one
 omitted CRT candidate. Fifteen new boundary/origin reviews include13 new
