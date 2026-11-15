@@ -18,8 +18,13 @@ is a canonical exact unit. The current C++ candidate declares `UpdateStage`
 EAX value. The callback remains semantically compatible because both registers
 hold the same context, but the callee's entry ABI is not byte-exact. In the
 selected object-walker context, the candidate is1710 bytes versus1677 native
-bytes, with316/443 target instructions aligned by the diagnostic comparator.
-`UpdateStageObjects` inherits the stage in EBX, returns zero in EAX and uses
+bytes, with320/443 target instructions aligned by the diagnostic comparator.
+The two wave phase locals are copied with `memcpy` so VC9 preserves their raw
+float bit patterns through the native integer-register loads instead of
+introducing x87 load/store round trips. This is a four-instruction-alignment
+improvement over the previous316/443 candidate; it does not close the private
+EAX-entry mismatch or grant exactness. `UpdateStageObjects` inherits the stage
+in EBX, returns zero in EAX and uses
 RET. Its naked VC9 body retains the original EBP frame, stack layout, signed
 primitive walk and VM call boundary; its one REL32 to `ExecuteAnimationVm` is
 independently replayed. These exact leaf/adapter proofs do not imply that the
