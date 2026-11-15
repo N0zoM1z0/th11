@@ -9403,4 +9403,25 @@ functions = ["UpdateStage"]
 symbol = "?UpdateStage@@YIHPAUStageResourceView@@@Z"
 target_address = 0x00402AA0
 size = 1677
-linkages = []
+linkages = [
+  { offset = 0x078, type = "REL32", symbol = "D3DX9_37.DLL::D3DXVec3Normalize", target = 0x0045F9BC },
+  { offset = 0x09F, type = "REL32", symbol = "?ExecuteStageScript@@YGHPAUStageResourceView@@@Z", target = 0x00404470 },
+  { offset = 0x0B2, type = "REL32", symbol = "?ExecuteAnimationVm@@YGHPAUAnimationVmView@@@Z", target = 0x0044B4B0 },
+  { offset = 0x0E3, type = "REL32", symbol = "?ExecuteAnimationVm@@YGHPAUAnimationVmView@@@Z", target = 0x0044B4B0 },
+  { offset = 0x0EF, type = "REL32", symbol = "?ExecuteAnimationVm@@YGHPAUAnimationVmView@@@Z", target = 0x0044B4B0 },
+  { offset = 0x0FB, type = "REL32", symbol = "?ExecuteAnimationVm@@YGHPAUAnimationVmView@@@Z", target = 0x0044B4B0 },
+  { offset = 0x187, type = "REL32", symbol = "?ResetStageMesh@@YGXPAUStageMeshView@@MMMM@Z", target = 0x0040E6C0 },
+  { offset = 0x1BA, type = "REL32", symbol = "__CIsin", target = 0x00486CF0 },
+  { offset = 0x1E9, type = "REL32", symbol = "__CIsin", target = 0x00486CF0 },
+  { offset = 0x255, type = "REL32", symbol = "?NormalizeAngle@@YGMM@Z", target = 0x00458ED0 },
+  { offset = 0x28C, type = "REL32", symbol = "?NormalizeAngle@@YGMM@Z", target = 0x00458ED0 },
+  { offset = 0x2C4, type = "REL32", symbol = "?NormalizeAngle@@YGMM@Z", target = 0x00458ED0 },
+  { offset = 0x35B, type = "REL32", symbol = "?ResetStageMesh@@YGXPAUStageMeshView@@MMMM@Z", target = 0x0040E6C0 },
+  { offset = 0x4FA, type = "REL32", symbol = "D3DX9_37.DLL::D3DXVec3Normalize", target = 0x0045F9BC },
+  { offset = 0x527, type = "REL32", symbol = "__CIsin", target = 0x00486CF0 },
+  { offset = 0x54A, type = "REL32", symbol = "__CIsin", target = 0x00486CF0 },
+  { offset = 0x5A9, type = "REL32", symbol = "?NormalizeAngle@@YGMM@Z", target = 0x00458ED0 },
+  { offset = 0x5C8, type = "REL32", symbol = "?NormalizeAngle@@YGMM@Z", target = 0x00458ED0 },
+  { offset = 0x631, type = "REL32", symbol = "?NormalizeAngle@@YGMM@Z", target = 0x00458ED0 },
+  { offset = 0x641, type = "REL32", symbol = "?RandomNext32@@YGIPAURandomStateView@@@Z", target = 0x00458C30 },
+]

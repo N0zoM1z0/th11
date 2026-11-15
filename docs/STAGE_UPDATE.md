@@ -31,6 +31,16 @@ independently replayed. These exact leaf/adapter proofs do not imply that the
 1,677-byte `UpdateStage` boss is finished. Original TU ownership remains
 unknown; origin is authored game logic.
 
+The `update-stage` frontier now carries 20 explicit REL32 dependency bindings
+for calls inside the native 1,677-byte owner: the D3DX normalize import thunk,
+stage script, animation VM, mesh reset, CRT sine, angle wrapping and text RNG.
+The candidate's final extra angle-wrap call lies beyond the native owner end
+and is intentionally not replayed as a target field. These bindings keep the
+linked diagnostic image on the native dependency addresses; they do not reduce
+the C++ code-generation differences or establish boss exactness. The D3DX
+import thunk and CRT routine retain their separately recorded provenance and
+acceptance limits.
+
 ## Update order
 
 Flag mask08 returns1 before any writes. Mask04 together with signed timer
