@@ -8557,3 +8557,244 @@ size = 64
 relocations = [
   { offset = 1, type = "DIR32", symbol = "?g_SecondaryGameplayStatistics@@3PAEA", target = 0x004A8EBC },
 ]
+
+[units.animation-distance-root]
+artifact_kind = "linked-pe"
+source = "src/AnimationProjectedQuad.cpp"
+inputs = ["src/AnimationFan.hpp"]
+support_sources = ["src/AnimationFan.cpp", "probes/animation-fan-context.cpp", "src/AnimationImmediateDraw.cpp", "src/AnimationVmDraw.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp", "src/Random.cpp"]
+output_dir = "build/match-linked/AnimationDistanceRoot"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationFanProbe@28"
+functions = ["AnimationDistanceRoot"]
+symbol = "?AnimationDistanceRoot@@YGMM@Z"
+target_address = 0x004196E0
+size = 31
+linkages = [
+  { offset = 13, type = "REL32", symbol = "__CIsqrt", target = 0x00486AA0 },
+]
+
+[units.set-configuration-menu-state]
+artifact_kind = "linked-pe"
+source = "src/ConfigurationAudioMenu.cpp"
+inputs = ["src/ConfigurationAudioMenu.hpp"]
+support_sources = ["src/SoundQueue.cpp", "src/MusicStream.cpp", "probes/sound-queue-context.cpp", "src/StageMesh.cpp", "probes/stage-mesh-context.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmFactory.cpp", "probes/configuration-audio-menu-context.cpp", "src/SecondaryPlayerMovement.cpp", "src/SecondaryDamageSupport.cpp", "src/MeshEffects.cpp", "src/ConfigurationMenuSelection.cpp", "src/ConfigurationMenuAnimation.cpp", "probes/configuration-menu-support-context.cpp", "src/AnimationExecution.cpp"]
+output_dir = "build/match-linked/SetConfigurationMenuState"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "ConfigurationAudioMenuProbe@4"
+functions = ["SetConfigurationMenuState"]
+symbol = "?SetConfigurationMenuState@@YGXPAUConfigurationAudioMenuView@@H@Z"
+target_address = 0x00439140
+size = 82
+linkages = [
+  { offset = 49, type = "DIR32", symbol = "?g_AnimationTimeScale@@3MA", target = 0x004A7948 },
+]
+
+[units.set-configuration-menu-page]
+artifact_kind = "linked-pe"
+source = "src/ConfigurationAudioMenu.cpp"
+inputs = ["src/ConfigurationAudioMenu.hpp"]
+support_sources = ["src/SoundQueue.cpp", "src/MusicStream.cpp", "probes/sound-queue-context.cpp", "src/StageMesh.cpp", "probes/stage-mesh-context.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmFactory.cpp", "probes/configuration-audio-menu-context.cpp", "src/SecondaryPlayerMovement.cpp", "src/SecondaryDamageSupport.cpp", "src/MeshEffects.cpp", "src/ConfigurationMenuSelection.cpp", "src/ConfigurationMenuAnimation.cpp", "probes/configuration-menu-support-context.cpp", "src/AnimationExecution.cpp"]
+output_dir = "build/match-linked/SetConfigurationMenuPage"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "ConfigurationAudioMenuProbe@4"
+functions = ["SetConfigurationMenuPage"]
+symbol = "?SetConfigurationMenuPage@@YGXPAUConfigurationAudioMenuView@@H@Z"
+target_address = 0x004390E0
+size = 85
+linkages = [
+  { offset = 52, type = "DIR32", symbol = "?g_AnimationTimeScale@@3MA", target = 0x004A7948 },
+]
+
+[units.signal-and-execute-configuration-animation]
+artifact_kind = "linked-pe"
+source = "src/ConfigurationMenuAnimation.cpp"
+inputs = ["src/ConfigurationAudioMenu.hpp"]
+support_sources = ["src/ConfigurationAudioMenu.cpp", "src/SoundQueue.cpp", "src/MusicStream.cpp", "probes/sound-queue-context.cpp", "src/StageMesh.cpp", "probes/stage-mesh-context.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmFactory.cpp", "probes/configuration-audio-menu-context.cpp", "src/SecondaryPlayerMovement.cpp", "src/SecondaryDamageSupport.cpp", "src/MeshEffects.cpp", "src/ConfigurationMenuSelection.cpp", "probes/configuration-menu-support-context.cpp", "src/AnimationExecution.cpp"]
+output_dir = "build/match-linked/SignalAndExecuteConfigurationAnimation"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "ConfigurationAudioMenuProbe@4"
+functions = ["SignalAndExecuteConfigurationAnimation"]
+symbol = "?SignalAndExecuteConfigurationAnimation@@YGXUAnimationVmId@@F@Z"
+target_address = 0x00456280
+size = 95
+linkages = [
+  { offset = 12, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x004C3268 },
+  { offset = 19, type = "REL32", symbol = "?FindAnimationVmById@@YGPAUAnimationVmView@@PAURenderBatchView@@UAnimationVmId@@@Z", target = 0x004561E0 },
+  { offset = 38, type = "REL32", symbol = "?ExecuteAnimationVm@@YGHPAUAnimationVmView@@@Z", target = 0x0044B4B0 },
+  { offset = 77, type = "REL32", symbol = "?ExecuteAnimationVm@@YGHPAUAnimationVmView@@@Z", target = 0x0044B4B0 },
+]
+
+[units.read-secondary-host-integer-value]
+artifact_kind = "linked-pe"
+source = "src/SecondaryHostArguments.cpp"
+inputs = ["src/SecondaryHud.hpp", "src/ChainRegistration.hpp"]
+support_sources = ["src/ScreenEffectInitialization.cpp", "src/SecondaryGameplay.cpp", "src/SecondaryActorInstructions.cpp", "src/SecondaryEclDebug.cpp", "src/SecondaryScript.cpp", "src/SecondaryActorCreation.cpp", "src/SecondaryActorLifetime.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorUpdate.cpp", "src/StageLifecycle.cpp", "src/StageTween.cpp", "src/FrameRuntime.cpp", "src/SecondaryGameplayCallbacks.cpp", "src/SecondaryGameplaySupport.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryDialogueAnimation.cpp", "src/StageMesh.cpp", "src/AnimationSpriteBinding.cpp", "src/FormattedTextureText.cpp", "src/SecondaryDamageSupport.cpp", "src/SecondaryPlayerMovement.cpp", "src/MeshEffects.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryActorCounters.cpp", "src/OutlinedTextureText.cpp", "src/TextTextureDispatch.cpp", "src/TextDrawing.cpp", "src/TextProcessing.cpp", "src/SecondaryDialogue.cpp", "src/SecondaryHudCallbacks.cpp", "probes/screen-effect-initialization-context.cpp", "src/SecondaryHud.cpp", "src/AnimationExecutionArguments.cpp", "src/AnimationExecutionSupport.cpp", "src/AnimationTween.cpp", "src/SecondaryEmitterAnimation.cpp", "src/Random.cpp", "src/AngleMath.cpp", "src/AnimationFan.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationImmediateDraw.cpp", "src/AnimationVmDraw.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp", "src/SecondaryProjectileCallbacks.cpp", "src/AnimationExecution.cpp", "src/ChainRegistration.cpp"]
+normal_support_sources = ["src/SecondaryGameplayCallbacks.cpp", "src/SecondaryHudCallbacks.cpp", "probes/screen-effect-initialization-context.cpp"]
+output_dir = "build/match-linked/ReadSecondaryHostIntegerValue"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryHudOwnersProbe@12"
+functions = ["ReadSecondaryHostIntegerValue"]
+symbol = "?ReadSecondaryHostIntegerValue@@YGHPAUSecondaryActorStateView@@HH@Z"
+target_address = 0x00417DF0
+size = 49
+linkages = [
+  { offset = 42, type = "REL32", symbol = "?ReadSecondaryIntReference@@YGHPAUSecondaryVm@@H@Z", target = 0x0045D600 },
+]
+
+[units.pause-secondary-gameplay-object]
+artifact_kind = "linked-pe"
+source = "src/SecondaryGameplaySupport.cpp"
+inputs = ["src/SecondaryHud.hpp", "src/ChainRegistration.hpp"]
+support_sources = ["src/ScreenEffectInitialization.cpp", "src/SecondaryGameplay.cpp", "src/SecondaryActorInstructions.cpp", "src/SecondaryEclDebug.cpp", "src/SecondaryScript.cpp", "src/SecondaryHostArguments.cpp", "src/SecondaryActorCreation.cpp", "src/SecondaryActorLifetime.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorUpdate.cpp", "src/StageLifecycle.cpp", "src/StageTween.cpp", "src/FrameRuntime.cpp", "src/SecondaryGameplayCallbacks.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryDialogueAnimation.cpp", "src/StageMesh.cpp", "src/AnimationSpriteBinding.cpp", "src/FormattedTextureText.cpp", "src/SecondaryDamageSupport.cpp", "src/SecondaryPlayerMovement.cpp", "src/MeshEffects.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryActorCounters.cpp", "src/OutlinedTextureText.cpp", "src/TextTextureDispatch.cpp", "src/TextDrawing.cpp", "src/TextProcessing.cpp", "src/SecondaryDialogue.cpp", "src/SecondaryHudCallbacks.cpp", "probes/screen-effect-initialization-context.cpp", "src/SecondaryHud.cpp", "src/AnimationExecutionArguments.cpp", "src/AnimationExecutionSupport.cpp", "src/AnimationTween.cpp", "src/SecondaryEmitterAnimation.cpp", "src/Random.cpp", "src/AngleMath.cpp", "src/AnimationFan.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationImmediateDraw.cpp", "src/AnimationVmDraw.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp", "src/SecondaryProjectileCallbacks.cpp", "src/AnimationExecution.cpp", "src/ChainRegistration.cpp"]
+normal_support_sources = ["src/SecondaryGameplayCallbacks.cpp", "src/SecondaryHudCallbacks.cpp", "probes/screen-effect-initialization-context.cpp"]
+output_dir = "build/match-linked/PauseSecondaryGameplayObject"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryHudOwnersProbe@12"
+functions = ["PauseSecondaryGameplayObject"]
+symbol = "?PauseSecondaryGameplayObject@@YGXPAX@Z"
+target_address = 0x0040CFA0
+size = 30
+linkages = []
+
+[units.find-secondary-dialogue-child]
+artifact_kind = "linked-pe"
+source = "src/SecondaryDialogueAnimation.cpp"
+inputs = ["src/SecondaryHud.hpp", "src/ChainRegistration.hpp"]
+support_sources = ["src/ScreenEffectInitialization.cpp", "src/SecondaryGameplay.cpp", "src/SecondaryActorInstructions.cpp", "src/SecondaryEclDebug.cpp", "src/SecondaryScript.cpp", "src/SecondaryHostArguments.cpp", "src/SecondaryActorCreation.cpp", "src/SecondaryActorLifetime.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorUpdate.cpp", "src/StageLifecycle.cpp", "src/StageTween.cpp", "src/FrameRuntime.cpp", "src/SecondaryGameplayCallbacks.cpp", "src/SecondaryGameplaySupport.cpp", "src/SecondaryActorMotion.cpp", "src/StageMesh.cpp", "src/AnimationSpriteBinding.cpp", "src/FormattedTextureText.cpp", "src/SecondaryDamageSupport.cpp", "src/SecondaryPlayerMovement.cpp", "src/MeshEffects.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryActorCounters.cpp", "src/OutlinedTextureText.cpp", "src/TextTextureDispatch.cpp", "src/TextDrawing.cpp", "src/TextProcessing.cpp", "src/SecondaryDialogue.cpp", "src/SecondaryHudCallbacks.cpp", "probes/screen-effect-initialization-context.cpp", "src/SecondaryHud.cpp", "src/AnimationExecutionArguments.cpp", "src/AnimationExecutionSupport.cpp", "src/AnimationTween.cpp", "src/SecondaryEmitterAnimation.cpp", "src/Random.cpp", "src/AngleMath.cpp", "src/AnimationFan.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationImmediateDraw.cpp", "src/AnimationVmDraw.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp", "src/SecondaryProjectileCallbacks.cpp", "src/AnimationExecution.cpp", "src/ChainRegistration.cpp"]
+normal_support_sources = ["src/SecondaryGameplayCallbacks.cpp", "src/SecondaryHudCallbacks.cpp", "probes/screen-effect-initialization-context.cpp"]
+output_dir = "build/match-linked/FindSecondaryDialogueChild"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryHudOwnersProbe@12"
+functions = ["FindSecondaryDialogueChild"]
+symbol = "?FindSecondaryDialogueChild@@YG?AUAnimationVmId@@PAIH@Z"
+target_address = 0x00456870
+size = 70
+linkages = [
+  { offset = 4, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x004C3268 },
+  { offset = 10, type = "REL32", symbol = "?FindAnimationVmById@@YGPAUAnimationVmView@@PAURenderBatchView@@UAnimationVmId@@@Z", target = 0x004561E0 },
+]
+
+[units.bind-secondary-dialogue-sprite]
+artifact_kind = "linked-pe"
+source = "src/SecondaryDialogueAnimation.cpp"
+inputs = ["src/SecondaryHud.hpp", "src/ChainRegistration.hpp"]
+support_sources = ["src/ScreenEffectInitialization.cpp", "src/SecondaryGameplay.cpp", "src/SecondaryActorInstructions.cpp", "src/SecondaryEclDebug.cpp", "src/SecondaryScript.cpp", "src/SecondaryHostArguments.cpp", "src/SecondaryActorCreation.cpp", "src/SecondaryActorLifetime.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorUpdate.cpp", "src/StageLifecycle.cpp", "src/StageTween.cpp", "src/FrameRuntime.cpp", "src/SecondaryGameplayCallbacks.cpp", "src/SecondaryGameplaySupport.cpp", "src/SecondaryActorMotion.cpp", "src/StageMesh.cpp", "src/AnimationSpriteBinding.cpp", "src/FormattedTextureText.cpp", "src/SecondaryDamageSupport.cpp", "src/SecondaryPlayerMovement.cpp", "src/MeshEffects.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryActorCounters.cpp", "src/OutlinedTextureText.cpp", "src/TextTextureDispatch.cpp", "src/TextDrawing.cpp", "src/TextProcessing.cpp", "src/SecondaryDialogue.cpp", "src/SecondaryHudCallbacks.cpp", "probes/screen-effect-initialization-context.cpp", "src/SecondaryHud.cpp", "src/AnimationExecutionArguments.cpp", "src/AnimationExecutionSupport.cpp", "src/AnimationTween.cpp", "src/SecondaryEmitterAnimation.cpp", "src/Random.cpp", "src/AngleMath.cpp", "src/AnimationFan.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationImmediateDraw.cpp", "src/AnimationVmDraw.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp", "src/SecondaryProjectileCallbacks.cpp", "src/AnimationExecution.cpp", "src/ChainRegistration.cpp"]
+normal_support_sources = ["src/SecondaryGameplayCallbacks.cpp", "src/SecondaryHudCallbacks.cpp", "probes/screen-effect-initialization-context.cpp"]
+output_dir = "build/match-linked/BindSecondaryDialogueSprite"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryHudOwnersProbe@12"
+functions = ["BindSecondaryDialogueSprite"]
+symbol = "?BindSecondaryDialogueSprite@@YGXABUAnimationVmId@@PAUAnimationDocumentView@@H@Z"
+target_address = 0x00456740
+size = 34
+linkages = [
+  { offset = 4, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x004C3268 },
+  { offset = 10, type = "REL32", symbol = "?FindAnimationVmById@@YGPAUAnimationVmView@@PAURenderBatchView@@UAnimationVmId@@@Z", target = 0x004561E0 },
+  { offset = 27, type = "REL32", symbol = "?BindAnimationSprite@@YGHPAUAnimationDocumentView@@HPAUAnimationVmView@@@Z", target = 0x0044AB40 },
+]
+
+[units.change-secondary-dialogue-sprite]
+artifact_kind = "linked-pe"
+source = "src/SecondaryDialogueAnimation.cpp"
+inputs = ["src/SecondaryHud.hpp", "src/ChainRegistration.hpp"]
+support_sources = ["src/ScreenEffectInitialization.cpp", "src/SecondaryGameplay.cpp", "src/SecondaryActorInstructions.cpp", "src/SecondaryEclDebug.cpp", "src/SecondaryScript.cpp", "src/SecondaryHostArguments.cpp", "src/SecondaryActorCreation.cpp", "src/SecondaryActorLifetime.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorUpdate.cpp", "src/StageLifecycle.cpp", "src/StageTween.cpp", "src/FrameRuntime.cpp", "src/SecondaryGameplayCallbacks.cpp", "src/SecondaryGameplaySupport.cpp", "src/SecondaryActorMotion.cpp", "src/StageMesh.cpp", "src/AnimationSpriteBinding.cpp", "src/FormattedTextureText.cpp", "src/SecondaryDamageSupport.cpp", "src/SecondaryPlayerMovement.cpp", "src/MeshEffects.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryActorCounters.cpp", "src/OutlinedTextureText.cpp", "src/TextTextureDispatch.cpp", "src/TextDrawing.cpp", "src/TextProcessing.cpp", "src/SecondaryDialogue.cpp", "src/SecondaryHudCallbacks.cpp", "probes/screen-effect-initialization-context.cpp", "src/SecondaryHud.cpp", "src/AnimationExecutionArguments.cpp", "src/AnimationExecutionSupport.cpp", "src/AnimationTween.cpp", "src/SecondaryEmitterAnimation.cpp", "src/Random.cpp", "src/AngleMath.cpp", "src/AnimationFan.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationImmediateDraw.cpp", "src/AnimationVmDraw.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp", "src/SecondaryProjectileCallbacks.cpp", "src/AnimationExecution.cpp", "src/ChainRegistration.cpp"]
+normal_support_sources = ["src/SecondaryGameplayCallbacks.cpp", "src/SecondaryHudCallbacks.cpp", "probes/screen-effect-initialization-context.cpp"]
+output_dir = "build/match-linked/ChangeSecondaryDialogueSprite"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryHudOwnersProbe@12"
+functions = ["ChangeSecondaryDialogueSprite"]
+symbol = "?ChangeSecondaryDialogueSprite@@YGXABUAnimationVmId@@H@Z"
+target_address = 0x004566D0
+size = 36
+linkages = [
+  { offset = 4, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x004C3268 },
+  { offset = 10, type = "REL32", symbol = "?FindAnimationVmById@@YGPAUAnimationVmView@@PAURenderBatchView@@UAnimationVmId@@@Z", target = 0x004561E0 },
+  { offset = 29, type = "REL32", symbol = "?BindAnimationSprite@@YGHPAUAnimationDocumentView@@HPAUAnimationVmView@@@Z", target = 0x0044AB40 },
+]
+
+[units.set-animation-uv]
+artifact_kind = "linked-pe"
+source = "src/AnimationExecutionArguments.cpp"
+inputs = ["src/SecondaryHud.hpp", "src/ChainRegistration.hpp"]
+support_sources = ["src/ScreenEffectInitialization.cpp", "src/SecondaryGameplay.cpp", "src/SecondaryActorInstructions.cpp", "src/SecondaryEclDebug.cpp", "src/SecondaryScript.cpp", "src/SecondaryHostArguments.cpp", "src/SecondaryActorCreation.cpp", "src/SecondaryActorLifetime.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorUpdate.cpp", "src/StageLifecycle.cpp", "src/StageTween.cpp", "src/FrameRuntime.cpp", "src/SecondaryGameplayCallbacks.cpp", "src/SecondaryGameplaySupport.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryDialogueAnimation.cpp", "src/StageMesh.cpp", "src/AnimationSpriteBinding.cpp", "src/FormattedTextureText.cpp", "src/SecondaryDamageSupport.cpp", "src/SecondaryPlayerMovement.cpp", "src/MeshEffects.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryActorCounters.cpp", "src/OutlinedTextureText.cpp", "src/TextTextureDispatch.cpp", "src/TextDrawing.cpp", "src/TextProcessing.cpp", "src/SecondaryDialogue.cpp", "src/SecondaryHudCallbacks.cpp", "probes/screen-effect-initialization-context.cpp", "src/SecondaryHud.cpp", "src/AnimationExecutionSupport.cpp", "src/AnimationTween.cpp", "src/SecondaryEmitterAnimation.cpp", "src/Random.cpp", "src/AngleMath.cpp", "src/AnimationFan.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationImmediateDraw.cpp", "src/AnimationVmDraw.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp", "src/SecondaryProjectileCallbacks.cpp", "src/AnimationExecution.cpp", "src/ChainRegistration.cpp"]
+normal_support_sources = ["src/SecondaryGameplayCallbacks.cpp", "src/SecondaryHudCallbacks.cpp", "probes/screen-effect-initialization-context.cpp"]
+output_dir = "build/match-linked/SetAnimationUv"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryHudOwnersProbe@12"
+functions = ["SetAnimationUv"]
+symbol = "?SetAnimationUv@@YGXPAUAnimationFloatPair@@PBUCameraVector@@@Z"
+target_address = 0x0044B470
+size = 52
+linkages = [
+  { offset = 4, type = "DIR32", symbol = "__real@4084000000000000", target = 0x00497E90 },
+  { offset = 15, type = "DIR32", symbol = "__real@407e000000000000", target = 0x00497E88 },
+]
+
+[units.reset-animation-vector-tween-time]
+artifact_kind = "linked-pe"
+source = "src/AnimationExecutionSupport.cpp"
+inputs = ["src/SecondaryHud.hpp", "src/ChainRegistration.hpp"]
+support_sources = ["src/ScreenEffectInitialization.cpp", "src/SecondaryGameplay.cpp", "src/SecondaryActorInstructions.cpp", "src/SecondaryEclDebug.cpp", "src/SecondaryScript.cpp", "src/SecondaryHostArguments.cpp", "src/SecondaryActorCreation.cpp", "src/SecondaryActorLifetime.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorUpdate.cpp", "src/StageLifecycle.cpp", "src/StageTween.cpp", "src/FrameRuntime.cpp", "src/SecondaryGameplayCallbacks.cpp", "src/SecondaryGameplaySupport.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryDialogueAnimation.cpp", "src/StageMesh.cpp", "src/AnimationSpriteBinding.cpp", "src/FormattedTextureText.cpp", "src/SecondaryDamageSupport.cpp", "src/SecondaryPlayerMovement.cpp", "src/MeshEffects.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryActorCounters.cpp", "src/OutlinedTextureText.cpp", "src/TextTextureDispatch.cpp", "src/TextDrawing.cpp", "src/TextProcessing.cpp", "src/SecondaryDialogue.cpp", "src/SecondaryHudCallbacks.cpp", "probes/screen-effect-initialization-context.cpp", "src/SecondaryHud.cpp", "src/AnimationExecutionArguments.cpp", "src/AnimationTween.cpp", "src/SecondaryEmitterAnimation.cpp", "src/Random.cpp", "src/AngleMath.cpp", "src/AnimationFan.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationImmediateDraw.cpp", "src/AnimationVmDraw.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp", "src/SecondaryProjectileCallbacks.cpp", "src/AnimationExecution.cpp", "src/ChainRegistration.cpp"]
+normal_support_sources = ["src/SecondaryGameplayCallbacks.cpp", "src/SecondaryHudCallbacks.cpp", "probes/screen-effect-initialization-context.cpp"]
+output_dir = "build/match-linked/ResetAnimationVectorTweenTime"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryHudOwnersProbe@12"
+functions = ["ResetAnimationVectorTweenTime"]
+symbol = "?ResetAnimationVectorTweenTime@@YGXPAUStageVectorTween@@@Z"
+target_address = 0x00405C60
+size = 52
+linkages = [
+  { offset = 31, type = "DIR32", symbol = "?g_AnimationTimeScale@@3MA", target = 0x004A7948 },
+]
+
+[units.insert-animation-related-node]
+artifact_kind = "linked-pe"
+source = "src/AnimationExecutionSupport.cpp"
+inputs = ["src/SecondaryHud.hpp", "src/ChainRegistration.hpp"]
+support_sources = ["src/ScreenEffectInitialization.cpp", "src/SecondaryGameplay.cpp", "src/SecondaryActorInstructions.cpp", "src/SecondaryEclDebug.cpp", "src/SecondaryScript.cpp", "src/SecondaryHostArguments.cpp", "src/SecondaryActorCreation.cpp", "src/SecondaryActorLifetime.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorUpdate.cpp", "src/StageLifecycle.cpp", "src/StageTween.cpp", "src/FrameRuntime.cpp", "src/SecondaryGameplayCallbacks.cpp", "src/SecondaryGameplaySupport.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryDialogueAnimation.cpp", "src/StageMesh.cpp", "src/AnimationSpriteBinding.cpp", "src/FormattedTextureText.cpp", "src/SecondaryDamageSupport.cpp", "src/SecondaryPlayerMovement.cpp", "src/MeshEffects.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryActorCounters.cpp", "src/OutlinedTextureText.cpp", "src/TextTextureDispatch.cpp", "src/TextDrawing.cpp", "src/TextProcessing.cpp", "src/SecondaryDialogue.cpp", "src/SecondaryHudCallbacks.cpp", "probes/screen-effect-initialization-context.cpp", "src/SecondaryHud.cpp", "src/AnimationExecutionArguments.cpp", "src/AnimationTween.cpp", "src/SecondaryEmitterAnimation.cpp", "src/Random.cpp", "src/AngleMath.cpp", "src/AnimationFan.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationImmediateDraw.cpp", "src/AnimationVmDraw.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp", "src/SecondaryProjectileCallbacks.cpp", "src/AnimationExecution.cpp", "src/ChainRegistration.cpp"]
+normal_support_sources = ["src/SecondaryGameplayCallbacks.cpp", "src/SecondaryHudCallbacks.cpp", "probes/screen-effect-initialization-context.cpp"]
+output_dir = "build/match-linked/InsertAnimationRelatedNode"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryHudOwnersProbe@12"
+functions = ["InsertAnimationRelatedNode"]
+symbol = "?InsertAnimationRelatedNode@@YGXPAUAnimationVmNode@@0@Z"
+target_address = 0x0040EA10
+size = 23
+linkages = []
+
+[units.animation-random-range]
+artifact_kind = "linked-pe"
+source = "src/AnimationExecutionSupport.cpp"
+inputs = ["src/SecondaryHud.hpp", "src/ChainRegistration.hpp"]
+support_sources = ["src/ScreenEffectInitialization.cpp", "src/SecondaryGameplay.cpp", "src/SecondaryActorInstructions.cpp", "src/SecondaryEclDebug.cpp", "src/SecondaryScript.cpp", "src/SecondaryHostArguments.cpp", "src/SecondaryActorCreation.cpp", "src/SecondaryActorLifetime.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorUpdate.cpp", "src/StageLifecycle.cpp", "src/StageTween.cpp", "src/FrameRuntime.cpp", "src/SecondaryGameplayCallbacks.cpp", "src/SecondaryGameplaySupport.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryDialogueAnimation.cpp", "src/StageMesh.cpp", "src/AnimationSpriteBinding.cpp", "src/FormattedTextureText.cpp", "src/SecondaryDamageSupport.cpp", "src/SecondaryPlayerMovement.cpp", "src/MeshEffects.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryActorCounters.cpp", "src/OutlinedTextureText.cpp", "src/TextTextureDispatch.cpp", "src/TextDrawing.cpp", "src/TextProcessing.cpp", "src/SecondaryDialogue.cpp", "src/SecondaryHudCallbacks.cpp", "probes/screen-effect-initialization-context.cpp", "src/SecondaryHud.cpp", "src/AnimationExecutionArguments.cpp", "src/AnimationTween.cpp", "src/SecondaryEmitterAnimation.cpp", "src/Random.cpp", "src/AngleMath.cpp", "src/AnimationFan.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationImmediateDraw.cpp", "src/AnimationVmDraw.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp", "src/SecondaryProjectileCallbacks.cpp", "src/AnimationExecution.cpp", "src/ChainRegistration.cpp"]
+normal_support_sources = ["src/SecondaryGameplayCallbacks.cpp", "src/SecondaryHudCallbacks.cpp", "probes/screen-effect-initialization-context.cpp"]
+output_dir = "build/match-linked/AnimationRandomRange"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryHudOwnersProbe@12"
+functions = ["AnimationRandomRange"]
+symbol = "?AnimationRandomRange@@YGMPAURandomStateView@@M@Z"
+target_address = 0x0040B9F0
+size = 50
+linkages = [
+  { offset = 2, type = "REL32", symbol = "?RandomNext32@@YGIPAURandomStateView@@@Z", target = 0x00458C30 },
+  { offset = 18, type = "DIR32", symbol = "__real@4f800000", target = 0x00497F98 },
+  { offset = 24, type = "DIR32", symbol = "__real@3df0000000000000", target = 0x00498030 },
+]
+
+[units.secondary-position-angle]
+artifact_kind = "linked-pe"
+source = "src/SecondaryProjectileMath.cpp"
+inputs = ["src/SecondaryPlayerController.hpp", "src/SecondaryPattern.hpp"]
+support_sources = ["src/SecondaryPlayerControllerHelpers.cpp", "probes/secondary-player-controller-context.cpp", "src/SecondaryPlayerController.cpp", "src/SecondaryPlayerCallbacks.cpp", "src/StageTween.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryMotionMath.cpp", "src/StageMesh.cpp", "src/AngleMath.cpp", "src/AnimationImmediateDraw.cpp", "src/SecondaryDamageSupport.cpp", "src/SecondaryPatternDispatch.cpp", "src/SecondaryPattern.cpp", "src/Random.cpp", "src/SecondaryProjectile.cpp", "src/ResourceFile.cpp", "src/SecondaryEmitterReset.cpp", "src/SecondaryEmitterAnimation.cpp", "src/AnimationVmFactory.cpp"]
+normal_support_sources = ["src/SecondaryPlayerCallbacks.cpp"]
+output_dir = "build/match-linked/SecondaryPositionAngle"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryPlayerControllerProbe@16"
+functions = ["SecondaryPositionAngle"]
+symbol = "?SecondaryPositionAngle@@YGMPBUCameraVector@@@Z"
+target_address = 0x00435460
+size = 31
+linkages = [
+  { offset = 15, type = "REL32", symbol = "__CIatan2", target = 0x00486C9A },
+]
