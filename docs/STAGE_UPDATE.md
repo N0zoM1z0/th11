@@ -18,14 +18,15 @@ is a canonical exact unit. The current C++ candidate declares `UpdateStage`
 EAX value. The callback remains semantically compatible because both registers
 hold the same context, but the callee's entry ABI is not byte-exact. In the
 selected object-walker context, the candidate is1710 bytes versus1677 native
-bytes, with320/443 target instructions aligned by the diagnostic comparator.
-The two wave phase locals are copied with `memcpy` so VC9 preserves their raw
+bytes, with321/443 target instructions aligned by the diagnostic comparator.
+The two wave phase locals are copied with memcpy so VC9 preserves their raw
 float bit patterns through the native integer-register loads instead of
 introducing x87 load/store round trips, improving the earlier316/443 result to
-320/443. A follow-up source-only experiment hoisted the column counter and
-removed the row register hint; an A/B build produced the identical 1,710-byte
-function hash (`418b3eb1…`) and the same320/443 alignment, so that neutral form
-was discarded rather than counted as progress. The remaining differences do
+320/443. Declaring each ordinary row counter before its vertex pointer, rather
+than as a register-hinted for-loop initializer, moves one more instruction
+into alignment (321/443) without changing row or column traversal order. The
+remaining differences do not close the private EAX-entry mismatch or grant
+exactness.
 not close the private EAX-entry mismatch or grant exactness.
 `UpdateStageObjects` inherits the stage
 in EBX, returns zero in EAX and uses

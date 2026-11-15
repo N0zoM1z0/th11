@@ -145,8 +145,9 @@ int __fastcall UpdateStage(StageResourceView *self)
         if (self->distortionMode == 1)
         {
             ResetStageMesh(StageMesh(self), -192.0f, 0.0f, 384.0f, 448.0f);
+            int row = 0;
             RenderVertex *vertex = StageMesh(self)->vertices;
-            for (register int row = 0; row < StageMesh(self)->rows; ++row)
+            for (; row < StageMesh(self)->rows; ++row)
             {
                 if (StageMesh(self)->columns > 0)
                 {
@@ -178,8 +179,9 @@ int __fastcall UpdateStage(StageResourceView *self)
                 self->radius = static_cast<float>(self->radius - 2.0);
             float diameter = static_cast<float>(radius * 2.0);
             ResetStageMesh(StageMesh(self), -radius, static_cast<float>(224.0 - radius), diameter, diameter);
+            int row = 0;
             RenderVertex *vertex = StageMesh(self)->vertices;
-            for (register int row = 0; row < StageMesh(self)->rows; ++row)
+            for (; row < StageMesh(self)->rows; ++row)
             {
                 double radiusSquared = radius * radius;
                 for (int column = 0; column < StageMesh(self)->columns; ++column, ++position, ++vertex)
