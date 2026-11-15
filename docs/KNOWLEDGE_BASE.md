@@ -51,6 +51,19 @@ harnesses for real C++ rewrites. The continue, game-over and pause menus and
 `DeletePauseMenuReplayRecord` helper in `PauseMenu.hpp`), so measurements of
 those owners are not evidence of a C++ shape.
 
+## Link context size (2026-11-15)
+
+- Narrow probe links create false gaps. LTCG inlines, constant-folds and
+  picks register conventions for shared callees based on the callers it sees.
+  `StepStageFogTween` 4055D0 matched only in a link with every `Secondary*.cpp`
+  source added to the screen-effect context; its "inlined operator+" gap came
+  from the narrow tween probe. Sweeping large existing links for masked matches
+  (`.analysis/tool-dirsweep.py`, `tool-lsweep*`) found 24 more already-exact
+  functions without units.
+- Callees that are still non-exact (for example `UpdateStage`, `DrawSecondaryHud`)
+  can make LTCG choose a different convention than native, so their callers'
+  call sequences stay off until the callee bodies are right.
+
 ## Inline definitions and opaque COMDAT callees (2026-11-14)
 
 - An inline-asm `call F` anywhere in the link makes LTCG keep `F` on the

@@ -80,7 +80,6 @@ far from current work tend to need revisiting once the source shape is known.
 | `RecordReplayInputFrame` 435FE0 | 94/108, no unit | native loads `heldFrames[0]` into ECX instead of sharing the constant 5 | [REPLAY_WRITING](REPLAY_WRITING.md) |
 | `PushSecondaryValue` 45DC30 | 20/21 instructions | native forms the slot address before the store | [SECONDARY_SCRIPT](SECONDARY_SCRIPT.md) |
 | `SecondaryManager::Restart` 45DD50 | 28/28 bytes as an inline copy | name arrives in EAX, native ECX; change reverted | [SECONDARY_SCRIPT](SECONDARY_SCRIPT.md) |
-| `StepStageFogTween` 4055D0 | 794/737 bytes | mode 17's second add is inlined; native calls `operator+` | [STAGE_TWEEN](STAGE_TWEEN.md) |
 | `StepStageVectorTween` 405240 | 887/883 bytes, 267/280 aligned | mode-7/17 store order, add operand order | [STAGE_TWEEN](STAGE_TWEEN.md) |
 | `StepAnimationIntScalarTween` 44E7C0 | 97/120 aligned | native spills `1-t` before loading 3.0 | [ANIMATION_TWEEN_DISPATCH](ANIMATION_TWEEN_DISPATCH.md) |
 | `StepAnimationFloatPairTween` 44E910 | 217/221 aligned | one mode-8 multiply schedule | [ANIMATION_TWEEN_DISPATCH](ANIMATION_TWEEN_DISPATCH.md) |
