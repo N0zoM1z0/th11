@@ -71,6 +71,10 @@ and EH/funclet ownership. Do not treat a matching function length as exactness.
   ResetAnimationVm and BindAnimationScript callees; scoped strict cold replay
   with zero differences. See `STAGE_VM_BIND.md`.
 - `PackStageFog`, target `0x00405B70`: 171/171 bytes, canonical exact proof.
+- `ScaleStageVectorByReciprocal` at `405D90` and
+  `StageVectorSquaredLength` at `405DC0` are now exact natural C++ `/GL`
+  source owners (43/43 and 33/33; both zero-field strict cold replay).
+  Adjacent vector addition at `405DF0` still differs in six operand bytes.
 - `AllocateStageHeapBytes` at `405D80`: independent exact 10-byte
   natural C++ /GL forwarding wrapper to native `_malloc` (1 reviewed
   REL32), with original source/TU attribution still unknown.

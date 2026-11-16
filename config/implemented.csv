@@ -517,6 +517,7 @@ ScaleAnimationColorChannel
 ScaleSecondaryIntegerPair
 ScaleSecondaryPair
 ScaleStageFog
+ScaleStageVectorByReciprocal
 ScatterXorBlocks
 SceneClearOutside
 ScreenshotWriteThread
@@ -634,6 +635,7 @@ StageResourceConstructor
 StageResourceDestructor
 StageScriptMeshConstructor
 StageUpdateCallback
+StageVectorSquaredLength
 StageVectorTweenFactor
 StartMenuAnimation
 StartMenuTransitionOverlay

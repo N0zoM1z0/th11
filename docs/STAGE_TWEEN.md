@@ -81,6 +81,28 @@ paths. SetStageTimer lazily initializes when flag bit0 is clear, installs the
 global scale pointer and preserves other flag bits, then writes previous=frame-1
 with32-bit wrap, current=frame and fraction=float(frame).
 
+## Recovered vector math owners at 0x405D90 and 0x405DC0
+
+The original `.text` includes two separate arithmetic owners missing from
+Ghidra's initial function inventory. At `405D90..405DBA` the 43-byte
+helper computes reciprocal scale `1.0f/divisor` and multiplies the three
+`CameraVector` coordinates, with each float result rounded at the original
+x87 store. It uses private ECX source/EAX output and a stack float argument.
+At `405DC0..405DE0` the 33-byte helper computes x*x+y*y+z*z and returns a
+float in ST0, using EAX for its input pointer. Following `CC` bytes and
+PDB code contributions establish the complete reviewed extents; the original
+source class and calls are not established.
+
+Natural C++ functions `ScaleStageVectorByReciprocal` and
+`StageVectorSquaredLength` in `src/StageVectorMathLeaves.cpp` compile under
+pinned VC9 `/GL` with their own small dynamic cross-TU caller. Both complete
+linked-PDB primary contributions exactly match the native bodies: **43/43**
+and **33/33** bytes, no relocations and no different code bytes. Focused
+verification uses `scale-stage-vector-by-reciprocal` and
+`stage-vector-squared-length`; both pass independent cold replay. The
+neighboring `AddStageVectorComponents` at `405DF0` is source-present but
+remains non-exact with six native operand-selector differences.
+
 ## Native 10-byte allocation forwarding adapter
 
 The ten native bytes at `0x00405D80..0x00405D89` transfer the private EAX byte

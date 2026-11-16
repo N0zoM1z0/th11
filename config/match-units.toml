@@ -9663,3 +9663,49 @@ size = 10
 linkages = [
   { offset = 2, type = "REL32", symbol = "_malloc", target = 0x00460192 },
 ]
+
+# Adjacent native Stage CameraVector math helpers, analyzed as scoped /GL
+# codegen first; all three native entries lack auto-promoted Ghidra functions.
+[units.add-stage-vector-components-frontier]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/StageVectorMathLeaves.cpp"
+inputs = ["src/StageScript.hpp", "probes/stage-vector-math-leaves-context.cpp"]
+support_sources = ["probes/stage-vector-math-leaves-context.cpp"]
+output_dir = "build/match-linked/StageVectorMathLeavesFrontier"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "StageVectorMathLeavesProbe@20"
+functions = ["AddStageVectorComponents"]
+symbol = "?AddStageVectorComponents@@YGXPBUCameraVector@@0PAU1@@Z"
+target_address = 0x00405DF0
+size = 25
+linkages = []
+
+# Two additional exact vector owners in the same scoped C++ producer.
+[units.scale-stage-vector-by-reciprocal]
+artifact_kind = "linked-pe"
+source = "src/StageVectorMathLeaves.cpp"
+inputs = ["src/StageScript.hpp", "probes/stage-vector-math-leaves-context.cpp"]
+support_sources = ["probes/stage-vector-math-leaves-context.cpp"]
+output_dir = "build/match-linked/StageVectorMathLeavesFrontier"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "StageVectorMathLeavesProbe@20"
+functions = ["ScaleStageVectorByReciprocal"]
+symbol = "?ScaleStageVectorByReciprocal@@YGXPBUCameraVector@@PAU1@M@Z"
+target_address = 0x00405D90
+size = 43
+linkages = []
+
+[units.stage-vector-squared-length]
+artifact_kind = "linked-pe"
+source = "src/StageVectorMathLeaves.cpp"
+inputs = ["src/StageScript.hpp", "probes/stage-vector-math-leaves-context.cpp"]
+support_sources = ["probes/stage-vector-math-leaves-context.cpp"]
+output_dir = "build/match-linked/StageVectorMathLeavesFrontier"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "StageVectorMathLeavesProbe@20"
+functions = ["StageVectorSquaredLength"]
+symbol = "?StageVectorSquaredLength@@YGMPBUCameraVector@@@Z"
+target_address = 0x00405DC0
+size = 33
+linkages = []

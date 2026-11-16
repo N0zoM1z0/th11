@@ -518,6 +518,7 @@ ScaleAnimationColorChannel,0x0044F490,function
 ScaleSecondaryIntegerPair,0x00433E30,function
 ScaleSecondaryPair,0x004195C0,function
 ScaleStageFog,0x00405A10,function
+ScaleStageVectorByReciprocal,0x00405D90,function
 ScatterXorBlocks,0x004581C0,function
 SceneClearOutside,0x0040B8A0,function
 ScreenshotWriteThread,0x00429BB0,function
@@ -635,6 +636,7 @@ StageResourceConstructor,0x004023F0,function
 StageResourceDestructor,0x00402740,function
 StageScriptMeshConstructor,0x0040E530,function
 StageUpdateCallback,0x00403900,function
+StageVectorSquaredLength,0x00405DC0,function
 StageVectorTweenFactor,0x00405960,function
 StartMenuAnimation,0x004391A0,function
 StartMenuTransitionOverlay,0x0040FCA0,function
