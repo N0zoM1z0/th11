@@ -8,6 +8,7 @@ section and reconciled its full extent, instruction flow, callers and tables.
 | --- | ---: | ---: | --- |
 | ExecuteStageScript,0x00404470 | 2,736 bytes through0x00404F1F | 2,712 bytes | Non-exact; EH ownership open |
 | SeekStageScriptMarker,0x00404F20 | 113 bytes through0x00404F90 | 113 bytes | Exact normal-COFF, 2 relocations |
+| BeginSecondaryStageTransition,0x00405130 | 159 bytes through0x004051CE | 159 bytes | Exact normal-COFF, 6 relocations |
 | BeginPrimaryStageTransition,0x004051D0 | 103 bytes through0x00405236 | 103 bytes | Exact normal-COFF, 3 relocations |
 | InitializePrimaryStageScripts,0x00405030 | 249 bytes through0x00405128 | 237 bytes in standalone normal-COFF diagnostic | Source present; non-exact |
 | PackStageFog,0x00405B70 | 171 bytes through0x00405C1A | 171 bytes | Exact; defined inline in StageTween.cpp (see [STAGE_TWEEN](STAGE_TWEEN.md)) |
@@ -93,6 +94,28 @@ The standalone compiler uses conventional stack calls while the target calls
 register ABIs. This is **source/behavioral recovery only**, not an exact
 match; original TU linkage and code generation remain open. No inline ASM,
 instruction padding, or fabricated control-flow was used.
+
+## Exact secondary stage screen transition (0x00405130)
+
+`BeginSecondaryStageTransition` is the adjacent 159-byte original stage
+handoff called by secondary gameplay. It loads `g_StageSecondary` at
+`4A8D5C`, creates a real 0x44-byte `SecondaryHudScreenEffect` using its
+existing C++ constructor, and on successful allocation initializes mode 2,
+30-frame duration, zero colors and priority 10 via the genuine
+`InitializeSecondaryHudScreenEffect` at `448A90`. Regardless of allocation
+success, it conditionally initializes the secondary stage's timer at
+`+0x2ff4`, sets current 30, previous 29, fraction 30.0f, and publishes the
+transition bit `2` at stage `+0x2ff0`.
+
+This is **159/159-byte pinned VC9 RTM normal-COFF strict exact** with all
+six native address fields independently reviewed: the stage-secondary
+pointer, C++ `operator new`, CRT `memset`, real screen-effect initializer,
+shared animation time scale, and float 30.0f. It introduces no handwritten
+register ABI, assembly, target bytes, or padding. Run only the selected unit:
+
+```bash
+scripts/repo-python scripts/replay-exact-units.py --unit begin-secondary-stage-transition
+```
 
 ## Exact primary stage transition timer (0x004051D0)
 

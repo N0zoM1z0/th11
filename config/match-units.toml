@@ -9577,3 +9577,23 @@ relocations = [
   { offset = 0x35, type = "DIR32", symbol = "?g_AnimationTimeScale@@3MA", target = 0x004A7948 },
   { offset = 0x41, type = "DIR32", symbol = "__real@42700000", target = 0x004981B8 },
 ]
+
+# Secondary stage's 159-byte screen effect and 30-frame timer startup.
+[units.begin-secondary-stage-transition]
+artifact_kind = "coff"
+source = "src/SecondaryStageTransition.cpp"
+inputs = ["src/SecondaryHud.hpp", "src/StageResource.hpp"]
+object = "build/match/SecondaryStageTransition.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["BeginSecondaryStageTransition"]
+symbol = "?BeginSecondaryStageTransition@@YAXXZ"
+target_address = 0x00405130
+size = 159
+relocations = [
+  { offset = 0x04, type = "DIR32", symbol = "?g_StageSecondary@@3PAUStageResourceView@@A", target = 0x004A8D5C },
+  { offset = 0x0B, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x0045FCE4 },
+  { offset = 0x22, type = "REL32", symbol = "_memset", target = 0x0046A720 },
+  { offset = 0x38, type = "REL32", symbol = "?InitializeSecondaryHudScreenEffect@@YGXPAUSecondaryHudScreenEffect@@HHHHH@Z", target = 0x00448A90 },
+  { offset = 0x6B, type = "DIR32", symbol = "?g_AnimationTimeScale@@3MA", target = 0x004A7948 },
+  { offset = 0x77, type = "DIR32", symbol = "__real@41f00000", target = 0x00497F9C },
+]

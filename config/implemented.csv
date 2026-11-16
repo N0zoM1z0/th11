@@ -93,6 +93,7 @@ BeginPrimaryStageTransition
 BeginSecondaryCollision
 BeginSecondaryPlayerDeath
 BeginSecondaryStackFrame
+BeginSecondaryStageTransition
 BindAnimationFileScript
 BindAnimationScript
 BindAnimationSprite
