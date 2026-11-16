@@ -121,8 +121,10 @@ StageScriptMesh::StageScriptMesh(int rowCount, int columnCount, int flags)
     rowVms = static_cast<AnimationVmView **>(malloc(static_cast<size_t>(rowCount) * 4 - 1));
     vertices = static_cast<RenderVertex *>(malloc(static_cast<size_t>(rowCount) * columnCount * sizeof(RenderVertex)));
     positions = static_cast<CameraVector *>(malloc(static_cast<size_t>(rowCount) * columnCount * sizeof(CameraVector)));
+    int rowLimit = MeshRowLimit(rows);
+    int row = 0;
     if (!flags)
-        for (int row = 0; row < MeshRowLimit(rows); ++row)
+        for (row = 0; row < rowLimit; ++row)
         {
             ids[row] = CreateStageMeshRow(columnCount);
             AnimationVmView *vm = FindAnimationVmById(g_RenderBatch, ids[row]);
@@ -134,7 +136,7 @@ StageScriptMesh::StageScriptMesh(int rowCount, int columnCount, int flags)
             MeshVm(rowVms[row])->flags &= ~0x70u;
         }
     else
-        for (int row = 0; row < MeshRowLimit(rows); ++row)
+        for (row = 0; row < rowLimit; ++row)
         {
             ids[row] = CreateAlternateStageMeshRow(columnCount);
             AnimationVmView *vm = FindAnimationVmById(g_RenderBatch, ids[row]);

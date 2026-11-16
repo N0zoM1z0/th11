@@ -5,7 +5,7 @@ Seven complete functions now have source in `src/StageMesh.cpp`.
 | Function | Address | Target | Source | State |
 | --- | --- | ---: | ---: | --- |
 | StageMeshVmCallback | 40E520 | 16 | 16 | Exact |
-| StageScriptMeshConstructor | 40E530 | 389 | 369 | Non-exact |
+| StageScriptMeshConstructor | 40E530 | 389 | 366 | Non-exact |
 | ResetStageMesh | 40E6C0 | 325 | 325 | Non-exact |
 | PublishStageMesh | 40E890 | 123 | 123 | Exact |
 | CreateStageMeshRow | 42B3D0 | 168 | 168 | Exact |
@@ -71,12 +71,15 @@ Totals are126 mappings and64 exact functions /12,675 bytes.
 
 The four-byte AnimationVmId value object recovers the native stack ID argument
 and genuine hidden-result factory returns. Raw unsigned IDs and explicit
-output-pointer declarations did not recover that context. The current
-constructor remains non-exact against389. Row initialization now assigns Z,
-rhw and color, then increments the vertex pointer. VC9 schedules color/Z/rhw
-and anchors the induction pointer at rhw, exactly as native. This gives full
-168/170-byte exact rows; five fields each bind runtime+588, ID creation,
-renderer, ID lookup and malloc.
+output-pointer declarations did not recover that context. The current constructor remains non-exact against389. Precomputing
+`MeshRowLimit(rows)` and sharing one row index across the normal/alternate
+branches changes the compiler allocation to EBX for columns and EBP for the
+row index, matching the native register roles. The constructor is now366 bytes
+with82 normalized instruction-key alignments; it is still23 bytes short and
+not exact. Row initialization still assigns Z, rhw and color, then increments
+the vertex pointer. VC9 schedules color/Z/rhw and anchors the induction pointer
+at rhw, exactly as native. This gives full168/170-byte exact rows; five fields
+each bind runtime+588, ID creation, renderer, ID lookup and malloc.
 
 A reference to the row ID, or an inline resolver taking that reference, gives
 a389-byte constructor but changes its private ABI to RET12 and retains232

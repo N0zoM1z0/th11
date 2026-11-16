@@ -33,7 +33,7 @@ compiling `src/StageMesh.cpp` and `probes/stage-mesh-context.cpp` in their
 non-`/Oy-` profile. The dynamic constructor probe prevents LTCG from
 specializing `StageScriptMesh` for only the Boss's `flags == 0` call sites.
 That changes the constructor from a 237-byte specialized candidate to a
-369-byte generic contribution. The target constructor is 389 bytes. The
+366-byte generic contribution. The target constructor is 389 bytes. The
 Boss's opcode-17 caller now has the native generic argument shape: ESI object,
 EAX row count, and two stack arguments; this is still not an exact constructor
 or Boss proof.
@@ -61,7 +61,7 @@ and EH/funclet ownership. Do not treat a matching function length as exactness.
 - `AdvanceStageTimer`: 83-byte exact linked-PE owner.
 - `UpdateStageObjects`: 153-byte exact linked-PE owner.
 - `StageUpdateCallback`: 7-byte exact adapter.
-- `StageScriptMeshConstructor`: 369-byte candidate versus 389 target bytes;
+- `StageScriptMeshConstructor`: 366-byte candidate versus 389 target bytes;
   generic call ABI restored, still non-exact.
 - `StepStageVectorTween` and `UpdateStage` remain large, non-exact owners.
 

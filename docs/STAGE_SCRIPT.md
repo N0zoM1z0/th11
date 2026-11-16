@@ -126,7 +126,7 @@ The frontier now compiles `src/StageMesh.cpp` and
 `probes/stage-mesh-context.cpp` in their non-`/Oy-` profile. The probe keeps a
 dynamic constructor call in the LTCG graph, preventing the Boss's constant
 `flags == 0` call sites from specializing the shared constructor. The
-StageScriptMesh constructor now contributes 369 bytes rather than the
+StageScriptMesh constructor now contributes 366 bytes rather than the
 237-byte specialized body; its generic ESI/EAX/stack argument ABI matches the
 native caller shape, including `ret 8`. The constructor remains 20 bytes short
 of its 389-byte target owner and is not exact.
