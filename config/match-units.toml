@@ -9458,11 +9458,17 @@ source = "src/StageScript.cpp"
 inputs = [
   "probes/stage-script-context.cpp",
   "probes/stage-tween-context.cpp",
+  "probes/runtime-surfaces-context.cpp",
+  "probes/vm-bindings-context.cpp",
   "src/AngleMath.cpp",
   "src/AngleMath.hpp",
   "src/AnimationDocument.hpp",
   "src/AnimationVm.hpp",
+  "src/AnimationVm.cpp",
   "src/AnimationVmFactory.cpp",
+  "src/RuntimeSurfaces.hpp",
+  "src/RuntimeSurfaces.cpp",
+  "src/VmBindings.cpp",
   "src/AnimationVmFactory.hpp",
   "src/AnimationVmId.hpp",
   "src/Camera.hpp",
@@ -9489,10 +9495,15 @@ support_sources = [
   "src/StageEasing.cpp",
   "src/StageMesh.cpp",
   "src/AnimationVmFactory.cpp",
+  "src/AnimationVm.cpp",
+  "src/RuntimeSurfaces.cpp",
+  "probes/runtime-surfaces-context.cpp",
+  "src/VmBindings.cpp",
+  "probes/vm-bindings-context.cpp",
   "src/AngleMath.cpp",
 ]
 normal_support_sources = ["src/AngleMath.cpp"]
-support_profiles = { "src/StageTween.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"] }
+support_profiles = { "src/StageTween.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/AnimationVm.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"], "src/RuntimeSurfaces.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"], "src/VmBindings.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"] }
 output_dir = "build/match-linked/StageScriptFrontier"
 profile = ["/TP", "/O2", "/Oy-", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "StageScriptProbe@12"

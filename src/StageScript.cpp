@@ -44,16 +44,6 @@ static __forceinline float OscillatorSine(float time, double inversePeriod)
     return static_cast<float>(sin(static_cast<double>(phase)));
 }
 
-static __declspec(naked) void ReleaseVmBindingBlockFromEsi()
-{
-    __asm
-    {
-        push esi
-        call ReleaseVmBindingBlock
-        ret
-    }
-}
-
 int __stdcall ExecuteStageScript(StageResourceView *self)
 {
     StageScriptStateView &state = ScriptState(self);
@@ -74,12 +64,11 @@ int __stdcall ExecuteStageScript(StageResourceView *self)
             continue;
         case 2:
         {
-            CameraVector cameraOffset = self->camera.view.position;
-            self->camera.updateOffset = cameraOffset;
+            self->camera.updateOffset = self->camera.view.position;
             ScriptVector(self->camera.view.position, values);
-            float offsetX = self->camera.view.position.x - cameraOffset.x;
-            float offsetY = self->camera.view.position.y - cameraOffset.y;
-            float offsetZ = self->camera.view.position.z - cameraOffset.z;
+            float offsetX = self->camera.view.position.x - self->camera.updateOffset.x;
+            float offsetY = self->camera.view.position.y - self->camera.updateOffset.y;
+            float offsetZ = self->camera.view.position.z - self->camera.updateOffset.z;
             *reinterpret_cast<unsigned int *>(&self->camera.updateOffset.x) =
                 *reinterpret_cast<unsigned int *>(&offsetX);
             *reinterpret_cast<unsigned int *>(&self->camera.updateOffset.y) =
@@ -102,9 +91,10 @@ int __stdcall ExecuteStageScript(StageResourceView *self)
                 *reinterpret_cast<const unsigned int *>(&targetY);
             *reinterpret_cast<unsigned int *>(&state.positionTween.target.z) =
                 *reinterpret_cast<const unsigned int *>(&targetZ);
+        }
+PositionTweenFrame:
             state.positionTween.time.SetFrame(-1);
             break;
-        }
         case 4:
             ScriptVector(self->camera.view.targetOffset, values);
             break;
@@ -122,9 +112,10 @@ int __stdcall ExecuteStageScript(StageResourceView *self)
                 *reinterpret_cast<const unsigned int *>(&targetY);
             *reinterpret_cast<unsigned int *>(&state.targetTween.target.z) =
                 *reinterpret_cast<const unsigned int *>(&targetZ);
+        }
+TargetTweenFrame:
             state.targetTween.time.SetFrame(-1);
             break;
-        }
         case 6:
             ScriptVector(self->camera.view.up, values);
             break;
@@ -193,8 +184,7 @@ int __stdcall ExecuteStageScript(StageResourceView *self)
             *reinterpret_cast<unsigned int *>(&state.positionTween.control2.z) =
                 *reinterpret_cast<const unsigned int *>(&control2Z);
             state.positionTween.mode = 8;
-            state.positionTween.time.SetFrame(-1);
-            break;
+            goto PositionTweenFrame;
         }
         case 11:
         {
@@ -228,17 +218,18 @@ int __stdcall ExecuteStageScript(StageResourceView *self)
             *reinterpret_cast<unsigned int *>(&state.targetTween.control2.z) =
                 *reinterpret_cast<const unsigned int *>(&control2Z);
             state.targetTween.mode = 8;
-            state.targetTween.time.SetFrame(-1);
-            break;
+            goto TargetTweenFrame;
         }
         case 12:
             state.oscillator = static_cast<unsigned char>(words[0]);
             if (!state.oscillator)
             {
-                CameraVector zero = {0.0f, 0.0f, 0.0f};
-                CameraVector up = {0.0f, 1.0f, 0.0f};
-                self->camera.view.eyeOffset = zero;
-                self->camera.view.up = up;
+                self->camera.view.eyeOffset.x = 0.0f;
+                self->camera.view.eyeOffset.y = 0.0f;
+                self->camera.view.eyeOffset.z = 0.0f;
+                self->camera.view.up.x = 0.0f;
+                self->camera.view.up.y = 1.0f;
+                self->camera.view.up.z = 0.0f;
             }
             state.oscillatorTime.SetFrame(-1);
             break;
@@ -267,11 +258,7 @@ int __stdcall ExecuteStageScript(StageResourceView *self)
             VmBindingBlockView *block = self->bindings;
             if (block)
             {
-                __asm
-                {
-                    mov esi, block
-                    call ReleaseVmBindingBlockFromEsi
-                }
+                ReleaseVmBindingBlock(block);
                 operator delete(block);
             }
             self->minimumRadius = 112.0f;
