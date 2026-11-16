@@ -312,6 +312,7 @@ InitializeD3DDevice,0x00446D30,function
 InitializeFanAnimationVm,0x004520F0,function
 InitializeInputBindingDefaults,0x00459BD0,function
 InitializeMainWindow,0x00446AE0,function
+InitializePrimaryStageScripts,0x00405030,function
 InitializeReplayFileBrowser,0x00437D50,function
 InitializeReplayHeaderStorage,0x00420D80,function
 InitializeReplayScoreArchive,0x00437550,function

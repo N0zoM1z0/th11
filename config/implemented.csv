@@ -311,6 +311,7 @@ InitializeD3DDevice
 InitializeFanAnimationVm
 InitializeInputBindingDefaults
 InitializeMainWindow
+InitializePrimaryStageScripts
 InitializeReplayFileBrowser
 InitializeReplayHeaderStorage
 InitializeReplayScoreArchive

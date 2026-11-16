@@ -8,6 +8,7 @@ section and reconciled its full extent, instruction flow, callers and tables.
 | --- | ---: | ---: | --- |
 | ExecuteStageScript,0x00404470 | 2,736 bytes through0x00404F1F | 2,712 bytes | Non-exact; EH ownership open |
 | SeekStageScriptMarker,0x00404F20 | 113 bytes through0x00404F90 | 113 bytes | Exact normal-COFF, 2 relocations |
+| InitializePrimaryStageScripts,0x00405030 | 249 bytes through0x00405128 | 237 bytes in standalone normal-COFF diagnostic | Source present; non-exact |
 | PackStageFog,0x00405B70 | 171 bytes through0x00405C1A | 171 bytes | Exact; defined inline in StageTween.cpp (see [STAGE_TWEEN](STAGE_TWEEN.md)) |
 
 The interpreter's Ghidra code body ends at404EB8 and contains2,633 bytes.
@@ -40,6 +41,35 @@ bytes and zero differences** after exhaustive replay of `g_StagePrimary` at
 field `+3` and `g_AnimationTimeScale` at `+0x59`. This does not grant exactness
 to `ExecuteStageScript`, nor does it establish the helper's original object
 ownership or authored provenance.
+
+## Primary stage object/VM initialization
+
+`InitializePrimaryStageScripts` at `0x00405030..0x00405128` has a complete
+natural C++ reconstruction in `src/StageScriptInitialization.cpp`. The native
+routine is reached from `UpdateSecondaryGameplay` at `0x00420390`; it reads
+`g_StagePrimary`, sets bit 1 (`0x2`) in each of the stage's update, draw and
+overlay chain-element flags, then walks the signed 16-bit object count. Each
+object has its active byte set to 1 at `+3`. Its variable-length VM command
+stream starts at object `+0x1c`: a signed command type at `+0`, signed byte
+stride at `+2`, signed script ID at `+4`, and written VM index at `+6`.
+A negative type terminates the current object's stream; the subsequent object
+continues global VM numbering.
+
+Each nonnegative command resets the corresponding 0x434-byte VM, sets the two
+`+0x41d`/`+0x41c` bytes to `0x10`, binds its script using the animation document
+at stage `+0x178`, writes its sequential VM index, and steps by the signed
+command byte stride. Finally, the main script cursor at stage `+0x4c` is set
+to section008 at `+0x1c`, even when no objects were present. The native
+routine introduces no extra object count/VM count guard, null fallback, or
+cycle detection.
+
+A targeted pinned VC9 normal-COFF compilation yields a 237-byte code body,
+compared with a 249-byte complete native extent (245 decoded code addresses).
+The standalone compiler uses conventional stack calls while the target calls
+`ResetAnimationVm` and `BindAnimationScript` through their private LTCG
+register ABIs. This is **source/behavioral recovery only**, not an exact
+match; original TU linkage and code generation remain open. No inline ASM,
+instruction padding, or fabricated control-flow was used.
 
 ## Script state and execution
 
