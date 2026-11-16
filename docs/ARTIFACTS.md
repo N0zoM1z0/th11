@@ -173,3 +173,49 @@ A short ignored cleanup receipt is kept at
 `.analysis/handoff-storage-cleanup-20261114.txt`. The canonical host build was
 rebuilt and its11-byte manager adapter passed selected cold replay after the
 pair-access support list changed. No full replay was run.
+
+## Handoff cleanup — 2026-11-16
+
+This pass removed stale, regenerable diagnostic output while keeping the
+current source experiments and canonical exact-unit evidence available.
+
+| Path | Before (apparent bytes) | After (apparent bytes) | Action |
+| --- | ---: | ---: | --- |
+| build/exp | 151,260,963 | 0 | Removed all scratch link contexts |
+| build/probe-ltcg | 56,719,463 | 38,014,295 | Removed 42 unreferenced/superseded contexts; retained 14 |
+| .analysis | 41,588,464 | 40,316,860 | Removed two obsolete full-ledger snapshots; retained source experiments and evidence |
+| scripts/__pycache__ | 414,747 | 0 | Removed regenerable Python bytecode |
+
+The pass reclaimed **171,652,482 apparent bytes** (about **163.7 MiB**).
+The 14 retained diagnostic contexts are:
+
+- AnimationSurfaceCopyTracked
+- BrowserState0-20261112-goto-layout
+- LoaderCtorOrder20261112-explicit-before-clear
+- MenuReplayRecordsDraw-isolated-20261112
+- PauseContinueAllRealCallersFinal-20261113
+- PauseContinueBossTrackedBestOy-20261113
+- PauseContinueDynamicFactorySupport-20261113
+- PauseContinueDynamicModeSupport-20261113
+- PauseContinueMenuOwner
+- PauseContinueSameTuScore-20261113
+- PauseGameOverFpoAdapters-20261113
+- ReplayCompressionMain
+- SecondaryGameplayStatisticsWriter
+- SecondaryReplayLoadRealHooks-real-all-hooks-20261112
+
+The removed contexts had no direct references from the maintained docs,
+README, configuration or probes. Their experimental source/analysis remains
+in .analysis where available; build outputs can be regenerated when needed.
+The removed ledger snapshots duplicated older versions of the now-tracked
+config and are not used by any build.
+
+No tracked file was deleted. The cleanup did not use git clean and did not
+touch the private target (672 KiB), VC9 compiler (133 MiB), Wine prefix
+(621 MiB), Ghidra project
+(14 MiB), canonical build/match cache (484 KiB), or canonical
+build/match-linked cache (607 MiB). No compile or cold replay was run.
+
+The exact removed probe-context names are recorded in
+.analysis/handoff-storage-cleanup-20261116.removed-probe-contexts.txt;
+the size summary is in .analysis/handoff-storage-cleanup-20261116.txt.
