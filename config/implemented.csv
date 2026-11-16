@@ -470,6 +470,7 @@ ReleaseVmBindingBlock
 RenderSecondaryDebugOverlay
 RenderSecondaryDebugOverlayCallback
 ReplaceReplayCompressionNode
+ResetAndBindStageAnimationVm
 ResetAnimationScalarTweenTime
 ResetAnimationVectorTweenTime
 ResetAnimationVm

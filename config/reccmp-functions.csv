@@ -471,6 +471,7 @@ ReleaseVmBindingBlock,0x00402300,function
 RenderSecondaryDebugOverlay,0x0040DAC0,function
 RenderSecondaryDebugOverlayCallback,0x0040DDE0,function
 ReplaceReplayCompressionNode,0x00442B50,function
+ResetAndBindStageAnimationVm,0x00405B10,function
 ResetAnimationScalarTweenTime,0x0044ED80,function
 ResetAnimationVectorTweenTime,0x00405C60,function
 ResetAnimationVm,0x00401FD0,function
