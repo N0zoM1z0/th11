@@ -9503,7 +9503,7 @@ support_sources = [
   "src/AngleMath.cpp",
 ]
 normal_support_sources = ["src/AngleMath.cpp"]
-support_profiles = { "src/StageTween.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/AnimationVm.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"], "src/RuntimeSurfaces.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"], "src/VmBindings.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"] }
+support_profiles = { "src/StageTween.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/AnimationVm.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"], "src/RuntimeSurfaces.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"], "src/VmBindings.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"], "probes/vm-bindings-context.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"] }
 output_dir = "build/match-linked/StageScriptFrontier"
 profile = ["/TP", "/O2", "/Oy-", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "StageScriptProbe@12"
