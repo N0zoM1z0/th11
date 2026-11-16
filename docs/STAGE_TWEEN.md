@@ -81,6 +81,23 @@ paths. SetStageTimer lazily initializes when flag bit0 is clear, installs the
 global scale pointer and preserves other flag bits, then writes previous=frame-1
 with32-bit wrap, current=frame and fraction=float(frame).
 
+## Exact native 15-byte timer comparison
+
+At `405E10..405E1E` the original executable contains a complete timer
+comparison: native ECX is the timer receiver, an `int` frame bound is passed
+on the stack, and the signed `current` at +4 is compared with `<=` to return
+0 or 1. One `CC` byte precedes the following distinct timer operation.
+The original class, translation unit, and caller are unestablished.
+
+The ordinary C++ method `StageTimerComparisonView::IsAtOrBefore` produces
+15 bytes even in normal VC9 COFF, but that isolated context uses ECX instead
+of the original EDX scratch register for two operand selector bytes. A
+separate-TU dynamic consumer compiled with pinned VC9 `/GL` naturally
+recovers EDX while preserving the 15-byte complete primary-TU PDB contribution.
+The canonical `stage-timer-is-at-or-before` unit has no link fields and passes
+**15/15 byte strict cold replay with zero differences**, without ASM or
+modified output bytes.
+
 ## Recovered vector math owners at 0x405D90 and 0x405DC0
 
 The original `.text` includes two separate arithmetic owners missing from

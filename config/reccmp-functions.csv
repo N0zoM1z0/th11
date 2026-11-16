@@ -636,6 +636,7 @@ StageOverlayCallback,0x00403920,function
 StageResourceConstructor,0x004023F0,function
 StageResourceDestructor,0x00402740,function
 StageScriptMeshConstructor,0x0040E530,function
+StageTimerComparisonView::IsAtOrBefore,0x00405E10,function
 StageUpdateCallback,0x00403900,function
 StageVectorSquaredLength,0x00405DC0,function
 StageVectorTweenFactor,0x00405960,function

@@ -635,6 +635,7 @@ StageOverlayCallback
 StageResourceConstructor
 StageResourceDestructor
 StageScriptMeshConstructor
+StageTimerComparisonView::IsAtOrBefore
 StageUpdateCallback
 StageVectorSquaredLength
 StageVectorTweenFactor

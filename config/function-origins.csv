@@ -56,6 +56,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00405D80,unknown,,review,unknown,stage-malloc-short-owner-20261116
 0x00405D90,unknown,,review,unknown,stage-vector-math-full-pe-review-20261116
 0x00405DC0,unknown,,review,unknown,stage-vector-math-full-pe-review-20261116
+0x00405E10,unknown,,review,unknown,stage-timer-compare-full-pe-owner-20261116
 0x00405E60,unknown,,review,unknown,stage-render-tint-full-pe-owner-20261116
 0x00405E80,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00405FB0,unknown,SecondaryScriptVm,indeterminate,unknown,secondary-script-origin-2026-10-29

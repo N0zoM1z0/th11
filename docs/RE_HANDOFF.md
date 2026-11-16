@@ -75,6 +75,9 @@ and EH/funclet ownership. Do not treat a matching function length as exactness.
   `StageVectorSquaredLength` at `405DC0` are now exact natural C++ `/GL`
   source owners (43/43 and 33/33; both zero-field strict cold replay).
   Adjacent vector addition at `405DF0` still differs in six operand bytes.
+- `StageTimerComparisonView::IsAtOrBefore` at `405E10` is exact
+  15/15-byte natural C++ `thiscall` under real /GL caller; the ordinary
+  COFF-only two EDX/ECX differences are resolved, no link fields.
 - `ResetStageRenderTint` at `405E60`: exact 26-byte natural C++
   renderer-neutralization helper, one native DIR32 to g_RenderBatch, focused
   normal-COFF cold replay zero differences.
