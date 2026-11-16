@@ -567,6 +567,7 @@ SecondaryStackTop
 SecondaryVelocityLength
 SeekPbgLowLevelFile
 SeekPbgMemoryFile
+SeekStageScriptMarker
 SelectAvailableMusicBuffer
 SelectMenuItem
 SelectSecondaryActorTransition

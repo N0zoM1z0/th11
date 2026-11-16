@@ -7,6 +7,7 @@ section and reconciled its full extent, instruction flow, callers and tables.
 | Function | Full target owner | Source contribution | State |
 | --- | ---: | ---: | --- |
 | ExecuteStageScript,0x00404470 | 2,736 bytes through0x00404F1F | 2,712 bytes | Non-exact; EH ownership open |
+| SeekStageScriptMarker,0x00404F20 | 113 bytes through0x00404F90 | 113 bytes | Exact normal-COFF, 2 relocations |
 | PackStageFog,0x00405B70 | 171 bytes through0x00405C1A | 171 bytes | Exact; defined inline in StageTween.cpp (see [STAGE_TWEEN](STAGE_TWEEN.md)) |
 
 The interpreter's Ghidra code body ends at404EB8 and contains2,633 bytes.
@@ -18,6 +19,27 @@ tables and resolve inside the primary code body. The next function starts at
 incomplete; the ledger now includes both tables. Separate EH handler/cleanup
 ownership remains outside the exact lane. No target bytes or tables are embedded
 in the source; ordinary switches generate the compiler's tables.
+
+## Adjacent exact marker-seek helper
+
+The native `0x00404F20..0x00404F90` function is a separate 113-byte owner,
+not part of the preceding interpreter's jump tables. Its single reviewed
+caller is `ExecuteSecondaryActorInstruction` at `0x00412E30`. In the internal
+fastcall ABI the first ECX value is unused, while EDX supplies a marker ID.
+It always reads `g_StagePrimary` at `0x004A8D60`, scans the stage's
+`section008` instructions until a negative-frame sentinel, and searches for
+opcode 16 with the requested argument. On a match it publishes the *next*
+instruction as the interpreter cursor, then initializes/sets the script timer
+to that next instruction's frame (current, previous=frame-1 and float fraction).
+An absent marker leaves the timer and cursor alone; there is no stream bound
+or allocation fallback in the native control flow.
+
+The maintained `src/StageScriptSeek.cpp` is ordinary C++ and has a separate
+pinned VC9 normal-COFF exact proof via `seek-stage-script-marker`: **113/113
+bytes and zero differences** after exhaustive replay of `g_StagePrimary` at
+field `+3` and `g_AnimationTimeScale` at `+0x59`. This does not grant exactness
+to `ExecuteStageScript`, nor does it establish the helper's original object
+ownership or authored provenance.
 
 ## Script state and execution
 

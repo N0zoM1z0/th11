@@ -568,6 +568,7 @@ SecondaryStackTop,0x0045B5E0,function
 SecondaryVelocityLength,0x00435430,function
 SeekPbgLowLevelFile,0x00441F30,function
 SeekPbgMemoryFile,0x00442DC0,function
+SeekStageScriptMarker,0x00404F20,function
 SelectAvailableMusicBuffer,0x0045A990,function
 SelectMenuItem,0x0040DF10,function
 SelectSecondaryActorTransition,0x00417B40,function

@@ -30,6 +30,23 @@ target_address = 4201808
 size = 124
 relocations = []
 
+# Adjacent marker seek helper; independent normal-COFF codegen frontier.
+# Its private fastcall signature has an unused ECX and marker in EDX.
+[units.seek-stage-script-marker]
+artifact_kind = "coff"
+source = "src/StageScriptSeek.cpp"
+inputs = ["src/StageScript.hpp", "src/StageResource.hpp"]
+object = "build/match/StageScriptSeek.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["SeekStageScriptMarker"]
+symbol = "?SeekStageScriptMarker@@YIXPAXH@Z"
+target_address = 0x00404F20
+size = 113
+relocations = [
+  { offset = 3, type = "DIR32", symbol = "?g_StagePrimary@@3PAUStageResourceView@@A", target = 0x004A8D60 },
+  { offset = 89, type = "DIR32", symbol = "?g_AnimationTimeScale@@3MA", target = 0x004A7948 },
+]
+
 [units.ascii-manager-on-update]
 artifact_kind = "coff"
 source = "src/AsciiUpdate.cpp"
