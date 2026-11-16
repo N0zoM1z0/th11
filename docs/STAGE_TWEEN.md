@@ -98,6 +98,22 @@ The canonical `stage-timer-is-at-or-before` unit has no link fields and passes
 **15/15 byte strict cold replay with zero differences**, without ASM or
 modified output bytes.
 
+## Exact 20-byte negative frame timer adapter at 0x405E30
+
+The native helper accepts its timer in ECX and signed frame count in EAX. It
+negates the integer first, converts that signed result to x87 float with
+`FILD`, forwards the float to `OffsetSecondaryTimer` (`0x459210`) while
+preserving the timer receiver, then returns. Its full 20-byte body ends at
+`0x405E43`, followed by 11 `CC` bytes.
+
+`src/StageTimerNegativeOffset.cpp` expresses the operation as a normal C++
+member method on a layout-compatible `StageTimerNegativeOffsetView`. With
+the real `src/SecondaryActorMotion.cpp` implementation in the `/GL` producer,
+VC9 naturally reproduces the complete 20-byte private register ABI and sole
+`REL32` field at `+0x0e`. The primary PDB contribution is exactly 20 bytes and
+strict cold replay reports zero differences. The source-side class name is
+only a layout/ABI expression; original class provenance is unknown.
+
 ## Exact 25-byte vector addition operator at 0x405DF0
 
 The native body at `405DF0..405E08` adds the three `CameraVector` components

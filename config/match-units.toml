@@ -3941,7 +3941,9 @@ functions = ["SecondaryIntegerPairNonzero"]
 symbol = "?SecondaryIntegerPairNonzero@@YGHPBUSecondaryIntegerPair@@@Z"
 target_address = 0x433df0
 size = 20
-linkages = []
+linkages = [
+  { offset = 0x0e, type = "REL32", symbol = "?OffsetSecondaryTimer@@YGHPAUStageTimerView@@M@Z", target = 0x00459210 },
+]
 
 [units.set-secondary-integer-pair]
 artifact_kind = "linked-pe"
@@ -9754,4 +9756,21 @@ target_address = 0x00405E20
 size = 16
 linkages = [
   { offset = 9, type = "REL32", symbol = "?OffsetSecondaryTimer@@YGHPAUStageTimerView@@M@Z", target = 0x00459210 },
+]
+
+# Diagnostic negative-frame timer adapter; original class/TU identity unknown.
+[units.offset-stage-timer-by-negative-frames]
+artifact_kind = "linked-pe"
+source = "src/StageTimerNegativeOffset.cpp"
+inputs = ["src/StageResource.hpp", "src/SecondaryActorMotion.cpp", "probes/stage-timer-negative-offset-context.cpp"]
+support_sources = ["probes/stage-timer-negative-offset-context.cpp", "src/SecondaryActorMotion.cpp"]
+output_dir = "build/match-linked/StageTimerNegativeOffsetFrontier"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "StageTimerNegativeOffsetProbe@8"
+functions = ["StageTimerNegativeOffsetView::OffsetByNegativeFrames"]
+symbol = "?OffsetByNegativeFrames@StageTimerNegativeOffsetView@@QAEHH@Z"
+target_address = 0x00405E30
+size = 20
+linkages = [
+  { offset = 0x0e, type = "REL32", symbol = "?OffsetSecondaryTimer@@YGHPAUStageTimerView@@M@Z", target = 0x00459210 },
 ]

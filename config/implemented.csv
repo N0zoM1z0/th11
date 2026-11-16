@@ -378,6 +378,7 @@ MusicStreamingThread
 NormalizeAngle
 OffsetSecondaryTimer
 OffsetStageTimerByFrames
+OffsetStageTimerByNegativeFrames
 OpenMusicDecoderFile
 OpenPbgFileSession
 OpenPbgLowLevelFile

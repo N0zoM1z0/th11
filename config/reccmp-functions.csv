@@ -379,6 +379,7 @@ MusicStreamingThread,0x0044A900,function
 NormalizeAngle,0x00458ED0,function
 OffsetSecondaryTimer,0x00459210,function
 OffsetStageTimerByFrames,0x00405E20,function
+OffsetStageTimerByNegativeFrames,0x00405E30,function
 OpenMusicDecoderFile,0x0045B220,function
 OpenPbgFileSession,0x004415C0,function
 OpenPbgLowLevelFile,0x00441D50,function
