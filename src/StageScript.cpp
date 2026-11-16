@@ -44,9 +44,20 @@ static __forceinline float OscillatorSine(float time, double inversePeriod)
     return static_cast<float>(sin(static_cast<double>(phase)));
 }
 
+static __declspec(naked) void ReleaseVmBindingBlockFromEsi()
+{
+    __asm
+    {
+        push esi
+        call ReleaseVmBindingBlock
+        ret
+    }
+}
+
 int __stdcall ExecuteStageScript(StageResourceView *self)
 {
     StageScriptStateView &state = ScriptState(self);
+    StageFogView fog;
     while (state.instruction->frame <= state.scriptTime.current)
     {
         StageScriptInstruction *instruction = state.instruction;
@@ -64,24 +75,33 @@ int __stdcall ExecuteStageScript(StageResourceView *self)
         case 2:
         {
             CameraVector cameraOffset = self->camera.view.position;
-            ScriptVector(self->camera.view.position, values);
-            cameraOffset.x = self->camera.view.position.x - cameraOffset.x;
-            cameraOffset.y = self->camera.view.position.y - cameraOffset.y;
-            cameraOffset.z = self->camera.view.position.z - cameraOffset.z;
             self->camera.updateOffset = cameraOffset;
+            ScriptVector(self->camera.view.position, values);
+            float offsetX = self->camera.view.position.x - cameraOffset.x;
+            float offsetY = self->camera.view.position.y - cameraOffset.y;
+            float offsetZ = self->camera.view.position.z - cameraOffset.z;
+            *reinterpret_cast<unsigned int *>(&self->camera.updateOffset.x) =
+                *reinterpret_cast<unsigned int *>(&offsetX);
+            *reinterpret_cast<unsigned int *>(&self->camera.updateOffset.y) =
+                *reinterpret_cast<unsigned int *>(&offsetY);
+            *reinterpret_cast<unsigned int *>(&self->camera.updateOffset.z) =
+                *reinterpret_cast<unsigned int *>(&offsetZ);
             break;
         }
         case 3:
         {
+            const float targetX = values[2];
+            const float targetY = values[3];
+            const float targetZ = values[4];
             state.positionTween.duration = words[0];
             state.positionTween.mode = words[1];
             state.positionTween.initial = self->camera.view.position;
-            volatile float targetX = values[2];
-            volatile float targetY = values[3];
-            volatile float targetZ = values[4];
-            state.positionTween.target.x = targetX;
-            state.positionTween.target.y = targetY;
-            state.positionTween.target.z = targetZ;
+            *reinterpret_cast<unsigned int *>(&state.positionTween.target.x) =
+                *reinterpret_cast<const unsigned int *>(&targetX);
+            *reinterpret_cast<unsigned int *>(&state.positionTween.target.y) =
+                *reinterpret_cast<const unsigned int *>(&targetY);
+            *reinterpret_cast<unsigned int *>(&state.positionTween.target.z) =
+                *reinterpret_cast<const unsigned int *>(&targetZ);
             state.positionTween.time.SetFrame(-1);
             break;
         }
@@ -90,15 +110,18 @@ int __stdcall ExecuteStageScript(StageResourceView *self)
             break;
         case 5:
         {
+            const float targetX = values[2];
+            const float targetY = values[3];
+            const float targetZ = values[4];
             state.targetTween.duration = words[0];
             state.targetTween.mode = words[1];
             state.targetTween.initial = self->camera.view.targetOffset;
-            volatile float targetX = values[2];
-            volatile float targetY = values[3];
-            volatile float targetZ = values[4];
-            state.targetTween.target.x = targetX;
-            state.targetTween.target.y = targetY;
-            state.targetTween.target.z = targetZ;
+            *reinterpret_cast<unsigned int *>(&state.targetTween.target.x) =
+                *reinterpret_cast<const unsigned int *>(&targetX);
+            *reinterpret_cast<unsigned int *>(&state.targetTween.target.y) =
+                *reinterpret_cast<const unsigned int *>(&targetY);
+            *reinterpret_cast<unsigned int *>(&state.targetTween.target.z) =
+                *reinterpret_cast<const unsigned int *>(&targetZ);
             state.targetTween.time.SetFrame(-1);
             break;
         }
@@ -123,7 +146,6 @@ int __stdcall ExecuteStageScript(StageResourceView *self)
         }
         case 9:
         {
-            StageFogView fog;
             fog.start = values[3];
             fog.end = values[4];
             const unsigned char *color = reinterpret_cast<const unsigned char *>(&words[2]);
@@ -140,23 +162,75 @@ int __stdcall ExecuteStageScript(StageResourceView *self)
             break;
         }
         case 10:
+        {
+            const float control1X = values[2];
+            const float control1Y = values[3];
+            const float control1Z = values[4];
+            const float targetX = values[5];
+            const float targetY = values[6];
+            const float targetZ = values[7];
+            const float control2X = values[8];
+            const float control2Y = values[9];
+            const float control2Z = values[10];
             state.positionTween.duration = words[0];
             state.positionTween.initial = self->camera.view.position;
-            ScriptVector(state.positionTween.control1, values + 2);
-            ScriptVector(state.positionTween.target, values + 5);
-            ScriptVector(state.positionTween.control2, values + 8);
+            *reinterpret_cast<unsigned int *>(&state.positionTween.control1.x) =
+                *reinterpret_cast<const unsigned int *>(&control1X);
+            *reinterpret_cast<unsigned int *>(&state.positionTween.control1.y) =
+                *reinterpret_cast<const unsigned int *>(&control1Y);
+            *reinterpret_cast<unsigned int *>(&state.positionTween.control1.z) =
+                *reinterpret_cast<const unsigned int *>(&control1Z);
+            *reinterpret_cast<unsigned int *>(&state.positionTween.target.x) =
+                *reinterpret_cast<const unsigned int *>(&targetX);
+            *reinterpret_cast<unsigned int *>(&state.positionTween.target.y) =
+                *reinterpret_cast<const unsigned int *>(&targetY);
+            *reinterpret_cast<unsigned int *>(&state.positionTween.target.z) =
+                *reinterpret_cast<const unsigned int *>(&targetZ);
+            *reinterpret_cast<unsigned int *>(&state.positionTween.control2.x) =
+                *reinterpret_cast<const unsigned int *>(&control2X);
+            *reinterpret_cast<unsigned int *>(&state.positionTween.control2.y) =
+                *reinterpret_cast<const unsigned int *>(&control2Y);
+            *reinterpret_cast<unsigned int *>(&state.positionTween.control2.z) =
+                *reinterpret_cast<const unsigned int *>(&control2Z);
             state.positionTween.mode = 8;
             state.positionTween.time.SetFrame(-1);
             break;
+        }
         case 11:
+        {
+            const float control1X = values[2];
+            const float control1Y = values[3];
+            const float control1Z = values[4];
+            const float targetX = values[5];
+            const float targetY = values[6];
+            const float targetZ = values[7];
+            const float control2X = values[8];
+            const float control2Y = values[9];
+            const float control2Z = values[10];
             state.targetTween.duration = words[0];
             state.targetTween.initial = self->camera.view.targetOffset;
-            ScriptVector(state.targetTween.control1, values + 2);
-            ScriptVector(state.targetTween.target, values + 5);
-            ScriptVector(state.targetTween.control2, values + 8);
+            *reinterpret_cast<unsigned int *>(&state.targetTween.control1.x) =
+                *reinterpret_cast<const unsigned int *>(&control1X);
+            *reinterpret_cast<unsigned int *>(&state.targetTween.control1.y) =
+                *reinterpret_cast<const unsigned int *>(&control1Y);
+            *reinterpret_cast<unsigned int *>(&state.targetTween.control1.z) =
+                *reinterpret_cast<const unsigned int *>(&control1Z);
+            *reinterpret_cast<unsigned int *>(&state.targetTween.target.x) =
+                *reinterpret_cast<const unsigned int *>(&targetX);
+            *reinterpret_cast<unsigned int *>(&state.targetTween.target.y) =
+                *reinterpret_cast<const unsigned int *>(&targetY);
+            *reinterpret_cast<unsigned int *>(&state.targetTween.target.z) =
+                *reinterpret_cast<const unsigned int *>(&targetZ);
+            *reinterpret_cast<unsigned int *>(&state.targetTween.control2.x) =
+                *reinterpret_cast<const unsigned int *>(&control2X);
+            *reinterpret_cast<unsigned int *>(&state.targetTween.control2.y) =
+                *reinterpret_cast<const unsigned int *>(&control2Y);
+            *reinterpret_cast<unsigned int *>(&state.targetTween.control2.z) =
+                *reinterpret_cast<const unsigned int *>(&control2Z);
             state.targetTween.mode = 8;
             state.targetTween.time.SetFrame(-1);
             break;
+        }
         case 12:
             state.oscillator = static_cast<unsigned char>(words[0]);
             if (!state.oscillator)
@@ -193,7 +267,11 @@ int __stdcall ExecuteStageScript(StageResourceView *self)
             VmBindingBlockView *block = self->bindings;
             if (block)
             {
-                ReleaseVmBindingBlock(block);
+                __asm
+                {
+                    mov esi, block
+                    call ReleaseVmBindingBlockFromEsi
+                }
                 operator delete(block);
             }
             self->minimumRadius = 112.0f;
@@ -201,7 +279,7 @@ int __stdcall ExecuteStageScript(StageResourceView *self)
             self->unknown301c = 0xffffffff;
             self->radius = 192.0f;
             float phase = NormalizeAngle(0.0f);
-            self->phaseX = self->phaseY = phase;
+            self->phaseY = self->phaseX = phase;
             self->distortionMode = state.instruction->args.words[0];
             if (self->minimumRadius > 0.0f)
             {
@@ -224,7 +302,10 @@ ApplyTweens:
     if (state.positionTween.duration)
         self->camera.view.position = StepStageVectorTween(&state.positionTween);
     if (state.fogTween.duration)
-        CameraFog(self) = StepStageFogTween(&state.fogTween);
+    {
+        fog = StepStageFogTween(&state.fogTween);
+        CameraFog(self) = fog;
+    }
 
     int period;
     float value;
