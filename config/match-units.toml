@@ -3941,9 +3941,7 @@ functions = ["SecondaryIntegerPairNonzero"]
 symbol = "?SecondaryIntegerPairNonzero@@YGHPBUSecondaryIntegerPair@@@Z"
 target_address = 0x433df0
 size = 20
-linkages = [
-  { offset = 0x0e, type = "REL32", symbol = "?OffsetSecondaryTimer@@YGHPAUStageTimerView@@M@Z", target = 0x00459210 },
-]
+linkages = []
 
 [units.set-secondary-integer-pair]
 artifact_kind = "linked-pe"
@@ -9774,3 +9772,19 @@ size = 20
 linkages = [
   { offset = 0x0e, type = "REL32", symbol = "?OffsetSecondaryTimer@@YGHPAUStageTimerView@@M@Z", target = 0x00459210 },
 ]
+
+# Constant -1.0f timer offset adapter with literal-pool and real callee fields.
+[units.offset-stage-timer-by-one-frame-frontier]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/StageTimerNegativeOne.cpp"
+inputs = ["src/StageResource.hpp", "src/SecondaryActorMotion.cpp", "probes/stage-timer-negative-one-context.cpp"]
+support_sources = ["probes/stage-timer-negative-one-context.cpp", "src/SecondaryActorMotion.cpp"]
+output_dir = "build/match-linked/StageTimerNegativeOneFrontier"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "StageTimerNegativeOneProbe@4"
+functions = ["StageTimerNegativeOneView::OffsetByOneFrame"]
+symbol = "?OffsetByOneFrame@StageTimerNegativeOneView@@QAEHXZ"
+target_address = 0x00405E50
+size = 15
+linkages = []
