@@ -2,12 +2,16 @@
 
 // Native vector helpers adjacent to the stage tween implementation. The
 // original owner/class identity is still unknown; keep normal C++ operations.
-void __stdcall AddStageVectorComponents(const CameraVector *right,
-    const CameraVector *left, CameraVector *out)
+struct StageVectorMathView
 {
-    out->x = right->x + left->x;
-    out->y = right->y + left->y;
-    out->z = right->z + left->z;
+    float x, y, z;
+    CameraVector __fastcall operator+(const StageVectorMathView &right) const;
+};
+
+CameraVector __fastcall StageVectorMathView::operator+(const StageVectorMathView &right) const
+{
+    CameraVector result = { x + right.x, y + right.y, z + right.z };
+    return result;
 }
 
 void __stdcall ScaleStageVectorByReciprocal(const CameraVector *source,

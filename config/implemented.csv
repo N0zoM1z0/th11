@@ -11,6 +11,7 @@ AddSecondaryCollisionValue
 AddSecondaryIntegerPair
 AddSecondaryPair
 AddStageFog
+AddStageVectorComponents
 AddToDrawChain
 AddToUpdateChain
 AdvanceAnimationDocument

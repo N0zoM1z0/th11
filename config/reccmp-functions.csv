@@ -12,6 +12,7 @@ AddSecondaryCollisionValue,0x0040BAA0,function
 AddSecondaryIntegerPair,0x00433EA0,function
 AddSecondaryPair,0x004195E0,function
 AddStageFog,0x00405A50,function
+AddStageVectorComponents,0x00405DF0,function
 AddToDrawChain,0x00456C10,function
 AddToUpdateChain,0x00456B70,function
 AdvanceAnimationDocument,0x004544C0,function

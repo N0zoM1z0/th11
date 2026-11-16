@@ -1,5 +1,5 @@
 #include "../src/StageScript.hpp"
-void __stdcall AddStageVectorComponents(const CameraVector *, const CameraVector *, CameraVector *);
+struct StageVectorMathView { float x, y, z; CameraVector __fastcall operator+(const StageVectorMathView &right) const; };
 void __stdcall ScaleStageVectorByReciprocal(const CameraVector *, CameraVector *, float);
 float __stdcall StageVectorSquaredLength(const CameraVector *);
 
@@ -9,7 +9,8 @@ extern "C" __declspec(dllexport) float __stdcall StageVectorMathLeavesProbe(
 {
     if (mode == 0)
     {
-        AddStageVectorComponents(second, first, output);
+        *output = *reinterpret_cast<const StageVectorMathView *>(first) +
+            *reinterpret_cast<const StageVectorMathView *>(second);
         return output->x;
     }
     if (mode == 1)

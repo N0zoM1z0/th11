@@ -98,6 +98,24 @@ The canonical `stage-timer-is-at-or-before` unit has no link fields and passes
 **15/15 byte strict cold replay with zero differences**, without ASM or
 modified output bytes.
 
+## Exact 25-byte vector addition operator at 0x405DF0
+
+The native body at `405DF0..405E08` adds the three `CameraVector` components
+with the left operand in ECX, the right operand in EDX, and the hidden 12-byte
+result pointer in EAX. This ABI shape is naturally expressed as a C++ member
+`operator+` returning `CameraVector`; a normal free function produced the same
+six operand-selector differences until the member return ABI was modeled.
+
+`src/StageVectorMathLeaves.cpp` now uses a small `StageVectorMathView` with the
+same three-float layout. Its `__fastcall` member operator returns a normal
+`CameraVector` aggregate. VC9 `/GL` emits the complete native 25-byte owner,
+including all three x87 `FLD/FADD/FSTP` sequences and the final `RET`, with no
+relocations. The full PDB primary contribution is 25 bytes, and strict cold
+replay reports **zero differences**. The original class identity remains
+unknown; `StageVectorMathView` is only the source-side ABI/layout expression.
+The two sibling math functions in the same source/PDB context continue to
+pass their 43-byte and 33-byte exact comparisons.
+
 ## Recovered vector math owners at 0x405D90 and 0x405DC0
 
 The original `.text` includes two separate arithmetic owners missing from

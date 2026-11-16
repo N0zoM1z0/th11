@@ -82,7 +82,10 @@ and EH/funclet ownership. Do not treat a matching function length as exactness.
 - `ScaleStageVectorByReciprocal` at `405D90` and
   `StageVectorSquaredLength` at `405DC0` are now exact natural C++ `/GL`
   source owners (43/43 and 33/33; both zero-field strict cold replay).
-  Adjacent vector addition at `405DF0` still differs in six operand bytes.
+  Adjacent `AddStageVectorComponents` at `405DF0` is now also exact (25/25):
+  natural member `operator+` C++ return ABI recovers EAX hidden result, ECX
+  left operand and EDX right operand. The synthetic view does not assert the
+  original class identity.
 - `StageTimerComparisonView::IsAtOrBefore` at `405E10` is exact
   15/15-byte natural C++ `thiscall` under real /GL caller; the ordinary
   COFF-only two EDX/ECX differences are resolved, no link fields.
