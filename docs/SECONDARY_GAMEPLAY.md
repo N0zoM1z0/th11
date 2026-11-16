@@ -12,6 +12,25 @@ LTCG ownership, native product closure and runtime behavior remain separate.
 | SecondaryGameplayUpdateCallback | 420840/7 | Normal callback has7-byte shape | Source; no leaf acceptance unit |
 | LoadSecondaryDebugScript entry | 40D4F0/10 | Prototype only | Reviewed boundary; source still open |
 
+## Reconnected primary/secondary stage handoff calls (2026-11-16)
+
+The 1,149-byte `UpdateSecondaryGameplay` owner at `0x00420390` now uses
+its three reconstructed stage entry points directly in normal C++:
+`InitializePrimaryStageScripts` at `0x00405030`, followed by an explicit
+`g_StageSecondary` check and, when present,
+`BeginSecondaryStageTransition` at `0x00405130` and
+`BeginPrimaryStageTransition` at `0x004051D0`. The first 249-byte owner
+has a 246-byte linked diagnostic with native VM/ANM private calls and is
+**not exact**. The adjacent 159-byte/103-byte transition functions have
+independent, zero-difference, strictly cold-replayed normal-COFF exact
+proofs, including six and three original address fields respectively.
+
+A focused pinned VC9 ordinary compile of `src/SecondaryGameplay.cpp` now
+emits relocations to the three corresponding decorated symbols, in the
+native call order. This closes previously unowned call identities in the
+large secondary gameplay source without claiming that the complete 1,149-byte
+caller matches yet. No handwritten stubs, target bytes or fake register ABI.
+
 ## Full boundaries and physical call contracts
 
 Fresh direct Ghidra exports attest the entire mapped text. Gameplay has305

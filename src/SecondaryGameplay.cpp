@@ -1,4 +1,6 @@
 #include "SecondaryGameplay.hpp"
+#include "StageScript.hpp"
+#include "StageTransitionLifecycle.hpp"
 
 namespace
 {
@@ -25,11 +27,11 @@ int __stdcall UpdateSecondaryGameplay(SecondaryGameplayView *self)
             RuntimeMode() = ((~(g_MainRuntime.flags >> 13)) & 1) | 2;
             return 1;
         }
-        ResetSecondaryGameplayStage();
+        InitializePrimaryStageScripts();
         if (g_StageSecondary)
         {
-            StartSecondaryGameplayStageTransition();
-            ResetSecondaryGameplayStageTimer();
+            BeginSecondaryStageTransition();
+            BeginPrimaryStageTransition();
             self->flags |= 0x800;
             SignalSecondaryAnimation(&Hud()->signal4370);
         }

@@ -94,6 +94,13 @@ loop matches byte structure (nine stack displacement differences from
 `+0x42..+0xDC`, excluding address fields). The three-byte gap,
 stack/frame lifetime differences and ownership remain open. No exact credit.
 
+`UpdateSecondaryGameplay` at `0x420390` is a 1,149-byte large owner.
+`src/SecondaryGameplay.cpp` now calls the three real stage helpers at
+`405030`, `405130` and `4051D0` instead of stale name-only placeholders.
+A focused VC9 compilation verifies all three COFF call symbols in native
+order. The whole caller remains non-exact; this is an integration step, not
+a new exact caller proof. See `SECONDARY_GAMEPLAY.md`.
+
 ## Next work
 
 1. Continue the `ExecuteStageScript` Boss from the current frontier. Compare
