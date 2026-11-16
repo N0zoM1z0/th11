@@ -47,6 +47,7 @@ static __forceinline float OscillatorSine(float time, double inversePeriod)
 int __stdcall ExecuteStageScript(StageResourceView *self)
 {
     StageScriptStateView &state = ScriptState(self);
+    CameraVector bezierA, bezierB;
     while (state.instruction->frame <= state.scriptTime.current)
     {
         StageScriptInstruction *instruction = state.instruction;
@@ -140,26 +141,26 @@ TargetTweenFrame:
         }
         case 10:
         {
-            CameraVector control1 = { values[2], values[3], values[4] };
-            CameraVector target = { values[5], values[6], values[7] };
+            ScriptVector(bezierA, values + 2);
+            ScriptVector(bezierB, values + 5);
             CameraVector control2 = { values[8], values[9], values[10] };
             state.positionTween.duration = words[0];
             state.positionTween.initial = self->camera.view.position;
-            state.positionTween.control1 = control1;
-            state.positionTween.target = target;
+            state.positionTween.control1 = bezierA;
+            state.positionTween.target = bezierB;
             state.positionTween.control2 = control2;
             state.positionTween.mode = 8;
             goto PositionTweenFrame;
         }
         case 11:
         {
-            CameraVector control1 = { values[2], values[3], values[4] };
-            CameraVector target = { values[5], values[6], values[7] };
+            ScriptVector(bezierA, values + 2);
+            ScriptVector(bezierB, values + 5);
             CameraVector control2 = { values[8], values[9], values[10] };
             state.targetTween.duration = words[0];
             state.targetTween.initial = self->camera.view.targetOffset;
-            state.targetTween.control1 = control1;
-            state.targetTween.target = target;
+            state.targetTween.control1 = bezierA;
+            state.targetTween.target = bezierB;
             state.targetTween.control2 = control2;
             state.targetTween.mode = 8;
             goto TargetTweenFrame;
