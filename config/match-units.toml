@@ -9774,8 +9774,7 @@ linkages = [
 ]
 
 # Constant -1.0f timer offset adapter with literal-pool and real callee fields.
-[units.offset-stage-timer-by-one-frame-frontier]
-frontier = true
+[units.offset-stage-timer-by-negative-one]
 artifact_kind = "linked-pe"
 source = "src/StageTimerNegativeOne.cpp"
 inputs = ["src/StageResource.hpp", "src/SecondaryActorMotion.cpp", "probes/stage-timer-negative-one-context.cpp"]
@@ -9786,5 +9785,8 @@ entry = "StageTimerNegativeOneProbe@4"
 functions = ["StageTimerNegativeOneView::OffsetByOneFrame"]
 symbol = "?OffsetByOneFrame@StageTimerNegativeOneView@@QAEHXZ"
 target_address = 0x00405E50
-size = 15
-linkages = []
+size = 16
+linkages = [
+  { offset = 2, type = "DIR32", symbol = "__real@bf800000", target = 0x00497F20 },
+  { offset = 0x0b, type = "REL32", symbol = "?OffsetSecondaryTimer@@YGHPAUStageTimerView@@M@Z", target = 0x00459210 },
+]

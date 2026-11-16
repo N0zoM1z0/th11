@@ -92,6 +92,9 @@ and EH/funclet ownership. Do not treat a matching function length as exactness.
 - `OffsetStageTimerByNegativeFrames` at `405E30`: exact 20-byte natural
   C++ member adapter, one native REL32 to OffsetSecondaryTimer 459210;
   integer negation precedes x87 conversion and strict replay is zero-difference.
+- OffsetStageTimerByNegativeOne at 405E50: exact 16-byte natural C++
+  member adapter; two reviewed fields to -1.0f 497F20 and timer offset
+  459210, strict focused cold replay zero differences.
 - `ResetStageRenderTint` at `405E60`: exact 26-byte natural C++
   renderer-neutralization helper, one native DIR32 to g_RenderBatch, focused
   normal-COFF cold replay zero differences.

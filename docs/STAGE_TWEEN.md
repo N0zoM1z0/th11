@@ -114,6 +114,22 @@ VC9 naturally reproduces the complete 20-byte private register ABI and sole
 strict cold replay reports zero differences. The source-side class name is
 only a layout/ABI expression; original class provenance is unknown.
 
+## Exact fixed negative-one-frame timer adapter at 0x405E50
+
+The complete native helper at 0x405E50..0x405E5F loads the original
+-1.0f literal from 0x497F20, passes it as the float argument to
+OffsetSecondaryTimer (0x459210) while retaining the timer receiver in ECX,
+then returns. Its body is 16 bytes, followed immediately by the distinct
+renderer tint reset owner at 0x405E60.
+
+src/StageTimerNegativeOne.cpp expresses this as an ordinary C++ member
+method on a layout-compatible view. The real SecondaryActorMotion.cpp
+callee is linked into the pinned VC9 /GL producer. The complete 16-byte
+PDB contribution exactly matches the original with two independently
+reviewed fields: DIR32 at +2 to 0x497F20 and REL32 at +0x0b to
+0x459210. Focused strict cold replay reports zero differences. The proposed
+view/class identity and original source owner remain unknown.
+
 ## Exact 25-byte vector addition operator at 0x405DF0
 
 The native body at `405DF0..405E08` adds the three `CameraVector` components
