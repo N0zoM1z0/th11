@@ -18,6 +18,18 @@ target_address = 0x004014E0
 size = 182
 linkages = []
 
+[units.ascii-manager-expire-strings]
+artifact_kind = "coff"
+source = "src/AsciiStrings.cpp"
+inputs = ["src/AsciiManager.hpp"]
+object = "build/match/AsciiStrings.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["AsciiManagerExpireStrings"]
+symbol = "?AsciiManagerExpireStrings@@YGXPAUAsciiManagerView@@@Z"
+target_address = 4201808
+size = 124
+relocations = []
+
 [units.ascii-manager-on-update]
 artifact_kind = "coff"
 source = "src/AsciiUpdate.cpp"
