@@ -9543,3 +9543,20 @@ symbol = "?ExecuteStageScript@@YGHPAUStageResourceView@@@Z"
 target_address = 0x00404470
 size = 2736
 linkages = []
+
+# Non-exact exploration: real /GL callees can recover private ResetAnimationVm
+# and BindAnimationScript ABIs for the 249-byte stage initialization owner.
+[units.initialize-primary-stage-scripts-frontier]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/StageScriptInitialization.cpp"
+inputs = ["src/StageScript.hpp", "src/StageResource.hpp", "src/AnimationVm.hpp", "probes/stage-script-initialization-context.cpp", "src/AnimationVm.cpp"]
+support_sources = ["probes/stage-script-initialization-context.cpp", "src/AnimationVm.cpp"]
+output_dir = "build/match-linked/StageScriptInitializationFrontier"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "StageScriptInitializationProbe@0"
+functions = ["InitializePrimaryStageScripts"]
+symbol = "?InitializePrimaryStageScripts@@YAXXZ"
+target_address = 0x00405030
+size = 249
+linkages = []

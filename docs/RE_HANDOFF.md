@@ -78,6 +78,13 @@ The StageTween/StageScript family still has a 794-byte candidate for the
 737-byte proof. Do not interchange those LTCG contexts. See
 `docs/STAGE_SCRIPT.md`, `docs/STAGE_TWEEN.md`, and `docs/STAGE_MESH.md`.
 
+Additional scoped stage initializer `InitializePrimaryStageScripts` at
+`0x405030` has a 246-byte natural C++ `/GL` candidate versus 249 target;
+`initialize-primary-stage-scripts-frontier` includes the real `AnimationVm.cpp`
+producer and reproduces the private ESI / EDI / EBX / EAX call contracts.
+The prior normal-COFF-only candidate was 237 bytes. The three-byte gap,
+stack/frame lifetime differences and ownership remain open. No exact credit.
+
 ## Next work
 
 1. Continue the `ExecuteStageScript` Boss from the current frontier. Compare

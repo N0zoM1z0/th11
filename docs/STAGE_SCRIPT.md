@@ -63,6 +63,21 @@ to section008 at `+0x1c`, even when no objects were present. The native
 routine introduces no extra object count/VM count guard, null fallback, or
 cycle detection.
 
+A focused canonical-graph diagnostic `initialize-primary-stage-scripts-frontier`
+now links the real `src/AnimationVm.cpp` producer plus the callable
+`probes/stage-script-initialization-context.cpp` under VC9 `/GL`. The resulting
+function is **246 bytes versus 249 target**. Its two native private calls use
+ESI for `ResetAnimationVm` and EDI / EBX / EAX for `BindAnimationScript`,
+without any manually assigned registers or assembly. The remaining three-byte
+extent gap, stack frame `0x10` versus target `0x14`, and early callee-save
+scheduling still preclude exactness. This reproducible linked frontier supersedes
+the old standalone-only comparison, but does not prove the original producer
+translation unit. Rebuild only the affected frontier with:
+
+```bash
+scripts/repo-python scripts/build-match-unit.py --unit initialize-primary-stage-scripts-frontier
+```
+
 A targeted pinned VC9 normal-COFF compilation yields a 237-byte code body,
 compared with a 249-byte complete native extent (245 decoded code addresses).
 The standalone compiler uses conventional stack calls while the target calls
