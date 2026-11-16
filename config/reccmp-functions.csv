@@ -608,6 +608,8 @@ SetSecondaryPairTarget,0x004194C0,function
 SetSecondaryPatternMultiplier,0x00435620,function
 SetSecondaryStackTop,0x0045B5F0,function
 SetStageTimer,0x00406100,function
+SetStageTweenControl1,0x00405B50,function
+SetStageTweenControl2,0x00405B30,function
 ShowPauseMenuAnimationTree,0x00456610,function
 SignalAndExecuteConfigurationAnimation,0x00456280,function
 SignalLockedMenuEntry,0x00439260,function

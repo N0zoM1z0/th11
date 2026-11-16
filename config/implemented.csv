@@ -607,6 +607,8 @@ SetSecondaryPairTarget
 SetSecondaryPatternMultiplier
 SetSecondaryStackTop
 SetStageTimer
+SetStageTweenControl1
+SetStageTweenControl2
 ShowPauseMenuAnimationTree
 SignalAndExecuteConfigurationAnimation
 SignalLockedMenuEntry

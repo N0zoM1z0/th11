@@ -14,6 +14,8 @@ without embedded tables or external interior references.
 | SubtractStageFog | 004059D0 | 61 | 61 | Exact linked unit |
 | ScaleStageFog | 00405A10 | 64 | 64 | Exact linked unit |
 | AddStageFog | 00405A50 | 61 | 61 | Exact linked unit |
+| SetStageTweenControl2 | 00405B30 | 18 | 18 | Exact linked owner, 0 fields |
+| SetStageTweenControl1 | 00405B50 | 18 | 18 | Exact linked owner, 0 fields |
 | PackStageFog | 00405B70 | 171 | 171 | Exact linked unit (now in this TU) |
 | SetStageTimer | 00406100 | 59 | 59 | Exact linked unit |
 | AdvanceStageTimer | 00459270 | 83 | 83 | Exact linked-PE unit (advance-stage-timer) |
@@ -78,6 +80,28 @@ float and converts that value to signed32. EAX returns the new current on both
 paths. SetStageTimer lazily initializes when flag bit0 is clear, installs the
 global scale pointer and preserves other flag bits, then writes previous=frame-1
 with32-bit wrap, current=frame and fraction=float(frame).
+
+## Adjacent 18-byte vector setters (2026-11-16)
+
+The native `.text` contains two complete 18-byte vector setters at
+`0x405B30..405B41` and `0x405B50..405B61`. The bytes load three DWORDs from
+an EAX vector and store them into an ECX `StageVectorTween` at offsets
+`+0x24..+0x2C` (control2) or `+0x18..+0x20` (control1), followed by a plain
+`RET`. Both end before 14 `CC` bytes. They were not present in the initial
+Ghidra function inventory, and no original caller is established. Their
+proposed semantic names and authorship remain tentative.
+
+`src/StageTweenControlCopies.cpp` uses ordinary C++ member assignments.
+A single dynamic cross-TU producer compiled with pinned VC9 `/GL` naturally
+chooses the observed EAX/ECX private calling convention. Complete 18-byte
+primary-TU PDB/PE/MAP extents and target bytes match for both functions,
+without relocations or any injected instructions. Both focused strict replays
+pass independently:
+
+```bash
+scripts/repo-python scripts/replay-exact-units.py \
+  --unit set-stage-tween-control1 --unit set-stage-tween-control2
+```
 
 ## Code generation and exact proof
 

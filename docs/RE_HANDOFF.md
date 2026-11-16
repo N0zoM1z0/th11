@@ -71,6 +71,10 @@ and EH/funclet ownership. Do not treat a matching function length as exactness.
   ResetAnimationVm and BindAnimationScript callees; scoped strict cold replay
   with zero differences. See `STAGE_VM_BIND.md`.
 - `PackStageFog`, target `0x00405B70`: 171/171 bytes, canonical exact proof.
+- Native vector setters `SetStageTweenControl2` at `405B30` and
+  `SetStageTweenControl1` at `405B50`: **18/18 each, strict /GL exact**,
+  two reviewed original extents with no linkages. Native original callers and
+  source provenance are unknown; Ghidra did not promote either function.
 - `ResetAndBindStageAnimationVm`, target `0x00405B10`: 30/30-byte
   independently strict-exact native wrapper, two reviewed CALL/JMP REL32 fields
   from natural C++ with real VM dependency TUs; caller 40C650 remains open.

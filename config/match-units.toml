@@ -9617,3 +9617,32 @@ linkages = [
   { offset = 4, type = "REL32", symbol = "?ResetAnimationVm@@YGXPAUAnimationVmView@@@Z", target = 0x00401FD0 },
   { offset = 26, type = "REL32", symbol = "?BindAnimationScript@@YGXPAUAnimationFileView@@HPAUAnimationVmView@@@Z", target = 0x0044ACD0 },
 ]
+
+# Two complete original vector setters recovered with a common VC9 /GL producer.
+[units.set-stage-tween-control2]
+artifact_kind = "linked-pe"
+source = "src/StageTweenControlCopies.cpp"
+inputs = ["src/StageScript.hpp", "probes/stage-tween-control-copies-context.cpp"]
+support_sources = ["probes/stage-tween-control-copies-context.cpp"]
+output_dir = "build/match-linked/StageTweenControlCopiesFrontier"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "StageTweenControlCopiesProbe@12"
+functions = ["SetStageTweenControl2"]
+symbol = "?SetStageTweenControl2@@YGXPAUStageVectorTween@@PBUCameraVector@@@Z"
+target_address = 0x00405B30
+size = 18
+linkages = []
+
+[units.set-stage-tween-control1]
+artifact_kind = "linked-pe"
+source = "src/StageTweenControlCopies.cpp"
+inputs = ["src/StageScript.hpp", "probes/stage-tween-control-copies-context.cpp"]
+support_sources = ["probes/stage-tween-control-copies-context.cpp"]
+output_dir = "build/match-linked/StageTweenControlCopiesFrontier"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "StageTweenControlCopiesProbe@12"
+functions = ["SetStageTweenControl1"]
+symbol = "?SetStageTweenControl1@@YGXPAUStageVectorTween@@PBUCameraVector@@@Z"
+target_address = 0x00405B50
+size = 18
+linkages = []
