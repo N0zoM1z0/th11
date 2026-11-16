@@ -20,14 +20,14 @@ proof. Exactness requires a fresh canonical receipt and accepted replay.
 The large owner is `ExecuteStageScript` at `0x00404470`. Its complete target
 extent is 2,736 bytes: a 2,633-byte code body, three alignment bytes, and 100
 bytes of switch tables. The current `execute-stage-script-frontier` PDB
-contribution is 2,712 bytes, 24 bytes smaller. Its decoded body is 2,612
-bytes; a normalized instruction-key sequence comparison aligns 366 of 609
-target instructions (the candidate decodes 619). Its stack frame reserves
-0x98 bytes, matching the target's 0x98. These are frontier measurements only;
+contribution is 2,728 bytes, only 8 bytes smaller. Its code/table
+boundary is +2,628 versus native +2,636, and normalized `objdump -w`
+instruction-key alignment finds 526 of 610 target instructions (621 candidate).
+Its stack frame still reserves 0x98 bytes, matching the target's 0x98. These are frontier measurements only;
 the owner remains non-exact and EH/funclet ownership remains open.
 
 The current maintained `src/StageScript.cpp` SHA-256 is
-`9cc9d5f27c8aaf2fc986a9554fba7320a2ec61caa0b611f721860cc547bf1440`.
+`8b3619f372568c7fec4c0de2e83633938873488d7012b21f2d055ae76310ca26`.
 
 The latest frontier profile deliberately keeps `/Oy-` for StageScript while
 compiling `src/StageMesh.cpp` and `probes/stage-mesh-context.cpp` in their
@@ -49,6 +49,12 @@ Current source hypotheses:
   0x98 stack frame from the prior 0xb0 candidate.
 - Opcode 9 has a local fog value; the fog postpass uses a separate result
   temporary.
+- Opcode 14 now branches on the signed script ID before computing its VM
+  address; the positive branch calls the native private ResetAnimationVm and
+  BindAnimationScript contracts and writes +41D then +41C, while the
+  negative branch independently computes the VM address and clears active.
+  This natural source shape narrows the Boss full-owner gap from 24 to 8
+  bytes and increases normalized instruction alignment from 451 to 526.
 - Opcode 17 uses an ordinary C++ `ReleaseVmBindingBlock` call. LTCG lowers
   that call to the native private ESI receiver ABI. Phase stores remain
   ordered as `phaseY = phaseX = phase`.
@@ -60,7 +66,14 @@ and EH/funclet ownership. Do not treat a matching function length as exactness.
 
 - `ReleaseVmBindingBlock`, target `0x00402300`: 231/231 bytes, six relocation
   fields replayed, zero differences in the focused linked-PE comparison.
+- `ResetAndBindStageAnimationVm`, target `0x00405B10`: new natural C++
+  linked-PE exact owner, 30/30 bytes; two native REL32 fields to the real
+  ResetAnimationVm and BindAnimationScript callees; scoped strict cold replay
+  with zero differences. See `STAGE_VM_BIND.md`.
 - `PackStageFog`, target `0x00405B70`: 171/171 bytes, canonical exact proof.
+- `ResetAndBindStageAnimationVm`, target `0x00405B10`: 30/30-byte
+  independently strict-exact native wrapper, two reviewed CALL/JMP REL32 fields
+  from natural C++ with real VM dependency TUs; caller 40C650 remains open.
 - `BeginSecondaryStageTransition`, target `0x00405130`: new 159-byte exact
   C++ screen-effect construction and 30-frame timer helper, six genuine
   relocation fields, focused strict normal-COFF replay with zero differences.
@@ -105,8 +118,9 @@ a new exact caller proof. See `SECONDARY_GAMEPLAY.md`.
 
 1. Continue the `ExecuteStageScript` Boss from the current frontier. Compare
    the complete 2,736-byte target owner, with special attention to the
-   remaining 21-byte code-body shortfall, 619 versus 609 decoded instructions,
-   and EH/funclet metadata. The current stack frame already matches at 0x98.
+   remaining 8-byte code/table boundary shortfall, 621 versus 610
+   decoded instruction keys, and EH/funclet metadata. The current stack
+   frame already matches the native 0x98.
 2. Keep the StageMesh support profile override and dynamic constructor probe
    in the frontier. Removing either re-specializes the constructor and
    changes the opcode-17 caller ABI.

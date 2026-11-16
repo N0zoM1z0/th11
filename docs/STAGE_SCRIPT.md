@@ -6,11 +6,13 @@ section and reconciled its full extent, instruction flow, callers and tables.
 
 | Function | Full target owner | Source contribution | State |
 | --- | ---: | ---: | --- |
-| ExecuteStageScript,0x00404470 | 2,736 bytes through0x00404F1F | 2,712 bytes | Non-exact; EH ownership open |
+| ExecuteStageScript,0x00404470 | 2,736 bytes through0x00404F1F | 2,728 bytes | Non-exact; EH ownership open |
 | SeekStageScriptMarker,0x00404F20 | 113 bytes through0x00404F90 | 113 bytes | Exact normal-COFF, 2 relocations |
 | BeginSecondaryStageTransition,0x00405130 | 159 bytes through0x004051CE | 159 bytes | Exact normal-COFF, 6 relocations |
 | BeginPrimaryStageTransition,0x004051D0 | 103 bytes through0x00405236 | 103 bytes | Exact normal-COFF, 3 relocations |
-| InitializePrimaryStageScripts,0x00405030 | 249 bytes through0x00405128 | 237 bytes in standalone normal-COFF diagnostic | Source present; non-exact |
+| InitializePrimaryStageScripts,0x00405030 | 249 bytes through0x00405128 | 246 bytes in focused linked frontier (237 normal-COFF) | Source present; non-exact |
+| ResetAndBindStageAnimationVm,0x00405B10 | 30 bytes through0x00405B2D | 30 bytes | Exact linked-PE, 2 REL32 fields (see [STAGE_VM_BIND](STAGE_VM_BIND.md)) |
+| ResetAndBindStageAnimationVm,0x00405B10 | 30 bytes through0x00405B2D | 30 bytes | Exact linked-PE, 2 REL32 fields |
 | PackStageFog,0x00405B70 | 171 bytes through0x00405C1A | 171 bytes | Exact; defined inline in StageTween.cpp (see [STAGE_TWEEN](STAGE_TWEEN.md)) |
 
 The interpreter's Ghidra code body ends at404EB8 and contains2,633 bytes.
@@ -43,6 +45,17 @@ bytes and zero differences** after exhaustive replay of `g_StagePrimary` at
 field `+3` and `g_AnimationTimeScale` at `+0x59`. This does not grant exactness
 to `ExecuteStageScript`, nor does it establish the helper's original object
 ownership or authored provenance.
+
+## Adjacent exact animation VM adapter
+
+`ResetAndBindStageAnimationVm` at `0x00405B10` has an independently proven,
+complete **30-byte exact** VC9 `/GL` primary translation-unit contribution.
+Its natural C++ uses the real `ResetAnimationVm` and `BindAnimationScript`
+callees. The scoped producer recovers the private EAX VM, EDI document and
+EBX script registers, VM+41D/+41C writes, and final tail jump without custom
+ASM or binary patching. Two independently reviewed REL32 call fields at +4
+and +26 replay to 401FD0 and 44ACD0 with zero differences. See
+[STAGE_VM_BIND](STAGE_VM_BIND.md). The large caller at 40C650 remains non-exact.
 
 ## Primary stage object/VM initialization
 
@@ -233,16 +246,18 @@ fractional, infinite and NaN inputs were checked against the actual bodies.
 ## Code generation and proofs
 
 The current execute-stage-script-frontier diagnostic build contributes
-2,712 bytes for ExecuteStageScript, 24 bytes smaller than the 2,736-byte
-target owner. Its decoded switch body is 2,612 bytes versus the target's
-2,633-byte body. The candidate and target both reserve a 0x98-byte stack
-frame. A normalized instruction-key sequence comparison aligns 366 of the
-target's 609 instructions (the candidate decodes 619 instructions). These are
-diagnostic measurements, not exactness. The linked receipt's
-src/StageScript.cpp SHA-256 is
-9cc9d5f27c8aaf2fc986a9554fba7320a2ec61caa0b611f721860cc547bf1440,
-matching the maintained source. The interpreter remains non-exact and
-EH/funclet ownership remains open.
+**2,728 bytes** for ExecuteStageScript, only **8 bytes smaller** than the
+2,736-byte target owner. The candidate's switch-body/table boundary is at
+`+0xA44` (2,628 bytes) versus target `+0xA4C` (2,636 bytes); the target has
+2,633 decoded code bytes, 3 alignment bytes, and 100 switch-table bytes.
+Both candidate and target reserve a **0x98-byte stack frame**.
+A reproducible normalized `objdump -w` instruction-key alignment now finds
+**526 matching of 610 target keys** (621 candidate instructions), up from
+451 before the opcode-14 change. These figures are diagnostic only, not
+exactness. The linked receipt's `src/StageScript.cpp` SHA-256 is
+`8b3619f372568c7fec4c0de2e83633938873488d7012b21f2d055ae76310ca26`,
+matching the maintained source. The interpreter remains
+non-exact and EH/funclet ownership is still open.
 
 The frontier now compiles `src/StageMesh.cpp` and
 `probes/stage-mesh-context.cpp` in their non-`/Oy-` profile. The probe keeps a
@@ -252,6 +267,17 @@ StageScriptMesh constructor now contributes 366 bytes rather than the
 237-byte specialized body; its generic ESI/EAX/stack argument ABI matches the
 native caller shape, including `ret 8`. The constructor remains 20 bytes short
 of its 389-byte target owner and is not exact.
+
+The opcode-14 case now branches on the signed script ID **before** computing
+its VM receiver. The positive branch loads its file and calculates the VM
+pointer before `ResetAnimationVm`, then writes `+0x41d` and `+0x41c` in
+native order and binds the script. The negative branch separately computes
+the receiver and clears only its active flag. Under normal pinned VC9 `/GL`
+code generation this natural control-flow change preserves the 0x98 stack
+frame, increases switch-body extent by 16 bytes and improves normalized
+instruction alignment from **451 to 526 target keys**; in particular the
+positive/negative VM branches and both private VM calls now track the native
+register assignment. No target bytes, ASM or padding were introduced.
 
 The current source snapshots the camera vector for opcode 2 and writes the
 new-minus-old components through raw DWORD copies. Opcodes 3 and 5 retain
@@ -270,7 +296,7 @@ contribution; StepStageVectorTween is 887 bytes against 883 target bytes,
 and StepStageFogTween is 794 bytes against 737 target bytes. A separate wide
 secondary context retains the exact 737-byte fog-tween proof. The prior
 2,744-byte candidate (0xb0 frame, 373/609 aligned instructions) is superseded
-by the 2,712-byte/0x98-frame candidate above. An older 2,744-byte/0x68-frame
+by the 2,728-byte/0x98-frame candidate above. An older 2,744-byte/0x68-frame
 and 303/610-instruction measurement describes a different earlier candidate;
 do not conflate either result with the current frontier. The interpreter's
 unresolved EH/funclet context and remaining code-generation differences

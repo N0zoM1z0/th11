@@ -186,19 +186,23 @@ TargetTweenFrame:
             break;
         case 14:
         {
-            AnimationVmView *vm = reinterpret_cast<AnimationVmView *>(
-                reinterpret_cast<unsigned char *>(self->vms180) + words[0] * static_cast<int>(sizeof(AnimationVmView)));
-            if (words[1] >= 0)
+            int script = words[1];
+            if (script >= 0)
             {
                 AnimationFileView *file = reinterpret_cast<AnimationFileView *>(self->animation);
-                int script = words[1];
+                AnimationVmView *vm = reinterpret_cast<AnimationVmView *>(
+                    reinterpret_cast<unsigned char *>(self->vms180) + words[0] * static_cast<int>(sizeof(AnimationVmView)));
                 ResetAnimationVm(vm);
-                reinterpret_cast<unsigned char *>(vm)[0x41c] = 0x10;
                 reinterpret_cast<unsigned char *>(vm)[0x41d] = 0x10;
+                reinterpret_cast<unsigned char *>(vm)[0x41c] = 0x10;
                 BindAnimationScript(file, script, vm);
             }
             else
+            {
+                AnimationVmView *vm = reinterpret_cast<AnimationVmView *>(
+                    reinterpret_cast<unsigned char *>(self->vms180) + words[0] * static_cast<int>(sizeof(AnimationVmView)));
                 vm->flags.value &= ~1u;
+            }
             break;
         }
         case 17:
