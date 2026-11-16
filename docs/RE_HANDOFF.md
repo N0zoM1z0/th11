@@ -1,149 +1,99 @@
-# TH11 reconstruction — next-agent handoff (2026-11-15)
+# TH11 reconstruction — next-agent handoff (2026-11-16)
 
-**Start here, then continue the code.** This repository reconstructs only the
-original Japanese TH11 v1.00a executable at `resources/th11.exe` (ignored),
-SHA-256 `2978b17f6184d100d249d4311348dd30c5c32ec75c014b667a525b797d3d8813`,
-with VC9 / Visual C++ 2008 RTM build 21022. Preserve `/GL` in established
-LTCG owners; all units use `/O2 /Ob1` (a global `/Ob2` is ruled out, see the
-knowledge base). Do not substitute `th11c.exe`, TH10 codegen or another
-compiler.
+## Target and repository state
 
-```bash
-git status --short --branch
-git log -8 --oneline
-scripts/repo-python scripts/verify-target.py
-scripts/repo-python scripts/verify-toolchain.py --check
-```
+Reconstruct only the original Japanese TH11 v1.00a executable:
+resources/th11.exe, SHA-256
+2978b17f6184d100d249d4311348dd30c5c32ec75c014b667a525b797d3d8813.
+Use the pinned VC9 / Visual C++ 2008 RTM build 21022 toolchain; preserve
+/GL in established LTCG owners. Do not substitute th11c.exe, TH10 bytes,
+or another compiler.
 
-Commits use the `claude-opus-5.5-high: ...` prefix (earlier history uses
-`gpt-web: ...`). `docs/PROGRESS.md` is the generated inventory authority;
-regenerate it with `scripts/repo-python scripts/progress.py` instead of copying
-counts here.
+- The source baseline was commit c0a075a, gpt-web: align stage script tween
+  spills; it matched origin/main before this handoff cleanup.
+- This handoff adds two local documentation-only commits on top of that
+  baseline. They are not pushed. The code baseline remains c0a075a.
+- After those documentation commits, src/StageScript.cpp remains the only
+  dirty tracked file; there are no staged changes or untracked files.
+  **Preserve this diff**. It is current work, not disposable scratch.
+- New commits use the gpt-web: prefix.
+- docs/PROGRESS.md is generated from the canonical ledgers. Do not copy its
+  totals into this handoff.
 
-## How recent gains were found
+## Current stage reconstruction
 
-Read the knowledge-base section "Inline definitions and opaque COMDAT callees"
-before editing. In short:
+The active large owner is ExecuteStageScript at 0x00404470. The reviewed
+target extent is 2,736 bytes. The current diagnostic build is
+build/match-linked/StageScriptFrontier; its PDB contribution is 2,768 bytes
+at 0x00401100, 32 bytes larger than the target. Its receipt records
+src/StageScript.cpp SHA-256
+87c67d178f345117b9aa22b5b0d1d09202b0b7a0b7bcf5f3d36b01965cc3b701, which
+matches the current worktree file. This is a frontier diagnostic, not an
+exact claim or accepted replay.
 
-- A callee that native callers treat as an opaque thiscall (they keep `this`
-  in ESI and reload ECX) is an `inline` function whose inlining was declined.
-- Uncalled, unreferenced leaves are usually dead copies of inline helpers.
-  They reproduce only when the helper is inline in the real owning TU and that
-  TU's code uses it. Find the users by searching the native image for the
-  copy's store shape or for calls to its callee.
-- Native writes switch cases out in full and lets VC9 cross-jump identical
-  tails; source `goto`s into shared blocks are usually wrong.
+The current dirty source experiments are:
 
-## Roadmap
+- Opcode 2 snapshots the original camera position, publishes it to
+  camera.updateOffset, applies the script vector, then writes the
+  new-minus-old components using raw float-bit copies.
+- Opcodes 3 and 5 preload their three float arguments and copy the raw bits
+  into the tween target. Opcodes 10 and 11 do the same for all nine
+  control/target components.
+- StageFogView fog is function-scoped and reused by opcode 9 and the fog
+  postpass.
+- Opcode 17 currently uses a naked ESI adapter around ReleaseVmBindingBlock,
+  and assigns phaseY = phaseX = phase to control store order.
 
-Measured backlog (2026-11-14, after the CRT scan): 624 functions still have
-unreviewed boundaries and origin is pending for 546. The game's own code ends
-at 0x45FC2B; everything matched above it is VC9 library code. Exact credit
-requires a reviewed boundary, so extend review, but tie it to reconstruction:
+These are code-generation experiments, not settled source-level conclusions.
+Keep the diff intact while testing them against the target. In particular,
+review the ESI adapter and EH behavior rather than assuming the current
+inline-assembly bridge is the final solution.
 
-1. **Library classification is done** (`scripts/scan-library-code.py`;
-   [KNOWLEDGE_BASE](KNOWLEDGE_BASE.md) "CRT library code"). 889 functions are
-   library. About 139 CRT-region rows (12.5 KB) remain unmatched, plus 116
-   library rows with split extents (mostly SEH funclets).
-1a. **Finish the withdrawn claims.** No `__asm` remains in `src` or `probes`.
-   Of the 29 withdrawn claims, these are exact again from natural C++: the five
-   LZSS tree helpers, the stage-link constructor, both draw-VM creators,
-   score insertion 42BA80 and record preparation 42D850. The rest are plain C++
-   with known gaps (`functions.csv` notes). Replay initializer 4356E0 305/406,
-   loader 436B60 131/137, statistics writer 437A70 178/201, writer 436420
-   446/564, stage lifecycle 436DA0 47/108, compressor 166/240. Record and
-   Ascii destructors match apart from fields but are SEH-framed, as are the
-   factories. Pause deletion 435FC0 needs a linked unit with C++ pause-menu
-   callers to get native ESI. Probes must give shared callees live arguments,
-   or LTCG folds constants into them.
-2. **Inventory the uncovered gaps.** Classify each as dead inline copy,
-   padding, data or thunk. Dead copies are quick exact wins with the method
-   above (store-shape search for users, inline helper in the owning TU).
-3. **Review and reconstruct by TU region.** Take a contiguous range next to
-   existing exact units (tween, script, chain, pattern areas), review boundary
-   and origin together, write its small leaves and prove them in that
-   region's family. Native layout follows source order, so neighbours share
-   headers, inline helpers and ownership.
-4. **Close the near-misses below**, each of which has one known gap.
-5. **Large owners**: the dispatcher (techniques known, 1,102 B interval
-   error), then the secondary interpreter and the pause/continue menus.
+The same StageScriptFrontier image currently contains:
 
-Avoid a review-only sweep: it yields no exact bytes, and boundaries reviewed
-far from current work tend to need revisiting once the source shape is known.
+| Owner | Target bytes | Candidate bytes | State |
+| --- | ---: | ---: | --- |
+| ExecuteStageScript | 2,736 | 2,768 | Non-exact; EH/funclet ownership and codegen remain open |
+| PackStageFog | 171 | 171 | Exact linked leaf |
+| StepStageVectorTween | 883 | 887 | Non-exact |
+| StepStageFogTween | 737 | 794 | Non-exact in this family |
 
-## Near-exact work to finish
+A separate wide secondary context still provides the exact 737-byte
+StepStageFogTween proof. The 794-byte result is the candidate in the
+StageTween/StageScript family; these /GL contexts are not interchangeable.
+See docs/STAGE_SCRIPT.md and docs/STAGE_TWEEN.md.
 
-| Target | State | Remaining gap | Note |
-| --- | --- | --- | --- |
-| Replay record destructor 435C50 | byte-identical apart from fields | SEH handler DIR32 cannot be bound by the public-symbol oracle (EH contexts open) | [KNOWLEDGE_BASE](KNOWLEDGE_BASE.md) |
-| `AppendReplayWriteSegment` 437300 | 38/40 with C++ callers | segment constructor store schedule | [REPLAY_WRITING](REPLAY_WRITING.md) |
-| `RecordReplayInputFrame` 435FE0 | 94/108, no unit | native loads `heldFrames[0]` into ECX instead of sharing the constant 5 | [REPLAY_WRITING](REPLAY_WRITING.md) |
-| `PushSecondaryValue` 45DC30 | 20/21 instructions | native forms the slot address before the store | [SECONDARY_SCRIPT](SECONDARY_SCRIPT.md) |
-| `SecondaryManager::Restart` 45DD50 | 28/28 bytes as an inline copy | name arrives in EAX, native ECX; change reverted | [SECONDARY_SCRIPT](SECONDARY_SCRIPT.md) |
-| `StepStageVectorTween` 405240 | 887/883 bytes, 272/280 aligned | mode-8 x87 coefficient/scale and final operand/temporary order | [STAGE_TWEEN](STAGE_TWEEN.md) |
-| `StepAnimationIntScalarTween` 44E7C0 | 97/120 aligned | native spills `1-t` before loading 3.0 | [ANIMATION_TWEEN_DISPATCH](ANIMATION_TWEEN_DISPATCH.md) |
-| `StepAnimationFloatPairTween` 44E910 | 217/221 aligned | one mode-8 multiply schedule | [ANIMATION_TWEEN_DISPATCH](ANIMATION_TWEEN_DISPATCH.md) |
-| 42F340/42F350 comparisons | byte-identical as inline copies in a probe | need their real inlined uses | [PAUSE_GAME_OVER_MENU](PAUSE_GAME_OVER_MENU.md) |
-| Other dead leaves (410530, 44ED70, 435400/30/60, ...) | open | find real users; list in the knowledge base | [KNOWLEDGE_BASE](KNOWLEDGE_BASE.md) |
+Other useful stage results already recorded:
 
-## Actor dispatcher 412E30 (16,556 bytes)
+- AdvanceStageTimer — 83-byte exact linked-PE owner.
+- UpdateStageObjects — 153-byte exact linked-PE owner.
+- StageUpdateCallback — 7-byte exact adapter.
+- UpdateStage and StepStageVectorTween remain large, non-exact owners.
 
-Not exact. Candidate PDB contribution 16,276 bytes, frame `0x328` (native
-`0x310`), masked alignment 1,053 instructions. Total per-opcode interval error
-is 1,102 bytes (it was 1,831 at the start of 2026-11-14). Largest remaining
-intervals, native → candidate:
+## Next work
 
-| Opcode | Native | Candidate | Gap |
-| --- | ---: | ---: | ---: |
-| `0x1AA` | 118 | 171 | +53 |
-| `0x1A6` | 112 | 140 | +28 |
-| `0x10E` | 233 | 253 | +20 |
-| `0x119`/`0x11B` | 315 | 271 | -44 |
-| `0x101` | 133 | 93 | -40 |
-| `0x121`/`0x123` | 509 | 475 | -34 |
-| `0x199` | 181 | 149 | -32 |
+1. Start with git diff -- src/StageScript.cpp; do not reset or overwrite it.
+2. Continue the ExecuteStageScript boss, comparing its complete 2,736-byte
+   target extent against the current frontier. Prioritize opcode 2, tween
+   argument loads/stores, opcode 17 register ownership, and EH/funclet gaps.
+3. Keep StepStageVectorTween and the StageScript owner in their selected
+   LTCG contexts. A changed support source/header may affect more than one
+   exact unit; use the dependency ledger to select only affected replay work.
+4. Build only the named diagnostic/frontier or affected exact units. Do not run
+   a full cold replay for routine progress. A successful build or diagnostic
+   similarity is not exactness; exact claims require the canonical strict
+   receipt and accepted replay.
+5. Save meaningful progress with gpt-web: ... commits. Keep this handoff
+   short and update it when the active owner or blockers change.
 
-Open causes: native keeps repeated identical opcode tests (motion/tween
-selection) that VC9 threads into one branch here; separate `if`s spill
-`opcode` for the whole function. 0x1AA's branches should cross-jump into
-0x1A9's store block. Details and ruled-out variants are in
-[SECONDARY_HOST_DISPATCH](SECONDARY_HOST_DISPATCH.md). Measure with:
+## Working references
 
-```bash
-scripts/repo-python scripts/build-match-unit.py --unit secondary-actor-instruction-adapter
-scripts/repo-python scripts/replay-exact-units.py --unit secondary-actor-instruction-adapter \
-  --unit initialize-secondary-hud-screen-effect
-```
+- docs/RE_WORKFLOW.md — reconstruction loop and evidence boundaries.
+- docs/ORACLES.md — exactness and replay requirements.
+- docs/KNOWLEDGE_BASE.md — durable target/compiler findings.
+- docs/ARTIFACTS.md — retained private artifacts and cleanup policy.
+- docs/PROGRESS.md — generated inventory and exactness totals.
 
-## Other large open owners
-
-| Native owner | Current checkpoint | Detail |
-| --- | --- | --- |
-| `0x45B860` secondary interpreter (7,093 B) | 7,193-byte candidate with the inline pop; VM receiver ESI vs native EDI | [SECONDARY_SCRIPT](SECONDARY_SCRIPT.md) |
-| `0x430290` player movement (2,896 B) | 2,920 bytes, 85 aligned instructions after the pair types | [SECONDARY_PATTERN](SECONDARY_PATTERN.md) |
-| `0x4356E0` secondary replay initializer (1,380 B) | natural C++, 305/406 aligned; stage-pointer reload and snapshot store schedule | [SECONDARY_REPLAY_LIFECYCLE](SECONDARY_REPLAY_LIFECYCLE.md) |
-| `0x42D9D0` continue menu (3,192 B) | 3,184/3,192, 2,008 non-address differences | [PAUSE_CONTINUE_MENU](PAUSE_CONTINUE_MENU.md) |
-| `0x42E6B0` game-over menu (3,208 B) | 3,212-byte candidate, 2,040 non-address differences | [PAUSE_GAME_OVER_MENU](PAUSE_GAME_OVER_MENU.md) |
-| `0x4396C0` title-menu destructor (561 B) | 561 bytes, 231 non-address differences | [TITLE_MENU_LIFECYCLE](TITLE_MENU_LIFECYCLE.md) |
-| `0x436420` replay writer (1,856 B) | natural C++, 446/564 aligned; raw-buffer reload placement in the copy loop | [REPLAY_WRITING](REPLAY_WRITING.md) |
-
-Keep source natural and ABI evidence-based. Never add target bytes, padding,
-fake returns, guessed register declarations, volatile accesses or invented
-callers to force emission.
-
-## Verification and storage
-
-After a source or header change, cold-replay every unit whose source/support
-closure includes the changed files (shared headers such as `Chain.hpp`,
-`SecondaryPattern.hpp` or `SecondaryScript.hpp` reach 30–220 units). A comment
-edit in a support source also invalidates receipts.
-
-`scripts/repo-python scripts/ci.py` runs in under a second and must stay green.
-Nonexact units in `config/match-units.toml` carry `frontier = true`: they are
-buildable diagnostic contexts (`build-match-unit.py --unit NAME`), the
-validator refuses an exact claim on them, and an unscoped replay skips them.
-Drop the flag when recording a unit as exact. Local diagnostic helpers
-(disassembly, masked diff, quick LTCG link) are in ignored
-`.analysis/tool-*-20261114.py`; the probes cited by topic notes are kept beside
-them. Preserve `.tools/`, `ghidra-project/` and canonical `build/match*/`
-receipts. See [ARTIFACTS](ARTIFACTS.md) for earlier storage passes.
+The 2026-11-16 documentation/storage cleanup did not change source, target,
+toolchain, Ghidra data, or canonical build/match* receipts. It did not run a
+full build or cold replay.

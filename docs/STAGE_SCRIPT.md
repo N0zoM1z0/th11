@@ -6,7 +6,7 @@ section and reconciled its full extent, instruction flow, callers and tables.
 
 | Function | Full target owner | Source contribution | State |
 | --- | ---: | ---: | --- |
-| ExecuteStageScript,0x00404470 | 2,736 bytes through0x00404F1F | 2,744 bytes | Non-exact; EH ownership open |
+| ExecuteStageScript,0x00404470 | 2,736 bytes through0x00404F1F | 2,768 bytes | Non-exact; EH ownership open |
 | PackStageFog,0x00405B70 | 171 bytes through0x00405C1A | 171 bytes | Exact; defined inline in StageTween.cpp (see [STAGE_TWEEN](STAGE_TWEEN.md)) |
 
 The interpreter's Ghidra code body ends at404EB8 and contains2,633 bytes.
@@ -111,26 +111,30 @@ fractional, infinite and NaN inputs were checked against the actual bodies.
 
 ## Code generation and proofs
 
-The current primary StageScript frontier produces a2,744-byte interpreter
-contribution (8 bytes larger than native) with a0x68-byte local reservation
-versus native0x98. Its primary TU uses /Oy-; the StageTween support TU keeps
-the normal /O2 /Ob1 /Gy /MT /EHsc /GL profile so Pack remains its exact
-171-byte owner. Opcode3 and opcode5 now spill the three target-vector float
-arguments through distinct volatile local slots before copying them to the
-tween state, reproducing the native x87 stack-temporary path. The current
-instruction diagnostic aligns303/610 target instructions; this is not an
-exactness percentage.
-The preceding opaque-tween context produced2,740 bytes. An initial
-aggregate-return helper produced3,048 bytes/0x120; a hybrid with aggregate tween
-vectors produced2,924 bytes/0xF8. Retained direct writes pass the same full-body
-checks. Reversing the scheduling comparison operands did not recover the native
-load order or improve the3,048-byte baseline and was reverted. An all-GL angle-math context produced2,724 bytes but removed the original
-minimum-radius comparison by proving the callee could not change it. Using the
-existing normal-COFF angle source restores that comparison while preserving
-GL on the primary interpreter. This supports an opaque-callee hypothesis; it
-does not establish the original TU partition. The interpreter remains
-non-exact; its unresolved EH/funclet context and the remaining code-generation
-differences receive no exact credit.
+The current execute-stage-script-frontier diagnostic build contributes
+2,768 bytes for ExecuteStageScript, 32 bytes larger than the 2,736-byte
+target owner. Its frame reserves 0x80 local bytes versus the target's
+0x98. The linked receipt's src/StageScript.cpp SHA-256 is
+87c67d178f345117b9aa22b5b0d1d09202b0b7a0b7bcf5f3d36b01965cc3b701,
+matching the current worktree source. This is a frontier measurement only;
+the interpreter remains non-exact and EH/funclet ownership remains open.
+
+The current source experiment snapshots the camera vector for opcode 2,
+preloads float arguments before raw-bit stores for opcodes 3, 5, 10 and 11,
+and shares a function-scope fog temporary between opcode 9 and the fog
+postpass. Opcode 17 also contains an ESI-preserving release adapter and a
+store-order experiment for the two phase fields. These edits are still under
+investigation and should be compared against the full native owner before
+being treated as final source.
+
+In this same linked image, PackStageFog remains an exact 171-byte
+contribution; StepStageVectorTween is 887 bytes against 883 target bytes,
+and StepStageFogTween is 794 bytes against 737 target bytes. A separate wide
+secondary context retains the exact 737-byte fog-tween proof. The older
+2,744-byte/0x68-frame and 303/610-instruction measurements describe an
+earlier candidate and are superseded; do not report them as the current
+frontier. The interpreter's unresolved EH/funclet context and remaining
+code-generation differences receive no exact credit.
 
 Fog packing is a non-EH public primary-TU PDB contribution. A cold pinned VC9
 build has identical171 bytes and no linked address fields. PE/MAP/PDB identity,

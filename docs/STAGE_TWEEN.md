@@ -5,10 +5,10 @@ Direct local Ghidra review attested the mapped text hash and reconciled full
 flows, returns, references and neighbors. These nine owners are contiguous,
 without embedded tables or external interior references.
 
-| Function | Address | Target bytes | Source bytes | State |
+| Function | Address | Target bytes | Selected candidate bytes | State |
 | --- | --- | ---: | ---: | --- |
 | StepStageVectorTween | 00405240 | 883 | 887 | Non-exact (270/280 aligned) |
-| StepStageFogTween | 004055D0 | 737 | 737 | Exact in the wide secondary link (`step-stage-fog-tween`) |
+| StepStageFogTween | 004055D0 | 737 | 794 (StageTween family); 737 (wide proof) | Exact only in the separate wide secondary link (step-stage-fog-tween) |
 | StageVectorTweenFactor | 00405960 | 39 | 39 | Exact linked unit |
 | StageFogTweenFactor | 00405990 | 45 | 45 | Exact linked unit |
 | SubtractStageFog | 004059D0 | 61 | 61 | Exact linked unit |
@@ -57,8 +57,12 @@ result = ((initial*a + target*b) + control1*c) + control2*d
 ```
 
 Independent x87 review confirms that a forms the square before the last factor.
-The current full diagnostics are vector785/824 and fog536/643; neither is exact.
-See [SECONDARY_PAIR_MATH](SECONDARY_PAIR_MATH.md).
+An earlier StageScript-primary context emitted 785-byte vector and 536-byte
+fog candidates. Those are not the current StageTween-family sizes: the
+StageTween family emits 887-byte vector and 794-byte fog candidates. The
+separate wide secondary fog context emits the exact 737-byte owner. These
+/GL results belong to different producer contexts and must not be collapsed
+into one candidate measurement. See [SECONDARY_PAIR_MATH](SECONDARY_PAIR_MATH.md).
 
 Coefficient evaluation promotes t to double. Each coefficient, scaled vector
 and pairwise vector sum rounds to float at the observed boundary. Fog performs
@@ -133,7 +137,7 @@ Both step functions now follow these native details:
   and `a = (2t+1) * ((t-1)*(t-1))`. This reproduces native's `fadd st0,st0`,
   the square-before-sum scheduling and the shared `2t` subexpression.
 
-Fog stepping is now 794/737 bytes; everything matches structurally except one
+In the StageTween family, fog stepping is 794 bytes against the 737-byte target; everything matches structurally except one
 gap: native calls the out-of-line `operator+` for mode 17's second addition
 (`control2 + target`), while VC9 here inlines all three mode-7/17 additions.
 Nested inline timer helpers, a default constructor, channel loops and
