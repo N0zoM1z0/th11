@@ -6,7 +6,7 @@ section and reconciled its full extent, instruction flow, callers and tables.
 
 | Function | Full target owner | Source contribution | State |
 | --- | ---: | ---: | --- |
-| ExecuteStageScript,0x00404470 | 2,736 bytes through0x00404F1F | 2,768 bytes | Non-exact; EH ownership open |
+| ExecuteStageScript,0x00404470 | 2,736 bytes through0x00404F1F | 2,744 bytes | Non-exact; EH ownership open |
 | PackStageFog,0x00405B70 | 171 bytes through0x00405C1A | 171 bytes | Exact; defined inline in StageTween.cpp (see [STAGE_TWEEN](STAGE_TWEEN.md)) |
 
 The interpreter's Ghidra code body ends at404EB8 and contains2,633 bytes.
@@ -112,28 +112,42 @@ fractional, infinite and NaN inputs were checked against the actual bodies.
 ## Code generation and proofs
 
 The current execute-stage-script-frontier diagnostic build contributes
-2,768 bytes for ExecuteStageScript, 32 bytes larger than the 2,736-byte
-target owner. Its frame reserves 0x80 local bytes versus the target's
-0x98. The linked receipt's src/StageScript.cpp SHA-256 is
-87c67d178f345117b9aa22b5b0d1d09202b0b7a0b7bcf5f3d36b01965cc3b701,
-matching the current worktree source. This is a frontier measurement only;
-the interpreter remains non-exact and EH/funclet ownership remains open.
+2,744 bytes for ExecuteStageScript, 8 bytes larger than the 2,736-byte
+target owner. Its decoded switch body is 2,644 bytes versus the target's
+2,633-byte body; the candidate frame reserves 0xb0 bytes versus the target's
+0x98. A normalized instruction-key sequence comparison aligns 373 of the
+target's 609 instructions. These are diagnostic measurements, not exactness.
+The linked receipt's src/StageScript.cpp SHA-256 is
+15f343bdd494cdecc66f75f7d6a5e99286e690c115b59f36d7e7ff9b0f113cc6,
+matching the maintained source. The interpreter remains non-exact and
+EH/funclet ownership remains open.
 
-The current source experiment snapshots the camera vector for opcode 2,
-preloads float arguments before raw-bit stores for opcodes 3, 5, 10 and 11,
-and shares a function-scope fog temporary between opcode 9 and the fog
-postpass. Opcode 17 also contains an ESI-preserving release adapter and a
-store-order experiment for the two phase fields. These edits are still under
-investigation and should be compared against the full native owner before
-being treated as final source.
+The frontier now compiles `src/StageMesh.cpp` and
+`probes/stage-mesh-context.cpp` in their non-`/Oy-` profile. The probe keeps a
+dynamic constructor call in the LTCG graph, preventing the Boss's constant
+`flags == 0` call sites from specializing the shared constructor. The
+StageScriptMesh constructor now contributes 369 bytes rather than the
+237-byte specialized body; its generic ESI/EAX/stack argument ABI matches the
+native caller shape, including `ret 8`. The constructor remains 20 bytes short
+of its 389-byte target owner and is not exact.
+
+The current source snapshots the camera vector for opcode 2 and writes the
+new-minus-old delta through raw DWORD copies. Opcodes 3 and 5 use one
+CameraVector argument temporary; opcodes 10 and 11 use three CameraVector
+temporaries for the Bezier control/target groups. Opcode 9 has its own local
+fog value, and the postpass has a separate result temporary. Opcode 17 uses
+the ordinary C++ ReleaseVmBindingBlock call; LTCG recovers the private ESI
+receiver ABI in the linked caller. The phase assignments remain ordered as
+`phaseY = phaseX = phase`. These are source/codegen hypotheses, not exactness
+claims.
 
 In this same linked image, PackStageFog remains an exact 171-byte
 contribution; StepStageVectorTween is 887 bytes against 883 target bytes,
 and StepStageFogTween is 794 bytes against 737 target bytes. A separate wide
-secondary context retains the exact 737-byte fog-tween proof. The older
-2,744-byte/0x68-frame and 303/610-instruction measurements describe an
-earlier candidate and are superseded; do not report them as the current
-frontier. The interpreter's unresolved EH/funclet context and remaining
+secondary context retains the exact 737-byte fog-tween proof. An older 2,744-byte/0x68-frame and 303/610-instruction measurement describes
+an unrelated earlier candidate; the current 2,744-byte result has a 0xb0
+frame and 373/609 normalized instruction-key alignments. Do not conflate the
+two. The interpreter's unresolved EH/funclet context and remaining
 code-generation differences receive no exact credit.
 
 Fog packing is a non-EH public primary-TU PDB contribution. A cold pinned VC9
