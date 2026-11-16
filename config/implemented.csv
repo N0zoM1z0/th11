@@ -20,6 +20,7 @@ AimSecondaryEmitter
 AllocateSceneAnimationVm
 AllocateSecondaryDamageRegion
 AllocateSecondaryDeathEffect
+AllocateStageHeapBytes
 AngleToSecondaryPlayer
 AnimationDistanceRoot
 AnimationExtentMagnitude

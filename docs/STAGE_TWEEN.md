@@ -81,6 +81,25 @@ paths. SetStageTimer lazily initializes when flag bit0 is clear, installs the
 global scale pointer and preserves other flag bits, then writes previous=frame-1
 with32-bit wrap, current=frame and fraction=float(frame).
 
+## Native 10-byte allocation forwarding adapter
+
+The ten native bytes at `0x00405D80..0x00405D89` transfer the private EAX byte
+count into the stack calling convention of pinned CRT `malloc` at `0x460192`:
+`PUSH EAX`, `CALL _malloc`, caller stack cleanup and `RET`. Six `CC` bytes
+follow. Ghidra did not classify a function there; no original caller is
+established, and the original source class/TU is unknown.
+
+`src/StageHeapAllocation.cpp` recovers this through an ordinary C++ `malloc`
+wrapper. A dynamic, separate-TU VC9 `/GL` consumer naturally passes `size_t`
+in EAX and compiles the **complete 10/10-byte** function. The canonical
+`allocate-stage-heap-bytes` linked unit verifies the primary-TU PDB/PE/MAP
+contribution and the sole native `REL32` at +2 to `_malloc`, with zero other
+byte differences. Focused replay:
+
+```bash
+scripts/repo-python scripts/replay-exact-units.py --unit allocate-stage-heap-bytes
+```
+
 ## Adjacent 18-byte vector setters (2026-11-16)
 
 The native `.text` contains two complete 18-byte vector setters at

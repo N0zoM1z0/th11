@@ -9646,3 +9646,20 @@ symbol = "?SetStageTweenControl1@@YGXPAUStageVectorTween@@PBUCameraVector@@@Z"
 target_address = 0x00405B50
 size = 18
 linkages = []
+
+# Native small malloc adapter; its codegen is private register-to-cdecl.
+[units.allocate-stage-heap-bytes]
+artifact_kind = "linked-pe"
+source = "src/StageHeapAllocation.cpp"
+inputs = ["probes/stage-heap-allocation-context.cpp"]
+support_sources = ["probes/stage-heap-allocation-context.cpp"]
+output_dir = "build/match-linked/StageHeapAllocationFrontier"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "StageHeapAllocationProbe@4"
+functions = ["AllocateStageHeapBytes"]
+symbol = "?AllocateStageHeapBytes@@YGPAXI@Z"
+target_address = 0x00405D80
+size = 10
+linkages = [
+  { offset = 2, type = "REL32", symbol = "_malloc", target = 0x00460192 },
+]
