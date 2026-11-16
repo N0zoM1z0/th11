@@ -47,7 +47,6 @@ static __forceinline float OscillatorSine(float time, double inversePeriod)
 int __stdcall ExecuteStageScript(StageResourceView *self)
 {
     StageScriptStateView &state = ScriptState(self);
-    StageFogView fog;
     while (state.instruction->frame <= state.scriptTime.current)
     {
         StageScriptInstruction *instruction = state.instruction;
@@ -137,6 +136,7 @@ TargetTweenFrame:
         }
         case 9:
         {
+            StageFogView fog;
             fog.start = values[3];
             fog.end = values[4];
             const unsigned char *color = reinterpret_cast<const unsigned char *>(&words[2]);
@@ -290,7 +290,7 @@ ApplyTweens:
         self->camera.view.position = StepStageVectorTween(&state.positionTween);
     if (state.fogTween.duration)
     {
-        fog = StepStageFogTween(&state.fogTween);
+        StageFogView fog = StepStageFogTween(&state.fogTween);
         CameraFog(self) = fog;
     }
 
