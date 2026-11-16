@@ -115,11 +115,11 @@ The current execute-stage-script-frontier diagnostic build contributes
 2,712 bytes for ExecuteStageScript, 24 bytes smaller than the 2,736-byte
 target owner. Its decoded switch body is 2,612 bytes versus the target's
 2,633-byte body. The candidate and target both reserve a 0x98-byte stack
-frame. A normalized instruction-key sequence comparison aligns 363 of the
+frame. A normalized instruction-key sequence comparison aligns 366 of the
 target's 609 instructions (the candidate decodes 619 instructions). These are
 diagnostic measurements, not exactness. The linked receipt's
 src/StageScript.cpp SHA-256 is
-276dbfe03a2c5a4fec0d8fa7a95f52b55bfc57a670d7f265b6af94eaf0add064,
+9cc9d5f27c8aaf2fc986a9554fba7320a2ec61caa0b611f721860cc547bf1440,
 matching the maintained source. The interpreter remains non-exact and
 EH/funclet ownership remains open.
 

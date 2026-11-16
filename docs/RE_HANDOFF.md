@@ -21,13 +21,13 @@ The large owner is `ExecuteStageScript` at `0x00404470`. Its complete target
 extent is 2,736 bytes: a 2,633-byte code body, three alignment bytes, and 100
 bytes of switch tables. The current `execute-stage-script-frontier` PDB
 contribution is 2,712 bytes, 24 bytes smaller. Its decoded body is 2,612
-bytes; a normalized instruction-key sequence comparison aligns 363 of 609
+bytes; a normalized instruction-key sequence comparison aligns 366 of 609
 target instructions (the candidate decodes 619). Its stack frame reserves
 0x98 bytes, matching the target's 0x98. These are frontier measurements only;
 the owner remains non-exact and EH/funclet ownership remains open.
 
 The current maintained `src/StageScript.cpp` SHA-256 is
-`276dbfe03a2c5a4fec0d8fa7a95f52b55bfc57a670d7f265b6af94eaf0add064`.
+`9cc9d5f27c8aaf2fc986a9554fba7320a2ec61caa0b611f721860cc547bf1440`.
 
 The latest frontier profile deliberately keeps `/Oy-` for StageScript while
 compiling `src/StageMesh.cpp` and `probes/stage-mesh-context.cpp` in their
@@ -64,8 +64,10 @@ and EH/funclet ownership. Do not treat a matching function length as exactness.
 - `AdvanceStageTimer`: 83-byte exact linked-PE owner.
 - `UpdateStageObjects`: 153-byte exact linked-PE owner.
 - `StageUpdateCallback`: 7-byte exact adapter.
-- `StageScriptMeshConstructor`: 366-byte candidate versus 389 target bytes;
-  generic call ABI restored, still non-exact.
+- `StageScriptMeshConstructor`: current 366-byte candidate versus 389 target
+  bytes, with 82 normalized instruction-key alignments. The generic ESI/EAX/
+  stack argument ABI is restored, and EBX/EBP now carry columns/row as in the
+  target; the constructor remains non-exact.
 - `StepStageVectorTween` and `UpdateStage` remain large, non-exact owners.
 
 The StageTween/StageScript family still has a 794-byte candidate for the

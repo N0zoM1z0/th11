@@ -81,12 +81,20 @@ the vertex pointer. VC9 schedules color/Z/rhw and anchors the induction pointer
 at rhw, exactly as native. This gives full168/170-byte exact rows; five fields
 each bind runtime+588, ID creation, renderer, ID lookup and malloc.
 
-A reference to the row ID, or an inline resolver taking that reference, gives
-a389-byte constructor but changes its private ABI to RET12 and retains232
-diagnostic differences. Using the columns member gives381 bytes/277. Those
-variants were not kept; the current constructor is369 bytes/276. Two complete
-real callers now have source in [MESH_EFFECTS.md](MESH_EFFECTS.md), including the
-998-byte column initializer. Adding their real call graph alone retains369.
+Earlier experiments that kept the row ID as a reference, or inlined a
+resolver taking that reference, produced a 389-byte constructor but changed
+its private ABI to RET12 and retained232 diagnostic differences. Using the
+columns member produced381 bytes/277 differences. Those are historical
+experiments, not the current source.
+
+The current constructor precomputes `MeshRowLimit(rows)` and shares one row
+index across the normal/alternate branches. VC9 then assigns EBX to columns
+and EBP to the row index, matching the native register roles. The current
+primary-TU contribution is366 bytes with82 normalized instruction-key
+alignments, 23 bytes shorter than the389-byte target; it remains non-exact.
+The dynamic constructor probe keeps the generic call context, but does not
+make the constructor body exact. Two complete real callers now have source in
+[MESH_EFFECTS.md](MESH_EFFECTS.md), including the998-byte column initializer.
 No register ABI or padding is imposed.
 
 Reset's scalar coordinate writes produced358 bytes; tuple-prefix copying
