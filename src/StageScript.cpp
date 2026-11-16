@@ -69,15 +69,10 @@ int __stdcall ExecuteStageScript(StageResourceView *self)
         {
             self->camera.updateOffset = self->camera.view.position;
             ScriptVector(self->camera.view.position, values);
-            float offsetX = self->camera.view.position.x - self->camera.updateOffset.x;
-            float offsetY = self->camera.view.position.y - self->camera.updateOffset.y;
-            float offsetZ = self->camera.view.position.z - self->camera.updateOffset.z;
-            *reinterpret_cast<unsigned int *>(&self->camera.updateOffset.x) =
-                *reinterpret_cast<unsigned int *>(&offsetX);
-            *reinterpret_cast<unsigned int *>(&self->camera.updateOffset.y) =
-                *reinterpret_cast<unsigned int *>(&offsetY);
-            *reinterpret_cast<unsigned int *>(&self->camera.updateOffset.z) =
-                *reinterpret_cast<unsigned int *>(&offsetZ);
+            bezierA.x = self->camera.view.position.x - self->camera.updateOffset.x;
+            bezierA.y = self->camera.view.position.y - self->camera.updateOffset.y;
+            bezierA.z = self->camera.view.position.z - self->camera.updateOffset.z;
+            self->camera.updateOffset = bezierA;
             break;
         }
         case 3:

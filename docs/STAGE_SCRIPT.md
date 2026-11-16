@@ -252,10 +252,10 @@ The current execute-stage-script-frontier diagnostic build contributes
 2,633 decoded code bytes, 3 alignment bytes, and 100 switch-table bytes.
 Both candidate and target reserve a **0x98-byte stack frame**.
 A reproducible normalized `objdump -w` instruction-key alignment now finds
-**526 matching of 610 target keys** (621 candidate instructions), up from
+**529 matching of 610 target keys** (621 candidate instructions), up from
 451 before the opcode-14 change. These figures are diagnostic only, not
 exactness. The linked receipt's `src/StageScript.cpp` SHA-256 is
-`8b3619f372568c7fec4c0de2e83633938873488d7012b21f2d055ae76310ca26`,
+`ed77781487018b82f799f075a584d39b39d5d660a5f642a008439c6636033907`,
 matching the maintained source. The interpreter remains
 non-exact and EH/funclet ownership is still open.
 
@@ -279,8 +279,21 @@ instruction alignment from **451 to 526 target keys**; in particular the
 positive/negative VM branches and both private VM calls now track the native
 register assignment. No target bytes, ASM or padding were introduced.
 
+Opcode 2 now reuses the already-live function-scope `bezierA`
+`CameraVector` as its movement-delta temporary. All three float subtractions
+are evaluated before the camera update-offset vector is assigned, mirroring
+more of the original x87/register scheduling. In the scoped 2,736-byte
+primary Boss frontier this advances normalized instruction alignment from
+526/610 to **529/610**, without changing the `0x98` stack reserve or the
+2,728-byte PDB contribution. The underlying stage behavior is unchanged:
+each Bezier case overwrites the scratch vector before using it. No ASM,
+opaque bytes or inert source was introduced. Seven affected StageTween
+primary-context exact functions were rebuilt once and compared successfully;
+two very wide indirect support contexts are not revalidated, as one required
+link exceeded the bounded 900-second run.
+
 The current source snapshots the camera vector for opcode 2 and writes the
-new-minus-old components through raw DWORD copies. Opcodes 3 and 5 retain
+new-minus-old components through a shared CameraVector scratch copy. Opcodes 3 and 5 retain
 case-local CameraVector argument temporaries. Opcodes 10 and 11 share two
 function-scope CameraVector temporaries for the Bezier control1/target pair;
 control2 remains case-local. This reduces the Boss frame from 0xb0 to the

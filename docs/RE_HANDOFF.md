@@ -22,12 +22,12 @@ extent is 2,736 bytes: a 2,633-byte code body, three alignment bytes, and 100
 bytes of switch tables. The current `execute-stage-script-frontier` PDB
 contribution is 2,728 bytes, only 8 bytes smaller. Its code/table
 boundary is +2,628 versus native +2,636, and normalized `objdump -w`
-instruction-key alignment finds 526 of 610 target instructions (621 candidate).
+instruction-key alignment finds 529 of 610 target instructions (621 candidate).
 Its stack frame still reserves 0x98 bytes, matching the target's 0x98. These are frontier measurements only;
 the owner remains non-exact and EH/funclet ownership remains open.
 
 The current maintained `src/StageScript.cpp` SHA-256 is
-`8b3619f372568c7fec4c0de2e83633938873488d7012b21f2d055ae76310ca26`.
+`ed77781487018b82f799f075a584d39b39d5d660a5f642a008439c6636033907`.
 
 The latest frontier profile deliberately keeps `/Oy-` for StageScript while
 compiling `src/StageMesh.cpp` and `probes/stage-mesh-context.cpp` in their
@@ -42,7 +42,10 @@ or Boss proof.
 Current source hypotheses:
 
 - Opcode 2 snapshots the original camera position, applies the script vector,
-  then writes the new-minus-old components through raw DWORD copies.
+  then computes the three new-minus-old components into the existing Bezier A
+  scratch vector before committing the whole movement delta. This matches
+  three more native instruction keys (529/610 total) without growing the
+  0x98 frame or changing the 2,728-byte source contribution.
 - Opcodes 3 and 5 retain case-local CameraVector argument temporaries. Opcodes
   10 and 11 share two function-scope CameraVector temporaries for the Bezier
   control1/target pair; control2 remains case-local. This recovers the target
@@ -58,6 +61,11 @@ Current source hypotheses:
 - Opcode 17 uses an ordinary C++ `ReleaseVmBindingBlock` call. LTCG lowers
   that call to the native private ESI receiver ABI. Phase stores remain
   ordered as `phaseY = phaseX = phase`.
+
+Seven affected StageTween-family exact linked functions remain zero-difference
+after one focused producer rebuild. The much wider WideMenuJoystickDisplay
+context exceeded the 900-second bounded build; it and the WideSecondaryClearing
+context are pending and must not be counted as reverified.
 
 The remaining Boss work is stack/local lifetime, opcode-specific codegen,
 and EH/funclet ownership. Do not treat a matching function length as exactness.
