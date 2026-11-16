@@ -376,6 +376,7 @@ MusicStreamingScalarDeletingDestructor
 MusicStreamingThread
 NormalizeAngle
 OffsetSecondaryTimer
+OffsetStageTimerByFrames
 OpenMusicDecoderFile
 OpenPbgFileSession
 OpenPbgLowLevelFile

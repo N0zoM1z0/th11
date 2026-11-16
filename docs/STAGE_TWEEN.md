@@ -120,6 +120,22 @@ verification uses `scale-stage-vector-by-reciprocal` and
 neighboring `AddStageVectorComponents` at `405DF0` is source-present but
 remains non-exact with six native operand-selector differences.
 
+## Adjacent exact integer-frame timer offset wrapper
+
+The native `0x405E20..0x405E2F` is a 16-byte adapter from signed integer frame
+count to floating-point timer offset. VC9 computes `float(frames)`, passes it
+to `OffsetSecondaryTimer` (native `0x459210`) and returns that result; the
+receiver is kept in the private ECX register. The following `0x405E30`
+starts a distinct helper. The original name and source TU are unknown.
+
+`src/StageTimerIntegerOffset.cpp` expresses the conversion and delegation in
+natural C++. Its focused VC9 `/GL` producer uses the actual
+`src/SecondaryActorMotion.cpp` implementation, so private calling conventions
+and float argument passing are derived without hand-written register shims.
+The full **16/16-byte** primary PDB/PE/MAP contribution matches after strict
+replay of the sole original REL32 field at `+0x09 -> 0x459210`. Canonical
+single-unit verification: `offset-stage-timer-by-frames`.
+
 ## Native 10-byte allocation forwarding adapter
 
 The ten native bytes at `0x00405D80..0x00405D89` transfer the private EAX byte

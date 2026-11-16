@@ -9666,8 +9666,7 @@ linkages = [
 
 # Adjacent native Stage CameraVector math helpers, analyzed as scoped /GL
 # codegen first; all three native entries lack auto-promoted Ghidra functions.
-[units.add-stage-vector-components-frontier]
-frontier = true
+[units.add-stage-vector-components]
 artifact_kind = "linked-pe"
 source = "src/StageVectorMathLeaves.cpp"
 inputs = ["src/StageScript.hpp", "probes/stage-vector-math-leaves-context.cpp"]
@@ -9675,8 +9674,8 @@ support_sources = ["probes/stage-vector-math-leaves-context.cpp"]
 output_dir = "build/match-linked/StageVectorMathLeavesFrontier"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
 entry = "StageVectorMathLeavesProbe@20"
-functions = ["AddStageVectorComponents"]
-symbol = "?AddStageVectorComponents@@YGXPBUCameraVector@@0PAU1@@Z"
+functions = ["StageVectorMathView::operator+"]
+symbol = "??HStageVectorMathView@@QBI?AUCameraVector@@ABU0@@Z"
 target_address = 0x00405DF0
 size = 25
 linkages = []
@@ -9739,3 +9738,20 @@ symbol = "?IsAtOrBefore@StageTimerComparisonView@@QBEHH@Z"
 target_address = 0x00405E10
 size = 15
 linkages = []
+
+# Diagnostic: native 16-byte integer-to-float timer offset wrapper.
+[units.offset-stage-timer-by-frames]
+artifact_kind = "linked-pe"
+source = "src/StageTimerIntegerOffset.cpp"
+inputs = ["src/StageResource.hpp", "src/SecondaryActorMotion.cpp", "probes/stage-timer-integer-offset-context.cpp"]
+support_sources = ["probes/stage-timer-integer-offset-context.cpp", "src/SecondaryActorMotion.cpp"]
+output_dir = "build/match-linked/StageTimerIntegerOffsetFrontier"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]
+entry = "StageTimerIntegerOffsetProbe@8"
+functions = ["OffsetStageTimerByFrames"]
+symbol = "?OffsetStageTimerByFrames@@YGHPAUStageTimerView@@H@Z"
+target_address = 0x00405E20
+size = 16
+linkages = [
+  { offset = 9, type = "REL32", symbol = "?OffsetSecondaryTimer@@YGHPAUStageTimerView@@M@Z", target = 0x00459210 },
+]

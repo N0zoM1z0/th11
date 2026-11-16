@@ -89,6 +89,9 @@ and EH/funclet ownership. Do not treat a matching function length as exactness.
 - `ResetStageRenderTint` at `405E60`: exact 26-byte natural C++
   renderer-neutralization helper, one native DIR32 to g_RenderBatch, focused
   normal-COFF cold replay zero differences.
+- `OffsetStageTimerByFrames` at `405E20`: new exact 16-byte natural
+  VC9 /GL integer-to-float timer adapter, real OffsetSecondaryTimer callee,
+  one native REL32 and zero-difference strict focused replay.
 - `AllocateStageHeapBytes` at `405D80`: independent exact 10-byte
   natural C++ /GL forwarding wrapper to native `_malloc` (1 reviewed
   REL32), with original source/TU attribution still unknown.
