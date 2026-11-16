@@ -493,6 +493,7 @@ ResetSecondaryPlayerControllerState
 ResetSecondaryPlayerEmitters
 ResetSecondaryStateWithEffect
 ResetStageMesh
+ResetStageRenderTint
 ResolveAnimationTextureFormat
 ResolvePbgDiskPath
 RestartSecondaryScript

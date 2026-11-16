@@ -494,6 +494,7 @@ ResetSecondaryPlayerControllerState,0x0042FEC0,function
 ResetSecondaryPlayerEmitters,0x00432CC0,function
 ResetSecondaryStateWithEffect,0x00410190,function
 ResetStageMesh,0x0040E6C0,function
+ResetStageRenderTint,0x00405E60,function
 ResolveAnimationTextureFormat,0x00453410,function
 ResolvePbgDiskPath,0x00442000,function
 RestartSecondaryScript,0x0045DD50,function

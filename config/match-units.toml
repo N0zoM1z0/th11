@@ -9709,3 +9709,18 @@ symbol = "?StageVectorSquaredLength@@YGMPBUCameraVector@@@Z"
 target_address = 0x00405DC0
 size = 33
 linkages = []
+
+# Exact 26-byte neutral stage renderer tint reset (normal COFF).
+[units.reset-stage-render-tint]
+artifact_kind = "coff"
+source = "src/StageRenderTintReset.cpp"
+inputs = ["src/StageDrawing.hpp", "src/RenderBatch.hpp"]
+object = "build/match/StageRenderTintReset.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["ResetStageRenderTint"]
+symbol = "?ResetStageRenderTint@@YAXXZ"
+target_address = 0x00405E60
+size = 26
+relocations = [
+  { offset = 1, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x004C3268 },
+]

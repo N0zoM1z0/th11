@@ -19,6 +19,20 @@ TU partition remains unknown. Diagnostic address-masked differences are754
 and526 positions respectively; shifted instructions make these counts unsuitable
 as progress percentages. No canonical exact units have been added.
 
+## Adjacent exact 26-byte renderer tint reset (2026-11-16)
+
+A previously uninventoried `0x405E60..0x405E79` helper resets the same
+renderer tail already represented by `StageRenderTintView`: `enabled` at
+`+0x7BD890` becomes zero and `tint` at `+0x7BD88C` becomes `0x80808080`.
+The complete function reads `g_RenderBatch` (`0x004C3268`), performs both
+DWORD stores, then returns; `CC` bytes follow its end. No original source
+name or independent caller is asserted.
+
+`src/StageRenderTintReset.cpp` reuses the existing typed renderer view. Pinned
+VC9 `/O2` normal-COFF emits **exactly 26 bytes** without ASM or padding.
+The single native DIR32 field at `+1` is reviewed and replayed by the scoped
+unit `reset-stage-render-tint`; strict cold replay reports zero differences.
+
 ## Fields and behavior
 
 Stage+2324 is an unsigned draw counter, incremented only when nonzero and the

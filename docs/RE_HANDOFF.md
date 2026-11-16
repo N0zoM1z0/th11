@@ -75,6 +75,9 @@ and EH/funclet ownership. Do not treat a matching function length as exactness.
   `StageVectorSquaredLength` at `405DC0` are now exact natural C++ `/GL`
   source owners (43/43 and 33/33; both zero-field strict cold replay).
   Adjacent vector addition at `405DF0` still differs in six operand bytes.
+- `ResetStageRenderTint` at `405E60`: exact 26-byte natural C++
+  renderer-neutralization helper, one native DIR32 to g_RenderBatch, focused
+  normal-COFF cold replay zero differences.
 - `AllocateStageHeapBytes` at `405D80`: independent exact 10-byte
   natural C++ /GL forwarding wrapper to native `_malloc` (1 reviewed
   REL32), with original source/TU attribution still unknown.
