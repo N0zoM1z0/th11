@@ -61,6 +61,9 @@ and EH/funclet ownership. Do not treat a matching function length as exactness.
 - `ReleaseVmBindingBlock`, target `0x00402300`: 231/231 bytes, six relocation
   fields replayed, zero differences in the focused linked-PE comparison.
 - `PackStageFog`, target `0x00405B70`: 171/171 bytes, canonical exact proof.
+- `BeginPrimaryStageTransition`, target `0x004051D0`: new exact 103-byte
+  natural C++ stage timer initialization and mode-bit helper, three native
+  DIR32 fields, single-unit strict cold replay with zero differences.
 - `SeekStageScriptMarker`, target `0x00404F20`: distinct 113-byte exact
   normal-COFF C++ owner adjacent to the Boss; 2 native DIR32 fields and a
   fresh strict replay with zero differences. The Boss itself remains non-exact.

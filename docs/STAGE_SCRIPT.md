@@ -8,6 +8,7 @@ section and reconciled its full extent, instruction flow, callers and tables.
 | --- | ---: | ---: | --- |
 | ExecuteStageScript,0x00404470 | 2,736 bytes through0x00404F1F | 2,712 bytes | Non-exact; EH ownership open |
 | SeekStageScriptMarker,0x00404F20 | 113 bytes through0x00404F90 | 113 bytes | Exact normal-COFF, 2 relocations |
+| BeginPrimaryStageTransition,0x004051D0 | 103 bytes through0x00405236 | 103 bytes | Exact normal-COFF, 3 relocations |
 | InitializePrimaryStageScripts,0x00405030 | 249 bytes through0x00405128 | 237 bytes in standalone normal-COFF diagnostic | Source present; non-exact |
 | PackStageFog,0x00405B70 | 171 bytes through0x00405C1A | 171 bytes | Exact; defined inline in StageTween.cpp (see [STAGE_TWEEN](STAGE_TWEEN.md)) |
 
@@ -92,6 +93,29 @@ The standalone compiler uses conventional stack calls while the target calls
 register ABIs. This is **source/behavioral recovery only**, not an exact
 match; original TU linkage and code generation remain open. No inline ASM,
 instruction padding, or fabricated control-flow was used.
+
+## Exact primary stage transition timer (0x004051D0)
+
+`BeginPrimaryStageTransition` is a separate 103-byte original no-argument
+stage timer helper called by secondary gameplay update. It initializes the
+`StageResourceView::timer2ff4` only if its initialization bit is unset,
+installing `g_AnimationTimeScale` and `-999999` as the previous-frame
+sentinel. Regardless of initialization it publishes current frame 60, previous
+frame 59, fraction 60.0f, and sets bit 2 of stage flags at `+0x2ff0`.
+`src/StageTransitionTimer.cpp` expresses this directly as ordinary C++.
+
+The pinned VC9 RTM `/O2` normal-COFF function is **103/103 strict exact**;
+all three original `DIR32` fields are independently reviewed and replayed:
+`+0x01` to `g_StagePrimary` at 4A8D60, `+0x35` to the time-scale global
+at 4A7948, and `+0x41` to float constant 60.0f at 4981B8.
+The following is the complete, narrowly scoped proof:
+
+```bash
+scripts/repo-python scripts/replay-exact-units.py --unit begin-primary-stage-transition
+```
+
+This does not confer exactness on the nearby 249-byte stage initializer,
+2736-byte interpreter Boss, or any unrelated stage subsystem.
 
 ## Script state and execution
 

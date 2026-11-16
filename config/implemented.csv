@@ -89,6 +89,7 @@ AssignMenuJoystickButton
 AssignSecondaryIntegerPair
 AttractSecondaryPlayerItems
 BeginLoadAnimationDocument
+BeginPrimaryStageTransition
 BeginSecondaryCollision
 BeginSecondaryPlayerDeath
 BeginSecondaryStackFrame

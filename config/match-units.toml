@@ -9560,3 +9560,20 @@ symbol = "?InitializePrimaryStageScripts@@YAXXZ"
 target_address = 0x00405030
 size = 249
 linkages = []
+
+# Independent 103-byte no-call primary stage transition timer leaf.
+[units.begin-primary-stage-transition]
+artifact_kind = "coff"
+source = "src/StageTransitionTimer.cpp"
+inputs = ["src/StageResource.hpp"]
+object = "build/match/StageTransitionTimer.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["BeginPrimaryStageTransition"]
+symbol = "?BeginPrimaryStageTransition@@YAXXZ"
+target_address = 0x004051D0
+size = 103
+relocations = [
+  { offset = 0x01, type = "DIR32", symbol = "?g_StagePrimary@@3PAUStageResourceView@@A", target = 0x004A8D60 },
+  { offset = 0x35, type = "DIR32", symbol = "?g_AnimationTimeScale@@3MA", target = 0x004A7948 },
+  { offset = 0x41, type = "DIR32", symbol = "__real@42700000", target = 0x004981B8 },
+]
