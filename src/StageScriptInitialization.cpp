@@ -24,15 +24,15 @@ void __cdecl InitializePrimaryStageScripts()
     int vmIndex = 0;
     for (int objectIndex = 0; objectIndex < stage->data->objectCount; ++objectIndex)
     {
-        unsigned char *object = stage->objects[objectIndex];
-        object[3] = 1;
-        StageObjectVmCommand *command = reinterpret_cast<StageObjectVmCommand *>(object + 0x1c);
+        stage->objects[objectIndex][3] = 1;
+        StageObjectVmCommand *command = reinterpret_cast<StageObjectVmCommand *>(
+            stage->objects[objectIndex] + 0x1c);
         while (command->type >= 0)
         {
             AnimationVmView *vm = reinterpret_cast<AnimationVmView *>(
                 reinterpret_cast<unsigned char *>(stage->vms) + vmIndex * sizeof(AnimationVmView));
-            AnimationFileView *file = reinterpret_cast<AnimationFileView *>(stage->animation);
             int scriptId = command->scriptId;
+            AnimationFileView *file = reinterpret_cast<AnimationFileView *>(stage->animation);
             ResetAnimationVm(vm);
             reinterpret_cast<unsigned char *>(vm)[0x41d] = 0x10;
             reinterpret_cast<unsigned char *>(vm)[0x41c] = 0x10;

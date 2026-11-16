@@ -82,7 +82,10 @@ Additional scoped stage initializer `InitializePrimaryStageScripts` at
 `0x405030` has a 246-byte natural C++ `/GL` candidate versus 249 target;
 `initialize-primary-stage-scripts-frontier` includes the real `AnimationVm.cpp`
 producer and reproduces the private ESI / EDI / EBX / EAX call contracts.
-The prior normal-COFF-only candidate was 237 bytes. The three-byte gap,
+The prior normal-COFF-only candidate was 237 bytes. The source now reloads the stage object pointer after publishing its active
+flag and orders the script ID before the file pointer; the native opcode
+loop matches byte structure (nine stack displacement differences from
+`+0x42..+0xDC`, excluding address fields). The three-byte gap,
 stack/frame lifetime differences and ownership remain open. No exact credit.
 
 ## Next work
