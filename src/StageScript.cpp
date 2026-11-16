@@ -78,18 +78,11 @@ int __stdcall ExecuteStageScript(StageResourceView *self)
         }
         case 3:
         {
-            const float targetX = values[2];
-            const float targetY = values[3];
-            const float targetZ = values[4];
+            CameraVector target = { values[2], values[3], values[4] };
             state.positionTween.duration = words[0];
             state.positionTween.mode = words[1];
             state.positionTween.initial = self->camera.view.position;
-            *reinterpret_cast<unsigned int *>(&state.positionTween.target.x) =
-                *reinterpret_cast<const unsigned int *>(&targetX);
-            *reinterpret_cast<unsigned int *>(&state.positionTween.target.y) =
-                *reinterpret_cast<const unsigned int *>(&targetY);
-            *reinterpret_cast<unsigned int *>(&state.positionTween.target.z) =
-                *reinterpret_cast<const unsigned int *>(&targetZ);
+            state.positionTween.target = target;
         }
 PositionTweenFrame:
             state.positionTween.time.SetFrame(-1);
@@ -99,18 +92,11 @@ PositionTweenFrame:
             break;
         case 5:
         {
-            const float targetX = values[2];
-            const float targetY = values[3];
-            const float targetZ = values[4];
+            CameraVector target = { values[2], values[3], values[4] };
             state.targetTween.duration = words[0];
             state.targetTween.mode = words[1];
             state.targetTween.initial = self->camera.view.targetOffset;
-            *reinterpret_cast<unsigned int *>(&state.targetTween.target.x) =
-                *reinterpret_cast<const unsigned int *>(&targetX);
-            *reinterpret_cast<unsigned int *>(&state.targetTween.target.y) =
-                *reinterpret_cast<const unsigned int *>(&targetY);
-            *reinterpret_cast<unsigned int *>(&state.targetTween.target.z) =
-                *reinterpret_cast<const unsigned int *>(&targetZ);
+            state.targetTween.target = target;
         }
 TargetTweenFrame:
             state.targetTween.time.SetFrame(-1);
@@ -154,69 +140,27 @@ TargetTweenFrame:
         }
         case 10:
         {
-            const float control1X = values[2];
-            const float control1Y = values[3];
-            const float control1Z = values[4];
-            const float targetX = values[5];
-            const float targetY = values[6];
-            const float targetZ = values[7];
-            const float control2X = values[8];
-            const float control2Y = values[9];
-            const float control2Z = values[10];
+            CameraVector control1 = { values[2], values[3], values[4] };
+            CameraVector target = { values[5], values[6], values[7] };
+            CameraVector control2 = { values[8], values[9], values[10] };
             state.positionTween.duration = words[0];
             state.positionTween.initial = self->camera.view.position;
-            *reinterpret_cast<unsigned int *>(&state.positionTween.control1.x) =
-                *reinterpret_cast<const unsigned int *>(&control1X);
-            *reinterpret_cast<unsigned int *>(&state.positionTween.control1.y) =
-                *reinterpret_cast<const unsigned int *>(&control1Y);
-            *reinterpret_cast<unsigned int *>(&state.positionTween.control1.z) =
-                *reinterpret_cast<const unsigned int *>(&control1Z);
-            *reinterpret_cast<unsigned int *>(&state.positionTween.target.x) =
-                *reinterpret_cast<const unsigned int *>(&targetX);
-            *reinterpret_cast<unsigned int *>(&state.positionTween.target.y) =
-                *reinterpret_cast<const unsigned int *>(&targetY);
-            *reinterpret_cast<unsigned int *>(&state.positionTween.target.z) =
-                *reinterpret_cast<const unsigned int *>(&targetZ);
-            *reinterpret_cast<unsigned int *>(&state.positionTween.control2.x) =
-                *reinterpret_cast<const unsigned int *>(&control2X);
-            *reinterpret_cast<unsigned int *>(&state.positionTween.control2.y) =
-                *reinterpret_cast<const unsigned int *>(&control2Y);
-            *reinterpret_cast<unsigned int *>(&state.positionTween.control2.z) =
-                *reinterpret_cast<const unsigned int *>(&control2Z);
+            state.positionTween.control1 = control1;
+            state.positionTween.target = target;
+            state.positionTween.control2 = control2;
             state.positionTween.mode = 8;
             goto PositionTweenFrame;
         }
         case 11:
         {
-            const float control1X = values[2];
-            const float control1Y = values[3];
-            const float control1Z = values[4];
-            const float targetX = values[5];
-            const float targetY = values[6];
-            const float targetZ = values[7];
-            const float control2X = values[8];
-            const float control2Y = values[9];
-            const float control2Z = values[10];
+            CameraVector control1 = { values[2], values[3], values[4] };
+            CameraVector target = { values[5], values[6], values[7] };
+            CameraVector control2 = { values[8], values[9], values[10] };
             state.targetTween.duration = words[0];
             state.targetTween.initial = self->camera.view.targetOffset;
-            *reinterpret_cast<unsigned int *>(&state.targetTween.control1.x) =
-                *reinterpret_cast<const unsigned int *>(&control1X);
-            *reinterpret_cast<unsigned int *>(&state.targetTween.control1.y) =
-                *reinterpret_cast<const unsigned int *>(&control1Y);
-            *reinterpret_cast<unsigned int *>(&state.targetTween.control1.z) =
-                *reinterpret_cast<const unsigned int *>(&control1Z);
-            *reinterpret_cast<unsigned int *>(&state.targetTween.target.x) =
-                *reinterpret_cast<const unsigned int *>(&targetX);
-            *reinterpret_cast<unsigned int *>(&state.targetTween.target.y) =
-                *reinterpret_cast<const unsigned int *>(&targetY);
-            *reinterpret_cast<unsigned int *>(&state.targetTween.target.z) =
-                *reinterpret_cast<const unsigned int *>(&targetZ);
-            *reinterpret_cast<unsigned int *>(&state.targetTween.control2.x) =
-                *reinterpret_cast<const unsigned int *>(&control2X);
-            *reinterpret_cast<unsigned int *>(&state.targetTween.control2.y) =
-                *reinterpret_cast<const unsigned int *>(&control2Y);
-            *reinterpret_cast<unsigned int *>(&state.targetTween.control2.z) =
-                *reinterpret_cast<const unsigned int *>(&control2Z);
+            state.targetTween.control1 = control1;
+            state.targetTween.target = target;
+            state.targetTween.control2 = control2;
             state.targetTween.mode = 8;
             goto TargetTweenFrame;
         }
