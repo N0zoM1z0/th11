@@ -20,14 +20,15 @@ proof. Exactness requires a fresh canonical receipt and accepted replay.
 The large owner is `ExecuteStageScript` at `0x00404470`. Its complete target
 extent is 2,736 bytes: a 2,633-byte code body, three alignment bytes, and 100
 bytes of switch tables. The current `execute-stage-script-frontier` PDB
-contribution is 2,744 bytes, eight bytes larger. Its decoded body is 2,644
-bytes; a normalized instruction-key sequence comparison aligns 373 of 609
-target instructions. Its stack frame reserves 0xb0 bytes versus the target's
-0x98. These are frontier measurements only; the owner remains non-exact and
-EH/funclet ownership remains open.
+contribution is 2,712 bytes, 24 bytes smaller. Its decoded body is 2,612
+bytes; a normalized instruction-key sequence comparison aligns 363 of 609
+target instructions (the candidate decodes 619). Its stack frame reserves
+0x98 bytes, matching the target's 0x98. These are frontier measurements only;
+the owner remains non-exact and EH/funclet ownership remains open.
 
 The current maintained `src/StageScript.cpp` SHA-256 is
-`15f343bdd494cdecc66f75f7d6a5e99286e690c115b59f36d7e7ff9b0f113cc6`.
+`276dbfe03a2c5a4fec0d8fa7a95f52b55bfc57a670d7f265b6af94eaf0add064`.
+
 The latest frontier profile deliberately keeps `/Oy-` for StageScript while
 compiling `src/StageMesh.cpp` and `probes/stage-mesh-context.cpp` in their
 non-`/Oy-` profile. The dynamic constructor probe prevents LTCG from
@@ -42,8 +43,10 @@ Current source hypotheses:
 
 - Opcode 2 snapshots the original camera position, applies the script vector,
   then writes the new-minus-old components through raw DWORD copies.
-- Opcodes 3 and 5 use a CameraVector argument temporary; opcodes 10 and 11
-  use three CameraVector temporaries for their Bezier control/target vectors.
+- Opcodes 3 and 5 retain case-local CameraVector argument temporaries. Opcodes
+  10 and 11 share two function-scope CameraVector temporaries for the Bezier
+  control1/target pair; control2 remains case-local. This recovers the target
+  0x98 stack frame from the prior 0xb0 candidate.
 - Opcode 9 has a local fog value; the fog postpass uses a separate result
   temporary.
 - Opcode 17 uses an ordinary C++ `ReleaseVmBindingBlock` call. LTCG lowers
@@ -74,8 +77,8 @@ The StageTween/StageScript family still has a 794-byte candidate for the
 
 1. Continue the `ExecuteStageScript` Boss from the current frontier. Compare
    the complete 2,736-byte target owner, with special attention to the
-   remaining 11-byte code-body excess, 0xb0 versus 0x98 stack frame, and
-   EH/funclet metadata.
+   remaining 21-byte code-body shortfall, 619 versus 609 decoded instructions,
+   and EH/funclet metadata. The current stack frame already matches at 0x98.
 2. Keep the StageMesh support profile override and dynamic constructor probe
    in the frontier. Removing either re-specializes the constructor and
    changes the opcode-17 caller ABI.
