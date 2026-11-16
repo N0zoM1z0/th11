@@ -48,8 +48,11 @@ int __stdcall ExecuteStageScript(StageResourceView *self)
 {
     StageScriptStateView &state = ScriptState(self);
     CameraVector bezierA, bezierB;
-    while (state.instruction->frame <= state.scriptTime.current)
+    for (;;)
     {
+        int currentFrame = state.scriptTime.current;
+        if (state.instruction->frame > currentFrame)
+            break;
         StageScriptInstruction *instruction = state.instruction;
         const int *words = instruction->args.words;
         const float *values = instruction->args.values;
