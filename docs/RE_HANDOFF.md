@@ -127,7 +127,12 @@ and EH/funclet ownership. Do not treat a matching function length as exactness.
   bytes, with 82 normalized instruction-key alignments. The generic ESI/EAX/
   stack argument ABI is restored, and EBX/EBP now carry columns/row as in the
   target; the constructor remains non-exact.
-- `StepStageVectorTween` and `UpdateStage` remain large, non-exact owners.
+- `StepStageVectorTween`, target `0x00405240`: the ordinary interpolation
+  fallback now yields an 883-byte PDB owner, matching the target's 883-byte
+  extent; normalized instruction alignment is 272/280. It remains explicitly
+  non-exact. Seven neighboring StageTween exact functions were rechecked in
+  the same focused producer and remain zero-difference. `UpdateStage` also
+  remains non-exact.
 
 The StageTween/StageScript family still has a 794-byte candidate for the
 737-byte fog tween; a separate wide secondary context retains the exact

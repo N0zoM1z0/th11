@@ -7,7 +7,7 @@ without embedded tables or external interior references.
 
 | Function | Address | Target bytes | Selected candidate bytes | State |
 | --- | --- | ---: | ---: | --- |
-| StepStageVectorTween | 00405240 | 883 | 887 | Non-exact (270/280 aligned) |
+| StepStageVectorTween | 00405240 | 883 | 883 | Non-exact (272/280 aligned; size only) |
 | StepStageFogTween | 004055D0 | 737 | 794 (StageTween family); 737 (wide proof) | Exact only in the separate wide secondary link (step-stage-fog-tween) |
 | StageVectorTweenFactor | 00405960 | 39 | 39 | Exact linked unit |
 | StageFogTweenFactor | 00405990 | 45 | 45 | Exact linked unit |
@@ -275,6 +275,11 @@ Both step functions now follow these native details:
 - No `duration` local. Native keeps the loaded `self->duration` in one stack
   slot and stores it again as the inlined `SetStageTimer` argument; reading
   `self->duration` at each use reproduces both stores and the mode-8 `fidiv`.
+- The ordinary interpolation fallback now names the target-minus-initial
+  difference, scales it, and writes the three returned vector components in
+  sequence. This recovers the complete 883-byte PDB extent without assembly or
+  padding, but leaves eight normalized instruction keys unmatched and is not
+  an exact proof.
 - The terminal endpoint uses `if (mode != 7) return target; return initial;`.
   The ternary form modified EBX and forced the state into EAX with an extra
   save; separate returns let the state arrive in EBX as in native.
@@ -297,15 +302,17 @@ copy instead of inlining it and calling `operator+`; used for all three
 mode-7/17 additions it is never inlined (542 bytes). A six-float constructor used by the
 operators changes their bodies (temporary spills) and is wrong.
 
-Vector stepping: with explicit float weight locals in mode 8 (the form that
-matches the animation int-vector step) instead of the reference-output helper,
-the candidate is 887/883 bytes with 270/280 instructions aligned (previously
-266). Reversing the commutative mode-7 add operands to `target + previous`
-brings that whole block into alignment without changing the vector result.
-Remaining differences are concentrated in mode17's returned/updated vectors,
-mode8's x87 coefficient and scale scheduling, and the final interpolation
-fallback. The next step is to close those remaining expression/temporary
-boundaries without changing the shared `CameraVector` aggregate.
+Vector stepping: explicit component stores in the ordinary interpolation
+fallback now produce an 883-byte PDB contribution, equal in length to the
+883-byte native owner. This is a size match only, not exactness: the current
+normalized instruction-key alignment is 272/280. The change also keeps the
+existing `/O2 /Ob1 /GL` source shape and has been rebuilt in the canonical
+StageTween producer; the seven neighboring exact functions in that producer
+remain zero-difference. A balanced Hermite sum tree was tested and rejected
+(887 bytes, 253/280 aligned). The remaining differences are concentrated in
+mode 8's x87 multiply order and the final Y/Z fallback additions; mode 17 and
+the remaining return/temporary lifetimes still need separate review. Do not
+count the size match as a byte-exact replay.
 
 AdvanceStageTimer is exact in the isolated advance-stage-timer linked-PE
 unit. The body preserves the private ESI input, ECX save/restore, previous-frame

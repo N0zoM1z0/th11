@@ -164,7 +164,16 @@ CameraVector __stdcall StepStageVectorTween(StageVectorTween *self)
             ScaleTweenVector(self->control1, c)), ScaleTweenVector(self->control2, d));
     }
     float factor = StageVectorTweenFactor(self);
-    return AddTweenVector(ScaleTweenVector(SubtractTweenVector(self->target, self->initial), factor), self->initial);
+    CameraVector difference = SubtractTweenVector(self->target, self->initial);
+    CameraVector scaled = ScaleTweenVector(difference, factor);
+    CameraVector result;
+    result.x = scaled.x;
+    result.x += self->initial.x;
+    result.y = scaled.y;
+    result.y += self->initial.y;
+    result.z = scaled.z;
+    result.z += self->initial.z;
+    return result;
 }
 
 StageFogView __stdcall StepStageFogTween(StageFogTween *self)
