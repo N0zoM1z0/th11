@@ -121,6 +121,7 @@ ClearReplayStageSegments
 ClearSceneProjectile
 ClearSceneProjectiles
 ClearSceneProjectilesInRadius
+ClearSecondaryActorsInHorizontalBand
 ClearSecondaryActorsInRadius
 ClearSecondaryObjects
 ClearSecondaryObjectsInRadius

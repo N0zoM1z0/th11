@@ -122,6 +122,7 @@ ClearReplayStageSegments,0x00437420,function
 ClearSceneProjectile,0x0040AE90,function
 ClearSceneProjectiles,0x0040B5C0,function
 ClearSceneProjectilesInRadius,0x0040AF90,function
+ClearSecondaryActorsInHorizontalBand,0x00412B10,function
 ClearSecondaryActorsInRadius,0x00412990,function
 ClearSecondaryObjects,0x00425040,function
 ClearSecondaryObjectsInRadius,0x00424FE0,function

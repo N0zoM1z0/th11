@@ -75,3 +75,26 @@ radial distance. After the 2000-record scan it calls the separate
 302-byte actor-band function at 412B10. This source addition is
 non-exact and does not change the shared exact clearing producers.
 See [STAGE_AUXILIARY](STAGE_AUXILIARY.md).
+
+## Actor horizontal-band clearance (2026-11-17)
+
+`src/SecondaryActorHorizontalBand.cpp` now owns the full native
+0x412B10..0x412C47 extent (312 bytes: 302 instruction bytes and 10
+in-function alignment bytes). It traverses the actual
+`g_SecondaryMaster->first` actor list, retains the next pointer across
+side effects, checks actor state flag 0x800, and accepts only an
+**open** X interval and a strict Y-below-center test. These bounds
+are not the radial formula used by `ClearSecondaryActorsInRadius`.
+
+Accepted actors lose 99999 from their native counter; flagged counters
+update their scaled field and recompute the integer result with signed
+division by 7 and a baseline. An unflagged counter subtracts directly.
+For eligible actors, an independent viewport helper at 419920 decides
+whether the standard kind-8 drop can spawn. The helper is a real
+thiscall member on the three-float point, separate from
+`SceneClearOutside` at 40B8A0. This owner returns void using RET12.
+
+The complete original code and two call targets were inspected; the
+natural C++ compiles under pinned VC9. Its original TU and linked
+machine-code equality remain open. The adjacent viewport leaf is a
+separate owner.
