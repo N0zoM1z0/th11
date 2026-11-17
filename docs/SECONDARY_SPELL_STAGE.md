@@ -340,3 +340,36 @@ it. Both source bodies are ordinary C++ and maintain independent
 function boundaries. All four owners compile under pinned
 VC9 /GL; they are **nonexact** until full EH/callsite and byte
 proofs are available.
+
+### Strict exact chain registration (0x40BD00, 256 bytes)
+
+The source-level `SpellStageChainElement` constructor was corrected to
+write its `priority` field *after* the three callback pointers, matching
+the original's observed member initialization order. It still uses
+ordinary C++ and the existing chain registration APIs; no bytecode,
+padding, naked function or ASM wrapper was added.
+
+In the scoped, real-caller VC9 /GL context, the complete
+`RegisterSecondarySpellStageChains` PDB contribution is **256 bytes**
+and has **all 76 native instructions aligned**. The selected,
+independently cold-built strict linked-PE replay proves all
+**256/256 bytes** equal to original Japanese TH11 v1.00a, with
+seven individually reviewed native relocation fields:
+
+| Target field offset | Relocation | Native destination |
+| --- | --- | --- |
+| +05 | REL32 | operator new at 45FCE4 |
+| +42 | DIR32 | update callback at 40C630 |
+| +53 | REL32 | AddToUpdateChain at 456B70 |
+| +5D | REL32 | operator new at 45FCE4 |
+| +97 | DIR32 | draw callback at 40C640 |
+| +A8 | REL32 | AddToDrawChain at 456C10 |
+| +DB | DIR32 | animation time scale at 4A7948 |
+
+Strict result: `exact`, difference_count=0, with no mismatched
+relocation. Run only this unit with
+`scripts/repo-python scripts/replay-exact-units.py --unit register-secondary-spell-stage-chains`.
+This is now a canonical exact unit. The two *separate* callbacks,
+317-byte destructor and 206-byte factory remain nonexact until
+their own complete proofs, even though they participate in this
+unit's caller context.

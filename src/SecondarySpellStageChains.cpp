@@ -10,10 +10,10 @@ struct SpellStageChainElement : ChainElement
     SpellStageChainElement()
     {
         flags &= ~1u;
-        priority = 0;
         callback = 0;
         unknown0c = 0;
         auxiliaryCallback = 0;
+        priority = 0;
         link.element = this;
         link.next = 0;
         link.previous = 0;
