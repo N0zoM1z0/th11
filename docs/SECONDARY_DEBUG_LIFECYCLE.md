@@ -369,3 +369,42 @@ words. Both the **208-byte constructor** and **150-byte factory**
 continue to pass their own selected strict cold VC9 /GL replay
 with zero differences after this type refinement. The exact
 machine code is unchanged; the source's physical semantics are better.
+
+
+## Complete visual resource initializer (0x41A520, 336 bytes)
+
+The original 336-byte `InitializeSecondaryDebugHudVisuals` owner now
+has maintained natural C++ source in
+`src/SecondaryDebugHudVisualInitialization.cpp`. It first acquires
+animation document index 27 using slot 12 of the existing secondary
+file table, storing the resulting document at HUD+43EC. Failure
+records the original resource error and returns -1 without
+registering any HUD callbacks.
+
+The next path checks the real global prepared-resource cache at
+4C3238. A cache hit publishes the cached pointer to HUD+443C,
+calls the independently owned RET-only diagnostic tracer with the
+current selection filename, then clears the global cache. A
+cache miss constructs the path in the existing shared filename
+buffer at 4C9928 using the original unbounded append semantics,
+calls `LoadResourceFile` with null size and disk mode zero, stores
+the result at +443C, and uses the **same native error logger**
+on load failure. The selection derives from the original pair
+at 4A5710/14 and chooses the corresponding filename-table entry.
+No duplicate global resource buffers are allocated.
+
+On success, the real embedded `StageTimerView` at HUD+43C8
+receives `SetFrame(-1)`, which includes its native first-use
+time-scale binding and flag publication. Two status words at
++4440/+4448 are set to -1, and the current native display value
+from 4A56E4 is stored at +43E4. Both the owning type's
+0x4458-byte size and all newly named offsets are asserted.
+
+Ghidra reviewed the full 41A520..41A66F code extent,
+including four callees and the next owner boundary.
+Pinned VC9 `secondary-debug-hud-visual-init-frontier`
+compilation currently yields **307 bytes and 75/96 normalized
+native instructions aligned**, a diagnostic, **nonexact** result.
+Its remaining gaps are the native private EBX/ECX caller
+allocation, error logger convention and the compiler-inlined
+unbounded string copy. No ASM/padding was used.

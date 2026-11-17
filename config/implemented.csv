@@ -338,6 +338,7 @@ InitializeReplaySeedArchive
 InitializeSceneAnimationVm
 InitializeSecondaryAuxiliaryOwner
 InitializeSecondaryContext
+InitializeSecondaryDebugHudVisuals
 InitializeSecondaryEffect
 InitializeSecondaryHost
 InitializeSecondaryHudScreenEffect

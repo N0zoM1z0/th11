@@ -29,7 +29,9 @@ struct SecondaryDebugHudOwned
     unsigned char unknown43bc[0x43c8 - 0x43bc];
     StageTimerView hudTimer;
     ChainElement *overlayChain;
-    unsigned char unknown43e0[0x43ec - 0x43e0];
+    unsigned char unknown43e0[0x43e4 - 0x43e0];
+    int displayedValue43e4;
+    unsigned char unknown43e8[0x43ec - 0x43e8];
     AnimationFileView *retainedAnimationFile;
     unsigned char unknown43f0[0x43fc - 0x43f0];
     unsigned int reset43fc;
@@ -38,7 +40,7 @@ struct SecondaryDebugHudOwned
     StageTimerView transitionTimer;
     void *dialogue;
     void *preparedData;
-    unsigned char unknown4440[0x444c - 0x4440];
+    int value4440, unknown4444, value4448;
     int ownerMarker;
     unsigned char unknown4450[8];
 
@@ -78,6 +80,12 @@ typedef char SecondaryDebugHudFlag43d8Offset[
     (offsetof(SecondaryDebugHudOwned, hudTimer) + offsetof(StageTimerView, flags) == 0x43d8) ? 1 : -1];
 typedef char SecondaryDebugHudFlag4434Offset[
     (offsetof(SecondaryDebugHudOwned, transitionTimer) + offsetof(StageTimerView, flags) == 0x4434) ? 1 : -1];
+typedef char SecondaryDebugHudDisplayedValueOffset[
+    (offsetof(SecondaryDebugHudOwned, displayedValue43e4) == 0x43e4) ? 1 : -1];
+typedef char SecondaryDebugHudValue4440Offset[
+    (offsetof(SecondaryDebugHudOwned, value4440) == 0x4440) ? 1 : -1];
+typedef char SecondaryDebugHudValue4448Offset[
+    (offsetof(SecondaryDebugHudOwned, value4448) == 0x4448) ? 1 : -1];
 typedef char SecondaryDebugHudMarkerOffset[
     (offsetof(SecondaryDebugHudOwned, ownerMarker) == 0x444c) ? 1 : -1];
 typedef char SecondaryDebugHudSize[

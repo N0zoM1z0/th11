@@ -10419,3 +10419,28 @@ symbol = "?RegisterSecondaryHudChains@@YGHPAUSecondaryDebugHudOwned@@@Z"
 target_address = 0x0041A3C0
 size = 339
 linkages = []
+
+# Bounded real-caller codegen for the full 336-byte HUD visual load/init.
+# The three-chain registration invokes the actual C++ body; no ASM proxy.
+[units.secondary-debug-hud-visual-init-frontier]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/SecondaryDebugHudVisualInitialization.cpp"
+inputs = ["src/SecondaryDebugHudLifetime.hpp",
+          "src/SecondaryDebugHudRegistration.cpp",
+          "src/SecondaryDebugHudFactory.cpp",
+          "probes/secondary-debug-hud-registration-context.cpp"]
+support_sources = ["src/SecondaryDebugHudRegistration.cpp",
+                   "src/SecondaryDebugHudFactory.cpp",
+                   "src/SecondaryDebugHudConstruction.cpp",
+                   "src/StageLifecycle.cpp", "src/ChainRegistration.cpp",
+                   "src/SecondaryDebugHudLifetime.cpp",
+                   "probes/secondary-debug-hud-registration-context.cpp"]
+output_dir = "build/match-linked/SecondaryDebugHudVisualInitFrontier"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryDebugHudRegistrationProbe@4"
+functions = ["InitializeSecondaryDebugHudVisuals"]
+symbol = "?InitializeSecondaryDebugHudVisuals@@YGHPAUSecondaryDebugHudOwned@@@Z"
+target_address = 0x0041A520
+size = 336
+linkages = []
