@@ -493,3 +493,28 @@ VC9 `/GL` compilation with its real animation helpers yields a
 402 decoded original instructions. The 33 direct/indirect CALL
 instructions in both are a diagnostic count, not byte exactness.
 The remaining 96-byte codegen gap and linked field bindings are open.
+
+
+## HUD destructor: register/loop recovery (2026-11-17 continuation)
+
+The native 729-byte destructor iterates eight HUD VM IDs using a
+decrementing count and reads the owner marker at +0x444C once before
+scanning both renderer VM lists. Its first four VM-ID operations use
+the shared renderer list at 0x4C3268 and signal the real linked
+children. A source-level pointer-end comparison and two independent
+owner-marker loads were unnecessarily extending the /GL-generated
+destructor. The natural C++ now uses an eight-element countdown,
+snapshots the owner marker, and preserves the next list node before
+marking each VM.
+
+The bounded original 729-byte owner has 195 decoded instructions.
+The scoped VC9 /GL candidate improves from 772 bytes / 200 instructions
+to **741 bytes / 195 instructions**, with the 16th real
+`StageEmbeddedVm` and 9/2/4 member arrays preserved. A distinct
+ordinary C++ producer also calls the 468-byte precleanup on an
+independent object, restoring the native stack-argument call contract
+without misdeclaring its ABI. The 12-byte remaining codegen difference
+includes chain lock-call scheduling and renderer-list register choices;
+this is a diagnostic, **not exact**. Cold replay of the directly
+affected 150-byte factory, 28-byte global destroy, and 101-byte
+dialogue destructor remains exact at zero differences.

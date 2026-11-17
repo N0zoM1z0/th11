@@ -10246,16 +10246,17 @@ source = "src/SecondaryDebugHudLifetime.cpp"
 inputs = ["src/SecondaryDebugHudLifetime.hpp", "src/StageResource.hpp",
           "src/VmBindings.hpp", "src/SecondaryDebugHudPrecleanup.cpp",
           "src/SecondaryDebugHudDialogue.cpp",
-          "probes/secondary-debug-hud-lifecycle-context.cpp"]
+          "probes/secondary-debug-hud-destructor-generic-context.cpp"]
 support_sources = ["src/SecondaryDebugHudPrecleanup.cpp",
                    "src/SecondaryDebugHudDialogue.cpp",
                    "src/StageLifecycle.cpp",
                    "src/ChainRemove.cpp",
                    "src/SecondaryActorAnimation.cpp",
-                   "probes/secondary-debug-hud-lifecycle-context.cpp"]
+                   "probes/secondary-debug-hud-destructor-generic-context.cpp"]
+normal_support_sources = ["src/SecondaryDebugHudPrecleanup.cpp"]
 output_dir = "build/match-linked/SecondaryDebugHudDestructorFrontier"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
-entry = "SecondaryDebugHudLifecycleProbe@4"
+entry = "SecondaryDebugHudDestructorGenericProbe@12"
 functions = ["SecondaryDebugHudOwned::~SecondaryDebugHudOwned"]
 symbol = "??1SecondaryDebugHudOwned@@QAE@XZ"
 target_address = 0x0041AFC0

@@ -4,8 +4,8 @@
 #include "MainRuntime.hpp"
 #include <stdlib.h>
 
-// 0x41AD30 is the separately bounded source-open HUD reset prepass.
-// Do not replace it with a fictitious loop or a machine-code proxy.
+// The separately bounded 0x41AD30 reset prepass has a real source owner.
+// Keep its call intact and preserve its independent ownership contract.
 void __stdcall PrepareSecondaryDebugHudDestruction(SecondaryDebugHudOwned *self);
 
 namespace
@@ -78,13 +78,17 @@ SecondaryDebugHudOwned::~SecondaryDebugHudOwned()
     ReleaseSecondaryAnimation(AnimationVmId(transitionVmId));
     transitionVmId = 0;
 
-    for (unsigned int *current = trackedVmIds;
-         current != trackedVmIds + 8; ++current)
+    // The native visits eight slots with a decrementing count, not a
+    // pointer-to-end comparison (which changes this /GL owner's layout).
+    unsigned int *current = trackedVmIds;
+    for (int remaining = 8; remaining; --remaining, ++current)
         ReleaseTrackedHudVm(*current);
 
     BoundVmListsView *lists = reinterpret_cast<BoundVmListsView *>(g_RenderBatch);
-    ReleaseVmsByHudMarker(lists->first, ownerMarker);
-    ReleaseVmsByHudMarker(lists->second, ownerMarker);
+    // The original snapshots the owner marker once for both renderer lists.
+    const int marker = ownerMarker;
+    ReleaseVmsByHudMarker(lists->first, marker);
+    ReleaseVmsByHudMarker(lists->second, marker);
 
     g_SecondaryActorHud = 0;
 
