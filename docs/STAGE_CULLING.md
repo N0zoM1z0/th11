@@ -81,8 +81,8 @@ and cannot acquire an exact result merely by matching a PDB extent.
 
 | Primary owner | Native | Current PDB contribution | Instruction-key diagnostic |
 | --- | ---: | ---: | ---: |
-| CullStageObject | 1,643 | 1,468 | 282 / 504 target instructions |
-| DrawStageLayer | 727 | 644 | 58 / 191 target instructions |
+| CullStageObject | 1,643 | 1,468 | 297 / 504 target instructions |
+| DrawStageLayer | 727 | 723 | 98 / 191 target instructions |
 
 The culler initially emitted 1,316 bytes (206/504 aligned) with an
 incorrect frame-pointer profile. Removing `/Oy-` restored the native
@@ -95,10 +95,10 @@ rounding boundaries matter. Reversing the commutative X-addend order and
 altering the snapshot's declaration order produced no further gain and
 were not retained.
 
-The layer dispatcher currently emits 644 bytes in its own primary
+The layer dispatcher now emits 723 bytes in its own primary
 translation-unit context. Its target uses EBP framing and a 0x14-byte
-local frame; the candidate's local frame is 0x0C bytes, so internal
-register/stack scheduling is still a substantial source-shape gap.
+local frame; the current candidate uses 0x1C bytes. Its stack argument
+and register scheduling still differ despite the near-sized PDB extent.
 The current comparison uses normalized instruction keys for orientation
 only; it does **not** mask a failed strict replay into an exact claim.
 D3DX import linkage and private caller ABI still need explicit proof.
@@ -106,3 +106,57 @@ D3DX import linkage and private caller ABI still need explicit proof.
 Continue both bosses with original control-flow, calling-convention and
 temporary-lifetime evidence. Preserve already-exact StageCallbacks and
 StageLifecycle owners; no unrelated bulk cold replay is warranted.
+
+## Focused VC9 /GL comparison (2026-11-17 continuation)
+
+The new `cull-stage-object-frontier` and `draw-stage-layer-frontier`
+contexts compile only the two participating real source TUs and a dynamic
+`StageLayerProbe` caller using pinned VC9, with PDB/MAP/PE receipts.
+They are explicitly **diagnostic frontiers**: their code is non-exact and
+their original REL32/DIR32 fields have not been exhaustively replayed.
+
+The original culler contains **1,643 bytes and 504 decoded instructions**.
+In the selected primary source context, forcing `/Oy-` incorrectly retained
+an EBP frame and produced 1,316 bytes with 206 normalized instruction
+keys aligned. Removing that profile option recovers the native frame-pointer
+omission and yields 1,444 bytes/247 aligned keys. A separate
+`eyePosition` three-float snapshot retains the native camera eye-coordinate
+rounding boundaries, improving the result to **1,468 bytes/282 aligned keys**.
+
+The original projection postpass loops over **two groups of six samples**,
+with independent depth and min/max tests for each projected point. The
+source now represents this explicitly with a tiny inlinable C++ helper;
+VC9 may still fold the six source calls into its own loop. More
+importantly, the old `if (point.x >= minimum) ... else minimum=point.x`
+incorrectly assigned NaN to the minimum because unordered comparison
+makes the first condition false. The native x87 instructions update
+the minimum only on **strictly less** and the maximum only on
+**strictly greater**; unordered samples update neither. The revised
+source uses those ordered comparisons for **both X and Y**.
+The final candidate remains 1,468 bytes, but normalization now aligns
+**297 of 504 native instruction keys** (469 candidate instructions).
+This is a source/behavioral correction with diagnostic codegen progress,
+**not an exactness claim**.
+
+The 727-byte `DrawStageLayer` in its own primary TU now produces
+**723 bytes / 194 instructions**, with 98 of 191 native normalized
+keys aligned (earlier 644 bytes / 175 instructions and 58 aligned).
+The original passes a **local copy** of the record's 12-byte offset to
+`CullStageObject`; the previous source passed a pointer into the
+record. Restoring that snapshot yields 672 bytes. Explicitly retaining
+the two Fog-enable/disable paths with their independent runtime checks
+and renderer flushes improves this to 703 bytes, restoring the native
+0x14-byte frame in that intermediate variant. Computing the optional
+VM X/Y scale ratios into float locals before committing the flags and
+results yields the current 723-byte source candidate. X-only and
+Y-only variants produced 715 and 711 bytes respectively, without
+improving normalized alignment. Linking the real `ApplyPerspectiveCamera`
+callee as another producer produced 712 bytes, and that experimental
+context was withdrawn.
+
+The current stage frame remains 0x1C versus native 0x14, and
+register/stack scheduling and imported D3DX bindings still need
+correction. None of these numerical diagnostics is an exact result.
+The previous rejected X-operand reversal and culler local-declaration
+reordering likewise produced no gain. No ASM, executable-byte
+injection, or inert padding was introduced.

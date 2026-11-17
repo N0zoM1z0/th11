@@ -4,17 +4,39 @@
 
 Reconstruct only the original Japanese TH11 v1.00a executable at `resources/th11.exe` (SHA-256 `2978b17f6184d100d249d4311348dd30c5c32ec75c014b667a525b797d3d8813`). Use the pinned VC9 / Visual C++ 2008 RTM build 21022 toolchain. Keep the original executable, `.tools/`, Wine prefix and Ghidra project private. Use direct `scripts/ghidra.py`; do not substitute another game executable or toolchain.
 
-Current branch is `main`, clean at `573baa7` (`gpt-web: recover hidden auxiliary update switch and camera selection`). This work session also committed `14a6305` (auxiliary lifetime) and `d8747a0` (stage culling/drawing). Preserve the `gpt-web: ...` commit prefix. Follow `AGENTS.md`; compile and replay only affected units, not the full cohort.
+Current branch is `main`; auxiliary singleton ownership was corrected in `619578d`, and the focused culling /GL producer was committed in `0eba967`. This session reconstructed six auxiliary update modes and their neighboring helpers through `cef3185`, `37d22ef`, `74bef7f`, `6563f1c`, and `9750526`; all use natural C++ and remain non-exact. Preserve the `gpt-web: ...` commit prefix. Follow `AGENTS.md`; compile and replay only affected units, not the full cohort.
 
 ## Large owners
+
+## Focused large stage-rendering frontiers
+
+- `CullStageObject` (0x403950): target **1,643 bytes / 504 instructions**.
+  The pinned VC9 focused link without `/Oy-` now compiles the natural
+  camera-eye float snapshot and restores strict NaN-aware bounds checks.
+  Its current candidate is **1,468 bytes**, with **297/504**
+  normalized instruction keys aligned, compared with 1,316 bytes/206
+  on the earlier forced-frame profile. The native six-samples/two-block
+  traversal is explicitly represented in C++; the compiler can still
+  optimize it to a different loop. Remains **non-exact**.
+- `DrawStageLayer` (0x404190): its own scoped VC9 /GL producer now
+  yields **723 bytes / 194 instructions** against 727 bytes / 191 native
+  (98 normalized keys aligned). The natural C++ now snapshots the
+  record offset, retains independent Fog state transitions, and evaluates
+  scale results before their flag stores. Native stack frame 0x14 vs
+  current 0x1C and caller register scheduling remain open.
+  See [STAGE_CULLING](STAGE_CULLING.md).
+- Two newly declared `frontier=true` units run these real TUs with a
+  minimal scoped dynamic caller. Neither claims strict relocated-field
+  replay or exactness. Build only `cull-stage-object-frontier` and
+  `draw-stage-layer-frontier` when changing this pair.
 
 ## New source coverage (2026-11-17)
 
 - `CullStageObject` 0x403950 (1,643 bytes) and `DrawStageLayer` 0x404190 (727 bytes) now have natural C++ with the actual 12-point D3DX projection, variable-length primitive traversal, and fog/Z state transitions. Both are source-present, **not byte-exact**. See [STAGE_CULLING](STAGE_CULLING.md).
-- The auxiliary stage object at global 4A8D64 now has six source-present lifecycle owners totaling 796 bytes, including the 477-byte destructor. It shares the existing `g_MeshEffectEnemy` data owner; `g_MeshEffectActor` remains at 4A8EB4. The previously uninventoried `UpdateStageAuxiliary` at 406620 now covers the complete 232-byte switch **including its six-entry jump table**. Its five other mode updater callees remain source-open. See [STAGE_AUXILIARY](STAGE_AUXILIARY.md).
+- The auxiliary stage object at global 4A8D64 now has six source-present lifecycle owners totaling 796 bytes, including the 477-byte destructor. It shares the existing `g_MeshEffectEnemy` data owner; `g_MeshEffectActor` remains at 4A8EB4. The previously uninventoried `UpdateStageAuxiliary` at 406620 now covers the complete 232-byte switch **including its six-entry jump table**. All five mode updater callees now have maintained source (the original register/codegen ownership remains open). See [STAGE_AUXILIARY](STAGE_AUXILIARY.md).
 - `SelectRuntimeCamera` at 405E80 adds 62 bytes of camera selection, ApplyCamera and D3D viewport source. All ten new/recovered function mappings are non-exact, apart from separately existing canonical functions revalidated below.
 - A stale tracking mismatch was fixed: the three stage vector/timer exact rows now use their real C++ member symbols. Previously missing exact ledger entries for `UpdateStageObjects` (153 bytes), `StageUpdateCallback` (7 bytes) and `AdvanceStageTimer` (83 bytes) have fresh, individually cold-built strict zero-difference proofs. `AsciiManagerExpireStrings` is correctly diagnostic/non-exact, not a canonical exact unit.
-- Latest generated ledger: **2,171 candidates; 764 source mappings; 457 canonical exact units**. This counts existing exact functions, not this session's new boss coverage. Verification: `scripts/repo-python scripts/validate-tracking.py --require-target`. The new source files and affected `StageDrawing.cpp` compile with pinned VC9; no full-cold replay was used.
+- Latest generated ledger: **2,171 candidates; 773 source mappings; 457 canonical exact units**. This counts existing exact functions, not this session's new boss coverage. Verification: `scripts/repo-python scripts/validate-tracking.py --require-target`. The new source files and affected `StageDrawing.cpp` compile with pinned VC9; no full-cold replay was used.
 
 ### ExecuteStageScript — 0x00404470
 

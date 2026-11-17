@@ -39,6 +39,21 @@ compiler observations and useful failed approaches.
   original ESI/EBX convention is private LTCG, not a source-level custom ABI.
   See [RENDER_CAMERA](RENDER_CAMERA.md).
 
+## NaN-sensitive stage culling and native stack ownership (2026-11-17)
+
+The 1,643-byte `CullStageObject` at 403950 stores all three
+camera-eye coordinates as independently rounded floats before
+subtracting them from the object center. Native screen-space min/max
+comparisons are **ordered**: an unordered/NaN X/Y comparison updates
+neither extreme. The earlier C++ `>= / else` structure incorrectly
+wrote a NaN into the minimum. The new strict `< / else if >` branch
+and two groups of six projected samples match the source-level
+flow. In the focused VC9 /GL context, dropping the forced EBP frame
+and retaining camera-eye snapshots improves normalized instruction
+alignment to **297/504** (1,468-byte candidate vs 1,643-byte native);
+see [STAGE_CULLING](STAGE_CULLING.md). Do not promote diagnostic
+instruction alignment to exactness.
+
 ## CRT library code and withdrawn asm claims (2026-11-14)
 
 `scripts/scan-library-code.py` matches every code section of the pinned VC9

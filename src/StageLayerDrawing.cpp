@@ -35,17 +35,6 @@ static __forceinline void SetLayerRenderState(D3DRENDERSTATETYPE state, DWORD va
     static_cast<IDirect3DDevice9 *>(g_MainRuntime.d3dDevice)->SetRenderState(state, value);
 }
 
-static __forceinline void LayerFog(int enabled)
-{
-    if (FrameRuntime().fogEnabled != enabled)
-    {
-        FlushRenderBatch(g_RenderBatch);
-        FrameRuntime().fogEnabled = enabled;
-        static_cast<IDirect3DDevice9 *>(g_MainRuntime.d3dDevice)->SetRenderState(
-            D3DRS_FOGENABLE, enabled);
-    }
-}
-
 // Complete target owner at 0x404190, including the variable-length primitive
 // stream and the independent fog/Z state transitions.
 int __stdcall DrawStageLayer(StageResourceView *stage, int layer)
@@ -69,7 +58,10 @@ int __stdcall DrawStageLayer(StageResourceView *stage, int layer)
         if (object->layer != layer)
             continue;
 
-        if (CullStageObject(camera, object, &entry->offset, stage->distanceSquared))
+        // Native dispatch snapshots the layer offset into a local vector;
+        // the culling helper observes the copy rather than the record.
+        CameraVector offset = entry->offset;
+        if (CullStageObject(camera, object, &offset, stage->distanceSquared))
         {
             ++DrawCounters(stage).rejectedObjects;
             entry->flags &= ~1u;
@@ -98,18 +90,38 @@ int __stdcall DrawStageLayer(StageResourceView *stage, int layer)
                         reinterpret_cast<StageSpriteDimensions *>(vm->unknown3ac);
                     if (command->scaleX != 0.0f)
                     {
-                        vm->flags.value |= 8;
-                        vm->scaleX = command->scaleX / sprite->width;
+                        const float scaleX = command->scaleX / sprite->width;
+                        vmFlags |= 8;
+                        vm->flags.value = vmFlags;
+                        vm->scaleX = scaleX;
                     }
                     if (command->scaleY != 0.0f)
                     {
+                        const float scaleY = command->scaleY / sprite->height;
                         vm->flags.value |= 8;
-                        vm->scaleY = command->scaleY / sprite->height;
+                        vm->scaleY = scaleY;
                     }
                 }
 
-                int fogEnabled = (vm->flags.value & 0x03c00000) == 0x02000000;
-                LayerFog(fogEnabled);
+                // The native splits enable and disable into separate gates,
+                // each of which samples the current runtime fog state.
+                if ((vm->flags.value & 0x03c00000) == 0x02000000)
+                {
+                    if (FrameRuntime().fogEnabled != 1)
+                    {
+                        FlushRenderBatch(g_RenderBatch);
+                        FrameRuntime().fogEnabled = 1;
+                        static_cast<IDirect3DDevice9 *>(g_MainRuntime.d3dDevice)->
+                            SetRenderState(D3DRS_FOGENABLE, 1);
+                    }
+                }
+                else if (FrameRuntime().fogEnabled != 0)
+                {
+                    FlushRenderBatch(g_RenderBatch);
+                    FrameRuntime().fogEnabled = 0;
+                    static_cast<IDirect3DDevice9 *>(g_MainRuntime.d3dDevice)->
+                        SetRenderState(D3DRS_FOGENABLE, 0);
+                }
                 const bool disableZ = (vm->flags.value & 0x800) != 0;
                 if (disableZ && zWritesEnabled)
                 {
