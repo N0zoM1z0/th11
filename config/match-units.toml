@@ -10215,3 +10215,20 @@ linkages = [
   { offset = 28, type = "REL32", symbol = "_free", target = 0x0045FC3B },
   { offset = 61, type = "REL32", symbol = "_free", target = 0x0045FC3B },
 ]
+
+# Original 25-byte contiguous attraction-item memory reset. Ordinary
+# C++ memset; no stand-in bytes or hand-written clearing loop.
+[units.reset-secondary-gameplay-items]
+artifact_kind = "coff"
+source = "src/SecondaryDebugItemReset.cpp"
+inputs = ["src/SecondaryPlayerWrapItems.hpp", "src/SecondaryPlayerController.hpp"]
+object = "build/match/SecondaryDebugItemReset.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["ResetSecondaryGameplayItems"]
+symbol = "?ResetSecondaryGameplayItems@@YAXXZ"
+target_address = 0x0040D040
+size = 25
+relocations = [
+  { offset = 1, type = "DIR32", symbol = "?g_SecondaryAttractionItems@@3PAUSecondaryAttractionManagerView@@A", target = 0x004A8E90 },
+  { offset = 17, type = "REL32", symbol = "_memset", target = 0x0046A720 },
+]

@@ -78,3 +78,64 @@ keys aligned**. Remaining differences are native private
 ECX/EDX chain-removal calls, a stage-auxiliary destructor
 calling-convention difference, and the compiler's member
 destruction/EH scheduling. It is source-complete but **nonexact**.
+
+## Full 729-byte debug HUD destructor at 0x41AFC0
+
+The original HUD singleton at 0x4A8D84 now has a **natural C++ owning
+type**, `SecondaryDebugHudOwned`, implemented in
+`src/SecondaryDebugHudLifetime.cpp` and its companion header. It
+shares physical storage with the existing non-owning
+`SecondaryGameplayHudView` and `SecondaryActorHudView`, rather than
+creating another singleton.
+
+This is a large, genuine C++ destructor. Its three **real**
+`StageEmbeddedVm` member arrays are 9 elements at +0x10,
+2 elements at +0x25E4, and 4 elements at +0x2E4C (each
+VM is 0x434 bytes). The compiler automatically frees these
+arrays in the original reverse order **4, 2, 9** after the
+destructor body; no EH vector-iterator assembly or fake
+padding is authored.
+
+Before member destruction the native owner calls the separately
+bounded 0x41AD30 HUD precleanup, independently unregisters
+update, draw, and overlay chains (+8/+C/+43DC), clears +8,
+releases two animation IDs at +43AC/+43B8 and zeros them,
+then visits the eight renderer ID slots at +4350..+436C.
+For each live ID the source searches both genuine renderer
+lists, marks its VM and eligible related children for cleanup
+using flag 0x04000000, and clears that ID. It then walks both
+renderer VM lists to mark entries whose +0x3B0 group field
+matches the owner marker at +0x444C. Finally it clears
+`g_SecondaryActorHud`, frees optional +0x431C data and
+nulls the pointer.
+
+Direct Ghidra and native PE review support the entire **729-byte**
+owner, seven actual callees, all returns and boundaries.
+A dedicated real-caller VC9 /GL scoped compilation produces a
+**740-byte candidate with 92/195 native instruction keys aligned**:
+source-complete but not byte-exact. The native EH/register
+ownership, especially the 0x41AD30 precleanup and three
+C++ member-array iterator calls, remains to be optimized.
+The adjacent 462-byte debug-session destructor now calls
+`delete` on this **actual owning class**, not a placeholder
+external destructor; its own codegen alignment remains 124/127
+in the focused context containing the real chain/master,
+auxiliary stage and HUD destructors.
+
+
+## Exact attraction-item pool reset (0x40D040, 25 bytes)
+
+`src/SecondaryDebugItemReset.cpp` now restores the complete native
+`ResetSecondaryGameplayItems` body with an ordinary
+`memset(g_SecondaryAttractionItems + 0x14, 0, 0x265E50)` call.
+This retains the existing pool's original header and clears the
+contiguous item data without changing the object layout.
+The source does not contain hand-coded machine bytes or padding.
+
+Selected cold pinned VC9 RTM normal-COFF replay confirms the entire
+**25/25 bytes** match original TH11 1.00a. The original DIR32
+global-pointer field at +01 resolves to 0x004A8E90 and REL32 at
++11 resolves to CRT memset at 0x0046A720. Both fields are
+independently reviewed, with zero unmatched bytes. The exact
+unit is `reset-secondary-gameplay-items`; nominal original
+class/translation-unit attribution is still indeterminate.

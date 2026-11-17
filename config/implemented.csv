@@ -504,6 +504,7 @@ ResetMusicDecoder
 ResetMusicPosition
 ResetPbgMemoryFile
 ResetReplayCompressionTree
+ResetSecondaryGameplayItems
 ResetSecondaryHostEffectSnapshot
 ResetSecondaryMainThread
 ResetSecondaryPairControl1
@@ -552,6 +553,7 @@ SecondaryActorStateConstructor
 SecondaryActorViewportPoint::IsOutside
 SecondaryDamageAngleDifference
 SecondaryDamageTimerElapsed
+SecondaryDebugHudOwned::~SecondaryDebugHudOwned
 SecondaryDefaultExecute
 SecondaryDefaultFloat
 SecondaryDefaultFloatPointer
