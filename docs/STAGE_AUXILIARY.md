@@ -224,3 +224,33 @@ The VM, spell and timer calls reuse existing maintained C++ contracts.
 `MeshEffectEventView` retains its original global symbol type through a
 local physical counter view; no second global or synthetic VM pool was
 introduced. Private native LTCG ABI and byte equality remain non-exact.
+
+## Mode-1 and mode-4 effect postpasses (475 bytes)
+
+Two more previously source-less call targets are now natural C++:
+`UpdateStageAuxiliaryMode1Effect` (407B50, 85 bytes) and
+`UpdateStageAuxiliaryMode4Effect` (4073B0, 390 bytes).
+
+The mode-1 effect first invokes the real 395-byte stage-actor clearing
+boundary at 40B210 with the auxiliary origin, radius **96** and current
+spell flag mask `(~flags)&1`. It **reloads** the flag after that call,
+then invokes `ClearSecondaryObjectsInRadius` with the 96-unit radius,
+`mask|2` and final filter 1. The 40B210 callee retains independent,
+source-open ownership; no invented body or ASM proxy is supplied.
+
+Mode 4 reads the externally maintained five-ID table at native 4A3DFC:
+initially `{48,50,52,54,56}`. For each ID it looks up the auxiliary
+animation through the renderer's two real VM-ID lists and starts traversal
+from the root VM's **embedded drawNode at +0x10**, *not* the bound-VM
+`related` pointer at +0x14. A matching **signed** 16-bit child script
+ID triggers a three-vector sum at +3DC/+3E8/+3F4, then subtracts
+(224,16) from X/Y before clearing scene projectiles at the child VM's
+Y scale (+40). A separate spell-mask read follows that first call
+before clearing secondary objects. The table remains an external,
+writable global rather than being hardcoded into the source.
+
+The original mode-4 owner is 390 bytes, comprising 387 classified Ghidra
+body bytes plus three internal alignment bytes. The source adds no
+alignment/padding instructions. Native null-VM and null-child behavior is
+not "repaired" with guards that would change its control flow. Full
+linked VC9 /GL codegen and dependency closures remain open.

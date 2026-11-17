@@ -752,7 +752,9 @@ UpdateSecondarySpecialMode4
 UpdateSecondarySpecialMode5
 UpdateStage
 UpdateStageAuxiliary
+UpdateStageAuxiliaryMode1Effect
 UpdateStageAuxiliaryMode2Effect
+UpdateStageAuxiliaryMode4Effect
 UpdateStageAuxiliaryMode5Effect
 UpdateStageObjects
 UpdateStripVertexUv

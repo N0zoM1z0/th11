@@ -753,7 +753,9 @@ UpdateSecondarySpecialMode4,0x004071A0,function
 UpdateSecondarySpecialMode5,0x00407720,function
 UpdateStage,0x00402AA0,function
 UpdateStageAuxiliary,0x00406620,function
+UpdateStageAuxiliaryMode1Effect,0x00407B50,function
 UpdateStageAuxiliaryMode2Effect,0x00408010,function
+UpdateStageAuxiliaryMode4Effect,0x004073B0,function
 UpdateStageAuxiliaryMode5Effect,0x004079C0,function
 UpdateStageObjects,0x004040F0,function
 UpdateStripVertexUv,0x004518C0,function

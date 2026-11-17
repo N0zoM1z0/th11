@@ -6,8 +6,8 @@
 // Both medium-sized mode dispatches are original TH11 game code. Their real
 // 0x407B50 and 0x4073B0 callees remain separately owned and source-open.
 void __stdcall EndSecondarySpecialState(int value);
-void __stdcall UpdateStageAuxiliaryMode1Effect(StageAuxiliaryView *self);
-void __stdcall UpdateStageAuxiliaryMode4Effect(StageAuxiliaryView *self);
+int __stdcall UpdateStageAuxiliaryMode1Effect(StageAuxiliaryView *self);
+int __stdcall UpdateStageAuxiliaryMode4Effect(StageAuxiliaryView *self);
 void __cdecl QueueSecondarySpecialPulse();
 
 // 0x407AC0..0x407B2C. Mode 1's radius grows only after frame 200; at frame
