@@ -1,243 +1,91 @@
-# Local artifacts and storage cleanup
+# Private artifacts and disk hygiene
 
-Keep the private original `resources/th11.exe`, the pinned VC9 compiler and
-its headers/libraries, the independent Wine prefix under `.tools/`, the TH11
-Ghidra project, and useful analysis evidence. These are **not disposable
-caches**, even when they occupy more disk than generated objects.
+The **durable reconstruction** lives in tracked C/C++ sources, probes,
+`config/` ledgers/match contracts, scripts and documentation. Generated
+objects and links are **caches**; an old cache or matching size alone is
+not proof of exactness. For current tasks, see [RE_HANDOFF](RE_HANDOFF.md)
+and for current totals, see generated [PROGRESS](PROGRESS.md).
 
-The source in `src/`, reusable `probes/`, match contracts and review ledgers
-in `config/`, documentation, and repository scripts are the durable result.
-`build/match/` and `build/match-linked/` hold **canonical exact-unit**
-COFF/PE/MAP/PDB/object/receipt caches. Keep them for the next agent; their
-contents can be recreated, but the receipt for a changed source must be
-refreshed before relying on it. An old cached result alone is not acceptance.
+## What must be preserved
 
-`build/probe/`, `build/probe-coff/` and most of `build/probe-ltcg/` contain
-ignored, regenerable exploratory objects and temporary diagnostic links.
-Do not treat a historical `.analysis/` path as proof that its corresponding
-old executable/PDB is still cached. Retain useful experimental recipes,
-logs, target reviews and notes in the ignored `.analysis/` directory; these
-are small relative to builds and can save expensive re-analysis.
+| Area | Retention rule |
+| --- | --- |
+| `resources/th11.exe` | **Keep.** Private Japanese v1.00a target, SHA-256 pinned in `config/target.toml` |
+| `.tools/msvc900/`, `.tools/wineprefix-msvc900/` | **Keep.** Pinned VC9 compiler, headers/libraries and game-isolated Wine prefix |
+| `ghidra-project/` | **Keep.** Private TH11 analysis database |
+| `src/`, `probes/`, `config/`, `scripts/`, `docs/` | **Keep.** Tracked source, reusable experiments, proof contracts and research |
+| `build/match/` and canonical `build/match-linked/` output directories | **Keep.** Exact-unit build families and receipts; they can be regenerated, but useful for handoff |
+| `.analysis/` original target reviews, recipes, meaningful comparisons and proof logs | **Keep.** Historical evidence not stored in Git; do not indiscriminately delete this tree |
 
-## Latest cleanup — 2026-11-13
-
-The cleanup inspected Git tracking before deleting anything; **no tracked
-files** were in the removed build paths. All actions were restricted to
-ignored diagnostic build output, without running `git clean -fdx` or touching
-other private/work directories.
-
-| Diagnostic cleanup | Before | After |
-| --- | ---: | ---: |
-| Entire `build/` | **293,240 KiB** (~286 MiB) | **142,600 KiB** (~139 MiB) |
-| `build/probe-ltcg/` | 164,080 KiB | 15,356 KiB |
-| Scratch `build/probe/` | 1,916 KiB | Removed |
-
-**150,640 KiB (~147 MiB)** was reclaimed by deleting 364 of 369 old
-exploratory link contexts and the scratch objects. At that first cleanup
-checkpoint, five deliberately retained expensive diagnostic contexts remained
-in `build/probe-ltcg/`:
-
-- `PauseContinueMenuOwner` — 3,192-byte continuation menu with expensive
-  63-support-TU context (~11 MiB);
-- `LoaderCtorOrder20261112-explicit-before-clear` — browser construction;
-- `BrowserState0-20261112-goto-layout` — 934-byte state dispatcher;
-- `SecondaryReplayLoadRealHooks-real-all-hooks-20261112` — replay loader;
-- `MenuReplayRecordsDraw-isolated-20261112` — replay record UI.
-
-All canonical `build/match-linked/` (~124 MiB) and `build/match/` caches,
-`.analysis/` evidence (~24 MiB), private original, `.tools/` (~716 MiB),
-`ghidra-project/` (~14 MiB), source and Git history were preserved.
-The local cleanup inventory is
-`.analysis/handoff-storage-cleanup-20261113.txt` (ignored).
-
-For context, an **earlier**, separate cleanup on 2026-11-12 reclaimed
-831.9 MiB from 835 outdated diagnostic links and left `build/` at ~133 MiB
-*at that time*. More probes were subsequently built, so those older sizes
-and the old 330-unit inventory are **historical**, not today's checkpoint.
-
-## How to rebuild after cleanup
-
-```bash
-# Build/verify only the exact context affected by a source change:
-scripts/repo-python scripts/replay-exact-units.py --unit read-archived-file
-
-# To examine disk usage again:
-du -sh build/* .analysis
-```
-
-For exploratory work rerun its relevant `.analysis/*.py` recipe or compile
-its tracked `probes/` context. **Do not replay all exact units merely because
-old diagnostic caches were removed.** For current branch state, open tasks and
-proof boundaries, see [RE_HANDOFF](RE_HANDOFF.md) and [ORACLES](ORACLES.md).
-
-## Handoff cleanup — 2026-11-13 (second pass)
-
-A second audit removed the remaining one-off experiment outputs from the
-continuation-menu and score-register search. It inspected `git ls-files` first;
-`build/probe-ltcg/` and `build/probes/` contained no tracked files. Only those
-ignored build paths were touched. No canonical `build/match/` or
-`build/match-linked/` output, target, toolchain, Ghidra data, source, probe
-recipe or `.analysis/` evidence was deleted.
-
-| Diagnostic cleanup | Before | After |
-| --- | ---: | ---: |
-| Entire `build/` | 318,428 KiB (~311 MiB) | 159,728 KiB (~156 MiB) |
-| `build/probe-ltcg/` | 186,764 KiB (~182 MiB) | 30,092 KiB (~29 MiB) |
-| Scratch `build/probes/` | 2,028 KiB | Removed |
-
-**158,700 KiB (~155 MiB)** was reclaimed from `build/`: 156 exploratory
-`build/probe-ltcg/` directories plus six loose diagnostic files were removed,
-and the scratch `build/probes/` directory was deleted. The exact removal list
-and per-context sizes are retained in
-`.analysis/handoff-storage-cleanup-20261113b.txt`.
-
-Eleven probe contexts remain: the five historical contexts above plus
-`PauseContinueSameTuScore-20261113`,
-`PauseContinueAllRealCallersFinal-20261113`,
-`PauseContinueDynamicModeSupport-20261113`,
-`PauseContinueDynamicFactorySupport-20261113`,
-`PauseContinueBossTrackedBestOy-20261113` and
-`PauseGameOverFpoAdapters-20261113`. The first four preserve the base
-63-support continuation context, the expanded real-caller comparison and the
-two dynamic helper objects. The last two preserve the best retained linked
-boss diagnostics: Continue 3184/3192 with 2008 non-address differences, and
-Game Over 3212/3208 with 2040 non-address differences. Neither is exact.
-All other diagnostic objects can be regenerated from retained `.analysis/`
-recipes and tracked `probes/` sources.
-
-
-## Handoff preparation cleanup — 2026-11-13 (third pass)
-
-A final handoff-oriented audit kept only the eleven contexts enumerated above
-and removed **67** non-retained exploratory `build/probe-ltcg/` directories
-or loose objects. This deleted **92,079,610 bytes** (about 87.8 MiB) of
-regenerable output. The retained `build/probe-ltcg/` inventory is now about
-36 MiB; total `build/` is about 163 MiB, with canonical `build/match/` and
-`build/match-linked/` caches untouched.
-
-The same pass removed **49** one-off Game Over/ABI source variants and probe
-scripts from ignored `.analysis/` scratch, reclaiming another **417,326
-bytes**. It retained the full Ghidra reviews/decompiles, the 2026-11-13
-Game Over review notes, one state-26 source/adapter recipe, the shared
-selection-ABI experiment and the best continuation boss recipe. The state-26
-recipe's most recent relink failed with a Wine linker page fault while opening
-a cached Archive support object; its 2039-difference measurement is therefore
-historical until reproduced. The retained Game Over PE/MAP/PDB snapshot is
-the 3212-byte/2040-difference candidate.
-
-Post-cleanup measured sizes (`du -sk`):
-
-| Path | KiB |
-| --- | ---: |
-| `build/` | 166,392 |
-| `build/probe-ltcg/` | 36,696 |
-| `build/match/` | 440 |
-| `build/match-linked/` | 129,252 |
-| `.analysis/` | 30,864 |
-
-No tracked build files were removed. The source tree was restored to the
-committed `e7e1f13` baseline before this documentation-only handoff update.
-
-
-## Secondary actor host experiment cleanup — 2026-11-14
-
-The complete secondary-actor host is now built in the canonical
-`build/match-linked/SecondaryActorInstructions/` family. Its one-off opcode,
-frame, scratch-layout and tween variants were no longer useful as active build
-caches. A tracked-file check found no tracked files in the selected paths; the
-cleanup removed only39 ignored `build/probe-ltcg/SecondaryActorHost-*`
-directories and105 top-level `.analysis/` scratch source/probe variants. The
-removed host links contained70,815,964 apparent bytes (70,108 KiB allocated);
-the loose scratch files contained another611,013 apparent bytes. No other
-`build/probe-ltcg/` context was removed.
-
-| Path | Before | After |
-| --- | ---: | ---: |
-| Entire `build/` | 261,532 KiB | 191,424 KiB |
-| `.analysis/` | 34,384 KiB | 33,540 KiB |
-| Remaining `build/probe-ltcg/` | — | 56,600 KiB |
-| Canonical `build/match/` | — | 440 KiB |
-| Canonical `build/match-linked/` | — | 134,380 KiB |
-
-The cleanup removed848 KiB of allocated scratch files from `.analysis/`; the
-4 KiB cleanup receipt leaves a net `.analysis/` reduction of844 KiB. Together
-with70,108 KiB removed from `build/`, the net saving is about69.3 MiB. It
-retained the original executable, the TH11 Ghidra
-project, `.tools/`, all canonical match caches and receipts, the current host
-PE/MAP/PDB, native Ghidra output and the reproducible
-`.analysis/probe-secondary-host-with-pair-access-ltcg.py` recipe. The remaining
-probe cache contains unrelated diagnostics from other reconstruction areas;
-its count is not the old 11-context snapshot from the 2026-11-13 cleanup.
-
-A short ignored cleanup receipt is kept at
-`.analysis/handoff-storage-cleanup-20261114.txt`. The canonical host build was
-rebuilt and its11-byte manager adapter passed selected cold replay after the
-pair-access support list changed. No full replay was run.
-
-## Handoff cleanup — 2026-11-16
-
-This pass removed stale, regenerable diagnostic output while keeping the
-current source experiments and canonical exact-unit evidence available.
-
-| Path | Before (apparent bytes) | After (apparent bytes) | Action |
-| --- | ---: | ---: | --- |
-| build/exp | 151,260,963 | 0 | Removed all scratch link contexts |
-| build/probe-ltcg | 56,719,463 | 38,014,295 | Removed 42 unreferenced/superseded contexts; retained 14 |
-| .analysis | 41,588,464 | 40,316,860 | Removed two obsolete full-ledger snapshots; retained source experiments and evidence |
-| scripts/__pycache__ | 414,747 | 0 | Removed regenerable Python bytecode |
-
-The pass reclaimed **171,652,482 apparent bytes** (about **163.7 MiB**).
-The 14 retained diagnostic contexts are:
-
-- AnimationSurfaceCopyTracked
-- BrowserState0-20261112-goto-layout
-- LoaderCtorOrder20261112-explicit-before-clear
-- MenuReplayRecordsDraw-isolated-20261112
-- PauseContinueAllRealCallersFinal-20261113
-- PauseContinueBossTrackedBestOy-20261113
-- PauseContinueDynamicFactorySupport-20261113
-- PauseContinueDynamicModeSupport-20261113
-- PauseContinueMenuOwner
-- PauseContinueSameTuScore-20261113
-- PauseGameOverFpoAdapters-20261113
-- ReplayCompressionMain
-- SecondaryGameplayStatisticsWriter
-- SecondaryReplayLoadRealHooks-real-all-hooks-20261112
-
-The removed contexts had no direct references from the maintained docs,
-README, configuration or probes. Their experimental source/analysis remains
-in .analysis where available; build outputs can be regenerated when needed.
-The removed ledger snapshots duplicated older versions of the now-tracked
-config and are not used by any build.
-
-No tracked file was deleted. The cleanup did not use git clean and did not
-touch the private target (672 KiB), VC9 compiler (133 MiB), Wine prefix
-(621 MiB), Ghidra project
-(14 MiB), canonical build/match cache (484 KiB), or canonical
-build/match-linked cache (607 MiB). No compile or cold replay was run.
-
-The exact removed probe-context names are recorded in
-.analysis/handoff-storage-cleanup-20261116.removed-probe-contexts.txt;
-the size summary is in .analysis/handoff-storage-cleanup-20261116.txt.
+A canonical `linked-pe` output is identified by a unit referenced in
+`config/matches.csv` and its `output_dir` in
+`config/match-units.toml`. Several units share one output directory;
+**do not remove a directory if any of its units is canonical exact**.
+The original target, Ghidra project, toolchain, all canonical output
+families and the known costly menu diagnostics were preserved during
+the cleanup below.
 
 ## Handoff cleanup — 2026-11-17
 
-This pass removed six ignored, unreferenced experimental link-output trees
-from `build/match-linked/`: `StageScriptVariants`, `StageMeshVariants`,
-`WidePauseSelectionComparisons`, `WideReplayLeaderboardRuntime`,
-`WideSecondaryHostMiscLeaves` and `WideSecondarySpecialEffectLifecycle`.
-None had a tracked file or a reference from the manifest, maintained docs,
-probes, scripts or analysis notes. The regenerable `scripts/__pycache__/`
-was also removed. No source, probe, canonical manifest output, `.analysis/`
-evidence, target executable, toolchain or Ghidra project was deleted.
+Removed only **147 ignored, regenerable paths** after checking the
+live Git worktree, match manifest, canonical exact-unit list and
+references from retained analysis scripts/documentation.
 
-| Path | Before | After |
-| --- | ---: | ---: |
-| Entire `build/` | 1,128,792 KiB | 517,212 KiB |
-| `.analysis/` | 61,868 KiB | 61,868 KiB |
+| Removed category | Entries | Reason |
+| --- | ---: | --- |
+| Abandoned/orphaned `build/match-linked/` directories and unrelated noncanonical frontier caches | 31 | No canonical exact unit owns these outputs; active HUD, stage script, tween and rendering frontiers were retained |
+| One-off `build/probe-ltcg/` objects and unretained small probe directories | 88 | Ordinary compile probes, replaceable from tracked source; 14 expensive historical diagnostics retained |
+| Unreferenced duplicate full `match-units.toml` snapshots in `.analysis/` | 28 | No retained script/document imports their names; canonical manifests and their Git history remain available |
 
-The six link-output trees accounted for **611,580 KiB** (about **597 MiB**)
-of reclaimed build space. The current `StageScriptFrontier`, `StageTween`,
-`WideMenuJoystickDisplay`, `WideSecondaryClearing` and
-`SecondaryWideStepStageFogTween` outputs were retained. The exact cleanup
-receipt is `.analysis/handoff-storage-cleanup-20261117.txt`.
+All removed paths were ignored. No Git-tracked files or canonical exact
+receipt directories were deleted.
+
+Measured allocated disk usage (KiB, from `du -sk`):
+
+| Directory | Before | After | Saved |
+| --- | ---: | ---: | ---: |
+| `build/` | 560,152 | 521,340 | 38,812 |
+| `.analysis/` | 72,456 | 54,560 | 17,896 |
+| **Combined** | **632,608** | **575,900** | **56,708** |
+
+That is approximately **55.4 MiB of allocated disk space**
+(56,561,171 apparent file bytes, or **53.9 MiB**). The ignored
+`.analysis/handoff-storage-cleanup-20261117b.txt` records the exact
+removed paths and their individual sizes. The TH11 target,
+`.tools/`, Ghidra project and every tracked file were unchanged.
+No code was compiled or replayed merely for this documentation/storage
+cleanup.
+
+The actively relevant diagnostic link caches retained at handoff
+include `StageScriptFrontier`, `StageTween`, `StageCullingFrontier`,
+`StageLayerFrontier`, `SecondaryDebugHudDestructorFrontier`,
+`SecondaryDebugHudPrecleanupFrontier`,
+`SecondaryDebugHudVisualInitFrontier`,
+`SecondaryDebugHudRegistrationFrontier` and
+`SecondaryDebugSessionDestructorFrontier`. The spell-stage scoped
+frontiers were also retained. Previously retained expensive
+pause/continue, replay, loader and game-over probe contexts were
+not removed.
+
+## Rebuilding a deleted diagnostic
+
+A removed noncanonical frontier or compile probe is **not a lost
+source change**. Rebuild only the owner relevant to the next edit:
+
+```bash
+scripts/repo-python scripts/build-match-unit.py --unit secondary-debug-hud-visual-init-frontier
+```
+
+To refresh a canonical exact result **when its inputs actually
+change**, run a selected cold build and strict replay, for example:
+
+```bash
+scripts/repo-python scripts/replay-exact-units.py --unit secondary-debug-hud-constructor-frontier
+```
+
+Do not run full cold replay or `git clean -fdx` just to reclaim
+space. Avoid deleting exact output directories, the Wine prefix,
+the private target, Ghidra databases or `.analysis/` evidence.
+Earlier dated cleanup inventories and experiments remain available
+through Git history and retained ignored cleanup receipts, rather
+than in a sequence of outdated disk-usage tables here.
