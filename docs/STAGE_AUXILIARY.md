@@ -63,7 +63,32 @@ member offsets are enforced in `StageAuxiliary.hpp`.
 
 ## Next work
 
-Reconstruct the main auxiliary updater at 406620 and its other
-callers before refining private register allocation for these lifecycle
+Reconstruct the other six mode-specific updater bodies and their original
+/GL owner context before refining private register allocation for these lifecycle
 functions. Build locally only the affected source; do not conflate native
 semantics, exact code generation, and complete executable closure.
+
+## Main auxiliary update, 0x406620 (2026-11-17)
+
+The update callback at 4064D0 copies ECX to EAX and jumps to **406620**.
+Ghidra did not promote the entry to a function. A direct original-PE
+Capstone decode establishes a complete 232-byte owner: 208 code bytes at
+406620..4066EF and the six 32-bit jump-table entries at 4066F0..406707.
+CC alignment follows; there are no externally owned table entries.
+
+The natural C++ `UpdateStageAuxiliary` now preserves the native state
+machine. Inactive state (+3C == 0) returns 1 immediately, without advancing
+the timer. State 1 dispatches six modes by
+`g_MeshEffectSelection0 * 3 + g_MeshEffectSelection1`. A mode-specific
+nonzero return clears +3C and returns 1; a zero return, an out-of-range
+index, or a non-one active state advances the timer at +14 before returning 1.
+Only mode 0's callee, `UpdateSecondaryEffect` at 45DE30, is source-present;
+the other five calls remain legitimate external source boundaries.
+
+The physical singleton is the **existing** `g_MeshEffectActor` at 4A8D64,
+not a newly allocated independent global. The auxiliary constructor,
+destructor, and global destroy have been revised to use this established
+owner, and the character/partner selection names now reuse the already
+maintained secondary-gameplay globals. This addresses semantic ownership,
+not exactness. Native private EAX/EBX/EDI call registers and the generated
+jump table still need a realistic original VC9 /GL producer comparison.

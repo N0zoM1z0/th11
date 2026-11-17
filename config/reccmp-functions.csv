@@ -584,6 +584,7 @@ SeekPbgMemoryFile,0x00442DC0,function
 SeekStageScriptMarker,0x00404F20,function
 SelectAvailableMusicBuffer,0x0045A990,function
 SelectMenuItem,0x0040DF10,function
+SelectRuntimeCamera,0x00405E80,function
 SelectSecondaryActorTransition,0x00417B40,function
 SelectSecondaryScript,0x0045DC00,function
 SetAnimationAlpha2Tween,0x0044F000,function
@@ -746,6 +747,7 @@ UpdateSecondaryProjectiles,0x00434440,function
 UpdateSecondaryReplayStage,0x00436DA0,function
 UpdateSecondaryScripts,0x0045D420,function
 UpdateStage,0x00402AA0,function
+UpdateStageAuxiliary,0x00406620,function
 UpdateStageObjects,0x004040F0,function
 UpdateStripVertexUv,0x004518C0,function
 UpdateTransposedStripVertexUv,0x004517B0,function

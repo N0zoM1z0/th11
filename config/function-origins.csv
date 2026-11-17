@@ -62,7 +62,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00405E30,unknown,,review,unknown,stage-negative-timer-offset-full-pe-20261116
 0x00405E50,unknown,,review,unknown,stage-negative-one-timer-full-pe-20261116
 0x00405E60,unknown,,review,unknown,stage-render-tint-full-pe-owner-20261116
-0x00405E80,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00405E80,authored_game,Rendering,authored,high,auxiliary-update-camera-ghidra-pe-20261117
 0x00405FB0,unknown,SecondaryScriptVm,indeterminate,unknown,secondary-script-origin-2026-10-29
 0x00406100,unknown,StageTween,indeterminate,unknown,stage-tween-origin-20261028
 0x004061B0,authored_game,StageAuxiliary,authored,high,stage-auxiliary-ghidra-20261117
@@ -72,6 +72,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x004064E0,unknown,StageAuxiliary,review,unknown,stage-auxiliary-ghidra-20261117
 0x004064F0,authored_game,StageAuxiliary,authored,high,stage-auxiliary-ghidra-20261117
 0x00406510,unknown,SecondaryPlayerController,indeterminate,unknown,secondary-controller-callee-origin-2026-10-29
+0x00406620,authored_game,StageAuxiliary,authored,high,auxiliary-update-camera-ghidra-pe-20261117
 0x00406720,unknown,SecondaryDamage,indeterminate,unknown,secondary-damage-origin-2026-10-29
 0x00406860,unknown,SecondaryEffects,indeterminate,unknown,secondary-special-support-origin-20261112
 0x004068C0,unknown,MeshEffects,indeterminate,unknown,mesh-effects-origin-20261028

@@ -35,8 +35,10 @@ typedef char StageAuxiliaryCacheOffset[(offsetof(StageAuxiliaryView, cachedData)
 typedef char StageAuxiliaryBindingOffset[(offsetof(StageAuxiliaryView, bindings) == 0x480) ? 1 : -1];
 typedef char StageAuxiliaryOverlayOffset[(offsetof(StageAuxiliaryView, overlayChain) == 0x49c) ? 1 : -1];
 
-extern StageAuxiliaryView *g_StageAuxiliary;
-extern unsigned int g_StagePlayerCharacter, g_StagePlayerPartner;
+// This view is rooted at the existing secondary mesh-effect singleton
+// (0x004A8D64); do not invent a second global storage owner.
+struct MeshEffectActorView;
+extern MeshEffectActorView *g_MeshEffectActor;
 
 int __stdcall RegisterStageAuxiliaryChains(StageAuxiliaryView *self);
 StageAuxiliaryView *CreateStageAuxiliary();

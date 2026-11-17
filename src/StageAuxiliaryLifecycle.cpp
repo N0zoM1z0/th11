@@ -1,6 +1,7 @@
 #include "StageAuxiliary.hpp"
 #include "ChainRegistration.hpp"
 #include "MainRuntime.hpp"
+#include "SecondaryActorRuntime.hpp"
 #include <new>
 #include <stdlib.h>
 #include <string.h>
@@ -61,7 +62,7 @@ StageAuxiliaryView::StageAuxiliaryView()
 {
     memset(this, 0, sizeof(*this));
     flags |= 2;
-    g_StageAuxiliary = this;
+    g_MeshEffectActor = reinterpret_cast<MeshEffectActorView *>(this);
 }
 
 int __stdcall RegisterStageAuxiliaryChains(StageAuxiliaryView *self)
@@ -80,7 +81,7 @@ int __stdcall RegisterStageAuxiliaryChains(StageAuxiliaryView *self)
 
 StageAuxiliaryView::~StageAuxiliaryView()
 {
-    if (effectActive && g_StagePlayerCharacter + 3 * g_StagePlayerPartner == 5)
+    if (effectActive && g_MeshEffectSelection1 + 3 * g_MeshEffectSelection0 == 5)
     {
         ReleaseSecondaryAnimation(AnimationVmId(animationId040));
         animationId040 = 0;
@@ -96,7 +97,7 @@ StageAuxiliaryView::~StageAuxiliaryView()
     RemoveAuxiliaryChain(drawChain);
     RemoveAuxiliaryChain(overlayChain);
 
-    g_StageAuxiliary = 0;
+    g_MeshEffectActor = 0;
     if (bindings)
     {
         ReleaseVmBindingBlock(bindings);
@@ -124,7 +125,7 @@ StageAuxiliaryView *CreateStageAuxiliary()
 
 void DestroyStageAuxiliary()
 {
-    StageAuxiliaryView *self = g_StageAuxiliary;
+    StageAuxiliaryView *self = reinterpret_cast<StageAuxiliaryView *>(g_MeshEffectActor);
     if (self)
         delete self;
 }

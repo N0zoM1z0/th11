@@ -12,7 +12,11 @@ external interior references, and adjacent CC padding.
 | `FlushRenderBatch` | 0x0044FD10..0x0044FD9E | 143 | Exact |
 
 Camera setup has four caller functions, including three frame paths and
-camera selection at0x00405E80. That selector computes a camera address using
+camera selection at0x00405E80. The complete 62-byte camera selector now has
+maintained source in `src/RuntimeCameraSelection.cpp` (2026-11-17),
+recovering the native 0x118 stride, active camera pointer, ApplyCamera,
+device viewport operation, and published index. It is source-present and
+non-exact; native private ESI/EBX allocation remains open. That selector computes a camera address using
 stride0x118, publishes it at runtime+0x54C and passes it in EDI. The batch
 submitter has25 caller functions across ASCII, animation and frame rendering;
 its receiver arrives in ESI. Ordinary stdcall source naturally generates
