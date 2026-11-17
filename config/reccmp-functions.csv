@@ -179,6 +179,7 @@ CreateReplayLeaderboardRuntime,0x00437800,function
 CreateReplayPlayback,0x00435EF0,function
 CreateReplayRecording,0x00435E00,function
 CreateSecondaryAuxiliaryOwner,0x0040E240,function
+CreateSecondaryDebugHud,0x0041B2A0,function
 CreateSecondaryDrawAnimationVmId,0x00455DF0,function
 CreateSecondaryEmitterAnimationVmId,0x00455BC0,function
 CreateSecondaryHostActor,0x004108F0,function

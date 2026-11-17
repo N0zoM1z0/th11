@@ -289,3 +289,33 @@ authenticated exactly, not substituted by a dummy or hidden field.
 The constructor is therefore canonical byte-exact; the external
 EH handler body and 729-byte owning HUD destructor are separately
 scoped code owners. No ASM or executable padding was used.
+
+
+## Exact owning HUD factory (0x41B2A0, 150 bytes)
+
+The factory in `src/SecondaryDebugHudFactory.cpp` naturally
+allocates a genuine 0x4458-byte `SecondaryDebugHudOwned`,
+calls its separate 208-byte C++ constructor, and invokes the
+independently bounded 339-byte registration function. Nonzero
+registration result destroys and deletes the owner before
+returning null; successful construction returns the real object.
+
+The focused VC9 /GL unit `secondary-debug-hud-factory-frontier`
+must include the **real constructor and destructor** sources,
+rather than exposing them as opaque external signatures. With
+those ordinary C++ owner bodies visible, the private stack
+argument convention and compiler EH scheduling match the
+original. Its primary PDB contribution is **150 bytes and all
+49 original instructions align**. The selected strict cold
+linked-PE replay proves **150/150 bytes with zero differences**,
+checking all seven address fields: owner-specific static EH
+handler, security cookie, operator new, constructor, registrar,
+destructor and operator delete. The handler's identity is
+verified against the real compiler MAP Static symbols section,
+not guessed or masked.
+
+This public factory body is now canonical exact. Its external
+C++ EH-handler *code*, the 339-byte registrar and the 729-byte
+destructor remain separately bounded owners; their exactness
+must not be inferred from this success. No hand-authored machine
+code, ASM or padding was added.

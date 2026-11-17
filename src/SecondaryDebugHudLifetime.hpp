@@ -87,3 +87,5 @@ typedef char SecondaryDebugHudSize[
     (sizeof(SecondaryDebugHudOwned) == 0x4458) ? 1 : -1];
 
 void __stdcall PrepareSecondaryDebugHudDestruction(SecondaryDebugHudOwned *self);
+int __stdcall RegisterSecondaryHudChains(SecondaryDebugHudOwned *self);
+SecondaryDebugHudOwned *CreateSecondaryDebugHud();

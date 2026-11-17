@@ -178,6 +178,7 @@ CreateReplayLeaderboardRuntime
 CreateReplayPlayback
 CreateReplayRecording
 CreateSecondaryAuxiliaryOwner
+CreateSecondaryDebugHud
 CreateSecondaryDrawAnimationVmId
 CreateSecondaryEmitterAnimationVmId
 CreateSecondaryHostActor
