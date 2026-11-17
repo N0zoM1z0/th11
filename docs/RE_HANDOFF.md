@@ -4,9 +4,7 @@
 
 Reconstruct only the original Japanese TH11 v1.00a executable at `resources/th11.exe` (SHA-256 `2978b17f6184d100d249d4311348dd30c5c32ec75c014b667a525b797d3d8813`). Use the pinned VC9 / Visual C++ 2008 RTM build 21022 toolchain. Keep the original executable, `.tools/`, Wine prefix and Ghidra project private. Use direct `scripts/ghidra.py`; do not substitute another game executable or toolchain.
 
-Current branch is `main`; auxiliary singleton ownership was corrected in `619578d`, and the focused culling /GL producer was committed in `0eba967`. This session reconstructed six auxiliary update modes and their neighboring helpers through `cef3185`, `37d22ef`, `74bef7f`, `6563f1c`, and `9750526`; all use natural C++ and remain non-exact. Preserve the `gpt-web: ...` commit prefix. Follow `AGENTS.md`; compile and replay only affected units, not the full cohort.
-
-## Large owners
+Current branch is `main`. This continuation has six source commits through `fbdc99a`: the native auxiliary singleton correction `619578d`, scoped culling producer `0eba967`, 727-byte layer rewrite `8c46df1`, and auxiliary postpasses `731c2f4`, `361411b`, `fbdc99a`. Preserve the `gpt-web: ...` commit prefix. Follow `AGENTS.md`; compile/replay only affected units, not the full cohort.
 
 ## Focused large stage-rendering frontiers
 
@@ -36,7 +34,8 @@ Current branch is `main`; auxiliary singleton ownership was corrected in `619578
 - The auxiliary stage object at global 4A8D64 now has six source-present lifecycle owners totaling 796 bytes, including the 477-byte destructor. It shares the existing `g_MeshEffectEnemy` data owner; `g_MeshEffectActor` remains at 4A8EB4. The previously uninventoried `UpdateStageAuxiliary` at 406620 now covers the complete 232-byte switch **including its six-entry jump table**. All five mode updater callees now have maintained source (the original register/codegen ownership remains open). See [STAGE_AUXILIARY](STAGE_AUXILIARY.md).
 - `SelectRuntimeCamera` at 405E80 adds 62 bytes of camera selection, ApplyCamera and D3D viewport source. All ten new/recovered function mappings are non-exact, apart from separately existing canonical functions revalidated below.
 - A stale tracking mismatch was fixed: the three stage vector/timer exact rows now use their real C++ member symbols. Previously missing exact ledger entries for `UpdateStageObjects` (153 bytes), `StageUpdateCallback` (7 bytes) and `AdvanceStageTimer` (83 bytes) have fresh, individually cold-built strict zero-difference proofs. `AsciiManagerExpireStrings` is correctly diagnostic/non-exact, not a canonical exact unit.
-- Latest generated ledger: **2,171 candidates; 773 source mappings; 457 canonical exact units**. This counts existing exact functions, not this session's new boss coverage. Verification: `scripts/repo-python scripts/validate-tracking.py --require-target`. The new source files and affected `StageDrawing.cpp` compile with pinned VC9; no full-cold replay was used.
+- Latest generated ledger: **2,171 candidates; 776 source mappings; 457 canonical exact units**. This counts existing exact functions, not this session's new boss coverage. Verification: `scripts/repo-python scripts/validate-tracking.py --require-target`. The new source files and affected `StageDrawing.cpp` compile with pinned VC9; no full-cold replay was used.
+- The mode-3 clearing dependency now has natural source for 406F90 (212 bytes), 424F30 (114-byte virtual-area dispatcher), and 40B0E0 (300-byte projectile-band scan). These reuse the real scene/secondary manager and do not alter any prior exact clearing units. Target original 406F90 only initializes the first two floats of the area extent; its third float is unknown, not assumed zero. See [STAGE_AUXILIARY](STAGE_AUXILIARY.md) and [SECONDARY_CLEARING](SECONDARY_CLEARING.md).
 
 ### ExecuteStageScript — 0x00404470
 
@@ -108,10 +107,10 @@ On 2026-11-17, removed only six ignored, unreferenced experiment-output director
 
 ## Next actions
 
-1. Build focused VC9 /GL primary-TU contexts for the new **1,643-byte `CullStageObject`** and **727-byte `DrawStageLayer`** pair, then compare their complete native spans and real D3DX/device field bindings. Their current standalone source compilation is only a codegen sanity check.
-2. Resolve the auxiliary stage's 406620 switch ABI and its five source-open mode updaters (407AC0, 407D10, 406D10, 4071A0, 407720). Confirm constructor/destructor EH ownership; do not label the new lifecycle owners exact on source coverage alone.
-3. Continue `ExecuteStageScript` from 2,728/2,736 bytes and `StepStageVectorTween` from 883/883 bytes (still 272/280 normalized instructions). Focus on source-faithful x87 operand ordering and EH/funclet ownership without ASMs or inert padding.
-4. Revisit `InitializePrimaryStageScripts` (246/249 diagnostic), `StageScriptMeshConstructor` (366/389), and wide contexts only when their affected producer/ABI paths warrant a bounded build. Never replay the full cohort for a local edit.
+1. Continue the **1,643-byte `CullStageObject`** (current scoped candidate 1,468 bytes / 297-of-504 normalized keys) and **727-byte `DrawStageLayer`** (723 bytes / 98-of-191). Preserve the natural X87 rounding, offset snapshot, Fog branches, and scale write order; close original D3DX register/stack and linker-field gaps using only their two scoped VC9 /GL frontiers.
+2. Complete the auxiliary clearing dependency: the **302-byte actor horizontal-band** owner at 412B10 is called from the now-restored 40B0E0 and the **395-byte scene actor radius** owner at 40B210 is called from 407B50. Confirm the auxiliary constructor/destructor EH ownership separately; none of these new C++ sources has byte-exact credit.
+3. Continue `ExecuteStageScript` from 2,728/2,736 bytes and `StepStageVectorTween` from 883/883 bytes (272/280 normalized instructions). Focus on source-faithful x87 operand ordering and EH/funclet ownership; do not insert ASM or padding.
+4. Revisit `InitializePrimaryStageScripts` (246/249 diagnostic) and `StageScriptMeshConstructor` (366/389) with bounded real-caller contexts only. Never replay the full cohort for a local edit.
 
 ## Working references
 
