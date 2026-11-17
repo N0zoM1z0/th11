@@ -747,6 +747,7 @@ UpdateSecondaryProjectiles,0x00434440,function
 UpdateSecondaryReplayStage,0x00436DA0,function
 UpdateSecondaryScripts,0x0045D420,function
 UpdateSecondarySpecialMode1,0x00407AC0,function
+UpdateSecondarySpecialMode3,0x00406D10,function
 UpdateSecondarySpecialMode4,0x004071A0,function
 UpdateStage,0x00402AA0,function
 UpdateStageAuxiliary,0x00406620,function

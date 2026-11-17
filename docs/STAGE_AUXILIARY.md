@@ -118,3 +118,28 @@ radius +490, radiusStep +494 and transitionActive +498, retaining size
 0x4A0 and all field offsets. These are **source-complete but not exact**
 linked-machine-code owners. Their mode-effect callees 407B50 and 4073B0
 remain separate restoration tasks.
+
+## Mode 3 mesh jitter (0x406D10, 356 bytes)
+
+`src/StageAuxiliaryMode3.cpp` reconstructs the complete 356-byte native
+mode-3 updater. The native first resolves animation ID +40. An absent VM
+clears that ID and returns -1 **without** releasing the mesh; this is
+distinct from mode 2. After frame +18 exceeds 90, it signals the current
+animation at its ID's address, releases/deletes binding +480 when present,
+zeros it and returns -1.
+
+During earlier frames it updates the X coordinates of **two distinct mesh
+rows**: for each column `i` strictly before `mesh.columns-1`, it samples
+the original text RNG twice and updates vertex
+`[mesh.columns+i]` and vertex `[2*mesh.columns+i]`, respectively,
+from the parallel source-position X coordinates. The randomness is an
+unsigned 32-bit value transformed by `sample * 2^-31 - 1`, rounded to float,
+then multiplied by 8 and rounded to float again. It does **not** perturb
+Y/Z, and it does not reset vertices from scratch. The separate 212-byte
+mode-3 collision/effect helper at 406F90 runs after the loop. Original
+signed/unsigned bounds are retained without adding null checks.
+
+Direct Ghidra review covers the complete 406D10..406E73 body, six callees,
+all returns, zero external interior references, and following CC bytes. The
+VC9 source compiles; its private EBX/ESI allocation and exact byte equality
+are still open.
