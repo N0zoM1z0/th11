@@ -359,3 +359,32 @@ effects, and returns zero via RET8. The original span contains
 392 classified code bytes and three alignment bytes; natural
 source adds no padding. Full /GL register allocation and
 relocation-aware equality remain to be established.
+
+## Corrected mode activation and fifth-mode initialization (2026-11-17)
+
+Native 406510 is the 268-byte six-way special activation switch
+(including the internal jump table). Its receiver comes from
+**4A8D64** (`g_MeshEffectEnemy`), and every initialization branch
+receives that **auxiliary-stage object**, not the player at 4A8EB4.
+The existing natural C++ had incorrectly used the player pointer for
+both the owner state and each dispatch argument. That is now corrected
+in `src/SecondaryPlayerSpecialActivation.cpp`. The positional
+sound at 406596 separately samples the real player's X coordinate.
+Neither the player object nor the global storage owner has been
+duplicated. Original switch register allocation and matching remain
+open, not byte-exact.
+
+The mode-five initializer at **407680..40771E (159 bytes)** now has
+real C++ in `src/StageAuxiliaryMode5Initialization.cpp`. It receives
+the already selected auxiliary owner (native ESI), stores radius=32
+and radiusStep=10, copies the player's three-float +87C position to
+auxiliary origin +484, and sets timer+28 to frame -1 through the
+existing real timer view. It calls the game's genuine
+`AnimationFileView::CreatePositionedVmId` with that origin,
+script 0x3A and layer 0x16, stores the resulting ID at +40, and sets
+bit 2 of the **player** flags at +8BC4. It returns 0.
+Direct Ghidra review covers the entire contiguous 159-byte body,
+one VM factory call, one caller, and no foreign interior references.
+Pinned VC9 source compilation succeeds; the source's external
+signature and original /GL register allocation remain to be verified
+in its wider producer context.

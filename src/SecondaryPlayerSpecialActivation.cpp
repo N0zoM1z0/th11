@@ -5,13 +5,14 @@
 
 // The complete original switch owns 241 code bytes, three alignment bytes,
 // and the full six-entry native dispatch table through 0x40661B.
-// These original independent mode callees still have source-open owners.
+// Mode 5 has maintained source; other mode initialization owners are
+// independent. The effect singleton is at 0x4A8D64, not the player at 4A8EB4.
 struct MeshEffectActorView;
-extern MeshEffectActorView *g_MeshEffectActor;
+extern MeshEffectEnemyView *g_MeshEffectEnemy;
 int __stdcall InitializeSecondaryEffect(MeshEffectActorView *self);
 void __stdcall InitializeSecondarySpecialMode1(MeshEffectActorView *self);
 void __stdcall InitializeSecondarySpecialMode4(MeshEffectActorView *self);
-void __stdcall InitializeSecondarySpecialMode5(MeshEffectActorView *self);
+int __stdcall InitializeSecondarySpecialMode5(MeshEffectActorView *self);
 
 namespace
 {
@@ -30,7 +31,7 @@ struct SpecialActivationView
 // The native does not check the globally published owner or spell for null.
 int __stdcall ActivateSecondaryPlayerSpecial()
 {
-    SpecialActivationView *owner = reinterpret_cast<SpecialActivationView *>(g_MeshEffectActor);
+    SpecialActivationView *owner = reinterpret_cast<SpecialActivationView *>(g_MeshEffectEnemy);
     if (owner->active != 0) return -1;
     owner->active = 1;
     owner->timer014.SetFrame(-1);
@@ -40,12 +41,12 @@ int __stdcall ActivateSecondaryPlayerSpecial()
     const int mode = static_cast<int>(static_cast<unsigned int>(g_MeshEffectSelection0) * 3u + g_MeshEffectSelection1);
     switch (mode)
     {
-    case 0: InitializeSecondaryEffect(g_MeshEffectActor); break;
-    case 1: InitializeSecondarySpecialMode1(g_MeshEffectActor); break;
-    case 2: InitializeSquareMeshEffect(reinterpret_cast<MeshEffectControllerView *>(g_MeshEffectActor)); break;
-    case 3: InitializeColumnMeshEffect(reinterpret_cast<MeshEffectControllerView *>(g_MeshEffectActor)); break;
-    case 4: InitializeSecondarySpecialMode4(g_MeshEffectActor); break;
-    case 5: InitializeSecondarySpecialMode5(g_MeshEffectActor); break;
+    case 0: InitializeSecondaryEffect(reinterpret_cast<MeshEffectActorView *>(owner)); break;
+    case 1: InitializeSecondarySpecialMode1(reinterpret_cast<MeshEffectActorView *>(owner)); break;
+    case 2: InitializeSquareMeshEffect(reinterpret_cast<MeshEffectControllerView *>(owner)); break;
+    case 3: InitializeColumnMeshEffect(reinterpret_cast<MeshEffectControllerView *>(owner)); break;
+    case 4: InitializeSecondarySpecialMode4(reinterpret_cast<MeshEffectActorView *>(owner)); break;
+    case 5: InitializeSecondarySpecialMode5(reinterpret_cast<MeshEffectActorView *>(owner)); break;
     }
     return 0;
 }

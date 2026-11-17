@@ -87,7 +87,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00407220,unknown,SecondaryDamage,indeterminate,unknown,secondary-damage-origin-2026-10-29
 0x004073B0,authored_game,StageAuxiliary,authored,high,stage-aux-mode-effects-ghidra-20261117
 0x00407560,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00407680,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00407680,authored_game,StageAuxiliary,authored,high,stage-mode5-initialization-ghidra-20261117
 0x00407720,authored_game,StageAuxiliary,authored,high,stage-aux-mode5-ghidra-20261117
 0x004079C0,authored_game,StageAuxiliary,authored,high,stage-aux-mode2-radius-ghidra-20261117
 0x00407A40,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

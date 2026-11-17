@@ -419,3 +419,16 @@ also remain non-exact (96/93 and 58/58 with 16/17 instructions). The
 producer script and retained diagnostic are
 `.analysis/probe-special-support-real-parent-20261112.py` and its log.
 No unrelated cold replay was performed.
+
+## Special activation receiver correction (2026-11-17)
+
+The complete 268-byte native `ActivateSecondaryPlayerSpecial` at
+406510 uses 4A8D64 for its 0x4A0-byte auxiliary receiver. A
+previous source reconstruction mistakenly used the distinct player
+singleton at 4A8EB4 to initialize the timer, active state and
+dispatch arguments. All six switch cases now forward the actual
+auxiliary instance. The player's positional sound +87C and the
+spell status at 4A8D6C remain independently sourced. Mode-five's
+159-byte initializer at 407680 now has natural source; see
+[STAGE_AUXILIARY](STAGE_AUXILIARY.md). No byte-exact credit is
+claimed for the 268-byte dispatcher.
