@@ -3,6 +3,7 @@
 #include "MainRuntime.hpp"
 #include <math.h>
 #include <new>
+#include <intrin.h>
 
 static __forceinline StageScriptStateView &ScriptState(StageResourceView *self)
 {
@@ -19,6 +20,30 @@ static __forceinline void ScriptVector(CameraVector &output, const float *values
     output.x = values[0];
     output.y = values[1];
     output.z = values[2];
+}
+
+static __forceinline void ScriptTweenFrame(StageTimerView &timer, int frame)
+{
+    unsigned int flags = timer.flags;
+    if (!(flags & 1))
+    {
+        timer.current = 0;
+        _ReadWriteBarrier();
+        timer.previous = -999999;
+        _ReadWriteBarrier();
+        timer.fraction = 0.0f;
+        _ReadWriteBarrier();
+        flags |= 1;
+        _ReadWriteBarrier();
+        timer.scale = &g_AnimationTimeScale;
+        _ReadWriteBarrier();
+        timer.flags = flags;
+    }
+    timer.current = 0;
+    _ReadWriteBarrier();
+    timer.fraction = 0.0f;
+    _ReadWriteBarrier();
+    timer.previous = frame;
 }
 
 static __forceinline void ScriptTime(StageTimerView &timer, int frame)
@@ -84,7 +109,7 @@ int __stdcall ExecuteStageScript(StageResourceView *self)
             state.positionTween.target = target;
         }
 PositionTweenFrame:
-            state.positionTween.time.SetFrame(-1);
+            ScriptTweenFrame(state.positionTween.time, -1);
             break;
         case 4:
             ScriptVector(self->camera.view.targetOffset, values);
@@ -98,7 +123,7 @@ PositionTweenFrame:
             state.targetTween.target = target;
         }
 TargetTweenFrame:
-            state.targetTween.time.SetFrame(-1);
+            ScriptTweenFrame(state.targetTween.time, -1);
             break;
         case 6:
             ScriptVector(self->camera.view.up, values);
