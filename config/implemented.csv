@@ -126,6 +126,7 @@ ClearSecondaryObjects
 ClearSecondaryObjectsInRadius
 ClearSecondaryProgramBrowserFiles
 ClearSecondaryProjectileHit
+ClearStageAuxiliaryHorizontalBand
 CloseMusicDecoder
 ClosePauseContinueMenu
 ClosePbgLowLevelFile

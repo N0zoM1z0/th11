@@ -127,6 +127,7 @@ ClearSecondaryObjects,0x00425040,function
 ClearSecondaryObjectsInRadius,0x00424FE0,function
 ClearSecondaryProgramBrowserFiles,0x00438570,function
 ClearSecondaryProjectileHit,0x0040FC30,function
+ClearStageAuxiliaryHorizontalBand,0x0040B0E0,function
 CloseMusicDecoder,0x0045B540,function
 ClosePauseContinueMenu,0x0042D7F0,function
 ClosePbgLowLevelFile,0x00441E40,function

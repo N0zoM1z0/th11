@@ -64,3 +64,14 @@ zero affected prior units: only new source/header/probe files are introduced.
 No full cohort, broad runtime or unchanged-infrastructure suite is run.
 
 Canonical artifacts are in `build/match-linked/SecondaryClearing/`.
+
+## Horizontal-band variant (2026-11-17)
+
+`ClearStageAuxiliaryHorizontalBand` at 40B0E0 now has complete 300-byte
+natural C++ in `src/StageAuxiliaryHorizontalBand.cpp`. It shares the
+scene projectile pool and real clear/drop helpers above, but selects
+a horizontal X interval and a downward Y threshold rather than a
+radial distance. After the 2000-record scan it calls the separate
+302-byte actor-band function at 412B10. This source addition is
+non-exact and does not change the shared exact clearing producers.
+See [STAGE_AUXILIARY](STAGE_AUXILIARY.md).

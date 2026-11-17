@@ -300,3 +300,28 @@ owners are not perturbed.
 Full native boundaries, caller, return and adjacent CC were reviewed,
 and the natural VC9 source compiles. This is 114 additional bytes of
 source coverage, not a strict original /GL codegen match.
+
+## Horizontal-band scene-projectile clearing (0x40B0E0)
+
+The complete 300-byte target function at 40B0E0..40B20B is now
+`ClearStageAuxiliaryHorizontalBand` in
+`src/StageAuxiliaryHorizontalBand.cpp`. The source reuses the
+existing `SceneClearProjectileView` at +64 in the 2000-entry pool
+with native stride 0x910, instead of creating another projectile
+layout. An active spell in phases 0x9E..0xA1 divides the supplied
+half-width by 3.0 and rounds it back to float.
+
+Only live, non-3 state projectiles with kind zero can qualify.
+The native accepts those whose X is in
+`[center.x-halfWidth, center.x+halfWidth]` and whose Y is at or
+below the supplied Y threshold. Qualified entries call the real
+`ClearSceneProjectile`, then conditionally spawn the standard kind-8
+drop if the 2-unit viewport test accepts and effects are requested.
+After visiting all 2000 records, this function calls the separate
+302-byte actor-band owner at 412B10 with the original center,
+possibly reduced width, and effect mask. It returns zero via RET12.
+
+The full Ghidra body, call graph, return and subsequent alignment
+were reviewed. The pinned VC9 source compiles, but byte exactness
+remains open. The actor-band callee at 412B10 is the next source-open
+dependency in this chain.
