@@ -254,3 +254,25 @@ body bytes plus three internal alignment bytes. The source adds no
 alignment/padding instructions. Native null-VM and null-child behavior is
 not "repaired" with guards that would change its control flow. Full
 linked VC9 /GL codegen and dependency closures remain open.
+
+## Mode-3 clearing and area dispatch (0x406F90)
+
+The 212-byte mode-3 postpass, now implemented in
+`src/StageAuxiliaryMode3Effect.cpp`, runs three separate clear passes:
+a 48-unit projectile-radius pass (40AF90), a 32-unit horizontal-band
+pass (40B0E0), and a second 48-unit object-radius pass (424FE0).
+The native function reloads the spell's `(~flags)&1` mask between
+calls rather than reusing a potentially stale value.
+
+It next passes the auxiliary origin with **224 subtracted from Y** to
+the 114-byte area dispatcher at 424F30. The accompanying extent
+vector stores X=32 and Y=448. The native 406F90 body does **not**
+initialize the third float component, although the downstream
+dispatcher reads it. The source leaves that component unspecified
+instead of inventing a Z value. The area-dispatch target is a
+separate source owner, not part of this 212-byte function.
+
+The direct Ghidra review covers all 212 bytes, four call targets,
+the final return and following alignment, without foreign interior
+references. The VC9 source compiles; original /GL private ABI and
+exactness are not established by this local compile.
