@@ -39,7 +39,7 @@ Do not return to the obsolete 15-VM / 0x4450 view.
 | `41AFC0` destructor, 729 B | natural source, nonexact | `src/SecondaryDebugHudLifetime.cpp`; 741-byte /GL candidate, 195 decoded instructions |
 | `41AF30` cleanup helper, 129 B | **exact** | `secondary-debug-hud-finalization`; 129/129 and eight audited fields |
 | `41B360` global destruction, 28 B | **exact** | `secondary-debug-hud-global-destroy`; 28/28 and three audited fields |
-| `41A6D0` HUD initialization dispatch, 1,619 B | natural source, nonexact | `src/SecondaryDebugHudAnimationInitialization.cpp`; 1,523-byte /GL candidate |
+| `41A6D0` HUD initialization dispatch, 1,619 B | natural source, nonexact | `src/SecondaryDebugHudAnimationInitialization.cpp`; 1,619-byte /GL candidate / 403 instructions (native 402) |
 
 The candidate figures are **historical scoped /GL diagnostics**, not
 freshly reverified exact claims. Build only the relevant frontier unit
@@ -53,7 +53,8 @@ from 772/200 to 741/195 (bytes/instructions), versus native 729/195.
 Its genuine 16-VM member destruction remains intact.
 
 **Next useful work:** refine the full 1,619-byte `41A6D0` HUD animation
-initialization against its 1,523-byte /GL source candidate, then close
+initialization against its now same-length 1,619-byte /GL candidate
+(403 versus 402 instructions), then close
 the 729-byte destructor and 336/339-byte resource/registration owners.
 The 129-byte independent cleanup and 28-byte global destroy entries
 are now strictly exact. Both preserve their original natural C++

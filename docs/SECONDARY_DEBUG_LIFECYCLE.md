@@ -518,3 +518,29 @@ includes chain lock-call scheduling and renderer-list register choices;
 this is a diagnostic, **not exact**. Cold replay of the directly
 affected 150-byte factory, 28-byte global destroy, and 101-byte
 dialogue destructor remains exact at zero differences.
+
+
+## Full HUD animation owner: dynamic file lifetime and generic VM creation
+
+Further direct original-code review found that the 1,619-byte
+`InitializeSecondaryDebugHudAnimations` repeatedly reloads HUD
+animation document pointer +0x444C between binding/creation calls. An
+earlier C++ implementation captured it only once at entry. Calling the
+existing `HudFrontFile(hud)` helper at each use preserves the original
+resource state visibility and increases the scoped VC9 /GL owner from
+**1,523 bytes / 391 instructions** to **1,603 bytes / 399
+instructions**, without any padding or assembly.
+
+The original initial `CreateAnimationVmId` call receives a real file
+and two distinct arguments (script 0, layer 0x16), not a specialized
+single-file signature. An independent normal C++ consumer now invokes
+that exact same source helper with dynamic file/script/layer arguments,
+preventing /GL from specializing away the parameters. The original
+nine/four/two VM loops have natural do/while form, and the ASCII file
+is re-read inside its two-VM loop as observed in the original. The
+current complete public PDB contribution has **1,619 bytes and 403
+decoded instructions** versus original **1,619 and 402**. This is a
+substantial natural-source and scoped codegen improvement, but **not
+strict exact**; instruction ordering/branch layout and field replay
+remain open. The original's internal instruction alignment was never
+copied into source.

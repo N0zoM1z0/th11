@@ -10253,7 +10253,6 @@ support_sources = ["src/SecondaryDebugHudPrecleanup.cpp",
                    "src/ChainRemove.cpp",
                    "src/SecondaryActorAnimation.cpp",
                    "probes/secondary-debug-hud-destructor-generic-context.cpp"]
-normal_support_sources = ["src/SecondaryDebugHudPrecleanup.cpp"]
 output_dir = "build/match-linked/SecondaryDebugHudDestructorFrontier"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "SecondaryDebugHudDestructorGenericProbe@12"
@@ -10483,7 +10482,7 @@ support_sources = ["src/AnimationVmFactory.cpp", "src/AnimationRendererDispatch.
                    "probes/secondary-debug-hud-animation-init-context.cpp"]
 output_dir = "build/match-linked/SecondaryDebugHudAnimationInitFrontier"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
-entry = "SecondaryDebugHudAnimationInitProbe@0"
+entry = "SecondaryDebugHudAnimationInitProbe@12"
 functions = ["InitializeSecondaryDebugHudAnimations"]
 symbol = "?InitializeSecondaryDebugHudAnimations@@YAXXZ"
 target_address = 0x0041A6D0

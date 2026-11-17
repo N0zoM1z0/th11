@@ -161,21 +161,35 @@ void InitializeSecondaryDebugHudAnimations()
     PauseHudChain(hud->drawChain);
     PauseHudChain(hud->overlayChain);
 
-    AnimationFileView *frontFile = HudFrontFile(hud);
     if (!hud->initialVmId)
-        hud->initialVmId = CreateAnimationVmId(frontFile, 0, 0x16).value;
+    {
+        AnimationVmId initialId = CreateAnimationVmId(HudFrontFile(hud), 0, 0x16);
+        hud->initialVmId = initialId.value;
+    }
 
     if (!(EmbeddedVm(&hud->mainVms[0])->flags.value & 1u))
     {
-        for (int i = 0; i < 9; ++i)
-            BindAnimationScript(frontFile, i + 10, EmbeddedVm(&hud->mainVms[i]));
+        int i = 0;
+        do
+        {
+            BindAnimationScript(HudFrontFile(hud), i + 10, EmbeddedVm(&hud->mainVms[i]));
+            ++i;
+        } while (i < 9);
 
-        for (int i = 0; i < 4; ++i)
-            BindAnimationScript(frontFile, i + 0x20, EmbeddedVm(&hud->overlayVms[i]));
+        i = 0;
+        do
+        {
+            BindAnimationScript(HudFrontFile(hud), i + 0x20, EmbeddedVm(&hud->overlayVms[i]));
+            ++i;
+        } while (i < 4);
 
-        AnimationFileView *asciiFile = reinterpret_cast<AnimationFileView *>(g_AsciiManager->animation);
-        for (int i = 0; i < 2; ++i)
+        i = 0;
+        do
+        {
+            AnimationFileView *asciiFile = reinterpret_cast<AnimationFileView *>(g_AsciiManager->animation);
             BindAnimationScript(asciiFile, i + 3, EmbeddedVm(&hud->auxiliaryVms[i]));
+            ++i;
+        } while (i < 2);
     }
 
     UpdateSecondaryLivesDisplay(g_SecondaryActorHud,
@@ -183,28 +197,28 @@ void InitializeSecondaryDebugHudAnimations()
 
     if (SceneMode() != 8 && !(g_StageResourceFlags & 0x20u))
     {
-        SpawnHudAnimation(frontFile, 0);
-        SpawnHudAnimation(frontFile, 1);
+        SpawnHudAnimation(HudFrontFile(hud), 0);
+        SpawnHudAnimation(HudFrontFile(hud), 1);
     }
     if (g_StageResourceFlags & 0x20u)
-        SpawnHudRetainedAnimation(frontFile, 0x46);
+        SpawnHudRetainedAnimation(HudFrontFile(hud), 0x46);
 
     BindAnimationScript(reinterpret_cast<AnimationFileView *>(g_AsciiManager->animation),
                         0, EmbeddedVm(&hud->persistentVm));
 
     if (g_StageVariant == 1 && g_SecondaryDialogueSession->mode == 0 &&
         RecordShotState() == 0)
-        SpawnHudAnimation(frontFile, 0x2c);
+        SpawnHudAnimation(HudFrontFile(hud), 0x2c);
 
     if (g_ReplayModeFlags)
     {
         const int script = static_cast<int>(g_ReplayStageCharacter) + 0x39;
-        hud->effectVmId = SpawnHudRetainedAnimation(frontFile, script).value;
+        hud->effectVmId = SpawnHudRetainedAnimation(HudFrontFile(hud), script).value;
         SignalHudAnimation(hud->effectVmId, 3);
     }
 
     const int script = static_cast<int>(g_ReplayStageCharacter) + 0x3e;
-    hud->secondaryEffectVmId = SpawnHudRetainedAnimation(frontFile, script).value;
+    hud->secondaryEffectVmId = SpawnHudRetainedAnimation(HudFrontFile(hud), script).value;
     SignalHudAnimation(hud->effectVmId, 3);
     hud->reset43fc = 0;
 }
