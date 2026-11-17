@@ -19,6 +19,7 @@ size = 182
 linkages = []
 
 [units.ascii-manager-expire-strings]
+frontier = true # 100-byte source candidate vs the 124-byte original; not exact
 artifact_kind = "coff"
 source = "src/AsciiStrings.cpp"
 inputs = ["src/AsciiManager.hpp"]
@@ -9458,7 +9459,6 @@ linkages = [
 # Standalone private-ESI timer owner. Kept out of StageTween's LTCG context so
 # its exact leaf proof cannot perturb the vector-tween caller's register layout.
 [units.advance-stage-timer]
-frontier = true
 artifact_kind = "linked-pe"
 source = "src/StageTimerExact.cpp"
 inputs = ["src/StageTween.hpp"]

@@ -12,7 +12,7 @@ AddSecondaryCollisionValue,0x0040BAA0,function
 AddSecondaryIntegerPair,0x00433EA0,function
 AddSecondaryPair,0x004195E0,function
 AddStageFog,0x00405A50,function
-AddStageVectorComponents,0x00405DF0,function
+StageVectorMathView::operator+,0x00405DF0,function
 AddToDrawChain,0x00456C10,function
 AddToUpdateChain,0x00456B70,function
 AdvanceAnimationDocument,0x004544C0,function
@@ -26,15 +26,16 @@ AllocateStageHeapBytes,0x00405D80,function
 AngleToSecondaryPlayer,0x00431D90,function
 AnimationDistanceRoot,0x004196E0,function
 AnimationExtentMagnitude,0x0040B930,function
+AnimationFileView::CreatePositionedVmId,0x00455B10,function
 AnimationFloatDestination,0x0044B380,function
 AnimationFloatPairTweenDuration,0x0044EBC0,function
 AnimationFloatPairTweenFactor,0x0044EE30,function
 AnimationFloatScalarTweenDuration,0x0044EDC0,function
 AnimationFloatScalarTweenFactor,0x0044EE60,function
+AnimationIntegerDestination,0x0044B400,function
 AnimationIntScalarTweenFactor,0x0044EE00,function
 AnimationIntVectorTweenDuration,0x0044E7B0,function
 AnimationIntVectorTweenFactor,0x0044EDD0,function
-AnimationIntegerDestination,0x0044B400,function
 AnimationRandomRange,0x0040B9F0,function
 AnimationRendererConstructor,0x004526F0,function
 AnimationRendererDestructor,0x00453130,function
@@ -168,7 +169,6 @@ CreateFrontSecondaryDrawAnimationVmId,0x00456020,function
 CreateMemoryMusicStream,0x0045A1B0,function
 CreateOffsetSecondaryDrawAnimationVmId,0x00455F00,function
 CreateOffsetSecondaryEmitterAnimationVmId,0x00455CD0,function
-AnimationFileView::CreatePositionedVmId,0x00455B10,function
 CreatePositionedSecondaryDrawAnimationVmId,0x00455E60,function
 CreatePositionedSecondaryEmitterAnimationVmId,0x00455C30,function
 CreateReplayFileBrowser,0x00437F60,function
@@ -183,6 +183,7 @@ CreateSecondaryHudScreenEffect,0x004489E0,function
 CreateSecondaryManager,0x0045DB90,function
 CreateSecondaryMaster,0x00411070,function
 CreateSecondaryPlayerController,0x004301B0,function
+CreateStageAuxiliary,0x00406440,function
 CreateStageMeshRow,0x0042B3D0,function
 CreateStageResource,0x004029C0,function
 CreateTextSurface,0x004435F0,function
@@ -212,6 +213,7 @@ DestroyReplayRecordStageLink,0x004374D0,function
 DestroySecondaryAuxiliaryOwner,0x0040E190,function
 DestroySecondaryMaster,0x00410E90,function
 DestroySecondaryProgramBrowser,0x00438710,function
+DestroyStageAuxiliary,0x004064F0,function
 DestroyThreadInfVirtual,0x00459410,function
 DestroyTitleMenuStorage,0x004396C0,function
 DestructSecondaryPlayerStorage,0x00430010,function
@@ -379,8 +381,8 @@ MusicStreamingThread,0x0044A900,function
 NormalizeAngle,0x00458ED0,function
 OffsetSecondaryTimer,0x00459210,function
 OffsetStageTimerByFrames,0x00405E20,function
-OffsetStageTimerByNegativeFrames,0x00405E30,function
-OffsetStageTimerByNegativeOne,0x00405E50,function
+StageTimerNegativeOffsetView::OffsetByNegativeFrames,0x00405E30,function
+StageTimerNegativeOneView::OffsetByOneFrame,0x00405E50,function
 OpenMusicDecoderFile,0x0045B220,function
 OpenPbgFileSession,0x004415C0,function
 OpenPbgLowLevelFile,0x00441D50,function
@@ -397,9 +399,9 @@ PauseSecondaryGameplayObject,0x0040CFA0,function
 PauseSecondaryMasterChains,0x00410E60,function
 PauseSelectionComparisonView::IsDifferent,0x0042F340,function
 PauseSelectionComparisonView::IsSmaller,0x0042F350,function
-PlayMusicStream,0x0045AA60,function
 PlayerEmitterOffsetPair::PlayerEmitterOffsetPair,0x00433F00,function
 PlayerEmitterPolarPair::PlayerEmitterPolarPair,0x004021D0,function
+PlayMusicStream,0x0045AA60,function
 PollJoystickButtons,0x004575A0,function
 PollKeyboardInput,0x004576B0,function
 PopConfigurationSelection,0x00459130,function
@@ -465,6 +467,7 @@ RefillMusicBuffer,0x0045A6F0,function
 RefreshMenuPlayerDataRecords,0x0043F120,function
 RefreshSecondaryPlayerEmitters,0x00410610,function
 RegisterSecondaryProgramBrowserChains,0x00438660,function
+RegisterStageAuxiliaryChains,0x004061B0,function
 ReleasePbgResourceSession,0x004416C0,function
 ReleaseRuntimeSurfaces,0x0042B600,function
 ReleaseSecondaryAnimation,0x004562E0,function
@@ -631,6 +634,9 @@ SpawnSecondaryPlayerDrop,0x00424230,function
 SpawnSecondaryProjectile,0x00433F90,function
 SpliceReplayCompressionNode,0x00442B00,function
 SquareMeshVmCallback,0x00408070,function
+StageAuxiliaryDrawCallback,0x004064E0,function
+StageAuxiliaryUpdateCallback,0x004064D0,function
+StageAuxiliaryView::~StageAuxiliaryView,0x00406260,function
 StageDrawCallback,0x00403910,function
 StageEmbeddedVmConstructor,0x00402270,function
 StageEmbeddedVmDestructor,0x00402170,function

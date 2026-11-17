@@ -11,7 +11,6 @@ AddSecondaryCollisionValue
 AddSecondaryIntegerPair
 AddSecondaryPair
 AddStageFog
-AddStageVectorComponents
 AddToDrawChain
 AddToUpdateChain
 AdvanceAnimationDocument
@@ -25,15 +24,16 @@ AllocateStageHeapBytes
 AngleToSecondaryPlayer
 AnimationDistanceRoot
 AnimationExtentMagnitude
+AnimationFileView::CreatePositionedVmId
 AnimationFloatDestination
 AnimationFloatPairTweenDuration
 AnimationFloatPairTweenFactor
 AnimationFloatScalarTweenDuration
 AnimationFloatScalarTweenFactor
+AnimationIntegerDestination
 AnimationIntScalarTweenFactor
 AnimationIntVectorTweenDuration
 AnimationIntVectorTweenFactor
-AnimationIntegerDestination
 AnimationRandomRange
 AnimationRendererConstructor
 AnimationRendererDestructor
@@ -167,7 +167,6 @@ CreateFrontSecondaryDrawAnimationVmId
 CreateMemoryMusicStream
 CreateOffsetSecondaryDrawAnimationVmId
 CreateOffsetSecondaryEmitterAnimationVmId
-AnimationFileView::CreatePositionedVmId
 CreatePositionedSecondaryDrawAnimationVmId
 CreatePositionedSecondaryEmitterAnimationVmId
 CreateReplayFileBrowser
@@ -182,6 +181,7 @@ CreateSecondaryHudScreenEffect
 CreateSecondaryManager
 CreateSecondaryMaster
 CreateSecondaryPlayerController
+CreateStageAuxiliary
 CreateStageMeshRow
 CreateStageResource
 CreateTextSurface
@@ -211,6 +211,7 @@ DestroyReplayRecordStageLink
 DestroySecondaryAuxiliaryOwner
 DestroySecondaryMaster
 DestroySecondaryProgramBrowser
+DestroyStageAuxiliary
 DestroyThreadInfVirtual
 DestroyTitleMenuStorage
 DestructSecondaryPlayerStorage
@@ -378,8 +379,6 @@ MusicStreamingThread
 NormalizeAngle
 OffsetSecondaryTimer
 OffsetStageTimerByFrames
-OffsetStageTimerByNegativeFrames
-OffsetStageTimerByNegativeOne
 OpenMusicDecoderFile
 OpenPbgFileSession
 OpenPbgLowLevelFile
@@ -396,9 +395,9 @@ PauseSecondaryGameplayObject
 PauseSecondaryMasterChains
 PauseSelectionComparisonView::IsDifferent
 PauseSelectionComparisonView::IsSmaller
-PlayMusicStream
 PlayerEmitterOffsetPair::PlayerEmitterOffsetPair
 PlayerEmitterPolarPair::PlayerEmitterPolarPair
+PlayMusicStream
 PollJoystickButtons
 PollKeyboardInput
 PopConfigurationSelection
@@ -464,6 +463,7 @@ RefillMusicBuffer
 RefreshMenuPlayerDataRecords
 RefreshSecondaryPlayerEmitters
 RegisterSecondaryProgramBrowserChains
+RegisterStageAuxiliaryChains
 ReleasePbgResourceSession
 ReleaseRuntimeSurfaces
 ReleaseSecondaryAnimation
@@ -630,6 +630,9 @@ SpawnSecondaryPlayerDrop
 SpawnSecondaryProjectile
 SpliceReplayCompressionNode
 SquareMeshVmCallback
+StageAuxiliaryDrawCallback
+StageAuxiliaryUpdateCallback
+StageAuxiliaryView::~StageAuxiliaryView
 StageDrawCallback
 StageEmbeddedVmConstructor
 StageEmbeddedVmDestructor
@@ -640,7 +643,10 @@ StageResourceConstructor
 StageResourceDestructor
 StageScriptMeshConstructor
 StageTimerComparisonView::IsAtOrBefore
+StageTimerNegativeOffsetView::OffsetByNegativeFrames
+StageTimerNegativeOneView::OffsetByOneFrame
 StageUpdateCallback
+StageVectorMathView::operator+
 StageVectorSquaredLength
 StageVectorTweenFactor
 StartMenuAnimation
