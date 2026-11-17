@@ -433,3 +433,33 @@ the real player singleton at 4A8EB4 separate from the auxiliary
 object at 4A8D64, and each returns zero. Their original register
 allocation and source TU still need local codegen validation;
 the complete natural C++ owners have compiled but are not byte-exact.
+
+## Scoped LTCG initialization comparison (2026-11-17)
+
+Mode-one and mode-four initializers retain the **original player-pointer
+snapshot** obtained before the optional sound and VM-factory calls; an
+intermediate refactor already restored this, and should not be replaced
+with a helper which reloads global 4A8EB4 during each call.
+
+Mode-five's 407680 owner does the opposite at one important boundary:
+after its positioned-VM factory call it **reloads 4A8EB4** before
+setting player flag bit2. The maintained C++ now makes that reload
+explicit. No hidden fake registration object is used.
+
+Two new focused `frontier=true` build units compile the real six-way
+activation caller with the newly restored mode-one/four/five code:
+`stage-special-activation-frontier` and
+`stage-special-mode5-initialization-frontier`. The first emits a
+244-byte PDB code owner versus 241 native code bytes plus three
+alignment bytes and a 24-byte dispatch table (268 total); normalized
+instruction-key alignment is 65/88 code instructions. The second
+emits 158 bytes versus 159 native and 25/40 instruction keys aligned.
+Both retain their full source and are **not exact proofs**. The
+original compiler's private receiver registers and full jump-table
+ownership remain open.
+
+The preexisting 132/214-source wide exact-context families list
+`SecondaryPlayerSpecialActivation.cpp` as a support input. They have
+**not** been fully cold-replayed after the receiver fix; do not
+describe their older receipts as fresh validation of these changes.
+The scoped compile is the relevant local progress record.

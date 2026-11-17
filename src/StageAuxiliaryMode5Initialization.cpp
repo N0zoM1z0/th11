@@ -22,6 +22,8 @@ int __stdcall InitializeSecondarySpecialMode5(MeshEffectActorView *context)
     self->timer028.SetFrame(-1);
     self->animationId040 = fileOwner->file->CreatePositionedVmId(
         &self->origin, 0x3a, 0x16).value;
-    player->flags |= 4u;
+    // The original reloads global 4A8EB4 after VM creation, rather than
+    // reusing the earlier player pointer across the factory call.
+    g_SecondaryPlayerControllerInstance->flags |= 4u;
     return 0;
 }

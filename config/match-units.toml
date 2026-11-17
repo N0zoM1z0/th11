@@ -9880,3 +9880,44 @@ symbol = "?ClearSecondaryActorsForSceneRadius@@YGXPBUCameraVector@@MH@Z"
 target_address = 0x00412C50
 size = 449
 linkages = []
+
+# Narrow dynamic producer for the corrected six-way auxiliary initializer.
+# Nonexact diagnostic; private LTCG register allocation remains open.
+[units.stage-special-activation-frontier]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/SecondaryPlayerSpecialActivation.cpp"
+inputs = ["src/StageAuxiliary.hpp", "src/SecondaryPlayerSpecialActivation.cpp",
+          "src/StageAuxiliaryMode14Initialization.cpp",
+          "src/StageAuxiliaryMode5Initialization.cpp",
+          "probes/stage-special-initialization-context.cpp"]
+support_sources = ["src/StageAuxiliaryMode14Initialization.cpp",
+                   "src/StageAuxiliaryMode5Initialization.cpp",
+                   "probes/stage-special-initialization-context.cpp"]
+output_dir = "build/match-linked/StageSpecialActivationFrontier"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageSpecialInitializationProbe@0"
+functions = ["ActivateSecondaryPlayerSpecial"]
+symbol = "?ActivateSecondaryPlayerSpecial@@YGHXZ"
+target_address = 0x00406510
+size = 268
+linkages = []
+
+[units.stage-special-mode5-initialization-frontier]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/StageAuxiliaryMode5Initialization.cpp"
+inputs = ["src/StageAuxiliary.hpp", "src/SecondaryPlayerSpecialActivation.cpp",
+          "src/StageAuxiliaryMode14Initialization.cpp",
+          "probes/stage-special-initialization-context.cpp"]
+support_sources = ["src/SecondaryPlayerSpecialActivation.cpp",
+                   "src/StageAuxiliaryMode14Initialization.cpp",
+                   "probes/stage-special-initialization-context.cpp"]
+output_dir = "build/match-linked/StageSpecialMode5InitializationFrontier"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageSpecialInitializationProbe@0"
+functions = ["InitializeSecondarySpecialMode5"]
+symbol = "?InitializeSecondarySpecialMode5@@YGHPAUMeshEffectActorView@@@Z"
+target_address = 0x00407680
+size = 159
+linkages = []
