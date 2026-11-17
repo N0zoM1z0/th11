@@ -40,3 +40,21 @@ flag bit5 if the auxiliary-stage singleton at 4A8D64 is inactive.
 The original register ABI is a private VC9 /GL EDI receiver; the
 natural C++ call boundary and EH ownership still need a wider
 producer comparison. No ASM or padding was used.
+
+## Shared state layout for the original initializer (2026-11-17)
+
+The formerly local `SecondarySpellStageView` physical definition now lives
+in `src/SecondarySpellStage.hpp`, while its 624-byte update code stays
+in `src/SecondarySpellStageState.cpp`. This makes the same real state
+view available to the source-open **1,777-byte initializer** at 40C650.
+In that native initializer, the spell name is copied into the
+0x40-byte field at +0x89C and the signed spell index is stored at
++0x8DC. Both have compile-time offset assertions in the shared header,
+along with VM, timer, follower IDs, flag and position offsets.
+
+Only the updater is mapped as source-complete. The header declaration
+for `InitializeSecondarySpellStage` does **not** imply the 40C650
+initializer has been reconstructed; its score-history writes, multiple
+VM binding owners and seven-way stage-configuration switch still need
+their own complete C++ recovery. No exact credit is added by this
+layout extraction.

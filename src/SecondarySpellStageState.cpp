@@ -1,34 +1,9 @@
-#include "StageAuxiliary.hpp"
+#include "SecondarySpellStage.hpp"
 #include "SecondaryActorState.hpp"
 #include "SecondaryActorRuntime.hpp"
 #include "SecondaryPlayerController.hpp"
 #include "StageTween.hpp"
 #include <stddef.h>
-
-// Physical state of the stage spell effect. The two embedded animation
-// VMs, three follower IDs, timer, score and position are distinct fields;
-// only their observed offsets are assigned names here.
-struct SecondarySpellStageView
-{
-    unsigned char unknown000[0x10];
-    AnimationVmView vm0;
-    AnimationVmView vm1;
-    unsigned int followerIds[3];
-    unsigned int positionVmId;
-    StageTimerView time;
-    unsigned char unknown89c[0x8e0 - 0x89c];
-    unsigned int flags;
-    int score, scoreInitial, scoreDuration, unknown8f0;
-    int activeFrames;
-    unsigned char unknown8f8[0x910 - 0x8f8];
-    CameraVector position;
-};
-
-typedef char SpellStageSecondVmOffset[(offsetof(SecondarySpellStageView, vm1) == 0x444) ? 1 : -1];
-typedef char SpellStageFollowersOffset[(offsetof(SecondarySpellStageView, followerIds) == 0x878) ? 1 : -1];
-typedef char SpellStageTimerOffset[(offsetof(SecondarySpellStageView, time) == 0x888) ? 1 : -1];
-typedef char SpellStageFlagsOffset[(offsetof(SecondarySpellStageView, flags) == 0x8e0) ? 1 : -1];
-typedef char SpellStagePositionOffset[(offsetof(SecondarySpellStageView, position) == 0x910) ? 1 : -1];
 
 extern SecondaryPlayerControllerView *g_SecondaryPlayerControllerInstance;
 
