@@ -759,6 +759,7 @@ UpdateSecondarySpecialMode2,0x00407D10,function
 UpdateSecondarySpecialMode3,0x00406D10,function
 UpdateSecondarySpecialMode4,0x004071A0,function
 UpdateSecondarySpecialMode5,0x00407720,function
+UpdateSecondarySpellStageState,0x0040C0A0,function
 UpdateStage,0x00402AA0,function
 UpdateStageAuxiliary,0x00406620,function
 UpdateStageAuxiliaryMode1Effect,0x00407B50,function
