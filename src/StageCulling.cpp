@@ -9,6 +9,25 @@ extern "C" CameraVector *WINAPI D3DXVec3ProjectArray(
     const D3DMATRIX *projection, const D3DMATRIX *view,
     const D3DMATRIX *world, unsigned int count);
 
+// Preserve the original branch order. For unordered/NaN X or Y values
+// neither comparison updates the corresponding screen-space extrema.
+static __forceinline void ExtendProjectedBounds(const CameraVector &point,
+    float &smallestX, float &largestX, float &smallestY, float &largestY)
+{
+    if (point.z > 0.0f && point.z <= 1.0f)
+    {
+        if (point.x < smallestX)
+            smallestX = point.x;
+        else if (point.x > largestX)
+            largestX = point.x;
+
+        if (point.y < smallestY)
+            smallestY = point.y;
+        else if (point.y > largestY)
+            largestY = point.y;
+    }
+}
+
 // Complete native 0x403950 object-culling algorithm. The 12 input positions
 // are eight cuboid corners plus four samples on the middle X plane.
 int __stdcall CullStageObject(const PerspectiveCameraView *camera,
@@ -19,10 +38,17 @@ int __stdcall CullStageObject(const PerspectiveCameraView *camera,
         object->position.y + offset->y,
         object->position.z + offset->z
     };
+    // The original stores all three camera-space eye coordinates as float
+    // before subtracting them from the separately rounded object center.
+    CameraVector eyePosition = {
+        static_cast<float>(camera->position.x + camera->eyeOffset.x),
+        static_cast<float>(camera->eyeOffset.y + camera->position.y),
+        static_cast<float>(camera->eyeOffset.z + camera->position.z)
+    };
     CameraVector delta = {
-        worldCenter.x - (camera->position.x + camera->eyeOffset.x),
-        worldCenter.y - (camera->position.y + camera->eyeOffset.y),
-        worldCenter.z - (camera->position.z + camera->eyeOffset.z)
+        static_cast<float>(worldCenter.x - eyePosition.x),
+        static_cast<float>(worldCenter.y - eyePosition.y),
+        static_cast<float>(worldCenter.z - eyePosition.z)
     };
     if (!(delta.z * delta.z + delta.x * delta.x + delta.y * delta.y <= maxDistanceSquared))
         return 1;
@@ -54,26 +80,17 @@ int __stdcall CullStageObject(const PerspectiveCameraView *camera,
 
     float smallestX = 424.0f, largestX = 24.0f;
     float smallestY = 472.0f, largestY = 8.0f;
-    for (int i = 0; i < 12; ++i)
+    // The native VC9 producer handles twelve projected points as two groups
+    // of six in a single outer loop; each point has its own clipping branch.
+    for (int group = 0; group < 2; ++group)
     {
-        const CameraVector &point = projected[i];
-        if (point.z > 0.0f && point.z <= 1.0f)
-        {
-            if (point.x >= smallestX)
-            {
-                if (point.x > largestX)
-                    largestX = point.x;
-            }
-            else
-                smallestX = point.x;
-            if (point.y > smallestY)
-            {
-                if (point.y > largestY)
-                    largestY = point.y;
-            }
-            else
-                smallestY = point.y;
-        }
+        const CameraVector *six = &projected[group * 6];
+        ExtendProjectedBounds(six[0], smallestX, largestX, smallestY, largestY);
+        ExtendProjectedBounds(six[1], smallestX, largestX, smallestY, largestY);
+        ExtendProjectedBounds(six[2], smallestX, largestX, smallestY, largestY);
+        ExtendProjectedBounds(six[3], smallestX, largestX, smallestY, largestY);
+        ExtendProjectedBounds(six[4], smallestX, largestX, smallestY, largestY);
+        ExtendProjectedBounds(six[5], smallestX, largestX, smallestY, largestY);
     }
     if (largestX > 32.0f && smallestX < 416.0 &&
         largestY > 16.0f && smallestY < 464.0)

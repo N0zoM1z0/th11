@@ -9790,3 +9790,36 @@ linkages = [
   { offset = 2, type = "DIR32", symbol = "__real@bf800000", target = 0x00497F20 },
   { offset = 0x0b, type = "REL32", symbol = "?OffsetSecondaryTimer@@YGHPAUStageTimerView@@M@Z", target = 0x00459210 },
 ]
+
+# Focused real-caller /GL diagnostics for the 1643-byte stage projection boss.
+# Neither unit is exact. Include the full primary source PDB contribution.
+[units.cull-stage-object-frontier]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/StageCulling.cpp"
+inputs = ["src/StageLayerDrawing.hpp", "src/StageResource.hpp", "src/Camera.hpp", "src/PerspectiveCamera.hpp", "src/StageDrawing.hpp", "probes/stage-layer-culling-context.cpp", "src/StageLayerDrawing.cpp"]
+support_sources = ["src/StageLayerDrawing.cpp", "probes/stage-layer-culling-context.cpp"]
+output_dir = "build/match-linked/StageCullingFrontier"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageLayerProbe@8"
+functions = ["CullStageObject"]
+symbol = "?CullStageObject@@YGHPBUPerspectiveCameraView@@PBUStageObjectDrawView@@PBUCameraVector@@M@Z"
+target_address = 0x00403950
+size = 1643
+linkages = []
+
+# Second owner in the same call graph, compiled as the primary TU.
+[units.draw-stage-layer-frontier]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/StageLayerDrawing.cpp"
+inputs = ["src/StageLayerDrawing.hpp", "src/StageResource.hpp", "src/AnimationVm.hpp", "src/StageDrawing.hpp", "probes/stage-layer-culling-context.cpp", "src/StageCulling.cpp"]
+support_sources = ["src/StageCulling.cpp", "probes/stage-layer-culling-context.cpp"]
+output_dir = "build/match-linked/StageLayerFrontier"
+profile = ["/TP", "/O2", "/Oy-", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageLayerProbe@8"
+functions = ["DrawStageLayer"]
+symbol = "?DrawStageLayer@@YGHPAUStageResourceView@@H@Z"
+target_address = 0x00404190
+size = 727
+linkages = []

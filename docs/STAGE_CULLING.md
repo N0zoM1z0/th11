@@ -72,10 +72,37 @@ The three integer counters reuse twelve physical bytes that another source
 view calls `drawOffset`. This is a *local overlay* with verified offsets;
 no shared exact unit's class layout was changed.
 
-## Remaining work
+## Focused VC9 /GL linked frontiers (2026-11-17)
 
-Build a realistic VC9 /GL producer and compare both entire PDB contributions,
-rather than treating isolated normal-COFF compilation as original ownership.
-The 1,643-byte D3DX projection and its 727-byte rendering caller are the
-priority. Preserve the existing exact StageDrawCallbacks and StageLifecycle
-owners; this change does not alter their machine instructions.
+The tracked `cull-stage-object-frontier` and `draw-stage-layer-frontier`
+build only the two original rendering owners and their dynamic probe caller,
+not the whole game. Both use pinned VC9 /GL; they are deliberately **frontiers**
+and cannot acquire an exact result merely by matching a PDB extent.
+
+| Primary owner | Native | Current PDB contribution | Instruction-key diagnostic |
+| --- | ---: | ---: | ---: |
+| CullStageObject | 1,643 | 1,468 | 282 / 504 target instructions |
+| DrawStageLayer | 727 | 644 | 58 / 191 target instructions |
+
+The culler initially emitted 1,316 bytes (206/504 aligned) with an
+incorrect frame-pointer profile. Removing `/Oy-` restored the native
+`sub esp,194h`-style frame and improved to 1,444 bytes (247/504
+aligned). Preserving the eye's three **separately float-rounded**
+coordinates across the distance subtraction increased the PDB
+contribution to 1,468 bytes and alignment to 282/504. This source
+change is semantic: in x87 compilation the explicit intermediate
+rounding boundaries matter. Reversing the commutative X-addend order and
+altering the snapshot's declaration order produced no further gain and
+were not retained.
+
+The layer dispatcher currently emits 644 bytes in its own primary
+translation-unit context. Its target uses EBP framing and a 0x14-byte
+local frame; the candidate's local frame is 0x0C bytes, so internal
+register/stack scheduling is still a substantial source-shape gap.
+The current comparison uses normalized instruction keys for orientation
+only; it does **not** mask a failed strict replay into an exact claim.
+D3DX import linkage and private caller ABI still need explicit proof.
+
+Continue both bosses with original control-flow, calling-convention and
+temporary-lifetime evidence. Preserve already-exact StageCallbacks and
+StageLifecycle owners; no unrelated bulk cold replay is warranted.
