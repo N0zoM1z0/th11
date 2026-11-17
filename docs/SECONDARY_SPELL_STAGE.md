@@ -488,3 +488,30 @@ The existing independently exact 256-byte chain registrar is
 also reverified after this work. These are distinct owners and
 only the seven-byte draw callback receives new canonical
 exact credit.
+
+
+### Strict exact owning destructor (0x40BE50, 317 bytes)
+
+Using existing `AnimationVmId` value objects, ordinary C++ references
+to the three follower IDs, and **no compiler barriers**, the pinned
+VC9 /GL producer emits the native 317-byte destructor with all
+**79/79 instructions** in native order. The previously outstanding
+load/push versus ID-zero-store scheduling differences disappear when
+the three values are explicitly represented as typed references.
+All original 317 bytes have been verified by selected **cold** strict
+linked-PE replay; there are **zero differences** after exhaustive
+relocation replay. The compiler-generated EH handler at +03 is
+authenticated from the MAP Static symbols section against this
+destructor's mangled name, not ignored or wildcarded.
+
+The function is now canonical exact as
+`secondary-spell-stage-destructor`. The original 0x924-byte
+object's three animation IDs are each released and zeroed, the
+two chain registrations are independently removed with the proper
+critical-section checks, global 4A8D6C is cleared, and the
+compiler itself invokes two `StageEmbeddedVm` member destructors.
+This also preserves separate exact receipts for the 206-byte
+factory, 256-byte registrar, 18-byte scalar deleting destructor
+and 28-byte global destroy. Compiler-generated EH *handler code*
+is still its own unproven function extent, not included in the
+317-byte owner.

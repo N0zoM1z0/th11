@@ -43,13 +43,16 @@ __forceinline SecondarySpellStageOwned::SecondarySpellStageOwned()
 // destructor runs after this ordinary C++ body, freeing both real VM stores.
 SecondarySpellStageOwned::~SecondarySpellStageOwned()
 {
-    volatile unsigned int *ids = followerIds;
-    ReleaseSecondaryAnimation(AnimationVmId(ids[0]));
-    ids[0] = 0;
-    ReleaseSecondaryAnimation(AnimationVmId(ids[1]));
-    ids[1] = 0;
-    ReleaseSecondaryAnimation(AnimationVmId(ids[2]));
-    ids[2] = 0;
+    AnimationVmId *ids = reinterpret_cast<AnimationVmId *>(followerIds);
+    AnimationVmId &a = ids[0];
+    AnimationVmId &b = ids[1];
+    AnimationVmId &c = ids[2];
+    ReleaseSecondaryAnimation(a);
+    a.value = 0;
+    ReleaseSecondaryAnimation(b);
+    b.value = 0;
+    ReleaseSecondaryAnimation(c);
+    c.value = 0;
 
     UnregisterSpellStageChain(updateChain);
     UnregisterSpellStageChain(drawChain);
