@@ -217,6 +217,7 @@ DestroyRendererAnimationVm,0x004558E0,function
 DestroyReplayFileBrowser,0x00437E40,function
 DestroyReplayRecordStageLink,0x004374D0,function
 DestroySecondaryAuxiliaryOwner,0x0040E190,function
+DestroySecondaryHudDialogue,0x00419F80,function
 DestroySecondaryMaster,0x00410E90,function
 DestroySecondaryProgramBrowser,0x00438710,function
 DestroySecondarySpellStage,0x0040C080,function
@@ -427,6 +428,7 @@ PositionSecondaryDamageAnimation,0x00420880,function
 PositionSecondaryProjectileFromEmitter,0x00435330,function
 PreparePauseContinueRecords,0x0042D850,function
 PrepareRendererForReset,0x00445320,function
+PrepareSecondaryDebugHudDestruction,0x0041AD30,function
 PrepareSecondaryMasterDestruction,0x0040D0C0,function
 PrependSecondaryDrawAnimationVm,0x00455860,function
 PresentFrame,0x00446790,function

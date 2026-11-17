@@ -10275,3 +10275,33 @@ symbol = "?PauseSecondaryGameplayPlayer@@YAXXZ"
 target_address = 0x0040D190
 size = 31
 linkages = []
+
+# Its independently bounded 101-byte eight-ID dialogue-release callee.
+[units.secondary-debug-hud-dialogue-frontier]
+artifact_kind = "linked-pe"
+source = "src/SecondaryDebugHudDialogue.cpp"
+inputs = ["src/SecondaryDebugHudDialogue.hpp", "src/SecondaryDebugHudPrecleanup.cpp",
+          "src/SecondaryDebugHudLifetime.cpp",
+          "probes/secondary-debug-hud-lifecycle-context.cpp"]
+support_sources = ["src/SecondaryDebugHudPrecleanup.cpp",
+                   "src/SecondaryDebugHudLifetime.cpp",
+                   "src/StageLifecycle.cpp", "src/ChainRemove.cpp",
+                   "src/SecondaryActorAnimation.cpp",
+                   "probes/secondary-debug-hud-lifecycle-context.cpp"]
+output_dir = "build/match-linked/SecondaryDebugHudDialogueFrontier"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryDebugHudLifecycleProbe@4"
+functions = ["DestroySecondaryHudDialogue"]
+symbol = "?DestroySecondaryHudDialogue@@YGXPAUSecondaryHudDialogueOwnedView@@@Z"
+target_address = 0x00419F80
+size = 101
+linkages = [
+  { offset = 6, type = "REL32", symbol = "?ReleaseSecondaryAnimation@@YGXUAnimationVmId@@@Z", target = 0x004562E0 },
+  { offset = 20, type = "REL32", symbol = "?ReleaseSecondaryAnimation@@YGXUAnimationVmId@@@Z", target = 0x004562E0 },
+  { offset = 32, type = "REL32", symbol = "?ReleaseSecondaryAnimation@@YGXUAnimationVmId@@@Z", target = 0x004562E0 },
+  { offset = 44, type = "REL32", symbol = "?ReleaseSecondaryAnimation@@YGXUAnimationVmId@@@Z", target = 0x004562E0 },
+  { offset = 56, type = "REL32", symbol = "?ReleaseSecondaryAnimation@@YGXUAnimationVmId@@@Z", target = 0x004562E0 },
+  { offset = 68, type = "REL32", symbol = "?ReleaseSecondaryAnimation@@YGXUAnimationVmId@@@Z", target = 0x004562E0 },
+  { offset = 80, type = "REL32", symbol = "?ReleaseSecondaryAnimation@@YGXUAnimationVmId@@@Z", target = 0x004562E0 },
+  { offset = 92, type = "REL32", symbol = "?ReleaseSecondaryAnimation@@YGXUAnimationVmId@@@Z", target = 0x004562E0 },
+]

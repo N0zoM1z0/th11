@@ -216,6 +216,7 @@ DestroyRendererAnimationVm
 DestroyReplayFileBrowser
 DestroyReplayRecordStageLink
 DestroySecondaryAuxiliaryOwner
+DestroySecondaryHudDialogue
 DestroySecondaryMaster
 DestroySecondaryProgramBrowser
 DestroySecondarySpellStage
@@ -426,6 +427,7 @@ PositionSecondaryDamageAnimation
 PositionSecondaryProjectileFromEmitter
 PreparePauseContinueRecords
 PrepareRendererForReset
+PrepareSecondaryDebugHudDestruction
 PrepareSecondaryMasterDestruction
 PrependSecondaryDrawAnimationVm
 PresentFrame

@@ -165,3 +165,24 @@ four bounded real-callee context variants did not solve that original
 private register assignment. The function is therefore **source-complete
 but nonexact**; no fabricated C++ register constraint, ASM or padding
 was inserted.
+
+
+## Exact dialogue animation cleanup (0x419F80, 101 bytes)
+
+The 101-byte native owner now has fully maintained natural C++ in
+`src/SecondaryDebugHudDialogue.cpp`. Eight distinct
+`AnimationVmId` member references correspond to the eight fields
+at dialogue+0x40..0x5C. Each field is passed by value to the real
+`ReleaseSecondaryAnimation` and is immediately set to zero.
+The dialogue class identity is a physical compatible view, not an
+assertion about the original C++ class name.
+
+The selected native VC9 /GL strict cold replay reports **101/101
+bytes exact** and 0 differences. The eight reviewed REL32 fields at
++06,+14,+20,+2C,+38,+44,+50,+5C all bind to the actual original
+animation release at 0x4562E0. Declaring eight typed value references
+causes the compiler to emit all 36 native instructions in order;
+direct unsigned indexing only aligned 18/36 and a loop was far
+shorter. No user-authored ASM, jump bytes, padding or NOPs were added.
+The companion 468-byte HUD precleanup and 729-byte owning destructor
+remain separate, nonexact owners.
