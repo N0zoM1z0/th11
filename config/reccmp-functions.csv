@@ -188,6 +188,7 @@ CreateStageAuxiliary,0x00406440,function
 CreateStageMeshRow,0x0042B3D0,function
 CreateStageResource,0x004029C0,function
 CreateTextSurface,0x004435F0,function
+CullStageAuxiliaryActorsInRadius,0x0040B210,function
 CullStageObject,0x00403950,function
 DecodeAnimationChunk,0x004545A0,function
 DecodeSecondaryDialogueText,0x0041EED0,function

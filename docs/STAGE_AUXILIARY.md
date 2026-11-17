@@ -325,3 +325,37 @@ The full Ghidra body, call graph, return and subsequent alignment
 were reviewed. The pinned VC9 source compiles, but byte exactness
 remains open. The actor-band callee at 412B10 is the next source-open
 dependency in this chain.
+
+## Retaliating scene-projectile radius clear (0x40B210)
+
+The formerly source-less 395-byte game function at 40B210..40B39A
+now has natural C++ source in `src/StageAuxiliaryRadiusActors.cpp`.
+This is the companion to the horizontal-band clearer, but it also
+**spawns a new secondary projectile on each visible hit**.
+
+It scans all 2000 source projectile records, skipping state 0/3
+and nonzero kind. In the active 0x9E..0xA1 spell phase, the radius
+is divided by 3 and rounded to float before scanning. For each
+eligible record it compares rounded XY squared distance to
+`(float(width*0.5 + radius))^2`, preserving the native ordered
+greater-than rejection (unordered comparisons remain on the
+clearing path). Accepted records call `ClearSceneProjectile`.
+
+If the original 2x2 viewport gate accepts, the function reads
+the original projectile's float orientation at +458, adds the
+double-precision value of float pi, rounds, and normalizes through
+`NormalizeAngle`. It writes the resulting float to the angle
+field of the real game descriptor at **4A3A50+14 = 4A3A64**.
+Then it invokes the genuine `SpawnSecondaryProjectile` with that
+descriptor, the real player at global 4A8EB4, the original point,
+and context zero. Only *after* the spawn, when effects is nonzero,
+does it also produce a kind-8 drop. The updated descriptor and
+spawn order are not interchangeable with an ordinary radial
+bullet-clear implementation.
+
+The function finally calls the separate 449-byte enemy/actor
+radius owner at 412C50 with the (possibly reduced) radius and
+effects, and returns zero via RET8. The original span contains
+392 classified code bytes and three alignment bytes; natural
+source adds no padding. Full /GL register allocation and
+relocation-aware equality remain to be established.

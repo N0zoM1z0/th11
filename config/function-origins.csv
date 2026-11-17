@@ -133,7 +133,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0040AE90,unknown,SecondaryClearing,indeterminate,unknown,secondary-clearing-origin-2026-11-05
 0x0040AF90,unknown,SecondaryPlayerController,indeterminate,unknown,secondary-controller-callee-origin-2026-10-29
 0x0040B0E0,unknown,StageAuxiliary,review,unknown,stage-horizontal-band-ghidra-20261117
-0x0040B210,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0040B210,unknown,StageAuxiliary,review,unknown,aux-stage-retaliation-radius-ghidra-20261117
 0x0040B3A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0040B5C0,unknown,SecondaryPlayerController,indeterminate,unknown,secondary-controller-callee-origin-2026-10-29
 0x0040B830,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
