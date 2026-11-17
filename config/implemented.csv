@@ -485,6 +485,7 @@ ReleasePbgResourceSession
 ReleaseRuntimeSurfaces
 ReleaseSecondaryAnimation
 ReleaseSecondaryAuxiliaryThreads
+ReleaseSecondaryDebugFilenames
 ReleaseSecondaryHostSpellAnimation
 ReleaseSoundDevice
 ReleaseTextSurface

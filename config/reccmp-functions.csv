@@ -486,6 +486,7 @@ ReleasePbgResourceSession,0x004416C0,function
 ReleaseRuntimeSurfaces,0x0042B600,function
 ReleaseSecondaryAnimation,0x004562E0,function
 ReleaseSecondaryAuxiliaryThreads,0x0040FE80,function
+ReleaseSecondaryDebugFilenames,0x0040CFE0,function
 ReleaseSecondaryHostSpellAnimation,0x004107B0,function
 ReleaseSoundDevice,0x00459D30,function
 ReleaseTextSurface,0x00443560,function
