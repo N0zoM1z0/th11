@@ -256,6 +256,7 @@ DrawSecondaryHud,0x0041C660,function
 DrawSecondaryPlayerCallback,0x00431C60,function
 DrawSecondaryPlayerEmitters,0x00431BC0,function
 DrawSecondaryProgramBrowser,0x00438E70,function
+DrawSecondarySpellStage,0x0040C4A0,function
 DrawStage,0x00403130,function
 DrawStageLayer,0x00404190,function
 DrawStageOverlay,0x004035A0,function

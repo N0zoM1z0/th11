@@ -255,6 +255,7 @@ DrawSecondaryHud
 DrawSecondaryPlayerCallback
 DrawSecondaryPlayerEmitters
 DrawSecondaryProgramBrowser
+DrawSecondarySpellStage
 DrawStage
 DrawStageLayer
 DrawStageOverlay

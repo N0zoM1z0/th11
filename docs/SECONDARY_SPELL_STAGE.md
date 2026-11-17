@@ -106,3 +106,29 @@ provisional because the native EAX string and RET8 form a private
 whole-program calling convention. No byte-exact claim is made;
 actual linked /GL caller ownership and relocation comparison
 remain to be resolved.
+
+## Stage-spell HUD drawing (0x40C4A0, 370 bytes)
+
+The native 370-byte `DrawSecondarySpellStage` owner now has a
+complete source body in `src/SecondarySpellStageDrawing.cpp`,
+sharing `SecondarySpellStageView` with the 1,777-byte initializer
+and 624-byte updater. The source is natural C++ and compiles under
+the fixed VC9 toolchain; this owner remains nonexact.
+
+Only when stage spell flag bit0 is active does it draw the two
+embedded VMs at +10/+444 and look up follower VM ID +880. An
+absent VM zeros that ID and returns one. With a live VM, the
+function prepares the **existing** AsciiManager at global 4A8D58:
+sets style flags +1849C=1, +18498=2 and copies the VM byte at
++377 into manager alpha +18483. It then draws the score at
+(265,51,0) with `%.8d` if spell flag bit1 is set, or the
+currency marker `$` at (279,51,0) if not.
+
+The historical counter line uses (360,51,0) and the native
+format `%.2d/%.2d`. The two counters are read from
+the shared record table at global 4A8EBC, using index
+`(selection0*3+selection1)*0x68D4 + spellIndex*0x90`
+and offsets +6EC/+6F0. The manager style fields are reset to
+zero afterward, alpha becomes 0xFF, and all paths return one.
+The original call sites and the three native callees were
+reviewed; no extra null guards or fake render methods were added.
