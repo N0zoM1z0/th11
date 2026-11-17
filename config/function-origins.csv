@@ -156,7 +156,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0040C310,authored_game,SecondaryGameplay,authored,high,spell-stage-time-settlement-ghidra-20261117
 0x0040C4A0,authored_game,SecondaryGameplay,authored,high,secondary-spell-drawing-ghidra-20261117
 0x0040C630,unknown,SecondaryGameplay,review,unknown,spell-stage-chains-ghidra-pe-20261117
-0x0040C640,unknown,SecondaryGameplay,review,unknown,spell-stage-chains-ghidra-pe-20261117
+0x0040C640,unknown,SecondaryGameplay,indeterminate,unknown,spell-stage-chains-ghidra-pe-20261117
 0x0040C650,authored_game,SecondaryGameplay,authored,high,spell-stage-init-ghidra-20261117
 0x0040CD60,authored_game,SecondaryGameplay,authored,high,spell-finish-ghidra-20261117
 0x0040CEB0,unknown,SecondaryActorState,indeterminate,unknown,secondary-state-origin-2026-10-29

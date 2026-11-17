@@ -468,3 +468,23 @@ exactness. Use only the affected units with
 `scripts/repo-python scripts/replay-exact-units.py --unit secondary-spell-stage-scalar-deleting-destructor`
 and
 `scripts/repo-python scripts/replay-exact-units.py --unit destroy-secondary-spell-stage`.
+
+### Exact draw callback from the real downstream LTCG producer
+
+A new bounded `secondary-spell-draw-callback` compilation includes
+the genuine natural C++ 624-byte stage updater and 370-byte
+`DrawSecondarySpellStage` in the callback's VC9 /GL producer.
+This makes the ordinary C++ `__fastcall SecondarySpellDrawCallback`
+compile into the original **seven-byte** tail transfer:
+`MOV EAX, ECX; JMP DrawSecondarySpellStage`.
+
+The selected strict cold linked-PE comparison proves **7/7 bytes
+exact**, including the sole original REL32 field at +03 targeting
+0x40C4A0, with zero differences. No user-authored machine-code
+JMP, inline ASM, naked function, NOP or padding was introduced.
+In the same wide producer the update callback remains nonexact:
+it selects ESI where the native update call wants EDI.
+The existing independently exact 256-byte chain registrar is
+also reverified after this work. These are distinct owners and
+only the seven-byte draw callback receives new canonical
+exact credit.
