@@ -408,3 +408,19 @@ native instructions aligned**, a diagnostic, **nonexact** result.
 Its remaining gaps are the native private EBX/ECX caller
 allocation, error logger convention and the compiler-inlined
 unbounded string copy. No ASM/padding was used.
+
+## Independent 129-byte HUD scene-resource cleanup (0x41AF30)
+
+`ClearSecondaryDebugHudResources` is a separate entry called by the
+scene owner at 0x41FE10, not a tail of the 468-byte HUD destructor prepass.
+The original function reads the 0x4A8D84 singleton and always releases
+its non-null dialogue with the eight-ID animation destructor and operator
+delete. When the stage resource flags at 0x4A5758 have no bits in mask 9,
+it destroys and deletes renderer document slot 27, clears the HUD's
+retained animation file, and frees and clears the prepared resource buffer.
+With mask 9 set, the document and prepared data are deliberately retained.
+
+The full 41AF30..41AFB0 code body, direct caller, four callees and
+CC-padded following boundary were reviewed in the attested Ghidra
+project. `src/SecondaryDebugHudFinalization.cpp` compiles with pinned
+VC9 `/GL`; exact linked codegen has not been established.
