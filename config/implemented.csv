@@ -745,6 +745,8 @@ UpdateSecondaryProjectilePatternTimer
 UpdateSecondaryProjectiles
 UpdateSecondaryReplayStage
 UpdateSecondaryScripts
+UpdateSecondarySpecialMode1
+UpdateSecondarySpecialMode4
 UpdateStage
 UpdateStageAuxiliary
 UpdateStageObjects

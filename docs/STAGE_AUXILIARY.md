@@ -92,3 +92,29 @@ owner, and the character/partner selection names now reuse the already
 maintained secondary-gameplay globals. This addresses semantic ownership,
 not exactness. Native private EAX/EBX/EDI call registers and the generated
 jump table still need a realistic original VC9 /GL producer comparison.
+
+## Two recovered medium-sized mode updates (2026-11-17 continuation)
+
+Both paths now live in `src/StageAuxiliaryModeUpdates.cpp`, after direct
+Ghidra review of the complete target spans (zero foreign interior xrefs,
+independent RET/CC boundaries). Both use the *existing* actor singleton,
+renderer VM-ID lookup at 4561E0, and the real
+`EndSecondarySpecialState(40)` function. Missing VM lookup sets animation
+ID +40 to zero, **still invokes the state transition**, then returns -1.
+
+- **Mode 1 (0x407AC0..0x407B2C, 109 bytes).** With a live VM, it
+  updates the effect via the native 407B50 boundary. When timer +18 reaches
+  200, it plays sound 0x26, queues the additional sound pulse and signals
+  the animation at the address of the ID +40 *once*, before adding the
+  growth step +494 to radius +490. Subsequent frames continue radius growth
+  without repeating the once-only actions.
+- **Mode 4 (0x4071A0..0x40720A, 107 bytes).** Every tenth timer frame
+  strictly inside 1..50, it queues positional sound 0x26 using origin.x at
+  +484. It always calls the existing 4073B0 effect boundary with a live
+  VM, and then copies the VM's float scaleY (+40) to radius +490.
+
+The auxiliary physical layout now gives semantic names to origin +484,
+radius +490, radiusStep +494 and transitionActive +498, retaining size
+0x4A0 and all field offsets. These are **source-complete but not exact**
+linked-machine-code owners. Their mode-effect callees 407B50 and 4073B0
+remain separate restoration tasks.

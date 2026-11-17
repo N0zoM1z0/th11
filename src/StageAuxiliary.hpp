@@ -22,7 +22,10 @@ struct StageAuxiliaryView
     StageEmbeddedVm vm;
     void *cachedData;
     VmBindingBlockView *bindings;
-    unsigned char unknown484[0x49c - 0x484];
+    CameraVector origin;
+    float radius;
+    float radiusStep;
+    int transitionActive;
     ChainElement *overlayChain;
 
     StageAuxiliaryView();
@@ -33,6 +36,9 @@ typedef char StageAuxiliarySize[(sizeof(StageAuxiliaryView) == 0x4a0) ? 1 : -1];
 typedef char StageAuxiliaryVmOffset[(offsetof(StageAuxiliaryView, vm) == 0x48) ? 1 : -1];
 typedef char StageAuxiliaryCacheOffset[(offsetof(StageAuxiliaryView, cachedData) == 0x47c) ? 1 : -1];
 typedef char StageAuxiliaryBindingOffset[(offsetof(StageAuxiliaryView, bindings) == 0x480) ? 1 : -1];
+typedef char StageAuxiliaryOriginOffset[(offsetof(StageAuxiliaryView, origin) == 0x484) ? 1 : -1];
+typedef char StageAuxiliaryRadiusOffset[(offsetof(StageAuxiliaryView, radius) == 0x490) ? 1 : -1];
+typedef char StageAuxiliaryTransitionOffset[(offsetof(StageAuxiliaryView, transitionActive) == 0x498) ? 1 : -1];
 typedef char StageAuxiliaryOverlayOffset[(offsetof(StageAuxiliaryView, overlayChain) == 0x49c) ? 1 : -1];
 
 // This view is rooted at the existing secondary mesh-effect singleton
