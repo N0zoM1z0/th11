@@ -82,7 +82,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00406F90,authored_game,StageAuxiliary,authored,high,stage-aux-mode3-effect-ghidra-20261117
 0x004070A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004070E0,unknown,SecondaryActorState,indeterminate,unknown,secondary-state-origin-2026-10-29
-0x00407130,authored_game,StageAuxiliary,authored,high,stage-aux-init-modes1-4-ghidra-20261117
+0x00407130,authored_game,StageAuxiliary,authored,high,stage-mode14-init-ghidra-20261117
 0x004071A0,authored_game,StageAuxiliary,authored,high,stage-auxiliary-mode-ghidra-20261117
 0x00407220,unknown,SecondaryDamage,indeterminate,unknown,secondary-damage-origin-2026-10-29
 0x004073B0,authored_game,StageAuxiliary,authored,high,stage-aux-mode-effects-ghidra-20261117
@@ -90,7 +90,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00407680,authored_game,StageAuxiliary,authored,high,stage-mode5-initialization-ghidra-20261117
 0x00407720,authored_game,StageAuxiliary,authored,high,stage-aux-mode5-ghidra-20261117
 0x004079C0,authored_game,StageAuxiliary,authored,high,stage-aux-mode2-radius-ghidra-20261117
-0x00407A40,authored_game,StageAuxiliary,authored,high,stage-aux-init-modes1-4-ghidra-20261117
+0x00407A40,authored_game,StageAuxiliary,authored,high,stage-mode14-init-ghidra-20261117
 0x00407AC0,authored_game,StageAuxiliary,authored,high,stage-auxiliary-mode-ghidra-20261117
 0x00407B50,authored_game,StageAuxiliary,authored,high,stage-aux-mode-effects-ghidra-20261117
 0x00407BB0,unknown,MeshEffects,indeterminate,unknown,mesh-effects-origin-20261028

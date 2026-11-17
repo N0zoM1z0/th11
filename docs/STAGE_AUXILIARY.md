@@ -412,3 +412,24 @@ owners, original calls, return instructions and following CC
 bytes, with no foreign interior entries. They both compile
 under the pinned VC9 toolchain; register allocation, wider
 LTCG ownership and byte-exact status are still open.
+
+## Mode one and four activation bodies (2026-11-17)
+
+`src/StageAuxiliaryMode14Initialization.cpp` now reconstructs both
+source-open initialization owners in the six-way activation switch:
+
+- `InitializeSecondarySpecialMode1` at 407A40..407ABC (125 bytes)
+  receives the existing auxiliary owner (native EBX). It stores radius
+  32, radiusStep 10 and the player's position, queues sound 0x31, then
+  creates a positioned VM using player file+10, script 0x21/layer 0x16.
+- `InitializeSecondarySpecialMode4` at 407130..407196 (103 bytes)
+  receives that auxiliary owner in native ESI, initializes the same
+  radius and player-origin values, but creates script 0x2F/layer 0x16
+  without playing the initial sound.
+
+Both call the already reconstructed `UpdateMeshEffectSpellState`
+and increment the event counter at global 4A8D7C +14. They keep
+the real player singleton at 4A8EB4 separate from the auxiliary
+object at 4A8D64, and each returns zero. Their original register
+allocation and source TU still need local codegen validation;
+the complete natural C++ owners have compiled but are not byte-exact.
