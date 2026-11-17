@@ -85,7 +85,7 @@ index, or a non-one active state advances the timer at +14 before returning 1.
 Only mode 0's callee, `UpdateSecondaryEffect` at 45DE30, is source-present;
 the other five calls remain legitimate external source boundaries.
 
-The physical singleton is the **existing** `g_MeshEffectActor` at 4A8D64,
+The physical singleton is the **existing** `g_MeshEffectEnemy` at 4A8D64,
 not a newly allocated independent global. The auxiliary constructor,
 destructor, and global destroy have been revised to use this established
 owner, and the character/partner selection names now reuse the already

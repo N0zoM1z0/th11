@@ -62,7 +62,7 @@ StageAuxiliaryView::StageAuxiliaryView()
 {
     memset(this, 0, sizeof(*this));
     flags |= 2;
-    g_MeshEffectActor = reinterpret_cast<MeshEffectActorView *>(this);
+    g_MeshEffectEnemy = reinterpret_cast<MeshEffectEnemyView *>(this);
 }
 
 int __stdcall RegisterStageAuxiliaryChains(StageAuxiliaryView *self)
@@ -97,7 +97,7 @@ StageAuxiliaryView::~StageAuxiliaryView()
     RemoveAuxiliaryChain(drawChain);
     RemoveAuxiliaryChain(overlayChain);
 
-    g_MeshEffectActor = 0;
+    g_MeshEffectEnemy = 0;
     if (bindings)
     {
         ReleaseVmBindingBlock(bindings);
@@ -125,7 +125,7 @@ StageAuxiliaryView *CreateStageAuxiliary()
 
 void DestroyStageAuxiliary()
 {
-    StageAuxiliaryView *self = reinterpret_cast<StageAuxiliaryView *>(g_MeshEffectActor);
+    StageAuxiliaryView *self = reinterpret_cast<StageAuxiliaryView *>(g_MeshEffectEnemy);
     if (self)
         delete self;
 }

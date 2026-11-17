@@ -27,7 +27,7 @@ compiler observations and useful failed approaches.
   center-X-plane samples join the eight AABB corners before the D3DX projection.
   The caller `DrawStageLayer` (404190, 727 bytes) runs 12 layer entry points
   and updates VM Fog/Z render state; see [STAGE_CULLING](STAGE_CULLING.md).
-- The auxiliary stage's `g_MeshEffectActor` singleton at 4A8D64 is the same
+- The auxiliary stage's `g_MeshEffectEnemy` singleton at 4A8D64 is the same
   physical 0x4A0-byte owner whose registration (4061B0) and destruction
   (406260) are now reconstructed. Its callback jumps into the uninventoried
   406620 update owner: 208 code bytes plus a **24-byte six-entry switch

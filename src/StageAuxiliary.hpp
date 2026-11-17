@@ -41,10 +41,10 @@ typedef char StageAuxiliaryRadiusOffset[(offsetof(StageAuxiliaryView, radius) ==
 typedef char StageAuxiliaryTransitionOffset[(offsetof(StageAuxiliaryView, transitionActive) == 0x498) ? 1 : -1];
 typedef char StageAuxiliaryOverlayOffset[(offsetof(StageAuxiliaryView, overlayChain) == 0x49c) ? 1 : -1];
 
-// This view is rooted at the existing secondary mesh-effect singleton
-// (0x004A8D64); do not invent a second global storage owner.
-struct MeshEffectActorView;
-extern MeshEffectActorView *g_MeshEffectActor;
+// The auxiliary instance is published through the existing enemy/effect
+// pointer at 0x004A8D64. The actor pointer is a separate global at 0x004A8EB4.
+struct MeshEffectEnemyView;
+extern MeshEffectEnemyView *g_MeshEffectEnemy;
 
 int __stdcall RegisterStageAuxiliaryChains(StageAuxiliaryView *self);
 StageAuxiliaryView *CreateStageAuxiliary();
