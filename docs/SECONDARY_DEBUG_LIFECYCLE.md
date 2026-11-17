@@ -19,10 +19,16 @@ skips the inner loop but not the table release.
 
 Direct Ghidra review of the complete 40CFE0..40D032 target verified
 two callers, one native free callee, no unrelated interior refs,
-the terminal RET and following CC alignment. The current C++
-implementation compiles under the pinned compiler, but original
-private ESI register assignment and full linked-byte equivalence
-remain **non-exact** until a real caller-context replay.
+the terminal RET and following CC alignment. The bounded real-caller VC9 /GL producer now generates
+**all 83 original bytes exactly**. The selected cold strict
+linked-PE replay validates both real CRT `free` calls at +1C/+3D,
+all other owner bytes, the PDB section contribution and current
+source/tool receipts, with **zero differences**. The recovered local
+`char *filename` value preserves native load/test/free/slot-zero
+scheduling: a direct repeated indexed expression instead generated
+87 bytes. This is a genuine natural C++ improvement, not ASM or
+padding. The leaf is now canonical exact under unit
+`release-secondary-debug-filenames`.
 
 ## Next ownership frontier
 
