@@ -310,7 +310,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00419790,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004197B0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004198C0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00419920,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00419920,unknown,SecondaryClearing,indeterminate,unknown,secondary-viewport-ghidra-cold-coff-20261117
 0x004199E0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00419A20,unknown,SecondaryActorState,indeterminate,unknown,secondary-state-origin-2026-10-29
 0x00419BB0,unknown,SecondaryActorEffectMath,indeterminate,unknown,secondary-effect-polar-origin-20261112

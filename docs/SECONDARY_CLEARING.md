@@ -98,3 +98,22 @@ The complete original code and two call targets were inspected; the
 natural C++ compiles under pinned VC9. Its original TU and linked
 machine-code equality remain open. The adjacent viewport leaf is a
 separate owner.
+
+### Exact native actor viewport member (0x419920)
+
+The 93-byte viewport test called by `ClearSecondaryActorsInHorizontalBand`
+is now recovered as natural C++
+`SecondaryActorViewportPoint::IsOutside(float, float) const`.
+Its native thiscall receiver arrives in ECX, the two half-extents are
+stack floats, and both returns use RET8. It rejects positions whose
+expanded bounds are outside `[-192,192] x [0,448]` using the observed
+ordered inequalities. The synthetic layout-compatible class view
+asserts no original source class identity.
+
+Pinned VC9 RTM normal-COFF compilation plus strict cold replay of the
+**complete 93-byte owner** gives 93/93 matching bytes. All four DIR32
+fields match their reviewed native double literals: -192 at 497EC8,
+192 at 497EA0, 0 at 497EC0 and 448 at 497EB8. No operand masking,
+padding or assembly is used. Canonical match unit:
+`secondary-actor-viewport-outside`. Native TU/type attribution remains
+indeterminate despite the byte-exact codegen.

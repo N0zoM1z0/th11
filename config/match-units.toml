@@ -9823,3 +9823,22 @@ symbol = "?DrawStageLayer@@YGHPAUStageResourceView@@H@Z"
 target_address = 0x00404190
 size = 727
 linkages = []
+
+# Complete 93-byte native thiscall viewport predicate. Four float-pool
+# relocations are individually reviewed against the original Japanese PE.
+[units.secondary-actor-viewport-outside]
+artifact_kind = "coff"
+source = "src/SecondaryActorViewport.cpp"
+inputs = ["src/SecondaryActorViewport.hpp", "src/Camera.hpp"]
+object = "build/match/SecondaryActorViewport.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["SecondaryActorViewportPoint::IsOutside"]
+symbol = "?IsOutside@SecondaryActorViewportPoint@@QBEHMM@Z"
+target_address = 0x00419920
+size = 93
+relocations = [
+  { offset = 14, type = "DIR32", symbol = "__real@c068000000000000", target = 0x00497EC8 },
+  { offset = 29, type = "DIR32", symbol = "__real@4068000000000000", target = 0x00497EA0 },
+  { offset = 51, type = "DIR32", symbol = "__real@0000000000000000", target = 0x00497EC0 },
+  { offset = 67, type = "DIR32", symbol = "__real@407c000000000000", target = 0x00497EB8 },
+]

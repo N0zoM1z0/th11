@@ -536,6 +536,7 @@ SecondaryActorDeletingDestructor
 SecondaryActorDestructor
 SecondaryActorReferenceStatus
 SecondaryActorStateConstructor
+SecondaryActorViewportPoint::IsOutside
 SecondaryDamageAngleDifference
 SecondaryDamageTimerElapsed
 SecondaryDefaultExecute
