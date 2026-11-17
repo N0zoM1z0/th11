@@ -274,9 +274,13 @@ in `src/SecondaryDebugHudConstruction.cpp`. The class physical size is
 and +2E4C, plus a **sixteenth standalone** `StageEmbeddedVm` at
 +3F1C. The latter's real storage pointer is +431C; the C++
 destructor owns its release without an extra hand-coded `free`.
-Two genuine flag subobject constructors at +43D8 and +4434 clear
-bit0 before the game deliberately resets *all* 0x4458 bytes,
-sets owner flag bit1 and publishes the singleton at 4A8D84.
+Two genuine `StageTimerView` members start at +43C8 and +4424;
+their actual `flags` fields at +43D8 and +4434 have bit0 cleared
+by the ordinary timer constructors before the game deliberately resets
+*all* 0x4458 bytes, sets owner flag bit1 and publishes the singleton
+at 4A8D84. The previously anonymous four-byte flag subobjects are now
+recovered as full twenty-byte timer members; no duplicate storage is
+introduced and the physical offsets remain the same.
 
 The focused VC9 /GL context generates **208/208 native bytes with
 53/53 x86 instructions**. All **14 native relocation fields** are
@@ -351,3 +355,17 @@ context. The critical remaining differences are compiler-private
 `AppendLog` (native ECX log receiver), and a small prologue/epilogue
 register lifetime choice. None of these is masked by padding or
 ASM. This owner is **source-complete, not yet byte-exact**.
+
+### Physically typed HUD timers (2026-11-17 continuation)
+
+The independent native HUD visual initializer at 0x41A520 uses the
+first timer at +43C8 and tests its flags at +43D8; the existing HUD
+updates read its frame and time-scale pointer at +43D4. The transition
+timer lives at +4424, with the second flag bit at +4434.
+`SecondaryDebugHudOwned` now declares both as real
+`StageTimerView` values, enabling normal C++ initialization and
+future `SetFrame` calls instead of representing only their flag
+words. Both the **208-byte constructor** and **150-byte factory**
+continue to pass their own selected strict cold VC9 /GL replay
+with zero differences after this type refinement. The exact
+machine code is unchanged; the source's physical semantics are better.

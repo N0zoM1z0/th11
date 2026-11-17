@@ -6,12 +6,6 @@
 
 struct AnimationFileView;
 
-struct SecondaryHudFlagSubobject
-{
-    unsigned int flags;
-    SecondaryHudFlagSubobject() { flags &= ~1u; }
-};
-
 // Owning C++ view of the already-existing HUD singleton at 0x4A8D84.
 // Sixteen VM objects are genuine C++ members: 9+2+4 array VMs
 // followed by one independently constructed persistent VM.
@@ -32,8 +26,8 @@ struct SecondaryDebugHudOwned
     unsigned int effectVmId;
     unsigned char unknown43b0[0x43b8 - 0x43b0];
     unsigned int transitionVmId;
-    unsigned char unknown43bc[0x43d8 - 0x43bc];
-    SecondaryHudFlagSubobject flag43d8;
+    unsigned char unknown43bc[0x43c8 - 0x43bc];
+    StageTimerView hudTimer;
     ChainElement *overlayChain;
     unsigned char unknown43e0[0x43ec - 0x43e0];
     AnimationFileView *retainedAnimationFile;
@@ -41,8 +35,7 @@ struct SecondaryDebugHudOwned
     unsigned int reset43fc;
     unsigned char unknown4400[0x4420 - 0x4400];
     unsigned int hudStateFlags;
-    unsigned char unknown4424[0x4434 - 0x4424];
-    SecondaryHudFlagSubobject flag4434;
+    StageTimerView transitionTimer;
     void *dialogue;
     void *preparedData;
     unsigned char unknown4440[0x444c - 0x4440];
@@ -77,10 +70,14 @@ typedef char SecondaryDebugHudDialogueOffset[
     (offsetof(SecondaryDebugHudOwned, dialogue) == 0x4438) ? 1 : -1];
 typedef char SecondaryDebugHudPreparedOffset[
     (offsetof(SecondaryDebugHudOwned, preparedData) == 0x443c) ? 1 : -1];
+typedef char SecondaryDebugHudTimerOffset[
+    (offsetof(SecondaryDebugHudOwned, hudTimer) == 0x43c8) ? 1 : -1];
+typedef char SecondaryDebugHudTransitionTimerOffset[
+    (offsetof(SecondaryDebugHudOwned, transitionTimer) == 0x4424) ? 1 : -1];
 typedef char SecondaryDebugHudFlag43d8Offset[
-    (offsetof(SecondaryDebugHudOwned, flag43d8) == 0x43d8) ? 1 : -1];
+    (offsetof(SecondaryDebugHudOwned, hudTimer) + offsetof(StageTimerView, flags) == 0x43d8) ? 1 : -1];
 typedef char SecondaryDebugHudFlag4434Offset[
-    (offsetof(SecondaryDebugHudOwned, flag4434) == 0x4434) ? 1 : -1];
+    (offsetof(SecondaryDebugHudOwned, transitionTimer) + offsetof(StageTimerView, flags) == 0x4434) ? 1 : -1];
 typedef char SecondaryDebugHudMarkerOffset[
     (offsetof(SecondaryDebugHudOwned, ownerMarker) == 0x444c) ? 1 : -1];
 typedef char SecondaryDebugHudSize[
