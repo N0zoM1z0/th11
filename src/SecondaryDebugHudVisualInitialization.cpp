@@ -3,6 +3,7 @@
 #include "ResourceFile.hpp"
 #include "ErrorLog.hpp"
 #include <string.h>
+#include <intrin.h>
 
 // Original game-owned data: one filename table at 0x4A8EC8, the two
 // selection indices at 0x4A5710/14, and the shared global filename
@@ -36,6 +37,7 @@ int __stdcall InitializeSecondaryDebugHudVisuals(SecondaryDebugHudOwned *self)
     if (g_SecondaryHudPreparedData)
     {
         self->preparedData = g_SecondaryHudPreparedData;
+        _ReadWriteBarrier();
         const int selection =
             (g_SecondaryHudCharacterIndex + 2) * 3 + g_SecondaryHudPartnerIndex;
         const char *selectedFilename = g_SecondaryHudFilenameTable[selection];
@@ -72,9 +74,10 @@ int __stdcall InitializeSecondaryDebugHudVisuals(SecondaryDebugHudOwned *self)
         timer.scale = &g_AnimationTimeScale;
         timer.flags |= 1u;
     }
-    timer.fraction = 0.0f;
-    timer.current = 0;
-    timer.previous = -1;
+    *reinterpret_cast<volatile int *>(&timer.current) = 0;
+    *reinterpret_cast<volatile float *>(&timer.fraction) = 0.0f;
+    *reinterpret_cast<volatile int *>(&timer.previous) = -1;
+    _ReadWriteBarrier();
     self->displayedValue43e4 = g_SecondaryHudDisplayValue;
     self->value4440 = -1;
     self->value4448 = -1;
