@@ -231,3 +231,34 @@ double offsets. The function and its dependent 80-byte leaf
 compile with pinned VC9; their native private x87 scheduling
 and full linked exactness are unresolved, so source coverage
 does not increase the canonical exact count.
+
+## Complete stage-spell termination (0x40CD60, 335 bytes)
+
+The native 335-byte game owner is now reconstructed as
+`FinishSecondarySpellStage` in `src/SecondarySpellStageFinish.cpp`.
+The function exits immediately when stage flags bit0 is clear.
+Otherwise it sets primary stage flag bit0 at +2FF0, signals events
+through *all three* follower animation IDs at stage+878/87C/880,
+clears the active and pending stage spell bits (mask `~0x21`),
+releases the positioned animation ID at +884 and zeros that ID.
+
+When the stage spell was a success (flags bit1 remains set), the
+real global score receives signed stage score/10, with 32-bit wrap
+and upper clamp at 999,999,999. The original 41F010 score-feedback
+owner is called using the stage's unscaled score. Unless the
+spell record status has mode 1, two different completion counters
+at record +80 are incremented independently up to 99,999:
+the character/mode-specific record at
+`4A8EBC + (selection0*3+selection1)*0x68D4 + spellIndex*0x90 + 0x66C`
+and the generic record at
+`4A8EBC + spellIndex*0x90 + 0x27B64`.
+The success path queues sound 0x2D; the failure path calls the
+score-feedback owner with zero without incrementing either record.
+
+The original target's complete contiguous 335 code bytes, one
+incoming caller, four actual callees, returns and neighboring
+alignment were checked independently. The 41F010 feedback routine
+is its own code owner with a native jump dispatch; this source
+does not replace it with fake bytecode. The pinned VC9 TU compiles.
+Private register allocation and strict full-span equivalence are
+not yet established, so this is source coverage rather than exact.

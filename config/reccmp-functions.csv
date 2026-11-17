@@ -299,6 +299,7 @@ FindSecondarySubroutine,0x0045DB10,function
 FindSecondaryThread,0x0045D840,function
 FindSoundTrack,0x004496B0,function
 FinishSecondaryActorEffect,0x004127E0,function
+FinishSecondarySpellStage,0x0040CD60,function
 FirstMusicBuffer,0x0045AA00,function
 FixAnimationTextureTransparentPixels,0x004534C0,function
 FloorAnimationCoordinate,0x004520C0,function

@@ -298,6 +298,7 @@ FindSecondarySubroutine
 FindSecondaryThread
 FindSoundTrack
 FinishSecondaryActorEffect
+FinishSecondarySpellStage
 FirstMusicBuffer
 FixAnimationTextureTransparentPixels
 FloorAnimationCoordinate
