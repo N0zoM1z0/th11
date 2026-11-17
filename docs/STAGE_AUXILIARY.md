@@ -143,3 +143,42 @@ Direct Ghidra review covers the complete 406D10..406E73 body, six callees,
 all returns, zero external interior references, and following CC bytes. The
 VC9 source compiles; its private EBX/ESI allocation and exact byte equality
 are still open.
+
+## Mode 2 radial deformation boss and two radius-clearing leaves
+
+The 665-byte `UpdateSecondarySpecialMode2` at 407D10..407FA8 now has
+natural C++ in `src/StageAuxiliaryMode2.cpp`. Two separate 84-byte helpers,
+`UpdateStageAuxiliaryMode5Effect` at 4079C0 and
+`UpdateStageAuxiliaryMode2Effect` at 408010, live in
+`src/StageAuxiliaryRadiusClearing.cpp`.
+
+Mode 2 looks up animation ID +40 and **always** calls the existing
+`EndSecondarySpecialState(40)`, including on VM lookup failure. A missing
+VM releases and deletes binding +480 when non-null, clears that field and
+returns -1. A live VM copies the real player position (+87C at the global
+player owner 4A8EB4) to the auxiliary origin +484, then calls the genuine
+VM position publisher and the 408010 radius-clearing helper. The mode
+subsequently stores the VM's scaleY at +40 into auxiliary radius +490.
+
+The grid's working radius is `float(radius + 0.5*radius)`. Its center
+is `(origin.x+224, origin.y+16, origin.z)`, and reset bounds start at
+`(origin.x-radialRadius-20, origin.y-radialRadius-20)`, with square side
+`2*radialRadius+40`. The source retains the observed separate position
+pointer capture before reset and vertex pointer capture afterward.
+
+Each mesh point computes rounded XY distance and remaining radius.
+Negative **or unordered** remaining distances clear vertex alpha.
+Inside points use full vertex color **0xFFFF4040**, proven by the native
+`MOV` (Ghidra reports an ambiguous `-NAN` instead). The normalized
+three-component displacement is scaled by
+`float((remaining/radiusSquared)*64)`, applied to vertex X/Y, and both
+position and vertex Z are set to zero. No extra guards are introduced for
+zero radius or unusual floating-point inputs.
+
+The two distinct 84-byte clearing helpers each read
+`(~spell.flags)&1`, call `ClearSceneProjectilesInRadius` using the
+current radius and filter 1, **re-read** spell flags after that call,
+and pass the new mask to `ClearSecondaryObjectsInRadius`.
+The native keeps these two separate owners; they are not collapsed into
+one compiled symbol. These 833 bytes have natural source and VC9 source
+compilation, but no full linked byte-exact claim.
