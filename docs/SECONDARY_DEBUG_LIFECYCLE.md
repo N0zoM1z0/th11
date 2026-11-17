@@ -424,3 +424,15 @@ The full 41AF30..41AFB0 code body, direct caller, four callees and
 CC-padded following boundary were reviewed in the attested Ghidra
 project. `src/SecondaryDebugHudFinalization.cpp` compiles with pinned
 VC9 `/GL`; exact linked codegen has not been established.
+
+## Global HUD teardown (0x41B360, 28 bytes)
+
+`DestroySecondaryDebugHudSingleton` is the scene's conditional
+destruction entry at 41B360..41B37B. It loads the true HUD singleton
+at 0x4A8D84, and when present invokes the full 729-byte owning
+destructor followed by CRT operator delete. Ordinary C++ `delete`
+preserves all 16 embedded VM member lifetimes; clearing the global
+singleton is already owned by the destructor itself. The single
+scene caller is at 40D8D9, with no foreign interior references
+or trailing non-padding bytes. This source builds under pinned
+VC9 `/GL`; linked byte exactness remains open.

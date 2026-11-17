@@ -96,3 +96,4 @@ int __stdcall RegisterSecondaryHudChains(SecondaryDebugHudOwned *self);
 SecondaryDebugHudOwned *CreateSecondaryDebugHud();
 
 void ClearSecondaryDebugHudResources();
+void DestroySecondaryDebugHudSingleton();

@@ -218,6 +218,7 @@ DestroyRendererAnimationVm
 DestroyReplayFileBrowser
 DestroyReplayRecordStageLink
 DestroySecondaryAuxiliaryOwner
+DestroySecondaryDebugHudSingleton
 DestroySecondaryHudDialogue
 DestroySecondaryMaster
 DestroySecondaryProgramBrowser

@@ -219,6 +219,7 @@ DestroyRendererAnimationVm,0x004558E0,function
 DestroyReplayFileBrowser,0x00437E40,function
 DestroyReplayRecordStageLink,0x004374D0,function
 DestroySecondaryAuxiliaryOwner,0x0040E190,function
+DestroySecondaryDebugHudSingleton,0x0041B360,function
 DestroySecondaryHudDialogue,0x00419F80,function
 DestroySecondaryMaster,0x00410E90,function
 DestroySecondaryProgramBrowser,0x00438710,function
