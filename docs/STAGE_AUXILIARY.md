@@ -276,3 +276,27 @@ The direct Ghidra review covers all 212 bytes, four call targets,
 the final return and following alignment, without foreign interior
 references. The VC9 source compiles; original /GL private ABI and
 exactness are not established by this local compile.
+
+## Area virtual dispatch (0x424F30)
+
+`src/StageAuxiliaryAreaDispatch.cpp` now covers the complete 114-byte
+region dispatcher used by mode 3. It reuses the **existing** secondary
+clear manager at global 4A8E94, publishes the origin to +45C/+460/+464
+and the three-float area extent to +468/+46C/+470, then walks the
+manager's linked list at +18, saving each next pointer (+8) before
+calling a subscriber. Objects with state +C equal to 1 or a zero
+enabled byte at +69 are skipped.
+
+The eligible object's **native virtual slot +18** receives
+`(origin, extent, effects, 1)` as a C++ member call; its signed
+return value contributes to the wrapped 32-bit sum. The original
+function ends with `RET 4` and never clears the manager's published
+area. The local physical C++ subscriber view declares the observed
+virtual slots but does not implement imaginary functions or introduce a
+second global storage owner. The existing shared
+`SecondaryClearObjectView` remains unchanged so its six exact scoped
+owners are not perturbed.
+
+Full native boundaries, caller, return and adjacent CC were reviewed,
+and the natural VC9 source compiles. This is 114 additional bytes of
+source coverage, not a strict original /GL codegen match.

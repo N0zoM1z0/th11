@@ -220,6 +220,7 @@ DetachSecondaryActor
 DetachSecondaryProjectileTargets
 DisableRuntimeFog
 DispatchSecondaryProjectilePattern
+DispatchStageAuxiliaryArea
 DivideSecondaryIntegerPair100
 DrawAdaptiveAnimationVm
 DrawAdaptiveUnroundedAnimationVm

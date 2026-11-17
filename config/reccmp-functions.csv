@@ -221,6 +221,7 @@ DetachSecondaryActor,0x00410B60,function
 DetachSecondaryProjectileTargets,0x004353A0,function
 DisableRuntimeFog,0x0042A300,function
 DispatchSecondaryProjectilePattern,0x004342F0,function
+DispatchStageAuxiliaryArea,0x00424F30,function
 DivideSecondaryIntegerPair100,0x00433E50,function
 DrawAdaptiveAnimationVm,0x00450610,function
 DrawAdaptiveUnroundedAnimationVm,0x00450690,function
