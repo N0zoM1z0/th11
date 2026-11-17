@@ -591,3 +591,15 @@ bytes, ASM, manual padding or special ABI declarations were added.
 The directly affected 101-byte dialogue cleanup and 28-byte global
 HUD destruction owners continue to pass individual strict cold replay
 at zero differences.
+
+
+## HUD visual initialization codegen refinement
+
+The natural C++ `0x41A520` visual initializer now emits a complete
+336-byte primary PDB contribution and 96/96 decoded instructions under
+pinned VC9 `/GL`, with 21 external address-field positions extracted.
+Its explicit `StageTimerView` initialization preserves the first-time
+scale binding and repeated timer reset. The two remaining instruction
+scheduling differences are the cached-path partner-index load and
+the display-global read relative to timer stores. This is a nonexact
+frontier; no ASM or padding was used.

@@ -37,7 +37,7 @@ int __stdcall InitializeSecondaryDebugHudVisuals(SecondaryDebugHudOwned *self)
     {
         self->preparedData = g_SecondaryHudPreparedData;
         const int selection =
-            g_SecondaryHudPartnerIndex + (g_SecondaryHudCharacterIndex + 2) * 3;
+            (g_SecondaryHudCharacterIndex + 2) * 3 + g_SecondaryHudPartnerIndex;
         const char *selectedFilename = g_SecondaryHudFilenameTable[selection];
         InputAcquireHook(g_SecondaryHudLoadSkipFormat, selectedFilename);
         g_SecondaryHudPreparedData = 0;
@@ -63,7 +63,18 @@ int __stdcall InitializeSecondaryDebugHudVisuals(SecondaryDebugHudOwned *self)
     // The member is an actual twenty-byte StageTimerView at 0x43C8.
     // SetFrame(-1) does the original first-time scale binding, flags
     // bit0 publication, and repeated float/int reset in native order.
-    self->hudTimer.SetFrame(-1);
+    StageTimerView &timer = self->hudTimer;
+    if (!(timer.flags & 1u))
+    {
+        timer.fraction = 0.0f;
+        timer.current = 0;
+        timer.previous = -999999;
+        timer.scale = &g_AnimationTimeScale;
+        timer.flags |= 1u;
+    }
+    timer.fraction = 0.0f;
+    timer.current = 0;
+    timer.previous = -1;
     self->displayedValue43e4 = g_SecondaryHudDisplayValue;
     self->value4440 = -1;
     self->value4448 = -1;
