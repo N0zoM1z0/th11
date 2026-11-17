@@ -11,9 +11,10 @@ void __stdcall ReleaseSecondaryDebugFilenames(SecondaryEclDebugView *self)
     {
         for (int index = 0; index < self->fileCount; ++index)
         {
-            if (self->filenames[index])
+            char *filename = self->filenames[index];
+            if (filename)
             {
-                free(self->filenames[index]);
+                free(filename);
                 self->filenames[index] = 0;
             }
         }

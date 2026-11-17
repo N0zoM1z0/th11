@@ -558,6 +558,7 @@ SecondaryDefaultFloatPointer
 SecondaryDefaultInt
 SecondaryDefaultIntPointer
 SecondaryDropPolarVector::SetPolar
+SecondaryEclDebugOwner::~SecondaryEclDebugOwner
 SecondaryEffectPolarVector::SetPolar
 SecondaryEmitterAimCallback
 SecondaryEmitterOrbitCallback

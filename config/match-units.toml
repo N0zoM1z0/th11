@@ -10172,3 +10172,44 @@ linkages = [
   { offset = 278, type = "DIR32", symbol = "?g_MeshEffectSpell@@3PAUMeshEffectSpellView@@A", target = 0x004A8D6C },
   { offset = 291, type = "REL32", symbol = "??_M@YGXPAXIHP6EX0@Z@Z", target = 0x00460066 },
 ]
+
+# Source-complete debug-session destructor with a genuine virtual
+# ThreadInf-derived member and live filename-cleanup helper.
+# Diagnostic only: native LTCG call ABI and vtable name are not exact.
+[units.secondary-debug-session-destructor-frontier]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/SecondaryDebugSessionLifecycle.cpp"
+inputs = ["src/SecondaryDebugSessionLifecycle.hpp",
+          "src/SecondaryGameplay.hpp", "src/SecondaryDebugFilenameCleanup.cpp",
+          "probes/secondary-debug-session-lifecycle-context.cpp"]
+support_sources = ["src/SecondaryDebugFilenameCleanup.cpp",
+                   "probes/secondary-debug-session-lifecycle-context.cpp"]
+output_dir = "build/match-linked/SecondaryDebugSessionDestructorFrontier"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryDebugSessionLifecycleProbe@4"
+functions = ["SecondaryEclDebugOwner::~SecondaryEclDebugOwner"]
+symbol = "??1SecondaryEclDebugOwner@@QAE@XZ"
+target_address = 0x0040D320
+size = 462
+linkages = []
+
+# Source-owning 83-byte debug filename-array destructor leaf. The
+# real 462-byte owning destructor remains in the same bounded LTCG context.
+[units.release-secondary-debug-filenames]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/SecondaryDebugFilenameCleanup.cpp"
+inputs = ["src/SecondaryGameplay.hpp", "src/SecondaryDebugSessionLifecycle.cpp",
+          "src/SecondaryDebugSessionLifecycle.hpp",
+          "probes/secondary-debug-session-lifecycle-context.cpp"]
+support_sources = ["src/SecondaryDebugSessionLifecycle.cpp",
+                   "probes/secondary-debug-session-lifecycle-context.cpp"]
+output_dir = "build/match-linked/SecondaryDebugFilenameCleanup"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryDebugSessionLifecycleProbe@4"
+functions = ["ReleaseSecondaryDebugFilenames"]
+symbol = "?ReleaseSecondaryDebugFilenames@@YGXPAUSecondaryEclDebugView@@@Z"
+target_address = 0x0040CFE0
+size = 83
+linkages = []
