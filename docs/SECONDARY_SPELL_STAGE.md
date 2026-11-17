@@ -132,3 +132,36 @@ and offsets +6EC/+6F0. The manager style fields are reset to
 zero afterward, alpha becomes 0xFF, and all paths return one.
 The original call sites and the three native callees were
 reviewed; no extra null guards or fake render methods were added.
+
+## Scoped native-compiler comparisons (2026-11-17)
+
+Two new diagnostics build only their affected source owners and a
+live dynamic caller under the pinned VC9 RTM `/O2 /GL` context:
+
+| Unit | Native span | Current PDB contribution | Normalized native instruction keys |
+| --- | ---: | ---: | ---: |
+| `secondary-spell-stage-init-frontier` | 1,777 B | 1,560 B | 115 / 468 |
+| `secondary-spell-stage-draw-frontier` | 370 B | 384 B | 65 / 89 |
+
+Both are **nonexact frontiers**. The initialization owner's private
+EAX spell-name argument, register allocation, seven-branch producer
+partition and real animation/script callees have not yet been
+recovered in a native-equivalent whole-caller link. The original
+seven-entry jump table begins at 40CD44, outside the 1,777-byte
+function extent; adding it to the source owner would corrupt the
+comparison.
+
+The drawing owner originally built a single three-float text
+position before its branch. This produced 352 candidate bytes and
+53/89 aligned native instruction keys. The source now initializes
+the 265/279,51,0 text position separately on its two print paths,
+then publishes 360,51,0 for the history counters. This matches the
+original branch-dependent sequence of float stores; the local
+linked result has 384 bytes and 65/89 aligned keys. A separate
+`const int` spelling experiment changed no instructions and was
+not retained. Both results need exact original register/argument
+ownership before any strict byte claim.
+
+The shared `SecondarySpellStageView` is now checked for its complete
+0x91C-byte prefix size as well as its critical member offsets.
+Neither test runner performs the full cold replay cohort.

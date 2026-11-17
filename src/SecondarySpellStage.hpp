@@ -23,6 +23,7 @@ struct SecondarySpellStageView
     CameraVector position;
 };
 
+typedef char SecondarySpellStageSize[(sizeof(SecondarySpellStageView) == 0x91c) ? 1 : -1];
 typedef char SpellStageSecondVmOffset[(offsetof(SecondarySpellStageView, vm1) == 0x444) ? 1 : -1];
 typedef char SpellStageFollowersOffset[(offsetof(SecondarySpellStageView, followerIds) == 0x878) ? 1 : -1];
 typedef char SpellStageTimerOffset[(offsetof(SecondarySpellStageView, time) == 0x888) ? 1 : -1];
@@ -33,3 +34,4 @@ typedef char SpellStagePositionOffset[(offsetof(SecondarySpellStageView, positio
 
 void __stdcall InitializeSecondarySpellStage(const char *spellName, int spellIndex, int duration);
 int __stdcall UpdateSecondarySpellStageState(SecondarySpellStageView *self);
+int __stdcall DrawSecondarySpellStage(SecondarySpellStageView *self);

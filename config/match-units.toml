@@ -9921,3 +9921,39 @@ symbol = "?InitializeSecondarySpecialMode5@@YGHPAUMeshEffectActorView@@@Z"
 target_address = 0x00407680
 size = 159
 linkages = []
+
+# Large nonexact scene-spell initializer. Its native seven-entry jump
+# table at 40CD44 is separate from the 1777-byte compiled owner.
+[units.secondary-spell-stage-init-frontier]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/SecondarySpellStageInitialization.cpp"
+inputs = ["src/SecondarySpellStage.hpp", "src/SecondarySpellStageState.cpp",
+          "probes/secondary-spell-stage-initialization-context.cpp"]
+support_sources = ["src/SecondarySpellStageState.cpp",
+                   "probes/secondary-spell-stage-initialization-context.cpp"]
+output_dir = "build/match-linked/SecondarySpellStageInitializationFrontier"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondarySpellStageInitProbe@12"
+functions = ["InitializeSecondarySpellStage"]
+symbol = "?InitializeSecondarySpellStage@@YGXPBDHH@Z"
+target_address = 0x0040C650
+size = 1777
+linkages = []
+
+# Scoped producer for the 370-byte spell HUD owner (nonexact).
+[units.secondary-spell-stage-draw-frontier]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/SecondarySpellStageDrawing.cpp"
+inputs = ["src/SecondarySpellStage.hpp", "src/AsciiManager.hpp",
+          "probes/secondary-spell-stage-drawing-context.cpp"]
+support_sources = ["probes/secondary-spell-stage-drawing-context.cpp"]
+output_dir = "build/match-linked/SecondarySpellStageDrawingFrontier"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondarySpellStageDrawProbe@4"
+functions = ["DrawSecondarySpellStage"]
+symbol = "?DrawSecondarySpellStage@@YGHPAUSecondarySpellStageView@@@Z"
+target_address = 0x0040C4A0
+size = 370
+linkages = []

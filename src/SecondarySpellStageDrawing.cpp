@@ -33,19 +33,25 @@ int __stdcall DrawSecondarySpellStage(SecondarySpellStageView *self)
     reinterpret_cast<unsigned char *>(&ascii->color)[3] =
         reinterpret_cast<const unsigned char *>(&vm->spriteIndex)[3];
 
-    float position[3] = {0.0f, 51.0f, 0.0f};
+    float position[3];
     if (self->flags & 2u)
     {
         position[0] = 265.0f;
+        position[1] = 51.0f;
+        position[2] = 0.0f;
         AsciiManagerPrint(ascii, position, "%.8d", self->score);
     }
     else
     {
         position[0] = 279.0f;
+        position[1] = 51.0f;
+        position[2] = 0.0f;
         AsciiManagerPrint(ascii, position, "$");
     }
 
     position[0] = 360.0f;
+    position[1] = 51.0f;
+    position[2] = 0.0f;
     const int category = g_MeshEffectSelection0 * 3 + g_MeshEffectSelection1;
     unsigned char *record = g_StageSpellRecordData +
         category * 0x68d4 + self->spellIndex * 0x90;
