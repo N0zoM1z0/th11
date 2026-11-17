@@ -434,8 +434,12 @@ destructor followed by CRT operator delete. Ordinary C++ `delete`
 preserves all 16 embedded VM member lifetimes; clearing the global
 singleton is already owned by the destructor itself. The single
 scene caller is at 40D8D9, with no foreign interior references
-or trailing non-padding bytes. This source builds under pinned
-VC9 `/GL`; linked byte exactness remains open.
+or trailing non-padding bytes. A scoped pinned VC9 `/GL` link preserves
+its **complete 28-byte public PDB function contribution**. Its single
+DIR32 singleton load and two REL32 calls to the separately owned
+HUD destructor and CRT delete were independently reviewed and replayed;
+strict cold comparison reports **28/28 bytes, three verified fields,
+zero differences**. No hand-authored ASM or padding is involved.
 
 ## Complete HUD animation initialization source (0x41A6D0, 1,619 bytes)
 
