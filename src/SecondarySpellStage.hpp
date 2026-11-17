@@ -44,3 +44,4 @@ int __stdcall UpdateSecondarySpellStageState(SecondarySpellStageView *self);
 int __stdcall DrawSecondarySpellStage(SecondarySpellStageView *self);
 
 int __stdcall CheckSecondarySpellRecordCode(const SecondarySpellStageView *self);
+void __stdcall SettleSecondarySpellStageTime();

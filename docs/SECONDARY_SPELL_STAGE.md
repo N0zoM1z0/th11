@@ -190,3 +190,44 @@ those double fields at their real x86 offsets, rather than allowing
 the compiler to align the first double to +900. Compile probes of
 the 1,777-byte initializer, 624-byte updater and 370-byte HUD
 owner all pass with this shared physical layout.
+
+## Complete spell result timing/settlement owner (0x40C310, 368 bytes)
+
+The 368-byte native owner is now written as
+`SettleSecondarySpellStageTime` in
+`src/SecondarySpellStageTimeSettlement.cpp`. It uses the previously
+source-present `GetFrameClockSeconds` at 446920 and the 80-byte
+`CheckSecondarySpellRecordCode` leaf at 40BB50. This owner is
+called from the three native frame/clock operations at 4463EC,
+446640 and 44686B; its original Ghidra extent contains no
+foreign interior references.
+
+While spell flag bit0 is active, its first call stores the current
+clock in the stage's double field +8FC and sets flag 0x40.
+When the spell becomes inactive and the flag was set, it
+captures the active frame count at +8F8, computes elapsed seconds,
+and removes the residue modulo **0.0167**. If the residue is
+ordered greater/equal to **0.00835**, one 0.0167 interval is
+added back. The rounded result is stored as double at +904.
+The integer seconds use `floor` and an upper cap of 999; the
+fractional remainder is multiplied by 100 and converted to a
+signed integer without inventing a nonnegative clamp.
+
+The encoded record result uses native 32-bit wrapping arithmetic
+with `(hundredths+seconds)*1000`, adds
+`seconds+0x5632`, multiplies by 100, and adds signed
+`(hundredths+33)%100`. The double at +904 is then reset to
+zero, the active clock bit0x40 is cleared, and the result goes
+to +90C. In a normal run it is also written to the native
+difficulty-indexed record table at global 4A8EB8, offset
++3C plus index*4. In replay mode (global 4A8E88+74 nonzero),
+the result is loaded from the alternate table and checked
+with the 80-byte leaf; an invalid entry is replaced by
+the original sentinel `0x06AE9C24`. Both paths advance the
+record index at +8F0 once.
+
+The packed physical source view retains original +8FC/+904
+double offsets. The function and its dependent 80-byte leaf
+compile with pinned VC9; their native private x87 scheduling
+and full linked exactness are unresolved, so source coverage
+does not increase the canonical exact count.
