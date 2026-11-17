@@ -204,7 +204,6 @@ DeletePbgWinResourceMemoryFile
 DeleteReplayCompressionNode
 DeleteReplayFileBrowser
 DeleteSecondaryMaster
-DeleteSecondarySpellStageReturningPointer
 DeleteThreadInfVirtual
 DeleteTitleMenu
 DestroyAnimationDocument
@@ -592,6 +591,7 @@ SecondaryProjectileAngleDifference
 SecondaryProjectileOutside
 SecondaryScriptTable
 SecondarySpellDrawCallback
+SecondarySpellStageOwned::scalar deleting destructor
 SecondarySpellStageOwned::~SecondarySpellStageOwned
 SecondarySpellUpdateCallback
 SecondaryStackAbsoluteAddress

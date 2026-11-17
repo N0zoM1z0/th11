@@ -205,7 +205,6 @@ DeletePbgWinResourceMemoryFile,0x00442F40,function
 DeleteReplayCompressionNode,0x00442AB0,function
 DeleteReplayFileBrowser,0x00438000,function
 DeleteSecondaryMaster,0x00411100,function
-DeleteSecondarySpellStageReturningPointer,0x0040C060,function
 DeleteThreadInfVirtual,0x004593E0,function
 DeleteTitleMenu,0x00439970,function
 DestroyAnimationDocument,0x004549E0,function
@@ -593,6 +592,7 @@ SecondaryProjectileAngleDifference,0x00435480,function
 SecondaryProjectileOutside,0x00435560,function
 SecondaryScriptTable,0x0045B600,function
 SecondarySpellDrawCallback,0x0040C640,function
+SecondarySpellStageOwned::scalar deleting destructor,0x0040C060,function
 SecondarySpellStageOwned::~SecondarySpellStageOwned,0x0040BE50,function
 SecondarySpellUpdateCallback,0x0040C630,function
 SecondaryStackAbsoluteAddress,0x0045B5D0,function

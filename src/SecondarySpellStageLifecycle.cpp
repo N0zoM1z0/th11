@@ -70,15 +70,8 @@ SecondarySpellStageOwned *CreateSecondarySpellStage()
     return stage;
 }
 
-// Two separate, native source owners adjacent to the lifetime functions.
-// The first preserves the historical return-value pointer after deletion.
-SecondarySpellStageOwned *DeleteSecondarySpellStageReturningPointer(
-    SecondarySpellStageOwned *stage)
-{
-    delete stage;
-    return stage;
-}
-
+// The compiler naturally generates SecondarySpellStageOwned's scalar
+// deleting destructor (native 0x40C060). No hand-authored wrapper is needed.
 void DestroySecondarySpellStage()
 {
     SecondarySpellStageOwned *stage =

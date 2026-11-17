@@ -438,3 +438,33 @@ Run just this selected unit:
 `scripts/repo-python scripts/replay-exact-units.py --unit secondary-spell-stage-factory-frontier`.
 The public owner's *body* is exact; neither the external EH handler
 code nor the nonexact destructor and callbacks inherit that status.
+
+### Exact natural scalar deleting destructor and global destroy (2026-11-17)
+
+The 18-byte native owner at 0x40C060 is **not** an authored wrapper
+that takes an ordinary C++ parameter and returns it. It is the native
+VC9 scalar-deleting destructor generated automatically from
+`SecondarySpellStageOwned::~SecondarySpellStageOwned`. The artificial
+`DeleteSecondarySpellStageReturningPointer` source was removed; the
+owning class and real `delete` expression now produce symbol
+`??_GSecondarySpellStageOwned@@QAEPAXI@Z` through the compiler.
+Selected pinned VC9 /GL cold replay proves **18/18 bytes exact**, with
+the two complete native REL32 fields to the destructor at 0x40BE50 and
+`operator delete` at 0x45FD49. The original class identity remains
+unverified even though this complete generated function matches.
+
+The independent 28-byte `DestroySecondarySpellStage` owner at
+0x40C080 now also has selected **28/28-byte strict exact** proof.
+It reads singleton 0x4A8D6C once, conditionally deletes it, and
+returns; all three decoded fields resolve to the actual native
+global, destructor and `operator delete` at offsets +03,+0D,+13.
+Neither owner was reproduced with ASM or a hand-coded jump.
+
+These two new exact receipts are separate from the 206-byte factory
+and 256-byte registration receipts, which were rechecked after
+the source change. The 317-byte destructor itself is still
+nonexact: exact calls to a function do not establish the callee's
+exactness. Use only the affected units with
+`scripts/repo-python scripts/replay-exact-units.py --unit secondary-spell-stage-scalar-deleting-destructor`
+and
+`scripts/repo-python scripts/replay-exact-units.py --unit destroy-secondary-spell-stage`.

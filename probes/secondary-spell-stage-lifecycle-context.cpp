@@ -1,4 +1,5 @@
 #include "SecondarySpellStageOwned.hpp"
+#include "SecondaryActorRuntime.hpp"
 
 // Keeps the real owner factory and both destruction paths reachable.
 // The original gameplay chooses these paths dynamically.
@@ -12,7 +13,11 @@ extern "C" void *__stdcall SecondarySpellStageLifecycleProbe(int operation)
         return 0;
     }
     if (operation == 2)
-        return DeleteSecondarySpellStageReturningPointer(
-            reinterpret_cast<SecondarySpellStageOwned *>(g_StagePrimary));
+    {
+        SecondarySpellStageOwned *stage =
+            reinterpret_cast<SecondarySpellStageOwned *>(g_MeshEffectSpell);
+        delete stage;
+        return 0;
+    }
     return 0;
 }
