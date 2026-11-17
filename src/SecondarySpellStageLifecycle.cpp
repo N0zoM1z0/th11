@@ -32,7 +32,7 @@ __forceinline void UnregisterSpellStageChain(ChainElement *element)
 
 // The two StageEmbeddedVm members were constructed before this body;
 // the original initializer then clears the *entire* 0x924-byte object.
-SecondarySpellStageOwned::SecondarySpellStageOwned()
+__forceinline SecondarySpellStageOwned::SecondarySpellStageOwned()
 {
     memset(this, 0, sizeof(*this));
     flags |= 2u;
@@ -43,12 +43,13 @@ SecondarySpellStageOwned::SecondarySpellStageOwned()
 // destructor runs after this ordinary C++ body, freeing both real VM stores.
 SecondarySpellStageOwned::~SecondarySpellStageOwned()
 {
-    ReleaseSecondaryAnimation(AnimationVmId(followerIds[0]));
-    followerIds[0] = 0;
-    ReleaseSecondaryAnimation(AnimationVmId(followerIds[1]));
-    followerIds[1] = 0;
-    ReleaseSecondaryAnimation(AnimationVmId(followerIds[2]));
-    followerIds[2] = 0;
+    volatile unsigned int *ids = followerIds;
+    ReleaseSecondaryAnimation(AnimationVmId(ids[0]));
+    ids[0] = 0;
+    ReleaseSecondaryAnimation(AnimationVmId(ids[1]));
+    ids[1] = 0;
+    ReleaseSecondaryAnimation(AnimationVmId(ids[2]));
+    ids[2] = 0;
 
     UnregisterSpellStageChain(updateChain);
     UnregisterSpellStageChain(drawChain);

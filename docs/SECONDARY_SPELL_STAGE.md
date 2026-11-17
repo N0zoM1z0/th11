@@ -373,3 +373,41 @@ This is now a canonical exact unit. The two *separate* callbacks,
 317-byte destructor and 206-byte factory remain nonexact until
 their own complete proofs, even though they participate in this
 unit's caller context.
+
+## Scoped constructor and destructor codegen (2026-11-17)
+
+The native 0x40BF90 spell-stage factory is **206 bytes / 65 decoded
+instructions**. In the existing `secondary-spell-stage-factory-frontier`,
+an out-of-line natural C++ `SecondarySpellStageOwned` constructor emitted
+only 153 bytes and aligned 40/65 native instruction keys. Declaring and
+defining that **real C++ constructor** `__forceinline` makes the compiler
+inline its member-array construction, full-object memset and singleton
+publication in the original function. The focused VC9 /GL result now
+has **206 bytes and all 65/65 normalized instructions aligned**.
+
+This is a real natural C++ source-shape improvement, **not** proof of
+byte identity: ten external targets plus a direct native EH-handler
+address differ until relocation replay. The EH handler is an actual
+compiler-generated *static* CIL linker symbol
+`__ehhandler$?CreateSecondarySpellStage@@YAPAUSecondarySpellStageOwned@@XZ`,
+not a public symbol exposed by the existing public-only strict
+replay. The original handler address at 0x48A9DB must be verified
+using a properly authenticated static-symbol workflow; do not label
+the factory exact merely by masking its four address bytes.
+
+The complete 317-byte destructor continues to be emitted as
+**317 bytes**. Preserving the three individually accessed VM IDs
+through a `volatile unsigned int *` physical view keeps each
+original zero store between releases and improves its normalized
+instruction alignment from **74/79 to 75/79**. Only two remaining
+load/push pairs use EAX where the native chooses ECX and EDX.
+The original C++ destructor still owns genuine destruction of
+both `StageEmbeddedVm` array members. Normal compiler probes
+retain this behavior; no ASM, naked functions or padding were used.
+
+The adjacent 256-byte `RegisterSecondarySpellStageChains` remains
+**strict exact** after these changes: a separate selected cold replay
+still reports zero differences in 256 bytes with all seven known
+relocation fields reviewed. The factory and destructor are
+independent nonexact owners until they each pass their own strict
+proof.

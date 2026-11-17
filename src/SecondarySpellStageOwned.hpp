@@ -19,7 +19,7 @@ struct SecondarySpellStageOwned
     StageTimerView time;
     unsigned char remaining89c[0x924 - 0x89c];
 
-    SecondarySpellStageOwned();
+    __forceinline SecondarySpellStageOwned();
     ~SecondarySpellStageOwned();
 };
 
