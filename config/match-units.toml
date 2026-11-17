@@ -10253,6 +10253,7 @@ support_sources = ["src/SecondaryDebugHudPrecleanup.cpp",
                    "src/ChainRemove.cpp",
                    "src/SecondaryActorAnimation.cpp",
                    "probes/secondary-debug-hud-destructor-generic-context.cpp"]
+normal_support_sources = ["src/SecondaryDebugHudPrecleanup.cpp"]
 output_dir = "build/match-linked/SecondaryDebugHudDestructorFrontier"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "SecondaryDebugHudDestructorGenericProbe@12"
@@ -10288,15 +10289,18 @@ artifact_kind = "linked-pe"
 source = "src/SecondaryDebugHudPrecleanup.cpp"
 inputs = ["src/SecondaryDebugHudLifetime.hpp", "src/SecondaryDebugHudDialogue.hpp",
           "src/SecondaryDebugHudLifetime.cpp", "src/SecondaryDebugHudDialogue.cpp",
-          "probes/secondary-debug-hud-lifecycle-context.cpp"]
+          "probes/secondary-debug-hud-destructor-generic-context.cpp"]
 support_sources = ["src/SecondaryDebugHudLifetime.cpp",
                    "src/SecondaryDebugHudDialogue.cpp",
                    "src/StageLifecycle.cpp", "src/ChainRemove.cpp",
+                   "src/AnimationDocumentDestructor.cpp",
+                   "src/MenuControllerSupport.cpp",
                    "src/SecondaryActorAnimation.cpp",
-                   "probes/secondary-debug-hud-lifecycle-context.cpp"]
+                   "probes/secondary-debug-hud-destructor-generic-context.cpp"]
+normal_support_sources = ["probes/secondary-debug-hud-destructor-generic-context.cpp"]
 output_dir = "build/match-linked/SecondaryDebugHudPrecleanupFrontier"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
-entry = "SecondaryDebugHudLifecycleProbe@4"
+entry = "SecondaryDebugHudDestructorGenericProbe@12"
 functions = ["PrepareSecondaryDebugHudDestruction"]
 symbol = "?PrepareSecondaryDebugHudDestruction@@YGXPAUSecondaryDebugHudOwned@@@Z"
 target_address = 0x0041AD30

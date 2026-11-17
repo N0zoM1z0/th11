@@ -42,12 +42,13 @@ void __stdcall PrepareSecondaryDebugHudDestruction(SecondaryDebugHudOwned *self)
     {
         AnimationDocumentSlotsView *slots =
             reinterpret_cast<AnimationDocumentSlotsView *>(g_RenderBatch);
-        AnimationDocumentView *document = slots->files[27];
+        AnimationDocumentView **documentSlot = &slots->files[27];
+        AnimationDocumentView *document = *documentSlot;
         if (document)
         {
             DestroyAnimationDocument(document);
-            ::operator delete(slots->files[27]);
-            slots->files[27] = 0;
+            ::operator delete(*documentSlot);
+            *documentSlot = 0;
         }
     }
     else
@@ -90,8 +91,8 @@ void __stdcall PrepareSecondaryDebugHudDestruction(SecondaryDebugHudOwned *self)
     for (int i = 0; i < 11; ++i)
         self->precleanupAdditionalIds[i] = 0;
 
-    for (unsigned int *id = self->trackedVmIds;
-         id != self->trackedVmIds + 8; ++id)
+    unsigned int *id = self->trackedVmIds;
+    for (int remaining = 8; remaining; --remaining, ++id)
         UnbindTrackedHudVm(*id);
 
     self->hudStateFlags |= 0x1c0u;

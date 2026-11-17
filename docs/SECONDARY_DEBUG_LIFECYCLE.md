@@ -216,6 +216,23 @@ aligned; this is **source coverage, not exactness**. The separate
 dialogue destructor is independently strict exact (101/101), as
 recorded above; that fact does not imply this larger caller is exact.
 
+### Native document-slot and VM countdown recovery
+
+The 468-byte precleanup now holds `AnimationDocumentView **documentSlot`
+across the actual animation-document destructor, operator delete, and
+zeroing. That pointer describes the renderer's existing slot 27: it is
+not a second allocation. The eight tracked HUD VM IDs are processed by
+a decrementing count while preserving each existing renderer binding
+and its linked children. The scoped VC9 `/GL` source uses a normal
+generic precleanup caller and the real 243-byte animation-document
+and 78-byte VM-file-mark helpers. The resulting complete primary
+PDB contribution is **448 bytes / 126 decoded instructions**, versus
+the original **468 bytes / 128 instructions**, so it is still nonexact.
+The restored source operations themselves are meaningful, and no
+machine-code substitute or artificial padding is present. Narrow
+cold replays of the 101-byte dialogue release, 150-byte owning factory,
+and 28-byte global destroy retain zero byte differences.
+
 ## Owning HUD destructor source-order refinement
 
 The 729-byte native `SecondaryDebugHudOwned` destructor at
@@ -487,12 +504,17 @@ The original code owns 1619 bytes at 41A6D0..41AD22. Direct Ghidra
 review found three callsites from two caller owners, no foreign interior
 references, and a 10-byte compiler-generated instruction-alignment
 island at 41AB96..41AB9F; these bytes belong to the original,
-but no padding is inserted into reconstructed source. Full natural
-VC9 `/GL` compilation with its real animation helpers yields a
-1523-byte primary PDB contribution with 391 instructions, versus
-402 decoded original instructions. The 33 direct/indirect CALL
-instructions in both are a diagnostic count, not byte exactness.
-The remaining 96-byte codegen gap and linked field bindings are open.
+but no padding is inserted into reconstructed source. The initial
+natural VC9 `/GL` context emitted a 1,523-byte primary PDB contribution.
+Adding an independent **dynamic file/script/layer** consumer of the real
+`CreateAnimationVmId` and sourcing the HUD front file at its actual
+use sites (rather than hoisting it across the initializer) restores the
+full **1,619-byte primary-TU PDB contribution**. The compiler currently
+emits **403 instructions** against the native 402, with 85 decoded
+candidate address fields. The first stack reservation is 8 bytes rather
+than the native 12 and register scheduling, renderer ID publication and
+branches still differ. This is a complete, natural-source codegen frontier,
+**not strict exactness**; no ASM or padding is used.
 
 
 ## HUD destructor: register/loop recovery (2026-11-17 continuation)
@@ -544,3 +566,28 @@ substantial natural-source and scoped codegen improvement, but **not
 strict exact**; instruction ordering/branch layout and field replay
 remain open. The original's internal instruction alignment was never
 copied into source.
+
+
+## HUD precleanup: original slot and count ownership
+
+The 468-byte `PrepareSecondaryDebugHudDestruction` loads renderer
+animation document slot 27, then uses its **address** across
+`DestroyAnimationDocument`, CRT deletion and zeroing. The maintained
+C++ now holds a typed `AnimationDocumentView **documentSlot`, just as
+the separately proven 129-byte HUD resource finalizer does, instead
+of indexing the renderer table repeatedly. The final tracked ID
+cleanup also uses a natural eight-iteration decrementing count; the
+original explicitly maintains this count on its stack.
+
+The selected VC9 /GL primary source is still built normally. Linking
+the genuine 243-byte animation document destructor and adding an
+independent generic, ordinary COFF precleanup caller prevents an
+incorrect register-specialized signature at this entry. The scoped
+PDB owner currently measures **448 bytes and 128 instructions**
+against native **468 bytes and 128 instructions**, with the native
+non-null resource deletion and cache publication branches preserved.
+The remaining 20-byte codegen gap has **no exact credit**. No target
+bytes, ASM, manual padding or special ABI declarations were added.
+The directly affected 101-byte dialogue cleanup and 28-byte global
+HUD destruction owners continue to pass individual strict cold replay
+at zero differences.
