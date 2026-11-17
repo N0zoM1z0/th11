@@ -185,6 +185,7 @@ CreateStageAuxiliary
 CreateStageMeshRow
 CreateStageResource
 CreateTextSurface
+CullStageObject
 DecodeAnimationChunk
 DecodeSecondaryDialogueText
 DecodeSecondaryHudBestTime
@@ -250,6 +251,7 @@ DrawSecondaryPlayerCallback
 DrawSecondaryPlayerEmitters
 DrawSecondaryProgramBrowser
 DrawStage
+DrawStageLayer
 DrawStageOverlay
 DrawTextToTexture
 DrawUnrotatedAnimationVm

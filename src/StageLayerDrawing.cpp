@@ -1,0 +1,137 @@
+#include "StageLayerDrawing.hpp"
+#include "StageDrawing.hpp"
+#include "AnimationImmediateDraw.hpp"
+#include "FrameLoop.hpp"
+
+// Native stage+2FE4/+2FE8/+2FEC are integer counters, although some other
+// owners currently see the same twelve-byte region as a physical vector.
+struct StageDrawCounters
+{
+    int acceptedObjects;
+    int rejectedObjects;
+    int drawnPrimitives;
+};
+
+struct StageLayerRendererFlag
+{
+    unsigned char unknown000[0x4355c4];
+    unsigned char enabled;
+};
+
+struct StageSpriteDimensions
+{
+    unsigned char unknown000[0x34];
+    float height, width;
+};
+
+static __forceinline StageDrawCounters &DrawCounters(StageResourceView *stage)
+{
+    return *reinterpret_cast<StageDrawCounters *>(&stage->drawOffset);
+}
+
+static __forceinline void SetLayerRenderState(D3DRENDERSTATETYPE state, DWORD value)
+{
+    FlushRenderBatch(g_RenderBatch);
+    static_cast<IDirect3DDevice9 *>(g_MainRuntime.d3dDevice)->SetRenderState(state, value);
+}
+
+static __forceinline void LayerFog(int enabled)
+{
+    if (FrameRuntime().fogEnabled != enabled)
+    {
+        FlushRenderBatch(g_RenderBatch);
+        FrameRuntime().fogEnabled = enabled;
+        static_cast<IDirect3DDevice9 *>(g_MainRuntime.d3dDevice)->SetRenderState(
+            D3DRS_FOGENABLE, enabled);
+    }
+}
+
+// Complete target owner at 0x404190, including the variable-length primitive
+// stream and the independent fog/Z state transitions.
+int __stdcall DrawStageLayer(StageResourceView *stage, int layer)
+{
+    StageLayerRecord *entry = reinterpret_cast<StageLayerRecord *>(stage->section004);
+    int zWritesEnabled = 1;
+
+    FrameRuntime().activeCamera = reinterpret_cast<CameraView *>(
+        reinterpret_cast<unsigned char *>(&g_MainRuntime) + 0x434);
+    PerspectiveCameraView *camera = reinterpret_cast<PerspectiveCameraView *>(
+        reinterpret_cast<unsigned char *>(&g_MainRuntime) + 0x434);
+    ApplyPerspectiveCamera(camera);
+    static_cast<IDirect3DDevice9 *>(g_MainRuntime.d3dDevice)->SetViewport(&camera->viewport);
+    FrameRuntime().activeCameraIndex = 2;
+    reinterpret_cast<StageLayerRendererFlag *>(g_RenderBatch)->enabled = 1;
+
+    for (; entry->objectIndex >= 0; ++entry)
+    {
+        StageObjectDrawView *object = reinterpret_cast<StageObjectDrawView *>(
+            stage->objects[entry->objectIndex]);
+        if (object->layer != layer)
+            continue;
+
+        if (CullStageObject(camera, object, &entry->offset, stage->distanceSquared))
+        {
+            ++DrawCounters(stage).rejectedObjects;
+            entry->flags &= ~1u;
+            continue;
+        }
+
+        object->flags |= 2;
+        StagePrimitiveDrawView *command = reinterpret_cast<StagePrimitiveDrawView *>(
+            object->commands);
+        while (command->type >= 0)
+        {
+            AnimationVmView *vm = reinterpret_cast<AnimationVmView *>(
+                reinterpret_cast<unsigned char *>(stage->vms) +
+                command->vmIndex * static_cast<int>(sizeof(AnimationVmView)));
+            if (command->type == 0)
+            {
+                unsigned int vmFlags = vm->flags.value;
+                if ((vmFlags & 0x03c00000) >= 0x01000000)
+                {
+                    float *position = reinterpret_cast<float *>(&vm->persistent3e8);
+                    position[0] = static_cast<float>(command->offsetX + entry->offset.x);
+                    position[1] = static_cast<float>(command->offsetY + entry->offset.y);
+                    position[2] = static_cast<float>(command->offsetZ + entry->offset.z);
+
+                    StageSpriteDimensions *sprite =
+                        reinterpret_cast<StageSpriteDimensions *>(vm->unknown3ac);
+                    if (command->scaleX != 0.0f)
+                    {
+                        vm->flags.value |= 8;
+                        vm->scaleX = command->scaleX / sprite->width;
+                    }
+                    if (command->scaleY != 0.0f)
+                    {
+                        vm->flags.value |= 8;
+                        vm->scaleY = command->scaleY / sprite->height;
+                    }
+                }
+
+                int fogEnabled = (vm->flags.value & 0x03c00000) == 0x02000000;
+                LayerFog(fogEnabled);
+                const bool disableZ = (vm->flags.value & 0x800) != 0;
+                if (disableZ && zWritesEnabled)
+                {
+                    SetLayerRenderState(D3DRS_ZWRITEENABLE, FALSE);
+                    zWritesEnabled = 0;
+                }
+                else if (!disableZ && !zWritesEnabled)
+                {
+                    SetLayerRenderState(D3DRS_ZWRITEENABLE, TRUE);
+                    zWritesEnabled = 1;
+                }
+                DrawAnimationVmByMode(g_RenderBatch, vm);
+                ++DrawCounters(stage).drawnPrimitives;
+            }
+            command = reinterpret_cast<StagePrimitiveDrawView *>(
+                reinterpret_cast<unsigned char *>(command) + command->byteSize);
+        }
+        entry->flags |= 1;
+        ++DrawCounters(stage).acceptedObjects;
+    }
+
+    if (!zWritesEnabled)
+        SetLayerRenderState(D3DRS_ZWRITEENABLE, TRUE);
+    return 0;
+}

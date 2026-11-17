@@ -103,3 +103,14 @@ is not runnable as a product.
 Some timer, animation-group and stage-layer boundaries remain external. Update
 402AA0 and object traversal4040F0 have complete non-exact source; see
 [STAGE_UPDATE.md](STAGE_UPDATE.md). Prioritize their complete codegen gaps.
+
+## Recovered stage-layer renderer and culler (2026-11-17)
+
+Both formerly source-less native owners are now maintained: a **1,643-byte**
+twelve-point D3DX screen-space object culler at 403950 and its **727-byte**
+layer renderer at 404190. The renderer implements the complete
+signed-stride primitive stream, VM position/scale bindings, conditional
+fog/Z render-state changes, and stage draw counters. These are natural
+C++ source coverage, not linked-byte exactness. See
+[STAGE_CULLING.md](STAGE_CULLING.md) for the new object/record layouts,
+native calling graph, numerical behavior and remaining codegen work.

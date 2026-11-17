@@ -12,7 +12,6 @@ AddSecondaryCollisionValue,0x0040BAA0,function
 AddSecondaryIntegerPair,0x00433EA0,function
 AddSecondaryPair,0x004195E0,function
 AddStageFog,0x00405A50,function
-StageVectorMathView::operator+,0x00405DF0,function
 AddToDrawChain,0x00456C10,function
 AddToUpdateChain,0x00456B70,function
 AdvanceAnimationDocument,0x004544C0,function
@@ -187,6 +186,7 @@ CreateStageAuxiliary,0x00406440,function
 CreateStageMeshRow,0x0042B3D0,function
 CreateStageResource,0x004029C0,function
 CreateTextSurface,0x004435F0,function
+CullStageObject,0x00403950,function
 DecodeAnimationChunk,0x004545A0,function
 DecodeSecondaryDialogueText,0x0041EED0,function
 DecodeSecondaryHudBestTime,0x0041A250,function
@@ -252,6 +252,7 @@ DrawSecondaryPlayerCallback,0x00431C60,function
 DrawSecondaryPlayerEmitters,0x00431BC0,function
 DrawSecondaryProgramBrowser,0x00438E70,function
 DrawStage,0x00403130,function
+DrawStageLayer,0x00404190,function
 DrawStageOverlay,0x004035A0,function
 DrawTextToTexture,0x00444890,function
 DrawUnrotatedAnimationVm,0x004500B0,function
@@ -381,8 +382,6 @@ MusicStreamingThread,0x0044A900,function
 NormalizeAngle,0x00458ED0,function
 OffsetSecondaryTimer,0x00459210,function
 OffsetStageTimerByFrames,0x00405E20,function
-StageTimerNegativeOffsetView::OffsetByNegativeFrames,0x00405E30,function
-StageTimerNegativeOneView::OffsetByOneFrame,0x00405E50,function
 OpenMusicDecoderFile,0x0045B220,function
 OpenPbgFileSession,0x004415C0,function
 OpenPbgLowLevelFile,0x00441D50,function
@@ -647,7 +646,10 @@ StageResourceConstructor,0x004023F0,function
 StageResourceDestructor,0x00402740,function
 StageScriptMeshConstructor,0x0040E530,function
 StageTimerComparisonView::IsAtOrBefore,0x00405E10,function
+StageTimerNegativeOffsetView::OffsetByNegativeFrames,0x00405E30,function
+StageTimerNegativeOneView::OffsetByOneFrame,0x00405E50,function
 StageUpdateCallback,0x00403900,function
+StageVectorMathView::operator+,0x00405DF0,function
 StageVectorSquaredLength,0x00405DC0,function
 StageVectorTweenFactor,0x00405960,function
 StartMenuAnimation,0x004391A0,function
