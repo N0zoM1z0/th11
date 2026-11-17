@@ -8,7 +8,7 @@ import json
 from pathlib import Path
 import sys
 import tomllib
-from linked_image import (PEImage, linked_functions, linked_code_fields, map_publics,
+from linked_image import (PEImage, linked_functions, linked_code_fields, map_publics, map_statics,
                           pdb_section_contributions, verify_capstone, _object_path,
                           IMAGE_SCN_CNT_CODE, IMAGE_SCN_MEM_EXECUTE)
 from linked_receipt import contract, verify_receipt
@@ -24,7 +24,7 @@ def fields(unit: dict) -> list[dict]:
         raise ValueError('exhaustive linked linkage list required')
     result, occupied = [], set()
     for raw in rows:
-        if not isinstance(raw, dict) or set(raw) - {'offset', 'type', 'width', 'symbol', 'target', 'addend', 'local'}:
+        if not isinstance(raw, dict) or set(raw) - {'offset', 'type', 'width', 'symbol', 'target', 'addend', 'local', 'eh_static'}:
             raise ValueError('unsupported linked field selector')
         kind = raw['type']
         if kind not in WIDTHS or raw.get('width', WIDTHS[kind]) != WIDTHS[kind]:
@@ -40,9 +40,15 @@ def fields(unit: dict) -> list[dict]:
         symbol = raw.get('symbol')
         if not local and (not isinstance(symbol, str) or not symbol or symbol.startswith(ANCHOR_PREFIX)):
             raise ValueError('linked field requires its real source symbol')
+        eh_static = raw.get('eh_static', False)
+        if type(eh_static) is not bool:
+            raise ValueError('eh_static must be a boolean')
+        if eh_static and (local or kind != 'DIR32' or raw.get('addend', 0) != 0
+                          or symbol != '__ehhandler$' + unit['symbol']):
+            raise ValueError('EH static field must name the owning C++ function handler exactly')
         result.append(dict(offset=offset, width=width, type=kind, local=local,
                            symbol='<local>' if local else symbol, target=int(raw['target']),
-                           addend=int(raw.get('addend', 0))))
+                           addend=int(raw.get('addend', 0)), eh_static=eh_static))
     return sorted(result, key=lambda row: (row['offset'], row['type']))
 
 
@@ -120,6 +126,9 @@ def replay(unit: dict, image: PEImage, map_path: Path, pdb_path: Path, target: P
         raise ValueError('exhaustive linked fields differ from manifest')
     observed = {key(r): r for r in decoded['fields']}
     names = aliases(image.path.parent / 'link-aliases.rsp')
+    # The VC9 LTCG EH handler is an actual compiler-emitted MAP *Static*
+    # symbol, not a public. Qualify precisely by owner and CIL origin.
+    statics = map_statics(map_path) if any(f['eh_static'] for f in expected) else []
     candidate = bytearray(image.read_address(address, size))
     for field in expected:
         actual = observed[key(field)]
@@ -128,6 +137,13 @@ def replay(unit: dict, image: PEImage, map_path: Path, pdb_path: Path, target: P
             if (not 0 <= destination - address < size
                     or destination - address != field['target'] - base):
                 raise ValueError('local linked destination changes owner or offset')
+        elif field['eh_static']:
+            matches = [p for p in statics if p['symbol'] == field['symbol']]
+            if (len(matches) != 1 or int(matches[0]['address']) != destination
+                    or matches[0]['section_number'] != function['section_number']
+                    or matches[0]['flags'] != ['f', 'CIL', 'library:', 'CIL']
+                    or matches[0]['object'] != 'module'):
+                raise ValueError('compiler-generated EH handler not uniquely identified in MAP static section')
         else:
             symbol = names.get(field['symbol'], field['symbol'])
             matches = [p for p in publics if p['symbol'] == symbol]

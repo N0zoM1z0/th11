@@ -292,7 +292,8 @@ ECX into the 370-byte draw owner by a tail jump. Both now have
 natural `__fastcall` source adapters; their **original native
 register-specialized machine code** is recorded as evidence, not
 reproduced using ASM, an injected JMP or alignment bytes.
-The 256+10+7 target extents are source-present but nonexact.
+The 256-byte registrar is now strict exact; the two small callbacks
+remain independent, nonexact owners.
 
 ## Owning constructor, destructor and lifetime wrappers
 
@@ -314,8 +315,8 @@ runs; the original behavior is intentionally preserved, not
 It then calls the real two-chain registrar (40BD00) even if
 allocation returned null. On a nonzero registrar result, it
 destroys and deletes the owner and returns null. The target's
-SEH/vector-constructor unwind and original class identity
-still require real /GL producer comparison.
+compiler-generated SEH/vector-constructor handler code and original class
+identity are separate from the now-exact 206-byte public factory body.
 
 `SecondarySpellStageOwned::~SecondarySpellStageOwned`
 (40BE50, 317 bytes) releases each of the three follower VM
@@ -337,9 +338,9 @@ the previous pointer value as the native wrapper does.
 `DestroySecondarySpellStage` (40C080, 28 bytes) captures the
 global pointer once, skips null, otherwise destroys and deletes
 it. Both source bodies are ordinary C++ and maintain independent
-function boundaries. All four owners compile under pinned
-VC9 /GL; they are **nonexact** until full EH/callsite and byte
-proofs are available.
+function boundaries. The factory is now canonical byte-exact;
+the 317-byte destructor and both delete wrappers remain nonexact
+pending their own complete proof.
 
 ### Strict exact chain registration (0x40BD00, 256 bytes)
 
@@ -369,10 +370,9 @@ seven individually reviewed native relocation fields:
 Strict result: `exact`, difference_count=0, with no mismatched
 relocation. Run only this unit with
 `scripts/repo-python scripts/replay-exact-units.py --unit register-secondary-spell-stage-chains`.
-This is now a canonical exact unit. The two *separate* callbacks,
-317-byte destructor and 206-byte factory remain nonexact until
-their own complete proofs, even though they participate in this
-unit's caller context.
+This is a canonical exact unit. Its two callback owners and
+the 317-byte destructor remain nonexact; the separate 206-byte
+factory now has its own full strict exact receipt below.
 
 ## Scoped constructor and destructor codegen (2026-11-17)
 
@@ -385,15 +385,15 @@ inline its member-array construction, full-object memset and singleton
 publication in the original function. The focused VC9 /GL result now
 has **206 bytes and all 65/65 normalized instructions aligned**.
 
-This is a real natural C++ source-shape improvement, **not** proof of
-byte identity: ten external targets plus a direct native EH-handler
-address differ until relocation replay. The EH handler is an actual
-compiler-generated *static* CIL linker symbol
-`__ehhandler$?CreateSecondarySpellStage@@YAPAUSecondarySpellStageOwned@@XZ`,
-not a public symbol exposed by the existing public-only strict
-replay. The original handler address at 0x48A9DB must be verified
-using a properly authenticated static-symbol workflow; do not label
-the factory exact merely by masking its four address bytes.
+The reconstructed natural C++ now has **strict full-owner exactness**.
+The candidate's eleven decoded 32-bit address operands were individually
+verified; the original handler pointer at +03 targets native 0x48A9DB
+and corresponds to the VC9 compiler-generated `Static symbols` entry
+`__ehhandler$?CreateSecondarySpellStage@@YAPAUSecondarySpellStageOwned@@XZ`.
+This compiler-generated CIL EH static entry is checked against the
+actual MAP section and current source owner, not inferred or masked.
+The independent selected cold replay proves 206/206 bytes with zero
+differences; the handler function's own code remains a separate owner.
 
 The complete 317-byte destructor continues to be emitted as
 **317 bytes**. Preserving the three individually accessed VM IDs
@@ -408,6 +408,33 @@ retain this behavior; no ASM, naked functions or padding were used.
 The adjacent 256-byte `RegisterSecondarySpellStageChains` remains
 **strict exact** after these changes: a separate selected cold replay
 still reports zero differences in 256 bytes with all seven known
-relocation fields reviewed. The factory and destructor are
-independent nonexact owners until they each pass their own strict
-proof.
+relocation fields reviewed. The factory has now passed its own strict proof;
+the destructor is the remaining nonexact large lifecycle owner.
+
+
+### Strict exact spell-stage factory (0x40BF90, 206 bytes)
+
+The dedicated `secondary-spell-stage-factory-frontier` unit has been
+promoted from diagnostic to canonical, after successful selected cold
+replay: **206/206 bytes exact, 0 differences, 65/65 native instruction
+keys**. The real `new SecondarySpellStageOwned` C++ expression generates
+a compiler-managed two-element VM constructor iterator, zero-initializes
+the 0x924-byte object, sets the singleton and calls the exact registrar.
+
+The original function body has **11 complete linked relocation fields**:
+the owner-specific compiler EH handler at +03, security cookie +12,
+operator new +29, embedded VM destructor +43 and constructor +48,
+vector-constructor iterator +58, memset +6C, global singleton +78,
+registrar +8B, owning destructor +99 and operator delete +9F.
+The EH field is accepted only if the MAP `Static symbols` section
+contains precisely one matching compiler-generated owner handler
+from a CIL module. Regression tests in
+`scripts/test-linked-eh-static.py` reject a false name, non-DIR32
+field, wrong native target, falsified MAP provenance or duplicate
+handler. Thus neither a hand-authored address override nor a
+relocation wildcard can establish exactness.
+
+Run just this selected unit:
+`scripts/repo-python scripts/replay-exact-units.py --unit secondary-spell-stage-factory-frontier`.
+The public owner's *body* is exact; neither the external EH handler
+code nor the nonexact destructor and callbacks inherit that status.
