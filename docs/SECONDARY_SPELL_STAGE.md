@@ -165,3 +165,28 @@ ownership before any strict byte claim.
 The shared `SecondarySpellStageView` is now checked for its complete
 0x91C-byte prefix size as well as its critical member offsets.
 Neither test runner performs the full cold replay cohort.
+
+## Natural signed-decimal result checksum (0x40BB50, 80 bytes)
+
+`src/SecondarySpellRecordChecksum.cpp` reconstructs the complete
+80-byte record-checking leaf. It reads the signed 32-bit result code
+from spell-stage+0x90C and checks whether
+
+`code / 100000 - 22` differs from
+`((code / 100) % 100 + 34) % 100 + (code % 100 + 67) % 100`.
+
+All divisions and remainders retain the original **signed** C++
+rules. The native function receives its physical stage pointer in
+EAX (private VC9 register allocation), has one caller at 40C461
+and contains no external calls or embedded tables. Ghidra reviewed
+the full 80 bytes and their neighbors. A separate pinned VC9
+normal-COFF diagnostic is 102 bytes with no relocations and does
+**not** match; this leaf is not exact.
+
+The shared `SecondarySpellStageView` now identifies the actual
++8F0 record index, +8F8 final frame count, +8FC/904 double clock
+fields and +90C record code. A scoped `#pragma pack(push,4)` keeps
+those double fields at their real x86 offsets, rather than allowing
+the compiler to align the first double to +900. Compile probes of
+the 1,777-byte initializer, 624-byte updater and 370-byte HUD
+owner all pass with this shared physical layout.

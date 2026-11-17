@@ -115,6 +115,7 @@ ChangeSecondaryAnimationScript
 ChangeSecondaryDialogueSprite
 CheckSecondaryActorCollision
 CheckSecondaryPlayerRectangle
+CheckSecondarySpellRecordCode
 CheckStartupPath
 ClearMissingAnimationId
 ClearReplayStageSegments

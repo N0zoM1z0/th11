@@ -116,6 +116,7 @@ ChangeSecondaryAnimationScript,0x00456770,function
 ChangeSecondaryDialogueSprite,0x004566D0,function
 CheckSecondaryActorCollision,0x00431F70,function
 CheckSecondaryPlayerRectangle,0x00431E00,function
+CheckSecondarySpellRecordCode,0x0040BB50,function
 CheckStartupPath,0x00447580,function
 ClearMissingAnimationId,0x00456520,function
 ClearReplayStageSegments,0x00437420,function
