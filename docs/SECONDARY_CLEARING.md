@@ -183,3 +183,39 @@ A diagnostic link adding both real `SecondaryPattern.cpp` and
 116/125 aligned keys, a poorer result; it was not retained in the
 manifest. Exact codegen remains open, especially the original
 private register passing for spawning projectiles and drops.
+
+## Full 537-byte scene boundary-effect scan (2026-11-17)
+
+`src/SceneProjectileBoundaryEffects.cpp` now restores
+`UpdateSceneProjectileBoundaryEffects` (40B3A0..40B5B8).
+This large function is not a simple offscreen predicate: it tests
+up to 2,000 scene-pool projectiles against a live scene rectangle,
+can mark each accepted projectile, optionally spawn a drop, publish
+a new positioned VM and choose its sprite.
+
+The pool header has scene center at +44/+48 and dimensions at
++50/+54. Both halves are calculated with the original double 0.5,
+then float-rounded for the rectangle boundaries. Each active
+projectile (state neither zero nor three) supplies its center
+at +43C/+440 and dimensions +45C/+460; their half extents are
+also float-rounded before the intersection test. The whole scan
+returns immediately during spell phase 0x9E..0xA1 if flag bit0
+is active.
+
+On intersection, the function sets the projectile's flag bit3.
+When effects is nonzero, it spawns the standard kind-8 drop
+before creating a positioned VM from the scene file at pool+46D674,
+script 0x5D, layer 0x16. It looks up the new VM in the
+renderer, reads the original projectile sprite pointer at +3B4,
+and chooses one of the native index tables: +4A5670 for sprite
+width up to 16, +4A56B0 up to 32, +4A56D0 above 32. The signed
+table index is the projectile's short at +90E; the chosen value
+is written to the new VM's spriteIndex at +374. Finally the
+projectile's +4BC field is zeroed. The existing VM lookup
+is not replaced by a fake null-safe function.
+
+Ghidra and independent PE decoding support the complete 537-byte
+owner (147 native instructions), all three external calls and
+the original return. Pinned VC9 /GL compilation succeeded.
+Its original translation unit, private allocation and strict byte
+equivalence are open, so this adds source coverage but no exact credit.

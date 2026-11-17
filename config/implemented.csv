@@ -730,6 +730,7 @@ UpdatePauseContinueMenu
 UpdatePauseGameOverMenu
 UpdatePauseMenu
 UpdateReplayInputRepeatState
+UpdateSceneProjectileBoundaryEffects
 UpdateSecondaryActor
 UpdateSecondaryActorPosition
 UpdateSecondaryActorState

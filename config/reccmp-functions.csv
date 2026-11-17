@@ -731,6 +731,7 @@ UpdatePauseContinueMenu,0x0042D9D0,function
 UpdatePauseGameOverMenu,0x0042E6B0,function
 UpdatePauseMenu,0x0042C8D0,function
 UpdateReplayInputRepeatState,0x0040DE10,function
+UpdateSceneProjectileBoundaryEffects,0x0040B3A0,function
 UpdateSecondaryActor,0x00411600,function
 UpdateSecondaryActorPosition,0x00411610,function
 UpdateSecondaryActorState,0x00411750,function
