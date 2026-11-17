@@ -145,3 +145,23 @@ global-pointer field at +01 resolves to 0x004A8E90 and REL32 at
 independently reviewed, with zero unmatched bytes. The exact
 unit is `reset-secondary-gameplay-items`; nominal original
 class/translation-unit attribution is still indeterminate.
+
+
+## Player-chain pause and emitter reset (0x40D190, 31 bytes)
+
+`src/SecondaryDebugPlayerPause.cpp` reconstructs the complete native
+`PauseSecondaryGameplayPlayer` function with ordinary C++. It captures
+the *existing* player singleton at 4A8EB4, sets bit1 in each player
+update/draw chain element (+8/+C of that player owner), and calls the
+separately maintained **2,508-byte** `ResetSecondaryPlayerEmitters`
+at 432CC0, without adding null guards or substitute global data.
+
+The original routine is 31 bytes and 10 instructions; two original
+callers and its one emitter-reset callee were reviewed. The pinned VC9
+/GL diagnostic `pause-secondary-gameplay-player-frontier` emits exactly
+31 bytes with the same temporary/or/call structure, but selects **EDI**
+instead of the original preserved **EBX**. Four source-shape trials and
+four bounded real-callee context variants did not solve that original
+private register assignment. The function is therefore **source-complete
+but nonexact**; no fabricated C++ register constraint, ASM or padding
+was inserted.

@@ -10257,3 +10257,21 @@ symbol = "??1SecondaryDebugHudOwned@@QAE@XZ"
 target_address = 0x0041AFC0
 size = 729
 linkages = []
+
+# Real player-chain pause and emitter-reset caller at 0x40D190.
+# Keep this a diagnostic until the private EBX callee ABI is verified.
+[units.pause-secondary-gameplay-player-frontier]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/SecondaryDebugPlayerPause.cpp"
+inputs = ["src/SecondaryGameplay.hpp", "src/SecondaryPlayerController.hpp",
+          "probes/secondary-debug-player-pause-context.cpp"]
+support_sources = ["src/SecondaryEmitterReset.cpp", "probes/secondary-debug-player-pause-context.cpp"]
+output_dir = "build/match-linked/SecondaryDebugPlayerPauseFrontier"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryDebugPlayerPauseProbe@4"
+functions = ["PauseSecondaryGameplayPlayer"]
+symbol = "?PauseSecondaryGameplayPlayer@@YAXXZ"
+target_address = 0x0040D190
+size = 31
+linkages = []

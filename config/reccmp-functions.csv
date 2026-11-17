@@ -409,6 +409,7 @@ PackStageFog,0x00405B70,function
 ParsePbgDirectoryEntries,0x00441A60,function
 PauseMusicStream,0x0045AC00,function
 PauseSecondaryGameplayObject,0x0040CFA0,function
+PauseSecondaryGameplayPlayer,0x0040D190,function
 PauseSecondaryMasterChains,0x00410E60,function
 PauseSelectionComparisonView::IsDifferent,0x0042F340,function
 PauseSelectionComparisonView::IsSmaller,0x0042F350,function

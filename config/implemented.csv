@@ -408,6 +408,7 @@ PackStageFog
 ParsePbgDirectoryEntries
 PauseMusicStream
 PauseSecondaryGameplayObject
+PauseSecondaryGameplayPlayer
 PauseSecondaryMasterChains
 PauseSelectionComparisonView::IsDifferent
 PauseSelectionComparisonView::IsSmaller
