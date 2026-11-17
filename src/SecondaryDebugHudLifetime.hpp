@@ -24,9 +24,11 @@ struct SecondaryDebugHudOwned
     unsigned char unknown4378[0x4380 - 0x4378];
     unsigned int precleanupAdditionalIds[11];
     unsigned int effectVmId;
-    unsigned char unknown43b0[0x43b8 - 0x43b0];
+    unsigned int secondaryEffectVmId;
+    unsigned char unknown43b4[0x43b8 - 0x43b4];
     unsigned int transitionVmId;
-    unsigned char unknown43bc[0x43c8 - 0x43bc];
+    unsigned char unknown43bc[0x43c4 - 0x43bc];
+    unsigned int initialVmId;
     StageTimerView hudTimer;
     ChainElement *overlayChain;
     unsigned char unknown43e0[0x43e4 - 0x43e0];
@@ -72,6 +74,10 @@ typedef char SecondaryDebugHudDialogueOffset[
     (offsetof(SecondaryDebugHudOwned, dialogue) == 0x4438) ? 1 : -1];
 typedef char SecondaryDebugHudPreparedOffset[
     (offsetof(SecondaryDebugHudOwned, preparedData) == 0x443c) ? 1 : -1];
+typedef char SecondaryDebugHudSecondaryEffectOffset[
+    (offsetof(SecondaryDebugHudOwned, secondaryEffectVmId) == 0x43b0) ? 1 : -1];
+typedef char SecondaryDebugHudInitialVmOffset[
+    (offsetof(SecondaryDebugHudOwned, initialVmId) == 0x43c4) ? 1 : -1];
 typedef char SecondaryDebugHudTimerOffset[
     (offsetof(SecondaryDebugHudOwned, hudTimer) == 0x43c8) ? 1 : -1];
 typedef char SecondaryDebugHudTransitionTimerOffset[
@@ -97,3 +103,4 @@ SecondaryDebugHudOwned *CreateSecondaryDebugHud();
 
 void ClearSecondaryDebugHudResources();
 void DestroySecondaryDebugHudSingleton();
+void InitializeSecondaryDebugHudAnimations();

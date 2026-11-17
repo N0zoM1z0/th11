@@ -10444,3 +10444,27 @@ symbol = "?InitializeSecondaryDebugHudVisuals@@YGHPAUSecondaryDebugHudOwned@@@Z"
 target_address = 0x0041A520
 size = 336
 linkages = []
+
+# Full HUD scene-animation initialization (1,619 native bytes).
+# /GL diagnostic only; compare the complete public owner, not a
+# cropped aligned subsequence or masked machine-code proxy.
+[units.secondary-debug-hud-animation-init-frontier]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/SecondaryDebugHudAnimationInitialization.cpp"
+inputs = ["src/SecondaryDebugHudLifetime.hpp", "src/SecondaryActorRuntime.hpp",
+          "src/SecondaryPlayerDeath.hpp", "src/AsciiLifecycle.hpp",
+          "src/AnimationVmFactory.hpp", "src/MainRuntime.hpp",
+          "src/SecondaryDialogue.hpp", "src/VmBindings.hpp",
+          "probes/secondary-debug-hud-animation-init-context.cpp"]
+support_sources = ["src/AnimationVmFactory.cpp", "src/AnimationRendererDispatch.cpp",
+                   "src/AnimationVm.cpp", "src/SecondaryPlayerDeath.cpp",
+                   "probes/secondary-debug-hud-animation-init-context.cpp"]
+output_dir = "build/match-linked/SecondaryDebugHudAnimationInitFrontier"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryDebugHudAnimationInitProbe@0"
+functions = ["InitializeSecondaryDebugHudAnimations"]
+symbol = "?InitializeSecondaryDebugHudAnimations@@YAXXZ"
+target_address = 0x0041A6D0
+size = 1619
+linkages = []

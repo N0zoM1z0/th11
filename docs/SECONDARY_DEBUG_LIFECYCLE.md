@@ -436,3 +436,37 @@ singleton is already owned by the destructor itself. The single
 scene caller is at 40D8D9, with no foreign interior references
 or trailing non-padding bytes. This source builds under pinned
 VC9 `/GL`; linked byte exactness remains open.
+
+## Complete HUD animation initialization source (0x41A6D0, 1,619 bytes)
+
+`InitializeSecondaryDebugHudAnimations` now owns the complete scene
+initialization logic instead of only the neighboring constructor and
+visual loader. The native owner pauses all three real chain nodes,
+creates the initial animation ID at +43C4 if absent, and binds the
+existing front animation file to nine main VMs (scripts 10..18) and
+four overlay VMs (scripts 32..35). Two auxiliary VMs use ASCII scripts
+3..4, and the standalone sixteenth VM binds ASCII script 0. Its
+conditional script initialization depends on the first main VM's
+active flag; the live/bomb display update still occurs on every call.
+
+Mode and resource flags select scene scripts 0, 1 and 70. Difficulty,
+replay session and the complete shot-state word gate script 44. The
+replay-mode flag controls a retained VM at +43AC using character script
+0x39+character; a second retained ID at +43B0 always uses
+0x3E+character. The native uses the scene animation critical section
+at 4C3B68 with depth 4C3BB9, allocates real renderer VMs and publishes
+their linked-list IDs. Each retained VM signals event 3 to matching
+renderer VMs and, when unmarked, their linked children. It clears the
+HUD reset word +43FC at the end. The initial ID, second retained ID
+and critical section are now physically named in source.
+
+The original code owns 1619 bytes at 41A6D0..41AD22. Direct Ghidra
+review found three callsites from two caller owners, no foreign interior
+references, and a 10-byte compiler-generated instruction-alignment
+island at 41AB96..41AB9F; these bytes belong to the original,
+but no padding is inserted into reconstructed source. Full natural
+VC9 `/GL` compilation with its real animation helpers yields a
+1523-byte primary PDB contribution with 391 instructions, versus
+402 decoded original instructions. The 33 direct/indirect CALL
+instructions in both are a diagnostic count, not byte exactness.
+The remaining 96-byte codegen gap and linked field bindings are open.

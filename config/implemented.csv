@@ -340,6 +340,7 @@ InitializeReplaySeedArchive
 InitializeSceneAnimationVm
 InitializeSecondaryAuxiliaryOwner
 InitializeSecondaryContext
+InitializeSecondaryDebugHudAnimations
 InitializeSecondaryDebugHudVisuals
 InitializeSecondaryEffect
 InitializeSecondaryHost

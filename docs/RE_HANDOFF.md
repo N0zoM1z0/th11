@@ -37,9 +37,9 @@ Do not return to the obsolete 15-VM / 0x4450 view.
 | `41A520` visual/resource initialization, 336 B | natural source, nonexact | `src/SecondaryDebugHudVisualInitialization.cpp`; candidate 307 B / 75 of 96 |
 | `41AD30` pre-destruction cleanup, 468 B | natural source, nonexact | `src/SecondaryDebugHudPrecleanup.cpp`; candidate 445 B / 62 of 128 |
 | `41AFC0` destructor, 729 B | natural source, nonexact | `src/SecondaryDebugHudLifetime.cpp`; recorded 772 B / 114 of 195 |
-| `41AF30` cleanup helper, 129 B | **source-open** | Ghidra: dialogue, animation document and prepared-data cleanup |
-| `41B360` global destruction, 28 B | **source-open** | singleton guard plus real destructor / delete |
-| `41A6D0` HUD initialization dispatch, 1,619 B | **source-open** | several VM branches, renderer lists and three-chain interaction |
+| `41AF30` cleanup helper, 129 B | natural source, nonexact | `src/SecondaryDebugHudFinalization.cpp`; scoped VC9 /GL compile |
+| `41B360` global destruction, 28 B | natural source, nonexact | `src/SecondaryDebugHudGlobalDestruction.cpp`; scoped VC9 /GL compile |
+| `41A6D0` HUD initialization dispatch, 1,619 B | natural source, nonexact | `src/SecondaryDebugHudAnimationInitialization.cpp`; 1,523-byte /GL candidate |
 
 The candidate figures are **historical scoped /GL diagnostics**, not
 freshly reverified exact claims. Build only the relevant frontier unit
@@ -50,10 +50,11 @@ The original registration's remaining discrepancies include private
 ABI. The 729-byte destructor is sensitive to the 16-VM member layout
 and its genuine member destructors.
 
-**Next useful work:** recover `41AF30` and `41B360` as natural C++,
-then close the 729-byte destructor and 336/339-byte init/registration
-callers. Also tackle the full 1,619-byte `41A6D0` boss; do not
-spend an entire session tuning leaves alone. Build only affected units.
+**Next useful work:** refine the full 1,619-byte `41A6D0` HUD animation
+initialization against its 1,523-byte /GL source candidate, then close
+the 729-byte destructor and 336/339-byte resource/registration owners.
+The two additional 129/28-byte cleanup entries are now mapped, compiled
+and independently bounded but not exact. Build only affected units.
 The 101/150/208-byte exact owners provide direct regression checks
 when their common headers/producer inputs change.
 

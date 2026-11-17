@@ -341,6 +341,7 @@ InitializeReplaySeedArchive,0x00437660,function
 InitializeSceneAnimationVm,0x00456910,function
 InitializeSecondaryAuxiliaryOwner,0x0040E0A0,function
 InitializeSecondaryContext,0x0045DBE0,function
+InitializeSecondaryDebugHudAnimations,0x0041A6D0,function
 InitializeSecondaryDebugHudVisuals,0x0041A520,function
 InitializeSecondaryEffect,0x0045DD70,function
 InitializeSecondaryHost,0x00410BE0,function
