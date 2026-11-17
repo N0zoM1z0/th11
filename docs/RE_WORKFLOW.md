@@ -42,4 +42,6 @@ Whole native product closure, broad runtime comparisons and portability are
 deferred; they do not block exact checkpoints. The normal-COFF
 Oracle has no authority over established LTCG-owned units. Public primary-TU
 linked contributions use the separate VC9 Oracle described in
-`LINKED_ORACLE.md`; specialized static/EH/split-owner contexts remain open.
+`LINKED_ORACLE.md`. Authenticated owner-qualified compiler EH
+**address fields** are supported; standalone static owners, split
+ownership and independent EH-handler code remain open.

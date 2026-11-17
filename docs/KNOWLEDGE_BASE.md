@@ -19,6 +19,14 @@ compiler observations and useful failed approaches.
   complete differences. Do not encode private registers or add inert storage.
 - Rebuild affected exact contexts through `config/match-units.toml`. Cache
   retention is described in [ARTIFACTS](ARTIFACTS.md).
+- **Updated 2026-11-17:** linked field replay authenticates
+  `eh_static = true` for the owner-named compiler CIL EH handler.
+  The spell-stage factory (206 B), spell-stage destructor (317 B),
+  and HUD constructor/factory (208/150 B) have separate exact
+  function-body proofs. The EH handler code is independently owned
+  and is **not** made exact by an accepted address field. Historical
+  notes below saying EH acceptance was still unimplemented describe
+  earlier tool revisions; see [LINKED_ORACLE](LINKED_ORACLE.md).
 
 ## Stage culling and auxiliary switch owners (2026-11-17)
 

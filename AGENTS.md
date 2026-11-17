@@ -99,8 +99,12 @@ Do not remove /GL from an established LTCG owner to fit a normal-COFF Oracle.
 Linked/LTCG acceptance is limited to complete public primary-TU PDB code
 contributions through `compare-linked-function.py`: require cold family
 receipts, PE/MAP/PDB identity and owner agreement, exhaustive field replay,
-and full byte equality. Specialized static-owner, EH and split-owner contexts
-remain open. Never crop an extent to fit this lane.
+and full byte equality. One narrow EH field case is supported:
+`eh_static = true` authenticates the compiler-generated, owner-named
+DIR32 handler through the MAP Static symbols section. This establishes
+the complete public owner body, **not** separate handler-code exactness.
+Standalone static owners, ambiguous/split PDB owners and native product
+closure remain open. Never crop an extent to fit this lane.
 
 Native product closure, broad runtime comparisons and portability are later
 work, not prerequisites for this exact-reconstruction phase. A diagnostic link

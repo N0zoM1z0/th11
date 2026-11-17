@@ -8,8 +8,10 @@ with zero byte differences. No earlier exact unit was rebuilt to validate it.
 This lane compares complete public code contributions from the primary
 maintained translation unit. It does not establish the original game's TU
 partition, original normal-COFF/LTCG ownership, complete data ownership or a
-native game build. Specialized static-owner, EH and split-owner acceptance
-still needs further implementation and evidence.
+native game build. Owner-qualified compiler-generated EH **address fields** now have
+a narrowly authenticated acceptance path; arbitrary static owners,
+split contributions and separately owned EH-handler **code** remain
+outside this lane.
 
 ## Cold construction and provenance
 
@@ -57,7 +59,13 @@ control transfer leaving the contribution. All bytes must be decoded or
 covered by authoritative PE fields. The manifest must declare exactly that
 field set, with no overlap or unsupported selectors. Ordinary external
 bindings must resolve uniquely through the real MAP symbol or its declared
-anchor alias. Local bindings must retain the same destination offset inside
+anchor alias. The sole special case is `eh_static = true` on a DIR32
+field whose symbol is `__ehhandler$` followed by the **exact
+selected C++ owner's decorated symbol**; it must resolve uniquely
+to a same-section compiler CIL static in the MAP's `Static symbols`
+section. An arbitrary hidden symbol or an EH handler's separate
+machine-code body is not accepted. Negative tests are in
+`scripts/test-linked-eh-static.py`. Local bindings must retain the same destination offset inside
 both complete owners. Every declared field is replayed at its reviewed target
 address; every remaining byte is compared directly. These are address
 relocations, never a masked exactness score.

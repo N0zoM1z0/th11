@@ -71,6 +71,7 @@ The Windows i386 production build, full runtime and portability are open.
 | Mesh effects and VM factory | [mesh](docs/STAGE_MESH.md), [effects](docs/MESH_EFFECTS.md), [factory](docs/ANIMATION_VM_FACTORY.md) |
 | Stage interpreter and interpolation | [script](docs/STAGE_SCRIPT.md), [tweens](docs/STAGE_TWEEN.md), [easing](docs/STAGE_EASING.md) |
 | Stage lifecycle/update/drawing/culling | [lifecycle](docs/STAGE_LIFECYCLE.md), [update](docs/STAGE_UPDATE.md), [drawing](docs/STAGE_DRAWING.md), [12-point culling and layer dispatch](docs/STAGE_CULLING.md), [auxiliary stage owner](docs/STAGE_AUXILIARY.md) |
+| HUD owning lifetime, initialization and exact VM cleanup | [secondary debug HUD](docs/SECONDARY_DEBUG_LIFECYCLE.md), [spell stage](docs/SECONDARY_SPELL_STAGE.md) |
 | Animation resources | [chunks](docs/ANIMATION_CHUNKS.md), [textures](docs/ANIMATION_TEXTURES.md), [pixels](docs/ANIMATION_TRANSPARENT_PIXELS.md) |
 | Other subsystems | [topic index](docs/KNOWLEDGE_BASE.md#topic-index) |
 
@@ -93,7 +94,9 @@ every byte. Artifact receipts bind source inputs, profile, target, tools, and
 object hashes. Masked probes do not grant exact credit. Public primary-TU
 linked contributions use a separate [VC9 linked Oracle](docs/LINKED_ORACLE.md),
 with complete PE/MAP/PDB identity, ownership, artifact receipts and exhaustive
-field replay. Specialized static/EH/split-owner contexts remain open.
+field replay. Owner-qualified compiler EH-static **address fields**
+are supported; standalone static owners, split ownership and the
+separate EH handler **code** remain open.
 
 ## Tools and resource limits
 

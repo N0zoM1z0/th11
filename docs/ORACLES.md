@@ -8,7 +8,7 @@
 | Compiler candidate | TH11 PE/Rich evidence, pinned hashes/banners and initial toolchain smoke |
 | Source presence | Maintained source mapping; grants no byte credit |
 | Normal-COFF exactness | Cold VC9 object, source/tool/object receipt, full owned extent, exhaustive relocation replay, zero byte differences |
-| LTCG exactness | Cold VC9 linked family receipt, matching PE/MAP/PDB identity, complete public primary-TU contribution, exhaustive linked-field replay, zero differences; specialized static/EH/split ownership remains open |
+| LTCG exactness | Cold VC9 linked family receipt, matching PE/MAP/PDB identity, complete public primary-TU contribution, exhaustive linked-field replay, zero differences; owner-qualified compiler EH-static DIR32 fields supported, standalone static/split owners remain open |
 
 This phase pursues exact reconstruction. Native-product/runtime/portability
 validation is deferred. Broad behavior harnesses and failure-injection matrices
