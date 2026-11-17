@@ -16,5 +16,7 @@ Pinned VC9 /GL emits a complete 105-byte/33-instruction primary-PDB
 owner whose instruction sequence matches the native. Its five external
 fields are the two renderer global loads, the master singleton load and
 the two calls to DrawAnimationVmByMode. This source contains no assembly
-or artificial padding. The adjacent 10-byte callback is reviewed but is
-a separate owner and is not claimed exact by this unit.
+or artificial padding. The adjacent 10-byte callback is a separate owner at 0x41CFC0. Its
+ordinary fastcall source uses a volatile function-pointer consumer so VC9
+retains the exact native ECX-to-EBX handoff. The callback is independently
+cold-replayed at 10/10 bytes with its sole REL32 to this exact body.

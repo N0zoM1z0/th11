@@ -10572,3 +10572,24 @@ linkages = [
   { offset = 84, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x004C3268 },
   { offset = 95, type = "REL32", symbol = "?DrawAnimationVmByMode@@YGHPAURenderBatchView@@PAUAnimationVmView@@@Z", target = 0x00451EF0 },
 ]
+
+# The callback's real ECX-to-EBX handoff is preserved by an independent
+# volatile indirect C++ consumer; its body remains a separate exact owner.
+[units.secondary-hud-front-draw-callback]
+artifact_kind = "linked-pe"
+source = "src/SecondaryHudFrontDraw.cpp"
+inputs = ["src/SecondaryHud.hpp", "src/SecondaryActorState.hpp",
+          "src/AnimationImmediateDraw.hpp",
+          "probes/secondary-hud-front-draw-context.cpp"]
+support_sources = ["src/AnimationImmediateDraw.cpp",
+                   "probes/secondary-hud-front-draw-context.cpp"]
+output_dir = "build/match-linked/SecondaryHudFrontDrawCallback"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryHudFrontDrawProbe@12"
+functions = ["SecondaryHudFrontDrawCallback"]
+symbol = "?SecondaryHudFrontDrawCallback@@YIHPAUSecondaryHudView@@@Z"
+target_address = 0x0041CFC0
+size = 10
+linkages = [
+  { offset = 4, type = "REL32", symbol = "?DrawSecondaryHudFront@@YGHPAUSecondaryHudView@@@Z", target = 0x0041C5F0 },
+]

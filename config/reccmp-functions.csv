@@ -1,5 +1,4 @@
 name,address,type
-DrawSecondaryHudFront,0x0041C5F0,function
 AccumulateAnimationA1Pixel,0x00453460,function
 AccumulateAnimationA4Pixel,0x00453490,function
 AccumulateAnimationArgbPixel,0x00453440,function
@@ -32,10 +31,10 @@ AnimationFloatPairTweenDuration,0x0044EBC0,function
 AnimationFloatPairTweenFactor,0x0044EE30,function
 AnimationFloatScalarTweenDuration,0x0044EDC0,function
 AnimationFloatScalarTweenFactor,0x0044EE60,function
-AnimationIntegerDestination,0x0044B400,function
 AnimationIntScalarTweenFactor,0x0044EE00,function
 AnimationIntVectorTweenDuration,0x0044E7B0,function
 AnimationIntVectorTweenFactor,0x0044EDD0,function
+AnimationIntegerDestination,0x0044B400,function
 AnimationRandomRange,0x0040B9F0,function
 AnimationRendererConstructor,0x004526F0,function
 AnimationRendererDestructor,0x00453130,function
@@ -261,6 +260,7 @@ DrawPlacedTextureText,0x00454BB0,function
 DrawProjectedAnimationVm,0x00451140,function
 DrawSecondaryEffect,0x0045DF10,function
 DrawSecondaryHud,0x0041C660,function
+DrawSecondaryHudFront,0x0041C5F0,function
 DrawSecondaryPlayerCallback,0x00431C60,function
 DrawSecondaryPlayerEmitters,0x00431BC0,function
 DrawSecondaryProgramBrowser,0x00438E70,function
@@ -420,9 +420,9 @@ PauseSecondaryGameplayPlayer,0x0040D190,function
 PauseSecondaryMasterChains,0x00410E60,function
 PauseSelectionComparisonView::IsDifferent,0x0042F340,function
 PauseSelectionComparisonView::IsSmaller,0x0042F350,function
+PlayMusicStream,0x0045AA60,function
 PlayerEmitterOffsetPair::PlayerEmitterOffsetPair,0x00433F00,function
 PlayerEmitterPolarPair::PlayerEmitterPolarPair,0x004021D0,function
-PlayMusicStream,0x0045AA60,function
 PollJoystickButtons,0x004575A0,function
 PollKeyboardInput,0x004576B0,function
 PopConfigurationSelection,0x00459130,function
@@ -582,6 +582,7 @@ SecondaryGlobalStatusBits,0x00410780,function
 SecondaryHostFloatDestination,0x00417DE0,function
 SecondaryHostIntegerDestination,0x00417D90,function
 SecondaryHudDrawCallback,0x0041CFD0,function
+SecondaryHudFrontDrawCallback,0x0041CFC0,function
 SecondaryHudUpdateCallback,0x0041CFB0,function
 SecondaryIntDestination,0x0045D710,function
 SecondaryIntegerPairNonzero,0x00433DF0,function

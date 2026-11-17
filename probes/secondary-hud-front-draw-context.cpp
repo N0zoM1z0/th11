@@ -1,13 +1,17 @@
 #include "SecondaryHud.hpp"
 #include "AnimationImmediateDraw.hpp"
 
-// The ordinary callback retains its actual HUD context. An independent
-// generic renderer/VM call keeps the drawing helper unspecialized in
-// the VC9 whole-program producer.
-int __fastcall SecondaryHudFrontDrawCallback(SecondaryHudView *self);
+typedef int (__fastcall *SecondaryHudFrontDrawEntry)(SecondaryHudView *);
+int __fastcall SecondaryHudFrontDrawCallback(SecondaryHudView *owner);
+
+// Keep the native callback's public ECX argument boundary observable to
+// VC9 /GL. A volatile indirect call prevents specializing its EBX handoff
+// to the probe's own register allocation.
 extern "C" int __stdcall SecondaryHudFrontDrawProbe(
     SecondaryHudView *owner, RenderBatchView *renderer, AnimationVmView *vm)
 {
-    const int result = SecondaryHudFrontDrawCallback(owner);
+    volatile SecondaryHudFrontDrawEntry callback =
+        SecondaryHudFrontDrawCallback;
+    const int result = callback(owner);
     return result + DrawAnimationVmByMode(renderer, vm);
 }

@@ -603,3 +603,34 @@ scale binding and repeated timer reset. The two remaining instruction
 scheduling differences are the cached-path partner-index load and
 the display-global read relative to timer stores. This is a nonexact
 frontier; no ASM or padding was used.
+
+
+## Front HUD drawing owner (0x41C5F0, 105 bytes)
+
+The nine primary HUD animation VMs are rendered in order with their
+physical 0x434-byte stride. The front draw then reads the secondary master,
+slot-zero actor and its flags word at +0x25BC. The original performs
+two independent inverted bit tests (bits 5 and 0); only when both are
+clear does it draw the indicator VM at HUD +0x3F1C. It returns 1
+regardless of the optional actor/indicator path.
+
+The natural C++ implementation uses a pointer/countdown loop, the real
+renderer dispatch and separate complemented bit tests. A scoped pinned
+VC9 /GL linked owner emits the complete **105-byte** body and its
+33-instruction layout. The cold Oracle confirms **105/105 bytes, five
+reviewed DIR32/REL32 fields and zero differences**. The separate 10-byte
+callback at 41CFC0 remains a distinct wrapper; its current source
+candidate is a 5-byte tail thunk and is not included in this exact claim.
+
+
+## Secondary HUD front draw and callback
+
+The 105-byte front-layer draw owner at 41C5F0 and its registered
+10-byte callback at 41CFC0 are now both independently exact. The draw
+body walks nine primary VMs at 0x434 stride, checks the master slot-zero
+actor's bit5/bit0 gates, conditionally draws the indicator, and returns
+one. Its five renderer/master fields replay with zero differences. The
+callback's volatile ordinary C++ function-pointer consumer preserves
+the native push-ebx/mov-ebx-ecx/call/pop-ebx/ret handoff; its
+single REL32 also replays with zero differences. Both are separate
+complete public primary-TU owners, with no assembly or padding.
