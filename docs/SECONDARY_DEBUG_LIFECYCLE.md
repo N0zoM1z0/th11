@@ -186,3 +186,32 @@ direct unsigned indexing only aligned 18/36 and a loop was far
 shorter. No user-authored ASM, jump bytes, padding or NOPs were added.
 The companion 468-byte HUD precleanup and 729-byte owning destructor
 remain separate, nonexact owners.
+
+
+## HUD destructor precleanup — 468-byte native owner
+
+`src/SecondaryDebugHudPrecleanup.cpp` restores
+`PrepareSecondaryDebugHudDestruction` at 0x41AD30..0x41AF03,
+including the original 468-byte function boundary and all six native
+call targets. The source uses the same 0x4450-byte physical HUD
+object as the 729-byte destructor, with typed member offsets in
+`src/SecondaryDebugHudLifetime.hpp`.
+
+The precleanup first releases the renderer's real animation document
+slot 27 if stage flags mask 9 is clear, or marks the retained
+animation file's VMs otherwise. It clears the retained file pointer,
+destroys/deletes the dialogue, and either frees the prepared HUD
+cache or publishes the existing pointer at global 4C3238. It then
+clears the update-chain pause bit, releases the specific VM IDs at
++4370, +4374 and +4380, zeroes all eleven additional VM slots at
++4380..+43A8, and releases eight tracked VM IDs through the real
+renderer ID lists. Finally, it sets HUD state bits 0x1C0 and clears
+the +43FC field, retaining the original cleanup sequence.
+
+The original Japanese TH11 1.00a body, its one caller at 41AFC0,
+six callees and return/neighbor bytes were reviewed in Ghidra,
+without foreign interior entry points. The scoped VC9 /GL
+candidate is 445 bytes with 62/128 normalized native instructions
+aligned; this is **source coverage, not exactness**. The separate
+dialogue destructor is independently strict exact (101/101), as
+recorded above; that fact does not imply this larger caller is exact.

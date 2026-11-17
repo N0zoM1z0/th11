@@ -10244,8 +10244,12 @@ frontier = true
 artifact_kind = "linked-pe"
 source = "src/SecondaryDebugHudLifetime.cpp"
 inputs = ["src/SecondaryDebugHudLifetime.hpp", "src/StageResource.hpp",
-          "src/VmBindings.hpp", "probes/secondary-debug-hud-lifecycle-context.cpp"]
-support_sources = ["src/StageLifecycle.cpp",
+          "src/VmBindings.hpp", "src/SecondaryDebugHudPrecleanup.cpp",
+          "src/SecondaryDebugHudDialogue.cpp",
+          "probes/secondary-debug-hud-lifecycle-context.cpp"]
+support_sources = ["src/SecondaryDebugHudPrecleanup.cpp",
+                   "src/SecondaryDebugHudDialogue.cpp",
+                   "src/StageLifecycle.cpp",
                    "src/ChainRemove.cpp",
                    "src/SecondaryActorAnimation.cpp",
                    "probes/secondary-debug-hud-lifecycle-context.cpp"]
@@ -10274,6 +10278,29 @@ functions = ["PauseSecondaryGameplayPlayer"]
 symbol = "?PauseSecondaryGameplayPlayer@@YAXXZ"
 target_address = 0x0040D190
 size = 31
+linkages = []
+
+# Native 468-byte precleanup called by the large 729-byte HUD destructor.
+# Genuine animation file/VM/dialogue lifetimes, no ASM or binary tables.
+[units.secondary-debug-hud-precleanup-frontier]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/SecondaryDebugHudPrecleanup.cpp"
+inputs = ["src/SecondaryDebugHudLifetime.hpp", "src/SecondaryDebugHudDialogue.hpp",
+          "src/SecondaryDebugHudLifetime.cpp", "src/SecondaryDebugHudDialogue.cpp",
+          "probes/secondary-debug-hud-lifecycle-context.cpp"]
+support_sources = ["src/SecondaryDebugHudLifetime.cpp",
+                   "src/SecondaryDebugHudDialogue.cpp",
+                   "src/StageLifecycle.cpp", "src/ChainRemove.cpp",
+                   "src/SecondaryActorAnimation.cpp",
+                   "probes/secondary-debug-hud-lifecycle-context.cpp"]
+output_dir = "build/match-linked/SecondaryDebugHudPrecleanupFrontier"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryDebugHudLifecycleProbe@4"
+functions = ["PrepareSecondaryDebugHudDestruction"]
+symbol = "?PrepareSecondaryDebugHudDestruction@@YGXPAUSecondaryDebugHudOwned@@@Z"
+target_address = 0x0041AD30
+size = 468
 linkages = []
 
 # Its independently bounded 101-byte eight-ID dialogue-release callee.

@@ -4,6 +4,8 @@
 #include "Chain.hpp"
 #include <stddef.h>
 
+struct AnimationFileView;
+
 // Owning C++ view of the already-existing HUD singleton at 0x4A8D84.
 // All 15 animation VMs are ordinary StageEmbeddedVm members so VC9
 // itself constructs/destroys the native 0x434-byte arrays.
@@ -20,13 +22,24 @@ struct SecondaryDebugHudOwned
     void *ownedData;
     unsigned char unknown4320[0x4350 - 0x4320];
     unsigned int trackedVmIds[8];
-    unsigned char unknown4370[0x43ac - 0x4370];
+    unsigned int precleanupAnimationIds[2];
+    unsigned char unknown4378[0x4380 - 0x4378];
+    unsigned int precleanupAdditionalIds[11];
     unsigned int effectVmId;
     unsigned char unknown43b0[0x43b8 - 0x43b0];
     unsigned int transitionVmId;
     unsigned char unknown43bc[0x43dc - 0x43bc];
     ChainElement *overlayChain;
-    unsigned char unknown43e0[0x444c - 0x43e0];
+    unsigned char unknown43e0[0x43ec - 0x43e0];
+    AnimationFileView *retainedAnimationFile;
+    unsigned char unknown43f0[0x43fc - 0x43f0];
+    unsigned int reset43fc;
+    unsigned char unknown4400[0x4420 - 0x4400];
+    unsigned int hudStateFlags;
+    unsigned char unknown4424[0x4438 - 0x4424];
+    void *dialogue;
+    void *preparedData;
+    unsigned char unknown4440[0x444c - 0x4440];
     int ownerMarker;
 
     ~SecondaryDebugHudOwned();
@@ -44,7 +57,19 @@ typedef char SecondaryDebugHudIdsOffset[
     (offsetof(SecondaryDebugHudOwned, trackedVmIds) == 0x4350) ? 1 : -1];
 typedef char SecondaryDebugHudOverlayOffset[
     (offsetof(SecondaryDebugHudOwned, overlayChain) == 0x43dc) ? 1 : -1];
+typedef char SecondaryDebugHudExtraIdsOffset[
+    (offsetof(SecondaryDebugHudOwned, precleanupAdditionalIds) == 0x4380) ? 1 : -1];
+typedef char SecondaryDebugHudRetainedFileOffset[
+    (offsetof(SecondaryDebugHudOwned, retainedAnimationFile) == 0x43ec) ? 1 : -1];
+typedef char SecondaryDebugHudStateOffset[
+    (offsetof(SecondaryDebugHudOwned, hudStateFlags) == 0x4420) ? 1 : -1];
+typedef char SecondaryDebugHudDialogueOffset[
+    (offsetof(SecondaryDebugHudOwned, dialogue) == 0x4438) ? 1 : -1];
+typedef char SecondaryDebugHudPreparedOffset[
+    (offsetof(SecondaryDebugHudOwned, preparedData) == 0x443c) ? 1 : -1];
 typedef char SecondaryDebugHudMarkerOffset[
     (offsetof(SecondaryDebugHudOwned, ownerMarker) == 0x444c) ? 1 : -1];
 typedef char SecondaryDebugHudSize[
     (sizeof(SecondaryDebugHudOwned) == 0x4450) ? 1 : -1];
+
+void __stdcall PrepareSecondaryDebugHudDestruction(SecondaryDebugHudOwned *self);
