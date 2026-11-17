@@ -117,3 +117,36 @@ fields match their reviewed native double literals: -192 at 497EC8,
 padding or assembly is used. Canonical match unit:
 `secondary-actor-viewport-outside`. Native TU/type attribution remains
 indeterminate despite the byte-exact codegen.
+
+## Retaliating actor-radius postpass (0x412C50, 449 bytes)
+
+`src/SecondaryActorRetaliationRadius.cpp` now restores the complete
+449-byte target owner called by the mode-1 scene-projectile radius
+routine `CullStageAuxiliaryActorsInRadius` (40B210). This is distinct
+from the previously maintained ordinary `ClearSecondaryActorsInRadius`
+at 412990.
+
+The function iterates `g_SecondaryMaster->first` and snapshots the
+next node before modifying an actor. Only state flag 0x800 allows an
+actor. The distance test uses float-rounded X/Y deltas and accepts
+**only ordered** `distanceSquared <= float(radius+16)^2`; this
+differs from the scene-projectile pool's ordered-greater rejection.
+An accepted actor loses 99999 from its native `SecondaryCounterView`,
+preserving the wrapped/scaled division-by-7 path when flags bit0 is
+active.
+
+Before launching retaliation, the target performs four **inline**
+viewport bounds tests on the actor's actual world position using the
+native double value 2.0. It does not call the separate exact 93-byte
+viewport member. If visible, it normalizes actor world.angle plus the
+double encoding of float pi, writes the resulting float to the
+game's descriptor at 4A3A50+14, calls the real
+`SpawnSecondaryProjectile` with that descriptor and the live player,
+then optionally spawns a kind-8 drop. It does not call the generic
+actor clearing helper or a synthetic projectile factory.
+
+Ghidra and independent PE decoding cover all 449 bytes, all direct
+calls and the terminal RET12, with no external interior entry. VC9
+source compilation succeeds. The owner is natural C++ with no
+ASM/padding, but its linked /GL private register choices and
+full relocation-aware equivalence are still open.
