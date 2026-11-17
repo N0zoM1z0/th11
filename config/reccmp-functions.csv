@@ -750,6 +750,7 @@ UpdateSecondarySpecialMode1,0x00407AC0,function
 UpdateSecondarySpecialMode2,0x00407D10,function
 UpdateSecondarySpecialMode3,0x00406D10,function
 UpdateSecondarySpecialMode4,0x004071A0,function
+UpdateSecondarySpecialMode5,0x00407720,function
 UpdateStage,0x00402AA0,function
 UpdateStageAuxiliary,0x00406620,function
 UpdateStageAuxiliaryMode2Effect,0x00408010,function

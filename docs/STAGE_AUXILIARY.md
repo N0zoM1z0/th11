@@ -182,3 +182,45 @@ and pass the new mask to `ClearSecondaryObjectsInRadius`.
 The native keeps these two separate owners; they are not collapsed into
 one compiled symbol. These 833 bytes have natural source and VC9 source
 compilation, but no full linked byte-exact claim.
+
+## Mode 5 stage-fade and player-spell boss (0x407720, 636 bytes)
+
+`src/StageAuxiliaryMode5.cpp` restores the complete mode-5 native
+owner, with 191 instructions, 13 distinct call targets, all returns and no
+foreign interior xrefs. It checks animation ID +40 but updates stage-primary
+tint +2328 **before** testing whether the VM is missing:
+
+- With the second timer +2C above 1, grayscale is
+  `(timer * 96)/30 + 32`.
+- Otherwise, age +18 at least 890 uses
+  `((age*3 - 2670)*32)/30 + 32`.
+- Age below 30 uses `128 - (age*96)/30`. The remaining active
+  window sets color `0xFF202020`.
+
+The grayscale uses the observed OR/shift packing with opaque alpha, **not**
+a saturating byte pack; signed integer division truncates toward zero.
+A missing animation clears player flags bit2, queues positional sound 0x33
+using the real player X position, resets the effect with code 10 and refreshes
+the player emitters, returning -1.
+
+With an active VM the function copies the real player position to the
+auxiliary origin and calls the existing animation-position helper. It starts
+the transition if player bit2 is clear or player mode is 4 or 2: update
+spell state, increment the shared event counter, set player mode1, then
+lazily initialize the second timer from zero to frame1. That branch queues
+sound0x26 and creates a real damage region at the origin with radius32,
+growth20, frame30 and damage75.
+
+While the second timer is positive it clears player bit2, signals the
+current animation, executes the now-source-present 84-byte mode-5 radius
+clearing, adds radiusStep to radius, advances **that** timer and sets
+secondary special state40. Only afterward does it test if the timer
+exceeds30. Completion clears player bit2 again, releases animation
+ID+40, zeros the ID and returns -1; the outer auxiliary update owner
+then clears effectActive. Otherwise mode5 returns0. This preserves
+the native order and does not suppress repeated timer/flag side effects.
+
+The VM, spell and timer calls reuse existing maintained C++ contracts.
+`MeshEffectEventView` retains its original global symbol type through a
+local physical counter view; no second global or synthetic VM pool was
+introduced. Private native LTCG ABI and byte equality remain non-exact.
