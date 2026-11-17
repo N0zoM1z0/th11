@@ -219,3 +219,25 @@ build/match-linked cache (607 MiB). No compile or cold replay was run.
 The exact removed probe-context names are recorded in
 .analysis/handoff-storage-cleanup-20261116.removed-probe-contexts.txt;
 the size summary is in .analysis/handoff-storage-cleanup-20261116.txt.
+
+## Handoff cleanup — 2026-11-17
+
+This pass removed six ignored, unreferenced experimental link-output trees
+from `build/match-linked/`: `StageScriptVariants`, `StageMeshVariants`,
+`WidePauseSelectionComparisons`, `WideReplayLeaderboardRuntime`,
+`WideSecondaryHostMiscLeaves` and `WideSecondarySpecialEffectLifecycle`.
+None had a tracked file or a reference from the manifest, maintained docs,
+probes, scripts or analysis notes. The regenerable `scripts/__pycache__/`
+was also removed. No source, probe, canonical manifest output, `.analysis/`
+evidence, target executable, toolchain or Ghidra project was deleted.
+
+| Path | Before | After |
+| --- | ---: | ---: |
+| Entire `build/` | 1,128,792 KiB | 517,212 KiB |
+| `.analysis/` | 61,868 KiB | 61,868 KiB |
+
+The six link-output trees accounted for **611,580 KiB** (about **597 MiB**)
+of reclaimed build space. The current `StageScriptFrontier`, `StageTween`,
+`WideMenuJoystickDisplay`, `WideSecondaryClearing` and
+`SecondaryWideStepStageFogTween` outputs were retained. The exact cleanup
+receipt is `.analysis/handoff-storage-cleanup-20261117.txt`.

@@ -1,180 +1,92 @@
-# TH11 reconstruction — next-agent handoff (2026-11-16)
+# TH11 reconstruction handoff — 2026-11-17
 
-## Target and working rules
+## Target and workflow
 
-Reconstruct only the original Japanese TH11 v1.00a executable:
-`resources/th11.exe`, SHA-256
-`2978b17f6184d100d249d4311348dd30c5c32ec75c014b667a525b797d3d8813`.
-Use the pinned VC9 / Visual C++ 2008 RTM build 21022 toolchain. Preserve
-established LTCG profiles and use the `gpt-web: ...` commit prefix. Preserve
-live worktree changes; do not reset them merely because they are dirty. Build
-only the changed unit and affected exact units during routine work. Do not run
-a full cold replay unless the task explicitly requires one.
+Reconstruct only the original Japanese TH11 v1.00a executable at `resources/th11.exe` (SHA-256 `2978b17f6184d100d249d4311348dd30c5c32ec75c014b667a525b797d3d8813`). Use the pinned VC9 / Visual C++ 2008 RTM build 21022 toolchain. Keep the original executable, `.tools/`, Wine prefix and Ghidra project private. Use direct `scripts/ghidra.py`; do not substitute another game executable or toolchain.
 
-`docs/PROGRESS.md` is generated from canonical ledgers; do not edit it or copy
-its totals into this handoff. A commit or diagnostic similarity is not Oracle
-proof. Exactness requires a fresh canonical receipt and accepted replay.
+Current branch is `main`, clean at `b55bbbcc` (`gpt-web: tune stage script timer initialization ordering`). Recent source checkpoints include `c77d5d5` for the 883-byte vector-tween frontier and `3b1a116` for the fixed negative-one timer adapter. Preserve the `gpt-web: ...` commit prefix. Follow `AGENTS.md`; compile and replay only affected units, not the full cohort.
 
-## Active Boss: ExecuteStageScript
+## Large owners
 
-The large owner is `ExecuteStageScript` at `0x00404470`. Its complete target
-extent is 2,736 bytes: a 2,633-byte code body, three alignment bytes, and 100
-bytes of switch tables. The current `execute-stage-script-frontier` PDB
-contribution is 2,728 bytes, only 8 bytes smaller. Its code/table
-boundary is +2,628 versus native +2,636, and normalized `objdump -w`
-instruction-key alignment finds 529 of 610 target instructions (621 candidate).
-Its stack frame still reserves 0x98 bytes, matching the target's 0x98. These are frontier measurements only;
-the owner remains non-exact and EH/funclet ownership remains open.
+### ExecuteStageScript — 0x00404470
 
-The current maintained `src/StageScript.cpp` SHA-256 is
-`ed77781487018b82f799f075a584d39b39d5d660a5f642a008439c6636033907`.
+- Native extent: 2,736 bytes = 2,633 code bytes, 3 alignment bytes and 100 bytes of switch tables.
+- Current `execute-stage-script-frontier` PDB contribution: 2,728 bytes. Candidate switch-table boundary is +0xA44 versus native +0xA4C. Both reserve a 0x98-byte stack frame.
+- Normalized `objdump -w` instruction-key alignment: 531 of 610 target instructions (621 candidate instructions). This is diagnostic only; the Boss remains non-exact and EH/funclet ownership is open.
+- Current `src/StageScript.cpp` SHA-256: `80705232bd45ba1ea6bbd2109a104c19fe84d4ddc0ae1c1981912f1fc5a5f1a4`.
+- Opcode 2 reuses the live Bezier A scratch vector for the new-minus-old camera-position delta. This improved alignment from 526 to 529 keys without changing the 0x98 frame.
+- Opcodes 3 and 5 use `ScriptTweenFrame` with `_ReadWriteBarrier()` between observable field writes. The candidate retains the 0x98 frame and reaches 531 keys. One scheduling difference remains: candidate stores the scale pointer before `OR flags,1`; native performs the OR first. Do not call this timer block exact.
+- Opcode 14 branches on the signed script ID before calculating the VM address and calls the real VM reset/bind routines. Keep the StageMesh profile override and dynamic constructor probe: they prevent LTCG from specializing the constructor for only the Boss call sites.
 
-The latest frontier profile deliberately keeps `/Oy-` for StageScript while
-compiling `src/StageMesh.cpp` and `probes/stage-mesh-context.cpp` in their
-non-`/Oy-` profile. The dynamic constructor probe prevents LTCG from
-specializing `StageScriptMesh` for only the Boss's `flags == 0` call sites.
-That changes the constructor from a 237-byte specialized candidate to a
-366-byte generic contribution. The target constructor is 389 bytes. The
-Boss's opcode-17 caller now has the native generic argument shape: ESI object,
-EAX row count, and two stack arguments; this is still not an exact constructor
-or Boss proof.
+Rebuild and inspect only this owner with:
 
-Current source hypotheses:
+```bash
+scripts/repo-python scripts/build-match-unit.py --unit execute-stage-script-frontier
+```
 
-- Opcode 2 snapshots the original camera position, applies the script vector,
-  then computes the three new-minus-old components into the existing Bezier A
-  scratch vector before committing the whole movement delta. This matches
-  three more native instruction keys (529/610 total) without growing the
-  0x98 frame or changing the 2,728-byte source contribution.
-- Opcodes 3 and 5 retain case-local CameraVector argument temporaries. Opcodes
-  10 and 11 share two function-scope CameraVector temporaries for the Bezier
-  control1/target pair; control2 remains case-local. This recovers the target
-  0x98 stack frame from the prior 0xb0 candidate.
-- Opcode 9 has a local fog value; the fog postpass uses a separate result
-  temporary.
-- Opcode 14 now branches on the signed script ID before computing its VM
-  address; the positive branch calls the native private ResetAnimationVm and
-  BindAnimationScript contracts and writes +41D then +41C, while the
-  negative branch independently computes the VM address and clears active.
-  This natural source shape narrows the Boss full-owner gap from 24 to 8
-  bytes and increases normalized instruction alignment from 451 to 526.
-- Opcode 17 uses an ordinary C++ `ReleaseVmBindingBlock` call. LTCG lowers
-  that call to the native private ESI receiver ABI. Phase stores remain
-  ordered as `phaseY = phaseX = phase`.
+### StepStageVectorTween — 0x00405240
 
-Seven affected StageTween-family exact linked functions remain zero-difference
-after one focused producer rebuild. The much wider WideMenuJoystickDisplay
-context exceeded the 900-second bounded build; it and the WideSecondaryClearing
-context are pending and must not be counted as reverified.
+- Native extent: 883 bytes. Current StageTween-family PDB contribution: 883 bytes.
+- Normalized instruction-key alignment: 272/280. Matching size is not exactness; the remaining differences include Hermite x87 multiply order and final interpolation component scheduling.
+- `StepStageFogTween` is 794 bytes in this StageTween context versus 737 native bytes. A separate wide secondary context retains the exact 737-byte proof; do not mix the two producer contexts.
+- Seven neighboring exact StageTween functions were rebuilt and compared after the latest StageScript source change: `PackStageFog`, `SetStageTimer`, `StageVectorTweenFactor`, `SubtractStageFog`, `ScaleStageFog`, `AddStageFog` and `StageFogTweenFactor`. All seven comparisons passed with zero differences.
 
-The remaining Boss work is stack/local lifetime, opcode-specific codegen,
-and EH/funclet ownership. Do not treat a matching function length as exactness.
+Rebuild the large tween owner with:
 
-## Exact leaves and nearby owners
+```bash
+scripts/repo-python scripts/build-match-unit.py --unit step-stage-vector-tween
+```
 
-- `ReleaseVmBindingBlock`, target `0x00402300`: 231/231 bytes, six relocation
-  fields replayed, zero differences in the focused linked-PE comparison.
-- `ResetAndBindStageAnimationVm`, target `0x00405B10`: new natural C++
-  linked-PE exact owner, 30/30 bytes; two native REL32 fields to the real
-  ResetAnimationVm and BindAnimationScript callees; scoped strict cold replay
-  with zero differences. See `STAGE_VM_BIND.md`.
-- `PackStageFog`, target `0x00405B70`: 171/171 bytes, canonical exact proof.
-- `ScaleStageVectorByReciprocal` at `405D90` and
-  `StageVectorSquaredLength` at `405DC0` are now exact natural C++ `/GL`
-  source owners (43/43 and 33/33; both zero-field strict cold replay).
-  Adjacent `AddStageVectorComponents` at `405DF0` is now also exact (25/25):
-  natural member `operator+` C++ return ABI recovers EAX hidden result, ECX
-  left operand and EDX right operand. The synthetic view does not assert the
-  original class identity.
-- `StageTimerComparisonView::IsAtOrBefore` at `405E10` is exact
-  15/15-byte natural C++ `thiscall` under real /GL caller; the ordinary
-  COFF-only two EDX/ECX differences are resolved, no link fields.
-- `OffsetStageTimerByNegativeFrames` at `405E30`: exact 20-byte natural
-  C++ member adapter, one native REL32 to OffsetSecondaryTimer 459210;
-  integer negation precedes x87 conversion and strict replay is zero-difference.
-- OffsetStageTimerByNegativeOne at 405E50: exact 16-byte natural C++
-  member adapter; two reviewed fields to -1.0f 497F20 and timer offset
-  459210, strict focused cold replay zero differences.
-- `ResetStageRenderTint` at `405E60`: exact 26-byte natural C++
-  renderer-neutralization helper, one native DIR32 to g_RenderBatch, focused
-  normal-COFF cold replay zero differences.
-- `OffsetStageTimerByFrames` at `405E20`: new exact 16-byte natural
-  VC9 /GL integer-to-float timer adapter, real OffsetSecondaryTimer callee,
-  one native REL32 and zero-difference strict focused replay.
-- `AllocateStageHeapBytes` at `405D80`: independent exact 10-byte
-  natural C++ /GL forwarding wrapper to native `_malloc` (1 reviewed
-  REL32), with original source/TU attribution still unknown.
-- Native vector setters `SetStageTweenControl2` at `405B30` and
-  `SetStageTweenControl1` at `405B50`: **18/18 each, strict /GL exact**,
-  two reviewed original extents with no linkages. Native original callers and
-  source provenance are unknown; Ghidra did not promote either function.
-- `ResetAndBindStageAnimationVm`, target `0x00405B10`: 30/30-byte
-  independently strict-exact native wrapper, two reviewed CALL/JMP REL32 fields
-  from natural C++ with real VM dependency TUs; caller 40C650 remains open.
-- `BeginSecondaryStageTransition`, target `0x00405130`: new 159-byte exact
-  C++ screen-effect construction and 30-frame timer helper, six genuine
-  relocation fields, focused strict normal-COFF replay with zero differences.
-- `BeginPrimaryStageTransition`, target `0x004051D0`: new exact 103-byte
-  natural C++ stage timer initialization and mode-bit helper, three native
-  DIR32 fields, single-unit strict cold replay with zero differences.
-- `SeekStageScriptMarker`, target `0x00404F20`: distinct 113-byte exact
-  normal-COFF C++ owner adjacent to the Boss; 2 native DIR32 fields and a
-  fresh strict replay with zero differences. The Boss itself remains non-exact.
-- `AdvanceStageTimer`: 83-byte exact linked-PE owner.
-- `UpdateStageObjects`: 153-byte exact linked-PE owner.
-- `StageUpdateCallback`: 7-byte exact adapter.
-- `StageScriptMeshConstructor`: current 366-byte candidate versus 389 target
-  bytes, with 82 normalized instruction-key alignments. The generic ESI/EAX/
-  stack argument ABI is restored, and EBX/EBP now carry columns/row as in the
-  target; the constructor remains non-exact.
-- `StepStageVectorTween`, target `0x00405240`: the ordinary interpolation
-  fallback now yields an 883-byte PDB owner, matching the target's 883-byte
-  extent; normalized instruction alignment is 272/280. It remains explicitly
-  non-exact. Seven neighboring StageTween exact functions were rechecked in
-  the same focused producer and remain zero-difference. `UpdateStage` also
-  remains non-exact.
+## Exact nearby owners worth preserving
 
-The StageTween/StageScript family still has a 794-byte candidate for the
-737-byte fog tween; a separate wide secondary context retains the exact
-737-byte proof. Do not interchange those LTCG contexts. See
-`docs/STAGE_SCRIPT.md`, `docs/STAGE_TWEEN.md`, and `docs/STAGE_MESH.md`.
+- `AllocateStageHeapBytes` at 0x405D80: 10 bytes, one REL32 to CRT malloc.
+- `ScaleStageVectorByReciprocal` at 0x405D90: 43 bytes; `StageVectorSquaredLength` at 0x405DC0: 33 bytes.
+- `AddStageVectorComponents` at 0x405DF0: 25 bytes; natural member `operator+` recovers hidden result EAX, left ECX and right EDX.
+- `StageTimerComparisonView::IsAtOrBefore` at 0x405E10: 15 bytes.
+- `OffsetStageTimerByFrames` at 0x405E20: 16 bytes; `OffsetStageTimerByNegativeFrames` at 0x405E30: 20 bytes; `OffsetStageTimerByNegativeOne` at 0x405E50: 16 bytes.
+- `ResetStageRenderTint` at 0x405E60: 26 bytes.
+- `SetStageTweenControl1/2` at 0x405B50/0x405B30: 18 bytes each.
+- `ResetAndBindStageAnimationVm` at 0x405B10: 30 bytes; two reviewed REL32 fields.
+- `SeekStageScriptMarker` at 0x404F20: 113 bytes; `BeginSecondaryStageTransition` at 0x405130: 159 bytes; `BeginPrimaryStageTransition` at 0x4051D0: 103 bytes.
+- `AdvanceStageTimer` at 0x459270: 83 bytes in its isolated linked-PE context.
 
-Additional scoped stage initializer `InitializePrimaryStageScripts` at
-`0x405030` has a 246-byte natural C++ `/GL` candidate versus 249 target;
-`initialize-primary-stage-scripts-frontier` includes the real `AnimationVm.cpp`
-producer and reproduces the private ESI / EDI / EBX / EAX call contracts.
-The prior normal-COFF-only candidate was 237 bytes. The source now reloads the stage object pointer after publishing its active
-flag and orders the script ID before the file pointer; the native opcode
-loop matches byte structure (nine stack displacement differences from
-`+0x42..+0xDC`, excluding address fields). The three-byte gap,
-stack/frame lifetime differences and ownership remain open. No exact credit.
+These exact owners have focused strict replay records in the canonical match ledgers. Do not infer original class or translation-unit attribution from the source-side layout views where the ledger records provenance as unknown.
 
-`UpdateSecondaryGameplay` at `0x420390` is a 1,149-byte large owner.
-`src/SecondaryGameplay.cpp` now calls the three real stage helpers at
-`405030`, `405130` and `4051D0` instead of stale name-only placeholders.
-A focused VC9 compilation verifies all three COFF call symbols in native
-order. The whole caller remains non-exact; this is an integration step, not
-a new exact caller proof. See `SECONDARY_GAMEPLAY.md`.
+## Other open stage work
 
-## Next work
+- `InitializePrimaryStageScripts` at 0x405030: 246-byte natural C++ linked candidate versus 249 native bytes; non-exact. Its frontier includes the real AnimationVm producer and private call ABI.
+- `StageScriptMeshConstructor` at 0x40E530: 366-byte candidate versus 389 native bytes; generic ESI/EAX/stack ABI restored, still non-exact.
+- `UpdateStage` and the large secondary gameplay caller remain non-exact.
 
-1. Continue the `ExecuteStageScript` Boss from the current frontier. Compare
-   the complete 2,736-byte target owner, with special attention to the
-   remaining 8-byte code/table boundary shortfall, 621 versus 610
-   decoded instruction keys, and EH/funclet metadata. The current stack
-   frame already matches the native 0x98.
-2. Keep the StageMesh support profile override and dynamic constructor probe
-   in the frontier. Removing either re-specializes the constructor and
-   changes the opcode-17 caller ABI.
-3. Attack large owners as well as leaf functions. Preserve exact leaves and
-   rerun only the changed unit plus dependency-ledger affected exact units.
-4. Save meaningful checkpoints with `gpt-web: ...` commits. Do not claim
-   exactness without the canonical strict receipt and accepted replay.
+## Shared contexts and outstanding verification
+
+`src/StageScript.cpp` is also a support input to wide menu and clearing contexts. The `WideMenuJoystickDisplay` build exceeded the bounded 900-second run. `WideSecondaryClearing` was not rebuilt in this handoff pass. Do not describe either as reverified after the latest source change. Their retained output directories are kept for a future targeted attempt.
+
+Useful current build outputs retained:
+
+- `build/match-linked/StageScriptFrontier`
+- `build/match-linked/StageTween`
+- `build/match-linked/WideMenuJoystickDisplay`
+- `build/match-linked/WideSecondaryClearing`
+- `build/match-linked/SecondaryWideStepStageFogTween`
+
+## Storage cleanup
+
+On 2026-11-17, removed only six ignored, unreferenced experiment-output directories under `build/match-linked/`: `StageScriptVariants`, `StageMeshVariants`, `WidePauseSelectionComparisons`, `WideReplayLeaderboardRuntime`, `WideSecondaryHostMiscLeaves` and `WideSecondarySpecialEffectLifecycle`. Also removed regenerable `scripts/__pycache__`. No tracked files, source, probes, canonical manifest outputs, `.analysis` evidence, target, toolchain or Ghidra project were removed.
+
+`build/` fell from 1,128,792 KiB to 517,212 KiB, reclaiming 611,580 KiB (about 597 MiB). The exact removal and size receipt is `.analysis/handoff-storage-cleanup-20261117.txt`. See `docs/ARTIFACTS.md` for retained-artifact policy.
+
+## Next actions
+
+1. Continue `ExecuteStageScript` from the 2,728-byte / 0x98 / 531-of-610 frontier. Focus on the remaining opcode-specific instruction schedule and EH/funclet ownership; preserve the current dynamic StageMesh constructor context.
+2. Continue `StepStageVectorTween` Hermite x87 ordering and final component additions without changing its seven exact siblings.
+3. Revisit `InitializePrimaryStageScripts` and the 389-byte StageScriptMesh constructor after the two large owners.
+4. Retry the wide menu/clearing builds only when a bounded, useful path is available. Do not run a full cold replay.
 
 ## Working references
 
-- `docs/RE_WORKFLOW.md` — reconstruction loop and evidence boundaries.
-- `docs/ORACLES.md` — exactness and replay requirements.
-- `docs/KNOWLEDGE_BASE.md` — durable target/compiler findings.
-- `docs/ARTIFACTS.md` — retained private artifacts and cleanup policy.
-- `docs/PROGRESS.md` — generated inventory and exactness totals.
+- `AGENTS.md` — current priorities and exactness rules.
+- `docs/RE_WORKFLOW.md` and `docs/ORACLES.md` — workflow and proof requirements.
+- `docs/STAGE_SCRIPT.md`, `docs/STAGE_TWEEN.md` and `docs/STAGE_MESH.md` — detailed stage findings.
+- `docs/KNOWLEDGE_BASE.md` — durable cross-subsystem compiler and target findings.
+- `docs/PROGRESS.md` — generated inventory; update from canonical ledgers, not by hand.

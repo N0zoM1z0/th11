@@ -12,7 +12,6 @@ section and reconciled its full extent, instruction flow, callers and tables.
 | BeginPrimaryStageTransition,0x004051D0 | 103 bytes through0x00405236 | 103 bytes | Exact normal-COFF, 3 relocations |
 | InitializePrimaryStageScripts,0x00405030 | 249 bytes through0x00405128 | 246 bytes in focused linked frontier (237 normal-COFF) | Source present; non-exact |
 | ResetAndBindStageAnimationVm,0x00405B10 | 30 bytes through0x00405B2D | 30 bytes | Exact linked-PE, 2 REL32 fields (see [STAGE_VM_BIND](STAGE_VM_BIND.md)) |
-| ResetAndBindStageAnimationVm,0x00405B10 | 30 bytes through0x00405B2D | 30 bytes | Exact linked-PE, 2 REL32 fields |
 | PackStageFog,0x00405B70 | 171 bytes through0x00405C1A | 171 bytes | Exact; defined inline in StageTween.cpp (see [STAGE_TWEEN](STAGE_TWEEN.md)) |
 
 The interpreter's Ghidra code body ends at404EB8 and contains2,633 bytes.
@@ -246,18 +245,16 @@ fractional, infinite and NaN inputs were checked against the actual bodies.
 ## Code generation and proofs
 
 The current execute-stage-script-frontier diagnostic build contributes
-**2,728 bytes** for ExecuteStageScript, only **8 bytes smaller** than the
-2,736-byte target owner. The candidate's switch-body/table boundary is at
-`+0xA44` (2,628 bytes) versus target `+0xA4C` (2,636 bytes); the target has
-2,633 decoded code bytes, 3 alignment bytes, and 100 switch-table bytes.
+**2,728 bytes** for ExecuteStageScript, 8 bytes smaller than the complete
+2,736-byte target owner. The candidate switch-body/table boundary is at
+`+0xA44` (2,628 bytes) versus native `+0xA4C` (2,636 bytes); the target
+contains 2,633 code bytes, 3 alignment bytes and 100 switch-table bytes.
 Both candidate and target reserve a **0x98-byte stack frame**.
-A reproducible normalized `objdump -w` instruction-key alignment now finds
-**529 matching of 610 target keys** (621 candidate instructions), up from
-451 before the opcode-14 change. These figures are diagnostic only, not
-exactness. The linked receipt's `src/StageScript.cpp` SHA-256 is
-`ed77781487018b82f799f075a584d39b39d5d660a5f642a008439c6636033907`,
-matching the maintained source. The interpreter remains
-non-exact and EH/funclet ownership is still open.
+Normalized `objdump -w` instruction-key alignment finds **531 of 610 target
+keys** (621 candidate instructions). This is diagnostic similarity, not
+exactness. The current `src/StageScript.cpp` SHA-256 is
+`80705232bd45ba1ea6bbd2109a104c19fe84d4ddc0ae1c1981912f1fc5a5f1a4`.
+The interpreter remains non-exact and EH/funclet ownership is still open.
 
 The frontier now compiles `src/StageMesh.cpp` and
 `probes/stage-mesh-context.cpp` in their non-`/Oy-` profile. The probe keeps a
@@ -292,6 +289,17 @@ primary-context exact functions were rebuilt once and compared successfully;
 two very wide indirect support contexts are not revalidated, as one required
 link exceeded the bounded 900-second run.
 
+Opcodes 3 and 5 now share the inline `ScriptTweenFrame` helper, which uses
+compiler barriers to preserve the observable order of timer-field writes.
+The pinned VC9 frontier remains 2,728 bytes with the native 0x98 stack frame
+and improves normalized alignment from 529 to **531/610**. One instruction
+ordering difference remains: the candidate stores the time-scale pointer
+before `OR flags,1`, while native performs the OR first. The helper is a
+codegen experiment, not an exact timer reconstruction. Seven neighboring
+StageTween exact functions were rebuilt and compared with zero differences.
+The wide menu build exceeded its 900-second bound; the wide secondary
+clearing context was not rerun, so neither is revalidated after this change.
+
 The current source snapshots the camera vector for opcode 2 and writes the
 new-minus-old components through a shared CameraVector scratch copy. Opcodes 3 and 5 retain
 case-local CameraVector argument temporaries. Opcodes 10 and 11 share two
@@ -304,15 +312,20 @@ ESI receiver ABI in the linked caller. The phase assignments remain ordered
 as `phaseY = phaseX = phase`. These are source/codegen hypotheses, not
 exactness claims.
 
-In this same linked image, PackStageFog remains an exact 171-byte
-contribution; StepStageVectorTween is 887 bytes against 883 target bytes,
-and StepStageFogTween is 794 bytes against 737 target bytes. A separate wide
+In this same StageScriptFrontier linked image, PackStageFog remains an
+exact 171-byte contribution; StepStageVectorTween contributes 887 bytes
+against its 883-byte target, and StepStageFogTween contributes 794 bytes
+against 737 target bytes. These are context-specific contributions, not the
+standalone StageTween-family measurements. The independent StageTween
+producer now contributes an 883-byte StepStageVectorTween candidate
+(272/280 normalized instruction keys), still non-exact. A separate wide
 secondary context retains the exact 737-byte fog-tween proof. The prior
-2,744-byte candidate (0xb0 frame, 373/609 aligned instructions) is superseded
-by the 2,728-byte/0x98-frame candidate above. An older 2,744-byte/0x68-frame
-and 303/610-instruction measurement describes a different earlier candidate;
-do not conflate either result with the current frontier. The interpreter's
-unresolved EH/funclet context and remaining code-generation differences
+2,744-byte candidate (0xb0 frame, 373/609 aligned instructions) is
+superseded by the 2,728-byte/0x98-frame Boss candidate above. An older
+2,744-byte/0x68-frame and 303/610-instruction measurement describes a
+different earlier candidate; do not conflate those results with the current
+frontier. The interpreter's unresolved EH/funclet context and remaining
+code-generation differences
 receive no exact credit.
 
 Fog packing is a non-EH public primary-TU PDB contribution. A cold pinned VC9
