@@ -350,11 +350,18 @@ references. The scoped `secondary-debug-hud-registration-frontier`
 compiles a real dynamic owning factory and real chain source under
 pinned VC9 /GL, yielding a **328-byte candidate with 104 of 112
 normalized native instructions aligned** in the current live
-context. The critical remaining differences are compiler-private
-`AcquireAnimationDocument` (native filename in EBX, index in ECX),
-`AppendLog` (native ECX log receiver), and a small prologue/epilogue
-register lifetime choice. None of these is masked by padding or
-ASM. This owner is **source-complete, not yet byte-exact**.
+context. The initial /GL context produced 328 bytes because link-time optimization
+specialized generic animation-slot and chain-priority callees. An independent
+natural C++ probe now calls `AcquireAnimationDocument` with a runtime slot,
+and both `AddToUpdateChain` and `AddToDrawChain` with runtime priorities;
+the source remains the original three-chain constructor with real
+`front.anm` and error logger, no forced ABI, ASM or padding.
+This genuine generic producer restores the native EBX filename/ECX slot
+and EBX priority convention. The **complete 339-byte public PDB primary-TU
+contribution** passes the pinned cold VC9 /GL linked Oracle with **15
+independently reviewed relocations, 339/339 bytes, zero differences**.
+The same generic context remains a codegen input for the visual initializer.
+
 
 ### Physically typed HUD timers (2026-11-17 continuation)
 

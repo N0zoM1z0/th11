@@ -33,7 +33,7 @@ Do not return to the obsolete 15-VM / 0x4450 view.
 | `41A2F0` constructor, 208 B | **exact** | `secondary-debug-hud-constructor-frontier`, 208/208 |
 | `41B2A0` factory, 150 B | **exact** | `secondary-debug-hud-factory-frontier`, 150/150 |
 | `419F80` dialogue VM release, 101 B | **exact** | `secondary-debug-hud-dialogue-frontier`, eight checked REL32 |
-| `41A3C0` three-chain registration, 339 B | natural source, nonexact | `src/SecondaryDebugHudRegistration.cpp`; candidate 328 B / 104 of 112 keys |
+| `41A3C0` three-chain registration, 339 B | **exact** | `secondary-debug-hud-registration`; 339/339 and 15 verified fields |
 | `41A520` visual/resource initialization, 336 B | natural source, nonexact | `src/SecondaryDebugHudVisualInitialization.cpp`; candidate 307 B / 75 of 96 |
 | `41AD30` pre-destruction cleanup, 468 B | natural source, nonexact | `src/SecondaryDebugHudPrecleanup.cpp`; candidate 445 B / 62 of 128 |
 | `41AFC0` destructor, 729 B | natural source, nonexact | `src/SecondaryDebugHudLifetime.cpp`; recorded 772 B / 114 of 195 |
@@ -45,9 +45,9 @@ The candidate figures are **historical scoped /GL diagnostics**, not
 freshly reverified exact claims. Build only the relevant frontier unit
 from `config/match-units.toml` to renew one; see
 [secondary debug lifecycle](SECONDARY_DEBUG_LIFECYCLE.md).
-The original registration's remaining discrepancies include private
-`AcquireAnimationDocument` filename/index registers and `AppendLog`
-ABI. The 729-byte destructor is sensitive to the 16-VM member layout
+Registration is now exact: a genuine independent generic-priority
+and document-slot C++ consumer recovered the native private registers.
+The 729-byte destructor and 336-byte resource initializer remain open. The 729-byte destructor is sensitive to the 16-VM member layout
 and its genuine member destructors.
 
 **Next useful work:** refine the full 1,619-byte `41A6D0` HUD animation

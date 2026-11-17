@@ -10396,10 +10396,9 @@ linkages = [
   { offset = 105, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x0045FD49 },
 ]
 
-# Scoped 339-byte HUD three-chain registration. Original native callbacks
-# and font/document load remain external until their own bounded proofs.
-[units.secondary-debug-hud-registration-frontier]
-frontier = true
+# Full 339-byte HUD chain registration: independent general-priority and
+# file-slot C++ callers preserve original VC9 /GL callee conventions.
+[units.secondary-debug-hud-registration]
 artifact_kind = "linked-pe"
 source = "src/SecondaryDebugHudRegistration.cpp"
 inputs = ["src/SecondaryDebugHudLifetime.hpp", "src/SecondaryHud.hpp",
@@ -10410,15 +10409,32 @@ support_sources = ["src/SecondaryDebugHudFactory.cpp",
                    "src/StageLifecycle.cpp", "src/ChainRegistration.cpp",
                    "src/SecondaryDebugHudLifetime.cpp",
                    "src/AnimationDocument.cpp", "src/LogBuffer.cpp",
+                   "probes/animation-document-load-context.cpp",
                    "probes/secondary-debug-hud-registration-context.cpp"]
 output_dir = "build/match-linked/SecondaryDebugHudRegistrationFrontier"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
-entry = "SecondaryDebugHudRegistrationProbe@4"
+entry = "SecondaryDebugHudRegistrationProbe@16"
 functions = ["RegisterSecondaryHudChains"]
 symbol = "?RegisterSecondaryHudChains@@YGHPAUSecondaryDebugHudOwned@@@Z"
 target_address = 0x0041A3C0
 size = 339
-linkages = []
+linkages = [
+  { offset = 0x008, type = "DIR32", symbol = "?g_SecondaryHudFrontAnimationFilename@@3QBDB", target = 0x00494108 },
+  { offset = 0x012, type = "REL32", symbol = "?AcquireAnimationDocument@@YGPAUAnimationDocumentView@@HPBD@Z", target = 0x00454360 },
+  { offset = 0x023, type = "DIR32", symbol = "?g_SecondaryHudResourceErrorMessage@@3QBDB", target = 0x00493874 },
+  { offset = 0x028, type = "DIR32", symbol = "?g_RuntimeLog@@3UErrorLogBufferView@@A", target = 0x004A5940 },
+  { offset = 0x02D, type = "REL32", symbol = "?AppendLog@@YAPBDPAULogBufferView@@PBDZZ", target = 0x00458A10 },
+  { offset = 0x03F, type = "REL32", symbol = "?InitializeSecondaryDebugHudVisuals@@YGHPAUSecondaryDebugHudOwned@@@Z", target = 0x0041A520 },
+  { offset = 0x04B, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x0045FCE4 },
+  { offset = 0x085, type = "DIR32", symbol = "?SecondaryHudUpdateCallback@@YIHPAUSecondaryHudView@@@Z", target = 0x0041CFB0 },
+  { offset = 0x096, type = "REL32", symbol = "?AddToUpdateChain@@YGHPAUChainElement@@H@Z", target = 0x00456B70 },
+  { offset = 0x0A0, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x0045FCE4 },
+  { offset = 0x0DA, type = "DIR32", symbol = "?SecondaryHudFrontDrawCallback@@YIHPAUSecondaryHudView@@@Z", target = 0x0041CFC0 },
+  { offset = 0x0EB, type = "REL32", symbol = "?AddToDrawChain@@YGHPAUChainElement@@H@Z", target = 0x00456C10 },
+  { offset = 0x0F5, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x0045FCE4 },
+  { offset = 0x12F, type = "DIR32", symbol = "?SecondaryHudDrawCallback@@YIHPAUSecondaryHudView@@@Z", target = 0x0041CFD0 },
+  { offset = 0x140, type = "REL32", symbol = "?AddToDrawChain@@YGHPAUChainElement@@H@Z", target = 0x00456C10 },
+]
 
 # Bounded real-caller codegen for the full 336-byte HUD visual load/init.
 # The three-chain registration invokes the actual C++ body; no ASM proxy.
@@ -10438,7 +10454,7 @@ support_sources = ["src/SecondaryDebugHudRegistration.cpp",
                    "probes/secondary-debug-hud-registration-context.cpp"]
 output_dir = "build/match-linked/SecondaryDebugHudVisualInitFrontier"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
-entry = "SecondaryDebugHudRegistrationProbe@4"
+entry = "SecondaryDebugHudRegistrationProbe@16"
 functions = ["InitializeSecondaryDebugHudVisuals"]
 symbol = "?InitializeSecondaryDebugHudVisuals@@YGHPAUSecondaryDebugHudOwned@@@Z"
 target_address = 0x0041A520
