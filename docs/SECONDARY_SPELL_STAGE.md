@@ -58,3 +58,51 @@ initializer has been reconstructed; its score-history writes, multiple
 VM binding owners and seven-way stage-configuration switch still need
 their own complete C++ recovery. No exact credit is added by this
 layout extraction.
+
+## Complete stage-spell initialization boss (0x40C650, 1,777 bytes)
+
+The original initializer at `0x40C650..0x40CD40` now has natural C++
+source in `src/SecondarySpellStageInitialization.cpp`, and the
+624-byte update owner shares its typed physical layout through
+`src/SecondarySpellStage.hpp`. The function extent has 1,769 Ghidra
+body bytes and 8 internal alignment bytes. The original VC9 compiler
+places its **seven-entry jump table** at `0x40CD44..0x40CD5F`,
+immediately *outside* this function boundary; no table data or
+instruction padding was inserted into the source.
+
+It resets the timer at stage+0x888 to frame -1, stores the spell
+index at +0x8DC, copies the NUL-terminated name at +0x89C, and
+updates the +0x8E0 flags. Unless the record mode at global 4A8EB8+10
+is one, it records the spell name and increments a capped 99,999
+attempt count in two separate native records. The first record
+uses `(selection0*3+selection1)*0x68D4 + index*0x90 + 0x66C`;
+the second uses `index*0x90+0x27B64`. The native performs
+unbounded string copies; no new truncation or sanitization is added.
+
+The initializer clears stage flags bit5, then sets it only if
+the auxiliary owner at 4A8D64 is active and the selection pair is
+not mode five. It clears bit6, starts the active counter at one,
+creates follower animation IDs for scripts 1, 0x4A and 2 from
+their observed independent files, looks up the name VM, renders
+the name with the real formatted-text helper and queues sound 14.
+Another positioned ID uses scene script 0x8B and the original
+scene actor's position. The function locates its two embedded child
+VMs with signed script IDs 0x89 and 0x8A and publishes the user
+duration at child+0x3BC, without inventing fallback VMs when missing.
+
+The score is set from `(level+difficulty)*1,000,000`, with its
+initial copy clamped only above 99,999,999. The function also
+creates the native script 0x95 animation and dispatches seven
+difficulty cases: case1/2 bind scripts 7/8; case3 binds 8/9;
+case4 binds 12/13; case5 binds 16/17; case6 selects 21/22
+or 18/17 depending on progress below 24; case7 selects 11/12
+or 7/8 on the same threshold. Each branch creates its own
+overlay script (10, 11, 15, 19, 20, 23 or 13) only under
+the original spell-index and progression conditions.
+
+The source preserves real VM reset/bind and allocation calls
+and compiles under pinned VC9. Its public source signature is
+provisional because the native EAX string and RET8 form a private
+whole-program calling convention. No byte-exact claim is made;
+actual linked /GL caller ownership and relocation comparison
+remain to be resolved.

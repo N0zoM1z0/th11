@@ -343,6 +343,7 @@ InitializeSecondaryReplay,0x004356E0,function
 InitializeSecondarySpecialMode1,0x00407A40,function
 InitializeSecondarySpecialMode4,0x00407130,function
 InitializeSecondarySpecialMode5,0x00407680,function
+InitializeSecondarySpellStage,0x0040C650,function
 InitializeSoundDevice,0x00459D50,function
 InitializeSoundDeviceOwner,0x00459D20,function
 InitializeSquareMeshEffect,0x00407BB0,function

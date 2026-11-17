@@ -342,6 +342,7 @@ InitializeSecondaryReplay
 InitializeSecondarySpecialMode1
 InitializeSecondarySpecialMode4
 InitializeSecondarySpecialMode5
+InitializeSecondarySpellStage
 InitializeSoundDevice
 InitializeSoundDeviceOwner
 InitializeSquareMeshEffect
