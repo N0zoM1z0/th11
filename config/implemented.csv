@@ -556,6 +556,7 @@ SecondaryActorStateConstructor
 SecondaryActorViewportPoint::IsOutside
 SecondaryDamageAngleDifference
 SecondaryDamageTimerElapsed
+SecondaryDebugHudOwned::SecondaryDebugHudOwned
 SecondaryDebugHudOwned::~SecondaryDebugHudOwned
 SecondaryDefaultExecute
 SecondaryDefaultFloat

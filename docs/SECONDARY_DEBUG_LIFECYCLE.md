@@ -263,3 +263,29 @@ raises normalized instruction alignment to **114/195** from
 destruction sequence are now better supported by the native
 factory and destructor. No assembly, naked function or padding
 has been inserted.
+
+
+## Strict exact owning HUD constructor (0x41A2F0, 208 bytes)
+
+A direct reconstruction of the original 208-byte constructor now lives
+in `src/SecondaryDebugHudConstruction.cpp`. The class physical size is
+**0x4458 bytes**, not the older 0x4450 prefix. It owns genuine C++
+`StageEmbeddedVm` arrays of **9, 2 and 4** at +10, +25E4
+and +2E4C, plus a **sixteenth standalone** `StageEmbeddedVm` at
++3F1C. The latter's real storage pointer is +431C; the C++
+destructor owns its release without an extra hand-coded `free`.
+Two genuine flag subobject constructors at +43D8 and +4434 clear
+bit0 before the game deliberately resets *all* 0x4458 bytes,
+sets owner flag bit1 and publishes the singleton at 4A8D84.
+
+The focused VC9 /GL context generates **208/208 native bytes with
+53/53 x86 instructions**. All **14 native relocation fields** are
+bound to the actual compiler-generated EH handler, security cookie,
+three real VM-array constructor iterators, the standalone VM ctor,
+VM array destructor callback, `memset`, and the singleton.
+Selected strict cold linked-PE replay reports **zero byte
+differences**. The handler's original CIL MAP static owner is
+authenticated exactly, not substituted by a dummy or hidden field.
+The constructor is therefore canonical byte-exact; the external
+EH handler body and 729-byte owning HUD destructor are separately
+scoped code owners. No ASM or executable padding was used.
