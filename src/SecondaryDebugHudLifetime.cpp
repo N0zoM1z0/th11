@@ -87,10 +87,7 @@ SecondaryDebugHudOwned::~SecondaryDebugHudOwned()
     ReleaseVmsByHudMarker(lists->second, ownerMarker);
 
     g_SecondaryActorHud = 0;
-    if (ownedData)
-        free(ownedData);
-    ownedData = 0;
 
-    // The compiler now invokes overlayVms[4], auxiliaryVms[2] and
-    // mainVms[9] destructors in the original reverse member order.
+    // Ordinary C++ now destroys persistentVm followed by overlayVms[4],
+    // auxiliaryVms[2] and mainVms[9], in that exact reverse member order.
 }

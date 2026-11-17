@@ -237,3 +237,29 @@ involve the original private ESI/EDI calling convention, the
 three registration-removal callsites, and register/loop scheduling
 around the two renderer lists and genuine 9/2/4 VM arrays.
 No ASM, forced instruction sequence or padding was inserted.
+
+## Sixteenth embedded HUD VM and actual 0x4458-byte allocation (2026-11-17)
+
+The native 0x41B2A0 HUD factory allocates **0x4458 bytes** (the
+`push 0x4458` before operator new at 41B2C2), not 0x4450 as the
+early destructor-only source view assumed. Its complete 729-byte
+destructor at 41AFC0 also frees a VM storage field at +0x431C
+*between* clearing the HUD singleton and destructing its existing
+4/2/9 VM arrays. Those bytes are at +0x400 inside a previously
+unnamed sixteenth `StageEmbeddedVm` starting at +0x3F1C.
+
+`SecondaryDebugHudOwned` now contains the real named
+`persistentVm` member at +0x3F1C and retains the original full
+0x4458-byte allocation. Ordinary C++ destruction invokes this
+member's real destructor in reverse declaration order, before the
+4/2/9 VM arrays, rather than manually freeing its +0x400 storage.
+The last eight bytes are left physically unknown. Both source
+offset/size assertions compile under the pinned VC9 toolchain.
+
+In the bounded `secondary-debug-hud-destructor-frontier`, this
+semantic source fix preserves the current 772-byte candidate and
+raises normalized instruction alignment to **114/195** from
+113/195. It is still nonexact; its source class layout and actual
+destruction sequence are now better supported by the native
+factory and destructor. No assembly, naked function or padding
+has been inserted.
