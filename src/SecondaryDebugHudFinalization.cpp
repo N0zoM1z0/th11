@@ -26,12 +26,13 @@ void ClearSecondaryDebugHudResources()
     {
         AnimationDocumentSlotsView *slots =
             reinterpret_cast<AnimationDocumentSlotsView *>(g_RenderBatch);
-        AnimationDocumentView *document = slots->files[27];
+        AnimationDocumentView **documentSlot = &slots->files[27];
+        AnimationDocumentView *document = *documentSlot;
         if (document)
         {
             DestroyAnimationDocument(document);
-            ::operator delete(slots->files[27]);
-            slots->files[27] = 0;
+            ::operator delete(*documentSlot);
+            *documentSlot = 0;
         }
 
         hud->retainedAnimationFile = 0;

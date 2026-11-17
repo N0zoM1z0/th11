@@ -37,7 +37,7 @@ Do not return to the obsolete 15-VM / 0x4450 view.
 | `41A520` visual/resource initialization, 336 B | natural source, nonexact | `src/SecondaryDebugHudVisualInitialization.cpp`; candidate 307 B / 75 of 96 |
 | `41AD30` pre-destruction cleanup, 468 B | natural source, nonexact | `src/SecondaryDebugHudPrecleanup.cpp`; candidate 445 B / 62 of 128 |
 | `41AFC0` destructor, 729 B | natural source, nonexact | `src/SecondaryDebugHudLifetime.cpp`; recorded 772 B / 114 of 195 |
-| `41AF30` cleanup helper, 129 B | natural source, nonexact | `src/SecondaryDebugHudFinalization.cpp`; scoped VC9 /GL compile |
+| `41AF30` cleanup helper, 129 B | **exact** | `secondary-debug-hud-finalization`; 129/129 and eight audited fields |
 | `41B360` global destruction, 28 B | **exact** | `secondary-debug-hud-global-destroy`; 28/28 and three audited fields |
 | `41A6D0` HUD initialization dispatch, 1,619 B | natural source, nonexact | `src/SecondaryDebugHudAnimationInitialization.cpp`; 1,523-byte /GL candidate |
 
@@ -53,8 +53,9 @@ and its genuine member destructors.
 **Next useful work:** refine the full 1,619-byte `41A6D0` HUD animation
 initialization against its 1,523-byte /GL source candidate, then close
 the 729-byte destructor and 336/339-byte resource/registration owners.
-The 129-byte independent cleanup entry remains nonexact; the 28-byte
-global destroy entry is now strictly exact. Build only affected units.
+The 129-byte independent cleanup and 28-byte global destroy entries
+are now strictly exact. Both preserve their original natural C++
+object/resource ownership and complete function extents. Build only affected units.
 The 101/150/208-byte exact owners provide direct regression checks
 when their common headers/producer inputs change.
 

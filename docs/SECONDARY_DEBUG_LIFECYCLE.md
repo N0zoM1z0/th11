@@ -422,8 +422,15 @@ With mask 9 set, the document and prepared data are deliberately retained.
 
 The full 41AF30..41AFB0 code body, direct caller, four callees and
 CC-padded following boundary were reviewed in the attested Ghidra
-project. `src/SecondaryDebugHudFinalization.cpp` compiles with pinned
-VC9 `/GL`; exact linked codegen has not been established.
+project. The first scoped `/GL` build was 134 bytes; linking the
+actual 243-byte animation-document destructor recovered the native
+register-private callee contract but produced 135 bytes. Holding a
+natural `AnimationDocumentView **documentSlot` across destruction,
+operator delete and zeroing recovered the original `add ESI,0x43512C`
+and two-byte `[ESI]` accesses, reducing the complete function to
+129 bytes. The strictly receipt-bound VC9 linked Oracle validates
+**129/129 bytes**, all eight native relocations and **zero differences**.
+No ASM, manually inserted padding, or artificial ABI was used.
 
 ## Global HUD teardown (0x41B360, 28 bytes)
 
