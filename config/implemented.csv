@@ -477,6 +477,7 @@ RefillMusicBuffer
 RefreshMenuPlayerDataRecords
 RefreshSecondaryPlayerEmitters
 RegisterSecondaryProgramBrowserChains
+RegisterSecondarySpellStageChains
 RegisterStageAuxiliaryChains
 ReleasePbgResourceSession
 ReleaseRuntimeSurfaces
@@ -587,6 +588,8 @@ SecondaryProgramFile
 SecondaryProjectileAngleDifference
 SecondaryProjectileOutside
 SecondaryScriptTable
+SecondarySpellDrawCallback
+SecondarySpellUpdateCallback
 SecondaryStackAbsoluteAddress
 SecondaryStackRelativeAddress
 SecondaryStackTop

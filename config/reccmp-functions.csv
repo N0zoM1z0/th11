@@ -478,6 +478,7 @@ RefillMusicBuffer,0x0045A6F0,function
 RefreshMenuPlayerDataRecords,0x0043F120,function
 RefreshSecondaryPlayerEmitters,0x00410610,function
 RegisterSecondaryProgramBrowserChains,0x00438660,function
+RegisterSecondarySpellStageChains,0x0040BD00,function
 RegisterStageAuxiliaryChains,0x004061B0,function
 ReleasePbgResourceSession,0x004416C0,function
 ReleaseRuntimeSurfaces,0x0042B600,function
@@ -588,6 +589,8 @@ SecondaryProgramFile,0x0040FFB0,function
 SecondaryProjectileAngleDifference,0x00435480,function
 SecondaryProjectileOutside,0x00435560,function
 SecondaryScriptTable,0x0045B600,function
+SecondarySpellDrawCallback,0x0040C640,function
+SecondarySpellUpdateCallback,0x0040C630,function
 SecondaryStackAbsoluteAddress,0x0045B5D0,function
 SecondaryStackRelativeAddress,0x0045B5C0,function
 SecondaryStackTop,0x0045B5E0,function

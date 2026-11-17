@@ -262,3 +262,34 @@ is its own code owner with a native jump dispatch; this source
 does not replace it with fake bytecode. The pinned VC9 TU compiles.
 Private register allocation and strict full-span equivalence are
 not yet established, so this is source coverage rather than exact.
+
+## Owning stage spell registration and callback pair
+
+The original separate owner behind the physical 0x91C-byte spell stage
+view has now been modeled with natural C++ `SecondarySpellStageOwned`
+in `src/SecondarySpellStageOwned.hpp`. It has two genuinely
+constructible/destructible `StageEmbeddedVm` members (0x434 bytes
+each) starting at +0x10, followed by the same follower IDs (+0x878)
+and timer (+0x888) that the updater, initializer and HUD sources
+already use. The complete owning allocation is 0x924 bytes; no new
+singleton storage is introduced.
+
+`RegisterSecondarySpellStageChains` at 40BD00..40BDFF (256 bytes)
+is restored in `src/SecondarySpellStageChains.cpp`. It allocates
+two native-size 0x24 chain elements, sets the observed flags and
+callbacks, registers them in the update and draw chains at priority
+**22** and **9**, stores the two nodes at owner+8 and +C, then
+sets the timer at owner+888 to frame -1. It always returns zero;
+the target's lack of allocation-error checks is retained. The
+C++ source uses the existing `ChainElement` constructor fields
+and real `AddToUpdateChain`/`AddToDrawChain` boundaries.
+
+The registration code points to two distinct callbacks. The
+10-byte native `SecondarySpellUpdateCallback` at 40C630 saves EDI,
+forwards the context through EDI to the 624-byte updater and returns.
+The 7-byte `SecondarySpellDrawCallback` at 40C640 forwards
+ECX into the 370-byte draw owner by a tail jump. Both now have
+natural `__fastcall` source adapters; their **original native
+register-specialized machine code** is recorded as evidence, not
+reproduced using ASM, an injected JMP or alignment bytes.
+The 256+10+7 target extents are source-present but nonexact.
