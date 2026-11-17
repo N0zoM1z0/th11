@@ -4,9 +4,17 @@
 
 Reconstruct only the original Japanese TH11 v1.00a executable at `resources/th11.exe` (SHA-256 `2978b17f6184d100d249d4311348dd30c5c32ec75c014b667a525b797d3d8813`). Use the pinned VC9 / Visual C++ 2008 RTM build 21022 toolchain. Keep the original executable, `.tools/`, Wine prefix and Ghidra project private. Use direct `scripts/ghidra.py`; do not substitute another game executable or toolchain.
 
-Current branch is `main`, clean at `b55bbbcc` (`gpt-web: tune stage script timer initialization ordering`). Recent source checkpoints include `c77d5d5` for the 883-byte vector-tween frontier and `3b1a116` for the fixed negative-one timer adapter. Preserve the `gpt-web: ...` commit prefix. Follow `AGENTS.md`; compile and replay only affected units, not the full cohort.
+Current branch is `main`, clean at `573baa7` (`gpt-web: recover hidden auxiliary update switch and camera selection`). This work session also committed `14a6305` (auxiliary lifetime) and `d8747a0` (stage culling/drawing). Preserve the `gpt-web: ...` commit prefix. Follow `AGENTS.md`; compile and replay only affected units, not the full cohort.
 
 ## Large owners
+
+## New source coverage (2026-11-17)
+
+- `CullStageObject` 0x403950 (1,643 bytes) and `DrawStageLayer` 0x404190 (727 bytes) now have natural C++ with the actual 12-point D3DX projection, variable-length primitive traversal, and fog/Z state transitions. Both are source-present, **not byte-exact**. See [STAGE_CULLING](STAGE_CULLING.md).
+- The auxiliary stage object at global 4A8D64 now has six source-present lifecycle owners totaling 796 bytes, including the 477-byte destructor. It shares the existing `g_MeshEffectActor` data owner. The previously uninventoried `UpdateStageAuxiliary` at 406620 now covers the complete 232-byte switch **including its six-entry jump table**. Its five other mode updater callees remain source-open. See [STAGE_AUXILIARY](STAGE_AUXILIARY.md).
+- `SelectRuntimeCamera` at 405E80 adds 62 bytes of camera selection, ApplyCamera and D3D viewport source. All ten new/recovered function mappings are non-exact, apart from separately existing canonical functions revalidated below.
+- A stale tracking mismatch was fixed: the three stage vector/timer exact rows now use their real C++ member symbols. Previously missing exact ledger entries for `UpdateStageObjects` (153 bytes), `StageUpdateCallback` (7 bytes) and `AdvanceStageTimer` (83 bytes) have fresh, individually cold-built strict zero-difference proofs. `AsciiManagerExpireStrings` is correctly diagnostic/non-exact, not a canonical exact unit.
+- Latest generated ledger: **2,171 candidates; 764 source mappings; 457 canonical exact units**. This counts existing exact functions, not this session's new boss coverage. Verification: `scripts/repo-python scripts/validate-tracking.py --require-target`. The new source files and affected `StageDrawing.cpp` compile with pinned VC9; no full-cold replay was used.
 
 ### ExecuteStageScript — 0x00404470
 
@@ -78,15 +86,16 @@ On 2026-11-17, removed only six ignored, unreferenced experiment-output director
 
 ## Next actions
 
-1. Continue `ExecuteStageScript` from the 2,728-byte / 0x98 / 531-of-610 frontier. Focus on the remaining opcode-specific instruction schedule and EH/funclet ownership; preserve the current dynamic StageMesh constructor context.
-2. Continue `StepStageVectorTween` Hermite x87 ordering and final component additions without changing its seven exact siblings.
-3. Revisit `InitializePrimaryStageScripts` and the 389-byte StageScriptMesh constructor after the two large owners.
-4. Retry the wide menu/clearing builds only when a bounded, useful path is available. Do not run a full cold replay.
+1. Build focused VC9 /GL primary-TU contexts for the new **1,643-byte `CullStageObject`** and **727-byte `DrawStageLayer`** pair, then compare their complete native spans and real D3DX/device field bindings. Their current standalone source compilation is only a codegen sanity check.
+2. Resolve the auxiliary stage's 406620 switch ABI and its five source-open mode updaters (407AC0, 407D10, 406D10, 4071A0, 407720). Confirm constructor/destructor EH ownership; do not label the new lifecycle owners exact on source coverage alone.
+3. Continue `ExecuteStageScript` from 2,728/2,736 bytes and `StepStageVectorTween` from 883/883 bytes (still 272/280 normalized instructions). Focus on source-faithful x87 operand ordering and EH/funclet ownership without ASMs or inert padding.
+4. Revisit `InitializePrimaryStageScripts` (246/249 diagnostic), `StageScriptMeshConstructor` (366/389), and wide contexts only when their affected producer/ABI paths warrant a bounded build. Never replay the full cohort for a local edit.
 
 ## Working references
 
 - `AGENTS.md` — current priorities and exactness rules.
 - `docs/RE_WORKFLOW.md` and `docs/ORACLES.md` — workflow and proof requirements.
 - `docs/STAGE_SCRIPT.md`, `docs/STAGE_TWEEN.md` and `docs/STAGE_MESH.md` — detailed stage findings.
+- `docs/STAGE_CULLING.md` and `docs/STAGE_AUXILIARY.md` — freshly recovered large culling/dispatch and auxiliary-lifetime owners.
 - `docs/KNOWLEDGE_BASE.md` — durable cross-subsystem compiler and target findings.
 - `docs/PROGRESS.md` — generated inventory; update from canonical ledgers, not by hand.

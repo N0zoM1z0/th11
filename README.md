@@ -70,7 +70,7 @@ The Windows i386 production build, full runtime and portability are open.
 | ASCII lifecycle, glyph drawing and formatting | [lifecycle](docs/ASCII_LIFECYCLE.md), [drawing](docs/ASCII_DRAWING.md) |
 | Mesh effects and VM factory | [mesh](docs/STAGE_MESH.md), [effects](docs/MESH_EFFECTS.md), [factory](docs/ANIMATION_VM_FACTORY.md) |
 | Stage interpreter and interpolation | [script](docs/STAGE_SCRIPT.md), [tweens](docs/STAGE_TWEEN.md), [easing](docs/STAGE_EASING.md) |
-| Stage lifecycle/update/drawing | [lifecycle](docs/STAGE_LIFECYCLE.md), [update](docs/STAGE_UPDATE.md), [drawing](docs/STAGE_DRAWING.md) |
+| Stage lifecycle/update/drawing/culling | [lifecycle](docs/STAGE_LIFECYCLE.md), [update](docs/STAGE_UPDATE.md), [drawing](docs/STAGE_DRAWING.md), [12-point culling and layer dispatch](docs/STAGE_CULLING.md), [auxiliary stage owner](docs/STAGE_AUXILIARY.md) |
 | Animation resources | [chunks](docs/ANIMATION_CHUNKS.md), [textures](docs/ANIMATION_TEXTURES.md), [pixels](docs/ANIMATION_TRANSPARENT_PIXELS.md) |
 | Other subsystems | [topic index](docs/KNOWLEDGE_BASE.md#topic-index) |
 

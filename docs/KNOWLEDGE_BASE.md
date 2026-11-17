@@ -20,6 +20,25 @@ compiler observations and useful failed approaches.
 - Rebuild affected exact contexts through `config/match-units.toml`. Cache
   retention is described in [ARTIFACTS](ARTIFACTS.md).
 
+## Stage culling and auxiliary switch owners (2026-11-17)
+
+- The stage layer's formerly source-less `CullStageObject` (403950, 1,643
+  bytes) projects **12** vertices, not just eight cuboid corners. Four
+  center-X-plane samples join the eight AABB corners before the D3DX projection.
+  The caller `DrawStageLayer` (404190, 727 bytes) runs 12 layer entry points
+  and updates VM Fog/Z render state; see [STAGE_CULLING](STAGE_CULLING.md).
+- The auxiliary stage's `g_MeshEffectActor` singleton at 4A8D64 is the same
+  physical 0x4A0-byte owner whose registration (4061B0) and destruction
+  (406260) are now reconstructed. Its callback jumps into the uninventoried
+  406620 update owner: 208 code bytes plus a **24-byte six-entry switch
+  table**, which must be included when comparing the complete owner. The
+  typed C++ uses the existing character/partner globals rather than
+  duplicating the data owner; see [STAGE_AUXILIARY](STAGE_AUXILIARY.md).
+- The selector at 405E80 publishes camera base `runtime+0x204` with a
+  0x118-byte stride and then calls `ApplyCamera` and D3D SetViewport; its
+  original ESI/EBX convention is private LTCG, not a source-level custom ABI.
+  See [RENDER_CAMERA](RENDER_CAMERA.md).
+
 ## CRT library code and withdrawn asm claims (2026-11-14)
 
 `scripts/scan-library-code.py` matches every code section of the pinned VC9
