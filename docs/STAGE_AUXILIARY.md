@@ -388,3 +388,27 @@ one VM factory call, one caller, and no foreign interior references.
 Pinned VC9 source compilation succeeds; the source's external
 signature and original /GL register allocation remain to be verified
 in its wider producer context.
+
+## Mode-one and mode-four activation leaves (2026-11-17)
+
+The previously source-open initializers at **407A40 (125 bytes)**
+and **407130 (103 bytes)** now live in
+`src/StageAuxiliaryMode14Initialization.cpp`.
+Both take the real auxiliary stage receiver from the 406510
+six-way dispatcher. They set radius=32, step=10, and copy the
+player's position at global 4A8EB4+87C into auxiliary +484.
+Both use the existing game factory
+`AnimationFileView::CreatePositionedVmId`, pass the origin
+rather than fabricating an animation ID, and update the shared
+spell state and event counter at master+14.
+
+Mode one queues sound 0x31 before creating animation script
+0x21 on layer 0x16. Mode four has no extra sound and creates
+script 0x2F on the same layer. The real spell-state helper at
+4068C0 is shared; neither owner is substituted with a stub.
+
+Direct Ghidra review covered the complete 125- and 103-byte
+owners, original calls, return instructions and following CC
+bytes, with no foreign interior entries. They both compile
+under the pinned VC9 toolchain; register allocation, wider
+LTCG ownership and byte-exact status are still open.

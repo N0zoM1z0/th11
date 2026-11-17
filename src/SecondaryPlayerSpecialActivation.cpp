@@ -10,8 +10,8 @@
 struct MeshEffectActorView;
 extern MeshEffectEnemyView *g_MeshEffectEnemy;
 int __stdcall InitializeSecondaryEffect(MeshEffectActorView *self);
-void __stdcall InitializeSecondarySpecialMode1(MeshEffectActorView *self);
-void __stdcall InitializeSecondarySpecialMode4(MeshEffectActorView *self);
+int __stdcall InitializeSecondarySpecialMode1(MeshEffectActorView *self);
+int __stdcall InitializeSecondarySpecialMode4(MeshEffectActorView *self);
 int __stdcall InitializeSecondarySpecialMode5(MeshEffectActorView *self);
 
 namespace
