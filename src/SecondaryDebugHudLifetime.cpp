@@ -10,20 +10,23 @@ void __stdcall PrepareSecondaryDebugHudDestruction(SecondaryDebugHudOwned *self)
 
 namespace
 {
-__forceinline void UnregisterHudChain(ChainElement *element)
+typedef void (WINAPI *HudCriticalSectionOperation)(LPCRITICAL_SECTION);
+
+__forceinline void UnregisterHudChain(ChainElement *element,
+    HudCriticalSectionOperation enter, HudCriticalSectionOperation leave)
 {
     ChainManagerView *manager = g_ChainManager;
     if (!element)
         return;
     if (g_MainRuntime.flags & 0x8000u)
     {
-        EnterCriticalSection(&g_MainRuntime.criticalSections[0]);
+        enter(&g_MainRuntime.criticalSections[0]);
         ++g_MainRuntime.criticalDepth[0];
     }
     UnregisterChainElement(manager, element);
     if (g_MainRuntime.flags & 0x8000u)
     {
-        LeaveCriticalSection(&g_MainRuntime.criticalSections[0]);
+        leave(&g_MainRuntime.criticalSections[0]);
         --g_MainRuntime.criticalDepth[0];
     }
 }
@@ -68,9 +71,11 @@ SecondaryDebugHudOwned::~SecondaryDebugHudOwned()
 {
     PrepareSecondaryDebugHudDestruction(this);
 
-    UnregisterHudChain(updateChain);
-    UnregisterHudChain(drawChain);
-    UnregisterHudChain(overlayChain);
+    HudCriticalSectionOperation enter = EnterCriticalSection;
+    HudCriticalSectionOperation leave = LeaveCriticalSection;
+    UnregisterHudChain(updateChain, enter, leave);
+    UnregisterHudChain(drawChain, enter, leave);
+    UnregisterHudChain(overlayChain, enter, leave);
 
     updateChain = 0;
     ReleaseSecondaryAnimation(AnimationVmId(effectVmId));

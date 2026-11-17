@@ -634,3 +634,20 @@ callback's volatile ordinary C++ function-pointer consumer preserves
 the native push-ebx/mov-ebx-ecx/call/pop-ebx/ret handoff; its
 single REL32 also replays with zero differences. Both are separate
 complete public primary-TU owners, with no assembly or padding.
+
+
+## 729-byte HUD destructor codegen frontier (0x41AFC0)
+
+The destructor now captures the chain-manager singleton and the imported
+Enter/LeaveCriticalSection operations once, then passes those original
+owners through the three real unregister operations. This matches the
+native's shared register-held manager and critical-section function
+pointers instead of reloading the manager per chain and making repeated
+IAT calls. The complete natural VC9 /GL owner fell from the earlier
+772-byte/200-instruction candidate to **725 bytes/192 instructions**
+against the native 729/195. The three direct unregister calls and the
+complete 8-ID/two-renderer-list cleanup remain in the body. Register
+assignment, the inline found-VM path placement and the remaining four
+bytes are still open; this is not exact. The dependent 150-byte factory
+and 28-byte global-destruction units were cold-replayed after the source
+change and remain exact with zero differences.

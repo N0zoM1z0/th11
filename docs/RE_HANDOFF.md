@@ -37,7 +37,7 @@ Do not return to the obsolete 15-VM / 0x4450 view.
 | `41C5F0` front HUD drawing, 105 B | **exact** | `secondary-hud-front-draw`; 105/105 and five audited fields |
 | `41A520` visual/resource initialization, 336 B | **exact** | `secondary-debug-hud-visual-init`; 336/336, 21 audited fields |
 | `41AD30` pre-destruction cleanup, 468 B | natural source, nonexact | `src/SecondaryDebugHudPrecleanup.cpp`; candidate 448 B / 126 decoded instructions |
-| `41AFC0` destructor, 729 B | natural source, nonexact | `src/SecondaryDebugHudLifetime.cpp`; 741-byte /GL candidate, 195 decoded instructions |
+| `41AFC0` destructor, 729 B | natural source, nonexact | `src/SecondaryDebugHudLifetime.cpp`; 725-byte/192-instruction /GL candidate |
 | `41AF30` cleanup helper, 129 B | **exact** | `secondary-debug-hud-finalization`; 129/129 and eight audited fields |
 | `41B360` global destruction, 28 B | **exact** | `secondary-debug-hud-global-destroy`; 28/28 and three audited fields |
 | `41A6D0` HUD initialization dispatch, 1,619 B | natural source, nonexact | `src/SecondaryDebugHudAnimationInitialization.cpp`; 1,619-byte /GL candidate / 403 instructions (native 402) |
@@ -48,7 +48,8 @@ from `config/match-units.toml` to renew one; see
 [secondary debug lifecycle](SECONDARY_DEBUG_LIFECYCLE.md).
 Registration is now exact: a genuine independent generic-priority
 and document-slot C++ consumer recovered the native private registers.
-The 729-byte destructor and 336-byte resource initializer remain open. The 468-byte precleanup now has a native-style typed slot pointer,
+The 729-byte destructor remains open at 725/729 bytes and 192/195
+instructions; the 336-byte resource initializer is now strictly exact. The 468-byte precleanup now has a native-style typed slot pointer,
 countdown VM loop and a generic normal-COFF caller; 448 bytes/126
 instructions versus native 468/128, still nonexact.
 
