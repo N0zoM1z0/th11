@@ -319,3 +319,35 @@ C++ EH-handler *code*, the 339-byte registrar and the 729-byte
 destructor remain separately bounded owners; their exactness
 must not be inferred from this success. No hand-authored machine
 code, ASM or padding was added.
+
+## Full HUD registration owner (0x41A3C0, 339 bytes)
+
+The native 339-byte `RegisterSecondaryHudChains` now has natural
+C++ in `src/SecondaryDebugHudRegistration.cpp`. Its physical
+receiver is the existing `SecondaryDebugHudOwned` singleton,
+whose 0x4458-byte allocation and 208-byte constructor are already
+strict exact.
+
+The registrar acquires the *actual* `front.anm` animation document
+(index 5), stores it at owner+0x444C, and on failure writes the
+original resource error through `AppendLog` and returns -1. A
+successful file load calls the independent 336-byte
+`InitializeSecondaryDebugHudVisuals` before installing any chain
+callbacks; a nonzero return likewise prevents registration.
+The native creates **three distinct 0x24-byte chain nodes**, assigns
+callbacks at 41CFB0, 41CFC0 and 41CFD0, registers them with
+update priority **24**, draw priority **57**, and overlay draw
+priority **42**, and stores them at HUD+8,+C,+43DC respectively.
+No allocation-error shortcut was added.
+
+Ghidra verified the complete 339-byte body, six callees, unique
+factory caller, terminal RET4 and absence of foreign interior
+references. The scoped `secondary-debug-hud-registration-frontier`
+compiles a real dynamic owning factory and real chain source under
+pinned VC9 /GL, yielding a **328-byte candidate with 104 of 112
+normalized native instructions aligned** in the current live
+context. The critical remaining differences are compiler-private
+`AcquireAnimationDocument` (native filename in EBX, index in ECX),
+`AppendLog` (native ECX log receiver), and a small prologue/epilogue
+register lifetime choice. None of these is masked by padding or
+ASM. This owner is **source-complete, not yet byte-exact**.

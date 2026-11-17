@@ -482,6 +482,7 @@ RecreateMusicBuffers
 RefillMusicBuffer
 RefreshMenuPlayerDataRecords
 RefreshSecondaryPlayerEmitters
+RegisterSecondaryHudChains
 RegisterSecondaryProgramBrowserChains
 RegisterSecondarySpellStageChains
 RegisterStageAuxiliaryChains

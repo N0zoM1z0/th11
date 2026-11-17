@@ -329,7 +329,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0041A0F0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0041A250,unknown,SecondaryHud,indeterminate,unknown,secondary-hud-draw-origin-2026-11-06
 0x0041A2F0,authored_game,SecondaryDebugHUD,authored,high,hud-constructor-ghidra-ltcg-20261117
-0x0041A3C0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0041A3C0,authored_game,SecondaryDebugHUD,authored,high,hud-registration-ghidra-20261117
 0x0041A520,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0041A6D0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0041AD30,authored_game,SecondaryDebug,authored,high,hud-precleanup-dialogue-ghidra-20261117

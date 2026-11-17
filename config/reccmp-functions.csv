@@ -483,6 +483,7 @@ RecreateMusicBuffers,0x0045A4F0,function
 RefillMusicBuffer,0x0045A6F0,function
 RefreshMenuPlayerDataRecords,0x0043F120,function
 RefreshSecondaryPlayerEmitters,0x00410610,function
+RegisterSecondaryHudChains,0x0041A3C0,function
 RegisterSecondaryProgramBrowserChains,0x00438660,function
 RegisterSecondarySpellStageChains,0x0040BD00,function
 RegisterStageAuxiliaryChains,0x004061B0,function

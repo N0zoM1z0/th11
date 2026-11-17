@@ -10395,3 +10395,27 @@ linkages = [
   { offset = 99, type = "REL32", symbol = "??1SecondaryDebugHudOwned@@QAE@XZ", target = 0x0041AFC0 },
   { offset = 105, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x0045FD49 },
 ]
+
+# Scoped 339-byte HUD three-chain registration. Original native callbacks
+# and font/document load remain external until their own bounded proofs.
+[units.secondary-debug-hud-registration-frontier]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/SecondaryDebugHudRegistration.cpp"
+inputs = ["src/SecondaryDebugHudLifetime.hpp", "src/SecondaryHud.hpp",
+          "src/SecondaryDebugHudFactory.cpp",
+          "probes/secondary-debug-hud-registration-context.cpp"]
+support_sources = ["src/SecondaryDebugHudFactory.cpp",
+                   "src/SecondaryDebugHudConstruction.cpp",
+                   "src/StageLifecycle.cpp", "src/ChainRegistration.cpp",
+                   "src/SecondaryDebugHudLifetime.cpp",
+                   "src/AnimationDocument.cpp", "src/LogBuffer.cpp",
+                   "probes/secondary-debug-hud-registration-context.cpp"]
+output_dir = "build/match-linked/SecondaryDebugHudRegistrationFrontier"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryDebugHudRegistrationProbe@4"
+functions = ["RegisterSecondaryHudChains"]
+symbol = "?RegisterSecondaryHudChains@@YGHPAUSecondaryDebugHudOwned@@@Z"
+target_address = 0x0041A3C0
+size = 339
+linkages = []
