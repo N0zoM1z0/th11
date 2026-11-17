@@ -9842,3 +9842,41 @@ relocations = [
   { offset = 51, type = "DIR32", symbol = "__real@0000000000000000", target = 0x00497EC0 },
   { offset = 67, type = "DIR32", symbol = "__real@407c000000000000", target = 0x00497EB8 },
 ]
+
+# Original mode-1 caller plus both real radius-clear owners, no broad replay.
+# These are diagnostic nonexact linked-PE units (not exact proof receipts).
+[units.auxiliary-scene-radius-frontier]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/StageAuxiliaryRadiusActors.cpp"
+inputs = ["src/SecondaryClearing.hpp", "src/SecondaryPattern.hpp", "src/AngleMath.hpp",
+          "src/StageAuxiliaryMode1Effect.cpp", "src/SecondaryActorRetaliationRadius.cpp",
+          "probes/auxiliary-radius-context.cpp"]
+support_sources = ["src/StageAuxiliaryMode1Effect.cpp", "src/SecondaryActorRetaliationRadius.cpp",
+                   "probes/auxiliary-radius-context.cpp"]
+output_dir = "build/match-linked/AuxiliarySceneRadiusFrontier"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AuxiliaryRadiusProbe@4"
+functions = ["CullStageAuxiliaryActorsInRadius"]
+symbol = "?CullStageAuxiliaryActorsInRadius@@YGHPBUCameraVector@@MH@Z"
+target_address = 0x0040B210
+size = 395
+linkages = []
+
+[units.auxiliary-actor-radius-frontier]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/SecondaryActorRetaliationRadius.cpp"
+inputs = ["src/SecondaryActorState.hpp", "src/SecondaryPattern.hpp", "src/AngleMath.hpp",
+          "src/StageAuxiliaryMode1Effect.cpp", "src/StageAuxiliaryRadiusActors.cpp",
+          "probes/auxiliary-radius-context.cpp"]
+support_sources = ["src/StageAuxiliaryMode1Effect.cpp", "src/StageAuxiliaryRadiusActors.cpp",
+                   "probes/auxiliary-radius-context.cpp"]
+output_dir = "build/match-linked/AuxiliaryActorRadiusFrontier"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AuxiliaryRadiusProbe@4"
+functions = ["ClearSecondaryActorsForSceneRadius"]
+symbol = "?ClearSecondaryActorsForSceneRadius@@YGXPBUCameraVector@@MH@Z"
+target_address = 0x00412C50
+size = 449
+linkages = []

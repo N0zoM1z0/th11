@@ -18,11 +18,10 @@ void __stdcall ClearSecondaryActorsForSceneRadius(
     {
         SecondaryActorManagerView *actor = node->actor;
         SecondaryActorNode *next = node->next;
-        SecondaryActorStateView &state = actor->state;
 
-        if (state.flags & 0x800)
+        if (actor->state.flags & 0x800)
         {
-            const CameraVector &point = state.world.position;
+            const CameraVector &point = actor->state.world.position;
             const float dx = static_cast<float>(point.x - center->x);
             const float dy = static_cast<float>(point.y - center->y);
             const float expanded = static_cast<float>(radius + 16.0);
@@ -32,7 +31,7 @@ void __stdcall ClearSecondaryActorsForSceneRadius(
             // the native actor test accepts only ordered less/equal.
             if (distanceSquared <= expanded * expanded)
             {
-                SecondaryCounterView &counter = state.counter;
+                SecondaryCounterView &counter = actor->state.counter;
                 if (counter.flags & 1)
                 {
                     counter.scaled = static_cast<int>(
@@ -54,13 +53,13 @@ void __stdcall ClearSecondaryActorsForSceneRadius(
 
                 // This native owner performs its own inline double-boundary
                 // viewport test with half-extent 2; it does not call 419920.
-                if (static_cast<double>(point.x) + 2.0 > -192.0 &&
-                    static_cast<double>(point.x) - 2.0 < 192.0 &&
-                    static_cast<double>(point.y) + 2.0 > 0.0 &&
-                    static_cast<double>(point.y) - 2.0 < 448.0)
+                if (!(static_cast<double>(point.x) + 2.0 <= -192.0 ||
+                    static_cast<double>(point.x) - 2.0 >= 192.0 ||
+                    static_cast<double>(point.y) + 2.0 <= 0.0 ||
+                    static_cast<double>(point.y) - 2.0 >= 448.0))
                 {
                     const float angle = static_cast<float>(
-                        state.world.angle + 3.1415927410125732421875);
+                        actor->state.world.angle + 3.1415927410125732421875);
                     g_SecondarySceneRetaliationProjectile.angle =
                         NormalizeAngle(angle);
                     SpawnSecondaryProjectile(

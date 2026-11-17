@@ -150,3 +150,36 @@ calls and the terminal RET12, with no external interior entry. VC9
 source compilation succeeds. The owner is natural C++ with no
 ASM/padding, but its linked /GL private register choices and
 full relocation-aware equivalence are still open.
+
+### Focused LTCG comparison of both retaliation-radius bosses
+
+The new `auxiliary-scene-radius-frontier` and
+`auxiliary-actor-radius-frontier` compile the real mode-1 caller
+and the two radius source functions under pinned VC9 `/O2 /GL`,
+without a full-game replay. Their current complete PDB contributions:
+
+| Original owner | Native | Current candidate | Normalized native keys aligned |
+| --- | ---: | ---: | ---: |
+| 40B210 scene retaliation | 395 | 397 | 85 / 107 |
+| 412C50 actor retaliation | 449 | 441 | 121 / 125 |
+
+The scene owner no longer stores the orientation in an unnecessary
+float temporary *before* adding pi; the native performs the addition
+first, then rounds to float for `NormalizeAngle`. Its source directly
+addresses the original projectile's position instead of holding a
+long-lived position reference, preserving the native record-base
+lifetime and improving 81/107 to 85/107 aligned keys.
+
+The actor owner now references the containing actor directly, avoiding
+an extra long-lived `state` alias and recovering the native +0x25BC
+flags addressing. Its viewport expression uses the native negated
+`<= / >=` disjunction, so unordered/NaN components do not trigger
+any of the four rejection comparisons. This is different from a
+conjunction of `> / <`, which rejected NaNs. The revised source
+improves alignment from 114/125 to 121/125.
+
+A diagnostic link adding both real `SecondaryPattern.cpp` and
+`SecondaryPlayerDrop.cpp` made the actor candidate 419 bytes and
+116/125 aligned keys, a poorer result; it was not retained in the
+manifest. Exact codegen remains open, especially the original
+private register passing for spawning projectiles and drops.

@@ -31,30 +31,29 @@ int __stdcall CullStageAuxiliaryActorsInRadius(
         if (!projectile->state || projectile->state == 3 || projectile->kind)
             continue;
 
-        const CameraVector &position = projectile->position;
-        const float dx = static_cast<float>(position.x - center->x);
-        const float dy = static_cast<float>(position.y - center->y);
+        const float dx = static_cast<float>(projectile->position.x - center->x);
+        const float dy = static_cast<float>(projectile->position.y - center->y);
         const float expandedRadius = static_cast<float>(projectile->width * 0.5 + radius);
         const float distanceSquared = static_cast<float>(dx * dx + dy * dy);
         if (distanceSquared > expandedRadius * expandedRadius)
             continue;
 
         ClearSceneProjectile(projectile);
-        if (!SceneClearOutside(&position, 2.0f, 2.0f))
+        if (!SceneClearOutside(&projectile->position, 2.0f, 2.0f))
         {
             // The native projectile's +0x458 float is the orientation for
             // the retaliating pattern. Normalize the float-rounded sum.
-            const float heading = *reinterpret_cast<const float *>(
-                reinterpret_cast<const unsigned char *>(projectile) + 0x458);
             g_SecondarySceneRetaliationProjectile.angle =
                 NormalizeAngle(static_cast<float>(
-                    heading + 3.1415927410125732421875));
+                    *reinterpret_cast<const float *>(
+                        reinterpret_cast<const unsigned char *>(projectile) + 0x458) +
+                    3.1415927410125732421875));
             SpawnSecondaryProjectile(
                 reinterpret_cast<SecondaryDamageReferencesView *>(
                     g_SecondaryPlayerControllerInstance),
-                &g_SecondarySceneRetaliationProjectile, &position, 0);
+                &g_SecondarySceneRetaliationProjectile, &projectile->position, 0);
             if (effects)
-                SpawnSecondaryPlayerDrop(g_SecondaryControllerDrops, &position,
+                SpawnSecondaryPlayerDrop(g_SecondaryControllerDrops, &projectile->position,
                     8, 0xffffffffu, -1.5707963705062866f,
                     0.6000000238418579f);
         }
