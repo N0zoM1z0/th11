@@ -47,13 +47,17 @@ __forceinline void ReleaseTrackedHudVm(unsigned int &id)
 
 __forceinline void ReleaseVmsByHudMarker(BoundVmNodeView *node, int marker)
 {
-    for (; node; node = node->next)
+    while (node)
     {
+        // The native captures each next link before marking a VM. Keeping
+        // the snapshot also preserves traversal if a mark mutates the node.
+        BoundVmNodeView *next = node->next;
         BoundVmView *vm = node->vm;
         const int group = *reinterpret_cast<const int *>(
             reinterpret_cast<const unsigned char *>(vm) + 0x3b0);
         if (group == marker)
             vm->flags |= 0x04000000u;
+        node = next;
     }
 }
 }
@@ -74,8 +78,9 @@ SecondaryDebugHudOwned::~SecondaryDebugHudOwned()
     ReleaseSecondaryAnimation(AnimationVmId(transitionVmId));
     transitionVmId = 0;
 
-    for (int i = 0; i < 8; ++i)
-        ReleaseTrackedHudVm(trackedVmIds[i]);
+    for (unsigned int *current = trackedVmIds;
+         current != trackedVmIds + 8; ++current)
+        ReleaseTrackedHudVm(*current);
 
     BoundVmListsView *lists = reinterpret_cast<BoundVmListsView *>(g_RenderBatch);
     ReleaseVmsByHudMarker(lists->first, ownerMarker);

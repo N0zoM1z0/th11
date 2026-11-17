@@ -215,3 +215,25 @@ candidate is 445 bytes with 62/128 normalized native instructions
 aligned; this is **source coverage, not exactness**. The separate
 dialogue destructor is independently strict exact (101/101), as
 recorded above; that fact does not imply this larger caller is exact.
+
+## Owning HUD destructor source-order refinement
+
+The 729-byte native `SecondaryDebugHudOwned` destructor at
+0x41AFC0 remains an independent nonexact owner. Its source now
+uses a typed pointer interval for the eight animation IDs, and
+preserves the **next** VM-list node before inspecting and marking
+the current one. The latter is important if an affected callback
+changes a list while the current VM is marked; it also reflects
+the original decompiler's explicit snapshot on both renderer lists.
+
+In the bounded VC9 /GL context containing the newly reconstructed
+468-byte `PrepareSecondaryDebugHudDestruction` and the already
+**101/101 byte exact** dialogue leaf, the destructor's natural C++
+PDB contribution is **772 bytes**, with **113/195 native instruction
+keys** aligned (the initial simpler source aligned 92/195).
+This diagnostic does not prove linked byte equality and does not
+increase canonical exact credit. The outstanding differences
+involve the original private ESI/EDI calling convention, the
+three registration-removal callsites, and register/loop scheduling
+around the two renderer lists and genuine 9/2/4 VM arrays.
+No ASM, forced instruction sequence or padding was inserted.
