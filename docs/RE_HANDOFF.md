@@ -4,7 +4,14 @@
 
 Reconstruct only the original Japanese TH11 v1.00a executable at `resources/th11.exe` (SHA-256 `2978b17f6184d100d249d4311348dd30c5c32ec75c014b667a525b797d3d8813`). Use the pinned VC9 / Visual C++ 2008 RTM build 21022 toolchain. Keep the original executable, `.tools/`, Wine prefix and Ghidra project private. Use direct `scripts/ghidra.py`; do not substitute another game executable or toolchain.
 
-Current branch is `main`. This continuation corrected the six-way auxiliary activation receiver and restored the three remaining special initialization leaves (`89ee417`, `ba8a1c6` and a subsequent source/layout refinement), plus the 537-byte scene boundary-effects boss (`28ae959`) and 624-byte spell-stage updater (`74891d3`). Preserve the `gpt-web: ...` commit prefix. Build/replay only affected units, not the full cohort.
+Current branch is `main` (no push). The latest session reconstructed mode-one/four initialization, the complete 1,777-byte stage-spell initializer, 370-byte spell HUD owner, 80-byte checksum leaf, and 368-byte timing settlement function, all in natural C++ with `gpt-web:` commits through `417a201`. Diagnostic LTCG frontiers and source refinements were saved through `234493f`. Preserve existing dirty work; compile only affected units, never the full cold replay.
+
+## Current spell-stage chain and evidence (2026-11-17)
+
+- **Six complete new source mappings / 2,823 target bytes**: mode-one (407A40,125 B) and mode-four (407130,103 B) special initialization, `InitializeSecondarySpellStage` (40C650,1,777 B), `DrawSecondarySpellStage` (40C4A0,370 B), `CheckSecondarySpellRecordCode` (40BB50,80 B), `SettleSecondarySpellStageTime` (40C310,368 B). Their physical runtime view is shared in `src/SecondarySpellStage.hpp`; no new executable ASM or padding was introduced. All compile with pinned VC9. **Current ledger: 2,171 candidates, 789 source mappings, 458 canonical exact units.** These six owners remain non-exact.
+- **Original jump-table ownership:** The 1,777-byte native initializer covers 40C650..40CD40, with its seven-entry switch table separately at 40CD44..40CD5F. Ghidra's seven interior references are compiler table edges, not foreign code/function entries. The source uses a normal C++ `switch`. `secondary-spell-stage-init-frontier` produces a 1,560-byte candidate with **115/468** normalized native instruction keys aligned; the original private EAX string/RET8 ABI and real full-caller closure remain open.
+- **HUD drawing:** `secondary-spell-stage-draw-frontier` has a **384-byte** PDB owner vs 370 native and **65/89** aligned keys. Branch-specific natural float-position initialization improved the earlier 352-byte / 53-key candidate, but the native private EAX receiver and `AsciiManagerPrint` call ABI are not exact.
+- **Score/clock chain:** Timer double fields at stage+8FC/+904 require *4-byte packing*; the 368-byte settlement uses original `GetFrameClockSeconds`, `fmod` by 0.0167, threshold 0.00835, signed floor/hundredths and the real attempt/replay record tables. The 80-byte signed checksum leaf at 40BB50 checks stage+90C. Normal-COFF diagnostic for timing settlement is 356 bytes vs 368 native (25/300 comparable bytes); **not exact**. No full cohort was replayed. See [SECONDARY_SPELL_STAGE](SECONDARY_SPELL_STAGE.md).
 
 ## Focused large stage-rendering frontiers
 
@@ -118,10 +125,10 @@ On 2026-11-17, removed only six ignored, unreferenced experiment-output director
 
 ## Next actions
 
-1. Continue the **395-byte scene retaliation** and **449-byte actor retaliation** frontiers (current candidate 397/441 bytes, alignment 85/107 and 121/125). Their current outstanding gaps are native private spawn/drop calling conventions, translation-unit layout and a few instruction scheduling differences. A narrow full-callee support-link was less faithful and is intentionally not retained; avoid guessing forced calling-convention declarations. Keep the new exact 419920 leaf untouched.
-2. Resume the **1,643-byte `CullStageObject`** and **727-byte `DrawStageLayer`** scoped frontiers: 1,468 bytes / 297-of-504 aligned and 723 bytes / 98-of-191 respectively. Preserve correct x87 rounding, copied layer offset, and independent fog/scale stores. Both remain non-exact.
-3. Continue `ExecuteStageScript` from 2,728/2,736 bytes and `StepStageVectorTween` from 883/883 bytes (272/280 aligned). Recover native source/control flow and EH ownership, never use ASM or inert padding.
-4. Revisit `InitializePrimaryStageScripts` (246/249 diagnostic), `StageScriptMeshConstructor` (366/389), and auxiliary destructor EH ownership only through bounded affected builds. Do not run a full cold replay.
+1. Continue `InitializeSecondarySpellStage` (1777/1560 native/candidate bytes, 115/468 diagnostic keys) with its **real original caller** and VC9 private EAX/stack ABI. The switch table is separately owned at 40CD44; keep it out of the function-size claim. Also refine `DrawSecondarySpellStage` (370/384, 65/89), `SettleSecondarySpellStageTime` (368/356 normal COFF), and the 80-byte checksum leaf. Prefer natural expressions and exact spell-record field semantics to code-size tricks.
+2. Resume `ExecuteStageScript` (2,736 bytes, candidate 2,728, 531/610 keys), `StepStageVectorTween` (883 bytes, candidate 883, 272/280 keys), and the large `CullStageObject`/ `DrawStageLayer` pair. The tween has measured source-order variants in ignored `.analysis`; none met strict exactness and existing source was restored.
+3. Recheck native 0x406510 six-way special activation and its 407A40/407130/407680 mode initializers in a real caller context; the singleton receiver is **4A8D64**, not 4A8EB4. Do not claim seven unrelated broad downstream exact units were rebuilt by the local source compiles.
+4. Keep validations bounded to edited sources and their actual producer dependencies. Run a full cold replay only if explicitly needed and explained; no ASM, executable patch or padding.
 
 ## Working references
 
