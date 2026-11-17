@@ -185,6 +185,7 @@ CreateSecondaryHudScreenEffect
 CreateSecondaryManager
 CreateSecondaryMaster
 CreateSecondaryPlayerController
+CreateSecondarySpellStage
 CreateStageAuxiliary
 CreateStageMeshRow
 CreateStageResource
@@ -203,6 +204,7 @@ DeletePbgWinResourceMemoryFile
 DeleteReplayCompressionNode
 DeleteReplayFileBrowser
 DeleteSecondaryMaster
+DeleteSecondarySpellStageReturningPointer
 DeleteThreadInfVirtual
 DeleteTitleMenu
 DestroyAnimationDocument
@@ -217,6 +219,7 @@ DestroyReplayRecordStageLink
 DestroySecondaryAuxiliaryOwner
 DestroySecondaryMaster
 DestroySecondaryProgramBrowser
+DestroySecondarySpellStage
 DestroyStageAuxiliary
 DestroyThreadInfVirtual
 DestroyTitleMenuStorage
@@ -589,6 +592,7 @@ SecondaryProjectileAngleDifference
 SecondaryProjectileOutside
 SecondaryScriptTable
 SecondarySpellDrawCallback
+SecondarySpellStageOwned::~SecondarySpellStageOwned
 SecondarySpellUpdateCallback
 SecondaryStackAbsoluteAddress
 SecondaryStackRelativeAddress

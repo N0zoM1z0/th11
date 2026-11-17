@@ -293,3 +293,50 @@ natural `__fastcall` source adapters; their **original native
 register-specialized machine code** is recorded as evidence, not
 reproduced using ASM, an injected JMP or alignment bytes.
 The 256+10+7 target extents are source-present but nonexact.
+
+## Owning constructor, destructor and lifetime wrappers
+
+The 0x924-byte owning stage spell C++ object now has real lifecycle
+source in `src/SecondarySpellStageLifecycle.cpp`. This **does not**
+allocate another singleton; it publishes/clears the same 4A8D6C
+object that the initializer, updater and HUD treat as
+`SecondarySpellStageView`.
+
+`CreateSecondarySpellStage` (40BF90, 206 bytes) uses
+`new SecondarySpellStageOwned`. Its **two genuine
+StageEmbeddedVm members** are constructed as normal C++ array
+members before its constructor clears the entire 0x924 bytes,
+sets bit1 at +0 and publishes the singleton. The target
+similarly resets VM constructor state after the vector constructor
+runs; the original behavior is intentionally preserved, not
+"fixed" by avoiding the initialization.
+
+It then calls the real two-chain registrar (40BD00) even if
+allocation returned null. On a nonzero registrar result, it
+destroys and deletes the owner and returns null. The target's
+SEH/vector-constructor unwind and original class identity
+still require real /GL producer comparison.
+
+`SecondarySpellStageOwned::~SecondarySpellStageOwned`
+(40BE50, 317 bytes) releases each of the three follower VM
+IDs at +878/+87C/+880 in order, zeroing each; it independently
+unregisters chain pointers +8 and +C. Each non-null chain
+removal checks runtime flags bit0x8000, enters the true runtime
+critical section0 and increments its depth, unregisters,
+**rechecks the runtime flag** and then leaves/decrements.
+The original destructor clears global 4A8D6C before the
+compiler-generated array destructor frees the two embedded VMs'
+native storage400 pointers. This is naturally expressed by
+the owning C++ destructor body and the member-array destructor,
+not handwritten EH instructions or padding.
+
+The source also restores two distinct, previously unmapped
+native entry points. `DeleteSecondarySpellStageReturningPointer`
+(40C060, 18 bytes) deletes the given stage object and returns
+the previous pointer value as the native wrapper does.
+`DestroySecondarySpellStage` (40C080, 28 bytes) captures the
+global pointer once, skips null, otherwise destroys and deletes
+it. Both source bodies are ordinary C++ and maintain independent
+function boundaries. All four owners compile under pinned
+VC9 /GL; they are **nonexact** until full EH/callsite and byte
+proofs are available.

@@ -36,5 +36,8 @@ typedef char SecondarySpellOwnedTimerOffset[
 
 int __stdcall RegisterSecondarySpellStageChains(SecondarySpellStageOwned *self);
 SecondarySpellStageOwned *CreateSecondarySpellStage();
+SecondarySpellStageOwned *DeleteSecondarySpellStageReturningPointer(
+    SecondarySpellStageOwned *self);
+void DestroySecondarySpellStage();
 int __fastcall SecondarySpellUpdateCallback(void *self);
 int __fastcall SecondarySpellDrawCallback(void *self);

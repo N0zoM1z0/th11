@@ -186,6 +186,7 @@ CreateSecondaryHudScreenEffect,0x004489E0,function
 CreateSecondaryManager,0x0045DB90,function
 CreateSecondaryMaster,0x00411070,function
 CreateSecondaryPlayerController,0x004301B0,function
+CreateSecondarySpellStage,0x0040BF90,function
 CreateStageAuxiliary,0x00406440,function
 CreateStageMeshRow,0x0042B3D0,function
 CreateStageResource,0x004029C0,function
@@ -204,6 +205,7 @@ DeletePbgWinResourceMemoryFile,0x00442F40,function
 DeleteReplayCompressionNode,0x00442AB0,function
 DeleteReplayFileBrowser,0x00438000,function
 DeleteSecondaryMaster,0x00411100,function
+DeleteSecondarySpellStageReturningPointer,0x0040C060,function
 DeleteThreadInfVirtual,0x004593E0,function
 DeleteTitleMenu,0x00439970,function
 DestroyAnimationDocument,0x004549E0,function
@@ -218,6 +220,7 @@ DestroyReplayRecordStageLink,0x004374D0,function
 DestroySecondaryAuxiliaryOwner,0x0040E190,function
 DestroySecondaryMaster,0x00410E90,function
 DestroySecondaryProgramBrowser,0x00438710,function
+DestroySecondarySpellStage,0x0040C080,function
 DestroyStageAuxiliary,0x004064F0,function
 DestroyThreadInfVirtual,0x00459410,function
 DestroyTitleMenuStorage,0x004396C0,function
@@ -590,6 +593,7 @@ SecondaryProjectileAngleDifference,0x00435480,function
 SecondaryProjectileOutside,0x00435560,function
 SecondaryScriptTable,0x0045B600,function
 SecondarySpellDrawCallback,0x0040C640,function
+SecondarySpellStageOwned::~SecondarySpellStageOwned,0x0040BE50,function
 SecondarySpellUpdateCallback,0x0040C630,function
 SecondaryStackAbsoluteAddress,0x0045B5D0,function
 SecondaryStackRelativeAddress,0x0045B5C0,function
