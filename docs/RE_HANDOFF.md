@@ -4,7 +4,7 @@
 
 Reconstruct only the original Japanese TH11 v1.00a executable at `resources/th11.exe` (SHA-256 `2978b17f6184d100d249d4311348dd30c5c32ec75c014b667a525b797d3d8813`). Use the pinned VC9 / Visual C++ 2008 RTM build 21022 toolchain. Keep the original executable, `.tools/`, Wine prefix and Ghidra project private. Use direct `scripts/ghidra.py`; do not substitute another game executable or toolchain.
 
-Current branch is `main`. This continuation has six source commits through `fbdc99a`: the native auxiliary singleton correction `619578d`, scoped culling producer `0eba967`, 727-byte layer rewrite `8c46df1`, and auxiliary postpasses `731c2f4`, `361411b`, `fbdc99a`. Preserve the `gpt-web: ...` commit prefix. Follow `AGENTS.md`; compile/replay only affected units, not the full cohort.
+Current branch is `main`. The latest continuation recovered the actor horizontal-band clear (`6c14e9a`), exact actor viewport leaf (`ab85377`), scene retaliation radius (`006caf2`), actor retaliation radius (`771a874`), and linked-radius source refinements (`d53fdb3`). Preserve the `gpt-web: ...` commit prefix. Follow `AGENTS.md`; compile/replay only affected units, not the full cohort.
 
 ## Focused large stage-rendering frontiers
 
@@ -34,8 +34,10 @@ Current branch is `main`. This continuation has six source commits through `fbdc
 - The auxiliary stage object at global 4A8D64 now has six source-present lifecycle owners totaling 796 bytes, including the 477-byte destructor. It shares the existing `g_MeshEffectEnemy` data owner; `g_MeshEffectActor` remains at 4A8EB4. The previously uninventoried `UpdateStageAuxiliary` at 406620 now covers the complete 232-byte switch **including its six-entry jump table**. All five mode updater callees now have maintained source (the original register/codegen ownership remains open). See [STAGE_AUXILIARY](STAGE_AUXILIARY.md).
 - `SelectRuntimeCamera` at 405E80 adds 62 bytes of camera selection, ApplyCamera and D3D viewport source. All ten new/recovered function mappings are non-exact, apart from separately existing canonical functions revalidated below.
 - A stale tracking mismatch was fixed: the three stage vector/timer exact rows now use their real C++ member symbols. Previously missing exact ledger entries for `UpdateStageObjects` (153 bytes), `StageUpdateCallback` (7 bytes) and `AdvanceStageTimer` (83 bytes) have fresh, individually cold-built strict zero-difference proofs. `AsciiManagerExpireStrings` is correctly diagnostic/non-exact, not a canonical exact unit.
-- Latest generated ledger: **2,171 candidates; 776 source mappings; 457 canonical exact units**. This counts existing exact functions, not this session's new boss coverage. Verification: `scripts/repo-python scripts/validate-tracking.py --require-target`. The new source files and affected `StageDrawing.cpp` compile with pinned VC9; no full-cold replay was used.
+- Latest generated ledger: **2,171 candidates; 780 source mappings; 458 canonical exact units**. This counts existing exact functions, not this session's new boss coverage. Verification: `scripts/repo-python scripts/validate-tracking.py --require-target`. The new source files and affected `StageDrawing.cpp` compile with pinned VC9; no full-cold replay was used.
 - The mode-3 clearing dependency now has natural source for 406F90 (212 bytes), 424F30 (114-byte virtual-area dispatcher), and 40B0E0 (300-byte projectile-band scan). These reuse the real scene/secondary manager and do not alter any prior exact clearing units. Target original 406F90 only initializes the first two floats of the area extent; its third float is unknown, not assumed zero. See [STAGE_AUXILIARY](STAGE_AUXILIARY.md) and [SECONDARY_CLEARING](SECONDARY_CLEARING.md).
+- The 40B0E0 horizontal-band dependency now has `ClearSecondaryActorsInHorizontalBand` (412B10, complete 312-byte extent) and the **exact** `SecondaryActorViewportPoint::IsOutside` (419920, 93 bytes). That native thiscall leaf has a fresh 93/93 strict pinned VC9 COFF proof and all four reviewed double-constant relocations. Two adjacent heavy retaliation owners also have source: 40B210 (395 bytes; scene-projectile scan and retaliating spawn) and 412C50 (449 bytes; actor-radius scan and retaliating spawn). Both remain **non-exact**.
+- The two new narrowly scoped LTCG frontiers use a real mode-1 dynamic caller: `auxiliary-scene-radius-frontier` emits 397 bytes vs native 395 (85/107 aligned native instruction keys), `auxiliary-actor-radius-frontier` emits 441 vs native 449 (121/125 aligned). The actor source now preserves original unordered viewport comparison outcomes, while the scene source avoids rounding the heading before adding pi. Both still have private spawn/drop call ABI gaps; a trial adding full `SecondaryPattern.cpp` and `SecondaryPlayerDrop.cpp` support reduced actor alignment and was reverted. Details: [SECONDARY_CLEARING](SECONDARY_CLEARING.md).
 
 ### ExecuteStageScript — 0x00404470
 
@@ -78,6 +80,7 @@ scripts/repo-python scripts/build-match-unit.py --unit step-stage-vector-tween
 - `ResetAndBindStageAnimationVm` at 0x405B10: 30 bytes; two reviewed REL32 fields.
 - `SeekStageScriptMarker` at 0x404F20: 113 bytes; `BeginSecondaryStageTransition` at 0x405130: 159 bytes; `BeginPrimaryStageTransition` at 0x4051D0: 103 bytes.
 - `AdvanceStageTimer` at 0x459270: 83 bytes in its isolated linked-PE context.
+- `SecondaryActorViewportPoint::IsOutside` at 0x419920: 93-byte exact member, four reviewed native double-pool DIR32 bindings, no assembly or padding.
 
 These exact owners have focused strict replay records in the canonical match ledgers. Do not infer original class or translation-unit attribution from the source-side layout views where the ledger records provenance as unknown.
 
@@ -107,10 +110,10 @@ On 2026-11-17, removed only six ignored, unreferenced experiment-output director
 
 ## Next actions
 
-1. Continue the **1,643-byte `CullStageObject`** (current scoped candidate 1,468 bytes / 297-of-504 normalized keys) and **727-byte `DrawStageLayer`** (723 bytes / 98-of-191). Preserve the natural X87 rounding, offset snapshot, Fog branches, and scale write order; close original D3DX register/stack and linker-field gaps using only their two scoped VC9 /GL frontiers.
-2. Complete the auxiliary clearing dependency: the **302-byte actor horizontal-band** owner at 412B10 is called from the now-restored 40B0E0 and the **395-byte scene actor radius** owner at 40B210 is called from 407B50. Confirm the auxiliary constructor/destructor EH ownership separately; none of these new C++ sources has byte-exact credit.
-3. Continue `ExecuteStageScript` from 2,728/2,736 bytes and `StepStageVectorTween` from 883/883 bytes (272/280 normalized instructions). Focus on source-faithful x87 operand ordering and EH/funclet ownership; do not insert ASM or padding.
-4. Revisit `InitializePrimaryStageScripts` (246/249 diagnostic) and `StageScriptMeshConstructor` (366/389) with bounded real-caller contexts only. Never replay the full cohort for a local edit.
+1. Continue the **395-byte scene retaliation** and **449-byte actor retaliation** frontiers (current candidate 397/441 bytes, alignment 85/107 and 121/125). Their current outstanding gaps are native private spawn/drop calling conventions, translation-unit layout and a few instruction scheduling differences. A narrow full-callee support-link was less faithful and is intentionally not retained; avoid guessing forced calling-convention declarations. Keep the new exact 419920 leaf untouched.
+2. Resume the **1,643-byte `CullStageObject`** and **727-byte `DrawStageLayer`** scoped frontiers: 1,468 bytes / 297-of-504 aligned and 723 bytes / 98-of-191 respectively. Preserve correct x87 rounding, copied layer offset, and independent fog/scale stores. Both remain non-exact.
+3. Continue `ExecuteStageScript` from 2,728/2,736 bytes and `StepStageVectorTween` from 883/883 bytes (272/280 aligned). Recover native source/control flow and EH ownership, never use ASM or inert padding.
+4. Revisit `InitializePrimaryStageScripts` (246/249 diagnostic), `StageScriptMeshConstructor` (366/389), and auxiliary destructor EH ownership only through bounded affected builds. Do not run a full cold replay.
 
 ## Working references
 
