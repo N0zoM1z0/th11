@@ -33,17 +33,20 @@ int __stdcall InitializeSecondaryDebugHudVisuals(SecondaryDebugHudOwned *self)
         return -1;
     }
 
-    const int selection =
-        (g_SecondaryHudCharacterIndex + 2) * 3 + g_SecondaryHudPartnerIndex;
-    const char *selectedFilename = g_SecondaryHudFilenameTable[selection];
     if (g_SecondaryHudPreparedData)
     {
         self->preparedData = g_SecondaryHudPreparedData;
+        const int selection =
+            g_SecondaryHudPartnerIndex + (g_SecondaryHudCharacterIndex + 2) * 3;
+        const char *selectedFilename = g_SecondaryHudFilenameTable[selection];
         InputAcquireHook(g_SecondaryHudLoadSkipFormat, selectedFilename);
         g_SecondaryHudPreparedData = 0;
     }
     else
     {
+        const int selection =
+            (g_SecondaryHudCharacterIndex + 2) * 3 + g_SecondaryHudPartnerIndex;
+        const char *selectedFilename = g_SecondaryHudFilenameTable[selection];
         // The native clears one byte and appends an unbounded filename,
         // relying on the already established global buffer's capacity.
         g_SecondaryProgramFilename[0] = 0;

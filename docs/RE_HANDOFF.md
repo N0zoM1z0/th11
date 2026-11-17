@@ -34,7 +34,7 @@ Do not return to the obsolete 15-VM / 0x4450 view.
 | `41B2A0` factory, 150 B | **exact** | `secondary-debug-hud-factory-frontier`, 150/150 |
 | `419F80` dialogue VM release, 101 B | **exact** | `secondary-debug-hud-dialogue-frontier`, eight checked REL32 |
 | `41A3C0` three-chain registration, 339 B | **exact** | `secondary-debug-hud-registration`; 339/339 and 15 verified fields |
-| `41A520` visual/resource initialization, 336 B | natural source, nonexact | `src/SecondaryDebugHudVisualInitialization.cpp`; candidate 307 B / 75 of 96 |
+| `41A520` visual/resource initialization, 336 B | natural source, nonexact | `src/SecondaryDebugHudVisualInitialization.cpp`; 336-byte scoped candidate, timer scheduling gap |
 | `41AD30` pre-destruction cleanup, 468 B | natural source, nonexact | `src/SecondaryDebugHudPrecleanup.cpp`; candidate 445 B / 62 of 128 |
 | `41AFC0` destructor, 729 B | natural source, nonexact | `src/SecondaryDebugHudLifetime.cpp`; recorded 772 B / 114 of 195 |
 | `41AF30` cleanup helper, 129 B | **exact** | `secondary-debug-hud-finalization`; 129/129 and eight audited fields |

@@ -409,12 +409,17 @@ from 4A56E4 is stored at +43E4. Both the owning type's
 
 Ghidra reviewed the full 41A520..41A66F code extent,
 including four callees and the next owner boundary.
-Pinned VC9 `secondary-debug-hud-visual-init-frontier`
-compilation currently yields **307 bytes and 75/96 normalized
-native instructions aligned**, a diagnostic, **nonexact** result.
-Its remaining gaps are the native private EBX/ECX caller
-allocation, error logger convention and the compiler-inlined
-unbounded string copy. No ASM/padding was used.
+The bounded VC9 `secondary-debug-hud-visual-init-frontier`
+initially produced **307 bytes**. Linking genuine generic-priority,
+animation-file-slot, logger and resource-load producers restored the
+native EBX/ECX conventions, raising the candidate to 315 bytes. The
+native separately computes the filename table index on the cache-hit
+and disk-load branches; preserving those two natural C++ paths restores
+the **complete 336-byte candidate** with 21 detected address fields.
+Its branch/file-copy instructions and most timer stores now agree in
+layout with the original 336-byte body. The remaining timer/store
+instruction scheduling differs; the candidate is **nonexact**.
+No ASM, padding, cropped comparison or fake ABI is used.
 
 ## Independent 129-byte HUD scene-resource cleanup (0x41AF30)
 

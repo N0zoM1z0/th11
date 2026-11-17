@@ -10451,6 +10451,10 @@ support_sources = ["src/SecondaryDebugHudRegistration.cpp",
                    "src/SecondaryDebugHudConstruction.cpp",
                    "src/StageLifecycle.cpp", "src/ChainRegistration.cpp",
                    "src/SecondaryDebugHudLifetime.cpp",
+                   "src/AnimationDocument.cpp", "src/LogBuffer.cpp",
+                   "src/ResourceFile.cpp",
+                   "probes/animation-document-load-context.cpp",
+                   "probes/resource-file-context.cpp",
                    "probes/secondary-debug-hud-registration-context.cpp"]
 output_dir = "build/match-linked/SecondaryDebugHudVisualInitFrontier"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
