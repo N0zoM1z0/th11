@@ -1,4 +1,5 @@
 #include "SecondaryDebugSessionLifecycle.hpp"
+#include "SecondaryDebugHudLifetime.hpp"
 #include "SecondaryActorRuntime.hpp"
 #include "SecondaryClearing.hpp"
 #include "SecondaryPlayerController.hpp"
@@ -14,7 +15,6 @@
 // ASM shim, or invented destructor implementation is introduced here.
 extern SecondaryPlayerControllerView *g_SecondaryPlayerControllerInstance;
 extern SecondaryEclDebugOwner *g_SecondaryDebugSession;
-void __stdcall DestroySecondaryDebugHud(SecondaryActorHudView *self);
 void __stdcall DestructSecondaryPlayerStorage(SecondaryPlayerControllerView *self);
 void __stdcall DestroySceneProjectilePool(SceneClearPoolView *self);
 void __stdcall DestroySecondaryMaster(SecondaryMasterView *self);
@@ -59,12 +59,10 @@ SecondaryEclDebugOwner::~SecondaryEclDebugOwner()
     UnregisterDebugChain(updateChain);
     UnregisterDebugChain(drawChain);
 
-    SecondaryActorHudView *hud = g_SecondaryActorHud;
+    SecondaryDebugHudOwned *hud =
+        reinterpret_cast<SecondaryDebugHudOwned *>(g_SecondaryActorHud);
     if (hud)
-    {
-        DestroySecondaryDebugHud(hud);
-        ::operator delete(hud);
-    }
+        delete hud;
 
     SecondaryPlayerControllerView *player = g_SecondaryPlayerControllerInstance;
     if (player)

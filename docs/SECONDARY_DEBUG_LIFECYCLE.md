@@ -73,11 +73,17 @@ naked/ASM machine-code wrappers. The original 462-byte span,
 14 callee sites, SEH ownership, boundaries and neighboring
 alignment were reviewed directly. The focused real-caller
 `secondary-debug-session-destructor-frontier` emits a
-**460-byte candidate with 118/127 normalized native instruction
-keys aligned**. Remaining differences are native private
-ECX/EDX chain-removal calls, a stage-auxiliary destructor
-calling-convention difference, and the compiler's member
-destruction/EH scheduling. It is source-complete but **nonexact**.
+**464-byte candidate with 124/127 normalized native instruction
+keys aligned** after adding real `ChainRemove`,
+`SecondaryMasterDestruction`, `StageAuxiliaryLifecycle`
+and `SecondaryDebugHudLifetime` producer inputs. The native
+private call registers are recovered in these contexts without
+ASM or special-purpose call shims. Remaining differences involve
+the compiler's initial EH state and final virtual thread member
+destructor scheduling. Linking the entire `FrameRuntime.cpp`
+or changing the owned heap pointer to volatile made the candidate
+less faithful and was rejected. The large owner is
+source-complete but **nonexact**.
 
 ## Full 729-byte debug HUD destructor at 0x41AFC0
 
