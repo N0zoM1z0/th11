@@ -30,10 +30,10 @@ AnimationFloatPairTweenDuration
 AnimationFloatPairTweenFactor
 AnimationFloatScalarTweenDuration
 AnimationFloatScalarTweenFactor
-AnimationIntegerDestination
 AnimationIntScalarTweenFactor
 AnimationIntVectorTweenDuration
 AnimationIntVectorTweenFactor
+AnimationIntegerDestination
 AnimationRandomRange
 AnimationRendererConstructor
 AnimationRendererDestructor
@@ -259,6 +259,7 @@ DrawPlacedTextureText
 DrawProjectedAnimationVm
 DrawSecondaryEffect
 DrawSecondaryHud
+DrawSecondaryHudFront
 DrawSecondaryPlayerCallback
 DrawSecondaryPlayerEmitters
 DrawSecondaryProgramBrowser
@@ -418,9 +419,9 @@ PauseSecondaryGameplayPlayer
 PauseSecondaryMasterChains
 PauseSelectionComparisonView::IsDifferent
 PauseSelectionComparisonView::IsSmaller
+PlayMusicStream
 PlayerEmitterOffsetPair::PlayerEmitterOffsetPair
 PlayerEmitterPolarPair::PlayerEmitterPolarPair
-PlayMusicStream
 PollJoystickButtons
 PollKeyboardInput
 PopConfigurationSelection

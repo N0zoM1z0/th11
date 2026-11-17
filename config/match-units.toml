@@ -10547,3 +10547,28 @@ linkages = [
   { offset = 78, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x0045FD49 },
   { offset = 106, type = "REL32", symbol = "_free", target = 0x0045FC3B },
 ]
+
+# The separate 105-byte front HUD drawing body and its 10-byte chain
+# callback share a genuine C++ caller and unspecialized VM renderer.
+[units.secondary-hud-front-draw]
+artifact_kind = "linked-pe"
+source = "src/SecondaryHudFrontDraw.cpp"
+inputs = ["src/SecondaryHud.hpp", "src/SecondaryActorState.hpp",
+          "src/AnimationImmediateDraw.hpp",
+          "probes/secondary-hud-front-draw-context.cpp"]
+support_sources = ["src/AnimationImmediateDraw.cpp",
+                   "probes/secondary-hud-front-draw-context.cpp"]
+output_dir = "build/match-linked/SecondaryHudFrontDrawFrontier"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryHudFrontDrawProbe@12"
+functions = ["DrawSecondaryHudFront"]
+symbol = "?DrawSecondaryHudFront@@YGHPAUSecondaryHudView@@@Z"
+target_address = 0x0041C5F0
+size = 105
+linkages = [
+  { offset = 18, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x004C3268 },
+  { offset = 25, type = "REL32", symbol = "?DrawAnimationVmByMode@@YGHPAURenderBatchView@@PAUAnimationVmView@@@Z", target = 0x00451EF0 },
+  { offset = 41, type = "DIR32", symbol = "?g_SecondaryMaster@@3PAUSecondaryMasterView@@A", target = 0x004A8D7C },
+  { offset = 84, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x004C3268 },
+  { offset = 95, type = "REL32", symbol = "?DrawAnimationVmByMode@@YGHPAURenderBatchView@@PAUAnimationVmView@@@Z", target = 0x00451EF0 },
+]

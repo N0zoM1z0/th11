@@ -34,6 +34,7 @@ Do not return to the obsolete 15-VM / 0x4450 view.
 | `41B2A0` factory, 150 B | **exact** | `secondary-debug-hud-factory-frontier`, 150/150 |
 | `419F80` dialogue VM release, 101 B | **exact** | `secondary-debug-hud-dialogue-frontier`, eight checked REL32 |
 | `41A3C0` three-chain registration, 339 B | **exact** | `secondary-debug-hud-registration`; 339/339 and 15 verified fields |
+| `41C5F0` front HUD drawing, 105 B | **exact** | `secondary-hud-front-draw`; 105/105 and five audited fields |
 | `41A520` visual/resource initialization, 336 B | natural source, nonexact | `src/SecondaryDebugHudVisualInitialization.cpp`; 336-byte scoped candidate, timer scheduling gap |
 | `41AD30` pre-destruction cleanup, 468 B | natural source, nonexact | `src/SecondaryDebugHudPrecleanup.cpp`; candidate 448 B / 126 decoded instructions |
 | `41AFC0` destructor, 729 B | natural source, nonexact | `src/SecondaryDebugHudLifetime.cpp`; 741-byte /GL candidate, 195 decoded instructions |

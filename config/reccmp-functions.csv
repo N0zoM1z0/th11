@@ -1,4 +1,5 @@
 name,address,type
+DrawSecondaryHudFront,0x0041C5F0,function
 AccumulateAnimationA1Pixel,0x00453460,function
 AccumulateAnimationA4Pixel,0x00453490,function
 AccumulateAnimationArgbPixel,0x00453440,function
