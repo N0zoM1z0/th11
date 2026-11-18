@@ -69,10 +69,10 @@ __declspec(noinline) void SecondarySpellPositionView::PositionAnimation(Animatio
     {
         for (BoundVmNodeView *node = bound->related; node; node = node->next)
         {
-            SecondaryActorAnimationView *child = reinterpret_cast<SecondaryActorAnimationView *>(node->vm);
-            child->position.x = static_cast<float>(x + 32.0 + 192.0);
-            child->position.y = static_cast<float>(y + 16.0);
-            child->position.z = z;
+            float *childPosition = &reinterpret_cast<SecondaryActorAnimationView *>(node->vm)->position.x;
+            childPosition[0] = static_cast<float>(x + 32.0 + 192.0);
+            childPosition[1] = static_cast<float>(y + 16.0);
+            childPosition[2] = z;
         }
     }
 }
@@ -103,7 +103,7 @@ static __forceinline void SetSpellFollowerEventTwo(SecondarySpellStageView *self
 {
     RenderBatchView *renderer = *reinterpret_cast<RenderBatchView * volatile *>(&g_RenderBatch);
     unsigned int *follower = self->followerIds;
-    volatile int remaining = 3;
+    int remaining = 3;
     do
     {
         AnimationVmView *vm = FindSecondarySpellVm(self, renderer, AnimationVmId(*follower));
