@@ -72,6 +72,26 @@ The three integer counters reuse twelve physical bytes that another source
 view calls `drawOffset`. This is a *local overlay* with verified offsets;
 no shared exact unit's class layout was changed.
 
+## Rounded culling distance and ordered rejection (2026-11-18)
+
+The original CullStageObject evaluates the squared world/eye distance,
+stores the result to a 32-bit float local with x87 FSTP and reloads it
+with FLD before the distance comparison. It rejects only when that
+rounded value is strictly above the supplied maximum. In particular,
+unordered/NaN comparisons do not reject the object. The prior C++ used
+a potentially extended-precision expression and the negation of a
+less-than-or-equal comparison; on unordered inputs it returned a
+different result.
+
+The natural C++ now explicitly rounds the distance to float and uses
+the strict greater-than test. The scoped VC9 compiler emits the original
+FSTP/FLD and TEST AH,5/JNP comparison sequence. The complete candidate
+is 1,476 bytes with 294/504 aligned native instructions, compared with
+the earlier 1,468 bytes and 297/504. The raw alignment tally regresses
+slightly elsewhere in the owner, but the critical precision boundary and
+unordered comparison behavior are restored. Both large culling/drawing
+frontiers compile; neither is byte exact.
+
 ## Float-valued layer offset snapshot (2026-11-18)
 
 The native culler caller copies X, Y and Z from the 16-byte layer
@@ -105,7 +125,7 @@ and cannot acquire an exact result merely by matching a PDB extent.
 
 | Primary owner | Native | Current PDB contribution | Instruction-key diagnostic |
 | --- | ---: | ---: | ---: |
-| CullStageObject | 1,643 | 1,468 | 297 / 504 target instructions |
+| CullStageObject | 1,643 | 1,476 | 294 / 504 target instructions |
 | DrawStageLayer | 727 | 729 | 112 / 191 target instructions |
 
 The culler initially emitted 1,316 bytes (206/504 aligned) with an

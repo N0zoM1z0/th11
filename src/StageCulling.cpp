@@ -50,7 +50,11 @@ int __stdcall CullStageObject(const PerspectiveCameraView *camera,
         static_cast<float>(worldCenter.y - eyePosition.y),
         static_cast<float>(worldCenter.z - eyePosition.z)
     };
-    if (!(delta.z * delta.z + delta.x * delta.x + delta.y * delta.y <= maxDistanceSquared))
+    // The source comparison uses a rounded float distance, and only a
+    // strictly greater distance is culled (unordered coordinates survive).
+    const float distanceSquared = static_cast<float>(
+        delta.z * delta.z + delta.x * delta.x + delta.y * delta.y);
+    if (distanceSquared > maxDistanceSquared)
         return 1;
 
     const float half = 0.5f;
