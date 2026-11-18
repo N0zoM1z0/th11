@@ -160,24 +160,25 @@ int __stdcall UpdateSecondarySpellStageState(SecondarySpellStageView *self)
             }
         }
 
-        const CameraVector &target = g_SecondaryMaster->Slot(0)->state.world.position;
+        CameraVector *position = &self->position;
+        const CameraVector *target = &g_SecondaryMaster->Slot(0)->state.world.position;
         __declspec(align(8)) CameraVector delta = {
-            static_cast<float>(target.x - self->position.x),
-            static_cast<float>(target.y - self->position.y),
-            static_cast<float>(target.z - self->position.z)
+            static_cast<float>(target->x - position->x),
+            static_cast<float>(target->y - position->y),
+            static_cast<float>(target->z - position->z)
         };
         CameraVector scaled = {
             static_cast<float>(delta.x * 0.05),
             static_cast<float>(delta.y * 0.05),
             static_cast<float>(delta.z * 0.05)
         };
-        volatile float &positionX = self->position.x;
+        volatile float &positionX = position->x;
         positionX = static_cast<float>(positionX + scaled.x);
-        volatile float &positionY = self->position.y;
+        volatile float &positionY = position->y;
         positionY = static_cast<float>(positionY + scaled.y);
-        self->position.z = static_cast<float>(self->position.z + scaled.z);
+        position->z = static_cast<float>(scaled.z + position->z);
 
-        reinterpret_cast<SecondarySpellPositionView *>(&self->position)->PositionAnimation(AnimationVmId(self->positionVmId));
+        reinterpret_cast<SecondarySpellPositionView *>(position)->PositionAnimation(AnimationVmId(self->positionVmId));
         if ((self->flags & 0x20u) &&
             !reinterpret_cast<StageAuxiliaryView *>(g_MeshEffectEnemy)->effectActive)
             self->flags &= ~0x20u;

@@ -336,14 +336,16 @@ callback remains **7/7 bytes exact** in its dedicated real downstream LTCG
 producer, including its REL32 field to DrawSecondarySpellStage; its cold replay
 is recorded below.
 
-The update callback is now **strict linked exact (10/10 bytes)** in the wide
-real LTCG producer, including its REL32 field to the updater. The updater
-candidate is 649 bytes versus the native 624. Modeling timer advance as the
-natural `StageTimerView::Advance()` member call changed the whole-program
-register allocation: the callback saves EDI, the updater keeps its stage
-receiver in EDI, and it loads the timer into ESI before the member call. An
-8-byte-aligned `CameraVector` local restores the native EBP frame, 8-byte ESP
-alignment and 0x20-byte local frame.
+The update callback is **strict linked exact (10/10 bytes)** in the wide real
+LTCG producer, including its REL32 field to the updater. The updater candidate
+now has the exact native extent: **624 bytes versus 624 bytes**. A normalized
+instruction comparison aligns 167 native instructions against 168 candidate
+instructions (85.37%). Modeling timer advance as the natural
+`StageTimerView::Advance()` member call changed the whole-program register
+allocation: the callback saves EDI, the updater keeps its stage receiver in
+EDI, and it loads the timer into ESI before the member call. An 8-byte-aligned
+`CameraVector` local restores the native EBP frame, 8-byte ESP alignment and
+0x20-byte local frame.
 
 The private `FindSecondarySpellVm` C++ fastcall adapter is 79/79 bytes
 identical to the existing exact `FindAnimationVmById` owner at 0x4561E0.
@@ -361,20 +363,27 @@ generic loop.
 The final position update is represented as a natural member operation on a
 12-byte `SecondarySpellPositionView`. Its implicit object stays in ESI, so
 the updater pushes only the animation ID before calling it; the former
-explicit position-pointer stack argument is gone. The call setup now loads
-the ID before the renderer, matching native order. The focused position
-method is now 132 bytes, matching the native helper extent. Its child-node
-loop computes the position member base once and writes the three contiguous
-floats, reproducing the native EAX/ECX cursor schedule. Its five relocation
-sites still resolve through the focused helper/global/constant bindings;
-this alternate member adapter is not counted as a second owner of the already
-maintained PositionSecondaryAnimation target. The timer member is 83 bytes,
-with its native `inc` fast path and slow-path x87 update restored. The three position-smoothing
-x87 sequences retain native operand order: position X then scaled X, position
-Y then scaled Y, and scaled Z then position Z. Remaining updater differences
-are in score division scheduling, follower/helper control flow and the
-position helper body. The 256-byte registrar is independently strict exact.
-No callback is implemented with inline ASM or a hand-authored jump.
+explicit position-pointer stack argument is gone. The call setup loads the ID
+before the renderer, matching native order. The focused position method is
+132 bytes, matching the native helper extent. Its child-node loop computes the
+position member base once and writes the three contiguous floats, reproducing
+the native EAX/ECX cursor schedule. Its five relocation sites still resolve
+through the focused helper/global/constant bindings; this alternate member
+adapter is not counted as a second owner of the already maintained
+PositionSecondaryAnimation target.
+
+The updater's position interpolation now keeps both `CameraVector *position`
+and `const CameraVector *target` live across the X/Y/Z difference, scale and
+writeback. VC9 consequently reuses ESI for the position base throughout the
+whole sequence and the final member call. This restores the native stack
+scratch layout and the native Z x87 operand order (`scaled.z + position.z`).
+The timer member is 83 bytes and has the native `inc` fast path, although its
+ECX/EDX local-register assignment still differs. The remaining updater gaps
+are the score `% 10` strength-reduction sequence (native uses `idiv`), the
+controller-pointer reload between threshold branches, and some follower
+branch register/control-flow choices. The 256-byte registrar is independently
+strict exact. No callback is implemented with inline ASM or a hand-authored
+jump.
 ## Owning constructor, destructor and lifetime wrappers
 
 The 0x924-byte owning stage spell C++ object now has real lifecycle
