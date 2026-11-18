@@ -7,6 +7,17 @@ count at +0x38. The existing partial `SecondaryEclDebugView` in
 `src/SecondaryGameplay.hpp` already models those original offsets.
 All source changes use **natural C++** and the pinned VC9 /GL toolchain.
 
+## Current handoff status (2026-11-18)
+
+The current HUD exact owners include the 208-byte constructor, 150-byte
+factory, 101-byte dialogue release, 339-byte chain registrar, 336-byte
+visual initializer, 105-byte front draw, 10-byte callback, 129-byte
+resource finalizer and 28-byte global destroy. The remaining large HUD
+owners are the 1,619-byte animation initializer (1,619/403 candidate),
+the 468-byte precleanup (477/130 candidate) and the 729-byte destructor
+(741/195 candidate). The two latter source files are intentionally dirty;
+see RE_HANDOFF.md for their current diffs and dependent replay results.
+
 ## Filename-array leaf (0x40CFE0, 83 bytes)
 
 `ReleaseSecondaryDebugFilenames` in
@@ -87,47 +98,27 @@ source-complete but **nonexact**.
 
 ## Full 729-byte debug HUD destructor at 0x41AFC0
 
-The original HUD singleton at 0x4A8D84 now has a **natural C++ owning
-type**, `SecondaryDebugHudOwned`, implemented in
-`src/SecondaryDebugHudLifetime.cpp` and its companion header. It
-shares physical storage with the existing non-owning
-`SecondaryGameplayHudView` and `SecondaryActorHudView`, rather than
-creating another singleton.
+The original HUD singleton at 0x4A8D84 has a natural C++ owning type,
+SecondaryDebugHudOwned, implemented in src/SecondaryDebugHudLifetime.cpp
+and its companion header. It shares physical storage with the existing
+non-owning HUD views.
 
-This is a large, genuine C++ destructor. Its three **real**
-`StageEmbeddedVm` member arrays are 9 elements at +0x10,
-2 elements at +0x25E4, and 4 elements at +0x2E4C (each
-VM is 0x434 bytes). The compiler automatically frees these
-arrays in the original reverse order **4, 2, 9** after the
-destructor body; no EH vector-iterator assembly or fake
-padding is authored.
+The three real StageEmbeddedVm arrays contain 9, 2 and 4 elements at
++0x10, +0x25E4 and +0x2E4C; each VM is 0x434 bytes. The separate sixteenth
+VM is at +0x3F1C. Compiler-generated member destruction releases the
+arrays in reverse order 4, 2, 9.
 
-Before member destruction the native owner calls the separately
-bounded 0x41AD30 HUD precleanup, independently unregisters
-update, draw, and overlay chains (+8/+C/+43DC), clears +8,
-releases two animation IDs at +43AC/+43B8 and zeros them,
-then visits the eight renderer ID slots at +4350..+436C.
-For each live ID the source searches both genuine renderer
-lists, marks its VM and eligible related children for cleanup
-using flag 0x04000000, and clears that ID. It then walks both
-renderer VM lists to mark entries whose +0x3B0 group field
-matches the owner marker at +0x444C. Finally it clears
-`g_SecondaryActorHud`, frees optional +0x431C data and
-nulls the pointer.
+The native body calls the separately bounded 0x41AD30 precleanup,
+unregisters update/draw/overlay chains, releases two animation IDs,
+visits eight tracked renderer IDs, marks matching VMs in both renderer
+lists using the owner marker at +0x444C, clears the HUD singleton, and
+frees optional storage at +0x431C. The source retains the real C++ owner
+and all 16 embedded VM lifetimes.
 
-Direct Ghidra and native PE review support the entire **729-byte**
-owner, seven actual callees, all returns and boundaries.
-A dedicated real-caller VC9 /GL scoped compilation produces a
-**740-byte candidate with 92/195 native instruction keys aligned**:
-source-complete but not byte-exact. The native EH/register
-ownership, especially the 0x41AD30 precleanup and three
-C++ member-array iterator calls, remains to be optimized.
-The adjacent 462-byte debug-session destructor now calls
-`delete` on this **actual owning class**, not a placeholder
-external destructor; its own codegen alignment remains 124/127
-in the focused context containing the real chain/master,
-auxiliary stage and HUD destructors.
-
+The latest focused VC9 /GL build of the current working tree produces
+a 741-byte / 195-instruction candidate against the native 729-byte /
+195-instruction owner. It remains nonexact; the current uncommitted
+unregister-path experiment is described in RE_HANDOFF.md.
 
 ## Exact attraction-item pool reset (0x40D040, 25 bytes)
 
@@ -190,70 +181,41 @@ remain separate, nonexact owners.
 
 ## HUD destructor precleanup — 468-byte native owner
 
-`src/SecondaryDebugHudPrecleanup.cpp` restores
-`PrepareSecondaryDebugHudDestruction` at 0x41AD30..0x41AF03,
-including the original 468-byte function boundary and all six native
-call targets. The source uses the same 0x4450-byte physical HUD
-object as the 729-byte destructor, with typed member offsets in
-`src/SecondaryDebugHudLifetime.hpp`.
+src/SecondaryDebugHudPrecleanup.cpp restores the complete 468-byte
+PrepareSecondaryDebugHudDestruction owner at 0x41AD30..0x41AF03. It uses
+the same 0x4458-byte physical HUD allocation as the owning destructor,
+with typed member offsets in SecondaryDebugHudLifetime.hpp.
 
-The precleanup first releases the renderer's real animation document
-slot 27 if stage flags mask 9 is clear, or marks the retained
-animation file's VMs otherwise. It clears the retained file pointer,
-destroys/deletes the dialogue, and either frees the prepared HUD
-cache or publishes the existing pointer at global 4C3238. It then
-clears the update-chain pause bit, releases the specific VM IDs at
-+4370, +4374 and +4380, zeroes all eleven additional VM slots at
-+4380..+43A8, and releases eight tracked VM IDs through the real
-renderer ID lists. Finally, it sets HUD state bits 0x1C0 and clears
-the +43FC field, retaining the original cleanup sequence.
+The precleanup releases renderer animation document slot 27 when stage
+flags mask 9 is clear, or marks VMs associated with the retained file
+otherwise. It holds a typed AnimationDocumentView **documentSlot across
+the document destructor, CRT delete and slot zeroing. It clears the retained
+file pointer, destroys/deletes the
+dialogue, frees the prepared cache or publishes the existing cache
+pointer at 0x4C3238, clears the update-chain pause bit, releases the
+specific animation IDs, zeros the eleven additional ID slots, releases
+eight tracked IDs through the renderer lists, sets state bits 0x1C0
+and clears +0x43FC.
 
-The original Japanese TH11 1.00a body, its one caller at 41AFC0,
-six callees and return/neighbor bytes were reviewed in Ghidra,
-without foreign interior entry points. The scoped VC9 /GL
-candidate is 445 bytes with 62/128 normalized native instructions
-aligned; this is **source coverage, not exactness**. The separate
-dialogue destructor is independently strict exact (101/101), as
-recorded above; that fact does not imply this larger caller is exact.
-
-### Native document-slot and VM countdown recovery
-
-The 468-byte precleanup now holds `AnimationDocumentView **documentSlot`
-across the actual animation-document destructor, operator delete, and
-zeroing. That pointer describes the renderer's existing slot 27: it is
-not a second allocation. The eight tracked HUD VM IDs are processed by
-a decrementing count while preserving each existing renderer binding
-and its linked children. The scoped VC9 `/GL` source uses a normal
-generic precleanup caller and the real 243-byte animation-document
-and 78-byte VM-file-mark helpers. The resulting complete primary
-PDB contribution is **448 bytes / 126 decoded instructions**, versus
-the original **468 bytes / 128 instructions**, so it is still nonexact.
-The restored source operations themselves are meaningful, and no
-machine-code substitute or artificial padding is present. Narrow
-cold replays of the 101-byte dialogue release, 150-byte owning factory,
-and 28-byte global destroy retain zero byte differences.
+The original body, caller, six callees and neighboring boundaries were
+reviewed. The latest focused VC9 /GL build of the current working tree
+is 477 bytes / 130 decoded instructions against native 468 bytes /
+128 instructions. The current dirty revision snapshots the renderer
+pointer once, uses volatile accesses for the first two precleanup IDs,
+and keeps the eight-ID countdown in a volatile do/while loop. It is
+still nonexact. The 150-byte factory and 28-byte global-destroy
+owners passed their focused exact replays after these edits; the
+101-byte dialogue leaf is independently exact but was not part of
+that two-unit replay.
 
 ## Owning HUD destructor source-order refinement
 
-The 729-byte native `SecondaryDebugHudOwned` destructor at
-0x41AFC0 remains an independent nonexact owner. Its source now
-uses a typed pointer interval for the eight animation IDs, and
-preserves the **next** VM-list node before inspecting and marking
-the current one. The latter is important if an affected callback
-changes a list while the current VM is marked; it also reflects
-the original decompiler's explicit snapshot on both renderer lists.
-
-In the bounded VC9 /GL context containing the newly reconstructed
-468-byte `PrepareSecondaryDebugHudDestruction` and the already
-**101/101 byte exact** dialogue leaf, the destructor's natural C++
-PDB contribution is **772 bytes**, with **113/195 native instruction
-keys** aligned (the initial simpler source aligned 92/195).
-This diagnostic does not prove linked byte equality and does not
-increase canonical exact credit. The outstanding differences
-involve the original private ESI/EDI calling convention, the
-three registration-removal callsites, and register/loop scheduling
-around the two renderer lists and genuine 9/2/4 VM arrays.
-No ASM, forced instruction sequence or padding was inserted.
+The destructor processes eight tracked VM IDs with a counted loop,
+captures the owner marker once for both renderer-list scans, and
+snapshots each next list node before marking the current VM. These
+source-level ownership details remain in the current implementation.
+Earlier 772-byte and 725-byte codegen experiments are superseded by
+the current 741-byte / 195-instruction result recorded below.
 
 ## Sixteenth embedded HUD VM and actual 0x4458-byte allocation (2026-11-17)
 
@@ -273,13 +235,12 @@ member's real destructor in reverse declaration order, before the
 The last eight bytes are left physically unknown. Both source
 offset/size assertions compile under the pinned VC9 toolchain.
 
-In the bounded `secondary-debug-hud-destructor-frontier`, this
-semantic source fix preserves the current 772-byte candidate and
-raises normalized instruction alignment to **114/195** from
-113/195. It is still nonexact; its source class layout and actual
-destruction sequence are now better supported by the native
-factory and destructor. No assembly, naked function or padding
-has been inserted.
+An earlier bounded destructor experiment preserved a 772-byte candidate
+and raised normalized instruction alignment to 114/195 from 113/195.
+That diagnostic is historical and has been superseded by the current
+741-byte / 195-instruction build. The source class layout and actual
+destruction sequence remain supported by the native factory and
+destructor. No assembly, naked function or padding has been inserted.
 
 
 ## Strict exact owning HUD constructor (0x41A2F0, 208 bytes)
@@ -517,31 +478,6 @@ branches still differ. This is a complete, natural-source codegen frontier,
 **not strict exactness**; no ASM or padding is used.
 
 
-## HUD destructor: register/loop recovery (2026-11-17 continuation)
-
-The native 729-byte destructor iterates eight HUD VM IDs using a
-decrementing count and reads the owner marker at +0x444C once before
-scanning both renderer VM lists. Its first four VM-ID operations use
-the shared renderer list at 0x4C3268 and signal the real linked
-children. A source-level pointer-end comparison and two independent
-owner-marker loads were unnecessarily extending the /GL-generated
-destructor. The natural C++ now uses an eight-element countdown,
-snapshots the owner marker, and preserves the next list node before
-marking each VM.
-
-The bounded original 729-byte owner has 195 decoded instructions.
-The scoped VC9 /GL candidate improves from 772 bytes / 200 instructions
-to **741 bytes / 195 instructions**, with the 16th real
-`StageEmbeddedVm` and 9/2/4 member arrays preserved. A distinct
-ordinary C++ producer also calls the 468-byte precleanup on an
-independent object, restoring the native stack-argument call contract
-without misdeclaring its ABI. The 12-byte remaining codegen difference
-includes chain lock-call scheduling and renderer-list register choices;
-this is a diagnostic, **not exact**. Cold replay of the directly
-affected 150-byte factory, 28-byte global destroy, and 101-byte
-dialogue destructor remains exact at zero differences.
-
-
 ## Full HUD animation owner: dynamic file lifetime and generic VM creation
 
 Further direct original-code review found that the 1,619-byte
@@ -568,86 +504,38 @@ remain open. The original's internal instruction alignment was never
 copied into source.
 
 
-## HUD precleanup: original slot and count ownership
-
-The 468-byte `PrepareSecondaryDebugHudDestruction` loads renderer
-animation document slot 27, then uses its **address** across
-`DestroyAnimationDocument`, CRT deletion and zeroing. The maintained
-C++ now holds a typed `AnimationDocumentView **documentSlot`, just as
-the separately proven 129-byte HUD resource finalizer does, instead
-of indexing the renderer table repeatedly. The final tracked ID
-cleanup also uses a natural eight-iteration decrementing count; the
-original explicitly maintains this count on its stack.
-
-The selected VC9 /GL primary source is still built normally. Linking
-the genuine 243-byte animation document destructor and adding an
-independent generic, ordinary COFF precleanup caller prevents an
-incorrect register-specialized signature at this entry. The scoped
-PDB owner currently measures **448 bytes and 128 instructions**
-against native **468 bytes and 128 instructions**, with the native
-non-null resource deletion and cache publication branches preserved.
-The remaining 20-byte codegen gap has **no exact credit**. No target
-bytes, ASM, manual padding or special ABI declarations were added.
-The directly affected 101-byte dialogue cleanup and 28-byte global
-HUD destruction owners continue to pass individual strict cold replay
-at zero differences.
-
-
 ## HUD visual initialization codegen refinement
 
-The natural C++ `0x41A520` visual initializer now emits a complete
-336-byte primary PDB contribution and 96/96 decoded instructions under
-pinned VC9 `/GL`, with 21 external address-field positions extracted.
-Its explicit `StageTimerView` initialization preserves the first-time
-scale binding and repeated timer reset. The two remaining instruction
-scheduling differences are the cached-path partner-index load and
-the display-global read relative to timer stores. This is a nonexact
-frontier; no ASM or padding was used.
-
+The natural C++ visual initializer at 0x41A520 emits the complete
+336-byte / 96-instruction primary-PDB contribution under pinned VC9
+/GL. All 21 external address fields are reviewed. Strict cold replay
+passes 336/336 bytes with zero differences. Ordered timer stores
+preserve the native scheduling; this owner is exact under
+secondary-debug-hud-visual-init.
 
 ## Front HUD drawing owner (0x41C5F0, 105 bytes)
 
-The nine primary HUD animation VMs are rendered in order with their
-physical 0x434-byte stride. The front draw then reads the secondary master,
-slot-zero actor and its flags word at +0x25BC. The original performs
-two independent inverted bit tests (bits 5 and 0); only when both are
-clear does it draw the indicator VM at HUD +0x3F1C. It returns 1
-regardless of the optional actor/indicator path.
+The front-layer draw owner walks nine primary VMs at 0x434 stride,
+checks the secondary master slot-zero actor's bit-5 and bit-0 gates,
+conditionally draws the indicator VM at +0x3F1C, and returns one.
+The complete 105-byte / 33-instruction body is exact with five
+reviewed DIR32/REL32 fields and zero byte differences.
 
-The natural C++ implementation uses a pointer/countdown loop, the real
-renderer dispatch and separate complemented bit tests. A scoped pinned
-VC9 /GL linked owner emits the complete **105-byte** body and its
-33-instruction layout. The cold Oracle confirms **105/105 bytes, five
-reviewed DIR32/REL32 fields and zero differences**. The separate 10-byte
-callback at 41CFC0 remains a distinct wrapper; its current source
-candidate is a 5-byte tail thunk and is not included in this exact claim.
-
-
-## Secondary HUD front draw and callback
-
-The 105-byte front-layer draw owner at 41C5F0 and its registered
-10-byte callback at 41CFC0 are now both independently exact. The draw
-body walks nine primary VMs at 0x434 stride, checks the master slot-zero
-actor's bit5/bit0 gates, conditionally draws the indicator, and returns
-one. Its five renderer/master fields replay with zero differences. The
-callback's volatile ordinary C++ function-pointer consumer preserves
-the native push-ebx/mov-ebx-ecx/call/pop-ebx/ret handoff; its
-single REL32 also replays with zero differences. Both are separate
-complete public primary-TU owners, with no assembly or padding.
-
+The adjacent 10-byte callback at 0x41CFC0 is a separate exact owner
+under secondary-hud-front-draw-callback: 10/10 bytes, one reviewed
+REL32 and zero differences. Its volatile ordinary C++ function-pointer
+consumer preserves the native push-ebx / mov-ebx,ecx / call / pop-ebx /
+ret handoff under VC9 /GL.
 
 ## 729-byte HUD destructor codegen frontier (0x41AFC0)
 
-The destructor now captures the chain-manager singleton and the imported
-Enter/LeaveCriticalSection operations once, then passes those original
-owners through the three real unregister operations. This matches the
-native's shared register-held manager and critical-section function
-pointers instead of reloading the manager per chain and making repeated
-IAT calls. The complete natural VC9 /GL owner fell from the earlier
-772-byte/200-instruction candidate to **725 bytes/192 instructions**
-against the native 729/195. The three direct unregister calls and the
-complete 8-ID/two-renderer-list cleanup remain in the body. Register
-assignment, the inline found-VM path placement and the remaining four
-bytes are still open; this is not exact. The dependent 150-byte factory
-and 28-byte global-destruction units were cold-replayed after the source
-change and remain exact with zero differences.
+The current dirty destructor revision removes the shared unregister
+helper and spells out the three conditional C++ unregister paths in
+the owner. It captures LeaveCriticalSection in a register local, calls
+EnterCriticalSection directly, and reloads the chain-manager singleton
+for each non-null chain. The fresh focused VC9 /GL owner is
+741 bytes / 195 instructions versus native 729 / 195. This supersedes
+the earlier 725-byte / 192-instruction experiment and remains nonexact.
+The dependent 150-byte factory and 28-byte global-destruction owners
+were cold-replayed after the current dirty changes and both remain
+exact with zero byte differences.

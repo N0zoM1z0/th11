@@ -89,3 +89,25 @@ the private target, Ghidra databases or `.analysis/` evidence.
 Earlier dated cleanup inventories and experiments remain available
 through Git history and retained ignored cleanup receipts, rather
 than in a sequence of outdated disk-usage tables here.
+
+## Agent handoff cleanup — 2026-11-18
+
+Removed four ignored, unreferenced temporary artifacts after checking
+the current match-unit manifest, exact-unit ownership and maintained source
+references:
+
+| Removed path | Allocated size | Reason |
+| --- | ---: | --- |
+| build/match-linked/SecondaryDebugHudOwnerBodyExperiment | 1,176 KiB | orphan link experiment; no configured unit owns this output directory |
+| .analysis/hud-destructor-unit-before-no-normal.toml | 680 KiB | one-off full-manifest snapshot; no maintained references |
+| .analysis/hud-precleanup-unit-before-menu-support.toml | 680 KiB | one-off full-manifest snapshot; no maintained references |
+| .analysis/functions.before-eax-local-noarg.csv | 1,148 KiB | exact historical copy of config/functions.csv at commit 852535c1; recoverable from Git |
+
+The cleanup reclaimed **3,684 KiB (about 3.60 MiB)** of allocated space:
+build/ fell from 531,148 to 529,972 KiB, and .analysis/ fell from
+56,536 to 54,028 KiB.
+
+No canonical exact output directory, active frontier, probe-ltcg diagnostic,
+source, target, Ghidra project, toolchain, Wine prefix, replay receipt or
+retained analysis comparison was removed. The current dirty HUD source files
+were left untouched.
