@@ -202,8 +202,13 @@ shared source headers and old exact contexts were not changed.
 
 The postpass tests nonzero duration independently, applies target-offset,
 position and fog interpolation in that order, then applies oscillation.
-Interpolation routines remain external dependencies, not source coverage.
-Vector/fog return values are copied in full, including the packed fog DWORD.
+Modes 1, 5, 6 and 7 each advance the oscillator timer in their own switch arm,
+compare the resulting signed current against their literal period (512, 2048,
+1024, 512), reset it when reached, and return from that arm. Other modes
+return without advancing. This matches the native per-mode control-flow shape
+and avoids a synthetic shared period local. Interpolation routines remain
+external dependencies, not source coverage. Vector/fog return values are
+copied in full, including the packed fog DWORD.
 
 Opcode14 uses signed argument0 with0x434 stride and has no eight-element check.
 The animation document and script number are captured before ResetAnimationVm.
@@ -249,15 +254,15 @@ fractional, infinite and NaN inputs were checked against the actual bodies.
 ## Code generation and proofs
 
 The current execute-stage-script-frontier diagnostic build contributes
-2,736 bytes for ExecuteStageScript, equal in extent to the complete native
-2,736-byte owner. The code-and-switch-table boundary reaches +0xA4C
-(2,636 bytes); the remainder is the two C++-generated 100-byte switch tables.
-The target contains 2,633 code bytes plus three code-alignment bytes, with
-no hand-authored padding in source. Both builds reserve a 0x98-byte stack
-frame. Normalized instruction-key alignment finds 537 of 610 native code
-instructions (620 candidate instructions). This is diagnostic codegen
-similarity, not exactness: EH/funclet ownership and byte/relocation matching
-are still open.
+2,720 bytes for ExecuteStageScript against the 2,736-byte native owner.
+Normalized instruction-key alignment finds 551 of 610 native code
+instructions (614 candidate instructions), up from 537/610 in the prior
+2,736-byte candidate. The oscillator postpass now advances and wraps its timer
+inside each native mode case, using literal periods 512, 2048, 1024 and 512
+rather than a shared period local and common tail. This recovers the native
+per-case return/control-flow shape. It remains diagnostic codegen similarity,
+not exactness: EH/funclet ownership and byte/relocation matching are still
+open.
 
 The 2026-11-18 opcode-8 revision explicitly snapshots the four unsigned-byte
 packed color channels into signed int locals before converting to float.

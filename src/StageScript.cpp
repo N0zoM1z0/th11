@@ -271,7 +271,6 @@ ApplyTweens:
         CameraFog(self) = fog;
     }
 
-    int period;
     float value;
     switch (state.oscillator)
     {
@@ -279,8 +278,10 @@ ApplyTweens:
         value = OscillatorSine(state.oscillatorTime.fraction, 1.0 / 512.0);
         self->camera.view.eyeOffset.x = static_cast<float>(-50.0 * value);
         self->camera.view.up.x = static_cast<float>(-value * static_cast<double>(0.1f));
-        period = 512;
-        break;
+        AdvanceStageTimer(&state.oscillatorTime);
+        if (state.oscillatorTime.current >= 512)
+            SetStageTimer(&state.oscillatorTime, 0);
+        return 0;
     case 5:
     {
         const double pi = static_cast<double>(3.1415927410125732f);
@@ -292,26 +293,29 @@ ApplyTweens:
         float other = static_cast<float>(sin(static_cast<double>(twice)));
         self->camera.view.eyeOffset.z = static_cast<float>(other * 200.0);
         self->camera.view.up.x = static_cast<float>(-value * static_cast<double>(0.1f));
-        period = 2048;
-        break;
+        AdvanceStageTimer(&state.oscillatorTime);
+        if (state.oscillatorTime.current >= 2048)
+            SetStageTimer(&state.oscillatorTime, 0);
+        return 0;
     }
     case 6:
         value = OscillatorSine(state.oscillatorTime.fraction, 1.0 / 1024.0);
         self->camera.view.eyeOffset.x = static_cast<float>(-50.0 * value);
         self->camera.view.up.x = static_cast<float>(-value * static_cast<double>(0.1f));
-        period = 1024;
-        break;
+        AdvanceStageTimer(&state.oscillatorTime);
+        if (state.oscillatorTime.current >= 1024)
+            SetStageTimer(&state.oscillatorTime, 0);
+        return 0;
     case 7:
         value = OscillatorSine(state.oscillatorTime.fraction, 1.0 / 512.0);
         self->camera.view.eyeOffset.x = static_cast<float>(-15.0 * value);
         self->camera.view.up.x = static_cast<float>(-value * static_cast<double>(0.01f));
-        period = 512;
-        break;
+        AdvanceStageTimer(&state.oscillatorTime);
+        if (state.oscillatorTime.current >= 512)
+            SetStageTimer(&state.oscillatorTime, 0);
+        return 0;
     default:
         return 0;
     }
-    AdvanceStageTimer(&state.oscillatorTime);
-    if (state.oscillatorTime.current >= period)
-        SetStageTimer(&state.oscillatorTime, 0);
     return 0;
 }

@@ -29,7 +29,7 @@ Factory-accepted results or whole-game closure.
 | --- | ---: | ---: | --- |
 | CullStageObject (0x403950) | 1,643 B | 1,648 B; 328/504 aligned instructions | Main active boss; strict depth, NaN extrema, three-argument fastcall; EAX camera input remains open |
 | DrawStageLayer (0x404190) | 727 B | 724 B; 112/191 aligned instructions | Nonexact; caller now uses native three-argument culler boundary |
-| ExecuteStageScript (0x404470) | 2,736 B | 2,736 B; 537/610 aligned instructions | Nonexact; EH/funclet ownership open |
+| ExecuteStageScript (0x404470) | 2,736 B | 2,720 B; 551/610 aligned instructions | Nonexact; per-mode oscillator tail restored; EH/funclet ownership open |
 | StepStageVectorTween (0x405240) | 883 B | 883 B; 276/280 aligned instructions | Nonexact; four fallback x87 differences remain |
 | InitializeSecondarySpellStage (0x40C650) | 1,777 B | Diagnostic frontier exists | Nonexact; see SECONDARY_SPELL_STAGE.md |
 | UpdateSecondarySpellStageState (0x40C0A0) | 624 B | 628 B in the current wide callback producer | Nonexact |
@@ -81,8 +81,12 @@ control-flow notes in STAGE_CULLING.md.
    Its candidate is 724 B / 112 of 191 aligned instructions after the culler
    ABI change. Preserve the active-camera reload, explicit float offset
    stores and full-width bit-11 extraction documented in STAGE_CULLING.md.
-3. Resume ExecuteStageScript, StepStageVectorTween, or the 1,777-byte
-   spell-stage initializer using their topic notes. Avoid broad replay.
+3. ExecuteStageScript now has per-mode oscillator timer advance/wrap and
+   return paths, reaching 2,720 B / 551 of 610 aligned instructions (from
+   2,736 B / 537). Continue its opcode/timer dataflow and EH/funclet work with
+   only execute-stage-script-frontier. StepStageVectorTween and the
+   1,777-byte spell-stage initializer remain active alternatives. Avoid broad
+   replay.
 4. The previous SecondarySpellStageView::Update() method experiment did
    not improve the callback ABI: the candidate still saved ESI, not native
    EDI. It also promoted a physical view to a guessed class identity. Its
