@@ -107,7 +107,10 @@ struct AnimationVmView
     unsigned char *instruction;
     unsigned int unknown3ac;
     AnimationFileView *file;
-    unsigned char unknown3b4[0x3e8 - 0x3b4];
+    unsigned char unknown3b4[0x3bc - 0x3b4];
+    // Child VM duration written by the stage-spell initialization owner.
+    int duration3bc;
+    unsigned char unknown3c0[0x3e8 - 0x3c0];
     AnimationPersistentState persistent3e8;
     unsigned char unknown3f4[0x404 - 0x3f4];
     AnimationVmFlags flags;
@@ -137,6 +140,7 @@ typedef char AnimationVmTimeOffset[(offsetof(AnimationVmView, time) == 0x5c) ? 1
 typedef char AnimationVmTransformOffset[(offsetof(AnimationVmView, transform) == 0x2b4) ? 1 : -1];
 typedef char AnimationVmFlagsOffset[(offsetof(AnimationVmView, flags) == 0x404) ? 1 : -1];
 typedef char AnimationVmFileOffset[(offsetof(AnimationVmView, file) == 0x3b0) ? 1 : -1];
+typedef char AnimationVmChildDurationOffset[(offsetof(AnimationVmView, duration3bc) == 0x3bc) ? 1 : -1];
 typedef char AnimationTextureEntrySize[(sizeof(AnimationTextureEntry) == 20) ? 1 : -1];
 typedef char AnimationFileScriptOffset[(offsetof(AnimationFileView, scripts) == 0x11c) ? 1 : -1];
 typedef char AnimationFileTextureOffset[(offsetof(AnimationFileView, textures) == 0x120) ? 1 : -1];

@@ -110,8 +110,7 @@ __forceinline void SetStageSpellChildDuration(
 {
     AnimationVmView *child = FindStageSpellChild(root, scriptId);
     // The original stores through the result without adding a guard.
-    *reinterpret_cast<int *>(
-        reinterpret_cast<unsigned char *>(child) + 0x3bc) = duration;
+    child->duration3bc = duration;
 }
 }
 
