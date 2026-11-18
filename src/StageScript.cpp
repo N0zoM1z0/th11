@@ -50,9 +50,10 @@ static __forceinline void ScriptTime(StageTimerView &timer, int frame)
 {
     if (!(timer.flags & 1))
     {
-        timer.fraction = 0.0f;
+        // Preserve the native field-write order before publishing the flag.
         timer.current = 0;
         timer.previous = -999999;
+        timer.fraction = 0.0f;
         timer.scale = &g_AnimationTimeScale;
         timer.flags |= 1;
     }
