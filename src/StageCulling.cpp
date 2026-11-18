@@ -33,13 +33,13 @@ static __forceinline void ExtendProjectedBounds(const CameraVector &point,
 int __stdcall CullStageObject(const PerspectiveCameraView *camera,
     const StageObjectDrawView *object, const CameraVector *offset, float maxDistanceSquared)
 {
-    // Snapshot the full layer translation before measuring against the
-    // camera eye. The renderer provides a real three-component offset.
+    // Retain the layer's three-float displacement value for the center
+    // calculation; the original also rereads its Y/Z values from the caller.
     const CameraVector displacement = *offset;
     CameraVector worldCenter = {
         object->position.x + displacement.x,
-        object->position.y + displacement.y,
-        object->position.z + displacement.z
+        object->position.y + offset->y,
+        object->position.z + offset->z
     };
     // The original stores all three camera-space eye coordinates as float
     // before subtracting them from the separately rounded object center.

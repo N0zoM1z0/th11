@@ -72,6 +72,19 @@ The three integer counters reuse twelve physical bytes that another source
 view calls `drawOffset`. This is a *local overlay* with verified offsets;
 no shared exact unit's class layout was changed.
 
+## Axis-specific layer-offset read scheduling (2026-11-18)
+
+The current C++ keeps the copied CameraVector value for the X center
+component but reads the Y and Z components directly from the caller's
+offset pointer. This is a source-level lifetime experiment: the data
+are unchanged, but the compiler sees a different mix of copied and
+direct component reads. It produces a 1,639-byte PDB contribution with
+**405/504** aligned native instructions, compared with the prior
+1,641-byte contribution and 402/504 aligned instructions. The
+1,643-byte native culler remains nonexact, and the dependent
+DrawStageLayer still rebuilds at 729 bytes / 112 of 191 instructions.
+This is not claimed as the original source expression.
+
 ## Restoring the native identity-matrix initialization (2026-11-18)
 
 Immediately before D3DXMatrixTranslation, the original culler writes
@@ -220,7 +233,7 @@ and cannot acquire an exact result merely by matching a PDB extent.
 
 | Primary owner | Native | Current PDB contribution | Instruction-key diagnostic |
 | --- | ---: | ---: | ---: |
-| CullStageObject | 1,643 | 1,641 | 402 / 504 target instructions |
+| CullStageObject | 1,643 | 1,639 | 405 / 504 target instructions |
 | DrawStageLayer | 727 | 729 | 112 / 191 target instructions |
 
 The culler initially emitted 1,316 bytes (206/504 aligned) with an
