@@ -51,6 +51,11 @@ control-flow notes in STAGE_CULLING.md.
 - SecondarySpellUpdateCallback (0x40C630, 10 B) is still nonexact.
   Native saves EDI around the updater call; the current candidate saves ESI.
   Do not transfer the draw callback's exact result to this separate owner.
+- PackStageFog (0x405B70, 171 B), ResetAnimationVm (0x401FD0, 303 B),
+  and ResetAndBindStageAnimationVm (0x405B10, 30 B) all passed targeted
+  strict cold linked-PE replay in this session with zero byte/relocation
+  differences. Opcode 9's FISTP is round-toward-zero because native sets
+  x87 RC=11b; keep the C++ float-to-int conversion truncating.
 
 ## Immediate next work
 
@@ -66,13 +71,15 @@ control-flow notes in STAGE_CULLING.md.
 1. Continue CullStageObject from the indexed two-group traversal, inclusive
    viewport-edge tests, strict 0 < z <= 1 depth gate, and native asymmetric
    X/Y extrema branches. Unordered coordinates follow the native fallback
-   into the minimum bound. The focused candidate is 1,644 B / 329 of 504
-   aligned instructions. Rebuild only cull-stage-object-frontier and work on
-   the remaining stack/local and x87 ordering differences. Do not replace the indexed loop with the earlier
-   pointer-cursor version: that checkpoint was 1,525 B / 383 of 504 aligned.
+   into the minimum bound. The focused candidate is 1,648 B / 328 of 504
+   aligned instructions. Its natural three-argument fastcall now models the
+   caller's object/offset/distance registers; the native private EAX camera
+   input remains open. Rebuild only cull-stage-object-frontier and work on
+   the remaining stack/local and x87 ordering differences.
 2. Rebuild draw-stage-layer-frontier when a shared source/header changes.
-   Preserve the active-camera reload, explicit float offset stores and
-   full-width bit-11 extraction documented in STAGE_CULLING.md.
+   Its candidate is 724 B / 112 of 191 aligned instructions after the culler
+   ABI change. Preserve the active-camera reload, explicit float offset
+   stores and full-width bit-11 extraction documented in STAGE_CULLING.md.
 3. Resume ExecuteStageScript, StepStageVectorTween, or the 1,777-byte
    spell-stage initializer using their topic notes. Avoid broad replay.
 4. The previous SecondarySpellStageView::Update() method experiment did

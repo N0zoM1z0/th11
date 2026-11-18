@@ -192,9 +192,13 @@ Target interpolation lives at stage+50 and position interpolation at+9C. Each
 contains initial, target and two control vectors, a timer, duration and mode.
 Fog interpolation starts at+E8, with four28-byte fog values, timer+158,
 duration+16C and mode+170. A fog value is start/end, four byte-domain float
-channels and the packed DWORD. The existing stage layout is accessed through
-an additional physical view; shared source headers and old exact contexts were
-not changed.
+channels and the packed DWORD. Opcode 9 calls PackStageFog after populating
+the four channels. Its x87 conversion is explicitly truncating: the native
+helper ORs 0xC00 into the saved control word before FISTP, then restores the
+original word. This is round-toward-zero, not nearest rounding, so the
+ordinary C++ `static_cast<int>` in PackStageFog is semantically correct.
+The existing stage layout is accessed through an additional physical view;
+shared source headers and old exact contexts were not changed.
 
 The postpass tests nonzero duration independently, applies target-offset,
 position and fog interpolation in that order, then applies oscillation.

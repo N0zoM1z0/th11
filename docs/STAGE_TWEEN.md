@@ -31,7 +31,10 @@ A vector tween contains four12-byte vectors, a20-byte timer at+30, signed
 duration+44 and mode+48. Fog uses four28-byte values, timer+70, duration+84 and
 mode+88. A fog value contains start/end, four float color channels and the
 packed DWORD at+18. Its arithmetic operates on six floats and calls the real
-Pack helper after every operation, without clamping.
+Pack helper after every operation, without clamping. PackStageFog saves the
+x87 control word, sets RC=11b (0xC00) for FISTP, then restores the saved word;
+the byte conversion therefore truncates toward zero. The source's
+`static_cast<int>` is intentional and matches this behavior.
 
 Both step functions advance the timer only when duration is positive. They
 reload duration afterward. At current>=duration they assign the timer to that
