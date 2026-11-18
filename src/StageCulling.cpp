@@ -96,15 +96,15 @@ int __stdcall CullStageObject(const PerspectiveCameraView *camera,
     float smallestY = 472.0f, largestY = 8.0f;
     // The native VC9 producer handles twelve projected points as two groups
     // of six in a single outer loop; each point has its own clipping branch.
+    const CameraVector *six = projected;
     for (int group = 0; group < 2; ++group)
     {
-        const CameraVector *six = &projected[group * 6];
-        ExtendProjectedBounds(six[0], smallestX, largestX, smallestY, largestY);
-        ExtendProjectedBounds(six[1], smallestX, largestX, smallestY, largestY);
-        ExtendProjectedBounds(six[2], smallestX, largestX, smallestY, largestY);
-        ExtendProjectedBounds(six[3], smallestX, largestX, smallestY, largestY);
-        ExtendProjectedBounds(six[4], smallestX, largestX, smallestY, largestY);
-        ExtendProjectedBounds(six[5], smallestX, largestX, smallestY, largestY);
+        ExtendProjectedBounds(*six++, smallestX, largestX, smallestY, largestY);
+        ExtendProjectedBounds(*six++, smallestX, largestX, smallestY, largestY);
+        ExtendProjectedBounds(*six++, smallestX, largestX, smallestY, largestY);
+        ExtendProjectedBounds(*six++, smallestX, largestX, smallestY, largestY);
+        ExtendProjectedBounds(*six++, smallestX, largestX, smallestY, largestY);
+        ExtendProjectedBounds(*six++, smallestX, largestX, smallestY, largestY);
     }
     if (largestX > 32.0f && smallestX < 416.0 &&
         largestY > 16.0f && smallestY < 464.0)

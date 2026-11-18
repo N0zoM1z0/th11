@@ -72,6 +72,22 @@ The three integer counters reuse twelve physical bytes that another source
 view calls `drawOffset`. This is a *local overlay* with verified offsets;
 no shared exact unit's class layout was changed.
 
+## Streaming traversal of projected culling samples (2026-11-18)
+
+The two native six-sample projected-point passes walk a contiguous
+twelve-entry CameraVector array. The previous source repeatedly indexed
+the six entries through a group-local base pointer. It now advances one
+real CameraVector pointer through both passes with six natural inline
+bound updates in each iteration, maintaining the identical 12-point
+clipping order and NaN-aware min/max semantics. Under pinned VC9 /GL,
+the complete culler primary owner changes from 1,530 bytes / 334 of
+504 aligned native instructions to **1,525 bytes / 383 of 504**.
+Twelve unrolled calls without the outer pass produced 2,226 bytes and
+worse alignment; a single twelve-point loop produced 377/504 and
+was not selected. Focused DrawStageLayer rebuild still contributes
+729 bytes with 112/191 alignment. No assembly, padding, or surrogate
+binary bytes were used. The culler remains nonexact.
+
 ## Independent layer-displacement snapshot (2026-11-18)
 
 The culler now snapshots the caller-provided three-float translation into a
@@ -185,7 +201,7 @@ and cannot acquire an exact result merely by matching a PDB extent.
 
 | Primary owner | Native | Current PDB contribution | Instruction-key diagnostic |
 | --- | ---: | ---: | ---: |
-| CullStageObject | 1,643 | 1,530 | 334 / 504 target instructions |
+| CullStageObject | 1,643 | 1,525 | 383 / 504 target instructions |
 | DrawStageLayer | 727 | 729 | 112 / 191 target instructions |
 
 The culler initially emitted 1,316 bytes (206/504 aligned) with an
