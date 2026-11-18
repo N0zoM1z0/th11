@@ -7,7 +7,7 @@ frontier results are:
 | Native owner | Native size | Candidate PDB contribution | Aligned native instructions | State |
 | --- | ---: | ---: | ---: | --- |
 | CullStageObject (0x403950) | 1,643 B | 1,648 B | 328/504 | Nonexact |
-| DrawStageLayer (0x404190) | 727 B | 724 B | 112/191 | Nonexact |
+| DrawStageLayer (0x404190) | 727 B | 744 B | 112/191 | Nonexact |
 
 These are diagnostic frontiers, not strict replay results. The original
 translation-unit ownership and remaining byte/relocation differences are
@@ -63,12 +63,16 @@ signed-16 type.
 
 Only primitive type zero has rendering side effects. Its offsets are combined
 with the record offset and stored at VM +0x3E8/+0x3EC/+0x3F0. Optional
-nonzero X/Y dimensions set scale ratios and VM flag 8. VM mode bits
-0x03C00000 select fog; bit 0x800 controls Z writing. State changes flush
-the renderer before D3D9 state updates. Drawing calls the maintained
-DrawAnimationVmByMode owner. Accepted objects and drawn primitives update
-their respective stage counters. Disabled Z writing is restored after the
-record stream ends.
+nonzero X/Y dimensions set scale ratios and VM flag 8. The native loads
+each command scale and sprite dimension before publishing flag 8, then
+performs the floating divide and stores the ratio. The source retains these
+four operands in scalar locals so the flag write stays between operand loads
+and FDIV; this preserves the native memory-side-effect order even though the
+focused candidate grows to 744 bytes. VM mode bits 0x03C00000 select fog;
+bit 0x800 controls Z writing. State changes flush the renderer before D3D9
+state updates. Drawing calls the maintained DrawAnimationVmByMode owner.
+Accepted objects and drawn primitives update their respective stage
+counters. Disabled Z writing is restored after the record stream ends.
 
 ## Code-generation findings retained
 
@@ -95,8 +99,9 @@ For DrawStageLayer, three independent source details improved the focused
 owner: reloading FrameRuntime.activeCamera after perspective application,
 copying the layer offset as three typed float members (recovering x87
 FLD/FSTP), and retaining the Z-write bit extraction as a full-width unsigned
-integer rather than bool. The current owner is 724 B with 112/191 aligned
-native instructions after restoring the three-argument fastcall boundary.
+integer rather than bool. The current owner is 744 B with 112/191 aligned
+native instructions after restoring the three-argument fastcall boundary and
+the original scale-operand / flag / divide ordering.
 
 ## Focused build and comparison
 

@@ -97,16 +97,18 @@ int __stdcall DrawStageLayer(StageResourceView *stage, int layer)
                         reinterpret_cast<StageSpriteDimensions *>(vm->unknown3ac);
                     if (command->scaleX != 0.0f)
                     {
-                        const float scaleX = command->scaleX / sprite->width;
+                        const float numerator = command->scaleX;
+                        const float denominator = sprite->width;
                         vmFlags |= 8;
                         vm->flags.value = vmFlags;
-                        vm->scaleX = scaleX;
+                        vm->scaleX = numerator / denominator;
                     }
                     if (command->scaleY != 0.0f)
                     {
-                        const float scaleY = command->scaleY / sprite->height;
+                        const float numerator = command->scaleY;
+                        const float denominator = sprite->height;
                         vm->flags.value |= 8;
-                        vm->scaleY = scaleY;
+                        vm->scaleY = numerator / denominator;
                     }
                 }
 
