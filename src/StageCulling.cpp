@@ -9,8 +9,8 @@ extern "C" CameraVector *WINAPI D3DXVec3ProjectArray(
     const D3DMATRIX *projection, const D3DMATRIX *view,
     const D3DMATRIX *world, unsigned int count);
 
-// Preserve the original branch order. For unordered/NaN X or Y values
-// neither comparison updates the corresponding screen-space extrema.
+// Preserve the native asymmetric x87 branches. If the first comparison is
+// false (including unordered/NaN), the native code writes the point to min.
 static __forceinline void ExtendProjectedBounds(const CameraVector &point,
     float &smallestX, float &largestX, float &smallestY, float &largestY)
 {

@@ -6,7 +6,7 @@ frontier results are:
 
 | Native owner | Native size | Candidate PDB contribution | Aligned native instructions | State |
 | --- | ---: | ---: | ---: | --- |
-| CullStageObject (0x403950) | 1,643 B | 1,644 B | 403/504 | Nonexact |
+| CullStageObject (0x403950) | 1,643 B | 1,644 B | 329/504 | Nonexact |
 | DrawStageLayer (0x404190) | 727 B | 729 B | 112/191 | Nonexact |
 
 These are diagnostic frontiers, not strict replay results. The original
@@ -81,7 +81,7 @@ instruction-alignment counts are diagnostics and are not additive.
 | Axis-specific offset reads and inclusive depth lower bound (rejected) | 1,639 B / 411 of 504 aligned | Earlier hypothesis; native Ghidra confirms the lower bound is strict |
 | Indexed two-group traversal, six points per group | 1,644 B / 442 of 504 aligned | Emits the native pointer advance and two-group loop |
 | Inclusive viewport-edge intersection tests with inclusive depth (superseded) | 1,644 B / 446 of 504 aligned | Four viewport edges are inclusive; the depth lower bound is not |
-| Strict positive projected depth | 1,644 B / 403 of 504 aligned | Matches native 0 < z <= 1; excludes samples exactly on the near plane |
+| Strict positive depth plus asymmetric X/Y extrema branches | 1,644 B / 329 of 504 aligned | Matches 0 < z <= 1 and native unordered-coordinate updates to minima |
 
 The current indexed loop visits projected[group * 6 + 0..5] for two groups.
 It preserves all twelve samples and their order. Earlier pointer-cursor and
