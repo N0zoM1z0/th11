@@ -72,6 +72,21 @@ The three integer counters reuse twelve physical bytes that another source
 view calls `drawOffset`. This is a *local overlay* with verified offsets;
 no shared exact unit's class layout was changed.
 
+## Float-rounded bounding-box half-extents (2026-11-18)
+
+The original 1,643-byte culler multiplies each extent by one half, then
+stores X/Y/Z half-extents separately with x87 FSTP before calculating
+the minimum/maximum corners. The earlier C++ embedded each half-extent
+multiplication in both corner expressions. That obscured the native
+intermediate float-rounding boundaries and changed instruction scheduling.
+The source now names halfX, halfY and halfZ as real float temporaries,
+using them for both endpoints of each axis. Pinned VC9 /GL regenerates
+the three consecutive half-extent stores. The complete PDB owner moves
+from 1,476 bytes / 294 of 504 aligned native instructions to **1,506
+bytes / 299 of 504 aligned instructions**. The dependent 729-byte
+DrawStageLayer diagnostic retains 112/191 aligned instructions. Both
+are nonexact large-function frontiers; no ASM or padding was used.
+
 ## Full-width Z-write flag extraction (2026-11-18)
 
 The native DrawStageLayer checks VM flag bit 11 by shifting the full
@@ -146,7 +161,7 @@ and cannot acquire an exact result merely by matching a PDB extent.
 
 | Primary owner | Native | Current PDB contribution | Instruction-key diagnostic |
 | --- | ---: | ---: | ---: |
-| CullStageObject | 1,643 | 1,476 | 294 / 504 target instructions |
+| CullStageObject | 1,643 | 1,506 | 299 / 504 target instructions |
 | DrawStageLayer | 727 | 729 | 112 / 191 target instructions |
 
 The culler initially emitted 1,316 bytes (206/504 aligned) with an

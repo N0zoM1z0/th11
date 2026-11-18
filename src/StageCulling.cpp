@@ -57,13 +57,18 @@ int __stdcall CullStageObject(const PerspectiveCameraView *camera,
     if (distanceSquared > maxDistanceSquared)
         return 1;
 
+    // The three half-extents are individually stored as floats before
+    // either corner endpoint is formed, matching the native x87 rounding.
     const float half = 0.5f;
-    float maxX = static_cast<float>(object->position.x + object->extents.x * half);
-    float minX = static_cast<float>(object->position.x - object->extents.x * half);
-    float maxY = static_cast<float>(object->position.y + object->extents.y * half);
-    float minY = static_cast<float>(object->position.y - object->extents.y * half);
-    float maxZ = static_cast<float>(object->position.z + object->extents.z * half);
-    float minZ = static_cast<float>(object->position.z - object->extents.z * half);
+    const float halfX = static_cast<float>(object->extents.x * half);
+    const float halfY = static_cast<float>(object->extents.y * half);
+    const float halfZ = static_cast<float>(object->extents.z * half);
+    float maxX = static_cast<float>(object->position.x + halfX);
+    float minX = static_cast<float>(object->position.x - halfX);
+    float maxY = static_cast<float>(object->position.y + halfY);
+    float minY = static_cast<float>(object->position.y - halfY);
+    float maxZ = static_cast<float>(object->position.z + halfZ);
+    float minZ = static_cast<float>(object->position.z - halfZ);
 
     CameraVector corners[12] = {
         {maxX, maxY, maxZ}, {maxX, maxY, minZ},
