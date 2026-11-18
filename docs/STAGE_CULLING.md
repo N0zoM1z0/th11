@@ -93,7 +93,7 @@ component but reads the Y and Z components directly from the caller's
 offset pointer. This is a source-level lifetime experiment: the data
 are unchanged, but the compiler sees a different mix of copied and
 direct component reads. It produces a 1,639-byte PDB contribution with
-**405/504** aligned native instructions, compared with the prior
+**411/504** aligned native instructions, compared with the prior
 1,641-byte contribution and 402/504 aligned instructions. The
 1,643-byte native culler remains nonexact, and the dependent
 DrawStageLayer still rebuilds at 729 bytes / 112 of 191 instructions.
