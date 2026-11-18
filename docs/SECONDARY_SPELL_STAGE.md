@@ -327,25 +327,27 @@ the target's lack of allocation-error checks is retained. The
 C++ source uses the existing `ChainElement` constructor fields
 and real `AddToUpdateChain`/`AddToDrawChain` boundaries.
 
-The registration code points to two distinct callbacks. The
-10-byte native `SecondarySpellUpdateCallback` at 40C630 saves EDI,
-forwards the context through EDI to the 624-byte updater and returns.
-The 7-byte `SecondarySpellDrawCallback` at 40C640 forwards
-ECX into the 370-byte draw owner by a tail jump. Both now have
-natural `__fastcall` source adapters. The draw callback is **7/7 bytes
-exact** in its dedicated real downstream LTCG producer, including its REL32
-field to DrawSecondarySpellStage; its cold replay is recorded below. The
-update callback remains nonexact: the current candidate saves ESI while the
-native saves EDI around the call to the 624-byte updater. The wide callback
-producer now uses `/Oy-`, giving the updater a frame-pointer-based 616-byte
-candidate. Its three position-smoothing x87 sequences now match native
-operand order exactly: position X then scaled X, position Y then scaled Y,
-and scaled Z then position Z. The remaining updater differences are the
-private EDI receiver versus candidate ESI, the native 8-byte stack alignment
-and the remaining surrounding control-flow/code-size gap. The 256-byte
-registrar is independently strict exact. No callback is implemented with
-inline ASM or a hand-authored jump.
+The registration code points to two distinct callbacks. The 10-byte native
+`SecondarySpellUpdateCallback` at 40C630 saves EDI, forwards the context
+through EDI to the 624-byte updater and returns. The 7-byte native
+`SecondarySpellDrawCallback` at 40C640 forwards ECX into the 370-byte draw
+owner by a tail jump. Both have natural `__fastcall` source adapters. The draw
+callback remains **7/7 bytes exact** in its dedicated real downstream LTCG
+producer, including its REL32 field to DrawSecondarySpellStage; its cold replay
+is recorded below.
 
+The update callback is now **strict linked exact (10/10 bytes)** in the wide
+real LTCG producer, including its REL32 field to the updater. The updater
+candidate is 617 bytes versus the native 624. Modeling timer advance as the
+natural `StageTimerView::Advance()` member call changed the whole-program
+register allocation: the callback now saves EDI, the updater keeps its stage
+receiver in EDI, and it loads the timer into ESI before the member call. The
+three position-smoothing x87 sequences also retain native operand order:
+position X then scaled X, position Y then scaled Y, and scaled Z then position Z.
+Remaining differences are inside the timer helper and the updater's stack
+alignment/control-flow schedule. The 256-byte registrar is independently
+strict exact. No callback is implemented with inline ASM or a hand-authored
+jump.
 ## Owning constructor, destructor and lifetime wrappers
 
 The 0x924-byte owning stage spell C++ object now has real lifecycle
@@ -533,13 +535,11 @@ The selected strict cold linked-PE comparison proves **7/7 bytes
 exact**, including the sole original REL32 field at +03 targeting
 0x40C4A0, with zero differences. No user-authored machine-code
 JMP, inline ASM, naked function, NOP or padding was introduced.
-In the same wide producer the update callback remains nonexact:
-it selects ESI where the native update call wants EDI.
-The existing independently exact 256-byte chain registrar is
-also reverified after this work. These are distinct owners and
-only the seven-byte draw callback receives new canonical
-exact credit.
-
+In the same wide producer the update callback now also has a strict linked
+exact receipt (10/10 bytes), including its REL32 to the 617-byte updater. The
+updater itself is still nonexact, but its private receiver has moved to EDI and
+its timer object is carried in ESI through the new natural member call. The
+existing independently exact 256-byte chain registrar remains exact.
 
 ### Strict exact owning destructor (0x40BE50, 317 bytes)
 

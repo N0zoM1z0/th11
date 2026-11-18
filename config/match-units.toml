@@ -10074,7 +10074,7 @@ linkages = [
 frontier = true
 artifact_kind = "linked-pe"
 source = "src/SecondarySpellStageChains.cpp"
-inputs = ["src/SecondarySpellStageOwned.hpp", "src/SecondarySpellStageState.cpp",
+inputs = ["src/SecondarySpellStageOwned.hpp", "src/StageResource.hpp", "src/SecondarySpellStageState.cpp",
           "src/SecondarySpellStageDrawing.cpp",
           "probes/secondary-spell-callback-context.cpp"]
 support_sources = ["src/SecondarySpellStageState.cpp",
@@ -10091,7 +10091,9 @@ functions = ["SecondarySpellUpdateCallback"]
 symbol = "?SecondarySpellUpdateCallback@@YIHPAX@Z"
 target_address = 0x0040C630
 size = 10
-linkages = []
+linkages = [
+  { offset = 4, type = "REL32", symbol = "?UpdateSecondarySpellStageState@@YGHPAUSecondarySpellStageView@@@Z", target = 0x0040C0A0 },
+]
 
 # Natural 7-byte VC9 tail adapter when the real stage-spell HUD C++ owner
 # participates in the same bounded LTCG producer. No ASM or fake JMP stub.

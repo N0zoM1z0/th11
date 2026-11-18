@@ -16,6 +16,7 @@ struct StageTimerView
     unsigned int flags;
 
     StageTimerView() { flags &= ~1u; }
+    int Advance();
     __forceinline void SetFrame(int value)
     {
         if (!(flags & 1))

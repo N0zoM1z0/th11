@@ -7,6 +7,22 @@
 
 extern SecondaryPlayerControllerView *g_SecondaryPlayerControllerInstance;
 
+__declspec(noinline) int StageTimerView::Advance()
+{
+    int previous = current;
+    this->previous = previous;
+    if (*scale > static_cast<double>(0.99f) && *scale < 1.01f)
+    {
+        int next = static_cast<int>(static_cast<unsigned int>(previous) + 1);
+        current = next;
+        fraction = static_cast<float>(fraction + 1.0);
+        return next;
+    }
+    fraction = *scale + fraction;
+    current = static_cast<int>(fraction);
+    return current;
+}
+
 static __forceinline void SetSpellFollowerEvent(SecondarySpellStageView *self,
     unsigned short event)
 {
@@ -48,7 +64,7 @@ int __stdcall UpdateSecondarySpellStageState(SecondarySpellStageView *self)
 
         ExecuteAnimationVm(&self->vm0);
         ExecuteAnimationVm(&self->vm1);
-        AdvanceStageTimer(&self->time);
+        self->time.Advance();
 
         if (self->time.current >= 120)
         {
