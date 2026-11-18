@@ -100,12 +100,24 @@ or 7/8 on the same threshold. Each branch creates its own
 overlay script (10, 11, 15, 19, 20, 23 or 13) only under
 the original spell-index and progression conditions.
 
-The source preserves real VM reset/bind and allocation calls
-and compiles under pinned VC9. Its public source signature is
-provisional because the native EAX string and RET8 form a private
-whole-program calling convention. No byte-exact claim is made;
-actual linked /GL caller ownership and relocation comparison
-remain to be resolved.
+The original caller at `0x415BE8` confirms the private argument layout:
+it pushes the duration returned by the selector-1 lookup, pushes the spell
+index, loads the name address with `lea eax,[esp+0x29c]`, then calls
+`0x40C650`. Thus EAX carries the NUL-terminated spell name and the callee
+consumes two stack arguments with `RET 8`; this is not a normal three-argument
+`__stdcall` ABI. The maintained C++ signature is a semantic adapter, not an
+ABI claim.
+
+The name lookup also supplies the VM state consumed implicitly in ESI by the
+right-aligned text helper at `0x454D00`. Its five visible arguments are
+foreground `0xffffff`, outline zero, font choice zero, spacing zero and the
+spell-name format string. `FormatRightAlignedTextureText` models that VM state
+as its explicit first C++ parameter; changing it to the spell-name pointer
+would be incorrect.
+
+The source preserves real VM reset/bind and allocation calls and compiles
+under pinned VC9. No byte-exact claim is made; actual linked /GL caller
+ownership and relocation comparison remain to be resolved.
 
 ## Stage-spell HUD drawing (0x40C4A0, 370 bytes)
 
