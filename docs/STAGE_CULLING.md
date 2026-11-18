@@ -72,6 +72,18 @@ The three integer counters reuse twelve physical bytes that another source
 view calls `drawOffset`. This is a *local overlay* with verified offsets;
 no shared exact unit's class layout was changed.
 
+## Independent layer-displacement snapshot (2026-11-18)
+
+The culler now snapshots the caller-provided three-float translation into a
+natural CameraVector before combining it with the object's own position.
+This expresses the lifetime of the already-copied offset from DrawStageLayer,
+without altering the 12-corner projection or the ordered NaN comparisons.
+The focused pinned VC9 /GL primary PDB owner changes from 1,506 bytes and
+315/504 aligned native instructions to **1,530 bytes and 334/504**.
+The separately recompiled 729-byte DrawStageLayer owner stays at 112/191.
+The native CullStageObject owns 1,643 bytes, so codegen and relocation
+closure remain open; the aligned counts are diagnostics, not exactness.
+
 ## Typed half-extent vector scheduling (2026-11-18)
 
 The three independently rounded half-extents now live together in
@@ -173,7 +185,7 @@ and cannot acquire an exact result merely by matching a PDB extent.
 
 | Primary owner | Native | Current PDB contribution | Instruction-key diagnostic |
 | --- | ---: | ---: | ---: |
-| CullStageObject | 1,643 | 1,506 | 315 / 504 target instructions |
+| CullStageObject | 1,643 | 1,530 | 334 / 504 target instructions |
 | DrawStageLayer | 727 | 729 | 112 / 191 target instructions |
 
 The culler initially emitted 1,316 bytes (206/504 aligned) with an
