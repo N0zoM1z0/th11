@@ -32,7 +32,7 @@ Factory-accepted results or whole-game closure.
 | ExecuteStageScript (0x404470) | 2,736 B | 2,720 B; 551/610 aligned instructions | Nonexact; per-mode oscillator tail restored; EH/funclet ownership open |
 | StepStageVectorTween (0x405240) | 883 B | 883 B; 274/280 aligned instructions | Nonexact; native Z fallback add order restored; Y/Hermite x87 differences remain |
 | InitializeSecondarySpellStage (0x40C650) | 1,777 B | Diagnostic frontier exists | Nonexact; see SECONDARY_SPELL_STAGE.md |
-| UpdateSecondarySpellStageState (0x40C0A0) | 624 B | 617 B in the wide callback producer | Nonexact; EDI receiver and ESI timer-method flow restored; remaining helper/stack alignment differences |
+| UpdateSecondarySpellStageState (0x40C0A0) | 624 B | 628 B in the wide callback producer | Nonexact; EDI receiver, native 8-byte frame, ESI timer and position member-call flow restored; follower/helper differences remain |
 
 Instruction alignment is a navigation aid, not exactness. The two stage
 rendering owners have complete maintained C++ bodies and useful target

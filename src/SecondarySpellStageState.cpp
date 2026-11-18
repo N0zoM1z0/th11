@@ -7,6 +7,7 @@
 
 extern SecondaryPlayerControllerView *g_SecondaryPlayerControllerInstance;
 
+#pragma optimize("y", on)
 __declspec(noinline) int StageTimerView::Advance()
 {
     int previous = current;
@@ -22,6 +23,38 @@ __declspec(noinline) int StageTimerView::Advance()
     current = static_cast<int>(fraction);
     return current;
 }
+#pragma optimize("", on)
+
+struct SecondarySpellPositionView
+{
+    float x, y, z;
+    void PositionAnimation(AnimationVmId id) const;
+};
+typedef char SecondarySpellPositionViewSize[(sizeof(SecondarySpellPositionView) == sizeof(CameraVector)) ? 1 : -1];
+
+#pragma optimize("y", on)
+__declspec(noinline) void SecondarySpellPositionView::PositionAnimation(AnimationVmId id) const
+{
+    AnimationVmView *vm = FindAnimationVmById(g_RenderBatch, id);
+    if (!vm)
+        return;
+    BoundVmView *bound = reinterpret_cast<BoundVmView *>(vm);
+    SecondaryActorAnimationView *actor = reinterpret_cast<SecondaryActorAnimationView *>(vm);
+    actor->position.x = static_cast<float>(x + 32.0 + 192.0);
+    actor->position.y = static_cast<float>(y + 16.0);
+    actor->position.z = z;
+    if (!bound->marker018)
+    {
+        for (BoundVmNodeView *node = bound->related; node; node = node->next)
+        {
+            SecondaryActorAnimationView *child = reinterpret_cast<SecondaryActorAnimationView *>(node->vm);
+            child->position.x = static_cast<float>(x + 32.0 + 192.0);
+            child->position.y = static_cast<float>(y + 16.0);
+            child->position.z = z;
+        }
+    }
+}
+#pragma optimize("", on)
 
 static __forceinline void SetSpellFollowerEvent(SecondarySpellStageView *self,
     unsigned short event)
@@ -84,7 +117,7 @@ int __stdcall UpdateSecondarySpellStageState(SecondarySpellStageView *self)
         }
 
         const CameraVector &target = g_SecondaryMaster->Slot(0)->state.world.position;
-        CameraVector delta = {
+        __declspec(align(8)) CameraVector delta = {
             static_cast<float>(target.x - self->position.x),
             static_cast<float>(target.y - self->position.y),
             static_cast<float>(target.z - self->position.z)
@@ -100,7 +133,7 @@ int __stdcall UpdateSecondarySpellStageState(SecondarySpellStageView *self)
         positionY = static_cast<float>(positionY + scaled.y);
         self->position.z = static_cast<float>(self->position.z + scaled.z);
 
-        PositionSecondaryAnimation(AnimationVmId(self->positionVmId), &self->position);
+        reinterpret_cast<SecondarySpellPositionView *>(&self->position)->PositionAnimation(AnimationVmId(self->positionVmId));
         if ((self->flags & 0x20u) &&
             !reinterpret_cast<StageAuxiliaryView *>(g_MeshEffectEnemy)->effectActive)
             self->flags &= ~0x20u;

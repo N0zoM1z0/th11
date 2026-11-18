@@ -338,16 +338,25 @@ is recorded below.
 
 The update callback is now **strict linked exact (10/10 bytes)** in the wide
 real LTCG producer, including its REL32 field to the updater. The updater
-candidate is 617 bytes versus the native 624. Modeling timer advance as the
+candidate is 628 bytes versus the native 624. Modeling timer advance as the
 natural `StageTimerView::Advance()` member call changed the whole-program
-register allocation: the callback now saves EDI, the updater keeps its stage
-receiver in EDI, and it loads the timer into ESI before the member call. The
-three position-smoothing x87 sequences also retain native operand order:
-position X then scaled X, position Y then scaled Y, and scaled Z then position Z.
-Remaining differences are inside the timer helper and the updater's stack
-alignment/control-flow schedule. The 256-byte registrar is independently
-strict exact. No callback is implemented with inline ASM or a hand-authored
-jump.
+register allocation: the callback saves EDI, the updater keeps its stage
+receiver in EDI, and it loads the timer into ESI before the member call. An
+8-byte-aligned `CameraVector` local restores the native EBP frame, 8-byte ESP
+alignment and 0x20-byte local frame.
+
+The final position update is represented as a natural member operation on a
+12-byte `SecondarySpellPositionView`. Its implicit object stays in ESI, so
+the updater pushes only the animation ID before calling it; the former
+explicit position-pointer stack argument is gone. This preserves the native
+hidden-register call shape without ASM. The focused position method is 138
+bytes versus the 132-byte native helper, and the updater remains 4 bytes
+larger. The three position-smoothing x87 sequences retain native operand
+order: position X then scaled X, position Y then scaled Y, and scaled Z then
+position Z. Remaining updater differences are in follower lookup, helper
+bodies and surrounding control-flow schedule. The 256-byte registrar is
+independently strict exact. No callback is implemented with inline ASM or
+a hand-authored jump.
 ## Owning constructor, destructor and lifetime wrappers
 
 The 0x924-byte owning stage spell C++ object now has real lifecycle
