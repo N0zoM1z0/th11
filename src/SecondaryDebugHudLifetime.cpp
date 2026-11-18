@@ -12,10 +12,9 @@ namespace
 {
 typedef void (WINAPI *HudCriticalSectionOperation)(LPCRITICAL_SECTION);
 
-__forceinline void UnregisterHudChain(ChainElement *element,
+__forceinline void UnregisterHudChain(ChainManagerView *manager, ChainElement *element,
     HudCriticalSectionOperation enter, HudCriticalSectionOperation leave)
 {
-    ChainManagerView *manager = g_ChainManager;
     if (!element)
         return;
     if (g_MainRuntime.flags & 0x8000u)
@@ -70,12 +69,12 @@ __forceinline void ReleaseVmsByHudMarker(BoundVmNodeView *node, int marker)
 SecondaryDebugHudOwned::~SecondaryDebugHudOwned()
 {
     PrepareSecondaryDebugHudDestruction(this);
-
+    ChainManagerView *manager = g_ChainManager;
     HudCriticalSectionOperation enter = EnterCriticalSection;
     HudCriticalSectionOperation leave = LeaveCriticalSection;
-    UnregisterHudChain(updateChain, enter, leave);
-    UnregisterHudChain(drawChain, enter, leave);
-    UnregisterHudChain(overlayChain, enter, leave);
+    UnregisterHudChain(manager, updateChain, enter, leave);
+    UnregisterHudChain(manager, drawChain, enter, leave);
+    UnregisterHudChain(manager, overlayChain, enter, leave);
 
     updateChain = 0;
     ReleaseSecondaryAnimation(AnimationVmId(effectVmId));
