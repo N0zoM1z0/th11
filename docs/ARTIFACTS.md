@@ -109,5 +109,27 @@ build/ fell from 531,148 to 529,972 KiB, and .analysis/ fell from
 
 No canonical exact output directory, active frontier, probe-ltcg diagnostic,
 source, target, Ghidra project, toolchain, Wine prefix, replay receipt or
-retained analysis comparison was removed. The current dirty HUD source files
-were left untouched.
+retained analysis comparison was removed. The HUD source changes present at
+that earlier checkpoint were left untouched.
+
+## Follow-up handoff cleanup — 2026-11-18
+
+A second storage pass removed only ignored, unreferenced scratch copies from
+the same day's compiler experiments:
+
+| Removed category | Files | Apparent bytes | Allocated bytes |
+| --- | ---: | ---: | ---: |
+| Alternate C++ source snapshots and duplicate full match-unit manifests | **190** | **4,563,509** | **5,009,408** |
+
+The allocated `.analysis/` usage fell from 68,380 KiB to 63,488 KiB,
+reclaiming **4,892 KiB (about 4.78 MiB)**. The selected comparison scripts,
+final diagnostic logs and the 1,670-byte spell-view method experiment patch
+were retained. That patch records the tested but unhelpful member-method
+experiment; the tracked source was restored because it did not recover the
+native EDI callback convention.
+
+No `build/match-linked/` directory was removed: every existing output
+folder is referenced by a configured match unit, including nonexact active
+frontiers. The build tree therefore remains at 535,916 KiB. The target,
+toolchain, Wine prefix, Ghidra project, canonical receipts and tracked source
+were not touched by storage pruning.
