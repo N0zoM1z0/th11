@@ -8485,7 +8485,6 @@ linkages = [
 ]
 
 [units.set-secondary-pair-duration]
-frontier = true
 artifact_kind = "linked-pe"
 source = "src/SecondaryPairAccess.cpp"
 inputs = ["src/SecondaryPairAccess.hpp", "src/SecondaryActorState.hpp"]
@@ -8494,7 +8493,7 @@ output_dir = "build/match-linked/SecondaryPairAccess"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "SecondaryPairAccessProbe@20"
 functions = ["SetSecondaryPairDuration"]
-symbol = "?SetSecondaryPairDuration@@YGXPAUSecondaryPairTween@@H@Z"
+symbol = "?SetSecondaryPairDuration@@YGXHPAUSecondaryPairTween@@@Z"
 target_address = 0x00419510
 size = 4
 linkages = []

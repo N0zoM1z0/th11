@@ -8,7 +8,9 @@ void __stdcall SetSecondaryPairInitial(SecondaryPairTween *self, const Secondary
 void __stdcall SetSecondaryPairTarget(SecondaryPairTween *self, const SecondaryVector2 *value);
 void __stdcall ResetSecondaryPairControl1(SecondaryPairTween *self);
 void __stdcall ResetSecondaryPairControl2(SecondaryPairTween *self);
-void __stdcall SetSecondaryPairDuration(SecondaryPairTween *self, int duration);
+// VC9 LTCG recovers the observed private EAX receiver / ECX integer ABI
+// with this natural duration-first interface.
+void __stdcall SetSecondaryPairDuration(int duration, SecondaryPairTween *self);
 void __stdcall ResetSecondaryPairTimer(SecondaryPairTween *self);
 int __stdcall GetSecondaryPairDuration(const SecondaryPairTween *self);
 void __stdcall StopSecondaryPairTween(SecondaryPairTween *self);

@@ -8,7 +8,7 @@ extern "C" float __stdcall SecondaryPairAccessProbe(SecondaryPairTween *self,
     SetSecondaryPairTarget(self, input);
     ResetSecondaryPairControl1(self);
     ResetSecondaryPairControl2(self);
-    SetSecondaryPairDuration(self, mode);
+    SetSecondaryPairDuration(mode, self);
     ResetSecondaryPairTimer(self);
     int duration = GetSecondaryPairDuration(self);
     StopSecondaryPairTween(self);

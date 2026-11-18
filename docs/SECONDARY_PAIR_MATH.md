@@ -63,13 +63,24 @@ interior entries or tables. Eleven were absent from the candidate inventory;
 | AddSecondaryPair | 4195E0 | 16 | Two rounded sums to output |
 
 The two preset-copy functions use raw 32-bit component transfers and
-reproduce both DIR32 references at offsets 2 and 11.
-`SetSecondaryPairDuration` (419510) and `AddSecondaryPair` (4195E0) are
-uncalled dead copies. Their former naked bodies were withdrawn on 2026-11-14.
-As plain C++ they get a register convention from LTCG, but with the registers
-assigned differently (ECX/EAX and EDX/ECX). They need the real inlining owner,
-probably the dispatcher's pair setup. The two preset copies are exact
-(`reset-secondary-pair-control1`, `reset-secondary-pair-control2`).
+reproduce both DIR32 references at offsets 2 and 11. Their exact
+canonical units remain unchanged.
+
+On 2026-11-18 the ordinary C++ SetSecondaryPairDuration source was
+restored with typed (int duration, SecondaryPairTween *self) parameter
+order in the existing dynamic VC9 /GL pair context. The optimizer
+assigns EAX to the real pair receiver and ECX to duration, reproducing
+the entire four-byte native MOV/RET sequence with no ASM, volatile
+padding or copied machine code. The complete unique PDB primary owner
+has no address relocations; strict cold replay passes with zero
+differences and all 11 selected exact pair units also pass. Its
+original game class/TU ownership remains unknown; the proof
+establishes native codegen only.
+
+AddSecondaryPair at 4195E0 remains nonexact: the scoped C++ still
+assigns ECX and EDX to the opposite vector inputs, so the 16-byte
+candidate differs in x87 operand encodings. Its earlier naked-code
+proof remains withdrawn; do not count it as exact.
 
 The complete101-byte4195F0 owner is also independently reviewed: two stack floats,
 double pi/tau comparisons, three rounded RET8 paths and the actual418D20 caller.

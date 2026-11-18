@@ -31,7 +31,7 @@ void __stdcall ResetSecondaryPairControl2(SecondaryPairTween *self)
     control[1] = preset[1];
 }
 
-void __stdcall SetSecondaryPairDuration(SecondaryPairTween *self, int duration)
+void __stdcall SetSecondaryPairDuration(int duration, SecondaryPairTween *self)
 {
     self->duration = duration;
 }
