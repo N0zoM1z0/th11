@@ -176,12 +176,13 @@ void InitializeSecondaryDebugHudAnimations()
             ++i;
         } while (i < 9);
 
-        i = 0;
+        unsigned int overlayIndex = 0;
         do
         {
-            BindAnimationScript(HudFrontFile(hud), i + 0x20, EmbeddedVm(&hud->overlayVms[i]));
-            ++i;
-        } while (i < 4);
+            BindAnimationScript(HudFrontFile(hud), overlayIndex + 0x20,
+                                EmbeddedVm(&hud->overlayVms[overlayIndex]));
+            ++overlayIndex;
+        } while (overlayIndex < 4u);
 
         i = 0;
         do
