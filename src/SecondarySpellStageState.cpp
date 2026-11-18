@@ -78,9 +78,11 @@ int __stdcall UpdateSecondarySpellStageState(SecondarySpellStageView *self)
             static_cast<float>(delta.y * 0.05),
             static_cast<float>(delta.z * 0.05)
         };
-        self->position.x = static_cast<float>(self->position.x + scaled.x);
-        self->position.y = static_cast<float>(self->position.y + scaled.y);
-        self->position.z = static_cast<float>(scaled.z + self->position.z);
+        volatile float &positionX = self->position.x;
+        positionX = static_cast<float>(positionX + scaled.x);
+        volatile float &positionY = self->position.y;
+        positionY = static_cast<float>(positionY + scaled.y);
+        self->position.z = static_cast<float>(self->position.z + scaled.z);
 
         PositionSecondaryAnimation(AnimationVmId(self->positionVmId), &self->position);
         if ((self->flags & 0x20u) &&

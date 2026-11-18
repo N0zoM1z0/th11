@@ -10085,7 +10085,7 @@ support_sources = ["src/SecondarySpellStageState.cpp",
                    "src/ChainRemove.cpp",
                    "probes/secondary-spell-callback-context.cpp"]
 output_dir = "build/match-linked/SecondarySpellCallbacksWide"
-profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+profile = ["/TP", "/O2", "/Oy-", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "SecondarySpellCallbackProbe@8"
 functions = ["SecondarySpellUpdateCallback"]
 symbol = "?SecondarySpellUpdateCallback@@YIHPAX@Z"

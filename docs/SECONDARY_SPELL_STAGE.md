@@ -336,7 +336,13 @@ natural `__fastcall` source adapters. The draw callback is **7/7 bytes
 exact** in its dedicated real downstream LTCG producer, including its REL32
 field to DrawSecondarySpellStage; its cold replay is recorded below. The
 update callback remains nonexact: the current candidate saves ESI while the
-native saves EDI around the call to the 624-byte updater. The 256-byte
+native saves EDI around the call to the 624-byte updater. The wide callback
+producer now uses `/Oy-`, giving the updater a frame-pointer-based 616-byte
+candidate. Its three position-smoothing x87 sequences now match native
+operand order exactly: position X then scaled X, position Y then scaled Y,
+and scaled Z then position Z. The remaining updater differences are the
+private EDI receiver versus candidate ESI, the native 8-byte stack alignment
+and the remaining surrounding control-flow/code-size gap. The 256-byte
 registrar is independently strict exact. No callback is implemented with
 inline ASM or a hand-authored jump.
 
