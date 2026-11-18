@@ -64,7 +64,10 @@ int __stdcall DrawStageLayer(StageResourceView *stage, int layer)
 
         // Native dispatch snapshots the layer offset into a local vector;
         // the culling helper observes the copy rather than the record.
-        CameraVector offset = entry->offset;
+        CameraVector offset;
+        offset.x = entry->offset.x;
+        offset.y = entry->offset.y;
+        offset.z = entry->offset.z;
         if (CullStageObject(camera, object, &offset, stage->distanceSquared))
         {
             ++DrawCounters(stage).rejectedObjects;
