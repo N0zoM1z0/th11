@@ -7,7 +7,7 @@ without embedded tables or external interior references.
 
 | Function | Address | Target bytes | Selected candidate bytes | State |
 | --- | --- | ---: | ---: | --- |
-| StepStageVectorTween | 00405240 | 883 | 883 | Non-exact (276/280 aligned; size and instruction count) |
+| StepStageVectorTween | 00405240 | 883 | 883 | Non-exact (274/280 aligned; native Z fallback add order restored) |
 | StepStageFogTween | 004055D0 | 737 | 794 (StageTween family); 737 (wide proof) | Exact only in the separate wide secondary link (step-stage-fog-tween) |
 | StageVectorTweenFactor | 00405960 | 39 | 39 | Exact linked unit |
 | StageFogTweenFactor | 00405990 | 45 | 45 | Exact linked unit |
@@ -75,6 +75,13 @@ Coefficient evaluation promotes t to double. Each coefficient, scaled vector
 and pairwise vector sum rounds to float at the observed boundary. Fog performs
 packing after each of four scales and three additions. Other modes use
 `(target-initial)*factor+initial`, again preserving intermediate float stores.
+The fallback Z sum is intentionally written as `initial.z + scaled.z` through
+a volatile reference: native x87 loads initial Z before adding scaled Z, while
+the fast VC9 optimizer otherwise commutes the two operands. The emitted Z
+fallback pair now matches that native order; Y remains reversed in the current
+candidate. This source-level ordering experiment keeps the 883-byte function
+but changes the normalized diagnostic alignment from 276/280 to 274/280 due
+to a separate Hermite x87 register-schedule shift.
 The factor helpers round fraction/signed-duration to float, then invoke the
 easing dispatcher only when unsigned(mode-1)<16, and round its result to float.
 

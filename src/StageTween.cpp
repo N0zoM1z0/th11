@@ -177,8 +177,9 @@ CameraVector __stdcall StepStageVectorTween(StageVectorTween *self)
     result.x += self->initial.x;
     result.y = scaled.y;
     result.y += self->initial.y;
-    result.z = scaled.z;
-    result.z += self->initial.z;
+    // Preserve the native x87 operand order; VC9 otherwise commutes this add.
+    const volatile float &initialZ = self->initial.z;
+    result.z = initialZ + scaled.z;
     return result;
 }
 
