@@ -175,15 +175,15 @@ The seven-way difficulty dispatch now keeps native cases 1 and 2 separate,
 uses direct returns for cases 1/3/4 and the early case-5/6/7 branches, and
 routes the remaining cases through the shared overlay-script tail. The focused
 frontier improves from 115/468 to 124/468 normalized native instruction keys
-at the same 1,560-byte candidate size. It remains nonexact; no ABI or exactness
-claim follows from this control-flow improvement.
+with the event owner fetched at its use sites. The candidate is 1,564 bytes and
+134/468 aligned keys; it remains nonexact and does not resolve the private ABI.
 
 Two new diagnostics build only their affected source owners and a
 live dynamic caller under the pinned VC9 RTM `/O2 /GL` context:
 
 | Unit | Native span | Current PDB contribution | Normalized native instruction keys |
 | --- | ---: | ---: | ---: |
-| `secondary-spell-stage-init-frontier` | 1,777 B | 1,560 B | 124 / 468 |
+| `secondary-spell-stage-init-frontier` | 1,777 B | 1,564 B | 134 / 468 |
 | `secondary-spell-stage-draw-frontier` | 370 B | 384 B | 65 / 89 |
 
 Both are **nonexact frontiers**. The initialization owner's private

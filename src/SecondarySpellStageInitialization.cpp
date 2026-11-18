@@ -105,9 +105,9 @@ __forceinline void BindStageSpellVm(
     BindAnimationScript(file, script, vm);
 }
 
-__forceinline void CreateStageSpellOverlayVm(SpellStageEventView *event, int script)
+__forceinline void CreateStageSpellOverlayVm(int script)
 {
-    CreateAnimationVmId(event->file, script, 0x16);
+    CreateAnimationVmId(EventOwner()->file, script, 0x16);
 }
 
 // The native searches the embedded draw-node list by the child VM's
@@ -139,7 +139,6 @@ void __stdcall InitializeSecondarySpellStage(
     const char *spellName, int spellIndex, int duration)
 {
     SecondarySpellStageView *stage = StageOwner();
-    SpellStageEventView *event = EventOwner();
 
     SetSpellStageTimerFrame(stage->time, -1);
     stage->spellIndex = spellIndex;
@@ -183,7 +182,7 @@ void __stdcall InitializeSecondarySpellStage(
 
     stage->positionVmId = CreateAnimationVmId(
         g_SecondaryActorFiles->file, 0x8b, 0x16).value;
-    stage->position = event->primaryActor->state.world.position;
+    stage->position = EventOwner()->primaryActor->state.world.position;
     PositionSecondaryAnimation(AnimationVmId(stage->positionVmId),
         &stage->position);
 
@@ -206,7 +205,7 @@ void __stdcall InitializeSecondarySpellStage(
 
     CreateAnimationVmId(g_SecondaryActorFiles->file, 0x95, 0x16);
 
-    AnimationFileView *file = event->file;
+    AnimationFileView *file = EventOwner()->file;
     int overlayScript = 0xa;
     switch (g_StageSpellDifficulty)
     {
@@ -215,7 +214,7 @@ void __stdcall InitializeSecondarySpellStage(
         BindStageSpellVm(&stage->vm1, file, 8);
         if (spellIndex < 2)
         {
-            CreateStageSpellOverlayVm(event, 0xb);
+            CreateStageSpellOverlayVm(0xb);
             return;
         }
         break;
@@ -226,12 +225,12 @@ void __stdcall InitializeSecondarySpellStage(
     case 3:
         BindStageSpellVm(&stage->vm0, file, 8);
         BindStageSpellVm(&stage->vm1, file, 9);
-        CreateStageSpellOverlayVm(event, 0xb);
+        CreateStageSpellOverlayVm(0xb);
         return;
     case 4:
         BindStageSpellVm(&stage->vm0, file, 0xc);
         BindStageSpellVm(&stage->vm1, file, 0xd);
-        CreateStageSpellOverlayVm(event, 0xf);
+        CreateStageSpellOverlayVm(0xf);
         return;
     case 5:
         BindStageSpellVm(&stage->vm0, file, 0x10);
@@ -245,7 +244,7 @@ void __stdcall InitializeSecondarySpellStage(
         {
             ResetAndBindStageAnimationVm(&stage->vm0, file, 0x15);
             ResetAndBindStageAnimationVm(&stage->vm1, file, 0x16);
-            CreateStageSpellOverlayVm(event, 0x17);
+            CreateStageSpellOverlayVm(0x17);
             return;
         }
         ResetAndBindStageAnimationVm(&stage->vm0, file, 0x12);
@@ -257,7 +256,7 @@ void __stdcall InitializeSecondarySpellStage(
         {
             ResetAndBindStageAnimationVm(&stage->vm0, file, 0xb);
             ResetAndBindStageAnimationVm(&stage->vm1, file, 0xc);
-            CreateStageSpellOverlayVm(event, 0xd);
+            CreateStageSpellOverlayVm(0xd);
             return;
         }
         ResetAndBindStageAnimationVm(&stage->vm0, file, 7);
@@ -266,5 +265,5 @@ void __stdcall InitializeSecondarySpellStage(
     default:
         return;
     }
-    CreateStageSpellOverlayVm(event, overlayScript);
+    CreateStageSpellOverlayVm(overlayScript);
 }
