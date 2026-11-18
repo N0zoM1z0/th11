@@ -129,7 +129,9 @@ int __stdcall DrawStageLayer(StageResourceView *stage, int layer)
                     static_cast<IDirect3DDevice9 *>(g_MainRuntime.d3dDevice)->
                         SetRenderState(D3DRS_FOGENABLE, 0);
                 }
-                const bool disableZ = (vm->flags.value & 0x800) != 0;
+                // The native extracts bit 11 with a full DWORD shift/mask,
+                // keeping the result integer-valued until the Z state gates.
+                const unsigned int disableZ = (vm->flags.value >> 11) & 1u;
                 if (disableZ && zWritesEnabled)
                 {
                     SetLayerRenderState(D3DRS_ZWRITEENABLE, FALSE);
