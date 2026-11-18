@@ -198,8 +198,10 @@ void InitializeSecondaryDebugHudAnimations()
 
     if (SceneMode() != 8 && !(g_StageResourceFlags & 0x20u))
     {
-        SpawnHudAnimation(HudFrontFile(hud), 0);
-        SpawnHudAnimation(HudFrontFile(hud), 1);
+        // The scene-start effects consume the HUD's retained animation file,
+        // while the overlay/replay effects use the front-file owner marker.
+        SpawnHudAnimation(hud->retainedAnimationFile, 0);
+        SpawnHudAnimation(hud->retainedAnimationFile, 1);
     }
     if (g_StageResourceFlags & 0x20u)
         SpawnHudRetainedAnimation(HudFrontFile(hud), 0x46);

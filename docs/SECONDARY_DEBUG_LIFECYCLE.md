@@ -450,8 +450,13 @@ four overlay VMs (scripts 32..35). Two auxiliary VMs use ASCII scripts
 conditional script initialization depends on the first main VM's
 active flag; the live/bomb display update still occurs on every call.
 
-Mode and resource flags select scene scripts 0, 1 and 70. Difficulty,
-replay session and the complete shot-state word gate script 44. The
+Mode and resource flags select scene scripts 0, 1 and 70. The original
+0x41A806 and 0x41A870 scene-start branches reload the animation file at
+HUD +0x43EC for scripts 0 and 1; the retained/overlay/replay paths instead
+read the front-file owner at HUD +0x444C. The C++ source now keeps these
+two distinct real pointers rather than sharing the front-file pointer for
+all spawn paths. Difficulty, replay session and the complete shot-state word
+gate script 44. The
 replay-mode flag controls a retained VM at +43AC using character script
 0x39+character; a second retained ID at +43B0 always uses
 0x3E+character. The native uses the scene animation critical section
