@@ -78,23 +78,6 @@ __forceinline void RecordStageSpellName(char *record, const char *name)
         ++count;
 }
 
-// This owner writes fraction, current, previous in native order. Keep this
-// local rather than changing the shared timer helper used by other owners.
-__forceinline void SetSpellStageTimerFrame(StageTimerView &timer, int frame)
-{
-    if (!(timer.flags & 1))
-    {
-        timer.fraction = 0.0f;
-        timer.current = 0;
-        timer.previous = -999999;
-        timer.scale = &g_AnimationTimeScale;
-        timer.flags |= 1;
-    }
-    timer.fraction = 0.0f;
-    timer.current = 0;
-    timer.previous = frame;
-}
-
 __forceinline void BindStageSpellVm(
     AnimationVmView *vm, AnimationFileView *file, int script)
 {
@@ -140,7 +123,17 @@ void __stdcall InitializeSecondarySpellStage(
 {
     SecondarySpellStageView *stage = StageOwner();
 
-    SetSpellStageTimerFrame(stage->time, -1);
+    if (!(stage->time.flags & 1))
+    {
+        stage->time.fraction = 0.0f;
+        stage->time.current = 0;
+        stage->time.previous = -999999;
+        stage->time.scale = &g_AnimationTimeScale;
+        stage->time.flags |= 1;
+    }
+    stage->time.fraction = 0.0f;
+    stage->time.current = 0;
+    stage->time.previous = -1;
     stage->spellIndex = spellIndex;
     CopyStageSpellName(stage->name, spellName);
     stage->flags = (stage->flags & ~0x18u) | 3u;
