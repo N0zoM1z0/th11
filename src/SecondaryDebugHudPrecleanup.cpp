@@ -38,10 +38,11 @@ __forceinline void UnbindTrackedHudVm(unsigned int &id)
 // shadow cache or replacing real component destruction with fake bytecode.
 void __stdcall PrepareSecondaryDebugHudDestruction(SecondaryDebugHudOwned *self)
 {
+    RenderBatchView *renderer = g_RenderBatch;
     if (!(g_StageResourceFlags & 9u))
     {
         AnimationDocumentSlotsView *slots =
-            reinterpret_cast<AnimationDocumentSlotsView *>(g_RenderBatch);
+            reinterpret_cast<AnimationDocumentSlotsView *>(renderer);
         AnimationDocumentView **documentSlot = &slots->files[27];
         AnimationDocumentView *document = *documentSlot;
         if (document)
@@ -53,7 +54,7 @@ void __stdcall PrepareSecondaryDebugHudDestruction(SecondaryDebugHudOwned *self)
     }
     else
     {
-        MarkMenuFileAnimations(g_RenderBatch, self->retainedAnimationFile);
+        MarkMenuFileAnimations(renderer, self->retainedAnimationFile);
     }
 
     self->retainedAnimationFile = 0;
@@ -82,18 +83,24 @@ void __stdcall PrepareSecondaryDebugHudDestruction(SecondaryDebugHudOwned *self)
     if (self->updateChain)
         self->updateChain->flags &= ~2u;
 
-    ReleaseSecondaryAnimation(AnimationVmId(self->precleanupAnimationIds[0]));
-    self->precleanupAnimationIds[0] = 0;
-    ReleaseSecondaryAnimation(AnimationVmId(self->precleanupAnimationIds[1]));
-    self->precleanupAnimationIds[1] = 0;
+    volatile unsigned int *precleanupIds =
+        reinterpret_cast<volatile unsigned int *>(self->precleanupAnimationIds);
+    ReleaseSecondaryAnimation(AnimationVmId(precleanupIds[0]));
+    precleanupIds[0] = 0;
+    ReleaseSecondaryAnimation(AnimationVmId(precleanupIds[1]));
+    precleanupIds[1] = 0;
     ReleaseSecondaryAnimation(AnimationVmId(self->precleanupAdditionalIds[0]));
 
     for (int i = 0; i < 11; ++i)
         self->precleanupAdditionalIds[i] = 0;
 
     unsigned int *id = self->trackedVmIds;
-    for (int remaining = 8; remaining; --remaining, ++id)
+    int remaining = 8;
+    do
+    {
         UnbindTrackedHudVm(*id);
+        ++id;
+    } while (--remaining);
 
     self->hudStateFlags |= 0x1c0u;
     self->reset43fc = 0;
