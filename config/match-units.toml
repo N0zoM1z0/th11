@@ -10294,6 +10294,7 @@ support_sources = ["src/SecondaryDebugHudLifetime.cpp",
                    "src/SecondaryDebugHudDialogue.cpp",
                    "src/StageLifecycle.cpp", "src/ChainRemove.cpp",
                    "src/AnimationDocumentDestructor.cpp",
+                   "src/AnimationDocumentSlotsLifecycle.cpp",
                    "src/MenuControllerSupport.cpp",
                    "src/SecondaryActorAnimation.cpp",
                    "probes/secondary-debug-hud-destructor-generic-context.cpp"]
