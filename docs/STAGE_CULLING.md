@@ -72,6 +72,18 @@ The three integer counters reuse twelve physical bytes that another source
 view calls `drawOffset`. This is a *local overlay* with verified offsets;
 no shared exact unit's class layout was changed.
 
+## Re-reading the published active camera (2026-11-18)
+
+Original DrawStageLayer publishes the runtime camera, calls
+ApplyPerspectiveCamera, then reloads FrameRuntime.activeCamera before
+selecting the viewport. The previous C++ forwarded the pre-call local
+camera pointer, assuming that the intervening call cannot change the
+camera publication. The current source naturally obtains the viewport
+from the freshly loaded active-camera field. The focused VC9 /GL
+primary owner changes from 723 bytes and 98/191 aligned instructions
+to 729 bytes and 110/191 aligned instructions versus 727 native bytes.
+This restores the viewport data dependency but is not byte-exact.
+
 ## Focused VC9 /GL linked frontiers (2026-11-17)
 
 The tracked `cull-stage-object-frontier` and `draw-stage-layer-frontier`
@@ -82,7 +94,7 @@ and cannot acquire an exact result merely by matching a PDB extent.
 | Primary owner | Native | Current PDB contribution | Instruction-key diagnostic |
 | --- | ---: | ---: | ---: |
 | CullStageObject | 1,643 | 1,468 | 297 / 504 target instructions |
-| DrawStageLayer | 727 | 723 | 98 / 191 target instructions |
+| DrawStageLayer | 727 | 729 | 110 / 191 target instructions |
 
 The culler initially emitted 1,316 bytes (206/504 aligned) with an
 incorrect frame-pointer profile. Removing `/Oy-` restored the native

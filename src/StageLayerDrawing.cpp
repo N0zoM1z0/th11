@@ -47,7 +47,11 @@ int __stdcall DrawStageLayer(StageResourceView *stage, int layer)
     PerspectiveCameraView *camera = reinterpret_cast<PerspectiveCameraView *>(
         reinterpret_cast<unsigned char *>(&g_MainRuntime) + 0x434);
     ApplyPerspectiveCamera(camera);
-    static_cast<IDirect3DDevice9 *>(g_MainRuntime.d3dDevice)->SetViewport(&camera->viewport);
+    // Perspective application can replace the active camera. The native
+    // reloads the published camera before choosing the viewport.
+    PerspectiveCameraView *activeCamera = reinterpret_cast<PerspectiveCameraView *>(
+        FrameRuntime().activeCamera);
+    static_cast<IDirect3DDevice9 *>(g_MainRuntime.d3dDevice)->SetViewport(&activeCamera->viewport);
     FrameRuntime().activeCameraIndex = 2;
     reinterpret_cast<StageLayerRendererFlag *>(g_RenderBatch)->enabled = 1;
 
