@@ -85,7 +85,13 @@ int __stdcall CullStageObject(const PerspectiveCameraView *camera,
         {object->position.x, minY, maxZ},
         {object->position.x, maxY, maxZ}
     };
+    // The original constructs an identity-valued matrix before applying
+    // the translation through D3DX. Preserve the real sixteen float stores.
     D3DMATRIX translation;
+    translation._12 = translation._13 = translation._14 = translation._21 =
+    translation._23 = translation._24 = translation._31 = translation._32 =
+    translation._34 = translation._41 = translation._42 = translation._43 = 0.0f;
+    translation._11 = translation._22 = translation._33 = translation._44 = 1.0f;
     D3DXMatrixTranslation(&translation, offset->x, offset->y, offset->z);
 
     CameraVector projected[12];

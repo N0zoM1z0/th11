@@ -72,6 +72,25 @@ The three integer counters reuse twelve physical bytes that another source
 view calls `drawOffset`. This is a *local overlay* with verified offsets;
 no shared exact unit's class layout was changed.
 
+## Restoring the native identity-matrix initialization (2026-11-18)
+
+Immediately before D3DXMatrixTranslation, the original culler writes
+all sixteen translation-matrix elements: twelve zeros followed by
+four diagonal ones, using x87 FLDZ, FLD1 and member stores. The
+earlier source only declared an uninitialized D3DMATRIX before the
+D3DX call. Ordinary typed C++ member initialization now reconstructs
+the observed identity-valued matrix before the translation call.
+Unlike artificial padding, these are genuine native-observed data
+initialization side effects with real matrix fields.
+
+The pinned VC9 /GL culler PDB owner moves from 1,525 bytes with
+383/504 aligned instructions to **1,641 bytes and 402/504 aligned**
+against the native 1,643-byte function. Candidate translation-matrix
+stores and the two subsequent D3DX calls now follow the original
+instruction shape. The linked dependent DrawStageLayer still has
+729 bytes and 112/191 aligned instructions. This remains a
+nonexact boss: owning full original data/ABI/relocations is not proven.
+
 ## Streaming traversal of projected culling samples (2026-11-18)
 
 The two native six-sample projected-point passes walk a contiguous
@@ -201,7 +220,7 @@ and cannot acquire an exact result merely by matching a PDB extent.
 
 | Primary owner | Native | Current PDB contribution | Instruction-key diagnostic |
 | --- | ---: | ---: | ---: |
-| CullStageObject | 1,643 | 1,525 | 383 / 504 target instructions |
+| CullStageObject | 1,643 | 1,641 | 402 / 504 target instructions |
 | DrawStageLayer | 727 | 729 | 112 / 191 target instructions |
 
 The culler initially emitted 1,316 bytes (206/504 aligned) with an
