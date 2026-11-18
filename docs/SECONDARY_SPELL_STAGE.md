@@ -289,11 +289,13 @@ The registration code points to two distinct callbacks. The
 forwards the context through EDI to the 624-byte updater and returns.
 The 7-byte `SecondarySpellDrawCallback` at 40C640 forwards
 ECX into the 370-byte draw owner by a tail jump. Both now have
-natural `__fastcall` source adapters; their **original native
-register-specialized machine code** is recorded as evidence, not
-reproduced using ASM, an injected JMP or alignment bytes.
-The 256-byte registrar is now strict exact; the two small callbacks
-remain independent, nonexact owners.
+natural `__fastcall` source adapters. The draw callback is **7/7 bytes
+exact** in its dedicated real downstream LTCG producer, including its REL32
+field to DrawSecondarySpellStage; its cold replay is recorded below. The
+update callback remains nonexact: the current candidate saves ESI while the
+native saves EDI around the call to the 624-byte updater. The 256-byte
+registrar is independently strict exact. No callback is implemented with
+inline ASM or a hand-authored jump.
 
 ## Owning constructor, destructor and lifetime wrappers
 

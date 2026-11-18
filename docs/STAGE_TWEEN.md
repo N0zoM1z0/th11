@@ -61,8 +61,9 @@ result = ((initial*a + target*b) + control1*c) + control2*d
 Independent x87 review confirms that a forms the square before the last factor.
 An earlier StageScript-primary context emitted 785-byte vector and 536-byte
 fog candidates. Those are not the current StageTween-family sizes: the
-StageTween family emits an 883-byte vector candidate (272/280 normalized
-instruction keys; still non-exact) and a 794-byte fog candidate. The
+StageTween family emits an 883-byte vector candidate (276/280 normalized
+instruction keys; still non-exact) and a 794-byte fog candidate. The earlier
+272/280 figure predates the scalar-first Hermite multiply correction below. The
 separate wide secondary fog context emits the exact 737-byte owner. These
 /GL results belong to different producer contexts and must not be collapsed
 into one candidate measurement. See [SECONDARY_PAIR_MATH](SECONDARY_PAIR_MATH.md).

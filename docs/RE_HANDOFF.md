@@ -1,106 +1,100 @@
-# TH11 reconstruction — agent handoff (2026-11-18)
+# TH11 reconstruction handoff — 2026-11-18
 
-## Resume safely
+## Target and repository state
 
-Target: original Japanese TH11 v1.00a, private resources/th11.exe,
-SHA-256 2978b17f6184d100d249d4311348dd30c5c32ec75c014b667a525b797d3d8813.
-Pinned compiler: VC9 / Visual C++ 2008 RTM build 21022. Use direct
-scripts/ghidra.py and the repository's VC9 linked-PE Oracle. Never substitute
-TH11c, a patched executable, or another game's compiler profile.
+Reconstruct only the original Japanese TH11 v1.00a executable:
+resources/th11.exe, 688,128 bytes, SHA-256
+2978b17f6184d100d249d4311348dd30c5c32ec75c014b667a525b797d3d8813.
+The target and PE/Rich identity were rechecked on 2026-11-18. The compiler
+candidate is pinned VC9 / Visual C++ 2008 RTM build 21022; preserve /GL
+for established LTCG owners.
 
-The source reconstruction baseline is fe8833e (gpt-web: hoist shared HUD
-teardown manager and critical imports), which was equal to origin/main before
-this documentation-only handoff checkpoint. There are exactly two unstaged
-source modifications and no untracked or conflicted paths:
-- src/SecondaryDebugHudLifetime.cpp
-- src/SecondaryDebugHudPrecleanup.cpp
+The source checkpoint entering this handoff cleanup was
+5e0a53b (gpt-web: restore indexed six-point culling traversal).
+The documentation commits in this cleanup are local; check the live
+upstream relationship before assuming they have been pushed. The source
+worktree is clean after preserving and withdrawing the unhelpful spell-view
+method experiment described below.
 
-These are active reconstruction work, not disposable build output. Read their
-diffs before editing. Do not reset, restore or overwrite them.
+scripts/progress.py currently reports 2,175 tracked candidates, 1,607
+reviewed boundaries, 813 source mappings, and 477 canonical exact functions
+covering 52,309 code bytes. These are local ledger totals. The Factory
+inventory reports 2,175 subjects, zero imported Oracle results, and an
+inventory-import-only warning; do not present local exact counts as
+Factory-accepted results or whole-game closure.
 
-The generated PROGRESS.md currently reports 2,175 tracked candidates,
-813 source mappings and 475 canonical exact functions (52,289 exact code
-bytes). These are repository-local ledger totals. The Factory read-only
-inventory currently reports zero imported Oracle results and an
-inventory-import-only warning; do not interpret the local exact ledger as
-Factory acceptance or whole-game production closure.
+## Current large-function frontiers
 
-## Current HUD state
+| Function | Native owner | Current focused VC9 /GL contribution | State |
+| --- | ---: | ---: | --- |
+| CullStageObject (0x403950) | 1,643 B | 1,644 B; 442/504 aligned instructions | Main active boss; nonexact |
+| DrawStageLayer (0x404190) | 727 B | 729 B; 112/191 aligned instructions | Nonexact; linked dependency of culler |
+| ExecuteStageScript (0x404470) | 2,736 B | 2,736 B; 537/610 aligned instructions | Nonexact; EH/funclet ownership open |
+| StepStageVectorTween (0x405240) | 883 B | 883 B; 276/280 aligned instructions | Nonexact; four fallback x87 differences remain |
+| InitializeSecondarySpellStage (0x40C650) | 1,777 B | Diagnostic frontier exists | Nonexact; see SECONDARY_SPELL_STAGE.md |
+| UpdateSecondarySpellStageState (0x40C0A0) | 624 B | 628 B in the current wide callback producer | Nonexact |
 
-The physical HUD owner is SecondaryDebugHudOwned at singleton 0x4A8D84,
-with a native allocation of 0x4458 and 16 real embedded VMs: arrays of
-9/2/4 plus the VM at +0x3F1C. Its timers are at +0x43C8 and +0x4424.
-Do not regress to the obsolete 15-VM / 0x4450 layout.
+Instruction alignment is a navigation aid, not exactness. The two stage
+rendering owners have complete maintained C++ bodies and useful target
+control-flow notes in STAGE_CULLING.md.
 
-| Native owner | Current source state | Evidence |
-| --- | --- | --- |
-| 0x41A2F0 constructor, 208 B | exact | secondary-debug-hud-constructor-frontier |
-| 0x41B2A0 factory, 150 B | exact | secondary-debug-hud-factory-frontier |
-| 0x419F80 dialogue VM release, 101 B | exact | secondary-debug-hud-dialogue-frontier |
-| 0x41A3C0 three-chain registration, 339 B | exact | secondary-debug-hud-registration; 15 fields |
-| 0x41A520 visual/resource initialization, 336 B | exact | secondary-debug-hud-visual-init; 21 fields |
-| 0x41C5F0 front HUD draw, 105 B | exact | secondary-hud-front-draw; 5 fields |
-| 0x41CFC0 front draw callback, 10 B | exact | secondary-hud-front-draw-callback; 1 REL32 |
-| 0x41AF30 resource finalizer, 129 B | exact | secondary-debug-hud-finalization; 8 fields |
-| 0x41B360 global HUD destruction, 28 B | exact | secondary-debug-hud-global-destroy; 3 fields |
-| 0x41AD30 precleanup, 468 B | nonexact; current candidate 477 B / 130 instructions | dirty src/SecondaryDebugHudPrecleanup.cpp |
-| 0x41AFC0 owning destructor, 729 B | nonexact; current candidate 741 B / 195 instructions | dirty src/SecondaryDebugHudLifetime.cpp |
-| 0x41A6D0 animation initialization, 1,619 B | nonexact; current candidate 1,619 B / 403 instructions (native 402) | secondary-debug-hud-animation-init-frontier |
+### Useful exact leaves
 
-The two dirty source changes were freshly built with the pinned VC9 /GL
-toolchain. The precleanup revision caches the renderer pointer, makes the
-first two precleanup animation-ID accesses volatile, and uses a volatile
-eight-count do/while loop. The destructor revision expands the three chain
-unregister paths in the owner, retaining a register-held LeaveCriticalSection
-pointer while loading the manager in each non-null path. These are current
-experiments, not exact results; preserve them and continue from their diffs.
+- SetSecondaryPairDuration (0x419510, 4 B) and AddSecondaryPair
+  (0x4195E0, 16 B) are natural C++ and passed selected strict cold replay.
+  Evidence: .analysis/secondary-pair-duration-strict-20261118.log,
+  .analysis/secondary-pair-add-strict-20261118.log, and
+  .analysis/secondary-pair-full-source-exact-20261118.log.
+- SecondarySpellDrawCallback (0x40C640, 7 B) passed strict cold linked-PE
+  replay, including its REL32 field:
+  .analysis/secondary-spell-draw-callback-cold-20261118.log.
+- SecondarySpellUpdateCallback (0x40C630, 10 B) is still nonexact.
+  Native saves EDI around the updater call; the current candidate saves ESI.
+  Do not transfer the draw callback's exact result to this separate owner.
 
-After those dirty edits, focused cold replay of the dependent 150-byte factory
-and 28-byte global-destroy owners passed: both exact, zero byte differences.
-No full cold replay was run.
+## Immediate next work
 
-## Next work
+1. Continue CullStageObject from the committed indexed two-group traversal.
+   Rebuild only cull-stage-object-frontier, compare the full native/candidate
+   instruction streams, and work on the remaining stack/local and x87 ordering
+   differences. Do not replace the current indexed loop with the earlier
+   pointer-cursor version: that checkpoint was 1,525 B / 383 of 504 aligned,
+   versus the current 1,644 B / 442 of 504.
+2. Rebuild draw-stage-layer-frontier when a shared source/header changes.
+   Preserve the active-camera reload, explicit float offset stores and
+   full-width bit-11 extraction documented in STAGE_CULLING.md.
+3. Resume ExecuteStageScript, StepStageVectorTween, or the 1,777-byte
+   spell-stage initializer using their topic notes. Avoid broad replay.
+4. The previous SecondarySpellStageView::Update() method experiment did
+   not improve the callback ABI: the candidate still saved ESI, not native
+   EDI. It also promoted a physical view to a guessed class identity. Its
+   three-file patch is retained at
+   .analysis/secondary-spell-view-method-experiment-20261118.patch;
+   the tracked sources were restored to the free-function form.
 
-1. Continue the 729-byte destructor. Current 741/195 output has the right
-   decoded instruction count but is 12 bytes too large. Compare chain-lock
-   scheduling, renderer-list searches, the shared found-VM path and the
-   compiler-generated 9/2/4 member-array destruction. Keep the real C++ owner.
-2. Continue the 468-byte precleanup. Current output is 477/130 versus
-   468/128. Revisit renderer snapshot lifetime, volatile ID stores and the
-   counted loop without changing ownership semantics.
-3. Continue the 1,619-byte animation initializer. Current output is the
-   native size but has one extra decoded instruction; compare complete
-   branches and relocation fields, not size alone.
-4. Continue other large owners: ExecuteStageScript (0x404470, 2,736 B),
-   StepStageVectorTween (0x405240, 883 B), CullStageObject (0x403950,
-   1,643 B), DrawStageLayer (0x404190, 727 B), and the 1,777-byte
-   InitializeSecondarySpellStage (0x40C650). Their detailed notes live in
-   STAGE_SCRIPT.md, STAGE_TWEEN.md, STAGE_CULLING.md and
-   SECONDARY_SPELL_STAGE.md.
+## Focused commands
 
-## Focused workflow
+    scripts/repo-python scripts/build-match-unit.py --unit cull-stage-object-frontier
+    scripts/repo-python .analysis/compare-cull-stage-object-20261118.py
+    scripts/repo-python scripts/build-match-unit.py --unit draw-stage-layer-frontier
+    scripts/repo-python .analysis/compare-draw-stage-layer-20261118.py
 
-Read AGENTS.md and RE_WORKFLOW.md, inspect the live Git diff, and verify the
-target/toolchain identity once when resuming. Build only the affected unit:
+Refresh local tracking/progress after a ledger change:
 
-    scripts/repo-python scripts/build-match-unit.py --unit secondary-debug-hud-destructor-frontier
-    scripts/repo-python scripts/build-match-unit.py --unit secondary-debug-hud-precleanup-frontier
+    scripts/repo-python scripts/validate-tracking.py --require-target
+    scripts/repo-python scripts/progress.py
+    git diff --check
 
-Cold-replay only exact units whose inputs changed and their real dependent
-owners. The last dependency check used:
+For source changes, cold-replay only affected canonical exact units and
+direct dependencies. Do not run the full cold replay. Keep source natural
+C++; no inline ASM, embedded instruction bytes or padding. Commit meaningful
+checkpoints with the gpt-web: prefix.
 
-    scripts/repo-python scripts/replay-exact-units.py --unit secondary-debug-hud-global-destroy --unit secondary-debug-hud-factory-frontier
+## Storage and retained evidence
 
-Then run validate-tracking.py --require-target, progress.py and git diff
---check. Do not run the full cold replay. Commit meaningful work with the
-prefix gpt-web: and never claim exactness without a complete cold Oracle
-replay, full PDB owner extent and all relocation fields.
-
-## Storage and evidence
-
-See ARTIFACTS.md. Canonical linked output directories, active frontier
-outputs, the Japanese target, VC9 toolchain, game-specific Wine prefix,
-Ghidra project and useful .analysis evidence are retained. The 2026-11-18
-handoff cleanup removed only an unconfigured orphan link experiment and
-three reproducible temporary snapshots; no source, exact receipt or active
-frontier was removed.
+See ARTIFACTS.md. The private target, VC9 toolchain and Wine prefix,
+Ghidra project, configured linked-output directories, exact receipts,
+current comparison scripts and useful .analysis evidence are retained.
+Unreferenced compiler-generated source variants and duplicate manifest
+snapshots from the 2026-11-18 exploration were pruned; the selected findings
+and the one live experiment patch remain documented.
