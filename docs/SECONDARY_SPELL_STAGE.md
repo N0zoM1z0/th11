@@ -338,25 +338,39 @@ is recorded below.
 
 The update callback is now **strict linked exact (10/10 bytes)** in the wide
 real LTCG producer, including its REL32 field to the updater. The updater
-candidate is 628 bytes versus the native 624. Modeling timer advance as the
+candidate is 649 bytes versus the native 624. Modeling timer advance as the
 natural `StageTimerView::Advance()` member call changed the whole-program
 register allocation: the callback saves EDI, the updater keeps its stage
 receiver in EDI, and it loads the timer into ESI before the member call. An
 8-byte-aligned `CameraVector` local restores the native EBP frame, 8-byte ESP
 alignment and 0x20-byte local frame.
 
+The private `FindSecondarySpellVm` C++ fastcall adapter is 79/79 bytes
+identical to the existing exact `FindAnimationVmById` owner at 0x4561E0.
+It preserves the native hidden context in ECX, renderer in EDX, and single
+stack ID argument. The existing `find-animation-vm-by-id` unit has also
+passed its canonical cold replay.
+
+The follower-event branches are now separate natural C++ traversals. The
+event-3 branch uses ESI as the follower cursor and EBX as its count, loading
+the renderer into EDX after reading each ID. The event-2 branch caches the
+renderer in EBX and uses a stack counter. This recovers the native two-loop
+register/counter pattern rather than forcing both branches through one
+generic loop.
+
 The final position update is represented as a natural member operation on a
 12-byte `SecondarySpellPositionView`. Its implicit object stays in ESI, so
 the updater pushes only the animation ID before calling it; the former
-explicit position-pointer stack argument is gone. This preserves the native
-hidden-register call shape without ASM. The focused position method is 138
-bytes versus the 132-byte native helper, and the updater remains 4 bytes
-larger. The three position-smoothing x87 sequences retain native operand
-order: position X then scaled X, position Y then scaled Y, and scaled Z then
-position Z. Remaining updater differences are in follower lookup, helper
-bodies and surrounding control-flow schedule. The 256-byte registrar is
-independently strict exact. No callback is implemented with inline ASM or
-a hand-authored jump.
+explicit position-pointer stack argument is gone. The call setup now loads
+the ID before the renderer, matching native order. The focused position
+method is 137 bytes versus the 132-byte native helper, and the updater
+remains 25 bytes larger. The timer member is 83 bytes, with its native `inc`
+fast path and slow-path x87 update restored. The three position-smoothing
+x87 sequences retain native operand order: position X then scaled X, position
+Y then scaled Y, and scaled Z then position Z. Remaining updater differences
+are in score division scheduling, follower/helper control flow and the
+position helper body. The 256-byte registrar is independently strict exact.
+No callback is implemented with inline ASM or a hand-authored jump.
 ## Owning constructor, destructor and lifetime wrappers
 
 The 0x924-byte owning stage spell C++ object now has real lifecycle

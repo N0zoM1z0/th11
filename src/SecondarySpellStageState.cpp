@@ -7,6 +7,26 @@
 
 extern SecondaryPlayerControllerView *g_SecondaryPlayerControllerInstance;
 
+
+// Match the native renderer lookup boundary: hidden context in ECX, renderer
+// in EDX, and the animation ID as the sole stack argument.
+#pragma optimize("y", on)
+__declspec(noinline) AnimationVmView *__fastcall FindSecondarySpellVm(
+    void *context, RenderBatchView *renderer, AnimationVmId id)
+{
+    if (!id.value)
+        return 0;
+    BoundVmListsView *lists = reinterpret_cast<BoundVmListsView *>(renderer);
+    for (BoundVmNodeView *node = lists->first; node; node = node->next)
+        if (node->vm->id == id.value)
+            return reinterpret_cast<AnimationVmView *>(node->vm);
+    for (BoundVmNodeView *node = lists->second; node; node = node->next)
+        if (node->vm->id == id.value)
+            return reinterpret_cast<AnimationVmView *>(node->vm);
+    return 0;
+}
+#pragma optimize("", on)
+
 #pragma optimize("y", on)
 __declspec(noinline) int StageTimerView::Advance()
 {
@@ -14,10 +34,10 @@ __declspec(noinline) int StageTimerView::Advance()
     this->previous = previous;
     if (*scale > static_cast<double>(0.99f) && *scale < 1.01f)
     {
-        int next = static_cast<int>(static_cast<unsigned int>(previous) + 1);
-        current = next;
+        ++previous;
+        current = previous;
         fraction = static_cast<float>(fraction + 1.0);
-        return next;
+        return previous;
     }
     fraction = *scale + fraction;
     current = static_cast<int>(fraction);
@@ -35,7 +55,9 @@ typedef char SecondarySpellPositionViewSize[(sizeof(SecondarySpellPositionView) 
 #pragma optimize("y", on)
 __declspec(noinline) void SecondarySpellPositionView::PositionAnimation(AnimationVmId id) const
 {
-    AnimationVmView *vm = FindAnimationVmById(g_RenderBatch, id);
+    AnimationVmView *vm = FindSecondarySpellVm(
+        const_cast<SecondarySpellPositionView *>(this),
+        *reinterpret_cast<RenderBatchView * volatile *>(&g_RenderBatch), id);
     if (!vm)
         return;
     BoundVmView *bound = reinterpret_cast<BoundVmView *>(vm);
@@ -56,24 +78,46 @@ __declspec(noinline) void SecondarySpellPositionView::PositionAnimation(Animatio
 }
 #pragma optimize("", on)
 
-static __forceinline void SetSpellFollowerEvent(SecondarySpellStageView *self,
-    unsigned short event)
+static __forceinline void SetSpellFollowerEventThree(SecondarySpellStageView *self)
 {
-    for (int i = 0; i < 3; ++i)
+    register int remaining = 3;
+    unsigned int *follower = self->followerIds;
+    do
     {
-        AnimationVmView *vm = FindAnimationVmById(
-            g_RenderBatch, AnimationVmId(self->followerIds[i]));
+        AnimationVmId followerId(*follower);
+        RenderBatchView *renderer = *reinterpret_cast<RenderBatchView * volatile *>(&g_RenderBatch);
+        AnimationVmView *vm = FindSecondarySpellVm(self, renderer, followerId);
         if (vm)
         {
-            reinterpret_cast<SecondaryActorAnimationView *>(vm)->event = event;
+            reinterpret_cast<SecondaryActorAnimationView *>(vm)->event = 3;
             BoundVmView *bound = reinterpret_cast<BoundVmView *>(vm);
             if (!bound->marker018)
-            {
                 for (BoundVmNodeView *node = bound->related; node; node = node->next)
-                    reinterpret_cast<SecondaryActorAnimationView *>(node->vm)->event = event;
-            }
+                    reinterpret_cast<SecondaryActorAnimationView *>(node->vm)->event = 3;
         }
-    }
+        ++follower;
+    } while (--remaining);
+}
+
+static __forceinline void SetSpellFollowerEventTwo(SecondarySpellStageView *self)
+{
+    RenderBatchView *renderer = *reinterpret_cast<RenderBatchView * volatile *>(&g_RenderBatch);
+    unsigned int *follower = self->followerIds;
+    volatile int remaining = 3;
+    do
+    {
+        AnimationVmView *vm = FindSecondarySpellVm(self, renderer, AnimationVmId(*follower));
+        if (vm)
+        {
+            reinterpret_cast<SecondaryActorAnimationView *>(vm)->event = 2;
+            BoundVmView *bound = reinterpret_cast<BoundVmView *>(vm);
+            if (!bound->marker018)
+                for (BoundVmNodeView *node = bound->related; node; node = node->next)
+                    reinterpret_cast<SecondaryActorAnimationView *>(node->vm)->event = 2;
+        }
+        ++follower;
+        --remaining;
+    } while (remaining);
 }
 
 // Full original 0x40C0A0..0x40C30F. This is a normal C++ object updater:
@@ -105,13 +149,13 @@ int __stdcall UpdateSecondarySpellStageState(SecondarySpellStageView *self)
             {
                 if (g_SecondaryPlayerControllerInstance->position.y < 96.0f)
                 {
-                    SetSpellFollowerEvent(self, 3);
+                    SetSpellFollowerEventThree(self);
                     self->flags |= 4u;
                 }
             }
             else if (g_SecondaryPlayerControllerInstance->position.y > 128.0f)
             {
-                SetSpellFollowerEvent(self, 2);
+                SetSpellFollowerEventTwo(self);
                 self->flags &= ~4u;
             }
         }
