@@ -72,6 +72,18 @@ The three integer counters reuse twelve physical bytes that another source
 view calls `drawOffset`. This is a *local overlay* with verified offsets;
 no shared exact unit's class layout was changed.
 
+## Typed half-extent vector scheduling (2026-11-18)
+
+The three independently rounded half-extents now live together in
+one naturally typed CameraVector value. This preserves the float
+precision boundaries and shared X/Y/Z ownership while giving pinned
+VC9 /GL the same lifetime information as a grouped 3D quantity.
+The full culler PDB contribution remains 1,506 bytes; normalized
+native instruction alignment improves from 299/504 to **315/504**
+without changing the rendering algorithm or introducing ASM/padding.
+The related layer dispatcher remains 729 bytes / 112 of 191 aligned.
+The culler is still nonexact; 1,643 native bytes require full replay.
+
 ## Float-rounded bounding-box half-extents (2026-11-18)
 
 The original 1,643-byte culler multiplies each extent by one half, then
@@ -161,7 +173,7 @@ and cannot acquire an exact result merely by matching a PDB extent.
 
 | Primary owner | Native | Current PDB contribution | Instruction-key diagnostic |
 | --- | ---: | ---: | ---: |
-| CullStageObject | 1,643 | 1,506 | 299 / 504 target instructions |
+| CullStageObject | 1,643 | 1,506 | 315 / 504 target instructions |
 | DrawStageLayer | 727 | 729 | 112 / 191 target instructions |
 
 The culler initially emitted 1,316 bytes (206/504 aligned) with an
