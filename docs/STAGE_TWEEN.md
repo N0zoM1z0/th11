@@ -7,7 +7,7 @@ without embedded tables or external interior references.
 
 | Function | Address | Target bytes | Selected candidate bytes | State |
 | --- | --- | ---: | ---: | --- |
-| StepStageVectorTween | 00405240 | 883 | 883 | Non-exact (272/280 aligned; size only) |
+| StepStageVectorTween | 00405240 | 883 | 883 | Non-exact (276/280 aligned; size and instruction count) |
 | StepStageFogTween | 004055D0 | 737 | 794 (StageTween family); 737 (wide proof) | Exact only in the separate wide secondary link (step-stage-fog-tween) |
 | StageVectorTweenFactor | 00405960 | 39 | 39 | Exact linked unit |
 | StageFogTweenFactor | 00405990 | 45 | 45 | Exact linked unit |
@@ -304,16 +304,19 @@ mode-7/17 additions it is never inlined (542 bytes). A six-float constructor use
 operators changes their bodies (temporary spills) and is wrong.
 
 Vector stepping: explicit component stores in the ordinary interpolation
-fallback now produce an 883-byte PDB contribution, equal in length to the
-883-byte native owner. This is a size match only, not exactness: the current
-normalized instruction-key alignment is 272/280. The change also keeps the
-existing `/O2 /Ob1 /GL` source shape and has been rebuilt in the canonical
-StageTween producer; the seven neighboring exact functions in that producer
-remain zero-difference. A balanced Hermite sum tree was tested and rejected
-(887 bytes, 253/280 aligned). The remaining differences are concentrated in
-mode 8's x87 multiply order and the final Y/Z fallback additions; mode 17 and
-the remaining return/temporary lifetimes still need separate review. Do not
-count the size match as a byte-exact replay.
+fallback produce an 883-byte PDB contribution, equal in length to the
+883-byte native owner. The Hermite branch now uses a scalar-first natural C++
+scale helper for the target and control2 vectors, while the initial/control1
+paths retain their value-first ordering. This restores four original x87
+`fld`/`fmulp`/`fxch` instruction keys without changing the interpolation
+formula, improving normalized alignment from **272/280 to 276/280**. The
+complete candidate remains **883 bytes and 280 instructions**. The seven
+neighboring exact owners in the same StageTween producer were checked by the
+strict linked Oracle and all retain `difference_count=0`. A balanced Hermite
+sum tree was previously rejected (887 bytes, 253/280 aligned). The remaining
+four instruction mismatches are the ordinary interpolation fallback's Y/Z
+`fld`/`fadd` operand order; exact replay of StepStageVectorTween remains open.
+No ASM, padding, or truncated body is used.
 
 AdvanceStageTimer is exact in the isolated advance-stage-timer linked-PE
 unit. The body preserves the private ESI input, ECX save/restore, previous-frame

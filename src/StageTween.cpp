@@ -101,6 +101,12 @@ static __forceinline CameraVector ScaleTweenVector(const CameraVector &value, fl
     return result;
 }
 
+static __forceinline CameraVector ScaleTweenVectorScalarFirst(float scale, const CameraVector &value)
+{
+    CameraVector result = {scale * value.x, scale * value.y, scale * value.z};
+    return result;
+}
+
 static __forceinline CameraVector AddTweenVector(const CameraVector &left, const CameraVector &right)
 {
     CameraVector result = {left.x + right.x, left.y + right.y, left.z + right.z};
@@ -160,8 +166,8 @@ CameraVector __stdcall StepStageVectorTween(StageVectorTween *self)
         float c = static_cast<float>((1.0 - progress) * (1.0 - progress) * progress);
         float d = static_cast<float>((progress - 1.0) * progress * progress);
         return AddTweenVector(AddTweenVector(AddTweenVector(
-            ScaleTweenVector(self->initial, a), ScaleTweenVector(self->target, b)),
-            ScaleTweenVector(self->control1, c)), ScaleTweenVector(self->control2, d));
+            ScaleTweenVector(self->initial, a), ScaleTweenVectorScalarFirst(b, self->target)),
+            ScaleTweenVector(self->control1, c)), ScaleTweenVectorScalarFirst(d, self->control2));
     }
     float factor = StageVectorTweenFactor(self);
     CameraVector difference = SubtractTweenVector(self->target, self->initial);
