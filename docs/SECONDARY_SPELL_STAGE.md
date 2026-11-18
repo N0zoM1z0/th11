@@ -145,6 +145,26 @@ zero afterward, alpha becomes 0xFF, and all paths return one.
 The original call sites and the three native callees were
 reviewed; no extra null guards or fake render methods were added.
 
+## Real instruction-owner call edge for spell initialization (2026-11-18)
+
+The spell-start opcode in `SecondaryActorInstructionControl.inc` now calls
+`InitializeSecondarySpellStage` directly instead of the unresolved
+`BeginSecondaryHostSpell` placeholder. The `secondary-actor-instruction-adapter`
+frontier links `SecondarySpellStageInitialization.cpp` and
+`SecondarySpellStageState.cpp` into the same VC9 `/GL` graph as the real
+`SecondaryActorInstructions.cpp` owner. The focused unit builds successfully,
+and its linked PDB contains both the 16,260-byte candidate
+`ExecuteInstruction@SecondaryActorStateView` and the 1,560-byte initializer
+candidate.
+
+This restores the real source-level call edge; it does not yet restore the
+private native ABI. The native call at `0x412E30` places the spell-name pointer
+in EAX, pushes only the signed spell index and duration, and reaches the
+initializer's `ret 8`. The natural C++ candidate still pushes all three
+arguments and the initializer returns with `ret 12`. Keep this explicit as an
+open whole-caller/LTCG ABI problem. No register shims, inline assembly, or
+padding are used, and no exactness credit is added.
+
 ## Scoped native-compiler comparisons (2026-11-17)
 
 Two new diagnostics build only their affected source owners and a

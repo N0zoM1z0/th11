@@ -170,7 +170,7 @@ case 0x167:
     }
     Integer(self, 2);
     int value = Integer(self, 1);
-    BeginSecondaryHostSpell(reinterpret_cast<const char *>(decodedName), id, value);
+    InitializeSecondarySpellStage(reinterpret_cast<const char *>(decodedName), id, value);
     self->counter.flags |= 1;
     self->counter.scaled = ScaleCounter(self->counter.value);
     goto secondary_host_reset_frame;

@@ -33,7 +33,7 @@ void __stdcall ResetSecondaryStateWithEffect(SecondaryActorEffectView *self,
     const CameraVector *position);
 void __stdcall SetSecondaryHostSlot(SecondaryActorManagerView *self, int slot,
     const char *script, int frameLimit);
-void __stdcall BeginSecondaryHostSpell(const char *name, int id, int value);
+void __stdcall InitializeSecondarySpellStage(const char *spellName, int spellIndex, int duration);
 void __stdcall FinishSecondaryHostSpell();
 int __stdcall SecondaryHostDialogueStatus();
 void __stdcall ReleaseSecondaryHostSpellAnimation();

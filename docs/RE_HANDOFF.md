@@ -54,6 +54,13 @@ control-flow notes in STAGE_CULLING.md.
 
 ## Immediate next work
 
+0. Continue the stage-spell initializer through its real caller. The opcode
+   owner now calls `InitializeSecondarySpellStage` directly, and the focused
+   `secondary-actor-instruction-adapter` graph links the initializer beside the
+   16,260-byte instruction owner. The native caller uses EAX for the spell-name
+   pointer plus two stack integers (`ret 8`); the candidate still uses three
+   stack arguments (`ret 12`). Recover this boundary only through natural C++
+   and whole-caller LTCG context; do not add register shims or ASM.
 1. Continue CullStageObject from the indexed two-group traversal, inclusive
    viewport-edge tests, strict 0 < z <= 1 depth gate, and native asymmetric
    X/Y extrema branches. Unordered coordinates follow the native fallback
