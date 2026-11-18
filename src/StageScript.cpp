@@ -136,10 +136,14 @@ TargetTweenFrame:
             StageFogView &fog = CameraFog(self);
             fog.packed = words[0];
             const unsigned char *color = reinterpret_cast<const unsigned char *>(&fog.packed);
-            fog.channels[0] = static_cast<float>(color[0]);
-            fog.channels[1] = static_cast<float>(color[1]);
-            fog.channels[2] = static_cast<float>(color[2]);
-            fog.channels[3] = static_cast<float>(color[3]);
+            const int red = color[0];
+            const int green = color[1];
+            const int blue = color[2];
+            const int alpha = color[3];
+            fog.channels[0] = static_cast<float>(red);
+            fog.channels[1] = static_cast<float>(green);
+            fog.channels[2] = static_cast<float>(blue);
+            fog.channels[3] = static_cast<float>(alpha);
             fog.start = values[1];
             fog.end = values[2];
             break;

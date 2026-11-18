@@ -6,7 +6,7 @@ section and reconciled its full extent, instruction flow, callers and tables.
 
 | Function | Full target owner | Source contribution | State |
 | --- | ---: | ---: | --- |
-| ExecuteStageScript,0x00404470 | 2,736 bytes through0x00404F1F | 2,728 bytes | Non-exact; EH ownership open |
+| ExecuteStageScript,0x00404470 | 2,736 bytes through0x00404F1F | 2,736 bytes | Non-exact; 537/610 aligned instructions; EH ownership open |
 | SeekStageScriptMarker,0x00404F20 | 113 bytes through0x00404F90 | 113 bytes | Exact normal-COFF, 2 relocations |
 | BeginSecondaryStageTransition,0x00405130 | 159 bytes through0x004051CE | 159 bytes | Exact normal-COFF, 6 relocations |
 | BeginPrimaryStageTransition,0x004051D0 | 103 bytes through0x00405236 | 103 bytes | Exact normal-COFF, 3 relocations |
@@ -245,16 +245,24 @@ fractional, infinite and NaN inputs were checked against the actual bodies.
 ## Code generation and proofs
 
 The current execute-stage-script-frontier diagnostic build contributes
-**2,728 bytes** for ExecuteStageScript, 8 bytes smaller than the complete
-2,736-byte target owner. The candidate switch-body/table boundary is at
-`+0xA44` (2,628 bytes) versus native `+0xA4C` (2,636 bytes); the target
-contains 2,633 code bytes, 3 alignment bytes and 100 switch-table bytes.
-Both candidate and target reserve a **0x98-byte stack frame**.
-Normalized `objdump -w` instruction-key alignment finds **531 of 610 target
-keys** (621 candidate instructions). This is diagnostic similarity, not
-exactness. The current `src/StageScript.cpp` SHA-256 is
-`80705232bd45ba1ea6bbd2109a104c19fe84d4ddc0ae1c1981912f1fc5a5f1a4`.
-The interpreter remains non-exact and EH/funclet ownership is still open.
+2,736 bytes for ExecuteStageScript, equal in extent to the complete native
+2,736-byte owner. The code-and-switch-table boundary reaches +0xA4C
+(2,636 bytes); the remainder is the two C++-generated 100-byte switch tables.
+The target contains 2,633 code bytes plus three code-alignment bytes, with
+no hand-authored padding in source. Both builds reserve a 0x98-byte stack
+frame. Normalized instruction-key alignment finds 537 of 610 native code
+instructions (620 candidate instructions). This is diagnostic codegen
+similarity, not exactness: EH/funclet ownership and byte/relocation matching
+are still open.
+
+The 2026-11-18 opcode-8 revision explicitly snapshots the four unsigned-byte
+packed color channels into signed int locals before converting to float.
+This restores more of the native load-all-then-FILD sequence while preserving
+the original 0..255 range, the four float channels, and the packed field.
+An unsigned int local instead adds inappropriate unsigned-to-float handling
+in VC9 and increases the candidate by 28 bytes. The old checkpoint was
+2,728 bytes and 531/610 aligned instructions; this one is 2,736 bytes and
+537/610, with no ASM or artificial byte padding.
 
 The frontier now compiles `src/StageMesh.cpp` and
 `probes/stage-mesh-context.cpp` in their non-`/Oy-` profile. The probe keeps a
@@ -291,8 +299,8 @@ link exceeded the bounded 900-second run.
 
 Opcodes 3 and 5 now share the inline `ScriptTweenFrame` helper, which uses
 compiler barriers to preserve the observable order of timer-field writes.
-The pinned VC9 frontier remains 2,728 bytes with the native 0x98 stack frame
-and improves normalized alignment from 529 to **531/610**. One instruction
+At the earlier checkpoint the pinned VC9 frontier remained 2,728 bytes
+with the native 0x98 stack frame and had improved alignment from 529 to **531/610**. One instruction
 ordering difference remains: the candidate stores the time-scale pointer
 before `OR flags,1`, while native performs the OR first. The helper is a
 codegen experiment, not an exact timer reconstruction. Seven neighboring
