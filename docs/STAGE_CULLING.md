@@ -34,8 +34,10 @@ using 12-byte source and destination strides.
 Projected depth is strictly positive and at most one: 0 < z <= 1. The
 native Ghidra body explicitly tests positive depth; a sample exactly on the
 near plane is excluded. For accepted depths, X and Y extrema update through
-the native ordered less-than / greater-than branches. Unordered X/Y values
-therefore update neither bound. The final screen-space intersection test
+the native asymmetric branch ordering. If a projected X or Y is unordered, the
+native fallback branch writes that NaN into the corresponding minimum; the
+maintained helper preserves this behavior rather than silently ignoring it.
+The final screen-space intersection test
 includes the four viewport edges: maximum X >= 32, minimum X <= 416,
 maximum Y >= 16, and minimum Y <= 464. Intersecting bounds accept the object.
 The four middle-plane samples are part of the native algorithm and must not
