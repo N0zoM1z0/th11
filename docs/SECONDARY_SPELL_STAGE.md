@@ -70,9 +70,13 @@ places its **seven-entry jump table** at `0x40CD44..0x40CD5F`,
 immediately *outside* this function boundary; no table data or
 instruction padding was inserted into the source.
 
-It resets the timer at stage+0x888 to frame -1, stores the spell
-index at +0x8DC, copies the NUL-terminated name at +0x89C, and
-updates the +0x8E0 flags. Unless the record mode at global 4A8EB8+10
+It resets the timer at stage+0x888 to frame -1. This owner uses its
+native field-write order: fraction zero, current zero, previous sentinel
+(-999999) and scale pointer/flag on first initialization; then fraction zero,
+current zero and previous -1 on every call. The source keeps this order in a
+local helper rather than changing the shared StageTimerView method. It then
+stores the spell index at +0x8DC, copies the NUL-terminated name at +0x89C,
+and updates the +0x8E0 flags. Unless the record mode at global 4A8EB8+10
 is one, it records the spell name and increments a capped 99,999
 attempt count in two separate native records. The first record
 uses `(selection0*3+selection1)*0x68D4 + index*0x90 + 0x66C`;
