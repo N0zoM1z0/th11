@@ -68,7 +68,7 @@ int __stdcall DrawStageLayer(StageResourceView *stage, int layer)
         offset.x = entry->offset.x;
         offset.y = entry->offset.y;
         offset.z = entry->offset.z;
-        if (CullStageObject(camera, object, &offset, stage->distanceSquared))
+        if (CullStageObject(object, &offset, stage->distanceSquared))
         {
             ++DrawCounters(stage).rejectedObjects;
             entry->flags &= ~1u;

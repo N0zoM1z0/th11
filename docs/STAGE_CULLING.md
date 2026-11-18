@@ -6,8 +6,8 @@ frontier results are:
 
 | Native owner | Native size | Candidate PDB contribution | Aligned native instructions | State |
 | --- | ---: | ---: | ---: | --- |
-| CullStageObject (0x403950) | 1,643 B | 1,644 B | 329/504 | Nonexact |
-| DrawStageLayer (0x404190) | 727 B | 729 B | 112/191 | Nonexact |
+| CullStageObject (0x403950) | 1,643 B | 1,648 B | 328/504 | Nonexact |
+| DrawStageLayer (0x404190) | 727 B | 724 B | 112/191 | Nonexact |
 
 These are diagnostic frontiers, not strict replay results. The original
 translation-unit ownership and remaining byte/relocation differences are
@@ -15,9 +15,13 @@ still open. The native bodies and their callers were reviewed in Ghidra.
 
 ## CullStageObject: native algorithm
 
-The function receives a perspective camera, a stage object, a layer offset,
-and a maximum squared distance. Its current source-level parameter ABI remains
-provisional.
+The native function has three formal `__fastcall` parameters: the stage
+object, layer offset and maximum squared distance. The original body also
+consumes the active perspective camera through a private EAX input. Its only
+caller publishes that same camera to `FrameRuntime().activeCamera` immediately
+before the call. The natural C++ source therefore models the three explicit
+fastcall arguments and reads the published camera from the runtime view; the
+private EAX input remains an acknowledged ABI difference.
 
 It first computes the object center in world space using the layer offset,
 then adds the camera eye offset to the camera position. The squared distance
@@ -81,7 +85,7 @@ instruction-alignment counts are diagnostics and are not additive.
 | Axis-specific offset reads and inclusive depth lower bound (rejected) | 1,639 B / 411 of 504 aligned | Earlier hypothesis; native Ghidra confirms the lower bound is strict |
 | Indexed two-group traversal, six points per group | 1,644 B / 442 of 504 aligned | Emits the native pointer advance and two-group loop |
 | Inclusive viewport-edge intersection tests with inclusive depth (superseded) | 1,644 B / 446 of 504 aligned | Four viewport edges are inclusive; the depth lower bound is not |
-| Strict positive depth plus asymmetric X/Y extrema branches | 1,644 B / 329 of 504 aligned | Matches 0 < z <= 1 and native unordered-coordinate updates to minima |
+| Strict positive depth plus asymmetric X/Y extrema branches | 1,648 B / 328 of 504 aligned | Matches 0 < z <= 1 and native unordered-coordinate updates to minima |
 
 The current indexed loop visits projected[group * 6 + 0..5] for two groups.
 It preserves all twelve samples and their order. Earlier pointer-cursor and
@@ -91,8 +95,8 @@ For DrawStageLayer, three independent source details improved the focused
 owner: reloading FrameRuntime.activeCamera after perspective application,
 copying the layer offset as three typed float members (recovering x87
 FLD/FSTP), and retaining the Z-write bit extraction as a full-width unsigned
-integer rather than bool. The current owner is 729 B with 112/191 aligned
-native instructions.
+integer rather than bool. The current owner is 724 B with 112/191 aligned
+native instructions after restoring the three-argument fastcall boundary.
 
 ## Focused build and comparison
 

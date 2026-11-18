@@ -36,6 +36,6 @@ typedef char StageLayerRecordSize[(sizeof(StageLayerRecord) == 0x10) ? 1 : -1];
 typedef char StageObjectCommandsOffset[(offsetof(StageObjectDrawView, commands) == 0x1c) ? 1 : -1];
 typedef char StagePrimitiveDrawSize[(sizeof(StagePrimitiveDrawView) == 0x1c) ? 1 : -1];
 
-int __stdcall CullStageObject(const PerspectiveCameraView *camera,
-    const StageObjectDrawView *object, const CameraVector *offset, float maxDistanceSquared);
+int __fastcall CullStageObject(const StageObjectDrawView *object,
+    const CameraVector *offset, float maxDistanceSquared);
 int __stdcall DrawStageLayer(StageResourceView *self, int layer);

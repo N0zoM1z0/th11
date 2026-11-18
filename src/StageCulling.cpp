@@ -1,4 +1,5 @@
 #include "StageLayerDrawing.hpp"
+#include "FrameLoop.hpp"
 
 extern "C" D3DMATRIX *WINAPI D3DXMatrixTranslation(
     D3DMATRIX *output, float x, float y, float z);
@@ -40,9 +41,14 @@ static __forceinline void ExtendProjectedBounds(const CameraVector &point,
 
 // Complete native 0x403950 object-culling algorithm. The 12 input positions
 // are eight cuboid corners plus four samples on the middle X plane.
-int __stdcall CullStageObject(const PerspectiveCameraView *camera,
-    const StageObjectDrawView *object, const CameraVector *offset, float maxDistanceSquared)
+int __fastcall CullStageObject(const StageObjectDrawView *object,
+    const CameraVector *offset, float maxDistanceSquared)
 {
+    // The only native caller publishes this camera before the call. The
+    // original callee receives it in a private EAX input; the natural C++
+    // boundary keeps that shared state and models the three fastcall args.
+    const PerspectiveCameraView *camera = reinterpret_cast<const PerspectiveCameraView *>(
+        FrameRuntime().activeCamera);
     // Retain the layer's three-float displacement value for the center
     // calculation; the original also rereads its Y/Z values from the caller.
     const CameraVector displacement = *offset;

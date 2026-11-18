@@ -27,8 +27,8 @@ Factory-accepted results or whole-game closure.
 
 | Function | Native owner | Current focused VC9 /GL contribution | State |
 | --- | ---: | ---: | --- |
-| CullStageObject (0x403950) | 1,643 B | 1,644 B; 329/504 aligned instructions | Main active boss; strict depth and native NaN extrema branches; nonexact |
-| DrawStageLayer (0x404190) | 727 B | 729 B; 112/191 aligned instructions | Nonexact; linked dependency of culler |
+| CullStageObject (0x403950) | 1,643 B | 1,648 B; 328/504 aligned instructions | Main active boss; strict depth, NaN extrema, three-argument fastcall; EAX camera input remains open |
+| DrawStageLayer (0x404190) | 727 B | 724 B; 112/191 aligned instructions | Nonexact; caller now uses native three-argument culler boundary |
 | ExecuteStageScript (0x404470) | 2,736 B | 2,736 B; 537/610 aligned instructions | Nonexact; EH/funclet ownership open |
 | StepStageVectorTween (0x405240) | 883 B | 883 B; 276/280 aligned instructions | Nonexact; four fallback x87 differences remain |
 | InitializeSecondarySpellStage (0x40C650) | 1,777 B | Diagnostic frontier exists | Nonexact; see SECONDARY_SPELL_STAGE.md |
