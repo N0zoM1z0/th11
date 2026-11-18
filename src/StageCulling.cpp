@@ -111,8 +111,9 @@ int __stdcall CullStageObject(const PerspectiveCameraView *camera,
         ExtendProjectedBounds(projected[group * 6 + 4], smallestX, largestX, smallestY, largestY);
         ExtendProjectedBounds(projected[group * 6 + 5], smallestX, largestX, smallestY, largestY);
     }
-    if (largestX > 32.0f && smallestX < 416.0 &&
-        largestY > 16.0f && smallestY < 464.0)
+    // The native rectangle intersection includes all four viewport edges.
+    if (largestX >= 32.0f && smallestX <= 416.0f &&
+        largestY >= 16.0f && smallestY <= 464.0f)
         return 0;
     return 1;
 }
