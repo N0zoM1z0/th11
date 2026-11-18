@@ -33,11 +33,12 @@ using 12-byte source and destination strides.
 
 Projected depth is strictly positive and at most one: 0 < z <= 1. The
 native Ghidra body explicitly tests positive depth; a sample exactly on the
-near plane is excluded. For accepted depths, X and Y extrema update through
-the native less-than / greater-than branch sequence. An unordered coordinate
-follows the x87 unordered path and updates neither bound; equality with the
-current minimum proceeds to the maximum-bound comparison. The final
-screen-space intersection test
+near plane is excluded. For accepted depths, X and Y extrema use the native
+asymmetric branch sequence: X compares `minimum <= point` before checking
+`maximum < point`, while Y compares `minimum < point` before checking
+`maximum < point`. A failed first comparison writes the point into the
+minimum, including the x87 unordered/NaN case. The final screen-space
+intersection test
 includes the four viewport edges: maximum X >= 32, minimum X <= 416,
 maximum Y >= 16, and minimum Y <= 464. Intersecting bounds accept the object.
 The four middle-plane samples are part of the native algorithm and must not
