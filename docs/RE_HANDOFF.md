@@ -57,7 +57,9 @@ control-flow notes in STAGE_CULLING.md.
 0. Continue the stage-spell initializer through its real caller. The opcode
    owner now calls `InitializeSecondarySpellStage` directly, and the focused
    `secondary-actor-instruction-adapter` graph links the initializer beside the
-   16,260-byte instruction owner. The native caller uses EAX for the spell-name
+   16,260-byte instruction owner. Its difficulty dispatch now keeps cases 1 and
+   2 separate and uses the native shared overlay tail (124/468 aligned keys).
+   The native caller uses EAX for the spell-name
    pointer plus two stack integers (`ret 8`); the candidate still uses three
    stack arguments (`ret 12`). Recover this boundary only through natural C++
    and whole-caller LTCG context; do not add register shims or ASM.
