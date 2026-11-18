@@ -86,6 +86,19 @@ instructions. The dependent DrawStageLayer remains 729 bytes and
 112/191 aligned. This is a behavior correction supported by the
 original x87 status flags, not an alignment-only tweak.
 
+## Indexed two-group projected sample traversal (2026-11-18)
+
+The twelve projected points are now expressed as two groups of six using
+the fixed source indices group * 6 + [0..5]. This is the same ordered
+sample sequence as the earlier pointer cursor, but the indexed C++ loop
+lets pinned VC9 /GL recover the native pair of loop counters: an advancing
+projected-point pointer by 0x48 bytes and a two-group countdown. The
+focused PDB owner improves from 1,639 bytes / 411 of 504 aligned native
+instructions to **1,644 bytes / 442 of 504**. The loop still visits each
+of the twelve projected points exactly once in the original order, with
+the existing ordered clipping and NaN behavior. The native owner is 1,643
+bytes, so this is a strong nonexact frontier, not a byte-exact claim.
+
 ## Axis-specific layer-offset read scheduling (2026-11-18)
 
 The current C++ keeps the copied CameraVector value for the X center
@@ -247,7 +260,7 @@ and cannot acquire an exact result merely by matching a PDB extent.
 
 | Primary owner | Native | Current PDB contribution | Instruction-key diagnostic |
 | --- | ---: | ---: | ---: |
-| CullStageObject | 1,643 | 1,639 | 411 / 504 target instructions |
+| CullStageObject | 1,643 | 1,644 | 442 / 504 target instructions |
 | DrawStageLayer | 727 | 729 | 112 / 191 target instructions |
 
 The culler initially emitted 1,316 bytes (206/504 aligned) with an
