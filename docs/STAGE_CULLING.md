@@ -72,6 +72,20 @@ The three integer counters reuse twelve physical bytes that another source
 view calls `drawOffset`. This is a *local overlay* with verified offsets;
 no shared exact unit's class layout was changed.
 
+## Inclusive projected-depth lower bound (2026-11-18)
+
+The native projected-depth predicate is inclusive at zero. Its x87
+sequence loads 1 then 0, compares 0 against the projected Z, checks
+the unordered/negative status with TEST AH,41h and JP, then compares
+1 against Z and rejects values above one. Therefore a depth exactly
+equal to 0 is accepted, while negative values and NaN are rejected.
+Changing the source from z > 0 to z >= 0 reproduces the native
+full-width status mask and branch shape. The focused 1,639-byte PDB
+contribution improves from 405/504 to **411/504** aligned native
+instructions. The dependent DrawStageLayer remains 729 bytes and
+112/191 aligned. This is a behavior correction supported by the
+original x87 status flags, not an alignment-only tweak.
+
 ## Axis-specific layer-offset read scheduling (2026-11-18)
 
 The current C++ keeps the copied CameraVector value for the X center
@@ -233,7 +247,7 @@ and cannot acquire an exact result merely by matching a PDB extent.
 
 | Primary owner | Native | Current PDB contribution | Instruction-key diagnostic |
 | --- | ---: | ---: | ---: |
-| CullStageObject | 1,643 | 1,639 | 405 / 504 target instructions |
+| CullStageObject | 1,643 | 1,639 | 411 / 504 target instructions |
 | DrawStageLayer | 727 | 729 | 112 / 191 target instructions |
 
 The culler initially emitted 1,316 bytes (206/504 aligned) with an
