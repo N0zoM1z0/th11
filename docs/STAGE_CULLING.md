@@ -72,6 +72,16 @@ The three integer counters reuse twelve physical bytes that another source
 view calls `drawOffset`. This is a *local overlay* with verified offsets;
 no shared exact unit's class layout was changed.
 
+## Full-width Z-write flag extraction (2026-11-18)
+
+The native DrawStageLayer checks VM flag bit 11 by shifting the full
+32-bit flags word and ANDing with one. Declaring the derived value as
+bool made pinned VC9 emit an 8-bit AND CL,1; retaining an unsigned
+32-bit bitfield expression yields a 32-bit AND ECX,1.
+The focused /GL owner remains 729 bytes with 112/191 normalized native
+instruction keys aligned. This is a natural-source codegen correction
+in a nonexact large function, not a byte-exact claim.
+
 ## Rounded culling distance and ordered rejection (2026-11-18)
 
 The original CullStageObject evaluates the squared world/eye distance,

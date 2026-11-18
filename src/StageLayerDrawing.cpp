@@ -131,6 +131,7 @@ int __stdcall DrawStageLayer(StageResourceView *stage, int layer)
                 }
                 // The native extracts bit 11 with a full DWORD shift/mask,
                 // keeping the result integer-valued until the Z state gates.
+                // The native path extracts bit 11 with a full-width SHR/AND.
                 const unsigned int disableZ = (vm->flags.value >> 11) & 1u;
                 if (disableZ && zWritesEnabled)
                 {
