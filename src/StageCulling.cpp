@@ -16,25 +16,15 @@ static __forceinline void ExtendProjectedBounds(const CameraVector &point,
 {
     if (point.z > 0.0f && point.z <= 1.0f)
     {
-        if (smallestX <= point.x)
-        {
-            if (largestX < point.x)
-                largestX = point.x;
-        }
-        else
-        {
+        if (point.x < smallestX)
             smallestX = point.x;
-        }
+        else if (point.x > largestX)
+            largestX = point.x;
 
-        if (smallestY < point.y)
-        {
-            if (largestY < point.y)
-                largestY = point.y;
-        }
-        else
-        {
+        if (point.y < smallestY)
             smallestY = point.y;
-        }
+        else if (point.y > largestY)
+            largestY = point.y;
     }
 }
 
