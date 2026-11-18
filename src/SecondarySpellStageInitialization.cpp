@@ -207,34 +207,38 @@ void __stdcall InitializeSecondarySpellStage(
     CreateAnimationVmId(g_SecondaryActorFiles->file, 0x95, 0x16);
 
     AnimationFileView *file = event->file;
+    int overlayScript = 0xa;
     switch (g_StageSpellDifficulty)
     {
     case 1:
-    case 2:
         BindStageSpellVm(&stage->vm0, file, 7);
         BindStageSpellVm(&stage->vm1, file, 8);
-        if (g_StageSpellDifficulty == 1 && spellIndex < 2)
+        if (spellIndex < 2)
         {
             CreateStageSpellOverlayVm(event, 0xb);
             return;
         }
-        CreateStageSpellOverlayVm(event, 0xa);
+        break;
+    case 2:
+        BindStageSpellVm(&stage->vm0, file, 7);
+        BindStageSpellVm(&stage->vm1, file, 8);
         break;
     case 3:
         BindStageSpellVm(&stage->vm0, file, 8);
         BindStageSpellVm(&stage->vm1, file, 9);
         CreateStageSpellOverlayVm(event, 0xb);
-        break;
+        return;
     case 4:
         BindStageSpellVm(&stage->vm0, file, 0xc);
         BindStageSpellVm(&stage->vm1, file, 0xd);
         CreateStageSpellOverlayVm(event, 0xf);
-        break;
+        return;
     case 5:
         BindStageSpellVm(&stage->vm0, file, 0x10);
         BindStageSpellVm(&stage->vm1, file, 0x11);
-        if (spellIndex >= 0x7a)
-            CreateStageSpellOverlayVm(event, 0x13);
+        if (spellIndex < 0x7a)
+            return;
+        overlayScript = 0x13;
         break;
     case 6:
         if (g_StageSpellProgress < 0x18)
@@ -242,13 +246,11 @@ void __stdcall InitializeSecondarySpellStage(
             ResetAndBindStageAnimationVm(&stage->vm0, file, 0x15);
             ResetAndBindStageAnimationVm(&stage->vm1, file, 0x16);
             CreateStageSpellOverlayVm(event, 0x17);
+            return;
         }
-        else
-        {
-            ResetAndBindStageAnimationVm(&stage->vm0, file, 0x12);
-            ResetAndBindStageAnimationVm(&stage->vm1, file, 0x11);
-            CreateStageSpellOverlayVm(event, 0x14);
-        }
+        ResetAndBindStageAnimationVm(&stage->vm0, file, 0x12);
+        ResetAndBindStageAnimationVm(&stage->vm1, file, 0x11);
+        overlayScript = 0x14;
         break;
     case 7:
         if (g_StageSpellProgress < 0x18)
@@ -256,13 +258,13 @@ void __stdcall InitializeSecondarySpellStage(
             ResetAndBindStageAnimationVm(&stage->vm0, file, 0xb);
             ResetAndBindStageAnimationVm(&stage->vm1, file, 0xc);
             CreateStageSpellOverlayVm(event, 0xd);
+            return;
         }
-        else
-        {
-            ResetAndBindStageAnimationVm(&stage->vm0, file, 7);
-            ResetAndBindStageAnimationVm(&stage->vm1, file, 8);
-            CreateStageSpellOverlayVm(event, 0xa);
-        }
+        ResetAndBindStageAnimationVm(&stage->vm0, file, 7);
+        ResetAndBindStageAnimationVm(&stage->vm1, file, 8);
         break;
+    default:
+        return;
     }
+    CreateStageSpellOverlayVm(event, overlayScript);
 }
