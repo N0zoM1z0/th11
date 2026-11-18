@@ -14,7 +14,7 @@ extern "C" CameraVector *WINAPI D3DXVec3ProjectArray(
 static __forceinline void ExtendProjectedBounds(const CameraVector &point,
     float &smallestX, float &largestX, float &smallestY, float &largestY)
 {
-    if (point.z >= 0.0f && point.z <= 1.0f)
+    if (point.z > 0.0f && point.z <= 1.0f)
     {
         if (point.x < smallestX)
             smallestX = point.x;

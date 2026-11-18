@@ -6,7 +6,7 @@ frontier results are:
 
 | Native owner | Native size | Candidate PDB contribution | Aligned native instructions | State |
 | --- | ---: | ---: | ---: | --- |
-| CullStageObject (0x403950) | 1,643 B | 1,644 B | 446/504 | Nonexact |
+| CullStageObject (0x403950) | 1,643 B | 1,644 B | 403/504 | Nonexact |
 | DrawStageLayer (0x404190) | 727 B | 729 B | 112/191 | Nonexact |
 
 These are diagnostic frontiers, not strict replay results. The original
@@ -31,13 +31,15 @@ the middle X plane. A real identity-valued D3DMATRIX is initialized before
 D3DXMatrixTranslation; D3DXVec3ProjectArray then projects all twelve points
 using 12-byte source and destination strides.
 
-Projected depth is inclusive at zero: 0 <= z <= 1. For accepted depths,
-X and Y extrema update only on strict less-than or strict greater-than.
-Unordered X/Y values therefore update neither bound. The final screen-space
-intersection test includes the four viewport edges: maximum X >= 32, minimum
-X <= 416, maximum Y >= 16, and minimum Y <= 464. Intersecting bounds accept
-the object. The four middle-plane samples are part of the native
-algorithm and must not be dropped.
+Projected depth is strictly positive and at most one: 0 < z <= 1. The
+native Ghidra body explicitly tests positive depth; a sample exactly on the
+near plane is excluded. For accepted depths, X and Y extrema update through
+the native ordered less-than / greater-than branches. Unordered X/Y values
+therefore update neither bound. The final screen-space intersection test
+includes the four viewport edges: maximum X >= 32, minimum X <= 416,
+maximum Y >= 16, and minimum Y <= 464. Intersecting bounds accept the object.
+The four middle-plane samples are part of the native algorithm and must not
+be dropped.
 
 ## DrawStageLayer: native algorithm
 
@@ -73,9 +75,10 @@ instruction-alignment counts are diagnostics and are not additive.
 | Layer-offset snapshot | 1,530 B / 334 of 504 aligned | Models the caller-provided three-float displacement lifetime |
 | Pointer-cursor traversal of two six-point groups | 1,525 B / 383 of 504 aligned | Tested but superseded by indexed traversal |
 | Identity matrix initialization before D3DX translation | 1,641 B / 402 of 504 aligned | Restores the sixteen observable float stores (twelve zeros, four ones) |
-| Axis-specific offset reads and inclusive depth lower bound | 1,639 B / 411 of 504 aligned | Restores source read scheduling and accepts depth exactly zero |
+| Axis-specific offset reads and inclusive depth lower bound (rejected) | 1,639 B / 411 of 504 aligned | Earlier hypothesis; native Ghidra confirms the lower bound is strict |
 | Indexed two-group traversal, six points per group | 1,644 B / 442 of 504 aligned | Emits the native pointer advance and two-group loop |
-| Inclusive viewport-edge intersection tests | 1,644 B / 446 of 504 aligned | Matches the native four-edge comparisons, including equality |
+| Inclusive viewport-edge intersection tests with inclusive depth (superseded) | 1,644 B / 446 of 504 aligned | Four viewport edges are inclusive; the depth lower bound is not |
+| Strict positive projected depth | 1,644 B / 403 of 504 aligned | Matches native 0 < z <= 1; excludes samples exactly on the near plane |
 
 The current indexed loop visits projected[group * 6 + 0..5] for two groups.
 It preserves all twelve samples and their order. Earlier pointer-cursor and

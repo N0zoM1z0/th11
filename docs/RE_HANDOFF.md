@@ -27,7 +27,7 @@ Factory-accepted results or whole-game closure.
 
 | Function | Native owner | Current focused VC9 /GL contribution | State |
 | --- | ---: | ---: | --- |
-| CullStageObject (0x403950) | 1,643 B | 1,644 B; 446/504 aligned instructions | Main active boss; nonexact |
+| CullStageObject (0x403950) | 1,643 B | 1,644 B; 403/504 aligned instructions | Main active boss; strict near-plane depth fixed; nonexact |
 | DrawStageLayer (0x404190) | 727 B | 729 B; 112/191 aligned instructions | Nonexact; linked dependency of culler |
 | ExecuteStageScript (0x404470) | 2,736 B | 2,736 B; 537/610 aligned instructions | Nonexact; EH/funclet ownership open |
 | StepStageVectorTween (0x405240) | 883 B | 883 B; 276/280 aligned instructions | Nonexact; four fallback x87 differences remain |
@@ -54,13 +54,13 @@ control-flow notes in STAGE_CULLING.md.
 
 ## Immediate next work
 
-1. Continue CullStageObject from the committed indexed two-group traversal
-   and inclusive viewport-edge tests. The focused candidate is now 1,644 B /
-   446 of 504 aligned instructions. Rebuild only cull-stage-object-frontier,
-   compare the full native/candidate instruction streams, and work on the
-   remaining stack/local and x87 ordering differences. Do not replace the current indexed loop with the earlier
-   pointer-cursor version: that checkpoint was 1,525 B / 383 of 504 aligned,
-   versus the current 1,644 B / 442 of 504.
+1. Continue CullStageObject from the indexed two-group traversal and inclusive
+   viewport-edge tests. The native depth gate is strictly 0 < z <= 1; samples
+   at z == 0 are excluded. The focused candidate is 1,644 B / 403 of 504
+   aligned instructions after correcting that semantic difference. Rebuild
+   only cull-stage-object-frontier and work on the remaining stack/local and
+   x87 ordering differences. Do not replace the indexed loop with the earlier
+   pointer-cursor version: that checkpoint was 1,525 B / 383 of 504 aligned.
 2. Rebuild draw-stage-layer-frontier when a shared source/header changes.
    Preserve the active-camera reload, explicit float offset stores and
    full-width bit-11 extraction documented in STAGE_CULLING.md.
