@@ -77,10 +77,16 @@ differences and all 11 selected exact pair units also pass. Its
 original game class/TU ownership remains unknown; the proof
 establishes native codegen only.
 
-AddSecondaryPair at 4195E0 remains nonexact: the scoped C++ still
-assigns ECX and EDX to the opposite vector inputs, so the 16-byte
-candidate differs in x87 operand encodings. Its earlier naked-code
-proof remains withdrawn; do not count it as exact.
+AddSecondaryPair at 4195E0 is now also exact as natural C++.
+Qualifying the two live input views as const volatile and evaluating
+the right view before the left view recovers the x87 source-operand
+order (ECX then EDX) without any ASM or artificial bytes. The actual
+float additions still produce the two vector components and return
+the output pointer. The pinned VC9 /GL primary-TU PDB owner contributes
+all 16 native bytes, with no address fields; its canonical strict
+cold replay reports zero differences. All twelve exact PairAccess
+units also pass a targeted source-family cold replay. The historical
+ASM-dependent proof stays withdrawn; class/TU origin is not asserted.
 
 The complete101-byte4195F0 owner is also independently reviewed: two stack floats,
 double pi/tau comparisons, three rounded RET8 paths and the actual418D20 caller.
@@ -173,7 +179,7 @@ The actual previous receipts select19 affected old units through StageTween,
 StageScript, AnimationTween, SecondaryPairTween and SecondaryActorMotion. Final
 selected cold replay passes27 units across6 linked families. Source hashes are
 frozen before compilation and unchanged afterward; no full cohort is replayed.
-The duration setter, the add leaf and the large math owners remain non-exact.
+The historical eight-unit exact total predates the recovered duration setter and add leaf. The large math owners remain non-exact. The current selected pair family has twelve exact functions spanning 188 native bytes; the latest source-scoped 12-unit cold replay passed with zero differences.
 
 This adds14 source mappings/373 target bytes,11 omitted pair candidates and one
 omitted CRT candidate. Fifteen new boundary/origin reviews include13 new

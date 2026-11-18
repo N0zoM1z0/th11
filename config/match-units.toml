@@ -8499,7 +8499,6 @@ size = 4
 linkages = []
 
 [units.add-secondary-pair]
-frontier = true
 artifact_kind = "linked-pe"
 source = "src/SecondaryPairAccess.cpp"
 inputs = ["src/SecondaryPairAccess.hpp", "src/SecondaryActorState.hpp"]

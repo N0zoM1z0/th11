@@ -80,7 +80,11 @@ SecondaryVector2 *__stdcall ScaleSecondaryPair(SecondaryVector2 *output,
 SecondaryVector2 *__stdcall AddSecondaryPair(SecondaryVector2 *output,
     const SecondaryVector2 *left, const SecondaryVector2 *right)
 {
-    output->x = left->x + right->x;
-    output->y = left->y + right->y;
+    // Preserve the observed source-operand read ordering of the two live
+    // pair values, including floating-point exceptional-value behavior.
+    const volatile SecondaryVector2 *l = left;
+    const volatile SecondaryVector2 *r = right;
+    output->x = r->x + l->x;
+    output->y = r->y + l->y;
     return output;
 }
