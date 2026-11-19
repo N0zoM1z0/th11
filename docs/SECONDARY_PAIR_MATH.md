@@ -131,11 +131,10 @@ primary owner passed *strict cold replay*: 101/101 bytes, 34/34 original
 instructions, and three independently reviewed DIR32 fields for π (+0x10)
 and 2π (+0x23/+0x45) all resolve with zero byte differences.
 
-The adjacent unary cosine owner at 0x419660 has natural C++ source
-(`SecondaryUnaryCosine.cpp`); the current standalone `/GL` producer emits
-20 bytes against 31 native bytes because it lacks the native 8-byte-aligned
-frame and local spill shape. It remains a diagnostic frontier, not exact.
-The original translation-unit/nominal class owners are still unknown.
+The adjacent 0x419660 cosine owner is now exact through normal C++ after
+restoring the compiler's eight-byte-aligned live return local, which generates
+the native 31-byte frame and float store/reload without ASM or padding.
+The original translation-unit/nominal class owners remain unknown.
 
 ## Math source and real VC9 overloads
 
@@ -236,13 +235,16 @@ queries are span-ADDRESS-review.txt, with the existing full pair/state exports.
 Private probes record full contributions and exhaustive decoded fields, never
 prefix acceptance. Broad runtime/product/port work remains later.
 
-## Natural C++ cosine wrapper frontier (0x419660)
+## Exact natural C++ cosine wrapper (0x419660)
 
-`src/SecondaryUnaryCosine.cpp` now describes the original complete 31-byte
-`SecondaryUnaryMathB` as `float(cos(double(value)))`. The native body calls
-`__CIcos` at 0x486BA0, rounds its x87 ST0 return to float, and returns with
-`RET 4`. A narrow pinned VC9 `/GL` probe produces the correct intrinsic call
-but only 20 bytes: the original 8-byte aligned EBP frame is absent. Disabling
-frame-pointer omission alone emits 21 bytes, not the 31-byte original. It is
-therefore a maintained **nonexact diagnostic**, not an exact mapping. The
-original wrapper's class/TU attribution remains unknown.
+The native 31-byte `SecondaryUnaryMathB` calls `__CIcos` at 0x486BA0,
+rounds the x87 return to float and exits with `RET 4`. A plain expression
+initially compiled to 20 bytes; removing frame-pointer omission produced
+21 bytes and still missed the original. A real live
+`__declspec(align(8)) float rounded` local restores VC9's aligned EBP
+frame, float spill and reload in **31/31 bytes**, with no artificial padding
+or injected instructions. Strict pinned VC9 `/GL` cold linked replay confirms
+the complete single PDB owner and the sole independently reviewed `REL32`
+call to `__CIcos` at +0x0D: **zero differences**. Evidence:
+`.analysis/secondary-unary-cosine-strict-20261119.log`. The original
+class/translation-unit attribution is still unknown.

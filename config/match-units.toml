@@ -10637,7 +10637,6 @@ linkages = [
 
 # Separate reviewed 31-byte x87 cosine wrapper, original target 0x419660.
 [units.secondary-unary-cosine]
-frontier = true
 artifact_kind = "linked-pe"
 source = "src/SecondaryUnaryCosine.cpp"
 inputs = []

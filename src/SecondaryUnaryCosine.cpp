@@ -1,8 +1,9 @@
 #include <math.h>
 
-// The native wrapper passes one float on the stack to the VC9 x87 cosine
-// intrinsic, then rounds the returned ST0 value back to float.
+// The native cosine wrapper rounds x87 ST0 through an eight-byte-aligned
+// floating-point local before returning the float value.
 float __stdcall SecondaryUnaryMathB(float value)
 {
-    return static_cast<float>(cos(static_cast<double>(value)));
+    __declspec(align(8)) float rounded = static_cast<float>(cos(static_cast<double>(value)));
+    return rounded;
 }

@@ -17,8 +17,8 @@ worktree is clean after preserving and withdrawing the unhelpful spell-view
 method experiment described below.
 
 scripts/progress.py currently reports 2,175 tracked candidates, 1,608
-reviewed boundaries, 815 source mappings, and 481 canonical exact functions
-covering 52,631 code bytes. These are local ledger totals. The Factory
+reviewed boundaries, 815 source mappings, and 482 canonical exact functions
+covering 52,662 code bytes. These are local ledger totals. The Factory
 inventory reports 2,175 subjects, zero imported Oracle results, and an
 inventory-import-only warning; do not present local exact counts as
 Factory-accepted results or whole-game closure.
@@ -46,9 +46,9 @@ pi/tau DIR32 fields. Its real caller is 0x40ABF8; see SECONDARY_PAIR_MATH.md.
 
 `SecondaryAngleDifference40B830` at 0x40B830 is now cold-replayed
 **101/101 bytes exact**, including all three π/2π DIR32 fields, with
-separate complete natural C++ and reviewed native caller. The 31-byte unary
-cosine wrapper at 0x419660 has new source but remains nonexact (20-byte
-candidate under the current linked context). See SECONDARY_PAIR_MATH.md.
+separate complete natural C++ and reviewed native caller. The 31-byte unary cosine wrapper at 0x419660 is also strict exact in
+natural C++ with its `__CIcos` REL32 and aligned live float local.
+See SECONDARY_PAIR_MATH.md.
 
 ### Selected exact replay-coordinate owner
 
