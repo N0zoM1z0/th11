@@ -152,8 +152,9 @@ CameraVector __stdcall StepStageVectorTween(StageVectorTween *self)
     {
         CameraVector previous = self->initial;
         const volatile CameraVector &control = self->control2;
+        const volatile float &previousY = previous.y;
         CameraVector result = {control.x + previous.x,
-            control.y + previous.y, control.z + previous.z};
+            previousY + control.y, control.z + previous.z};
         self->initial = result;
         self->control2 = AddTweenVector(self->control2, self->target);
         return result;
