@@ -6,7 +6,7 @@ section and reconciled its full extent, instruction flow, callers and tables.
 
 | Function | Full target owner | Source contribution | State |
 | --- | ---: | ---: | --- |
-| ExecuteStageScript,0x00404470 | 2,736 bytes through0x00404F1F | 2,736 bytes | Non-exact; 537/610 aligned instructions; EH ownership open |
+| ExecuteStageScript,0x00404470 | 2,736 bytes through0x00404F1F | 2,712 bytes | Non-exact; 577/610 aligned instructions; EH/funclet ownership open |
 | SeekStageScriptMarker,0x00404F20 | 113 bytes through0x00404F90 | 113 bytes | Exact normal-COFF, 2 relocations |
 | BeginSecondaryStageTransition,0x00405130 | 159 bytes through0x004051CE | 159 bytes | Exact normal-COFF, 6 relocations |
 | BeginPrimaryStageTransition,0x004051D0 | 103 bytes through0x00405236 | 103 bytes | Exact normal-COFF, 3 relocations |
@@ -251,46 +251,29 @@ each integer's low byte, and restores the original x87 control word after each
 conversion. It does not clamp to0..255 or normalize from0..1. Negative, oversized,
 fractional, infinite and NaN inputs were checked against the actual bodies.
 
-## Code generation and proofs
+## Current code-generation frontier
 
-A second 2026-11-19 C++ math revision now uses `angle * 2.0` instead
-of `angle + angle` for both the shared `OscillatorSine` path (modes 1/6/7)
-and the independent mode-5 sine phase. This has the same double angle
-mathematics but guides VC9 `/GL` to a shorter, more native x87 stack sequence.
-The complete ExecuteStageScript PDB contribution is **2,712 bytes** versus
-**2,736** native, with **577/610** normalized native instruction keys
-aligned (610 candidate instructions). The previous 2,720-byte producer
-aligned 573/610. The diff is recorded at
-`.analysis/stage-script-double-angle-combined-20261119.diff`; the routine
-remains nonexact.
+The latest focused VC9 `/GL` build contributes **2,712 bytes** for the
+2,736-byte `ExecuteStageScript` owner, with **577/610** normalized native
+instruction keys aligned (610 candidate instructions). The owner remains
+nonexact; byte/relocation equality and EH/funclet ownership are open.
 
-The 2026-11-19 focused update duplicates the existing natural C++
-`ScriptTweenFrame` call at the end of opcode 10 and opcode 11 instead of
-sharing the opcode 3/5 timer blocks through backward `goto` edges. Although
-this has identical control/data behavior, VC9 `/GL` now places the two timer
-initializers at the native opcode 3/5 positions and follows the native
-jump-table case layout. Normalized complete-Boss instruction alignment rises
-from **551/610 to 573/610**. The PDB contribution remains **2,720 bytes**
-versus the original **2,736 bytes**; this is diagnostic improvement, not
-byte-exact restoration. The working comparison is
-`.analysis/compare-stage-script-frontier-20261118.py`. The changed source
-adds no assembly or artificial padding. The affected StageTween-family
-producer was rebuilt for a strict `pack-stage-fog` cold replay (zero bytes
-and fields differ); the same current PE/MAP/PDB and receipt were checked for
-`set-stage-timer`, both tween factors, and the three fog operators, also
-all zero differences. The two unusually wide support-context consumers were
-not rerun in this focused pass.
+Two 2026-11-19 natural-C++ changes produced the current result:
 
-The current execute-stage-script-frontier diagnostic build contributes
-2,712 bytes for ExecuteStageScript against the 2,736-byte native owner.
-Normalized instruction-key alignment finds 577 of 610 native code
-instructions (610 candidate instructions), up from 573/610 in the prior
-2,720-byte candidate. The oscillator postpass now advances and wraps its timer
-inside each native mode case, using literal periods 512, 2048, 1024 and 512
-rather than a shared period local and common tail. This recovers the native
-per-case return/control-flow shape. It remains diagnostic codegen similarity,
-not exactness: EH/funclet ownership and byte/relocation matching are still
-open.
+- Opcode 10 and 11 now make their own `ScriptTweenFrame` call rather than
+  jumping backward into the opcode 3/5 timer blocks. This restored the native
+  per-case timer-initialization layout and improved alignment from 551/610
+  to 573/610 at the 2,720-byte intermediate checkpoint.
+- Both oscillator paths now express the double angle as `angle * 2.0`
+  instead of `angle + angle`. This preserves the mathematics and improves the
+  complete owner to 2,712 bytes and 577/610 aligned keys.
+
+The current comparison is
+`.analysis/stage-script-double-angle-combined-20261119.diff`. The changed
+source uses ordinary C++; no target instructions or padding are inserted.
+The StageTween-family exact dependencies were selectively rebuilt and
+compared after the source change; see the retained affected-unit logs.
+
 
 The 2026-11-18 opcode-8 revision explicitly snapshots the four unsigned-byte
 packed color channels into signed int locals before converting to float.
@@ -363,7 +346,7 @@ against its 883-byte target, and StepStageFogTween contributes 794 bytes
 against 737 target bytes. These are context-specific contributions, not the
 standalone StageTween-family measurements. The independent StageTween
 producer now contributes an 883-byte StepStageVectorTween candidate
-(272/280 normalized instruction keys), still non-exact. A separate wide
+(278/280 normalized instruction keys), still non-exact. A separate wide
 secondary context retains the exact 737-byte fog-tween proof. The prior
 2,744-byte candidate (0xb0 frame, 373/609 aligned instructions) is
 superseded by the 2,728-byte/0x98-frame Boss candidate above. An older

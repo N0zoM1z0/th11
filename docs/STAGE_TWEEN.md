@@ -7,7 +7,7 @@ without embedded tables or external interior references.
 
 | Function | Address | Target bytes | Selected candidate bytes | State |
 | --- | --- | ---: | ---: | --- |
-| StepStageVectorTween | 00405240 | 883 | 883 | Non-exact (274/280 aligned; native Z fallback add order restored) |
+| StepStageVectorTween | 00405240 | 883 | 883 | Non-exact (278/280 aligned; Z fallback order restored, Y order remains) |
 | StepStageFogTween | 004055D0 | 737 | 794 (StageTween family); 737 (wide proof) | Exact only in the separate wide secondary link (step-stage-fog-tween) |
 | StageVectorTweenFactor | 00405960 | 39 | 39 | Exact linked unit |
 | StageFogTweenFactor | 00405990 | 45 | 45 | Exact linked unit |
@@ -63,13 +63,13 @@ result = ((initial*a + target*b) + control1*c) + control2*d
 
 Independent x87 review confirms that a forms the square before the last factor.
 An earlier StageScript-primary context emitted 785-byte vector and 536-byte
-fog candidates. Those are not the current StageTween-family sizes: the
-StageTween family emits an 883-byte vector candidate (276/280 normalized
-instruction keys; still non-exact) and a 794-byte fog candidate. The earlier
-272/280 figure predates the scalar-first Hermite multiply correction below. The
-separate wide secondary fog context emits the exact 737-byte owner. These
-/GL results belong to different producer contexts and must not be collapsed
-into one candidate measurement. See [SECONDARY_PAIR_MATH](SECONDARY_PAIR_MATH.md).
+fog candidates. Those are not the current StageTween-family sizes: the current
+family emits an 883-byte vector candidate (278/280 normalized instruction
+keys; still non-exact) and a 794-byte fog candidate. Earlier 272/280 and
+276/280 measurements predate the scalar-first Hermite multiply correction
+below. The separate wide secondary fog context emits the exact 737-byte owner.
+These /GL results belong to different producer contexts and must not be
+collapsed into one candidate measurement. See [SECONDARY_PAIR_MATH](SECONDARY_PAIR_MATH.md).
 
 Coefficient evaluation promotes t to double. Each coefficient, scaled vector
 and pairwise vector sum rounds to float at the observed boundary. Fog performs
@@ -79,9 +79,9 @@ The fallback Z sum is intentionally written as `initial.z + scaled.z` through
 a volatile reference: native x87 loads initial Z before adding scaled Z, while
 the fast VC9 optimizer otherwise commutes the two operands. The emitted Z
 fallback pair now matches that native order; Y remains reversed in the current
-candidate. This source-level ordering experiment keeps the 883-byte function
-but changes the normalized diagnostic alignment from 276/280 to 274/280 due
-to a separate Hermite x87 register-schedule shift.
+candidate. The first Z-order experiment temporarily moved alignment from
+276/280 to 274/280. The later Hermite control1 scale-order correction below
+supersedes that intermediate result and brings the current owner to 278/280.
 The factor helpers round fraction/signed-duration to float, then invoke the
 easing dispatcher only when unsigned(mode-1)<16, and round its result to float.
 
