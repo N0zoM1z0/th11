@@ -136,6 +136,19 @@ restoring the compiler's eight-byte-aligned live return local, which generates
 the native 31-byte frame and float store/reload without ASM or padding.
 The original translation-unit/nominal class owners remain unknown.
 
+## Distinct 0x4287A0 one-turn angle owner (2026-11-19)
+
+The original 0x4287A0..0x428804 body comprises 101 bytes and three
+`RET 8` exits, with a real caller at 0x428716 and no foreign interior
+references. Native PE and direct Ghidra show the complete body is identical
+to the independently proved 0x4195F0 and 0x435480 angle-difference owners.
+A separate natural C++ function `SecondaryAngleDifference4287A0`
+reconstructs both rounded correction paths plus the uncorrected difference.
+Selected VC9 `/GL` full linked-PE cold replay covers 101/101 bytes and
+independently binds the pi constant at +0x10 and tau at +0x23/+0x45:
+**zero differences**. The target's nominal original class/TU remains unknown;
+no ASM, executable patching or artificial byte filler was used.
+
 ## Math source and real VC9 overloads
 
 Complete source is added for both math dependencies:

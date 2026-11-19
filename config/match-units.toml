@@ -10670,3 +10670,23 @@ linkages = [
   { offset = 35, type = "DIR32", symbol = "__real@401921fb60000000", target = 0x497E78 },
   { offset = 69, type = "DIR32", symbol = "__real@401921fb60000000", target = 0x497E78 },
 ]
+
+# Complete duplicate angle-difference owner at 0x4287A0, independently
+# reviewed full span, real callsite and three constant bindings.
+[units.secondary-angle-difference-4287a0]
+artifact_kind = "linked-pe"
+source = "src/SecondaryAngleDifference4287A0.cpp"
+inputs = ["src/SecondaryAngleDifference4287A0.hpp"]
+support_sources = ["probes/secondary-angle-4287a0-context.cpp"]
+output_dir = "build/match-linked/SecondaryAngle4287A0"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryAngle4287A0Probe@8"
+functions = ["SecondaryAngleDifference4287A0"]
+symbol = "?SecondaryAngleDifference4287A0@@YGMMM@Z"
+target_address = 0x004287A0
+size = 101
+linkages = [
+  { offset = 16, type = "DIR32", symbol = "__real@400921fb60000000", target = 0x00497E80 },
+  { offset = 35, type = "DIR32", symbol = "__real@401921fb60000000", target = 0x00497E78 },
+  { offset = 69, type = "DIR32", symbol = "__real@401921fb60000000", target = 0x00497E78 },
+]
