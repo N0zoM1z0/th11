@@ -338,14 +338,21 @@ is recorded below.
 
 The update callback is **strict linked exact (10/10 bytes)** in the wide real
 LTCG producer, including its REL32 field to the updater. The updater candidate
-now has the exact native extent: **624 bytes versus 624 bytes**. A normalized
-instruction comparison aligns 167 native instructions against 168 candidate
-instructions (85.37%). Modeling timer advance as the natural
-`StageTimerView::Advance()` member call changed the whole-program register
-allocation: the callback saves EDI, the updater keeps its stage receiver in
-EDI, and it loads the timer into ESI before the member call. An 8-byte-aligned
-`CameraVector` local restores the native EBP frame, 8-byte ESP alignment and
-0x20-byte local frame.
+has the exact native extent: **624 bytes versus 624 bytes**. A normalized
+instruction comparison now aligns **160 of 167 native instructions** against
+165 candidate instructions (96.39%). This improves on 143/167 (85.37%) when
+the score-rounding denominator is represented by a real local
+`const volatile int roundingBase = 10`. VC9 then emits the native signed
+`cdq; idiv esi; sub ecx, edx` computation instead of a strength-reduced
+constant-multiply remainder. The candidate still performs a separate local
+store/load of the divisor, unlike native's one `mov esi,10`, so these are
+**not exact updater bytes**. The remaining differences include the event-3
+follower branch's register and jump layout and the Z interpolation's x87
+load/add order. This is normal C++ with a stable divisor and no assembly,
+byte patches or padding. The focused 2026-11-19 complete-owner diff is
+`.analysis/spell-update-signed-divisor-20261119.diff`. Modeling timer advance
+as `StageTimerView::Advance()` keeps the original update callback saving EDI,
+the updater's EDI stage receiver and ESI timer setup.
 
 The private `FindSecondarySpellVm` C++ fastcall adapter is 79/79 bytes
 identical to the existing exact `FindAnimationVmById` owner at 0x4561E0.
@@ -379,9 +386,8 @@ whole sequence and the final member call. This restores the native stack
 scratch layout and the native Z x87 operand order (`scaled.z + position.z`).
 The timer member is 83 bytes and has the native `inc` fast path, although its
 ECX/EDX local-register assignment still differs. The remaining updater gaps
-are the score `% 10` strength-reduction sequence (native uses `idiv`), the
-controller-pointer reload between threshold branches, and some follower
-branch register/control-flow choices. The 256-byte registrar is independently
+are the extra local load of the signed modulus, the event-3 follower
+branch register/control-flow schedule, and Z x87 addition order. The 256-byte registrar is independently
 strict exact. No callback is implemented with inline ASM or a hand-authored
 jump.
 ## Owning constructor, destructor and lifetime wrappers

@@ -32,7 +32,7 @@ Factory-accepted results or whole-game closure.
 | ExecuteStageScript (0x404470) | 2,736 B | 2,712 B; 577/610 aligned instructions | Nonexact; per-mode oscillator tail restored; EH/funclet ownership open |
 | StepStageVectorTween (0x405240) | 883 B | 883 B; 278/280 aligned instructions | Nonexact; native Z fallback add order restored; Y x87 addition order remains |
 | InitializeSecondarySpellStage (0x40C650) | 1,777 B | Diagnostic frontier exists | Nonexact; see SECONDARY_SPELL_STAGE.md |
-| UpdateSecondarySpellStageState (0x40C0A0) | 624 B | 624 B in the wide callback producer | Nonexact; native extent and ESI position-vector lifetime restored; 85.37% normalized instruction alignment |
+| UpdateSecondarySpellStageState (0x40C0A0) | 624 B | 624 B in the wide callback producer | Nonexact; signed `idiv` score rounding restored; 160/167 native instructions aligned |
 
 Instruction alignment is a navigation aid, not exactness. The two stage
 rendering owners have complete maintained C++ bodies and useful target
@@ -48,9 +48,9 @@ control-flow notes in STAGE_CULLING.md.
 - SecondarySpellDrawCallback (0x40C640, 7 B) passed strict cold linked-PE
   replay, including its REL32 field:
   .analysis/secondary-spell-draw-callback-cold-20261118.log.
-- SecondarySpellUpdateCallback (0x40C630, 10 B) is still nonexact.
-  Native saves EDI around the updater call; the current candidate saves ESI.
-  Do not transfer the draw callback's exact result to this separate owner.
+- SecondarySpellUpdateCallback (0x40C630, 10 B) also has a zero-difference
+  linked comparison in the wide callback producer with its REL32 bound to
+  0x40C0A0; promote only after a dedicated strict cold receipt and ledger row.
 - PackStageFog (0x405B70, 171 B), ResetAnimationVm (0x401FD0, 303 B),
   and ResetAndBindStageAnimationVm (0x405B10, 30 B) all passed targeted
   strict cold linked-PE replay in this session with zero byte/relocation

@@ -136,7 +136,9 @@ int __stdcall UpdateSecondarySpellStageState(SecondarySpellStageView *self)
                 (self->scoreInitial - self->scoreInitial / 10) /
                 (self->scoreDuration - 300);
             int score = self->score - reduction;
-            self->score = score - score % 10;
+            // Retain the signed remainder path used by the original updater.
+            const volatile int roundingBase = 10;
+            self->score = score - score % roundingBase;
         }
 
         ExecuteAnimationVm(&self->vm0);
