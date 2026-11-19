@@ -22,7 +22,7 @@ void __stdcall DestroySecondaryAttractionItems(SecondaryAttractionManagerView *s
 
 // The real ThreadInf-derived member destructor returns its thread to the
 // runtime, after the owner's C++ body has completed.
-SecondaryDebugThreadOwner::~SecondaryDebugThreadOwner()
+inline SecondaryDebugThreadOwner::~SecondaryDebugThreadOwner()
 {
     StopRuntimeThread(reinterpret_cast<RuntimeThreadView *>(this));
 }

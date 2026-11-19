@@ -10185,7 +10185,7 @@ support_sources = ["src/SecondaryDebugFilenameCleanup.cpp",
                    "src/ChainRemove.cpp",
                    "src/SecondaryMasterDestruction.cpp",
                    "src/StageAuxiliaryLifecycle.cpp",
-                   "src/SecondaryDebugHudLifetime.cpp",
+                   "src/SecondaryDebugHudLifetime.cpp", "src/FrameRuntime.cpp",
                    "probes/secondary-debug-session-lifecycle-context.cpp"]
 output_dir = "build/match-linked/SecondaryDebugSessionDestructorFrontier"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]

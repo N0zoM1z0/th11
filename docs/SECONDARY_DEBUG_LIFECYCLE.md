@@ -83,18 +83,24 @@ There are **no invented second singleton globals** and no
 naked/ASM machine-code wrappers. The original 462-byte span,
 14 callee sites, SEH ownership, boundaries and neighboring
 alignment were reviewed directly. The focused real-caller
-`secondary-debug-session-destructor-frontier` emits a
-**464-byte candidate with 124/127 normalized native instruction
-keys aligned** after adding real `ChainRemove`,
-`SecondaryMasterDestruction`, `StageAuxiliaryLifecycle`
-and `SecondaryDebugHudLifetime` producer inputs. The native
-private call registers are recovered in these contexts without
-ASM or special-purpose call shims. Remaining differences involve
-the compiler's initial EH state and final virtual thread member
-destructor scheduling. Linking the entire `FrameRuntime.cpp`
-or changing the owned heap pointer to volatile made the candidate
-less faithful and was rejected. The large owner is
-source-complete but **nonexact**.
+`secondary-debug-session-destructor-frontier` now emits a complete
+**462-byte candidate with 126/127 native instruction keys aligned**
+(the earlier 464-byte/124-key result is superseded). The scoped VC9 `/GL`
+producer includes the real `FrameRuntime.cpp` implementation of
+`StopRuntimeThread`, in addition to `ChainRemove`,
+`SecondaryMasterDestruction`, `StageAuxiliaryLifecycle` and
+`SecondaryDebugHudLifetime`. The member's genuine virtual destructor is
+an ordinary C++ `inline` function, so VC9 performs the native member
+vptr publication and transfers its ESI receiver directly to the real
+thread-stopper. The previous out-of-line destructor generated an extra
+call, different argument register and a 464-byte owner; forcing an inline
+without its real thread callee generated 471 bytes. The **only remaining
+normalized instruction mismatch** is compiler-generated EH state near
++0x28: native initializes state 1, the candidate initializes state 0.
+No ASM, hand-authored vtable store, padding, or fake cleanup path is used.
+The large owner remains source-complete but **nonexact**. Focused comparison:
+`.analysis/compare-debug-session-dtor-20261119.py`.
+
 
 ## Full 729-byte debug HUD destructor at 0x41AFC0
 

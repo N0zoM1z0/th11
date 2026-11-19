@@ -54,6 +54,17 @@ restored the allocator/register schedule; the original `replay/%s` constant
 is bound through the actual source MAP string literal. This is a substantial
 complete function, not a cropped leaf. See SECONDARY_REPLAY_LIFECYCLE.md.
 
+## Improved 462-byte debug-session destructor frontier
+
+The real `StopRuntimeThread` / VC9 LTCG producer now inlines the
+`SecondaryDebugThreadOwner` member destructor naturally, improving the
+complete 462-byte debug-session destructor from a 464-byte candidate with
+124/127 aligned instructions to **462 bytes with 126/127 aligned**.
+The only normalized mismatch is the compiler-managed EH state 1 versus 0;
+this is diagnostic progress, **not** a strict exact owner. See
+`docs/SECONDARY_DEBUG_LIFECYCLE.md`. Its exact 83-byte filename-cleanup
+callee must retain separate strict proof.
+
 ## Current large-function frontiers
 
 | Function | Native owner | Current focused VC9 /GL contribution | State |
