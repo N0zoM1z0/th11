@@ -133,3 +133,37 @@ folder is referenced by a configured match unit, including nonexact active
 frontiers. The build tree therefore remains at 535,916 KiB. The target,
 toolchain, Wine prefix, Ghidra project, canonical receipts and tracked source
 were not touched by storage pruning.
+
+## Agent handoff cleanup — 2026-11-19
+
+Two conservative storage passes removed only unreferenced scratch files and
+byte-identical duplicate copies from the 2026-11-19 exploration. Candidate
+paths were checked against tracked source/config/docs and the complete
+`.analysis/` tree. For duplicate groups, at least one copy of each content hash
+was retained, along with every referenced copy.
+
+| Removed | Count | Measured allocated space |
+| --- | ---: | ---: |
+| Unreferenced C++/header snapshots and full manifest/profile backups in `.analysis/` | 86 files | 4,912 KiB |
+| Unreferenced byte-identical duplicate files at `.analysis/` top level | 1,157 files | 9,012 KiB directory-usage reduction |
+| Orphaned `build/match-linked/SecondarySpellVmLookup` output | 1 directory | 1,324 KiB |
+| Generated `scripts/__pycache__/` | 1 directory | 212 KiB |
+| **Total measured reduction** | | **15,460 KiB (about 15.1 MiB)** |
+
+The 86 scratch snapshots occupied 4,855,865 apparent bytes (5,029,888
+allocated bytes). The duplicate copies occupied 6,385,297 apparent bytes
+(9,330,688 allocated bytes by file-block accounting). The exact removed path
+list and both pass summaries are retained in
+`.analysis/handoff-storage-cleanup-20261119.txt`.
+
+| Directory | Before both passes | After | Saved |
+| --- | ---: | ---: | ---: |
+| `.analysis/` | 71,852 KiB | 57,928 KiB | 13,924 KiB |
+| `build/` | 544,960 KiB | 543,636 KiB | 1,324 KiB |
+| `scripts/__pycache__/` | 212 KiB | absent | 212 KiB |
+
+No tracked source, proof receipt, canonical exact output, configured active
+frontier, target, compiler/toolchain, Wine prefix or Ghidra database was
+removed. The 218 remaining `build/match-linked/` directories are all
+referenced by configured units; retained historical `probe-ltcg` contexts
+remain available. No build or replay was run solely for this cleanup.
