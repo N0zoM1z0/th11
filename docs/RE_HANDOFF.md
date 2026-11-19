@@ -17,8 +17,8 @@ worktree is clean after preserving and withdrawing the unhelpful spell-view
 method experiment described below.
 
 scripts/progress.py currently reports 2,175 tracked candidates, 1,607
-reviewed boundaries, 813 source mappings, and 479 canonical exact functions
-covering 52,429 code bytes. These are local ledger totals. The Factory
+reviewed boundaries, 813 source mappings, and 480 canonical exact functions
+covering 52,530 code bytes. These are local ledger totals. The Factory
 inventory reports 2,175 subjects, zero imported Oracle results, and an
 inventory-import-only warning; do not present local exact counts as
 Factory-accepted results or whole-game closure.
@@ -46,6 +46,14 @@ reviewed DIR32 fields. Integer coordinates are written before float conversion
 and all eight item flags are updated. Only this owner and its directly affected
 callers require selected replay; other large replay owners remain nonexact.
 See `docs/SECONDARY_REPLAY_LIFECYCLE.md`.
+
+### Exact wrapped-angle owner
+
+A separate natural C++ owner at 0x4195F0 reproduces the original 101-byte
+three-path wrapped-angle difference, with all 34 instructions and all three
+independently bound pi/tau fields. It is native-byte-identical to the previously
+exact 0x435480 angle-difference body. Selected strict cold replay passed;
+see `docs/SECONDARY_PAIR_MATH.md`.
 
 ### Useful exact leaves
 

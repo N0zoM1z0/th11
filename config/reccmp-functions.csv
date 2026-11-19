@@ -615,6 +615,7 @@ SecondaryStackAbsoluteAddress,0x0045B5D0,function
 SecondaryStackRelativeAddress,0x0045B5C0,function
 SecondaryStackTop,0x0045B5E0,function
 SecondaryVelocityLength,0x00435430,function
+SecondaryWrappedAngleDifference,0x004195F0,function
 SeekPbgLowLevelFile,0x00441F30,function
 SeekPbgMemoryFile,0x00442DC0,function
 SeekStageScriptMarker,0x00404F20,function

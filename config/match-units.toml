@@ -10614,3 +10614,23 @@ size = 10
 linkages = [
   { offset = 4, type = "REL32", symbol = "?DrawSecondaryHudFront@@YGHPAUSecondaryHudView@@@Z", target = 0x0041C5F0 },
 ]
+
+# 0x4195F0 wraps a two-float difference across +/-pi. It is a separate
+# 101-byte owner from the byte-identical projectile-angle helper at 0x435480.
+[units.secondary-wrapped-angle-difference]
+artifact_kind = "linked-pe"
+source = "src/SecondaryWrappedAngle.cpp"
+inputs = ["src/SecondaryWrappedAngle.hpp"]
+support_sources = ["probes/secondary-wrapped-angle-context.cpp"]
+output_dir = "build/match-linked/SecondaryWrappedAngle"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryWrappedAngleProbe@8"
+functions = ["SecondaryWrappedAngleDifference"]
+symbol = "?SecondaryWrappedAngleDifference@@YGMMM@Z"
+target_address = 0x004195F0
+size = 101
+linkages = [
+  { offset = 16, type = "DIR32", symbol = "__real@400921fb60000000", target = 0x497E80 },
+  { offset = 35, type = "DIR32", symbol = "__real@401921fb60000000", target = 0x497E78 },
+  { offset = 69, type = "DIR32", symbol = "__real@401921fb60000000", target = 0x497E78 },
+]

@@ -614,6 +614,7 @@ SecondaryStackAbsoluteAddress
 SecondaryStackRelativeAddress
 SecondaryStackTop
 SecondaryVelocityLength
+SecondaryWrappedAngleDifference
 SeekPbgLowLevelFile
 SeekPbgMemoryFile
 SeekStageScriptMarker

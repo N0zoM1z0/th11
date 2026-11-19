@@ -88,11 +88,19 @@ cold replay reports zero differences. All twelve exact PairAccess
 units also pass a targeted source-family cold replay. The historical
 ASM-dependent proof stays withdrawn; class/TU origin is not asserted.
 
-The complete101-byte4195F0 owner is also independently reviewed: two stack floats,
-double pi/tau comparisons, three rounded RET8 paths and the actual418D20 caller.
-It stays source-open and origin-indeterminate. The adjacent419660/31 is the
-already-reviewed SecondaryUnaryMathB cosine wrapper calling486BA0; its role is
-not inferred from proximity to vector helpers.
+The complete 101-byte 0x4195F0 owner is independently reviewed: two stack
+floats, double pi/tau comparisons, three rounded RET8 paths and the actual
+0x418D20 caller. Its original machine-code body is **byte-for-byte identical**
+to the separately exact `SecondaryProjectileAngleDifference` at 0x435480.
+A distinct natural C++ `SecondaryWrappedAngleDifference` body now lives in
+`src/SecondaryWrappedAngle.cpp`; the private pinned VC9 RTM `/GL` compiler
+reproduces the complete **101 bytes / 34 instructions** in its own PDB owner.
+Selected cold linked-PE replay checks all three native DIR32 constant fields
+(pi at +0x10 -> 0x497E80, tau at +0x23/+0x45 -> 0x497E78) and reports zero
+differences. Its original nominal class/TU identity remains unknown, and
+this does not claim that two identical native bodies shared a single original
+source file. The adjacent 0x419660/31 owner is the independently reviewed
+SecondaryUnaryMathB cosine wrapper calling 0x486BA0.
 
 ## Math source and real VC9 overloads
 
