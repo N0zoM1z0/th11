@@ -458,7 +458,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x004284F0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00428610,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x004287A0,unknown,SecondaryAngleMath,indeterminate,unknown,secondary-4287a0-origin-2026-11-19
-0x00428850,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00428850,unknown,SecondaryViewport,indeterminate,unknown,secondary-428850-viewport-origin-2026-11-19
 0x004288B0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00428920,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00428980,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

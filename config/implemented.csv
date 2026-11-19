@@ -617,6 +617,7 @@ SecondaryStackRelativeAddress
 SecondaryStackTop
 SecondaryUnaryMathB
 SecondaryVelocityLength
+SecondaryViewportPoint428850::IsOutside
 SecondaryWrappedAngleDifference
 SeekPbgLowLevelFile
 SeekPbgMemoryFile

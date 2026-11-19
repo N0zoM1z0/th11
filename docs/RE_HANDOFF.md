@@ -16,12 +16,27 @@ upstream relationship before assuming they have been pushed. The source
 worktree is clean after preserving and withdrawing the unhelpful spell-view
 method experiment described below.
 
-scripts/progress.py currently reports 2,175 tracked candidates, 1,608
-reviewed boundaries, 815 source mappings, and 482 canonical exact functions
-covering 52,662 code bytes. These are local ledger totals. The Factory
+scripts/progress.py currently reports 2,175 tracked candidates, 1,610
+reviewed boundaries, 818 source mappings, and 484 canonical exact functions
+covering 52,856 code bytes. These are local ledger totals. The Factory
 inventory reports 2,175 subjects, zero imported Oracle results, and an
 inventory-import-only warning; do not present local exact counts as
 Factory-accepted results or whole-game closure.
+
+## 2026-11-19 selected newly exact geometry/math owners
+
+- `SecondaryAngleDifference4287A0` (0x4287A0, 101 bytes): complete
+  independent linked `/GL` C++ owner, 34 instructions, three pi/tau DIR32
+  fields, zero strict cold-replay differences and a real caller at 0x428716.
+- `SecondaryViewportPoint428850::IsOutside` (0x428850, 93 bytes): complete
+  independent native thiscall C++ body, five real callsites, four ordered
+  rectangle tests and four float-constant DIR32 fields. Strict VC9 normal-COFF
+  cold replay has zero byte differences. This does not prove the native TU
+  was a normal COFF unit or verify its original nominal C++ class.
+
+Both use natural C++ without ASM/padding. Their target boundaries, incoming
+references and following padding are reviewed; only these two exact units
+were cold-replayed. See SECONDARY_PAIR_MATH.md for evidence and limitations.
 
 ## Current large-function frontiers
 

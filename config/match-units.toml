@@ -10690,3 +10690,22 @@ linkages = [
   { offset = 35, type = "DIR32", symbol = "__real@401921fb60000000", target = 0x00497E78 },
   { offset = 69, type = "DIR32", symbol = "__real@401921fb60000000", target = 0x00497E78 },
 ]
+
+# Original separate 93-byte viewport predicate at 0x428850. A physical
+# C++ member model recovers ECX this + two stacked float arguments.
+[units.secondary-viewport-428850]
+artifact_kind = "coff"
+source = "src/SecondaryViewport428850.cpp"
+inputs = ["src/SecondaryViewport428850.hpp", "src/Camera.hpp"]
+object = "build/match/SecondaryViewport428850.obj"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc"]
+functions = ["SecondaryViewportPoint428850::IsOutside"]
+symbol = "?IsOutside@SecondaryViewportPoint428850@@QBEHMM@Z"
+target_address = 0x00428850
+size = 93
+relocations = [
+  { offset = 14, type = "DIR32", symbol = "__real@c068000000000000", target = 0x00497EC8 },
+  { offset = 29, type = "DIR32", symbol = "__real@4068000000000000", target = 0x00497EA0 },
+  { offset = 51, type = "DIR32", symbol = "__real@0000000000000000", target = 0x00497EC0 },
+  { offset = 67, type = "DIR32", symbol = "__real@407c000000000000", target = 0x00497EB8 },
+]

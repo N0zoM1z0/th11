@@ -149,6 +149,20 @@ independently binds the pi constant at +0x10 and tau at +0x23/+0x45:
 **zero differences**. The target's nominal original class/TU remains unknown;
 no ASM, executable patching or artificial byte filler was used.
 
+## Independent 0x428850 viewport predicate (2026-11-19)
+
+Direct Ghidra and complete PE review identify a distinct 93-byte
+`0x428850..0x4288AC` function. Five real callsites occur in three primary
+owners; there are two `RET 8` exits and no foreign interior references.
+Its four ordered, NaN-preserving screen tests use the same native text as
+the earlier exact 0x419920 and 0x435560 predicates, but it is independently
+compiled as a natural C++ member on a three-float physical point view.
+Selected pinned VC9 normal-COFF cold replay proves the **full 93/93-byte
+owner**, including independently resolved -192/192/0/448 float constants
+at offsets +0xE/+0x1D/+0x33/+0x43, with **zero differences**. This
+establishes source codegen for this owner, not the original C++ class name,
+translation-unit partition or `/GL` ownership. No ASM or padding is used.
+
 ## Math source and real VC9 overloads
 
 Complete source is added for both math dependencies:
