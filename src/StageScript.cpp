@@ -66,7 +66,7 @@ static __forceinline float OscillatorSine(float time, double inversePeriod)
 {
     const double pi = static_cast<double>(3.1415927410125732f);
     double angle = time * pi;
-    float phase = static_cast<float>((angle + angle) * inversePeriod - pi);
+    float phase = static_cast<float>((angle * 2.0) * inversePeriod - pi);
     return static_cast<float>(sin(static_cast<double>(phase)));
 }
 
@@ -286,7 +286,7 @@ ApplyTweens:
     {
         const double pi = static_cast<double>(3.1415927410125732f);
         double angle = state.oscillatorTime.fraction * pi;
-        float phase = static_cast<float>((angle + angle) * (1.0 / 2048.0) - pi);
+        float phase = static_cast<float>((angle * 2.0) * (1.0 / 2048.0) - pi);
         value = static_cast<float>(sin(static_cast<double>(phase)));
         self->camera.view.eyeOffset.x = static_cast<float>(value * 70.0);
         float twice = NormalizeAngle(static_cast<float>(phase + phase));

@@ -253,6 +253,17 @@ fractional, infinite and NaN inputs were checked against the actual bodies.
 
 ## Code generation and proofs
 
+A second 2026-11-19 C++ math revision now uses `angle * 2.0` instead
+of `angle + angle` for both the shared `OscillatorSine` path (modes 1/6/7)
+and the independent mode-5 sine phase. This has the same double angle
+mathematics but guides VC9 `/GL` to a shorter, more native x87 stack sequence.
+The complete ExecuteStageScript PDB contribution is **2,712 bytes** versus
+**2,736** native, with **577/610** normalized native instruction keys
+aligned (610 candidate instructions). The previous 2,720-byte producer
+aligned 573/610. The diff is recorded at
+`.analysis/stage-script-double-angle-combined-20261119.diff`; the routine
+remains nonexact.
+
 The 2026-11-19 focused update duplicates the existing natural C++
 `ScriptTweenFrame` call at the end of opcode 10 and opcode 11 instead of
 sharing the opcode 3/5 timer blocks through backward `goto` edges. Although
@@ -271,10 +282,10 @@ all zero differences. The two unusually wide support-context consumers were
 not rerun in this focused pass.
 
 The current execute-stage-script-frontier diagnostic build contributes
-2,720 bytes for ExecuteStageScript against the 2,736-byte native owner.
-Normalized instruction-key alignment finds 573 of 610 native code
-instructions (614 candidate instructions), up from 551/610 in the prior
-2,736-byte candidate. The oscillator postpass now advances and wraps its timer
+2,712 bytes for ExecuteStageScript against the 2,736-byte native owner.
+Normalized instruction-key alignment finds 577 of 610 native code
+instructions (610 candidate instructions), up from 573/610 in the prior
+2,720-byte candidate. The oscillator postpass now advances and wraps its timer
 inside each native mode case, using literal periods 512, 2048, 1024 and 512
 rather than a shared period local and common tail. This recovers the native
 per-case return/control-flow shape. It remains diagnostic codegen similarity,
