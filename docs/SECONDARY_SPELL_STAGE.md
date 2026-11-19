@@ -345,18 +345,20 @@ Its natural C++ adapter compiles to `push edi; mov edi,ecx; call; pop edi; ret`.
 The native class/TU attribution is still unknown, and this exact callback
 result does not prove the 624-byte updater exact. The updater candidate
 has the exact native extent: **624 bytes versus 624 bytes**. A normalized
-instruction comparison now aligns **160 of 167 native instructions** against
-165 candidate instructions (96.39%). This improves on 143/167 (85.37%) when
+instruction comparison now aligns **161 of 167 native instructions** against
+165 candidate instructions (96.99%). This improves on 143/167 (85.37%) when
 the score-rounding denominator is represented by a real local
 `const volatile int roundingBase = 10`. VC9 then emits the native signed
 `cdq; idiv esi; sub ecx, edx` computation instead of a strength-reduced
 constant-multiply remainder. The candidate still performs a separate local
 store/load of the divisor, unlike native's one `mov esi,10`, so these are
-**not exact updater bytes**. The remaining differences include the event-3
-follower branch's register and jump layout and the Z interpolation's x87
+**not exact updater bytes**. Swapping the two natural local
+declarations in the event-3 follower loop makes VC9 load the follower cursor
+into ESI before setting EBX=3, as native does. The remaining differences include
+event-3 loop-target alignment / jump layout and the Z interpolation's x87
 load/add order. This is normal C++ with a stable divisor and no assembly,
-byte patches or padding. The focused 2026-11-19 complete-owner diff is
-`.analysis/spell-update-signed-divisor-20261119.diff`. Modeling timer advance
+byte patches or padding. The focused 2026-11-19 complete-owner diff after both changes is
+`.analysis/spell-update-follower-declaration-20261119.diff`. Modeling timer advance
 as `StageTimerView::Advance()` keeps the original update callback saving EDI,
 the updater's EDI stage receiver and ESI timer setup.
 

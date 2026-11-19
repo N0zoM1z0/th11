@@ -80,8 +80,8 @@ __declspec(noinline) void SecondarySpellPositionView::PositionAnimation(Animatio
 
 static __forceinline void SetSpellFollowerEventThree(SecondarySpellStageView *self)
 {
-    register int remaining = 3;
     unsigned int *follower = self->followerIds;
+    int remaining = 3;
     do
     {
         AnimationVmId followerId(*follower);
