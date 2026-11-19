@@ -167,7 +167,7 @@ CameraVector __stdcall StepStageVectorTween(StageVectorTween *self)
         float d = static_cast<float>((progress - 1.0) * progress * progress);
         return AddTweenVector(AddTweenVector(AddTweenVector(
             ScaleTweenVector(self->initial, a), ScaleTweenVectorScalarFirst(b, self->target)),
-            ScaleTweenVector(self->control1, c)), ScaleTweenVectorScalarFirst(d, self->control2));
+            ScaleTweenVectorScalarFirst(c, self->control1)), ScaleTweenVectorScalarFirst(d, self->control2));
     }
     float factor = StageVectorTweenFactor(self);
     CameraVector difference = SubtractTweenVector(self->target, self->initial);

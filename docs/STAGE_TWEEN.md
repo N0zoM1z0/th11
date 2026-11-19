@@ -329,6 +329,21 @@ four instruction mismatches are the ordinary interpolation fallback's Y/Z
 `fld`/`fadd` operand order; exact replay of StepStageVectorTween remains open.
 No ASM, padding, or truncated body is used.
 
+
+2026-11-19 follow-up: changing the Hermite control1 scale expression from
+`ScaleTweenVector(control1, c)` to the algebraically equivalent natural C++
+`ScaleTweenVectorScalarFirst(c, control1)` recovers the source/target
+`fld`/`fmulp`/`fxch` order for that entire component triplet. The focused
+VC9 `/GL` complete owner remains **883 bytes / 280 instructions**, and
+normalized alignment increases from **274/280 to 278/280** in the current
+build. The only remaining normalized mismatch is the ordinary fallback's Y
+addition: native loads the scaled local then adds the initial Y from the
+object, while the current compiler output loads the initial Y and adds the
+scaled local. Both produce the same arithmetic value except for potential
+x87 edge cases, but the owner is **not exact** until all bytes agree. The
+focused comparison is `.analysis/compare-stage-vector-tween-20261118.py`;
+no register shims, ASM or padding were added.
+
 AdvanceStageTimer is exact in the isolated advance-stage-timer linked-PE
 unit. The body preserves the private ESI input, ECX save/restore, previous-frame
 copy, strict near-one scale comparisons, x87 tick branch and _ftol2_sse
