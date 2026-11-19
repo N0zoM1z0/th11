@@ -109,7 +109,6 @@ int __stdcall ExecuteStageScript(StageResourceView *self)
             state.positionTween.initial = self->camera.view.position;
             state.positionTween.target = target;
         }
-PositionTweenFrame:
             ScriptTweenFrame(state.positionTween.time, -1);
             break;
         case 4:
@@ -123,7 +122,6 @@ PositionTweenFrame:
             state.targetTween.initial = self->camera.view.targetOffset;
             state.targetTween.target = target;
         }
-TargetTweenFrame:
             ScriptTweenFrame(state.targetTween.time, -1);
             break;
         case 6:
@@ -178,7 +176,8 @@ TargetTweenFrame:
             state.positionTween.target = bezierB;
             state.positionTween.control2 = control2;
             state.positionTween.mode = 8;
-            goto PositionTweenFrame;
+            ScriptTweenFrame(state.positionTween.time, -1);
+            break;
         }
         case 11:
         {
@@ -191,7 +190,8 @@ TargetTweenFrame:
             state.targetTween.target = bezierB;
             state.targetTween.control2 = control2;
             state.targetTween.mode = 8;
-            goto TargetTweenFrame;
+            ScriptTweenFrame(state.targetTween.time, -1);
+            break;
         }
         case 12:
             state.oscillator = static_cast<unsigned char>(words[0]);

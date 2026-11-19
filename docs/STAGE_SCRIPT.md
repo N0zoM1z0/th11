@@ -253,10 +253,27 @@ fractional, infinite and NaN inputs were checked against the actual bodies.
 
 ## Code generation and proofs
 
+The 2026-11-19 focused update duplicates the existing natural C++
+`ScriptTweenFrame` call at the end of opcode 10 and opcode 11 instead of
+sharing the opcode 3/5 timer blocks through backward `goto` edges. Although
+this has identical control/data behavior, VC9 `/GL` now places the two timer
+initializers at the native opcode 3/5 positions and follows the native
+jump-table case layout. Normalized complete-Boss instruction alignment rises
+from **551/610 to 573/610**. The PDB contribution remains **2,720 bytes**
+versus the original **2,736 bytes**; this is diagnostic improvement, not
+byte-exact restoration. The working comparison is
+`.analysis/compare-stage-script-frontier-20261118.py`. The changed source
+adds no assembly or artificial padding. The affected StageTween-family
+producer was rebuilt for a strict `pack-stage-fog` cold replay (zero bytes
+and fields differ); the same current PE/MAP/PDB and receipt were checked for
+`set-stage-timer`, both tween factors, and the three fog operators, also
+all zero differences. The two unusually wide support-context consumers were
+not rerun in this focused pass.
+
 The current execute-stage-script-frontier diagnostic build contributes
 2,720 bytes for ExecuteStageScript against the 2,736-byte native owner.
-Normalized instruction-key alignment finds 551 of 610 native code
-instructions (614 candidate instructions), up from 537/610 in the prior
+Normalized instruction-key alignment finds 573 of 610 native code
+instructions (614 candidate instructions), up from 551/610 in the prior
 2,736-byte candidate. The oscillator postpass now advances and wraps its timer
 inside each native mode case, using literal periods 512, 2048, 1024 and 512
 rather than a shared period local and common tail. This recovers the native
