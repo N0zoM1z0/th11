@@ -7,7 +7,7 @@ without embedded tables or external interior references.
 
 | Function | Address | Target bytes | Selected candidate bytes | State |
 | --- | --- | ---: | ---: | --- |
-| StepStageVectorTween | 00405240 | 883 | 883 | Non-exact (278/280 aligned; Z fallback order restored, Y order remains) |
+| StepStageVectorTween | 00405240 | 883 | 883 | Exact linked unit (four reviewed fields; zero differences) |
 | StepStageFogTween | 004055D0 | 737 | 794 (StageTween family); 737 (wide proof) | Exact only in the separate wide secondary link (step-stage-fog-tween) |
 | StageVectorTweenFactor | 00405960 | 39 | 39 | Exact linked unit |
 | StageFogTweenFactor | 00405990 | 45 | 45 | Exact linked unit |
@@ -330,19 +330,22 @@ four instruction mismatches are the ordinary interpolation fallback's Y/Z
 No ASM, padding, or truncated body is used.
 
 
-2026-11-19 follow-up: changing the Hermite control1 scale expression from
-`ScaleTweenVector(control1, c)` to the algebraically equivalent natural C++
-`ScaleTweenVectorScalarFirst(c, control1)` recovers the source/target
-`fld`/`fmulp`/`fxch` order for that entire component triplet. The focused
-VC9 `/GL` complete owner remains **883 bytes / 280 instructions**, and
-normalized alignment increases from **274/280 to 278/280** in the current
-build. The only remaining normalized mismatch is the ordinary fallback's Y
-addition: native loads the scaled local then adds the initial Y from the
-object, while the current compiler output loads the initial Y and adds the
-scaled local. Both produce the same arithmetic value except for potential
-x87 edge cases, but the owner is **not exact** until all bytes agree. The
-focused comparison is `.analysis/compare-stage-vector-tween-20261118.py`;
-no register shims, ASM or padding were added.
+2026-11-19 final follow-up: after the Hermite control1 scale-order correction,
+mode 17's Y accumulation was the remaining operand-order difference. Writing
+`previousY + control.y` through a volatile reference (rather than allowing
+VC9 to commute it to `control.y + previous.y`) restores the native x87 order.
+The independent StageTween-family linked owner now has an exact 883-byte PDB
+contribution, all four reviewed DIR32/REL32 fields match, and the complete
+byte replay reports **zero differences**. The canonical unit is
+`step-stage-vector-tween`; its focused strict cold replay is:
+
+```bash
+scripts/repo-python scripts/replay-exact-units.py --unit step-stage-vector-tween
+```
+
+No register shims, ASM or padding were added. The separate StageScript-primary
+context remains a distinct LTCG producer and must not be conflated with this
+exact StageTween-family proof.
 
 AdvanceStageTimer is exact in the isolated advance-stage-timer linked-PE
 unit. The body preserves the private ESI input, ECX save/restore, previous-frame

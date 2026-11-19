@@ -9362,7 +9362,6 @@ linkages = []
 # Diagnostic frontier for the large stage-vector tween owner. The context is
 # shared with the exact stage-tween leaves; no exact claim is made here.
 [units.step-stage-vector-tween]
-frontier = true
 artifact_kind = "linked-pe"
 source = "src/StageTween.cpp"
 inputs = ["src/StageTween.hpp", "src/StageScript.hpp"]
@@ -9379,7 +9378,7 @@ linkages = [
   { offset = 23, type = "REL32", symbol = "?AdvanceStageTimer@@YGHPAUStageTimerView@@@Z", target = 0x459270 },
   { offset = 74, type = "DIR32", symbol = "?g_AnimationTimeScale@@3MA", target = 0x4A7948 },
   { offset = 456, type = "DIR32", symbol = "__real@4008000000000000", target = 0x498168 },
-  { offset = 755, type = "REL32", symbol = "?StageVectorTweenFactor@@YGMPAUStageVectorTween@@@Z", target = 0x405960 },
+  { offset = 751, type = "REL32", symbol = "?StageVectorTweenFactor@@YGMPAUStageVectorTween@@@Z", target = 0x405960 },
 ]
 
 # Exact 7-byte ECX-to-EAX adapter into the private-EAX stage updater.
