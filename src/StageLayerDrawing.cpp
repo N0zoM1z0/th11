@@ -85,7 +85,7 @@ int __stdcall DrawStageLayer(StageResourceView *stage, int layer)
                 command->vmIndex * static_cast<int>(sizeof(AnimationVmView)));
             if (command->type == 0)
             {
-                unsigned int vmFlags = vm->flags.value;
+                register unsigned int vmFlags = vm->flags.value;
                 if ((vmFlags & 0x03c00000) >= 0x01000000)
                 {
                     float *position = reinterpret_cast<float *>(&vm->persistent3e8);
@@ -105,14 +105,15 @@ int __stdcall DrawStageLayer(StageResourceView *stage, int layer)
                     if (command->scaleY != 0.0f)
                     {
                         const float ratio = command->scaleY / sprite->height;
-                        vm->flags.value |= 8;
+                        vmFlags |= 8;
+                        vm->flags.value = vmFlags;
                         vm->scaleY = ratio;
                     }
                 }
 
                 // The native splits enable and disable into separate gates,
                 // each of which samples the current runtime fog state.
-                if ((vm->flags.value & 0x03c00000) == 0x02000000)
+                if ((vmFlags & 0x03c00000) == 0x02000000)
                 {
                     if (FrameRuntime().fogEnabled != 1)
                     {
@@ -132,7 +133,7 @@ int __stdcall DrawStageLayer(StageResourceView *stage, int layer)
                 // The native extracts bit 11 with a full DWORD shift/mask,
                 // keeping the result integer-valued until the Z state gates.
                 // The native path extracts bit 11 with a full-width SHR/AND.
-                const unsigned int disableZ = (vm->flags.value >> 11) & 1u;
+                const unsigned int disableZ = (vmFlags >> 11) & 1u;
                 if (disableZ && zWritesEnabled)
                 {
                     SetLayerRenderState(D3DRS_ZWRITEENABLE, FALSE);

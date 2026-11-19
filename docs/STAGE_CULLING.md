@@ -7,7 +7,7 @@ frontier results are:
 | Native owner | Native size | Candidate PDB contribution | Aligned native instructions | State |
 | --- | ---: | ---: | ---: | --- |
 | CullStageObject (0x403950) | 1,643 B | 1,648 B | 361/504 | Nonexact |
-| DrawStageLayer (0x404190) | 727 B | 744 B | 112/191 | Nonexact |
+| DrawStageLayer (0x404190) | 727 B | 727 B | 116/191 | Nonexact |
 
 These are diagnostic frontiers, not strict replay results. The original
 translation-unit ownership and remaining byte/relocation differences are
@@ -72,11 +72,14 @@ Only primitive type zero has rendering side effects. Its offsets are combined
 with the record offset and stored at VM +0x3E8/+0x3EC/+0x3F0. Optional
 nonzero X/Y dimensions set scale ratios and VM flag 8. The native loads
 each command scale and sprite dimension, performs the floating divide, then
-publishes flag 8 before storing the quotient. The source computes each ratio
-before the flag update so VC9 retains the division-before-flag side-effect
-order. The focused candidate is now 724 bytes (down from 744); instruction
-alignment remains 112/191, and the owner is still nonexact. VM mode bits
-0x03C00000 select fog;
+publishes flag 8 before storing the quotient. The source keeps `vmFlags` live in a register across both optional scale
+updates, mirrors the resulting flag value back to the VM, and reuses that
+local for the subsequent fog and Z-mode tests. This produces a 727-byte
+candidate (down from 744) and improves instruction alignment from 112/191 to
+116/191. The remaining x87 mismatch is explicit: VC9 schedules the X flag OR
+before FDIV and spills/reloads the quotient, whereas native code divides,
+updates its register-held flags, stores the flags, then writes the quotient
+directly. The owner remains nonexact. VM mode bits 0x03C00000 select fog;
 bit 0x800 controls Z writing. State changes flush the renderer before D3D9
 state updates. Drawing calls the maintained DrawAnimationVmByMode owner.
 Accepted objects and drawn primitives update their respective stage
@@ -100,18 +103,19 @@ instruction-alignment counts are diagnostics and are not additive.
 | Strict positive depth plus asymmetric X/Y extrema branches | 1,648 B / 328 of 504 aligned | Matches 0 < z <= 1 and native unordered-coordinate updates to minima |
 | Reverse the equivalent Y extrema comparisons (`point.y > min/max`) | 1,648 B / 352 of 504 aligned | Same ordered and unordered behavior, with a better VC9 x87 branch schedule |
 | Reverse the equivalent X extrema comparisons (`point.x >= min`, `point.x > max`) | 1,648 B / 361 of 504 aligned | Preserves the asymmetric X predicates while improving the same x87 branch schedule |
+| Keep `vmFlags` live across X/Y scale updates and fog/Z mode tests | 727 B / 116 of 191 aligned | Restores the native owner extent and register-held flag dataflow; x87 divide/flag scheduling remains open |
 
 The current indexed loop visits projected[group * 6 + 0..5] for two groups.
 It preserves all twelve samples and their order. Earlier pointer-cursor and
 fully unrolled variants were worse and are not selected.
 
-For DrawStageLayer, three independent source details improved the focused
-owner: reloading FrameRuntime.activeCamera after perspective application,
-copying the layer offset as three typed float members (recovering x87
-FLD/FSTP), and retaining the Z-write bit extraction as a full-width unsigned
-integer rather than bool. The current owner is 744 B with 112/191 aligned
-native instructions after restoring the three-argument fastcall boundary and
-the original scale-operand / flag / divide ordering.
+For DrawStageLayer, the current focused owner is 727 B with 116/191 aligned
+native instructions. In addition to reloading FrameRuntime.activeCamera,
+copying the layer offset as three typed float members, and retaining the
+full-width Z-write bit extraction, the source now keeps `vmFlags` live across
+both scale branches and the later fog/Z mode tests. This recovers the native
+owner extent and four additional instruction keys. The X/Y scale x87 schedule
+and the stage/culling ABI remain open.
 
 ## Focused build and comparison
 
