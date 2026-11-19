@@ -561,6 +561,7 @@ SecondaryActorDestructor
 SecondaryActorReferenceStatus
 SecondaryActorStateConstructor
 SecondaryActorViewportPoint::IsOutside
+SecondaryAngleDifference40B830
 SecondaryDamageAngleDifference
 SecondaryDamageTimerElapsed
 SecondaryDebugHudOwned::SecondaryDebugHudOwned

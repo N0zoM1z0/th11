@@ -10634,3 +10634,39 @@ linkages = [
   { offset = 35, type = "DIR32", symbol = "__real@401921fb60000000", target = 0x497E78 },
   { offset = 69, type = "DIR32", symbol = "__real@401921fb60000000", target = 0x497E78 },
 ]
+
+# Separate reviewed 31-byte x87 cosine wrapper, original target 0x419660.
+[units.secondary-unary-cosine]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/SecondaryUnaryCosine.cpp"
+inputs = []
+support_sources = ["probes/secondary-unary-cosine-context.cpp"]
+output_dir = "build/match-linked/SecondaryUnaryCosine"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryUnaryCosineProbe@4"
+functions = ["SecondaryUnaryMathB"]
+symbol = "?SecondaryUnaryMathB@@YGMM@Z"
+target_address = 0x00419660
+size = 31
+linkages = [
+  { offset = 13, type = "REL32", symbol = "__CIcos", target = 0x00486BA0 },
+]
+# Complete 101-byte native angular difference at 0x40B830, separately reviewed.
+[units.secondary-angle-difference-40b830]
+artifact_kind = "linked-pe"
+source = "src/SecondaryAngleDifference40B830.cpp"
+inputs = ["src/SecondaryAngleDifference40B830.hpp"]
+support_sources = ["probes/secondary-angle-40b830-context.cpp"]
+output_dir = "build/match-linked/SecondaryAngle40B830"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryAngle40B830Probe@8"
+functions = ["SecondaryAngleDifference40B830"]
+symbol = "?SecondaryAngleDifference40B830@@YGMMM@Z"
+target_address = 0x0040B830
+size = 101
+linkages = [
+  { offset = 16, type = "DIR32", symbol = "__real@400921fb60000000", target = 0x497E80 },
+  { offset = 35, type = "DIR32", symbol = "__real@401921fb60000000", target = 0x497E78 },
+  { offset = 69, type = "DIR32", symbol = "__real@401921fb60000000", target = 0x497E78 },
+]

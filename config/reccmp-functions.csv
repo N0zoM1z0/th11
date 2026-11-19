@@ -562,6 +562,7 @@ SecondaryActorDestructor,0x00411480,function
 SecondaryActorReferenceStatus,0x00410690,function
 SecondaryActorStateConstructor,0x00410440,function
 SecondaryActorViewportPoint::IsOutside,0x00419920,function
+SecondaryAngleDifference40B830,0x0040B830,function
 SecondaryDamageAngleDifference,0x00433BE0,function
 SecondaryDamageTimerElapsed,0x00433D60,function
 SecondaryDebugHudOwned::SecondaryDebugHudOwned,0x0041A2F0,function

@@ -102,6 +102,41 @@ this does not claim that two identical native bodies shared a single original
 source file. The adjacent 0x419660/31 owner is the independently reviewed
 SecondaryUnaryMathB cosine wrapper calling 0x486BA0.
 
+## Additional independently exact angle owner (0x40B830)
+
+The separately inventoried 0x40B830..0x40B894 helper was reviewed directly
+in the original TH11 Ghidra program on 2026-11-19. The contiguous 101-byte
+body has all 34 instructions, three `RET 8` exits, exactly one observed call
+at 0x40ABF8 and **no external references into the interior**; the following
+alignment bytes are not claimed. Its complete native bytes agree with the
+independently proved 0x4195F0 and 0x435480 angle helpers.
+
+The maintained natural C++ `SecondaryAngleDifference40B830` is a separate
+source owner, using the same float-rounded pi/tau arithmetic, not an ASM
+alias or jump shim. The selected pinned VC9 `/GL` cold linked-PE comparison
+matches **101/101 bytes** with all three reviewed DIR32 constant bindings
+(`+0x10` pi, `+0x23` and `+0x45` tau) and zero differences. Exactness proves
+this full code contribution, not the unknown original class/TU ownership.
+Evidence: `.analysis/duplicate-angle-and-viewport-review-20261119.txt`
+and `.analysis/secondary-angle-40b830-strict-20261119.log`.
+
+## Independent 0x40B830 wrapped-angle owner (2026-11-19)
+
+The complete 101-byte function at 0x40B830 is byte-identical to the
+separately reviewed 0x4195F0 and 0x435480 signed angle-difference owners,
+but has its own real call at 0x40ABF8. A distinct natural C++ definition
+`SecondaryAngleDifference40B830` reproduces all three float-rounded x87
+return paths without ASM or code padding. The pinned VC9 `/GL` local linked
+primary owner passed *strict cold replay*: 101/101 bytes, 34/34 original
+instructions, and three independently reviewed DIR32 fields for π (+0x10)
+and 2π (+0x23/+0x45) all resolve with zero byte differences.
+
+The adjacent unary cosine owner at 0x419660 has natural C++ source
+(`SecondaryUnaryCosine.cpp`); the current standalone `/GL` producer emits
+20 bytes against 31 native bytes because it lacks the native 8-byte-aligned
+frame and local spill shape. It remains a diagnostic frontier, not exact.
+The original translation-unit/nominal class owners are still unknown.
+
 ## Math source and real VC9 overloads
 
 Complete source is added for both math dependencies:

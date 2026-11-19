@@ -16,9 +16,9 @@ upstream relationship before assuming they have been pushed. The source
 worktree is clean after preserving and withdrawing the unhelpful spell-view
 method experiment described below.
 
-scripts/progress.py currently reports 2,175 tracked candidates, 1,607
-reviewed boundaries, 813 source mappings, and 480 canonical exact functions
-covering 52,530 code bytes. These are local ledger totals. The Factory
+scripts/progress.py currently reports 2,175 tracked candidates, 1,608
+reviewed boundaries, 815 source mappings, and 481 canonical exact functions
+covering 52,631 code bytes. These are local ledger totals. The Factory
 inventory reports 2,175 subjects, zero imported Oracle results, and an
 inventory-import-only warning; do not present local exact counts as
 Factory-accepted results or whole-game closure.
@@ -37,6 +37,18 @@ Factory-accepted results or whole-game closure.
 Instruction alignment is a navigation aid, not exactness. The two stage
 rendering owners have complete maintained C++ bodies and useful target
 control-flow notes in STAGE_CULLING.md.
+
+A second independently reviewed native copy of the 101-byte wrapped-angle
+helper at 0x40B830 is now strict exact through natural C++ and its three
+pi/tau DIR32 fields. Its real caller is 0x40ABF8; see SECONDARY_PAIR_MATH.md.
+
+### Additional selected exact angle owner
+
+`SecondaryAngleDifference40B830` at 0x40B830 is now cold-replayed
+**101/101 bytes exact**, including all three π/2π DIR32 fields, with
+separate complete natural C++ and reviewed native caller. The 31-byte unary
+cosine wrapper at 0x419660 has new source but remains nonexact (20-byte
+candidate under the current linked context). See SECONDARY_PAIR_MATH.md.
 
 ### Selected exact replay-coordinate owner
 
