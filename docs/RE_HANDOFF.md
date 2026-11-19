@@ -62,10 +62,11 @@ contracts and evidence.
 
 | Function | Native owner | Current candidate | Current state |
 | --- | ---: | ---: | --- |
-| `ExecuteStageScript` (`0x404470`) | 2,736 B | 2,712 B; 577/610 native instruction keys aligned | Nonexact; oscillator case layout improved; EH/funclet and remaining codegen differences open |
+| `ExecuteStageScript` (`0x404470`) | 2,736 B | 2,696 B; 581/610 native instruction keys aligned | Nonexact; fog return-buffer adapter improved call-site layout; EH/funclet and remaining codegen differences open |
 | `CullStageObject` (`0x403950`) | 1,643 B | 1,648 B; 328/504 aligned | Nonexact; native EAX camera input and local/x87 scheduling remain open |
+| `InitializePrimaryStageScripts` (`0x405030`) | 249 B | 246 B in focused linked frontier | Nonexact; private-call ABI is recovered; three-byte extent and stack layout remain |
 | `DrawStageLayer` (`0x404190`) | 727 B | 744 B; 112/191 aligned | Nonexact; stage/culling ABI and register allocation remain open |
-| `StepStageVectorTween` (`0x405240`) | 883 B | 883 B; 278/280 aligned | Nonexact; the ordinary fallback Y addition still has the opposite x87 operand order |
+| `StepStageVectorTween` (`0x405240`) | 883 B | 883 B; 4 reviewed linked fields | Exact linked-PE owner; zero code-byte and relocation differences |
 | `InitializeSecondarySpellStage` (`0x40C650`) | 1,777 B | Diagnostic linked frontier | Nonexact; native caller uses EAX for the spell-name pointer plus two stack integers, while the candidate still uses three stack arguments |
 | `UpdateSecondarySpellStageState` (`0x40C0A0`) | 624 B | 624 B; 161/167 aligned | Nonexact; signed `idiv` and follower-cursor initialization order restored; divisor spill, event-3 branch layout and Z x87 order remain |
 | `InitializeSecondaryDebugHudAnimations` (`0x41A6D0`) | 1,619 B | 1,619 B; 385/402 aligned | Nonexact; renderer-tail publication order restored; return-buffer, stack reservation, zero-ID wrap and retained-animation scheduling remain |
@@ -78,19 +79,19 @@ See the corresponding subsystem documents for the full native observations.
 ## Recommended next work
 
 1. Continue `ExecuteStageScript` as the main Boss. Work from the current
-   2,712-byte / 577-of-610 frontier; keep EH/funclet ownership separate from
+   2,696-byte / 581-of-610 frontier; keep EH/funclet ownership separate from
    the public body and do not crop the owner to fit a comparison.
-2. Continue `CullStageObject`, then rebuild `DrawStageLayer` only when a shared
+2. Continue `InitializePrimaryStageScripts` (249-byte owner, 246-byte focused
+   linked candidate); the private call ABI is already recovered, so focus on
+   natural C++ lifetime/loop scheduling and the three-byte extent gap.
+3. Continue `CullStageObject`, then rebuild `DrawStageLayer` only when a shared
    culling/header change affects it. Preserve the native strict depth and
    unordered-coordinate behavior documented in [STAGE_CULLING](STAGE_CULLING.md).
-3. Continue the 1,777-byte spell-stage initializer through its real caller,
+4. Continue the 1,777-byte spell-stage initializer through its real caller,
    then the 624-byte updater. The callback leaves are already exact; do not
    transfer their exactness to the large updater.
-4. Continue the HUD initializer and debug-session destructor. The current
+5. Continue the HUD initializer and debug-session destructor. The current
    improvements are useful natural-C++ frontiers, not exact proofs.
-5. Revisit the final Y-component x87 order in `StepStageVectorTween` when a
-   concrete C++ dataflow change is available; repeated declaration/volatile
-   permutations have not improved it.
 
 ## Focused workflow
 

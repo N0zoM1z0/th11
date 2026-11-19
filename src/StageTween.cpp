@@ -184,6 +184,14 @@ CameraVector __stdcall StepStageVectorTween(StageVectorTween *self)
     return result;
 }
 
+// Expose the large aggregate result through caller-owned storage. The wrapper
+// keeps the x86 result-buffer pointer visible to the stage-script caller.
+__declspec(noinline) StageFogView *__stdcall StepStageFogTweenInto(StageFogTween *self, StageFogView *output)
+{
+    *output = StepStageFogTween(self);
+    return output;
+}
+
 StageFogView __stdcall StepStageFogTween(StageFogTween *self)
 {
     if (self->duration > 0)

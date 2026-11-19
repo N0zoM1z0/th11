@@ -6,7 +6,7 @@ section and reconciled its full extent, instruction flow, callers and tables.
 
 | Function | Full target owner | Source contribution | State |
 | --- | ---: | ---: | --- |
-| ExecuteStageScript,0x00404470 | 2,736 bytes through0x00404F1F | 2,712 bytes | Non-exact; 578/610 aligned instructions; EH/funclet ownership open |
+| ExecuteStageScript,0x00404470 | 2,736 bytes through0x00404F1F | 2,696 bytes | Non-exact; 581/610 aligned instructions; EH/funclet ownership open |
 | SeekStageScriptMarker,0x00404F20 | 113 bytes through0x00404F90 | 113 bytes | Exact normal-COFF, 2 relocations |
 | BeginSecondaryStageTransition,0x00405130 | 159 bytes through0x004051CE | 159 bytes | Exact normal-COFF, 6 relocations |
 | BeginPrimaryStageTransition,0x004051D0 | 103 bytes through0x00405236 | 103 bytes | Exact normal-COFF, 3 relocations |
@@ -253,9 +253,9 @@ fractional, infinite and NaN inputs were checked against the actual bodies.
 
 ## Current code-generation frontier
 
-The latest focused VC9 `/GL` build contributes **2,712 bytes** for the
-2,736-byte `ExecuteStageScript` owner, with **578/610** normalized native
-instruction keys aligned (610 candidate instructions). The owner remains
+The latest focused VC9 `/GL` build contributes **2,696 bytes** for the
+2,736-byte `ExecuteStageScript` owner, with **581/610** normalized native
+instruction keys aligned (607 candidate instructions). The owner remains
 nonexact; byte/relocation equality and EH/funclet ownership are open.
 
 Two 2026-11-19 natural-C++ changes produced the current result:
@@ -274,6 +274,15 @@ Two 2026-11-19 natural-C++ changes produced the current result:
   from 577/610 to **578/610** without changing the 2,712-byte contribution or
   introducing handwritten instructions. Remaining opcode-17 instruction
   scheduling and exception-handler ownership are still unresolved.
+- The fog-tween application now uses a small natural-C++
+  `StepStageFogTweenInto` adapter with an explicit caller-owned `StageFogView`
+  output and returned buffer pointer. This changes the call-site stack layout
+  and removes 16 bytes from the interpreter candidate; focused alignment
+  advances from 578/610 to **581/610** (2,696 bytes, 607 candidate
+  instructions). The underlying `StepStageFogTween` remains independently
+  exact at 737/737 bytes with all 16 reviewed relocation fields unchanged.
+  This adapter is a code-generation experiment, not a claim about the original
+  source-level API or ownership.
 
 The current comparison is
 `.analysis/stage-script-double-angle-combined-20261119.diff`. The changed

@@ -270,8 +270,9 @@ ApplyTweens:
         self->camera.view.position = StepStageVectorTween(&state.positionTween);
     if (state.fogTween.duration)
     {
-        StageFogView fog = StepStageFogTween(&state.fogTween);
-        CameraFog(self) = fog;
+        StageFogView fog;
+        StageFogView *result = StepStageFogTweenInto(&state.fogTween, &fog);
+        CameraFog(self) = *result;
     }
 
     float value;

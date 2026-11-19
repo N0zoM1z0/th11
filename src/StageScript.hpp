@@ -62,6 +62,7 @@ typedef char StageScriptMeshSize[(sizeof(StageScriptMesh) == 0x18) ? 1 : -1];
 
 CameraVector __stdcall StepStageVectorTween(StageVectorTween *self);
 StageFogView __stdcall StepStageFogTween(StageFogTween *self);
+StageFogView *__stdcall StepStageFogTweenInto(StageFogTween *self, StageFogView *output);
 void __fastcall SeekStageScriptMarker(void *unused, int marker);
 void __cdecl InitializePrimaryStageScripts();
 int __stdcall AdvanceStageTimer(StageTimerView *self);
