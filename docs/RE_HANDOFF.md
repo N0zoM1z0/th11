@@ -17,8 +17,8 @@ worktree is clean after preserving and withdrawing the unhelpful spell-view
 method experiment described below.
 
 scripts/progress.py currently reports 2,175 tracked candidates, 1,607
-reviewed boundaries, 813 source mappings, and 477 canonical exact functions
-covering 52,309 code bytes. These are local ledger totals. The Factory
+reviewed boundaries, 813 source mappings, and 478 canonical exact functions
+covering 52,319 code bytes. These are local ledger totals. The Factory
 inventory reports 2,175 subjects, zero imported Oracle results, and an
 inventory-import-only warning; do not present local exact counts as
 Factory-accepted results or whole-game closure.
@@ -48,9 +48,10 @@ control-flow notes in STAGE_CULLING.md.
 - SecondarySpellDrawCallback (0x40C640, 7 B) passed strict cold linked-PE
   replay, including its REL32 field:
   .analysis/secondary-spell-draw-callback-cold-20261118.log.
-- SecondarySpellUpdateCallback (0x40C630, 10 B) also has a zero-difference
-  linked comparison in the wide callback producer with its REL32 bound to
-  0x40C0A0; promote only after a dedicated strict cold receipt and ledger row.
+- SecondarySpellUpdateCallback (0x40C630, 10 B) is now canonical strict
+  linked exact in the wide callback producer: full 10 bytes and its sole REL32
+  at +04 to 0x40C0A0 match under selected cold replay. The updater itself
+  is nonexact; see `.analysis/secondary-spell-update-callback-strict-20261119.log`.
 - PackStageFog (0x405B70, 171 B), ResetAnimationVm (0x401FD0, 303 B),
   and ResetAndBindStageAnimationVm (0x405B10, 30 B) all passed targeted
   strict cold linked-PE replay in this session with zero byte/relocation

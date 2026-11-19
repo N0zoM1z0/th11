@@ -336,8 +336,14 @@ callback remains **7/7 bytes exact** in its dedicated real downstream LTCG
 producer, including its REL32 field to DrawSecondarySpellStage; its cold replay
 is recorded below.
 
-The update callback is **strict linked exact (10/10 bytes)** in the wide real
-LTCG producer, including its REL32 field to the updater. The updater candidate
+The update callback is **canonical strict linked exact (10/10 bytes)** in the
+wide real LTCG producer, including its sole REL32 field at +04 to the updater.
+The `secondary-spell-update-callback` selected cold replay validates the full
+primary PDB owner, current PE/MAP/PDB and build receipt, and exhaustively
+rebinds the original call target at 0x40C0A0 with **zero byte differences**.
+Its natural C++ adapter compiles to `push edi; mov edi,ecx; call; pop edi; ret`.
+The native class/TU attribution is still unknown, and this exact callback
+result does not prove the 624-byte updater exact. The updater candidate
 has the exact native extent: **624 bytes versus 624 bytes**. A normalized
 instruction comparison now aligns **160 of 167 native instructions** against
 165 candidate instructions (96.39%). This improves on 143/167 (85.37%) when

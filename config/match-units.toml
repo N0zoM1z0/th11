@@ -10067,11 +10067,9 @@ linkages = [
   { offset = 19, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x0045FD49 },
 ]
 
-# Nonexact diagnostic: putting the real 624-byte updater and 370-byte HUD
-# renderer into this VC9 /GL producer may recover the callbacks' private
-# whole-program register ABI without ASM or external shim stubs.
-[units.secondary-spell-callbacks-ltcg-frontier]
-frontier = true
+# Strict exact 10-byte update callback under the real 624-byte updater and
+# 370-byte HUD renderer whole-program VC9 /GL producer.
+[units.secondary-spell-update-callback]
 artifact_kind = "linked-pe"
 source = "src/SecondarySpellStageChains.cpp"
 inputs = ["src/SecondarySpellStageOwned.hpp", "src/StageResource.hpp", "src/SecondarySpellStageState.cpp",
