@@ -99,7 +99,8 @@ __forceinline AnimationVmId PublishHudAnimationInline(AnimationVmView *vm)
         tail->next = node;
         node->previous = tail;
     }
-    registry->tail = node;
+    AnimationVmNode * volatile *tailSlot = &registry->tail;
+    *tailSlot = node;
     ++registry->nextId;
     if (!registry->nextId)
         ++registry->nextId;
@@ -220,8 +221,10 @@ void InitializeSecondaryDebugHudAnimations()
         SignalHudAnimation(hud->effectVmId, 3);
     }
 
-    const int script = static_cast<int>(g_ReplayStageCharacter) + 0x3e;
-    hud->secondaryEffectVmId = SpawnHudRetainedAnimation(HudFrontFile(hud), script).value;
+    const int character = static_cast<int>(g_ReplayStageCharacter);
+    AnimationFileView *file = HudFrontFile(hud);
+    AnimationVmId secondaryId = SpawnHudRetainedAnimation(file, character + 0x3e);
+    hud->secondaryEffectVmId = secondaryId.value;
     SignalHudAnimation(hud->effectVmId, 3);
     hud->reset43fc = 0;
 }

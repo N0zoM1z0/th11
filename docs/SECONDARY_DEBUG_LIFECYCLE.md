@@ -481,13 +481,18 @@ natural VC9 `/GL` context emitted a 1,523-byte primary PDB contribution.
 Adding an independent **dynamic file/script/layer** consumer of the real
 `CreateAnimationVmId` and sourcing the HUD front file at its actual
 use sites (rather than hoisting it across the initializer) restores the
-full **1,619-byte primary-TU PDB contribution**. The compiler currently
-emits **403 instructions** against the native 402, with 85 decoded
-candidate address fields. The first stack reservation is 8 bytes rather
-than the native 12 and register scheduling, renderer ID publication and
-branches still differ. This is a complete, natural-source codegen frontier,
-**not strict exactness**; no ASM or padding is used.
-
+full **1,619-byte primary-TU PDB contribution**. The compiler currently emits **403 instructions** against the native 402,
+with 85 decoded candidate address fields. A subsequent natural-source
+refinement publishes the renderer-list tail through a local volatile pointer
+before advancing the next ID, restoring native store order and increasing
+normalized alignment to **385/402** (from 375/402) without changing the
+1,619-byte owner. The final retained-animation path also keeps the character,
+front-file and returned `AnimationVmId` as ordinary locals. The first stack
+reservation is still 8 bytes rather than native 12, and the initial return-
+buffer load, zero-ID overflow branch, retained-animation register schedule
+and branches differ. This is a complete natural-source codegen frontier,
+**not strict exactness**; no ASM or padding is used. Evidence:
+`.analysis/hud-init-best-natural-source-diff-20261119.txt`.
 
 ## Full HUD animation owner: dynamic file lifetime and generic VM creation
 
@@ -507,13 +512,14 @@ that exact same source helper with dynamic file/script/layer arguments,
 preventing /GL from specializing away the parameters. The original
 nine/four/two VM loops have natural do/while form, and the ASCII file
 is re-read inside its two-VM loop as observed in the original. The
-current complete public PDB contribution has **1,619 bytes and 403
-decoded instructions** versus original **1,619 and 402**. This is a
-substantial natural-source and scoped codegen improvement, but **not
-strict exact**; instruction ordering/branch layout and field replay
-remain open. The original's internal instruction alignment was never
-copied into source.
-
+The current complete public PDB contribution has **1,619 bytes and 403
+decoded instructions** versus original **1,619 and 402**, with **385/402
+normalized native instructions aligned**. A volatile pointer store is used
+only for the real renderer tail field to retain its native publication order;
+the source does not add a synthetic code island. The owner remains **nonexact**:
+initial return-buffer, stack reservation, zero-ID wrap and retained-animation
+register scheduling still differ. The original's internal instruction
+alignment was never copied into source.
 
 ## HUD visual initialization codegen refinement
 

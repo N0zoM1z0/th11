@@ -76,6 +76,9 @@ callee must retain separate strict proof.
 | InitializeSecondarySpellStage (0x40C650) | 1,777 B | Diagnostic frontier exists | Nonexact; see SECONDARY_SPELL_STAGE.md |
 | UpdateSecondarySpellStageState (0x40C0A0) | 624 B | 624 B in the wide callback producer | Nonexact; signed `idiv` score rounding restored; 161/167 native instructions aligned |
 
+| InitializeSecondaryDebugHudAnimations (0x41A6D0) | 1,619 B | 1,619 B / 403 instructions; 385/402 aligned | Nonexact; renderer tail publication order restored; return-buffer and retained-animation scheduling remain open |
+| SecondaryEclDebugOwner::~SecondaryEclDebugOwner (0x40D320) | 462 B | 462 B / 127 instructions; 126/127 aligned | Nonexact; real inline thread teardown; one compiler EH-state initializer differs |
+
 Instruction alignment is a navigation aid, not exactness. The two stage
 rendering owners have complete maintained C++ bodies and useful target
 control-flow notes in STAGE_CULLING.md.
