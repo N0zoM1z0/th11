@@ -6,7 +6,7 @@ frontier results are:
 
 | Native owner | Native size | Candidate PDB contribution | Aligned native instructions | State |
 | --- | ---: | ---: | ---: | --- |
-| CullStageObject (0x403950) | 1,643 B | 1,648 B | 352/504 | Nonexact |
+| CullStageObject (0x403950) | 1,643 B | 1,648 B | 361/504 | Nonexact |
 | DrawStageLayer (0x404190) | 727 B | 744 B | 112/191 | Nonexact |
 
 These are diagnostic frontiers, not strict replay results. The original
@@ -46,12 +46,14 @@ intersection test
 includes the four viewport edges: maximum X >= 32, minimum X <= 416,
 maximum Y >= 16, and minimum Y <= 464. Intersecting bounds accept the object.
 The four middle-plane samples are part of the native algorithm and must not
-be dropped. The Y extrema source now spells the two equivalent comparisons
-as `point.y > smallestY` and `point.y > largestY` rather than reversing the
-operands. Both forms have identical ordered and unordered behavior; the
-point-first spelling improves the focused VC9 `/GL` alignment from 328/504 to
-352/504 without changing the clipping algorithm. X retains its separately
-observed `minimum <= point` / `maximum < point` asymmetry.
+be dropped. The natural C++ source spells the equivalent extrema comparisons
+point-first on both axes: `point.x >= smallestX`, `point.x > largestX`,
+`point.y > smallestY`, and `point.y > largestY`. These preserve the native
+X `minimum <= point` / `maximum < point` and Y `minimum < point` /
+`maximum < point` ordered and unordered behavior, including writing NaN into
+the minimum when the first comparison is false. The point-first spelling
+improves focused VC9 `/GL` alignment from 328/504 to **361/504** without
+changing clipping or dropping samples.
 
 ## DrawStageLayer: native algorithm
 
@@ -96,6 +98,7 @@ instruction-alignment counts are diagnostics and are not additive.
 | Inclusive viewport-edge intersection tests with inclusive depth (superseded) | 1,644 B / 446 of 504 aligned | Four viewport edges are inclusive; the depth lower bound is not |
 | Strict positive depth plus asymmetric X/Y extrema branches | 1,648 B / 328 of 504 aligned | Matches 0 < z <= 1 and native unordered-coordinate updates to minima |
 | Reverse the equivalent Y extrema comparisons (`point.y > min/max`) | 1,648 B / 352 of 504 aligned | Same ordered and unordered behavior, with a better VC9 x87 branch schedule |
+| Reverse the equivalent X extrema comparisons (`point.x >= min`, `point.x > max`) | 1,648 B / 361 of 504 aligned | Preserves the asymmetric X predicates while improving the same x87 branch schedule |
 
 The current indexed loop visits projected[group * 6 + 0..5] for two groups.
 It preserves all twelve samples and their order. Earlier pointer-cursor and

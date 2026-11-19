@@ -63,7 +63,7 @@ contracts and evidence.
 | Function | Native owner | Current candidate | Current state |
 | --- | ---: | ---: | --- |
 | `ExecuteStageScript` (`0x404470`) | 2,736 B | 2,696 B; 581/610 native instruction keys aligned | Nonexact; fog return-buffer adapter improved call-site layout; EH/funclet and remaining codegen differences open |
-| `CullStageObject` (`0x403950`) | 1,643 B | 1,648 B; 352/504 aligned | Nonexact; equivalent point-first Y comparisons improve x87 branch scheduling; native EAX camera input and remaining local/x87 scheduling remain open |
+| `CullStageObject` (`0x403950`) | 1,643 B | 1,648 B; 361/504 aligned | Nonexact; equivalent point-first X/Y extrema comparisons improve x87 branch scheduling; native EAX camera input and remaining local/x87 scheduling remain open |
 | `InitializePrimaryStageScripts` (`0x405030`) | 249 B | 246 B in focused linked frontier | Nonexact; private-call ABI is recovered; three-byte extent and stack layout remain |
 | `DrawStageLayer` (`0x404190`) | 727 B | 744 B; 112/191 aligned | Nonexact; stage/culling ABI and register allocation remain open |
 | `StepStageVectorTween` (`0x405240`) | 883 B | 883 B; 4 reviewed linked fields | Exact linked-PE owner; zero code-byte and relocation differences |
