@@ -93,10 +93,10 @@ int __stdcall DrawStageLayer(StageResourceView *stage, int layer)
                     position[1] = static_cast<float>(command->offsetY + entry->offset.y);
                     position[2] = static_cast<float>(command->offsetZ + entry->offset.z);
 
-                    StageSpriteDimensions *sprite =
-                        reinterpret_cast<StageSpriteDimensions *>(vm->unknown3ac);
                     if (command->scaleX != 0.0f)
                     {
+                        StageSpriteDimensions *sprite =
+                            reinterpret_cast<StageSpriteDimensions *>(vm->unknown3ac);
                         const float ratio = command->scaleX / sprite->width;
                         vmFlags |= 8;
                         vm->flags.value = vmFlags;
@@ -104,6 +104,8 @@ int __stdcall DrawStageLayer(StageResourceView *stage, int layer)
                     }
                     if (command->scaleY != 0.0f)
                     {
+                        StageSpriteDimensions *sprite =
+                            reinterpret_cast<StageSpriteDimensions *>(vm->unknown3ac);
                         const float ratio = command->scaleY / sprite->height;
                         vmFlags |= 8;
                         vm->flags.value = vmFlags;
