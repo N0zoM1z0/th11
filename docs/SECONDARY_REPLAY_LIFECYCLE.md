@@ -1,7 +1,8 @@
 # Secondary replay stage lifecycle
 
 All functions below are plain C++ (rewritten 2026-11-14 from withdrawn
-`__asm` copies). None is exact yet; `config/functions.csv` notes hold the
+`__asm` copies). The integer-position helper now has strict exact proof;
+the larger replay lifecycle functions remain nonexact; `config/functions.csv` notes hold the
 current measurements.
 
 | Function | Address | Bytes | Aligned | Remaining gap |
@@ -10,7 +11,7 @@ current measurements.
 | `LoadReplayStageData` | 436B60 | 441 | 131/137 | one-step temp-register rotation around the `malloc` argument |
 | `UpdateSecondaryReplayStage` | 436DA0 | 388 | 47/108 | native keeps the state in ESI (copying to EBX for the append) |
 | `InitializeReplayHeaderStorage` | 420D80 | 137 | 30/40 | zero-byte and version stores scheduled after the default copy |
-| `SetSecondaryIntegerPlayerPosition` | 435630 | 110 | 19/22 | native finishes both integer stores before the first `fild` |
+| `SetSecondaryIntegerPlayerPosition` | 435630 | 110 | 22/22 | Exact (cold strict linked-PE zero byte differences, 2 DIR32 fields) |
 
 ## Initializer 4356E0
 
@@ -51,3 +52,20 @@ stage records are at +0x1C, segment list heads `{segment, next, previous}` at
 and the playback stage links at +0xA4. `g_SecondaryReplayCurrent` (0x4A8EB8)
 is the replay state; `g_SecondaryControllerMode` (0x4A8EB4) is the player
 controller.
+
+## Exact integer player-position helper (2026-11-19)
+
+The complete original 110-byte `SetSecondaryIntegerPlayerPosition` owner at
+0x435630 now matches the pinned VC9 `/GL` primary-TU contribution: 22 native
+instructions, all 110 bytes, and both reviewed absolute fields at +1
+(`g_SecondaryControllerMode`, 0x4A8EB4) and +0x1E (double 1/128, 0x497ED0).
+The C++ publishes two distinct controller integer coordinates through typed
+volatile member references (to preserve publication order), then reads them for x87 conversion and marks all
+eight 0xE4-stride item slots active. Expressing the publication as one ordinary
+aggregate assignment lets VC9 start the X conversion before the Y store,
+which is different from the target. The ordered member writes recover the
+native two-store boundary, while keeping the actual type, 1/128 arithmetic,
+and item loop. This is natural C++ with no assembly or padding.
+
+Replay only `secondary-integer-player-position` for this owner; its original
+C++ class identity and actual translation-unit partition remain unknown.

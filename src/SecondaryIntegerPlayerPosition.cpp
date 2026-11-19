@@ -34,7 +34,11 @@ void __stdcall SetSecondaryIntegerPlayerPosition(const int *position)
 {
     IntegerPositionControllerView *controller =
         reinterpret_cast<IntegerPositionControllerView *>(g_SecondaryControllerMode);
-    controller->integer = *reinterpret_cast<const IntegerPositionPair *>(position);
+    // Both replay-coordinate stores complete before either float conversion.
+    volatile int &integerX = controller->integer.x;
+    volatile int &integerY = controller->integer.y;
+    integerX = position[0];
+    integerY = position[1];
     controller->x = static_cast<float>(controller->integer.x * g_SecondaryIntegerPositionScale);
     controller->y = static_cast<float>(controller->integer.y * g_SecondaryIntegerPositionScale);
     for (int i = 0; i < 8; ++i)

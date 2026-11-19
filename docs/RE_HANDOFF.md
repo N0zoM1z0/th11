@@ -17,8 +17,8 @@ worktree is clean after preserving and withdrawing the unhelpful spell-view
 method experiment described below.
 
 scripts/progress.py currently reports 2,175 tracked candidates, 1,607
-reviewed boundaries, 813 source mappings, and 478 canonical exact functions
-covering 52,319 code bytes. These are local ledger totals. The Factory
+reviewed boundaries, 813 source mappings, and 479 canonical exact functions
+covering 52,429 code bytes. These are local ledger totals. The Factory
 inventory reports 2,175 subjects, zero imported Oracle results, and an
 inventory-import-only warning; do not present local exact counts as
 Factory-accepted results or whole-game closure.
@@ -38,7 +38,21 @@ Instruction alignment is a navigation aid, not exactness. The two stage
 rendering owners have complete maintained C++ bodies and useful target
 control-flow notes in STAGE_CULLING.md.
 
+### Selected exact replay-coordinate owner
+
+`SetSecondaryIntegerPlayerPosition` (0x435630) now has strict pinned VC9
+`/GL` complete **110/110-byte** proof: 22/22 instructions and two independently
+reviewed DIR32 fields. Integer coordinates are written before float conversion
+and all eight item flags are updated. Only this owner and its directly affected
+callers require selected replay; other large replay owners remain nonexact.
+See `docs/SECONDARY_REPLAY_LIFECYCLE.md`.
+
 ### Useful exact leaves
+
+- SetSecondaryIntegerPlayerPosition (0x435630, 110 B) now passes selected
+  strict cold linked replay: 22 instructions, two reviewed DIR32 bindings
+  at +1/+1E, zero differing bytes. Natural C++ stores both player replay
+  coordinates before x87 scaling; see docs/SECONDARY_REPLAY_LIFECYCLE.md.
 
 - SetSecondaryPairDuration (0x419510, 4 B) and AddSecondaryPair
   (0x4195E0, 16 B) are natural C++ and passed selected strict cold replay.

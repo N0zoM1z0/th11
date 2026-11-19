@@ -7616,8 +7616,9 @@ relocations = [
   { offset = 12, type = "REL32", symbol = "_FreeHeapBlock", target = 0x0045FD49 },
 ]
 
+# Canonical primary-TU linked owner: observed player-coordinate stores complete
+# before either x87 conversion; both reviewed DIR32 fields replay strictly.
 [units.secondary-integer-player-position]
-frontier = true
 artifact_kind = "linked-pe"
 source = "src/SecondaryIntegerPlayerPosition.cpp"
 inputs = ["src/SecondaryPlayerController.hpp"]
