@@ -17,8 +17,8 @@ worktree is clean after preserving and withdrawing the unhelpful spell-view
 method experiment described below.
 
 scripts/progress.py currently reports 2,175 tracked candidates, 1,610
-reviewed boundaries, 818 source mappings, and 484 canonical exact functions
-covering 52,856 code bytes. These are local ledger totals. The Factory
+reviewed boundaries, 819 source mappings, and 485 canonical exact functions
+covering 52,890 code bytes. These are local ledger totals. The Factory
 inventory reports 2,175 subjects, zero imported Oracle results, and an
 inventory-import-only warning; do not present local exact counts as
 Factory-accepted results or whole-game closure.
@@ -37,6 +37,13 @@ Factory-accepted results or whole-game closure.
 Both use natural C++ without ASM/padding. Their target boundaries, incoming
 references and following padding are reviewed; only these two exact units
 were cold-replayed. See SECONDARY_PAIR_MATH.md for evidence and limitations.
+
+## Selected exact angle adapter
+
+`SecondaryAngleMath` (0x40B900, 34 bytes) now has natural source and
+strict selected VC9 `/GL` cold replay. A genuine aligned float local preserves
+all 12 native instructions and one REL32 call to `__CIatan2` at 0x486C9A.
+See `docs/SECONDARY_SCRIPT.md`.
 
 ## Current large-function frontiers
 

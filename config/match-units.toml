@@ -10709,3 +10709,20 @@ relocations = [
   { offset = 51, type = "DIR32", symbol = "__real@0000000000000000", target = 0x00497EC0 },
   { offset = 67, type = "DIR32", symbol = "__real@407c000000000000", target = 0x00497EB8 },
 ]
+
+# Original 34-byte two-float x87 atan2 wrapper at 0x40B900.
+[units.secondary-angle-math]
+artifact_kind = "linked-pe"
+source = "src/SecondaryAngleMath.cpp"
+inputs = ["src/SecondaryActorInstructionRecords.hpp"]
+support_sources = ["probes/secondary-angle-math-context.cpp"]
+output_dir = "build/match-linked/SecondaryAngleMath"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryAngleMathProbe@8"
+functions = ["SecondaryAngleMath"]
+symbol = "?SecondaryAngleMath@@YGMMM@Z"
+target_address = 0x0040B900
+size = 34
+linkages = [
+  { offset = 16, type = "REL32", symbol = "__CIatan2", target = 0x00486C9A },
+]

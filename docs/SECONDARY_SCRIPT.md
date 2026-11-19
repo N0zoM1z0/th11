@@ -38,6 +38,18 @@ diagnostics below retain their recorded independent context.
 | SetTop | 45B5F0 | 7 | Exact; no fields |
 | SecondaryScriptTable | 45B600 | 7 | Exact; no fields |
 
+## Exact 34-byte interpreter angle adapter (0x40B900)
+
+The complete native wrapper at 0x40B900 takes two stack floats, loads them
+into the x87 stack in order, invokes the VC9 `__CIatan2` intrinsic and returns
+a float-rounded result with `ret 8`. A natural `atan2(y, x)` expression
+stored in a genuine 8-byte-aligned float local makes the pinned VC9 `/GL`
+compiler reproduce the full **34-byte / 12-instruction** PDB owner, including
+its aligned stack frame. Selected strict cold replay of unit
+`secondary-angle-math` matches every byte and its one independently reviewed
+REL32 at +0x10 targeting `__CIatan2` (0x486C9A). There is no ASM, forced
+padding, or cropped return; the original nominal TU remains unknown.
+
 The true six-slot manager interface and current lifetime proof are recorded in
 [SECONDARY_LIFETIME](SECONDARY_LIFETIME.md).
 
