@@ -615,6 +615,7 @@ SecondarySpellUpdateCallback,0x0040C630,function
 SecondaryStackAbsoluteAddress,0x0045B5D0,function
 SecondaryStackRelativeAddress,0x0045B5C0,function
 SecondaryStackTop,0x0045B5E0,function
+SecondaryUnaryMathB,0x00419660,function
 SecondaryVelocityLength,0x00435430,function
 SecondaryWrappedAngleDifference,0x004195F0,function
 SeekPbgLowLevelFile,0x00441F30,function

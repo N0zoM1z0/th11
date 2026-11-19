@@ -614,6 +614,7 @@ SecondarySpellUpdateCallback
 SecondaryStackAbsoluteAddress
 SecondaryStackRelativeAddress
 SecondaryStackTop
+SecondaryUnaryMathB
 SecondaryVelocityLength
 SecondaryWrappedAngleDifference
 SeekPbgLowLevelFile

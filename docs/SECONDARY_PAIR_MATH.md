@@ -235,3 +235,14 @@ decompiler dump or instruction bytes are committed. Relevant direct Ghidra
 queries are span-ADDRESS-review.txt, with the existing full pair/state exports.
 Private probes record full contributions and exhaustive decoded fields, never
 prefix acceptance. Broad runtime/product/port work remains later.
+
+## Natural C++ cosine wrapper frontier (0x419660)
+
+`src/SecondaryUnaryCosine.cpp` now describes the original complete 31-byte
+`SecondaryUnaryMathB` as `float(cos(double(value)))`. The native body calls
+`__CIcos` at 0x486BA0, rounds its x87 ST0 return to float, and returns with
+`RET 4`. A narrow pinned VC9 `/GL` probe produces the correct intrinsic call
+but only 20 bytes: the original 8-byte aligned EBP frame is absent. Disabling
+frame-pointer omission alone emits 21 bytes, not the 31-byte original. It is
+therefore a maintained **nonexact diagnostic**, not an exact mapping. The
+original wrapper's class/TU attribution remains unknown.

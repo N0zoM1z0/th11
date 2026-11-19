@@ -10652,6 +10652,7 @@ size = 31
 linkages = [
   { offset = 13, type = "REL32", symbol = "__CIcos", target = 0x00486BA0 },
 ]
+
 # Complete 101-byte native angular difference at 0x40B830, separately reviewed.
 [units.secondary-angle-difference-40b830]
 artifact_kind = "linked-pe"
