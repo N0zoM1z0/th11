@@ -65,7 +65,7 @@ contracts and evidence.
 | `ExecuteStageScript` (`0x404470`) | 2,736 B | 2,696 B; 581/610 native instruction keys aligned | Nonexact; fog return-buffer adapter improved call-site layout; EH/funclet and remaining codegen differences open |
 | `CullStageObject` (`0x403950`) | 1,643 B | 1,648 B; 361/504 aligned | Nonexact; equivalent point-first X/Y extrema comparisons improve x87 branch scheduling; native EAX camera input and remaining local/x87 scheduling remain open |
 | `InitializePrimaryStageScripts` (`0x405030`) | 249 B | 246 B in focused linked frontier | Nonexact; private-call ABI is recovered; three-byte extent and stack layout remain |
-| `DrawStageLayer` (`0x404190`) | 727 B | 744 B; 112/191 aligned | Nonexact; stage/culling ABI and register allocation remain open |
+| `DrawStageLayer` (`0x404190`) | 727 B | 724 B; 112/191 aligned | Nonexact; scale division now precedes flag publication as in native; stage/culling ABI and register allocation remain open |
 | `StepStageVectorTween` (`0x405240`) | 883 B | 883 B; 4 reviewed linked fields | Exact linked-PE owner; zero code-byte and relocation differences |
 | `InitializeSecondarySpellStage` (`0x40C650`) | 1,777 B | Diagnostic linked frontier | Nonexact; native caller uses EAX for the spell-name pointer plus two stack integers, while the candidate still uses three stack arguments |
 | `UpdateSecondarySpellStageState` (`0x40C0A0`) | 624 B | 624 B; 161/167 aligned | Nonexact; signed `idiv` and follower-cursor initialization order restored; divisor spill, event-3 branch layout and Z x87 order remain |

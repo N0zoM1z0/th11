@@ -71,11 +71,12 @@ signed-16 type.
 Only primitive type zero has rendering side effects. Its offsets are combined
 with the record offset and stored at VM +0x3E8/+0x3EC/+0x3F0. Optional
 nonzero X/Y dimensions set scale ratios and VM flag 8. The native loads
-each command scale and sprite dimension before publishing flag 8, then
-performs the floating divide and stores the ratio. The source retains these
-four operands in scalar locals so the flag write stays between operand loads
-and FDIV; this preserves the native memory-side-effect order even though the
-focused candidate grows to 744 bytes. VM mode bits 0x03C00000 select fog;
+each command scale and sprite dimension, performs the floating divide, then
+publishes flag 8 before storing the quotient. The source computes each ratio
+before the flag update so VC9 retains the division-before-flag side-effect
+order. The focused candidate is now 724 bytes (down from 744); instruction
+alignment remains 112/191, and the owner is still nonexact. VM mode bits
+0x03C00000 select fog;
 bit 0x800 controls Z writing. State changes flush the renderer before D3D9
 state updates. Drawing calls the maintained DrawAnimationVmByMode owner.
 Accepted objects and drawn primitives update their respective stage
