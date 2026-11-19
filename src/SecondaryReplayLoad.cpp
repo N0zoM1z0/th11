@@ -67,8 +67,8 @@ int __stdcall LoadReplayStageData(ReplayInitStateView *state, void *source)
         state->fileHeader = LoadResourceFile(static_cast<const char *>(source), &size, 0);
         data = static_cast<unsigned char *>(state->fileHeader) + 0x24;
     }
-    state->unpackedData = static_cast<unsigned char *>(
-        malloc(static_cast<ReplayLoadFileHeader *>(state->fileHeader)->rawSize));
+    ReplayLoadFileHeader *header = static_cast<ReplayLoadFileHeader *>(state->fileHeader);
+    state->unpackedData = static_cast<unsigned char *>(malloc(header->rawSize));
     ScatterXorBlocks(data, static_cast<ReplayLoadFileHeader *>(state->fileHeader)->packedSize,
         0xaa, 0xe1, 0x800, static_cast<ReplayLoadFileHeader *>(state->fileHeader)->packedSize);
     ScatterXorBlocks(data, static_cast<ReplayLoadFileHeader *>(state->fileHeader)->packedSize,

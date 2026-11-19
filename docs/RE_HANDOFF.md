@@ -17,8 +17,8 @@ worktree is clean after preserving and withdrawing the unhelpful spell-view
 method experiment described below.
 
 scripts/progress.py currently reports 2,175 tracked candidates, 1,610
-reviewed boundaries, 819 source mappings, and 485 canonical exact functions
-covering 52,890 code bytes. These are local ledger totals. The Factory
+reviewed boundaries, 819 source mappings, and 486 canonical exact functions
+covering 53,331 code bytes. These are local ledger totals. The Factory
 inventory reports 2,175 subjects, zero imported Oracle results, and an
 inventory-import-only warning; do not present local exact counts as
 Factory-accepted results or whole-game closure.
@@ -44,6 +44,15 @@ were cold-replayed. See SECONDARY_PAIR_MATH.md for evidence and limitations.
 strict selected VC9 `/GL` cold replay. A genuine aligned float local preserves
 all 12 native instructions and one REL32 call to `__CIatan2` at 0x486C9A.
 See `docs/SECONDARY_SCRIPT.md`.
+
+## New complete exact replay loader
+
+`LoadReplayStageData` (0x436B60) has a natural C++ pinned VC9 `/GL` 441-byte
+complete owner, **137/137 instructions** and **18/18** reviewed relocation
+fields, all strictly cold-replayed with zero differences. A typed header local
+restored the allocator/register schedule; the original `replay/%s` constant
+is bound through the actual source MAP string literal. This is a substantial
+complete function, not a cropped leaf. See SECONDARY_REPLAY_LIFECYCLE.md.
 
 ## Current large-function frontiers
 

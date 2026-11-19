@@ -1,14 +1,14 @@
 # Secondary replay stage lifecycle
 
 All functions below are plain C++ (rewritten 2026-11-14 from withdrawn
-`__asm` copies). The integer-position helper now has strict exact proof;
-the larger replay lifecycle functions remain nonexact; `config/functions.csv` notes hold the
-current measurements.
+`__asm` copies). The integer-position helper and 441-byte replay loader now have strict
+exact proof. Other replay lifecycle functions remain nonexact;
+`config/functions.csv` notes hold their current measurements.
 
 | Function | Address | Bytes | Aligned | Remaining gap |
 | --- | --- | ---: | --- | --- |
 | `ReplayRecordRegistryView::InitializeRecord` | 4356E0 | 1380 | 305/406 | stage-pointer reload after the store; snapshot store scheduling |
-| `LoadReplayStageData` | 436B60 | 441 | 131/137 | one-step temp-register rotation around the `malloc` argument |
+| `LoadReplayStageData` | 436B60 | 441 | 137/137 | Exact (cold linked-PE, 18 exhaustive fields, zero byte differences) |
 | `UpdateSecondaryReplayStage` | 436DA0 | 388 | 47/108 | native keeps the state in ESI (copying to EBX for the append) |
 | `InitializeReplayHeaderStorage` | 420D80 | 137 | 30/40 | zero-byte and version stores scheduled after the default copy |
 | `SetSecondaryIntegerPlayerPosition` | 435630 | 110 | 22/22 | Exact (cold strict linked-PE zero byte differences, 2 DIR32 fields) |
@@ -36,6 +36,23 @@ the archived copy through `LoadResourceFile(source, &size, 0)`. It then
 decrypts twice, decompresses and indexes each stage link. The link must include
 the real file, resource, cipher and archive sources so LTCG gives those helpers
 their native ESI/EDI/EAX conventions.
+
+### Exact complete loader codegen (2026-11-19)
+
+The observed register schedule around `malloc` was restored by retaining a
+real typed `ReplayLoadFileHeader *header` local for the `rawSize` allocation.
+The existing 441-byte natural C++ loader now compiles under the pinned
+VC9 `/GL` source producer to **441/441 bytes and 137/137 instructions**.
+The original replay path `replay/%s` at 0x4955A8 is the same content as the
+compiler's C++ string literal; the manifest now binds its genuine MAP public
+`??_C@_09ONNEPONB@replay?1?$CFs?$AA@` instead of an invented external
+variable. All **18 independently reviewed** call, global, CRT security and
+constant-field bindings resolve and replay; the strict whole-owner comparator
+reports zero differing bytes. The separate selected unit
+`secondary-replay-load` is cold compiled and replayed, not instruction masked.
+This proves the entire complete function body, not the native TU partition
+or the whole game's replay subsystem. No ASM, aliases, padding, or patched
+instructions were introduced.
 
 ## Stage lifecycle 436DA0
 
