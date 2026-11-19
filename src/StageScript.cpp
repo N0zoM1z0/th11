@@ -244,6 +244,9 @@ int __stdcall ExecuteStageScript(StageResourceView *self)
             self->radius = 192.0f;
             float phase = NormalizeAngle(0.0f);
             self->phaseY = self->phaseX = phase;
+            // Keep the cursor read after angle normalization: the native
+            // reloads this live member after the call sequence.
+            _ReadWriteBarrier();
             self->distortionMode = state.instruction->args.words[0];
             if (self->minimumRadius > 0.0f)
             {

@@ -64,12 +64,12 @@ result = ((initial*a + target*b) + control1*c) + control2*d
 Independent x87 review confirms that a forms the square before the last factor.
 An earlier StageScript-primary context emitted 785-byte vector and 536-byte
 fog candidates. Those are not the current StageTween-family sizes: the current
-family emits an 883-byte vector candidate (278/280 normalized instruction
-keys; still non-exact) and a 794-byte fog candidate. Earlier 272/280 and
-276/280 measurements predate the scalar-first Hermite multiply correction
-below. The separate wide secondary fog context emits the exact 737-byte owner.
-These /GL results belong to different producer contexts and must not be
-collapsed into one candidate measurement. See [SECONDARY_PAIR_MATH](SECONDARY_PAIR_MATH.md).
+family emits the exact 883-byte vector owner and a 794-byte fog candidate.
+Earlier 272/280, 276/280 and 278/280 measurements predate the final mode-17
+Y-order correction below. The separate wide secondary fog context emits the
+exact 737-byte fog owner. These /GL results belong to different producer
+contexts and must not be collapsed into one candidate measurement. See
+[SECONDARY_PAIR_MATH](SECONDARY_PAIR_MATH.md).
 
 Coefficient evaluation promotes t to double. Each coefficient, scaled vector
 and pairwise vector sum rounds to float at the observed boundary. Fog performs
@@ -78,10 +78,12 @@ packing after each of four scales and three additions. Other modes use
 The fallback Z sum is intentionally written as `initial.z + scaled.z` through
 a volatile reference: native x87 loads initial Z before adding scaled Z, while
 the fast VC9 optimizer otherwise commutes the two operands. The emitted Z
-fallback pair now matches that native order; Y remains reversed in the current
-candidate. The first Z-order experiment temporarily moved alignment from
-276/280 to 274/280. The later Hermite control1 scale-order correction below
-supersedes that intermediate result and brings the current owner to 278/280.
+fallback pair matches that native order. The mode-17 Y accumulation likewise
+uses `previousY + control.y` through a volatile reference; this is the final
+operand-order correction that completes the exact linked owner. The first
+Z-order experiment temporarily moved alignment from 276/280 to 274/280; the
+scalar-first Hermite control1 correction and final mode-17 Y correction
+supersede those intermediate measurements.
 The factor helpers round fraction/signed-duration to float, then invoke the
 easing dispatcher only when unsigned(mode-1)<16, and round its result to float.
 
@@ -316,17 +318,14 @@ operators changes their bodies (temporary spills) and is wrong.
 
 Vector stepping: explicit component stores in the ordinary interpolation
 fallback produce an 883-byte PDB contribution, equal in length to the
-883-byte native owner. The Hermite branch now uses a scalar-first natural C++
+883-byte native owner. The Hermite branch uses a scalar-first natural C++
 scale helper for the target and control2 vectors, while the initial/control1
 paths retain their value-first ordering. This restores four original x87
 `fld`/`fmulp`/`fxch` instruction keys without changing the interpolation
-formula, improving normalized alignment from **272/280 to 276/280**. The
-complete candidate remains **883 bytes and 280 instructions**. The seven
-neighboring exact owners in the same StageTween producer were checked by the
-strict linked Oracle and all retain `difference_count=0`. A balanced Hermite
-sum tree was previously rejected (887 bytes, 253/280 aligned). The remaining
-four instruction mismatches are the ordinary interpolation fallback's Y/Z
-`fld`/`fadd` operand order; exact replay of StepStageVectorTween remains open.
+formula. The complete candidate remains **883 bytes and 280 instructions**.
+A balanced Hermite sum tree was previously rejected (887 bytes, 253/280
+aligned). The final mode-17 Y operand-order correction below closes the
+remaining instruction differences and makes the complete owner byte-exact.
 No ASM, padding, or truncated body is used.
 
 

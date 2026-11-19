@@ -6,7 +6,7 @@ section and reconciled its full extent, instruction flow, callers and tables.
 
 | Function | Full target owner | Source contribution | State |
 | --- | ---: | ---: | --- |
-| ExecuteStageScript,0x00404470 | 2,736 bytes through0x00404F1F | 2,712 bytes | Non-exact; 577/610 aligned instructions; EH/funclet ownership open |
+| ExecuteStageScript,0x00404470 | 2,736 bytes through0x00404F1F | 2,712 bytes | Non-exact; 578/610 aligned instructions; EH/funclet ownership open |
 | SeekStageScriptMarker,0x00404F20 | 113 bytes through0x00404F90 | 113 bytes | Exact normal-COFF, 2 relocations |
 | BeginSecondaryStageTransition,0x00405130 | 159 bytes through0x004051CE | 159 bytes | Exact normal-COFF, 6 relocations |
 | BeginPrimaryStageTransition,0x004051D0 | 103 bytes through0x00405236 | 103 bytes | Exact normal-COFF, 3 relocations |
@@ -254,7 +254,7 @@ fractional, infinite and NaN inputs were checked against the actual bodies.
 ## Current code-generation frontier
 
 The latest focused VC9 `/GL` build contributes **2,712 bytes** for the
-2,736-byte `ExecuteStageScript` owner, with **577/610** normalized native
+2,736-byte `ExecuteStageScript` owner, with **578/610** normalized native
 instruction keys aligned (610 candidate instructions). The owner remains
 nonexact; byte/relocation equality and EH/funclet ownership are open.
 
@@ -267,6 +267,13 @@ Two 2026-11-19 natural-C++ changes produced the current result:
 - Both oscillator paths now express the double angle as `angle * 2.0`
   instead of `angle + angle`. This preserves the mathematics and improves the
   complete owner to 2,712 bytes and 577/610 aligned keys.
+- Opcode 17 now places a compiler read/write barrier between phase
+  normalization and the mode read from the live instruction cursor. This
+  prevents VC9 from hoisting the cursor load ahead of `NormalizeAngle`, as the
+  native body reloads it afterward; focused normalized alignment advances
+  from 577/610 to **578/610** without changing the 2,712-byte contribution or
+  introducing handwritten instructions. Remaining opcode-17 instruction
+  scheduling and exception-handler ownership are still unresolved.
 
 The current comparison is
 `.analysis/stage-script-double-angle-combined-20261119.diff`. The changed

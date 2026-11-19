@@ -9359,8 +9359,7 @@ target_address = 0x00438AC0
 size = 934
 linkages = []
 
-# Diagnostic frontier for the large stage-vector tween owner. The context is
-# shared with the exact stage-tween leaves; no exact claim is made here.
+# Canonical exact linked-PE proof for the complete stage-vector tween owner.
 [units.step-stage-vector-tween]
 artifact_kind = "linked-pe"
 source = "src/StageTween.cpp"
