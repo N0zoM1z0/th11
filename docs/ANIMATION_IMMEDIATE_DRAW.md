@@ -1,10 +1,12 @@
 # Immediate animation drawing and mode dispatch
 
-`src/AnimationImmediateDraw.cpp` adds nine complete source mappings covering
-3,422 reviewed target owner bytes, including the1,036-byte world draw,
-572-byte world-state setup and546-byte projected fog path. Four functions
-have new complete cold exact proofs: two224-byte draw functions and two258-byte
-UV updates, totaling964 bytes. The larger owners remain non-exact.
+`src/AnimationImmediateDraw.cpp` and
+src/AnimationImmediateDrawWorldState.cpp add nine complete source mappings
+covering 3,450 reviewed target owner bytes, including the1,036-byte world draw,
+the600-byte world-state code+table contribution and the546-byte projected fog
+path. Five functions now have complete cold exact proofs: four strip/fan/UV
+leafs totaling964 code bytes, plus the600-byte world-state contribution. The
+world draw and projected fog owners remain non-exact.
 
 Nine additional boundary/origin reviews cover eight engine/math owners and
 one verified D3DX import thunk. Engine/math origins remain indeterminate;
@@ -15,9 +17,9 @@ code-only boundary is superseded; the existing review count is unchanged.
 | Owner | Address | Target owned bytes | Current state |
 | --- | --- | ---: | --- |
 | AnimationExtentMagnitude | 40B930 | 28 | Source; candidate17 /28 diagnostic differences |
-| ApplyAnimationVmWorldState | 44F4B0 | 572 | Source; candidate580 /411 |
+| ApplyAnimationVmWorldState | 44F4B0 | 600 (572 code + 28 table) | Exact; 21 fields, zero differences |
 | DrawFoggedProjectedAnimationVm | 451170 | 546 | Source; candidate548 /150 |
-| DrawWorldAnimationVm | 4513A0 | 1,036 | Source; candidate1,038 /750 |
+| DrawWorldAnimationVm | 4513A0 | 1,036 | Source; candidate1,038; ABI/frame mismatch |
 | UpdateTransposedStripVertexUv | 4517B0 | 258 | Exact; no address fields |
 | UpdateStripVertexUv | 4518C0 | 258 | Exact; no address fields |
 | DrawAnimationVertexStrip | 451A00 | 224 | Exact;7 reviewed fields |
@@ -32,6 +34,27 @@ Current general renderer-input /GL support gives276=219 code+1 alignment+56
 table, with26 complete field bindings and220 full differences. Earlier272/115
 code-only diagnostics do not establish full-owner equality. See
 [HUD drawing](SECONDARY_HUD_DRAW.md) for the caller/context evidence.
+
+## Physical immediate-VM view
+
+The immediate-draw translation unit now names the complete 0x408-byte
+physical view used by its world, fog and strip/fan paths. The typed tween
+subobject occupies 0x90..0x2B3 (0x224 bytes) and reuses the established
+stage-vector, integer-vector/scalar and float-pair/scalar tween layouts.
+The view then names the three matrix blocks at 0x2B4, 0x2F4 and 0x334,
+primary/alternate packed colors at 0x374/0x378, event and saved-script
+state at 0x37C..0x3AB, sprite/file/strip state at 0x3AC..0x3B7,
+integer/float variable banks at 0x3B8..0x3D3, and the position/offset
+vectors plus vertex pointer and flags at 0x3DC..0x407.
+
+Compile-time offset assertions pin the update/draw nodes, rotation and
+angular velocity, scale/size/UV state, timer, tween region, matrices,
+colors, script pointers, sprite/file pointers, variable banks, vectors,
+vertices and final flags. The four independently strict strip/fan/UV
+units were rebuilt against this layout and remain exact (964 code bytes,
+17 address/call fields, zero differences). This is a source-local physical
+view overlay; it does not by itself establish the original C++ class
+identity or authorship.
 
 ## World drawing
 
@@ -50,14 +73,26 @@ re-read with extraOffset afterward before SetTransform(WORLD).
 
 World, rotation and texture matrices have genuine independent uses. Restoring
 their function-scope lifetimes prevents reuse of the rotation/texture stack
-slot. The candidate frame changes from94 toD4 bytes, approaching the nativeD0,
-but native alignment and private register parameters remain unrecovered.
-No inert local, explicit alignment, padding or ABI annotation is added.
+slot. The current member-method trial is not ABI-aligned yet. Its complete PDB
+contribution is 1,038 bytes, two bytes larger than the native owner. The
+candidate uses a thiscall entry, retains the VM pointer in EBP, reloads the
+renderer into EBX, reserves a 0xD4 frame and returns with RET8. The target
+instead carries the VM in EBX, keeps the renderer in one caller stack slot,
+uses a 0xD0 frame and returns with RET4. The next source trial will restore an
+internal free-function boundary so the real mode-dispatch producer can select
+the private register ABI under LTCG. The flag snapshot also still allocates to
+ECX rather than the target's ESI across the two anchor switches. The
+world-state call itself already replays independently as a strict 600-byte
+exact contribution. No inert local, padding or assembly substitution is used.
 
 The world-state helper applies blend changes, primary/alternate color with
 ordered saturated red/green/blue/alpha tint, cached D3DRS_TEXTUREFACTOR, filter
 changes, and the unconditional applications counter. Flushes precede cache
-updates as observed. Blend7 stores its cache without a blend API call.
+updates as observed. Blend7 stores its cache without a blend API call. The
+572-byte executable body is immediately followed by its owned 28-byte,
+seven-entry blend jump table; the complete 600-byte linked contribution is
+strict exact. A volatile read of the runtime device pointer preserves the
+native cache-store-before-device-load ordering without assembly or patching.
 
 After world and texture bindings, the original UV cache predicate checks
 `offsetU != 0` twice. It does not check offsetV. The source preserves this
@@ -132,13 +167,12 @@ cold proof remains exact after updating the manifest's decorated symbol.
 ## Full extents, origin and cold evidence
 
 Independent Capstone decoding covers every recorded code byte and RET tail.
-The1,036-byte owner has302 instructions, so a full explicit Ghidra span review
-supplements the250-instruction default limit. The572-byte helper's seven
-external interior references are its independently decoded table44F6EC..44F707.
-The dispatcher retains fourteen entries451FCC..452003. Code and owned table
-extents must be reconciled with complete PDB contributions before any future
-exact claim for these two switch owners; candidate sizes above include data
-where attributed by PDB. No table or contribution is cropped for acceptance.
+The1,036-byte world-draw owner has302 instructions, so a full explicit Ghidra
+span review supplements the250-instruction default limit. The world-state
+owner is a 600-byte contiguous linked contribution: 572 executable bytes
+followed by its owned table at44F6EC..44F707. Its 21 fields replay with zero
+differences. The dispatcher retains fourteen entries451FCC..452003 and
+remains non-exact; no table or contribution is cropped for acceptance.
 
 The full6-byte thunk45FA04 jumps through IAT48B2BC. Independent original-PE
 import decoding binds d3dx9_37.dll!D3DXVec3Transform; full hash-attested Ghidra
@@ -146,23 +180,26 @@ review confirms the body, references and separate neighboring entries.
 Only the thunk is excluded. No external DLL or authored-source credit follows.
 The math adapter and custom rendering roles do not prove original authorship.
 
-The four new exact units use `build/match-linked/AnimationImmediateDraw`, the
-real projected/quad/submission/batch support and independent probe inputs.
-Every complete primary-TU public contribution has current source/header/tool,
-producer and PE/MAP/PDB receipts. Strip fields are REL32 offsets47/136 and
-DIR32 offsets78/106/141/163/189. Fan fields are REL32 offsets16/60/116 and
-DIR32 offsets30/91/111/121/141/163/189. Independently reviewed targets are
-Flush44FD10, state44F710, runtime4C3280+8, and global renderer4C3268. UV owners
-have no fields. All17 fields and every other byte replay with zero differences.
+The four strip/fan/UV exact units use build/match-linked/AnimationImmediateDraw,
+the real projected/quad/submission/batch support and independent probe inputs.
+The world-state helper uses its dedicated build/match-linked/AnimationImmediateDrawWorldState
+context. Across these five exact units, all38 reviewed address/call fields and
+all1,564 owned bytes replay with zero differences. Strip fields are REL32
+offsets47/136 and DIR32 offsets78/106/141/163/189. Fan fields are REL32
+offsets16/60/116 and DIR32 offsets30/91/111/121/141/163/189. The helper adds
+three FlushRenderBatch calls, ten runtime-device references, one table-base
+reference and seven table entries. Independently reviewed targets include
+Flush44FD10, runtime4C3280+8 and global renderer4C3268.
 
-Only ten units were cold-replayed: the four new units plus six directly
+Eleven units were cold-replayed: the five exact units plus six directly
 affected AnimationQuad/AnimationVmDraw units. The latter remain exact despite
 the corrected wrapper return types. No full cohort or behavioral suite ran.
-At this checkpoint exact state reached82 functions/15,952 bytes; original TU
-ownership and a complete native product remain open. The subsequent
+Original TU ownership and a complete native product remain open. The subsequent
 [fan review](ANIMATION_FAN.md) recovers three additional draw owners from the
 gap451AE0..451E0F and three other missing entries, with six new exact proofs.
 
 Compiler probes of natural loops, blend-pair/red-temporary expressions, matrix
-lifetimes and restricted caller graphs did not close the world-state/private-ABI
-gaps. The findings above and maintained source retain the useful results.
+lifetimes and restricted caller graphs closed the world-state owner. The
+world-draw private ABI/frame and flags-register allocation, plus the dispatcher
+private ABI, remain open.
+The findings above and maintained source retain the useful results.

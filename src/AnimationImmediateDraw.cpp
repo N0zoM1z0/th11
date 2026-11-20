@@ -1,4 +1,5 @@
 #include "AnimationImmediateDraw.hpp"
+#include "AnimationExecution.hpp"
 #include "MainRuntime.hpp"
 #include <math.h>
 
@@ -10,28 +11,104 @@ union ImmediateColor
     struct { unsigned char blue, green, red, alpha; } bytes;
 };
 struct ImmediateUv { float u, v; };
+struct ImmediateVmTweenStorage
+{
+    StageVectorTween positionTween;
+    AnimationIntVectorTween colorTween;
+    AnimationIntScalarTween alphaTween;
+    StageVectorTween rotationTween;
+    AnimationFloatPairTween scaleTween;
+    AnimationIntVectorTween color2Tween;
+    AnimationIntScalarTween alpha2Tween;
+    AnimationFloatScalarTween uVelocityTween, vVelocityTween;
+    float uVelocity, vVelocity;
+};
+
 struct ImmediateVmView
 {
-    unsigned char unknown000[0x24];
-    CameraVector rotation;
-    unsigned char unknown030[0x3c - 0x30];
+    unsigned int unknown000;
+    AnimationVmNode updateNode, drawNode;
+    unsigned int unknown01c, persistent020;
+    CameraVector rotation, angularVelocity;
     float scaleX, scaleY;
-    unsigned char unknown044[8];
+    float scaleVelocityX, scaleVelocityY;
     float width, height, offsetU, offsetV;
-    unsigned char unknown05c[0x70 - 0x5c];
+    StageTimerView time;
     ImmediateUv uv[4];
-    unsigned char unknown090[0x2b4 - 0x90];
+    ImmediateVmTweenStorage tweenState;
     D3DMATRIX base, transformed, textureTransform;
     ImmediateColor color, alternateColor;
-    unsigned char unknown37c[0x3ac - 0x37c];
+    short event;
+    unsigned short unknown37e;
+    StageTimerView savedTime;
+    AnimationInstruction *savedInstruction;
+    int spriteFrame;
+    short marker;
+    unsigned short fileId, unknown3a0, scriptId;
+    unsigned char *scriptStart;
+    AnimationInstruction *instruction;
     AnimationSpriteView *sprite;
-    unsigned char unknown3b0[4];
+    AnimationFileView *file;
     unsigned int stripPairs;
-    unsigned char unknown3b8[0x3dc - 0x3b8];
+    int integerVariables[3];
+    float floatVariables[4];
+    int integer3d4, integer3d8;
     CameraVector position, offset, extraOffset;
     RenderVertex *vertices;
     unsigned int flags;
+    int DrawWorld(RenderBatchView *renderer);
 };
+
+typedef char ImmediateVmTweenStorageSize[
+    (sizeof(ImmediateVmTweenStorage) == 0x224) ? 1 : -1];
+typedef char ImmediateVmSize[(sizeof(ImmediateVmView) == 0x408) ? 1 : -1];
+typedef char ImmediateVmRotationOffset[
+    (offsetof(ImmediateVmView, rotation) == 0x24) ? 1 : -1];
+typedef char ImmediateVmTimeOffset[
+    (offsetof(ImmediateVmView, time) == 0x5c) ? 1 : -1];
+typedef char ImmediateVmUvOffset[
+    (offsetof(ImmediateVmView, uv) == 0x70) ? 1 : -1];
+typedef char ImmediateVmTweenOffset[
+    (offsetof(ImmediateVmView, tweenState) == 0x90) ? 1 : -1];
+typedef char ImmediateVmTextureTransformOffset[
+    (offsetof(ImmediateVmView, textureTransform) == 0x334) ? 1 : -1];
+typedef char ImmediateVmColorOffset[
+    (offsetof(ImmediateVmView, color) == 0x374) ? 1 : -1];
+typedef char ImmediateVmSpriteOffset[
+    (offsetof(ImmediateVmView, sprite) == 0x3ac) ? 1 : -1];
+typedef char ImmediateVmFileOffset[
+    (offsetof(ImmediateVmView, file) == 0x3b0) ? 1 : -1];
+typedef char ImmediateVmStripPairsOffset[
+    (offsetof(ImmediateVmView, stripPairs) == 0x3b4) ? 1 : -1];
+typedef char ImmediateVmPositionOffset[
+    (offsetof(ImmediateVmView, position) == 0x3dc) ? 1 : -1];
+typedef char ImmediateVmVerticesOffset[
+    (offsetof(ImmediateVmView, vertices) == 0x400) ? 1 : -1];
+typedef char ImmediateVmFlagsOffset[
+    (offsetof(ImmediateVmView, flags) == 0x404) ? 1 : -1];
+typedef char ImmediateVmUpdateNodeOffset[
+    (offsetof(ImmediateVmView, updateNode) == 0x004) ? 1 : -1];
+typedef char ImmediateVmDrawNodeOffset[
+    (offsetof(ImmediateVmView, drawNode) == 0x010) ? 1 : -1];
+typedef char ImmediateVmAngularVelocityOffset[
+    (offsetof(ImmediateVmView, angularVelocity) == 0x030) ? 1 : -1];
+typedef char ImmediateVmScaleVelocityOffset[
+    (offsetof(ImmediateVmView, scaleVelocityX) == 0x044) ? 1 : -1];
+typedef char ImmediateVmWidthOffset[
+    (offsetof(ImmediateVmView, width) == 0x04c) ? 1 : -1];
+typedef char ImmediateVmSavedTimeOffset[
+    (offsetof(ImmediateVmView, savedTime) == 0x380) ? 1 : -1];
+typedef char ImmediateVmSavedInstructionOffset[
+    (offsetof(ImmediateVmView, savedInstruction) == 0x394) ? 1 : -1];
+typedef char ImmediateVmInstructionOffset[
+    (offsetof(ImmediateVmView, instruction) == 0x3a8) ? 1 : -1];
+typedef char ImmediateVmIntegerVariablesOffset[
+    (offsetof(ImmediateVmView, integerVariables) == 0x3b8) ? 1 : -1];
+typedef char ImmediateVmFloatVariablesOffset[
+    (offsetof(ImmediateVmView, floatVariables) == 0x3c4) ? 1 : -1];
+typedef char ImmediateVmExtraOffsetOffset[
+    (offsetof(ImmediateVmView, extraOffset) == 0x3f4) ? 1 : -1];
+
 struct ImmediateRendererView
 {
     unsigned char unknown000[0xa8];
@@ -51,6 +128,7 @@ struct ImmediateRendererView
     unsigned char unknown435624[0x7bd88c - 0x435624];
     ImmediateColor tint;
     int tintEnabled;
+    void ApplyWorldState(ImmediateVmView *vm);
 };
 struct ImmediateFogView
 {
@@ -73,12 +151,6 @@ struct ImmediateRuntimeView
     unsigned char unknown31c[0x54c - 0x31c];
     ImmediateCameraView *camera;
 };
-typedef char ImmediateVmTextureOffset[(offsetof(ImmediateVmView, textureTransform) == 0x334) ? 1 : -1];
-typedef char ImmediateVmColorOffset[(offsetof(ImmediateVmView, color) == 0x374) ? 1 : -1];
-typedef char ImmediateVmSpriteOffset[(offsetof(ImmediateVmView, sprite) == 0x3ac) ? 1 : -1];
-typedef char ImmediateVmPositionOffset[(offsetof(ImmediateVmView, position) == 0x3dc) ? 1 : -1];
-typedef char ImmediateVmVerticesOffset[(offsetof(ImmediateVmView, vertices) == 0x400) ? 1 : -1];
-typedef char ImmediateVmFlagsOffset[(offsetof(ImmediateVmView, flags) == 0x404) ? 1 : -1];
 typedef char ImmediateWorldVertexSize[(sizeof(AnimationWorldVertex) == 20) ? 1 : -1];
 typedef char ImmediateRendererTextureOffset[(offsetof(ImmediateRendererView, texture) == 0x4355bc) ? 1 : -1];
 typedef char ImmediateRendererCornersOffset[(offsetof(ImmediateRendererView, corners) == 0x4355d0) ? 1 : -1];
@@ -107,83 +179,16 @@ float __stdcall AnimationExtentMagnitude(float value)
     return static_cast<float>(fabs(static_cast<double>(value)));
 }
 
-void __stdcall ApplyAnimationVmWorldState(RenderBatchView *renderer, AnimationVmView *vm)
+namespace {
+int ImmediateVmView::DrawWorld(RenderBatchView *renderer)
 {
-    ImmediateVmView *self = reinterpret_cast<ImmediateVmView *>(vm);
-    ImmediateRendererView *state = reinterpret_cast<ImmediateRendererView *>(renderer);
-    if (state->blend != ((self->flags >> 4) & 7))
-    {
-        FlushRenderBatch(renderer);
-        unsigned char blend = static_cast<unsigned char>((self->flags >> 4) & 7);
-        state->blend = blend;
-        switch (blend)
-        {
-        case 0:
-            Device()->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-            Device()->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA); break;
-        case 1:
-            Device()->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-            Device()->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE); break;
-        case 2:
-            Device()->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ZERO);
-            Device()->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCCOLOR); break;
-        case 3:
-            Device()->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_ONE);
-            Device()->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ZERO); break;
-        case 4:
-            Device()->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_INVDESTCOLOR);
-            Device()->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA); break;
-        case 5:
-            Device()->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_DESTCOLOR);
-            Device()->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ZERO); break;
-        case 6:
-            Device()->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_INVSRCCOLOR);
-            Device()->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA); break;
-        }
-    }
-    ImmediateColor color;
-    color.value = (self->flags & 0x8000) ? self->alternateColor.value : self->color.value;
-    if (state->tintEnabled)
-    {
-        color.bytes.red = static_cast<unsigned char>(ScaleChannel(color.bytes.red, state->tint.bytes.red));
-        color.bytes.green = static_cast<unsigned char>(ScaleChannel(color.bytes.green, state->tint.bytes.green));
-        color.bytes.blue = static_cast<unsigned char>(ScaleChannel(color.bytes.blue, state->tint.bytes.blue));
-        color.bytes.alpha = static_cast<unsigned char>(ScaleChannel(color.bytes.alpha, state->tint.bytes.alpha));
-    }
-    if (state->textureFactor != color.value)
-    {
-        FlushRenderBatch(renderer);
-        state->textureFactor = color.value;
-        Device()->SetRenderState(D3DRS_TEXTUREFACTOR, color.value);
-    }
-    if (state->pointFilter != (self->flags >> 31))
-    {
-        FlushRenderBatch(renderer);
-        unsigned char pointFilter = static_cast<unsigned char>((self->flags >> 31) & 1);
-        state->pointFilter = pointFilter;
-        if (!pointFilter)
-        {
-            Device()->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
-            Device()->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
-        }
-        else
-        {
-            Device()->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_POINT);
-            Device()->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_POINT);
-        }
-    }
-    ++state->applications;
-}
-
-int __stdcall DrawWorldAnimationVm(RenderBatchView *renderer, AnimationVmView *vm)
-{
-    ImmediateVmView *self = reinterpret_cast<ImmediateVmView *>(vm);
+    ImmediateVmView *self = this;
     ImmediateRendererView *state = reinterpret_cast<ImmediateRendererView *>(renderer);
     D3DMATRIX world, rotation, texture;
     if (!(self->flags & 1)) return -1;
     if (!(self->flags & 2)) return -1;
     if (!self->color.bytes.alpha) return -1;
-    if (renderer->quadCount)
+    if (state->quadCount)
         FlushRenderBatch(renderer);
     if (!(self->flags & 0x4000) && (self->flags & 0x0c))
     {
@@ -209,7 +214,8 @@ int __stdcall DrawWorldAnimationVm(RenderBatchView *renderer, AnimationVmView *v
         self->flags &= ~4u;
     }
     world = self->transformed;
-    switch ((self->flags >> 18) & 3)
+    register unsigned int flags = self->flags;
+    switch ((flags >> 18) & 3)
     {
     case 0: world._41 = self->offset.x + self->position.x + self->extraOffset.x; break;
     case 1:
@@ -226,7 +232,7 @@ int __stdcall DrawWorldAnimationVm(RenderBatchView *renderer, AnimationVmView *v
         }
         break;
     }
-    switch ((self->flags >> 20) & 3)
+    switch ((flags >> 20) & 3)
     {
     case 0: world._42 = self->offset.y + self->position.y + self->extraOffset.y; break;
     case 1:
@@ -244,7 +250,7 @@ int __stdcall DrawWorldAnimationVm(RenderBatchView *renderer, AnimationVmView *v
         break;
     }
     world._43 = self->offset.z + self->position.z;
-    ApplyAnimationVmWorldState(renderer, vm);
+    renderer->ApplyAnimationVmWorldState(reinterpret_cast<AnimationVmView *>(self));
     world._43 = self->offset.z + self->position.z + self->extraOffset.z;
     Device()->SetTransform(D3DTS_WORLD, &world);
     if (state->texture != self->sprite->texture)
@@ -271,6 +277,8 @@ int __stdcall DrawWorldAnimationVm(RenderBatchView *renderer, AnimationVmView *v
     }
     Device()->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
     return 0;
+}
+
 }
 
 int __stdcall DrawFoggedProjectedAnimationVm(RenderBatchView *renderer, AnimationVmView *vm)
@@ -455,7 +463,7 @@ int __stdcall DrawAnimationVmByMode(RenderBatchView *renderer, AnimationVmView *
     case 5: return DrawProjectedAnimationVm(renderer, vm);
     case 6: return DrawFoggedBillboardAnimationVm(renderer, vm);
     case 7: return DrawFoggedProjectedAnimationVm(renderer, vm);
-    case 8: return DrawWorldAnimationVm(renderer, vm);
+    case 8: return self->DrawWorld(renderer);
     case 9:
     case 12:
     case 13: return DrawAnimationVertexStrip(renderer, vm, self->vertices, self->stripPairs * 2u);

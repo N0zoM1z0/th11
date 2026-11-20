@@ -2,6 +2,8 @@
 
 #include <stddef.h>
 
+struct AnimationVmView;
+
 struct RenderVertex
 {
     float x, y, z, rhw;
@@ -21,6 +23,7 @@ struct RenderBatchView
     RenderVertex vertices[0x20000];
     RenderVertex *nextVertex;
     RenderVertex *batchStart;
+    void ApplyAnimationVmWorldState(AnimationVmView *vm);
 };
 
 typedef char RenderVertexSize[(sizeof(RenderVertex) == 28) ? 1 : -1];

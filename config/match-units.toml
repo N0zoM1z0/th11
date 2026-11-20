@@ -2453,11 +2453,47 @@ target_address = 0x44ed60
 size = 6
 linkages = []
 
+[units.apply-animation-vm-world-state]
+artifact_kind = "linked-pe"
+source = "src/AnimationImmediateDrawWorldState.cpp"
+inputs = ["src/AnimationImmediateDraw.hpp", "src/AnimationExecution.hpp", "src/MainRuntime.hpp", "src/RenderBatch.hpp"]
+support_sources = ["probes/animation-immediate-world-state-context.cpp", "src/RenderBatch.cpp"]
+output_dir = "build/match-linked/AnimationImmediateDrawWorldState"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationWorldStateProbe@8"
+functions = ["ApplyAnimationVmWorldState"]
+symbol = "?ApplyAnimationVmWorldState@RenderBatchView@@QAEXPAUAnimationVmView@@@Z"
+target_address = 0x44f4b0
+size = 600
+linkages = [
+  { offset = 0x21, type = "REL32", symbol = "?FlushRenderBatch@@YGXPAURenderBatchView@@@Z", target = 0x44fd10, addend = 0x0 },
+  { offset = 0x4a, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 0x62, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 0x7a, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 0x96, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 0xae, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 0xc8, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 0xdc, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 0x1bc, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 0x1f7, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 0x21e, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8 },
+  { offset = 0x1b1, type = "REL32", symbol = "?FlushRenderBatch@@YGXPAURenderBatchView@@@Z", target = 0x44fd10, addend = 0x0 },
+  { offset = 0x1e1, type = "REL32", symbol = "?FlushRenderBatch@@YGXPAURenderBatchView@@@Z", target = 0x44fd10, addend = 0x0 },
+  { offset = 0x45, type = "DIR32", symbol = "?ApplyAnimationVmWorldState@RenderBatchView@@QAEXPAUAnimationVmView@@@Z", target = 0x44f4b0, addend = 0x23c },
+  { offset = 0x23c, type = "DIR32", symbol = "?ApplyAnimationVmWorldState@RenderBatchView@@QAEXPAUAnimationVmView@@@Z", target = 0x44f4b0, addend = 0x49 },
+  { offset = 0x240, type = "DIR32", symbol = "?ApplyAnimationVmWorldState@RenderBatchView@@QAEXPAUAnimationVmView@@@Z", target = 0x44f4b0, addend = 0x61 },
+  { offset = 0x244, type = "DIR32", symbol = "?ApplyAnimationVmWorldState@RenderBatchView@@QAEXPAUAnimationVmView@@@Z", target = 0x44f4b0, addend = 0x79 },
+  { offset = 0x248, type = "DIR32", symbol = "?ApplyAnimationVmWorldState@RenderBatchView@@QAEXPAUAnimationVmView@@@Z", target = 0x44f4b0, addend = 0x91 },
+  { offset = 0x24c, type = "DIR32", symbol = "?ApplyAnimationVmWorldState@RenderBatchView@@QAEXPAUAnimationVmView@@@Z", target = 0x44f4b0, addend = 0x95 },
+  { offset = 0x250, type = "DIR32", symbol = "?ApplyAnimationVmWorldState@RenderBatchView@@QAEXPAUAnimationVmView@@@Z", target = 0x44f4b0, addend = 0xc5 },
+  { offset = 0x254, type = "DIR32", symbol = "?ApplyAnimationVmWorldState@RenderBatchView@@QAEXPAUAnimationVmView@@@Z", target = 0x44f4b0, addend = 0xad },
+]
+
 [units.draw-animation-renderer-layer]
 artifact_kind = "linked-pe"
 source = "src/AnimationRendererDispatch.cpp"
 inputs = ["src/AnimationRendererDispatch.hpp"]
-support_sources = ["probes/animation-renderer-dispatch-context.cpp", "src/AnimationVm.cpp", "src/StageLifecycle.cpp", "src/AnimationImmediateDraw.cpp", "src/AnimationRendererLifecycle.cpp"]
+support_sources = ["probes/animation-renderer-dispatch-context.cpp", "src/AnimationVm.cpp", "src/StageLifecycle.cpp", "src/AnimationImmediateDraw.cpp", "src/AnimationImmediateDrawWorldState.cpp", "src/RenderBatch.cpp", "src/AnimationRendererLifecycle.cpp"]
 output_dir = "build/match-linked/AnimationRendererDispatch"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "AnimationRendererDispatchProbe@12"
@@ -2481,7 +2517,7 @@ linkages = [
 artifact_kind = "linked-pe"
 source = "src/AnimationRendererDispatch.cpp"
 inputs = ["src/AnimationRendererDispatch.hpp"]
-support_sources = ["probes/animation-renderer-dispatch-context.cpp", "src/AnimationVm.cpp", "src/StageLifecycle.cpp", "src/AnimationImmediateDraw.cpp", "src/AnimationRendererLifecycle.cpp"]
+support_sources = ["probes/animation-renderer-dispatch-context.cpp", "src/AnimationVm.cpp", "src/StageLifecycle.cpp", "src/AnimationImmediateDraw.cpp", "src/AnimationImmediateDrawWorldState.cpp", "src/RenderBatch.cpp", "src/AnimationRendererLifecycle.cpp"]
 output_dir = "build/match-linked/AnimationRendererDispatch"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "AnimationRendererDispatchProbe@12"
