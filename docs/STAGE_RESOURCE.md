@@ -5,7 +5,7 @@ non-exact; the VM binding cleanup in `VM_BINDINGS.md` is independently exact.
 
 | Function | Native span | Native / source bytes | Unequal diagnostic positions |
 | --- | --- | ---: | ---: |
-| `LoadStageResource` | `0x00403FC0..0x004040E8` | 297 /297 | 17 |
+| `LoadStageResource` | `0x00403FC0..0x004040E8` | 297 /297 | 20 non-field bytes; 84/99 instructions aligned |
 | `BeginLoadAnimationDocument` | `0x00454190..0x00454355` | 454 /434 | 337 |
 | `AcquireAnimationDocument` | `0x00454360..0x004543DB` | 124 /131 | 80 |
 
@@ -32,10 +32,24 @@ failure logs and returns-1 with the copy retained.
 
 Success derives the object-offset table immediately after the typed
 `StageBlobHeaderView` (`data + 1`, statically checked as 0x90 bytes), and section
-pointers from the relative DWORDs at header+4/+8. The typed table boundary
-produces the same complete 297-byte, 82/99-instruction focused VC9 `/GL`
-candidate as the original raw `base + 0x90` expression; no fabricated
-instructions or padding are introduced. The signed16-bit object count at+0 controls in-place
+pointers from the relative DWORDs at header+4/+8. The typed table boundary produces the same complete 297-byte focused VC9 `/GL`
+candidate as the original raw `base + 0x90` expression; no fabricated instructions
+or padding are introduced.
+
+### Real ResourceFile call graph (2026-11-20)
+
+The dedicated `load-stage-resource-real-callee-frontier` builds
+StageResource.cpp as the primary TU and links the real ResourceFile.cpp,
+archive lookup/decompression, byte cipher and runtime critical-section
+implementations. This replaces the generic LoadResourceFile link anchor.
+The call now reproduces the native private EAX filename input with size and
+mode on the stack, rather than pushing the filename as a third stack argument.
+The complete 297-byte candidate aligns 84/99 native instructions (up from
+82/99 in the anchor-only context); 20 same-offset bytes outside candidate
+relocation fields still differ. This remains diagnostic, not exact. The
+remaining caller-side differences include the size/data register schedule,
+AcquireAnimationDocument private ECX/EBX inputs, section-pointer register
+order and the final VM-count register assignment. The signed16-bit object count at+0 controls in-place
 pointer relocation by adding the copied-data base. The signed16-bit VM count
 at+2 is multiplied by `sizeof(StageEmbeddedVm)` (statically checked as
 0x434) for malloc. Its return is published without a null check, and the

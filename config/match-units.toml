@@ -1256,6 +1256,24 @@ linkages = [
   { offset = 579, type = "DIR32", symbol = "?g_AnimationTimeScale@@3MA", target = 0x4a7948, addend = 0x0 },
 ]
 
+
+# Diagnostic call-graph closure for LoadStageResource: include the real
+# ResourceFile/archive/runtime producer instead of the generic link anchor.
+[units.load-stage-resource-real-callee-frontier]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/StageResource.cpp"
+inputs = ["src/StageResource.hpp", "src/ResourceFile.hpp", "src/Archive.hpp", "src/ByteCipher.hpp", "src/SharedFile.hpp", "src/RuntimeCritical.hpp", "src/MainRuntime.hpp"]
+support_sources = ["src/StageLifecycle.cpp", "src/StageCallbacks.cpp", "probes/stage-lifecycle-context.cpp", "src/AnimationDocument.cpp", "src/ErrorLog.cpp", "src/LogBuffer.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/VmBindings.cpp", "src/ResourceFile.cpp", "src/Archive.cpp", "src/ArchiveDecompress.cpp", "src/ArchiveLookup.cpp", "src/ByteCipher.cpp", "src/RuntimeCritical.cpp", "probes/resource-file-context.cpp", "probes/archive-read-context.cpp"]
+output_dir = "build/match-linked/StageResourceResourceFileFrontier"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageLifecycleProbe@24"
+functions = ["LoadStageResource"]
+symbol = "?LoadStageResource@@YGHPAUStageResourceView@@PBD@Z"
+target_address = 0x00403FC0
+size = 297
+linkages = []
+
 [units.stage-draw-callback]
 artifact_kind = "linked-pe"
 source = "src/StageCallbacks.cpp"
