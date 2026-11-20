@@ -7,7 +7,7 @@ frontier results are:
 | Native owner | Native size | Candidate PDB contribution | Aligned native instructions | State |
 | --- | ---: | ---: | ---: | --- |
 | CullStageObject (0x403950) | 1,643 B | 1,644 B | 362/504 | Nonexact |
-| DrawStageLayer (0x404190) | 727 B | 754 B | 134/191 | Nonexact |
+| DrawStageLayer (0x404190) | 727 B | 738 B | 134/191 | Nonexact |
 
 These are diagnostic frontiers, not strict replay results. The original
 translation-unit ownership and remaining byte/relocation differences are
@@ -95,12 +95,14 @@ this recovers the native pointer-load placement for both X and Y. The focused
 At the earlier anchor-only checkpoint the candidate was 731 bytes and
 alignment improved from 112/191 to **127/191**. Linking the real camera,
 render-batch and VM-draw callees raised that checkpoint to 742 bytes and
-134/191. The current caller also passes the private culler camera input in
-EAX, yielding a 754-byte / 134-of-191 candidate. The owner remains nonexact:
-VC9 materializes each quotient to a stack temporary across the flag update,
-whereas native code leaves it in ST(0), updates the register-held flags, stores
-the flags, then writes the quotient directly. The stage/section pointer
-register lifetimes and 27-byte contribution gap also remain open. VM mode bits 0x03C00000 select fog;
+134/191. Modelling the private culler camera input in EAX then moved it to
+754 bytes / 134-of-191. The X/Y scale locals are now `double`, with an explicit
+conversion to float only at the VM store. This keeps the x87 quotient in ST(0)
+across the integer flag update and removes the prior stack spill/reload,
+reducing the complete candidate to **738 bytes** while retaining 134/191
+aligned instructions. The owner remains nonexact: stage/section pointer
+register lifetimes, command/object traversal, register allocation and the
+11-byte contribution gap remain open. VM mode bits 0x03C00000 select fog;
 bit 0x800 controls Z writing. State changes flush the renderer before D3D9
 state updates. Drawing calls the maintained DrawAnimationVmByMode owner.
 Accepted objects and drawn primitives update their respective stage
@@ -125,6 +127,7 @@ instruction-alignment counts are diagnostics and are not additive.
 | Reverse the equivalent Y extrema comparisons (`point.y > min/max`) | 1,648 B / 352 of 504 aligned | Same ordered and unordered behavior, with a better VC9 x87 branch schedule |
 | Reverse the equivalent X extrema comparisons (`point.x >= min`, `point.x > max`) | 1,648 B / 361 of 504 aligned | Preserves the asymmetric X predicates while improving the same x87 branch schedule |
 | Keep `vmFlags` live and load sprite dimensions inside each scale branch | 731 B / 127 of 191 aligned in the anchor-only context | Recovers native branch-local pointer loads and 11 more instruction keys; x87 quotient spill remains open |
+| Hold X/Y scale quotients in `double` and cast only at the VM store | 738 B / 134 of 191 in the real-callee/private-camera context | Keeps the x87 quotient live across flag updates and removes both stack spill/reloads |
 
 The current indexed loop visits projected[group * 6 + 0..5] for two groups.
 It preserves all twelve samples and their order. Earlier pointer-cursor and
@@ -144,10 +147,11 @@ pointer in EAX and the callee copies it to ESI at entry.
 
 With these callees present, the earlier complete candidate was 742 bytes
 with 134/191 aligned instructions. Modelling the culler's private camera input
-as a fourth source parameter, passed by the linked caller in EAX, moves the
-layer candidate to 754 bytes while retaining 134/191 aligned instructions.
+as a fourth source parameter, passed by the linked caller in EAX, moved the
+layer candidate to 754 bytes. The `double` X/Y ratio locals then removed the
+x87 spill/reloads and reduced it to **738 bytes**, still 134/191 aligned.
 The result remains non-exact: stage and section pointer register lifetimes,
-command/object traversal, x87 quotient spills and the 27-byte contribution-size
+command/object traversal, register allocation and the 11-byte contribution-size
 gap remain open. The unit declaration in
 `config/match-units.toml` records the support-source closure.
 
