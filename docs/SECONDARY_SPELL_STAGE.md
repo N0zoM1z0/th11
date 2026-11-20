@@ -345,23 +345,21 @@ Its natural C++ adapter compiles to `push edi; mov edi,ecx; call; pop edi; ret`.
 The native class/TU attribution is still unknown, and this exact callback
 result does not prove the 624-byte updater exact. The updater candidate
 has the exact native extent: **624 bytes versus 624 bytes**. A normalized
-instruction comparison now aligns **161 of 167 native instructions** against
-165 candidate instructions (96.99%). This improves on 143/167 (85.37%) when
-the score-rounding denominator is represented by a real local
-`const volatile int roundingBase = 10`. VC9 then emits the native signed
-`cdq; idiv esi; sub ecx, edx` computation instead of a strength-reduced
-constant-multiply remainder. The candidate still performs a separate local
-store/load of the divisor, unlike native's one `mov esi,10`, so these are
-**not exact updater bytes**. Swapping the two natural local
-declarations in the event-3 follower loop makes VC9 load the follower cursor
-into ESI before setting EBX=3, as native does. The remaining differences include
-event-3 loop-target alignment / jump layout and the Z interpolation's x87
-load/add order. This is normal C++ with a stable divisor and no assembly,
-byte patches or padding. The focused 2026-11-19 complete-owner diff after both changes is
-`.analysis/spell-update-follower-declaration-20261119.diff`. Modeling timer advance
-as `StageTimerView::Advance()` keeps the original update callback saving EDI,
-the updater's EDI stage receiver and ESI timer setup.
-
+instruction comparison now aligns **165 of 167 native instructions** against
+167 candidate instructions (98.80%). Replacing the earlier volatile divisor
+with an ordinary local `int roundingBase = 10` retains the native signed
+`cdq; idiv esi; sub ecx, edx` computation and recovers its register form
+(`mov esi,10`) without a separate stack store/load. The signed remainder and
+round-toward-zero score behavior are unchanged. The follower-pointer
+declaration order restores the native ESI-before-EBX setup in the event-3
+loop. The only remaining normalized instruction-key difference is the final
+Z interpolation's x87 operand order: the target loads rounded `scaled.z`
+before adding `position.z`, while VC9 loads `position.z` before adding
+rounded `scaled.z`. This is normal C++ with no assembly, byte patches or
+padding. The focused 2026-11-20 comparison is retained in
+`.analysis/spell-update-divisor-plain-local-20261120`.
+Modeling timer advance as `StageTimerView::Advance()` keeps the original update
+callback saving EDI, the updater's EDI stage receiver and ESI timer setup.
 The private `FindSecondarySpellVm` C++ fastcall adapter is 79/79 bytes
 identical to the existing exact `FindAnimationVmById` owner at 0x4561E0.
 It preserves the native hidden context in ECX, renderer in EDX, and single

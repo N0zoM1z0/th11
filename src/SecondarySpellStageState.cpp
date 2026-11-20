@@ -137,7 +137,7 @@ int __stdcall UpdateSecondarySpellStageState(SecondarySpellStageView *self)
                 (self->scoreDuration - 300);
             int score = self->score - reduction;
             // Retain the signed remainder path used by the original updater.
-            const volatile int roundingBase = 10;
+            int roundingBase = 10;
             self->score = score - score % roundingBase;
         }
 
