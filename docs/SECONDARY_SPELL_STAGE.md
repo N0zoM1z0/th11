@@ -391,11 +391,13 @@ The updater's position interpolation now keeps both `CameraVector *position`
 and `const CameraVector *target` live across the X/Y/Z difference, scale and
 writeback. VC9 consequently reuses ESI for the position base throughout the
 whole sequence and the final member call. This restores the native stack
-scratch layout and the native Z x87 operand order (`scaled.z + position.z`).
-The timer member is 83 bytes and has the native `inc` fast path, although its
-ECX/EDX local-register assignment still differs. The remaining updater gaps
-are the extra local load of the signed modulus, the event-3 follower
-branch register/control-flow schedule, and Z x87 addition order. The 256-byte registrar is independently
+scratch layout, but **not** the native Z x87 instruction order: VC9 still
+loads `position.z` before adding the rounded `scaled.z`, while the target
+loads `scaled.z` first. Several equivalent C++ spellings leave this difference
+unchanged. The timer member is 83 bytes and has the native `inc` fast path,
+although its ECX/EDX assignment still differs. The remaining updater gaps
+are the extra local load of the signed modulus, event-3 branch scheduling,
+and the Z x87 load/add order. The 256-byte registrar is independently
 strict exact. No callback is implemented with inline ASM or a hand-authored
 jump.
 ## Owning constructor, destructor and lifetime wrappers

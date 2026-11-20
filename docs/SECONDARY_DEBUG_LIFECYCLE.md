@@ -121,10 +121,11 @@ lists using the owner marker at +0x444C, clears the HUD singleton, and
 frees optional storage at +0x431C. The source retains the real C++ owner
 and all 16 embedded VM lifetimes.
 
-The latest focused VC9 /GL build of the current working tree produces
-a 741-byte / 195-instruction candidate against the native 729-byte /
-195-instruction owner. It remains nonexact; the current uncommitted
-unregister-path experiment is described in RE_HANDOFF.md.
+A focused VC9 /GL experiment produced a 741-byte / 195-instruction
+candidate against the native 729-byte / 195-instruction owner. That result
+remains nonexact; the tracked source currently uses the shared
+`UnregisterHudChain` helper. Older uncommitted experiments are not pending
+working-tree changes.
 
 ## Exact attraction-item pool reset (0x40D040, 25 bytes)
 
@@ -204,12 +205,11 @@ eight tracked IDs through the renderer lists, sets state bits 0x1C0
 and clears +0x43FC.
 
 The original body, caller, six callees and neighboring boundaries were
-reviewed. The latest focused VC9 /GL build of the current working tree
-is 477 bytes / 130 decoded instructions against native 468 bytes /
-128 instructions. The current dirty revision snapshots the renderer
-pointer once, uses volatile accesses for the first two precleanup IDs,
-and keeps the eight-ID countdown in a volatile do/while loop. It is
-still nonexact. The 150-byte factory and 28-byte global-destroy
+reviewed. A prior focused VC9 /GL experiment produced 477 bytes / 130
+decoded instructions against native 468 bytes / 128 instructions. The
+renderer snapshot, first-two-ID volatile accesses and volatile countdown
+were tested in that historical frontier, but it is nonexact and must not be
+mistaken for a pending dirty source change. The 150-byte factory and 28-byte global-destroy
 owners passed their focused exact replays after these edits; the
 101-byte dialogue leaf is independently exact but was not part of
 that two-unit replay.
@@ -546,13 +546,11 @@ ret handoff under VC9 /GL.
 
 ## 729-byte HUD destructor codegen frontier (0x41AFC0)
 
-The current dirty destructor revision removes the shared unregister
-helper and spells out the three conditional C++ unregister paths in
-the owner. It captures LeaveCriticalSection in a register local, calls
-EnterCriticalSection directly, and reloads the chain-manager singleton
-for each non-null chain. The fresh focused VC9 /GL owner is
-741 bytes / 195 instructions versus native 729 / 195. This supersedes
-the earlier 725-byte / 192-instruction experiment and remains nonexact.
-The dependent 150-byte factory and 28-byte global-destruction owners
-were cold-replayed after the current dirty changes and both remain
-exact with zero byte differences.
+An earlier experimental destructor version removed the shared unregister
+helper, expanded the three conditional C++ unregister paths, and reloaded
+the chain-manager singleton separately. Its focused VC9 /GL contribution
+was 741 bytes / 195 instructions versus native 729 / 195; it superseded
+an older 725-byte / 192-instruction trial but remains nonexact. The tracked
+source currently retains `UnregisterHudChain` and there are no pending dirty
+unregister edits. The dependent 150-byte factory and 28-byte global-destroy
+owners passed their separately selected cold replays in that earlier work.

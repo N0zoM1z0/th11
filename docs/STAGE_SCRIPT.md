@@ -284,9 +284,11 @@ Two 2026-11-19 natural-C++ changes produced the current result:
   This adapter is a code-generation experiment, not a claim about the original
   source-level API or ownership.
 
-The current comparison is
-`.analysis/stage-script-double-angle-combined-20261119.diff`. The changed
-source uses ordinary C++; no target instructions or padding are inserted.
+The current complete-owner comparison is
+`.analysis/stage-script-final-current-20261120.log` (2,696 bytes,
+581/610 keys). The older double-angle diff records an intermediate
+2,712-byte checkpoint, not the current source. No target instructions or
+padding are inserted.
 The StageTween-family exact dependencies were selectively rebuilt and
 compared after the source change; see the retained affected-unit logs.
 
