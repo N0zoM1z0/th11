@@ -58,8 +58,8 @@ Instruction-key alignment is diagnostic only:
 | Owner | Native / candidate | Matched keys | Next concrete issue |
 | --- | --- | ---: | --- |
 | `ExecuteStageScript` (`0x404470`) | 2,736 / 2,692 B | 582/610 | Opcode 8 channel spill schedule, fog/tween return buffers, oscillator x87 scheduling, EH/funclet ownership |
-| `CullStageObject` (`0x403950`) | 1,643 / 1,648 B | 361/504 | Private EAX camera argument, projected-point x87/local register schedule |
-| `DrawStageLayer` (`0x404190`) | 727 / 742 B | 134/191 | Real callees now linked; stage/section register placement, culler EAX live-in, x87 quotient spill and 15-byte size gap |
+| `CullStageObject` (`0x403950`) | 1,643 / 1,644 B | 362/504 | Private EAX camera input now modelled by the fourth source parameter; projected-point x87/local register schedule |
+| `DrawStageLayer` (`0x404190`) | 727 / 754 B | 134/191 | Real callees and culler EAX input linked; stage/section register placement, x87 quotient spill and 27-byte size gap |
 | `InitializePrimaryStageScripts` (`0x405030`) | 249 / 246 B | 68/78 | Early callee-saved pushes, stack layout and final store/return scheduling |
 | `LoadStageResource` (`0x403FC0`) | 297 / 297 B | 82/99 | Filename-call and size-register scheduling, section pointer and VM-count register assignment |
 | `UpdateSecondarySpellStageState` (`0x40C0A0`) | 624 / 624 B | 161/167 | Signed modulus spill, event-3 loop entry and Z x87 load/add order |
@@ -81,15 +81,17 @@ large initializer's linked 246-byte result is newer than its historical
 C++ expression still emits the *wrong x87 operand load order*; multiple
 mathematically equivalent C++ trials did not resolve that difference.
 
-The `DrawStageLayer` frontier now links the real camera, render-batch flush,
-and immediate VM-draw implementations with their direct source dependencies.
-This changes the diagnostic candidate from 731/127 to 742 bytes and 134/191
-aligned instructions; it is still non-exact. `CullStageObject` also has a
-private EAX camera input: its only caller loads `g_MainRuntime + 0x434` into
-EAX at `0x404241`, while the natural C++ candidate reads the published camera
-pointer from `FrameRuntime().activeCamera`. Keep this as an explicit ABI gap;
-do not fake it with assembly or a false formal signature. Do not promote these
-functions based on instruction alignment or size alone.
+The `DrawStageLayer` frontier links the real camera, render-batch flush and
+immediate VM-draw implementations with their direct source dependencies. The
+real-callee anchor-only candidate was 742 bytes / 134/191; modelling the
+culler's private camera input as a fourth source parameter now produces a
+754-byte / 134/191 layer candidate. `CullStageObject` itself is 1,644 bytes
+with 362/504 aligned instructions. Its sole caller loads `g_MainRuntime +
+0x434` into EAX, and the focused `/GL` caller/callee pair now passes that
+pointer in EAX; the candidate callee copies EAX to ESI at entry. The fourth
+source parameter models this private LTCG live-in, not a new public stack
+argument. Both owners remain non-exact. Do not promote them based on
+instruction alignment or size alone.
 
 ## Efficient continuation
 

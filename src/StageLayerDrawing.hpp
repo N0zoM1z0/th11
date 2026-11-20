@@ -36,6 +36,9 @@ typedef char StageLayerRecordSize[(sizeof(StageLayerRecord) == 0x10) ? 1 : -1];
 typedef char StageObjectCommandsOffset[(offsetof(StageObjectDrawView, commands) == 0x1c) ? 1 : -1];
 typedef char StagePrimitiveDrawSize[(sizeof(StagePrimitiveDrawView) == 0x1c) ? 1 : -1];
 
+// The fourth source parameter models the private perspective-camera input
+// that the native caller places in EAX; the focused /GL pair keeps it there.
 int __fastcall CullStageObject(const StageObjectDrawView *object,
-    const CameraVector *offset, float maxDistanceSquared);
+    const CameraVector *offset, float maxDistanceSquared,
+    const PerspectiveCameraView *camera);
 int __stdcall DrawStageLayer(StageResourceView *self, int layer);

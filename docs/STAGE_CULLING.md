@@ -6,8 +6,8 @@ frontier results are:
 
 | Native owner | Native size | Candidate PDB contribution | Aligned native instructions | State |
 | --- | ---: | ---: | ---: | --- |
-| CullStageObject (0x403950) | 1,643 B | 1,648 B | 361/504 | Nonexact |
-| DrawStageLayer (0x404190) | 727 B | 742 B | 134/191 | Nonexact |
+| CullStageObject (0x403950) | 1,643 B | 1,644 B | 362/504 | Nonexact |
+| DrawStageLayer (0x404190) | 727 B | 754 B | 134/191 | Nonexact |
 
 These are diagnostic frontiers, not strict replay results. The original
 translation-unit ownership and remaining byte/relocation differences are
@@ -18,18 +18,23 @@ still open. The native bodies and their callers were reviewed in Ghidra.
 The native function has three formal `__fastcall` parameters: the stage
 object, layer offset and maximum squared distance. The original body also
 consumes the active perspective camera through a private EAX input. Its only
-caller at `0x00404241` loads EAX with `0x004C36B4` (`g_MainRuntime + 0x434`),
-the embedded perspective camera, immediately before the call. The callee
-copies EAX into ESI and reads the camera position and eye offset through it.
+caller loads EAX with `0x004C36B4` (`g_MainRuntime + 0x434`) at
+`0x00404222`, then calls the culler at `0x00404241`. The callee copies EAX into
+ESI and reads the camera position and eye offset through it.
 The caller also publishes that camera in `FrameRuntime().activeCamera`.
 
-The natural C++ source models the three explicit fastcall arguments and reads
-the published camera from the runtime view; the candidate consequently loads
-the pointer from the global field instead of consuming the incoming EAX value.
-A direct `&g_MainRuntime + 0x434` source variant folded the camera fields into
-absolute memory operands and reduced alignment to 346/504, so it was rejected.
-The private EAX live-in remains an ABI gap; it is not replaced with assembly or
-a fabricated formal argument.
+The natural C++ source models the three public fastcall arguments plus a
+fourth source-level parameter for the private camera input. The sole caller
+passes the embedded camera pointer used by `ApplyPerspectiveCamera`; the
+focused VC9 `/GL` call graph assigns that parameter to EAX, and the candidate
+callee begins by copying EAX to ESI, matching the native entry. This does not
+claim that the native decorated public signature has a fourth stack argument:
+the fourth source parameter models the private LTCG live-in. It is carried in
+EAX without assembly or a fabricated stack argument.
+
+The focused candidate is now 1,644 bytes with 362/504 aligned instructions,
+up from the previous 1,648-byte / 361-key global-camera version. The remaining
+projection/local schedule and the one-byte contribution gap are still open.
 
 It first computes the object center in world space using the layer offset,
 then adds the camera eye offset to the camera position. The squared distance
@@ -66,7 +71,9 @@ changing clipping or dropping samples.
 ## DrawStageLayer: native algorithm
 
 The dispatcher selects and publishes the runtime camera, applies perspective,
-then reloads the published active camera before setting the D3D viewport.
+then reloads the published active camera before setting the D3D viewport. The
+culler separately receives the embedded camera pointer used for perspective
+application through its private EAX input.
 It sets the renderer's stage-mode flag and scans the 16-byte records at
 stage->section004 until a negative signed-16 object index.
 
@@ -85,12 +92,15 @@ updates, mirrors the resulting flag value back to the VM, and reuses that
 local for the subsequent fog and Z-mode tests. Each sprite-dimension pointer
 is now loaded inside its own nonzero-scale branch, after the native zero test;
 this recovers the native pointer-load placement for both X and Y. The focused
-candidate is 731 bytes and instruction alignment improves from 112/191 to
-**127/191**. Four bytes of owner extent and the x87 quotient spill/reload remain
-open: VC9 materializes each quotient to a stack temporary across the flag
-update, whereas native code leaves it in ST(0), updates the register-held
-flags, stores the flags, then writes the quotient directly. The owner remains
-nonexact. VM mode bits 0x03C00000 select fog;
+At the earlier anchor-only checkpoint the candidate was 731 bytes and
+alignment improved from 112/191 to **127/191**. Linking the real camera,
+render-batch and VM-draw callees raised that checkpoint to 742 bytes and
+134/191. The current caller also passes the private culler camera input in
+EAX, yielding a 754-byte / 134-of-191 candidate. The owner remains nonexact:
+VC9 materializes each quotient to a stack temporary across the flag update,
+whereas native code leaves it in ST(0), updates the register-held flags, stores
+the flags, then writes the quotient directly. The stage/section pointer
+register lifetimes and 27-byte contribution gap also remain open. VM mode bits 0x03C00000 select fog;
 bit 0x800 controls Z writing. State changes flush the renderer before D3D9
 state updates. Drawing calls the maintained DrawAnimationVmByMode owner.
 Accepted objects and drawn primitives update their respective stage
@@ -127,14 +137,19 @@ of `ApplyPerspectiveCamera`, `FlushRenderBatch`, and `DrawAnimationVmByMode`,
 plus their projected-quad, VM-draw, quad and render-batch dependencies. This
 replaces generic external call anchors with the real VC9 `/GL` call context.
 The target's private inputs are EDI for `ApplyPerspectiveCamera`, ESI for
-`FlushRenderBatch`, and EAX/ECX for `DrawAnimationVmByMode` (VM/renderer).
+`FlushRenderBatch`, EAX/ECX for `DrawAnimationVmByMode` (VM/renderer), and EAX
+for the culler camera pointer. The layer's fourth source-level culler argument
+models this last private live-in; the linked caller passes the embedded camera
+pointer in EAX and the callee copies it to ESI at entry.
 
-With these callees present, the complete candidate contribution is 742 bytes
-and the instruction-key alignment is 134/191, up from 731 bytes and 127/191
-in the earlier anchor-only context. The result remains non-exact: stage and
-section pointer register lifetimes, command/object traversal, x87 quotient
-spills and the 15-byte contribution-size gap remain open. The unit declaration
-in `config/match-units.toml` records the support-source closure.
+With these callees present, the earlier complete candidate was 742 bytes
+with 134/191 aligned instructions. Modelling the culler's private camera input
+as a fourth source parameter, passed by the linked caller in EAX, moves the
+layer candidate to 754 bytes while retaining 134/191 aligned instructions.
+The result remains non-exact: stage and section pointer register lifetimes,
+command/object traversal, x87 quotient spills and the 27-byte contribution-size
+gap remain open. The unit declaration in
+`config/match-units.toml` records the support-source closure.
 
 ## Focused build and comparison
 
