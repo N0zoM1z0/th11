@@ -139,6 +139,7 @@ int __stdcall ExecuteStageScript(StageResourceView *self)
             const int green = color[1];
             const int blue = color[2];
             const int alpha = color[3];
+            _ReadWriteBarrier();
             fog.channels[0] = static_cast<float>(red);
             fog.channels[1] = static_cast<float>(green);
             fog.channels[2] = static_cast<float>(blue);

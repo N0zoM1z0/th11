@@ -57,7 +57,7 @@ Instruction-key alignment is diagnostic only:
 
 | Owner | Native / candidate | Matched keys | Next concrete issue |
 | --- | --- | ---: | --- |
-| `ExecuteStageScript` (`0x404470`) | 2,736 / 2,696 B | 581/610 | Opcode 8 packed-color codegen, fog/tween return buffers, oscillator x87 scheduling, EH/funclet ownership |
+| `ExecuteStageScript` (`0x404470`) | 2,736 / 2,692 B | 582/610 | Opcode 8 channel spill schedule, fog/tween return buffers, oscillator x87 scheduling, EH/funclet ownership |
 | `CullStageObject` (`0x403950`) | 1,643 / 1,648 B | 361/504 | Private EAX camera argument, projected-point x87/local register schedule |
 | `DrawStageLayer` (`0x404190`) | 727 / 742 B | 134/191 | Real callees now linked; stage/section register placement, culler EAX live-in, x87 quotient spill and 15-byte size gap |
 | `InitializePrimaryStageScripts` (`0x405030`) | 249 / 246 B | 68/78 | Early callee-saved pushes, stack layout and final store/return scheduling |

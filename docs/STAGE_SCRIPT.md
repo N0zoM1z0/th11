@@ -6,7 +6,7 @@ section and reconciled its full extent, instruction flow, callers and tables.
 
 | Function | Full target owner | Source contribution | State |
 | --- | ---: | ---: | --- |
-| ExecuteStageScript,0x00404470 | 2,736 bytes through0x00404F1F | 2,696 bytes | Non-exact; 581/610 aligned instructions; EH/funclet ownership open |
+| ExecuteStageScript,0x00404470 | 2,736 bytes through0x00404F1F | 2,692 bytes | Non-exact; 582/610 aligned instructions; EH/funclet ownership open |
 | SeekStageScriptMarker,0x00404F20 | 113 bytes through0x00404F90 | 113 bytes | Exact normal-COFF, 2 relocations |
 | BeginSecondaryStageTransition,0x00405130 | 159 bytes through0x004051CE | 159 bytes | Exact normal-COFF, 6 relocations |
 | BeginPrimaryStageTransition,0x004051D0 | 103 bytes through0x00405236 | 103 bytes | Exact normal-COFF, 3 relocations |
@@ -253,8 +253,8 @@ fractional, infinite and NaN inputs were checked against the actual bodies.
 
 ## Current code-generation frontier
 
-The latest focused VC9 `/GL` build contributes **2,696 bytes** for the
-2,736-byte `ExecuteStageScript` owner, with **581/610** normalized native
+The latest focused VC9 `/GL` build contributes **2,692 bytes** for the
+2,736-byte `ExecuteStageScript` owner, with **582/610** normalized native
 instruction keys aligned (607 candidate instructions). The owner remains
 nonexact; byte/relocation equality and EH/funclet ownership are open.
 
@@ -285,10 +285,10 @@ Two 2026-11-19 natural-C++ changes produced the current result:
   source-level API or ownership.
 
 The current complete-owner comparison is
-`.analysis/stage-script-final-current-20261120.log` (2,696 bytes,
-581/610 keys). The older double-angle diff records an intermediate
-2,712-byte checkpoint, not the current source. No target instructions or
-padding are inserted.
+`.analysis/stage-script-color-barrier-after-channel-loads-final-20261120.log`
+(2,692 bytes, 582/610 keys). The older double-angle diff records an
+intermediate 2,712-byte checkpoint, not the current source. No target
+instructions or padding are inserted.
 The StageTween-family exact dependencies were selectively rebuilt and
 compared after the source change; see the retained affected-unit logs.
 
@@ -301,6 +301,14 @@ An unsigned int local instead adds inappropriate unsigned-to-float handling
 in VC9 and increases the candidate by 28 bytes. The old checkpoint was
 2,728 bytes and 531/610 aligned instructions; this one is 2,736 bytes and
 537/610, with no ASM or artificial byte padding.
+
+The 2026-11-20 opcode-8 follow-up adds `_ReadWriteBarrier()` after all four
+packed-byte channel snapshots and before their float stores. This prevents
+VC9 from scheduling the first FILD/channel write ahead of the remaining byte
+loads. The focused candidate drops from 2,696 to **2,692 bytes** and improves
+alignment from 581/610 to **582/610** (607 candidate instructions). The
+per-channel stack-slot/register schedule still differs from native, so this
+is a measured natural-C++ improvement, not an exact match or an ABI claim.
 
 The frontier now compiles `src/StageMesh.cpp` and
 `probes/stage-mesh-context.cpp` in their non-`/Oy-` profile. The probe keeps a
