@@ -46,10 +46,10 @@ AnimationDocumentView *__thiscall AnimationDocumentNameView::BeginLoad(
         ++textureCount;
     }
     file->textureCount = textureCount;
-    file->textures = static_cast<AnimationDocumentTextureView *>(malloc(textureCount * 20));
-    memset(file->textures, 0, textureCount * 20);
-    file->sprites = static_cast<AnimationSpriteView *>(malloc(spriteCount * 72));
-    file->scripts = static_cast<unsigned char **>(malloc(scriptCount * 4));
+    file->textures = static_cast<AnimationDocumentTextureView *>(malloc(textureCount * sizeof(*file->textures)));
+    memset(file->textures, 0, textureCount * sizeof(*file->textures));
+    file->sprites = static_cast<AnimationSpriteView *>(malloc(spriteCount * sizeof(*file->sprites)));
+    file->scripts = static_cast<unsigned char **>(malloc(scriptCount * sizeof(*file->scripts)));
     file->spriteCount = spriteCount;
     file->scriptCount = scriptCount;
     register AnimationChunkHeaderView *chunk = data;
