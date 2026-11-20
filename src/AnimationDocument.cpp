@@ -26,6 +26,8 @@ AnimationDocumentView *__thiscall AnimationDocumentNameView::BeginLoad(
     AnimationDocumentView *file = new AnimationDocumentView;
     if (file)
         memset(file, 0, sizeof(*file));
+    else
+        file = 0;
     reinterpret_cast<AnimationDocumentSlotsView *>(renderer)->files[index] = file;
     if (!data)
         return 0;
@@ -35,7 +37,7 @@ AnimationDocumentView *__thiscall AnimationDocumentNameView::BeginLoad(
     int scriptCount = data->scriptCount;
     int spriteCount = data->spriteCount;
     int textureCount = 1;
-    for (AnimationChunkHeaderView *chunk = data; chunk->nextOffset; )
+    for (register AnimationChunkHeaderView *chunk = data; chunk->nextOffset; )
     {
         chunk = reinterpret_cast<AnimationChunkHeaderView *>(
             reinterpret_cast<unsigned char *>(chunk) + chunk->nextOffset);
@@ -50,7 +52,7 @@ AnimationDocumentView *__thiscall AnimationDocumentNameView::BeginLoad(
     file->scripts = static_cast<unsigned char **>(malloc(scriptCount * 4));
     file->spriteCount = spriteCount;
     file->scriptCount = scriptCount;
-    AnimationChunkHeaderView *chunk = data;
+    register AnimationChunkHeaderView *chunk = data;
     while (chunk)
     {
         if (LoadAnimationChunkSource(file, chunkIndex, chunk) < 0)

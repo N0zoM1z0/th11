@@ -208,12 +208,25 @@ Those variants are kept only under `.analysis/advance-document-*`;
 the maintained advance source was not changed.
 
 
-## Real producer context for 221-byte source loader (2026-11-11)
+## Real producer context for document loading (2026-11-20)
 
-The source-present `BeginLoadAnimationDocument` at 0x454190 is the genuine
-producer of `LoadAnimationChunkSource` (0x4543E0). A compile-only dynamic
-source caller in `probes/animation-document-load-context.cpp` retains
-this parent-child relationship in a narrowly linked VC9 `/GL` family.
+The 454-byte BeginLoadAnimationDocument at 0x454190 is the genuine
+producer of LoadAnimationChunkSource (0x4543E0). A compile-only dynamic
+source caller in probes/animation-document-load-context.cpp retains
+this parent-child relationship in a narrowly linked VC9 /GL family.
+The natural member-function view passes the filename as ECX and carries the
+8-byte renderer/index context on the stack; the linked owner therefore keeps
+the native RET8 rather than the incorrect one-argument RET4 produced by
+the direct-parameter experiment.
+
+The latest focused producer gives a 450-byte BeginLoad body against the
+454-byte native span, with the correct 13-call shape and RET8. Normalized
+instruction alignment is 134/141; the remaining differences are concentrated
+in the chunk-count local store order, the initial null test, loop-back branch
+shape, and the final error/success join. This is meaningful source progress,
+not an exact match. The maintained code keeps the aggregate context and
+ordinary C++ chunk traversal; no assembly or padding is used.
+
 The source loader naturally recovers the native private arguments:
 ECX document, EBX texture index and a single stack chunk parameter,
 with `RET4`. The complete PDB contribution is **221/221 bytes**,
