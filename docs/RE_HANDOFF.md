@@ -1,121 +1,118 @@
-# TH11 reconstruction handoff — 2026-11-19
+# TH11 reconstruction handoff — 2026-11-20
 
-## Target and checkpoint
+## Start here
 
-Reconstruct only the original Japanese TH11 v1.00a executable:
-`resources/th11.exe`, 688,128 bytes, SHA-256
+The source baseline was verified on clean `main` at **`9accb5a`**
+(`gpt-web: express stage VM allocation with owned type size`). Subsequent
+handoff commits correct stale documentation/ledger notes and prune **ignored
+regenerable caches**, not game C/C++ source. Run `git status --short --branch`
+and `git log -8 --oneline` before continuing; any new dirty changes are the
+current agent's work to integrate, not a reason to skip a file.
+
+Work against **Japanese TH11 1.00a only**: private `resources/th11.exe`,
+688,128 bytes, SHA-256
 `2978b17f6184d100d249d4311348dd30c5c32ec75c014b667a525b797d3d8813`.
-The pinned compiler is Visual C++ 2008 RTM / VC9 build 21022. Preserve `/GL`
-for owners whose native code generation is LTCG-dependent.
+The code-generation target is **VC9 RTM build 21022**; retain `/GL` in
+LTCG owner contexts. Use the repository shell, `scripts/repo-python`, and
+`scripts/ghidra.py` for direct Ghidra analysis.
 
-This handoff was prepared from a clean `main` worktree at `d832f18`
-(`gpt-web: restore HUD renderer tail publication order`). The source checkpoint
-contains the recent exact-function work and the two large debug-HUD frontiers
-below. Documentation and storage cleanup are recorded separately in
-[ARTIFACTS](ARTIFACTS.md).
+## Canonical local progress
 
-## Current local inventory
+[PROGRESS](PROGRESS.md), generated from the ledgers, reports **2,175** tracked
+function candidates, **1,610** reviewed boundaries, **565** needing boundary
+review, **819** source mappings and **130** confirmed authored functions.
+It records **487 canonical exact functions / 54,214 exact code bytes**; **68**
+exact functions / **15,260 bytes** have confirmed authored origin. These
+numbers are *local exact-codegen ledger claims*, not native game closure or
+Factory-accepted Oracle coverage. Rerun `scripts/repo-python scripts/progress.py`
+only when canonical ledger status actually changes.
 
-`scripts/progress.py` generates [PROGRESS](PROGRESS.md). The current local
-ledger reports:
+Recently relevant selected exact owners include:
 
-- 2,175 tracked candidates; 1,610 reviewed boundaries; 565 still need review.
-- 516 origins pending; 130 confirmed authored functions.
-- 819 source mappings.
-- 486 canonical exact functions covering 53,331 code bytes.
-- 67 canonical exact functions with authored origin, covering 14,377 bytes.
+| Function (target address) | Exact extent and proof lane |
+| --- | --- |
+| `InitializeStageResource` (`0x4024C0`) | 630/630 B; strict linked-PE `/GL` owner and reviewed fields |
+| `SeekStageScriptMarker` (`0x404F20`) | 113/113 B; normal COFF, two relocations |
+| `BeginPrimaryStageTransition` (`0x4051D0`) | 103/103 B; normal COFF, three relocations |
+| `StepStageVectorTween` (`0x405240`) | 883/883 B; linked PE, four relocations |
+| `StepStageFogTween` (`0x4055D0`) | 737/737 B; linked PE, sixteen relocations |
 
-These are repository-local ledger counts, not whole-game closure. The Factory
-inspection still reports 2,175 inventory subjects, zero imported Oracle
-results, and an `inventory-import-only` warning. Do not describe local exact
-rows as Factory-accepted facts or as a complete native product.
+The stage marker, transition and both tween owners passed a **selected four-unit
+cold replay** in the retained `.analysis/` logs. The stage initializer also
+passed an independent **one-unit** replay after the two natural C++ typed
+layout refinements. The exact status of other owners is in
+`config/matches.csv`; a source mapping or byte-length match is not a proof.
 
-## Recent strict exact owners
+## Large functions still in progress
 
-The recent focused work added or reconfirmed these complete natural-C++ owners:
+These are **nonexact**, measured on their focused natural-C++ VC9 frontiers.
+Instruction-key alignment is diagnostic only:
 
-- `LoadReplayStageData` at `0x436B60`: 441/441 bytes, 137 instructions,
-  18 reviewed relocation fields; selected strict cold replay passed.
-- `SecondaryAngleMath` at `0x40B900`: 34/34 bytes, 12 instructions and one
-  `REL32` to `__CIatan2`; selected strict cold replay passed.
-- `SecondaryUnaryMathB` at `0x419660`: 31/31 bytes, 10 instructions and one
-  `REL32` to `__CIcos`; selected strict cold replay passed.
-- `SecondaryAngleDifference40B830` and `SecondaryWrappedAngleDifference`:
-  separate 101-byte owners, each with 34 instructions and three reviewed
-  pi/tau fields; both passed selected strict replay.
-- `SecondaryAngleDifference4287A0`: 101 bytes, 34 instructions and three
-  reviewed pi/tau fields; strict replay passed.
-- `SecondaryViewportPoint428850::IsOutside`: 93 bytes, four ordered rectangle
-  tests and four reviewed float-constant fields; strict replay passed.
-- `SetSecondaryIntegerPlayerPosition` at `0x435630`: 110/110 bytes,
-  22 instructions and two reviewed address fields; strict replay passed.
-- `SecondarySpellUpdateCallback` (10 bytes) and
-  `SecondarySpellDrawCallback` (7 bytes) remain independently exact; their
-  updater/draw owners have separate proof states.
+| Owner | Native / candidate | Matched keys | Next concrete issue |
+| --- | --- | ---: | --- |
+| `ExecuteStageScript` (`0x404470`) | 2,736 / 2,696 B | 581/610 | Opcode 8 packed-color codegen, fog/tween return buffers, oscillator x87 scheduling, EH/funclet ownership |
+| `CullStageObject` (`0x403950`) | 1,643 / 1,648 B | 361/504 | Private EAX camera argument, projected-point x87/local register schedule |
+| `DrawStageLayer` (`0x404190`) | 727 / 731 B | 127/191 | X/Y quotient stack spill, private stage/culling call convention, four-byte extent gap |
+| `InitializePrimaryStageScripts` (`0x405030`) | 249 / 246 B | 68/78 | Early callee-saved pushes, stack layout and final store/return scheduling |
+| `LoadStageResource` (`0x403FC0`) | 297 / 297 B | 82/99 | Filename-call and size-register scheduling, section pointer and VM-count register assignment |
+| `UpdateSecondarySpellStageState` (`0x40C0A0`) | 624 / 624 B | 161/167 | Signed modulus spill, event-3 loop entry and Z x87 load/add order |
+| `InitializeSecondaryDebugHudAnimations` (`0x41A6D0`) | 1,619 / 1,619 B | 385/402 | Initial return buffer, frame reservation, zero-ID wrap and retained animation scheduling |
+| `SecondaryEclDebugOwner::~SecondaryEclDebugOwner` (`0x40D320`) | 462 / 462 B | 126/127 | One compiler-generated EH state initializer (`1` native vs `0` candidate) |
+| `InitializeSecondarySpellStage` (`0x40C650`) | 1,777 B native | diagnostic | Real caller uses EAX spell-name pointer and two stack integers, not three stack arguments |
 
-See [SECONDARY_PAIR_MATH](SECONDARY_PAIR_MATH.md),
-[SECONDARY_SCRIPT](SECONDARY_SCRIPT.md), [SECONDARY_REPLAY_LIFECYCLE](SECONDARY_REPLAY_LIFECYCLE.md)
-and [SECONDARY_SPELL_STAGE](SECONDARY_SPELL_STAGE.md) for the individual
-contracts and evidence.
+Read [STAGE_SCRIPT](STAGE_SCRIPT.md), [STAGE_CULLING](STAGE_CULLING.md),
+[STAGE_RESOURCE](STAGE_RESOURCE.md), [STAGE_TWEEN](STAGE_TWEEN.md),
+[SECONDARY_SPELL_STAGE](SECONDARY_SPELL_STAGE.md) and
+[SECONDARY_DEBUG_LIFECYCLE](SECONDARY_DEBUG_LIFECYCLE.md) for native
+observations, original owner extents and failed code-generation trials.
 
-## Active large-function frontiers
+**Important known traps:** `ExecuteStageScript` owns two internal switch tables
+(100 B) within its complete 2,736-byte target extent. Do not crop either or
+confuse compiler-generated EH handlers with the public function body. The
+large initializer's linked 246-byte result is newer than its historical
+237-byte normal-COFF diagnostic. The spell updater's `scaled.z + position.z`
+C++ expression still emits the *wrong x87 operand load order*; multiple
+mathematically equivalent C++ trials did not resolve that difference.
+Do not promote these functions based on instruction alignment or size alone.
 
-| Function | Native owner | Current candidate | Current state |
-| --- | ---: | ---: | --- |
-| `ExecuteStageScript` (`0x404470`) | 2,736 B | 2,696 B; 581/610 native instruction keys aligned | Nonexact; fog return-buffer adapter improved call-site layout; EH/funclet and remaining codegen differences open |
-| `CullStageObject` (`0x403950`) | 1,643 B | 1,648 B; 361/504 aligned | Nonexact; equivalent point-first X/Y extrema comparisons improve x87 branch scheduling; native EAX camera input and remaining local/x87 scheduling remain open |
-| `InitializePrimaryStageScripts` (`0x405030`) | 249 B | 246 B in focused linked frontier | Nonexact; private-call ABI is recovered; three-byte extent and stack layout remain |
-| `DrawStageLayer` (`0x404190`) | 727 B | 731 B; 127/191 aligned | Nonexact; branch-local sprite loads and live `vmFlags` recover 11 more instruction keys; four-byte extent, x87 quotient spill and stage/culling ABI remain open |
-| `StepStageVectorTween` (`0x405240`) | 883 B | 883 B; 4 reviewed linked fields | Exact linked-PE owner; zero code-byte and relocation differences |
-| `InitializeSecondarySpellStage` (`0x40C650`) | 1,777 B | Diagnostic linked frontier | Nonexact; native caller uses EAX for the spell-name pointer plus two stack integers, while the candidate still uses three stack arguments |
-| `UpdateSecondarySpellStageState` (`0x40C0A0`) | 624 B | 624 B; 161/167 aligned | Nonexact; signed `idiv` and follower-cursor initialization order restored; divisor spill, event-3 branch layout and Z x87 order remain |
-| `InitializeSecondaryDebugHudAnimations` (`0x41A6D0`) | 1,619 B | 1,619 B; 385/402 aligned | Nonexact; renderer-tail publication order restored; return-buffer, stack reservation, zero-ID wrap and retained-animation scheduling remain |
-| `SecondaryEclDebugOwner::~SecondaryEclDebugOwner` (`0x40D320`) | 462 B | 462 B; 126/127 aligned | Nonexact; one compiler-generated EH-state initializer differs |
+## Efficient continuation
 
-Instruction-key alignment is a navigation aid, not exactness. Every row above
-still needs complete byte/relocation equality before it can be called exact.
-See the corresponding subsystem documents for the full native observations.
+Keep large Boss functions and exact-capable leaves in the same work stream.
+Start with the full original owner plus call/reference review, change natural
+C/C++, then build/compare **only the affected unit**, its owned extent and
+relocation fields. Cold-replay only directly affected canonical exact units.
+Do not run a full cold replay. Successful checkpoints should be saved as
+`gpt-web: ...` commits; retain meaningful failed experiments in prose/logs.
 
-## Recommended next work
+Useful current scoped entry points:
 
-1. Continue `ExecuteStageScript` as the main Boss. Work from the current
-   2,696-byte / 581-of-610 frontier; keep EH/funclet ownership separate from
-   the public body and do not crop the owner to fit a comparison.
-2. Continue `InitializePrimaryStageScripts` (249-byte owner, 246-byte focused
-   linked candidate); the private call ABI is already recovered, so focus on
-   natural C++ lifetime/loop scheduling and the three-byte extent gap.
-3. Continue `CullStageObject`, then rebuild `DrawStageLayer` only when a shared
-   culling/header change affects it. Preserve the native strict depth and
-   unordered-coordinate behavior documented in [STAGE_CULLING](STAGE_CULLING.md).
-4. Continue the 1,777-byte spell-stage initializer through its real caller,
-   then the 624-byte updater. The callback leaves are already exact; do not
-   transfer their exactness to the large updater.
-5. Continue the HUD initializer and debug-session destructor. The current
-   improvements are useful natural-C++ frontiers, not exact proofs.
+```bash
+scripts/repo-python scripts/build-match-unit.py --unit execute-stage-script-frontier
+scripts/repo-python .analysis/compare-stage-script-frontier-20261118.py
+scripts/repo-python scripts/build-match-unit.py --unit cull-stage-object-frontier
+scripts/repo-python .analysis/compare-cull-stage-object-20261118.py
+scripts/repo-python scripts/build-match-unit.py --unit draw-stage-layer-frontier
+scripts/repo-python .analysis/compare-draw-stage-layer-20261118.py
+scripts/repo-python scripts/build-match-unit.py --unit initialize-primary-stage-scripts-frontier
+scripts/repo-python .analysis/compare-stage-init-current-20261119.py
+```
 
-## Focused workflow
+These `.analysis/` helpers and review logs are **local ignored evidence**, not
+tracked source. The retained logs include
+`.analysis/stage-script-final-current-20261120.log`,
+`.analysis/draw-stage-layer-final-current-20261120.log` and
+`.analysis/cull-stage-final-current-20261120.log`. Verify any exact claim with
+the strict unit replay command before updating `config/matches.csv`.
 
-Use only the affected unit and its direct exact dependencies:
+## Storage and current workspace
 
-    scripts/repo-python scripts/build-match-unit.py --unit execute-stage-script-frontier
-    scripts/repo-python .analysis/compare-stage-script-frontier-20261118.py
-    scripts/repo-python scripts/build-match-unit.py --unit cull-stage-object-frontier
-    scripts/repo-python .analysis/compare-cull-stage-object-20261118.py
-    scripts/repo-python scripts/validate-tracking.py --require-target
-    scripts/repo-python scripts/progress.py
-    git diff --check
-
-For a source edit, compare the complete owner and all declared fields, then
-cold-replay only changed canonical exact units and directly affected exact
-dependencies. Do not run the full cold replay. Keep C++ natural: no inline
-assembly, embedded instruction bytes, inert padding, fake returns or ABI
-misdeclarations. Commit meaningful checkpoints with the `gpt-web: ` prefix.
-
-## Retained workspace
-
-Keep `resources/th11.exe`, `.tools/` and its TH11 Wine prefix,
-`ghidra-project/`, canonical `build/match-linked/` output families, active
-diagnostic frontiers, and the selected `.analysis/` comparisons/proof logs.
-The handoff cleanup removed only unreferenced scratch snapshots and one
-orphaned linked-output directory; details and measured savings are in
-[ARTIFACTS](ARTIFACTS.md).
+On 2026-11-20, **510 ignored cache files** were removed, saving about
+**10.4 MiB** by before/after directory measurements. This included old trial
+PE/PDB/MAP snapshots, source-sweep objects, one rotatable Ghidra application
+log and Python bytecode. Trial `source.cpp`, `comparison.log`, referenced
+machine-code snapshots, canonical exact output families, all active Boss
+frontiers, target, tools, Wine prefix and Ghidra project were preserved.
+See [ARTIFACTS](ARTIFACTS.md) and the ignored local inventory
+`.analysis/handoff-storage-cleanup-20261120.txt`. Rebuild a missing historical
+scratch binary before investigating it; do not use its old receipt as a current
+exactness proof. No compilation or full replay is required just to edit docs.
