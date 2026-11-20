@@ -65,6 +65,18 @@ AnimationDocumentView *__thiscall AnimationDocumentNameView::BeginLoad(
     return 0;
 }
 
+static __forceinline void WaitForAnimationDocument(AnimationDocumentView *file)
+{
+    void (__stdcall *sleepFunction)(unsigned long) = Sleep;
+    file->busy = 1;
+waitForAnimationDocument:
+    if (g_MainRuntime.flags & 0x180)
+        return;
+    sleepFunction(1);
+    if (file->busy != 0)
+        goto waitForAnimationDocument;
+}
+
 AnimationDocumentView *__stdcall AcquireAnimationDocument(int index, const char *filename)
 {
     RenderBatchView *renderer = g_RenderBatch;
@@ -80,13 +92,7 @@ AnimationDocumentView *__stdcall AcquireAnimationDocument(int index, const char 
     AnimationDocumentView *file = name->BeginLoad(context);
     if (!file)
         return 0;
-    file->busy = 1;
-    while (!(g_MainRuntime.flags & 0x180))
-    {
-        Sleep(1);
-        if (!file->busy)
-            break;
-    }
+    WaitForAnimationDocument(file);
     TraceAnimationLoad(g_AnimationReadyTraceFormat, filename);
     return file;
 }
