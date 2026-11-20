@@ -24,7 +24,8 @@ int __stdcall LoadStageResource(StageResourceView *self, const char *filename)
         return -1;
     }
     unsigned char *base = reinterpret_cast<unsigned char *>(self->data);
-    self->objects = reinterpret_cast<unsigned char **>(base + 0x90);
+    // Object offsets start immediately after the 0x90-byte stage blob header.
+    self->objects = reinterpret_cast<unsigned char **>(self->data + 1);
     self->section004 = base + self->data->section004Offset;
     self->section008 = base + self->data->section008Offset;
     for (int i = 0; i < self->data->objectCount; ++i)

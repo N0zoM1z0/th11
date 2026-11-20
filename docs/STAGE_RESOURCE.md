@@ -30,8 +30,12 @@ Every attempt thereafter allocates and copies source bytes. It acquires the
 animation filename at copied header+10 in slot `(variant&1)+3`. Animation
 failure logs and returns-1 with the copy retained.
 
-Success derives the pointer table at+90, and section pointers from the relative
-DWORDs at header+4/+8. The signed16-bit object count at+0 controls in-place
+Success derives the object-offset table immediately after the typed
+`StageBlobHeaderView` (`data + 1`, statically checked as 0x90 bytes), and section
+pointers from the relative DWORDs at header+4/+8. The typed table boundary
+produces the same complete 297-byte, 82/99-instruction focused VC9 `/GL`
+candidate as the original raw `base + 0x90` expression; no fabricated
+instructions or padding are introduced. The signed16-bit object count at+0 controls in-place
 pointer relocation by adding the copied-data base. The signed16-bit VM count
 at+2 is multiplied by0x434 for malloc. Its return is published without a null
 check, and the function returns0. The source keeps these failure and ownership
