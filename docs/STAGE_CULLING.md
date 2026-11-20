@@ -7,7 +7,7 @@ frontier results are:
 | Native owner | Native size | Candidate PDB contribution | Aligned native instructions | State |
 | --- | ---: | ---: | ---: | --- |
 | CullStageObject (0x403950) | 1,643 B | 1,648 B | 361/504 | Nonexact |
-| DrawStageLayer (0x404190) | 727 B | 731 B | 127/191 | Nonexact |
+| DrawStageLayer (0x404190) | 727 B | 742 B | 134/191 | Nonexact |
 
 These are diagnostic frontiers, not strict replay results. The original
 translation-unit ownership and remaining byte/relocation differences are
@@ -18,10 +18,18 @@ still open. The native bodies and their callers were reviewed in Ghidra.
 The native function has three formal `__fastcall` parameters: the stage
 object, layer offset and maximum squared distance. The original body also
 consumes the active perspective camera through a private EAX input. Its only
-caller publishes that same camera to `FrameRuntime().activeCamera` immediately
-before the call. The natural C++ source therefore models the three explicit
-fastcall arguments and reads the published camera from the runtime view; the
-private EAX input remains an acknowledged ABI difference.
+caller at `0x00404241` loads EAX with `0x004C36B4` (`g_MainRuntime + 0x434`),
+the embedded perspective camera, immediately before the call. The callee
+copies EAX into ESI and reads the camera position and eye offset through it.
+The caller also publishes that camera in `FrameRuntime().activeCamera`.
+
+The natural C++ source models the three explicit fastcall arguments and reads
+the published camera from the runtime view; the candidate consequently loads
+the pointer from the global field instead of consuming the incoming EAX value.
+A direct `&g_MainRuntime + 0x434` source variant folded the camera fields into
+absolute memory operands and reduced alignment to 346/504, so it was rejected.
+The private EAX live-in remains an ABI gap; it is not replaced with assembly or
+a fabricated formal argument.
 
 It first computes the object center in world space using the layer offset,
 then adds the camera eye offset to the camera position. The squared distance
@@ -106,20 +114,27 @@ instruction-alignment counts are diagnostics and are not additive.
 | Strict positive depth plus asymmetric X/Y extrema branches | 1,648 B / 328 of 504 aligned | Matches 0 < z <= 1 and native unordered-coordinate updates to minima |
 | Reverse the equivalent Y extrema comparisons (`point.y > min/max`) | 1,648 B / 352 of 504 aligned | Same ordered and unordered behavior, with a better VC9 x87 branch schedule |
 | Reverse the equivalent X extrema comparisons (`point.x >= min`, `point.x > max`) | 1,648 B / 361 of 504 aligned | Preserves the asymmetric X predicates while improving the same x87 branch schedule |
-| Keep `vmFlags` live and load sprite dimensions inside each scale branch | 731 B / 127 of 191 aligned | Recovers native branch-local pointer loads and 11 more instruction keys; x87 quotient spill remains open |
+| Keep `vmFlags` live and load sprite dimensions inside each scale branch | 731 B / 127 of 191 aligned in the anchor-only context | Recovers native branch-local pointer loads and 11 more instruction keys; x87 quotient spill remains open |
 
 The current indexed loop visits projected[group * 6 + 0..5] for two groups.
 It preserves all twelve samples and their order. Earlier pointer-cursor and
 fully unrolled variants were worse and are not selected.
 
-For DrawStageLayer, the current focused owner is 731 B with 127/191 aligned
-native instructions. In addition to reloading FrameRuntime.activeCamera,
-copying the layer offset as three typed float members, and retaining the
-full-width Z-write bit extraction, the source keeps `vmFlags` live across both
-scale branches and the later fog/Z mode tests. Branch-local sprite-dimension
-loads now follow the native zero-scale tests on both axes. This recovers 11
-additional instruction keys. The four-byte extent gap, x87 quotient
-spill/reload, and stage/culling ABI remain open.
+### Real callee context added (2026-11-20)
+
+The focused `DrawStageLayer` link now includes the maintained implementations
+of `ApplyPerspectiveCamera`, `FlushRenderBatch`, and `DrawAnimationVmByMode`,
+plus their projected-quad, VM-draw, quad and render-batch dependencies. This
+replaces generic external call anchors with the real VC9 `/GL` call context.
+The target's private inputs are EDI for `ApplyPerspectiveCamera`, ESI for
+`FlushRenderBatch`, and EAX/ECX for `DrawAnimationVmByMode` (VM/renderer).
+
+With these callees present, the complete candidate contribution is 742 bytes
+and the instruction-key alignment is 134/191, up from 731 bytes and 127/191
+in the earlier anchor-only context. The result remains non-exact: stage and
+section pointer register lifetimes, command/object traversal, x87 quotient
+spills and the 15-byte contribution-size gap remain open. The unit declaration
+in `config/match-units.toml` records the support-source closure.
 
 ## Focused build and comparison
 
