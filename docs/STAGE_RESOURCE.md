@@ -37,8 +37,11 @@ produces the same complete 297-byte, 82/99-instruction focused VC9 `/GL`
 candidate as the original raw `base + 0x90` expression; no fabricated
 instructions or padding are introduced. The signed16-bit object count at+0 controls in-place
 pointer relocation by adding the copied-data base. The signed16-bit VM count
-at+2 is multiplied by0x434 for malloc. Its return is published without a null
-check, and the function returns0. The source keeps these failure and ownership
+at+2 is multiplied by `sizeof(StageEmbeddedVm)` (statically checked as
+0x434) for malloc. Its return is published without a null check, and the
+function returns0. This replaces the last magic VM stride in the loader with
+the actual C++ member type without changing the 297-byte /GL contribution or
+82/99 native instruction-key alignment. The source keeps these failure and ownership
 asymmetries. It does not insert validation, cleanup or bounds absent in native.
 
 ## Animation document creation

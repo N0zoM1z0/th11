@@ -30,6 +30,7 @@ int __stdcall LoadStageResource(StageResourceView *self, const char *filename)
     self->section008 = base + self->data->section008Offset;
     for (int i = 0; i < self->data->objectCount; ++i)
         self->objects[i] += reinterpret_cast<unsigned int>(self->data);
-    self->vms = malloc(self->data->vmCount * 0x434);
+    // Allocate one real native-size VM record for every declared VM slot.
+    self->vms = malloc(self->data->vmCount * sizeof(StageEmbeddedVm));
     return 0;
 }
