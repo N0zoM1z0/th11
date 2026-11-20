@@ -59,7 +59,7 @@ Instruction-key alignment is diagnostic only:
 | --- | --- | ---: | --- |
 | `ExecuteStageScript` (`0x404470`) | 2,736 / 2,692 B | 582/610 | Opcode 8 channel spill schedule, fog/tween return buffers, oscillator x87 scheduling, EH/funclet ownership |
 | `CullStageObject` (`0x403950`) | 1,643 / 1,644 B | 362/504 | Private EAX camera input now modelled by the fourth source parameter; projected-point x87/local register schedule |
-| `DrawStageLayer` (`0x404190`) | 727 / 738 B | 134/191 | Real callees and culler EAX input linked; x87 quotient spills removed, stage/section register placement and 11-byte size gap remain |
+| `DrawStageLayer` (`0x404190`) | 727 / 740 B | 156/191 | Real callees and culler EAX input linked; volatile object-pointer lifetime recovers 22 keys, 13-byte size gap remains |
 | `InitializePrimaryStageScripts` (`0x405030`) | 249 / 246 B | 68/78 | Early callee-saved pushes, stack layout and final store/return scheduling |
 | `LoadStageResource` (`0x403FC0`) | 297 / 297 B | 82/99 | Filename-call and size-register scheduling, section pointer and VM-count register assignment |
 | `UpdateSecondarySpellStageState` (`0x40C0A0`) | 624 / 624 B | 161/167 | Signed modulus spill, event-3 loop entry and Z x87 load/add order |

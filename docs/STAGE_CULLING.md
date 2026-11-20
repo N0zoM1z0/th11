@@ -7,7 +7,7 @@ frontier results are:
 | Native owner | Native size | Candidate PDB contribution | Aligned native instructions | State |
 | --- | ---: | ---: | ---: | --- |
 | CullStageObject (0x403950) | 1,643 B | 1,644 B | 362/504 | Nonexact |
-| DrawStageLayer (0x404190) | 727 B | 738 B | 134/191 | Nonexact |
+| DrawStageLayer (0x404190) | 727 B | 740 B | 156/191 | Nonexact |
 
 These are diagnostic frontiers, not strict replay results. The original
 translation-unit ownership and remaining byte/relocation differences are
@@ -128,6 +128,7 @@ instruction-alignment counts are diagnostics and are not additive.
 | Reverse the equivalent X extrema comparisons (`point.x >= min`, `point.x > max`) | 1,648 B / 361 of 504 aligned | Preserves the asymmetric X predicates while improving the same x87 branch schedule |
 | Keep `vmFlags` live and load sprite dimensions inside each scale branch | 731 B / 127 of 191 aligned in the anchor-only context | Recovers native branch-local pointer loads and 11 more instruction keys; x87 quotient spill remains open |
 | Hold X/Y scale quotients in `double` and cast only at the VM store | 738 B / 134 of 191 in the real-callee/private-camera context | Keeps the x87 quotient live across flag updates and removes both stack spill/reloads |
+| Keep the per-iteration object pointer as a volatile local pointer | 740 B / 156 of 191 | Recovers 22 instruction keys across object/VM traversal by preserving the pointer reload lifetime; 13-byte extent gap remains |
 
 The current indexed loop visits projected[group * 6 + 0..5] for two groups.
 It preserves all twelve samples and their order. Earlier pointer-cursor and
@@ -149,10 +150,13 @@ With these callees present, the earlier complete candidate was 742 bytes
 with 134/191 aligned instructions. Modelling the culler's private camera input
 as a fourth source parameter, passed by the linked caller in EAX, moved the
 layer candidate to 754 bytes. The `double` X/Y ratio locals then removed the
-x87 spill/reloads and reduced it to **738 bytes**, still 134/191 aligned.
-The result remains non-exact: stage and section pointer register lifetimes,
-command/object traversal, register allocation and the 11-byte contribution-size
-gap remain open. The unit declaration in
+x87 spill/reloads and reduced it to **738 bytes** with 134/191 aligned
+instructions. Keeping the per-iteration object pointer as a volatile local
+pointer moves the candidate to **740 bytes** with **156/191** aligned
+instructions, recovering 22 more native instruction keys through the object
+and VM traversal. This remains diagnostic and non-exact: stage/section pointer
+placement, the remaining object/command register schedule and the 13-byte
+contribution-size gap remain open. The unit declaration in
 `config/match-units.toml` records the support-source closure.
 
 ## Focused build and comparison

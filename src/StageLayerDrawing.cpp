@@ -57,7 +57,7 @@ int __stdcall DrawStageLayer(StageResourceView *stage, int layer)
 
     for (; entry->objectIndex >= 0; ++entry)
     {
-        StageObjectDrawView *object = reinterpret_cast<StageObjectDrawView *>(
+        StageObjectDrawView * volatile object = reinterpret_cast<StageObjectDrawView *>(
             stage->objects[entry->objectIndex]);
         if (object->layer != layer)
             continue;
