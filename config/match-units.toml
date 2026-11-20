@@ -10757,3 +10757,35 @@ symbol = "?AcquireAnimationDocument@@YGPAUAnimationDocumentView@@HPBD@Z"
 target_address = 0x00454360
 size = 124
 linkages = []
+
+# Full multi-caller LTCG context for the animation-document private ABI.
+[units.animation-document-primary-all-callers-frontier]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/AnimationDocument.cpp"
+inputs = ["src/AnimationDocument.hpp", "src/ResourceFile.hpp", "src/ErrorLog.hpp", "src/MainRuntime.hpp", "src/AsciiLifecycle.hpp", "src/StageResource.hpp", "src/SecondaryProgramExtension.hpp", "src/SecondaryPlayerMovement.hpp", "src/SecondaryAuxiliaryOwner.hpp", "src/SecondaryDebugHudLifetime.hpp", "src/SecondaryHud.hpp", "src/TitleMenuLifecycle.hpp"]
+support_sources = ["src/AnimationTrace.cpp", "src/ResourceFile.cpp", "src/Archive.cpp", "src/ArchiveDecompress.cpp", "src/ArchiveLookup.cpp", "src/ByteCipher.cpp", "src/RuntimeCritical.cpp", "src/ErrorLog.cpp", "src/LogBuffer.cpp", "src/StageLifecycle.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/VmBindings.cpp", "src/AnimationVm.cpp", "src/AnimationSpriteBinding.cpp", "src/AsciiLifecycle.cpp", "src/StageResource.cpp", "src/SecondaryProgramExtension.cpp", "src/SecondaryPlayerInitialization.cpp", "src/SecondaryAuxiliaryOwner.cpp", "src/SecondaryDebugHudRegistration.cpp", "src/SecondaryDebugHudVisualInitialization.cpp", "src/TitleMenuLifecycle.cpp", "src/SecondaryDebugHudFactory.cpp", "src/SecondaryDebugHudConstruction.cpp", "src/SecondaryDebugHudLifetime.cpp", "probes/ascii-lifecycle-context.cpp", "probes/resource-file-context.cpp", "probes/archive-read-context.cpp", "probes/secondary-program-extension-context.cpp", "probes/secondary-debug-hud-registration-context.cpp", "probes/title-menu-resources-generic-context.cpp"]
+output_dir = "build/match-linked/AnimationDocumentPrimaryAllCallersFrontier"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AsciiDocumentProbe@8"
+functions = ["AcquireAnimationDocument"]
+symbol = "?AcquireAnimationDocument@@YGPAUAnimationDocumentView@@HPBD@Z"
+target_address = 0x00454360
+size = 124
+linkages = []
+
+# Original AnimationDocument primary TU with all maintained real callers.
+[units.animation-document-real-callers-frontier]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/AnimationDocument.cpp"
+inputs = ["src/AnimationDocument.hpp", "src/ResourceFile.hpp", "src/ErrorLog.hpp", "src/MainRuntime.hpp", "src/AsciiLifecycle.hpp", "src/SecondaryAuxiliaryOwner.hpp", "src/SecondaryDebugHudLifetime.hpp", "src/SecondaryHud.hpp", "src/SecondaryPlayerMovement.hpp", "src/SecondaryProgramExtension.hpp", "src/TitleMenuLifecycle.hpp", "src/StageResource.hpp"]
+support_sources = ["src/AnimationTrace.cpp", "src/ResourceFile.cpp", "src/Archive.cpp", "src/ArchiveDecompress.cpp", "src/ArchiveLookup.cpp", "src/ByteCipher.cpp", "src/RuntimeCritical.cpp", "probes/resource-file-context.cpp", "probes/archive-read-context.cpp", "src/AsciiLifecycle.cpp", "src/SecondaryAuxiliaryOwner.cpp", "src/SecondaryDebugHudRegistration.cpp", "src/SecondaryDebugHudVisualInitialization.cpp", "src/SecondaryPlayerInitialization.cpp", "src/SecondaryProgramExtension.cpp", "src/TitleMenuLifecycle.cpp", "src/StageResource.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/AnimationVm.cpp", "src/AnimationSpriteBinding.cpp", "src/SecondaryProgram.cpp", "src/SecondaryScript.cpp", "src/LogBuffer.cpp", "src/ErrorLog.cpp", "src/VmBindings.cpp", "probes/animation-document-real-callers-context.cpp"]
+output_dir = "build/match-linked/AnimationDocumentRealCallersAggregateRegisterSlotsFrontier"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationDocumentRealCallersProbe@36"
+functions = ["AcquireAnimationDocument", "BeginLoadAnimationDocument"]
+symbol = "?AcquireAnimationDocument@@YGPAUAnimationDocumentView@@HPBD@Z"
+target_address = 0x00454360
+size = 124
+linkages = []

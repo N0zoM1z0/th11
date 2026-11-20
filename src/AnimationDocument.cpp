@@ -67,7 +67,8 @@ AnimationDocumentView *__thiscall AnimationDocumentNameView::BeginLoad(
 
 AnimationDocumentView *__stdcall AcquireAnimationDocument(int index, const char *filename)
 {
-    AnimationDocumentSlotsView *slots = reinterpret_cast<AnimationDocumentSlotsView *>(g_RenderBatch);
+    RenderBatchView *renderer = g_RenderBatch;
+    AnimationDocumentSlotsView *slots = reinterpret_cast<AnimationDocumentSlotsView *>(renderer);
     if (slots->files[index])
     {
         TraceAnimationLoad(g_AnimationCachedTraceFormat, filename);
@@ -75,7 +76,7 @@ AnimationDocumentView *__stdcall AcquireAnimationDocument(int index, const char 
     }
     const AnimationDocumentNameView *name =
         reinterpret_cast<const AnimationDocumentNameView *>(filename);
-    AnimationDocumentLoadContext context = { g_RenderBatch, index };
+    AnimationDocumentLoadContext context = { renderer, index };
     AnimationDocumentView *file = name->BeginLoad(context);
     if (!file)
         return 0;
