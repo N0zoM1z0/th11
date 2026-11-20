@@ -66,6 +66,7 @@ union AnimationVmFlags
 };
 
 // Observed 0x434-byte reset/bind span; unknown storage is retained.
+struct RenderBatchView;
 struct AnimationVmView
 {
     unsigned int unknown000;
@@ -115,6 +116,8 @@ struct AnimationVmView
     unsigned char unknown3f4[0x404 - 0x3f4];
     AnimationVmFlags flags;
     unsigned char unknown408[0x434 - 0x408];
+
+    int DrawByMode(RenderBatchView *renderer);
 };
 
 struct AnimationTextureEntry

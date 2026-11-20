@@ -1923,8 +1923,8 @@ linkages = [
 [units.draw-animation-vertex-strip]
 artifact_kind = "linked-pe"
 source = "src/AnimationImmediateDraw.cpp"
-inputs = ["src/AnimationImmediateDraw.hpp"]
-support_sources = ["probes/animation-immediate-draw-context.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationVmDraw.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp"]
+inputs = ["src/AnimationImmediateDraw.hpp", "src/AnimationImmediateDrawViews.hpp", "src/AnimationVm.hpp"]
+support_sources = ["probes/animation-immediate-draw-context.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationVmDraw.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp", "src/AnimationImmediateDrawWorldState.cpp"]
 output_dir = "build/match-linked/AnimationImmediateDraw"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "AnimationImmediateDrawProbe@28"
@@ -1945,8 +1945,8 @@ linkages = [
 [units.draw-animation-vertex-fan]
 artifact_kind = "linked-pe"
 source = "src/AnimationImmediateDraw.cpp"
-inputs = ["src/AnimationImmediateDraw.hpp"]
-support_sources = ["probes/animation-immediate-draw-context.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationVmDraw.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp"]
+inputs = ["src/AnimationImmediateDraw.hpp", "src/AnimationImmediateDrawViews.hpp", "src/AnimationVm.hpp"]
+support_sources = ["probes/animation-immediate-draw-context.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationVmDraw.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp", "src/AnimationImmediateDrawWorldState.cpp"]
 output_dir = "build/match-linked/AnimationImmediateDraw"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "AnimationImmediateDrawProbe@28"
@@ -1970,8 +1970,8 @@ linkages = [
 [units.update-strip-vertex-uv]
 artifact_kind = "linked-pe"
 source = "src/AnimationImmediateDraw.cpp"
-inputs = ["src/AnimationImmediateDraw.hpp"]
-support_sources = ["probes/animation-immediate-draw-context.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationVmDraw.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp"]
+inputs = ["src/AnimationImmediateDraw.hpp", "src/AnimationImmediateDrawViews.hpp", "src/AnimationVm.hpp"]
+support_sources = ["probes/animation-immediate-draw-context.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationVmDraw.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp", "src/AnimationImmediateDrawWorldState.cpp"]
 output_dir = "build/match-linked/AnimationImmediateDraw"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "AnimationImmediateDrawProbe@28"
@@ -1984,8 +1984,8 @@ linkages = []
 [units.update-transposed-strip-vertex-uv]
 artifact_kind = "linked-pe"
 source = "src/AnimationImmediateDraw.cpp"
-inputs = ["src/AnimationImmediateDraw.hpp"]
-support_sources = ["probes/animation-immediate-draw-context.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationVmDraw.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp"]
+inputs = ["src/AnimationImmediateDraw.hpp", "src/AnimationImmediateDrawViews.hpp", "src/AnimationVm.hpp"]
+support_sources = ["probes/animation-immediate-draw-context.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationVmDraw.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp", "src/AnimationImmediateDrawWorldState.cpp"]
 output_dir = "build/match-linked/AnimationImmediateDraw"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "AnimationImmediateDrawProbe@28"
@@ -10855,3 +10855,45 @@ symbol = "?AcquireAnimationDocument@@YGPAUAnimationDocumentView@@HPBD@Z"
 target_address = 0x00454360
 size = 124
 linkages = []
+
+
+# Full world-space animation owner. The 1,036-byte primary-TU contribution
+# and all 23 call/data fields replay exactly against the original image.
+[units.draw-world-animation-vm]
+artifact_kind = "linked-pe"
+source = "src/AnimationImmediateDraw.cpp"
+inputs = ["src/AnimationImmediateDrawViews.hpp", "src/AnimationImmediateDraw.hpp", "src/AnimationVm.hpp", "src/AnimationExecution.hpp", "src/MainRuntime.hpp", "src/RenderBatch.hpp"]
+support_sources = ["probes/animation-world-draw-context.cpp", "src/AnimationImmediateDrawWorldState.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationVmDraw.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp", "src/AnimationExtentMagnitude.cpp"]
+normal_support_sources = ["src/AnimationExtentMagnitude.cpp"]
+output_dir = "build/match-linked/AnimationWorldDraw"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationWorldDrawProbe@8"
+functions = ["DrawWorldAnimationVm"]
+symbol = "?DrawWorld@ImmediateVmView@@QAEHPAURenderBatchView@@@Z"
+target_address = 0x004513A0
+size = 1036
+linkages = [
+  { offset = 0x03D, type = "REL32", symbol = "?FlushRenderBatch@@YGXPAURenderBatchView@@@Z", target = 0x0044FD10, addend = 0x0 },
+  { offset = 0x0A7, type = "REL32", symbol = "_D3DXMatrixRotationX@8", target = 0x0045F9EC, addend = 0x0 },
+  { offset = 0x0B9, type = "REL32", symbol = "_D3DXMatrixMultiply@12", target = 0x0045F9F2, addend = 0x0 },
+  { offset = 0x0D6, type = "REL32", symbol = "_D3DXMatrixRotationY@8", target = 0x0045F9F8, addend = 0x0 },
+  { offset = 0x0E8, type = "REL32", symbol = "_D3DXMatrixMultiply@12", target = 0x0045F9F2, addend = 0x0 },
+  { offset = 0x105, type = "REL32", symbol = "_D3DXMatrixRotationZ@8", target = 0x0045F9FE, addend = 0x0 },
+  { offset = 0x117, type = "REL32", symbol = "_D3DXMatrixMultiply@12", target = 0x0045F9F2, addend = 0x0 },
+  { offset = 0x124, type = "DIR32", symbol = "__real@3fe0000000000000", target = 0x00497E60, addend = 0x0 },
+  { offset = 0x173, type = "REL32", symbol = "_AnimationExtentMagnitude@4", target = 0x0040B930, addend = 0x0 },
+  { offset = 0x191, type = "DIR32", symbol = "__real@3fe0000000000000", target = 0x00497E60, addend = 0x0 },
+  { offset = 0x1C2, type = "REL32", symbol = "_AnimationExtentMagnitude@4", target = 0x0040B930, addend = 0x0 },
+  { offset = 0x1D0, type = "DIR32", symbol = "__real@3fe0000000000000", target = 0x00497E60, addend = 0x0 },
+  { offset = 0x21A, type = "REL32", symbol = "_AnimationExtentMagnitude@4", target = 0x0040B930, addend = 0x0 },
+  { offset = 0x263, type = "REL32", symbol = "_AnimationExtentMagnitude@4", target = 0x0040B930, addend = 0x0 },
+  { offset = 0x2A4, type = "REL32", symbol = "?ApplyAnimationVmWorldState@RenderBatchView@@QAEXPAUAnimationVmView@@@Z", target = 0x0044F4B0, addend = 0x0 },
+  { offset = 0x2AF, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x8 },
+  { offset = 0x2F3, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x8 },
+  { offset = 0x33A, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x8 },
+  { offset = 0x38E, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x8 },
+  { offset = 0x3A5, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x8 },
+  { offset = 0x3BA, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x8 },
+  { offset = 0x3D0, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x8 },
+  { offset = 0x3ED, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x8 },
+]

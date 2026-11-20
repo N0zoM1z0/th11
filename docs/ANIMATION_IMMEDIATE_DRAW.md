@@ -1,12 +1,12 @@
 # Immediate animation drawing and mode dispatch
 
-`src/AnimationImmediateDraw.cpp` and
-src/AnimationImmediateDrawWorldState.cpp add nine complete source mappings
-covering 3,450 reviewed target owner bytes, including the1,036-byte world draw,
-the600-byte world-state code+table contribution and the546-byte projected fog
-path. Five functions now have complete cold exact proofs: four strip/fan/UV
-leafs totaling964 code bytes, plus the600-byte world-state contribution. The
-world draw and projected fog owners remain non-exact.
+`src/AnimationImmediateDraw.cpp`, `src/AnimationImmediateDrawViews.hpp` and
+`src/AnimationImmediateDrawWorldState.cpp` cover the immediate VM drawing and
+world-state paths. Six functions now have complete cold exact proofs: the four
+strip/fan/UV leafs (964 bytes), the world-state code+table owner (600 bytes),
+and the full world-space drawing owner (1,036 bytes). The projected fog and
+mode-dispatch owners remain non-exact; the magnitude helper is still an
+independently open 28-byte leaf.
 
 Nine additional boundary/origin reviews cover eight engine/math owners and
 one verified D3DX import thunk. Engine/math origins remain indeterminate;
@@ -19,7 +19,7 @@ code-only boundary is superseded; the existing review count is unchanged.
 | AnimationExtentMagnitude | 40B930 | 28 | Source; candidate17 /28 diagnostic differences |
 | ApplyAnimationVmWorldState | 44F4B0 | 600 (572 code + 28 table) | Exact; 21 fields, zero differences |
 | DrawFoggedProjectedAnimationVm | 451170 | 546 | Source; candidate548 /150 |
-| DrawWorldAnimationVm | 4513A0 | 1,036 | Source; candidate1,038; ABI/frame mismatch |
+| DrawWorldAnimationVm | 4513A0 | 1,036 | Exact; 23 fields, zero differences |
 | UpdateTransposedStripVertexUv | 4517B0 | 258 | Exact; no address fields |
 | UpdateStripVertexUv | 4518C0 | 258 | Exact; no address fields |
 | DrawAnimationVertexStrip | 451A00 | 224 | Exact;7 reviewed fields |
@@ -71,19 +71,23 @@ before the magnitude call; selector2 reads it after the call. Selector3 retains
 that cached matrix translation. Z is written before world-state setup, then
 re-read with extraOffset afterward before SetTransform(WORLD).
 
-World, rotation and texture matrices have genuine independent uses. Restoring
-their function-scope lifetimes prevents reuse of the rotation/texture stack
-slot. The current member-method trial is not ABI-aligned yet. Its complete PDB
-contribution is 1,038 bytes, two bytes larger than the native owner. The
-candidate uses a thiscall entry, retains the VM pointer in EBP, reloads the
-renderer into EBX, reserves a 0xD4 frame and returns with RET8. The target
-instead carries the VM in EBX, keeps the renderer in one caller stack slot,
-uses a 0xD0 frame and returns with RET4. The next source trial will restore an
-internal free-function boundary so the real mode-dispatch producer can select
-the private register ABI under LTCG. The flag snapshot also still allocates to
-ECX rather than the target's ESI across the two anchor switches. The
-world-state call itself already replays independently as a strict 600-byte
-exact contribution. No inert local, padding or assembly substitution is used.
+World, rotation and texture matrices have genuine independent uses. Their
+function-scope lifetimes preserve the native stack layout. The natural C++
+owner is `ImmediateVmView::DrawWorld`; pinned VC9 RTM `/GL` emits its complete
+1,036-byte primary-TU PDB contribution. Strict linked-PE replay binds all 23
+call/data fields (including the D3DX imports, magnitude calls, world-state
+method, float literal and eight runtime-global references) to their reviewed
+original addresses, then reports zero byte differences across the full owner.
+The private entry ABI is recovered naturally: VM in EBX, renderer in the
+caller stack slot, EAX status, 0xD0 frame and `RET 4`. No ASM, padding or
+synthetic contribution is involved.
+
+The four magnitude call fields are correctly bound to the original 0x40B930
+leaf, but that 28-byte helper remains independently non-exact (the current
+natural helper contribution is 17 bytes). This owner proof therefore credits
+the complete world-draw body and its call-site relocations, not the helper's
+own implementation. The world-state call independently replays as a strict
+600-byte exact contribution.
 
 The world-state helper applies blend changes, primary/alternate color with
 ordered saturated red/green/blue/alpha tint, cached D3DRS_TEXTUREFACTOR, filter
