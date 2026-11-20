@@ -13,7 +13,8 @@ extern "C" int __stdcall SecondaryProgramExtensionProbe(int kind,
     {
         const AnimationDocumentNameView *name =
             reinterpret_cast<const AnimationDocumentNameView *>(filename);
-        return reinterpret_cast<int>(name->BeginLoad(renderer, fromDisk));
+        AnimationDocumentLoadContext context = { renderer, fromDisk };
+        return reinterpret_cast<int>(name->BeginLoad(context));
     }
     return reinterpret_cast<int>(new SecondaryProgramWithExtensions);
 }

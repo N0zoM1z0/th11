@@ -62,10 +62,9 @@ AnimationDocumentView *__stdcall AdvanceAnimationDocument(AnimationDocumentView 
         ++index;
         chunk = reinterpret_cast<AnimationChunkHeaderView *>(
             reinterpret_cast<unsigned char *>(chunk) + chunk->nextOffset);
-        // This native continuation path uses one ordinary memory compare;
-        // unlike asynchronous status observers it does not force a volatile
-        // load into EAX before the indexed EDI call convention.
-        if (index == *const_cast<int *>(&file->busy) || decoded)
+        // The document busy field is an ordinary 32-bit state value; the
+        // native continuation path compares it directly in memory.
+        if (index == file->busy || decoded)
         {
             ++file->busy;
             return file;

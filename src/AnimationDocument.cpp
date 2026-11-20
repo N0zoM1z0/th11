@@ -7,8 +7,10 @@
 #include <string.h>
 
 AnimationDocumentView *__thiscall AnimationDocumentNameView::BeginLoad(
-    RenderBatchView *renderer, int index) const
+    AnimationDocumentLoadContext context) const
 {
+    int index = context.index;
+    RenderBatchView *renderer = context.renderer;
     const char *filename = reinterpret_cast<const char *>(this);
     char path[260];
     TraceAnimationLoad(g_AnimationLoadTraceFormat, filename);
@@ -18,7 +20,7 @@ AnimationDocumentView *__thiscall AnimationDocumentNameView::BeginLoad(
         return 0;
     }
     sprintf(path, g_AnimationPathFormat, filename);
-    AnimationChunkHeaderView *data = reinterpret_cast<AnimationChunkHeaderView *>(
+    register AnimationChunkHeaderView *data = reinterpret_cast<AnimationChunkHeaderView *>(
         LoadResourceFile(path, 0, 0));
     int chunkIndex = 0;
     AnimationDocumentView *file = new AnimationDocumentView;
@@ -86,7 +88,8 @@ AnimationDocumentView *__stdcall AcquireAnimationDocument(int index, const char 
     }
     const AnimationDocumentNameView *name =
         reinterpret_cast<const AnimationDocumentNameView *>(filename);
-    AnimationDocumentView *file = name->BeginLoad(renderer, index);
+    AnimationDocumentLoadContext context = { renderer, index };
+    AnimationDocumentView *file = name->BeginLoad(context);
     if (!file)
         return 0;
     WaitForAnimationDocument(file);

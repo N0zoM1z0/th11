@@ -67,10 +67,9 @@ int __cdecl UpdateAnimationDocumentSlots()
             // a new guard. In native code the pointer may already be null.
             (*slot)->pendingDestroy = 0;
         }
-        // This source view declares busy volatile, but the native scan
-        // performs one ordinary in-memory compare at physical +0x124.
-        // Avoid a synthetic load+test pair from the shared volatile view.
-        else if (*const_cast<int *>(&file->busy))
+        // The native slot scan performs an ordinary in-memory compare at
+        // physical +0x124, so busy is modeled as a normal DWORD field.
+        else if (file->busy)
         {
             AnimationDocumentSlotsView *fresh =
                 reinterpret_cast<AnimationDocumentSlotsView *>(renderer);
