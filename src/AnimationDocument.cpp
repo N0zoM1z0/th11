@@ -6,9 +6,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-AnimationDocumentView *__stdcall BeginLoadAnimationDocument(RenderBatchView *renderer,
-    const char *filename, int index)
+AnimationDocumentView *__thiscall AnimationDocumentNameView::BeginLoad(
+    AnimationDocumentLoadContext context) const
 {
+    RenderBatchView *renderer = context.renderer;
+    int index = context.index;
+    const char *filename = reinterpret_cast<const char *>(this);
     char path[260];
     TraceAnimationLoad(g_AnimationLoadTraceFormat, filename);
     if (index >= 32)
@@ -70,7 +73,10 @@ AnimationDocumentView *__stdcall AcquireAnimationDocument(int index, const char 
         TraceAnimationLoad(g_AnimationCachedTraceFormat, filename);
         return slots->files[index];
     }
-    AnimationDocumentView *file = BeginLoadAnimationDocument(g_RenderBatch, filename, index);
+    const AnimationDocumentNameView *name =
+        reinterpret_cast<const AnimationDocumentNameView *>(filename);
+    AnimationDocumentLoadContext context = { g_RenderBatch, index };
+    AnimationDocumentView *file = name->BeginLoad(context);
     if (!file)
         return 0;
     file->busy = 1;

@@ -10741,3 +10741,19 @@ size = 34
 linkages = [
   { offset = 16, type = "REL32", symbol = "__CIatan2", target = 0x00486C9A },
 ]
+
+# Trace-aware LTCG frontier for the animation document callee.
+[units.animation-document-acquire-trace-frontier]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/SecondaryDebugHudRegistration.cpp"
+inputs = ["src/SecondaryDebugHudLifetime.hpp", "src/SecondaryHud.hpp", "src/AnimationDocument.hpp"]
+support_sources = ["src/AnimationTrace.cpp", "src/SecondaryDebugHudFactory.cpp", "src/SecondaryDebugHudConstruction.cpp", "src/StageLifecycle.cpp", "src/ChainRegistration.cpp", "src/SecondaryDebugHudLifetime.cpp", "src/AnimationDocument.cpp", "src/LogBuffer.cpp", "probes/animation-document-load-context.cpp", "probes/secondary-debug-hud-registration-context.cpp"]
+output_dir = "build/match-linked/AnimationDocumentAcquireAggregateFreshFrontier"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryDebugHudRegistrationProbe@16"
+functions = ["AcquireAnimationDocument"]
+symbol = "?AcquireAnimationDocument@@YGPAUAnimationDocumentView@@HPBD@Z"
+target_address = 0x00454360
+size = 124
+linkages = []

@@ -3,11 +3,11 @@
 Three related loader functions have full maintained source. All remain
 non-exact; the VM binding cleanup in `VM_BINDINGS.md` is independently exact.
 
-| Function | Native span | Native / source bytes | Unequal diagnostic positions |
+| Function | Native span | Native / source bytes | Candidate diagnostics |
 | --- | --- | ---: | ---: |
 | `LoadStageResource` | `0x00403FC0..0x004040E8` | 297 /297 | 20 non-field bytes; 84/99 instructions aligned |
-| `BeginLoadAnimationDocument` | `0x00454190..0x00454355` | 454 /434 | 337 |
-| `AcquireAnimationDocument` | `0x00454360..0x004543DB` | 124 /131 | 80 |
+| `BeginLoadAnimationDocument` | `0x00454190..0x00454355` | 454 /434 | 337 non-field differences |
+| `AcquireAnimationDocument` | `0x00454360..0x004543DB` | 124 /128 | 28/38 instruction keys aligned |
 
 Counts outside candidate address fields are diagnostics only. Direct Ghidra
 explicit spans include3-byte internal alignment omitted by the begin routine's
@@ -55,7 +55,7 @@ at+2 is multiplied by `sizeof(StageEmbeddedVm)` (statically checked as
 0x434) for malloc. Its return is published without a null check, and the
 function returns0. This replaces the last magic VM stride in the loader with
 the actual C++ member type without changing the 297-byte /GL contribution or
-82/99 native instruction-key alignment. The source keeps these failure and ownership
+84/99 native instruction-key alignment. The source keeps these failure and ownership
 asymmetries. It does not insert validation, cleanup or bounds absent in native.
 
 ## Animation document creation
@@ -91,20 +91,24 @@ tested. Busy zero exits; shutdown flags can also exit while busy remains1.
 There is no timeout. These details are retained, including one mandatory Sleep
 when the flag gate is open, signed indices and incomplete-cache behavior.
 
-Native acquisition receives ECX index/EBX filename. Creation receives ECX
-filename plus renderer/index on the stack and RET8; the current compiled
-creation instead receives ECX index/EDX filename plus stack renderer/RET4.
-Stage loading already has the native EAX filename/stack stage view/RET4, but
-17 register/operand differences remain. No ABI or operand normalization grants
-credit for these functions.
+Native acquisition receives ECX index/EBX filename. The trace-aware
+`animation-document-acquire-trace-frontier` links the real `AnimationTrace.cpp`
+body rather than a generic call anchor. Its complete 128-byte candidate aligns
+28/38 normalized instruction keys, up from 26/38 at 131 bytes in the
+anchor-only context. The cached path now preserves EAX/ECX across the no-op
+trace call as native does. The slow path remains non-exact: native creation
+receives ECX filename plus renderer/index on the stack and RET8; the current
+candidate instead uses EDX filename with a different stack/register setup.
+The two exact HUD callers, `RegisterSecondaryHudChains` and
+`InitializeSecondaryDebugHudVisuals`, both passed strict cold replay after
+this source change. No ABI or operand normalization grants exact credit.
 
-The native trace entry0x00456AD0 is the previously reviewed RET sink. In cached
-acquisition the native caller retains EAX/ECX across it; the opaque source call
-produces different preservation/spilling. This is the existing trace/context
-gap, not a reason to fabricate a callee contract or pad code. The first loader
-family gave297/24 differences; adding directly needed existing resource/log
-bodies and independent unknown inputs gives297/17. Old canonical proofs were
-not replayed. Do not repeat those same contexts without new evidence.
+Stage loading already has the native EAX filename/stack stage view/RET4; its
+separate real-ResourceFile frontier remains 297 bytes with 84/99 aligned
+instructions and 20 same-offset non-field differences. The first loader
+family gave 297/24 differences; adding directly needed existing resource/log
+bodies and independent unknown inputs gives297/20 same-offset non-field
+differences. Old canonical proofs were not replayed. Do not repeat those same contexts without new evidence.
 
 ## Remaining exact work
 

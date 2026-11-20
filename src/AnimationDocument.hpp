@@ -100,6 +100,17 @@ int __stdcall CreateAnimationEmbeddedTexture(AnimationDocumentTextureView *textu
 int __stdcall CreateAnimationEmptyTexture(AnimationDocumentTextureView *texture,
     int width, int height, unsigned int format);
 int __stdcall CreateAnimationRenderTarget(AnimationDocumentTextureView *texture);
-AnimationDocumentView *__stdcall BeginLoadAnimationDocument(RenderBatchView *renderer,
-    const char *filename, int index);
+struct AnimationDocumentLoadContext
+{
+    RenderBatchView *renderer;
+    int index;
+};
+
+struct AnimationDocumentNameView
+{
+    AnimationDocumentView *__thiscall BeginLoad(AnimationDocumentLoadContext context) const;
+};
+
+typedef char AnimationDocumentLoadContextSize[
+    (sizeof(AnimationDocumentLoadContext) == 8) ? 1 : -1];
 AnimationDocumentView *__stdcall AcquireAnimationDocument(int index, const char *filename);

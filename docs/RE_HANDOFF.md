@@ -81,6 +81,14 @@ large initializer's linked 246-byte result is newer than its historical
 C++ expression still emits the *wrong x87 operand load order*; multiple
 mathematically equivalent C++ trials did not resolve that difference.
 
+The `AcquireAnimationDocument` helper now has a trace-aware 128-byte
+diagnostic candidate with 28/38 aligned instruction keys (the external-anchor
+candidate was 131 bytes / 26/38). The real no-op `AnimationTrace.cpp` body
+restores cached-path EAX/ECX preservation. The slow-path `BeginLoad` register
+and stack ABI remains open. Strict cold replay still passes for both
+`secondary-debug-hud-registration` (339 bytes) and
+`secondary-debug-hud-visual-init` (336 bytes).
+
 The `DrawStageLayer` frontier links the real camera, render-batch flush and
 immediate VM-draw implementations with their direct source dependencies. The
 real-callee anchor-only candidate was 742 bytes / 134/191; modelling the
@@ -115,6 +123,7 @@ scripts/repo-python scripts/build-match-unit.py --unit draw-stage-layer-frontier
 scripts/repo-python .analysis/compare-draw-stage-layer-20261118.py
 scripts/repo-python scripts/build-match-unit.py --unit initialize-primary-stage-scripts-frontier
 scripts/repo-python .analysis/compare-stage-init-current-20261119.py
+scripts/repo-python scripts/build-match-unit.py --unit animation-document-acquire-trace-frontier
 ```
 
 These `.analysis/` helpers and review logs are **local ignored evidence**, not
