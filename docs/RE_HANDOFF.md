@@ -9,6 +9,13 @@ regenerable caches**, not game C/C++ source. Run `git status --short --branch`
 and `git log -8 --oneline` before continuing; any new dirty changes are the
 current agent's work to integrate, not a reason to skip a file.
 
+**Remote synchronization:** At the November 20 handoff check, local `main`
+was ahead of `origin/main`; an attempted `git push origin main` failed because
+the host could not resolve `github.com`. All changes are saved in local Git,
+but a fresh remote clone may not yet include the latest handoff commits. Resume
+from this Factory worktree, or push/reconcile `main` once networking works.
+Do not assume the remote received a commit merely because it exists locally.
+
 Work against **Japanese TH11 1.00a only**: private `resources/th11.exe`,
 688,128 bytes, SHA-256
 `2978b17f6184d100d249d4311348dd30c5c32ec75c014b667a525b797d3d8813`.
