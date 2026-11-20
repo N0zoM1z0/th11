@@ -79,8 +79,9 @@ offset at+24, relative to the current chunk. Counts sum across this chain.
 It allocates and clears20 bytes per texture/chunk, allocates72 bytes per sprite
 and4 bytes per script, then loads chunk texture sources in order. A negative result
 returns null without undoing the published document/tables. The source loader
-at0x004543E0 is now recovered as LoadAnimationChunkSource; the later worker
-decodes textures/sprites/scripts at0x004545A0. See `ANIMATION_CHUNKS.md`.
+at0x004543E0 is recovered as LoadAnimationChunkSource and is now strict
+221/221-byte linked-PE exact under its real BeginLoad producer; the later worker
+decodes textures/sprites/scripts at0x004545A0. See ANIMATION_CHUNKS.md.
 
 ## Acquisition and waiting
 

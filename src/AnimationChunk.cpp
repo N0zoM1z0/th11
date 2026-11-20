@@ -25,8 +25,11 @@ int __stdcall LoadAnimationChunkSource(AnimationDocumentView *file, int index,
                 AppendErrorLog(&g_RuntimeLog, g_AnimationTextureReadError, name);
                 return -1;
             }
-            file->textures[index].sourceSize = size;
-            file->textures[index].source = data;
+            register int offset = index * sizeof(*file->textures);
+            *reinterpret_cast<unsigned int *>(
+                reinterpret_cast<unsigned char *>(file->textures) + offset + 8) = size;
+            *reinterpret_cast<unsigned char **>(
+                reinterpret_cast<unsigned char *>(file->textures) + offset + 4) = data;
         }
     }
     return 1;

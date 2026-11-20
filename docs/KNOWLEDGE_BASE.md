@@ -457,11 +457,12 @@ proof supersedes this historical non-exact observation; see the later
 entry below and [ANIMATION_CHUNKS](ANIMATION_CHUNKS.md). See [ANIMATION_CHUNKS](ANIMATION_CHUNKS.md).
 
 
-The 221-byte `LoadAnimationChunkSource` real parent context now includes
-`BeginLoadAnimationDocument`: it reproduces 221 bytes, native six calls
-and two RET4 exits with only two non-field SIB selector differences
-at B3 and BD (commutative ECX/EDX addressing). It remains **non-exact**
-and must not replace the separately exact 811-byte decoder family.
+The 221-byte LoadAnimationChunkSource real parent context now includes
+BeginLoadAnimationDocument: the dedicated load-animation-chunk-source
+unit reproduces all 221 bytes, six calls and two RET4 exits. Its twelve
+DIR32/REL32 fields replay with zero differences. A natural register-offset
+local restores both native SIB selectors at B3 and BD. It is strict
+linked-PE exact and remains independently built from the 811-byte decoder.
 See [ANIMATION_CHUNKS](ANIMATION_CHUNKS.md).
 
 Renderer priority callbacks 455140..45531E: the real
@@ -474,12 +475,13 @@ callback and zero remaining byte differences under strict cold replay.
 The five stateful priorities are now independently exact (see below).
 See [ANIMATION_RENDERER_LIFECYCLE](ANIMATION_RENDERER_LIFECYCLE.md).
 
-The 221-byte animation source loader4543E0 remains non-exact after eight
-additional natural direct-array, signed-index and byte-offset expressions:
-all preserve the full221-byte producer body but still select SIB0A rather
-than native SIB11 at offsets B3/BD. Those alternatives are isolated in
-`.analysis/try-animation-load-sib-20261111.py` and must not replace the
-separately exact 811-byte decoder.
+The 221-byte animation source loader4543E0 is now strict linked-PE exact.
+The remaining SIB0A/SIB11 mismatch was resolved with the natural
+register int offset = index * sizeof(*file->textures); source expression;
+the dedicated producer unit replays all twelve fields and all 221 bytes
+with zero differences. The earlier rejected variants remain isolated in
+.analysis/try-animation-load-sib-20261111.py; the separately exact
+811-byte decoder remains an independent unit.
 
 Five renderer-priority stateful callbacks 455170/126, 455320/46,
 455350/74, 4553A0/74 and 4553F0/133 become strict linked exact under
@@ -703,7 +705,7 @@ non-volatile direct CMP of busy+124 restore all74 instructions. Three native
 DIR32/REL32 fields are independently reviewed and the full primary-TU VC9
 /GL PE/MAP/PDB cold replay reports zero differing bytes. The exact 135-byte
 scanner, 811-byte decoder and51-byte slot release remain compatible in the
-same linked diagnostic context. `LoadAnimationChunkSource` remains nonexact.
+same linked diagnostic context. LoadAnimationChunkSource is also now strict linked-PE exact.
 See `ANIMATION_CHUNKS.md` and `ANIMATION_DOCUMENT_SLOTS.md`.
 
 
