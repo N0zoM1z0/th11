@@ -48,6 +48,27 @@ additional index==busy exit is retained, including the behavior of zero,
 negative and out-of-chain cursor values. Chunk links and cursor loads remain
 in native order, without validation or timeouts.
 
+## BeginLoad error-path and current producer frontier (2026-11-20)
+
+The maintained BeginLoad source now routes both a failed resource read and a
+failed LoadAnimationChunkSource call through one animationChunkError exit.
+This preserves the native g_AnimationChunkError logging path; the previous
+early returns skipped that diagnostic. chunkIndex remains explicitly
+initialized to zero.
+
+The current focused VC9 producer emits a 450-byte BeginLoad contribution,
+13 calls and RET8 against the 454-byte native extent. Instruction-shape
+alignment is 114/141, so this is not exact. The current remaining work is
+primarily the EBX/EBP live-range assignment, the four-byte stack-frame
+difference, and the final chunk-loop branch/layout. No assembly or padding
+is used.
+
+The 124-byte AcquireAnimationDocument contribution remains field-masked
+exact in the current aggregate-register frontier. Its external DIR32/REL32
+fields are replayed separately; the 212-byte AdvanceAnimationDocument and
+135-byte UpdateAnimationDocumentSlots units also pass strict linked-function
+comparison with zero differences.
+
 ## Complete decoder
 
 DecodeAnimationChunk rejects null chunks and version !=7 before texture work.

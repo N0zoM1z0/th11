@@ -22,6 +22,7 @@ AnimationDocumentView *__thiscall AnimationDocumentNameView::BeginLoad(
     sprintf(path, g_AnimationPathFormat, filename);
     register AnimationChunkHeaderView *data = reinterpret_cast<AnimationChunkHeaderView *>(
         LoadResourceFile(path, 0, 0));
+    int scriptCount;
     int chunkIndex = 0;
     AnimationDocumentView *file = new AnimationDocumentView;
     if (file)
@@ -30,11 +31,11 @@ AnimationDocumentView *__thiscall AnimationDocumentNameView::BeginLoad(
         file = 0;
     reinterpret_cast<AnimationDocumentSlotsView *>(renderer)->files[index] = file;
     if (!data)
-        return 0;
+        goto animationChunkError;
     file->index = index;
     file->data = data;
     strcpy(file->filename, filename);
-    int scriptCount = data->scriptCount;
+    scriptCount = data->scriptCount;
     int spriteCount = data->spriteCount;
     int textureCount = 1;
     for (register AnimationChunkHeaderView *chunk = data; chunk->nextOffset; )
@@ -52,17 +53,18 @@ AnimationDocumentView *__thiscall AnimationDocumentNameView::BeginLoad(
     file->scripts = static_cast<unsigned char **>(malloc(scriptCount * sizeof(*file->scripts)));
     file->spriteCount = spriteCount;
     file->scriptCount = scriptCount;
-    register AnimationChunkHeaderView *chunk = data;
+    register AnimationChunkHeaderView *chunk = file->data;
     while (chunk)
     {
         if (LoadAnimationChunkSource(file, chunkIndex, chunk) < 0)
-            return 0;
+            goto animationChunkError;
         ++chunkIndex;
         if (!chunk->nextOffset)
             return file;
         chunk = reinterpret_cast<AnimationChunkHeaderView *>(
             reinterpret_cast<unsigned char *>(chunk) + chunk->nextOffset);
     }
+animationChunkError:
     AppendErrorLog(&g_RuntimeLog, g_AnimationChunkError);
     return 0;
 }
