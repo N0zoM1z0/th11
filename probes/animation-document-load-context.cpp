@@ -7,6 +7,5 @@ extern "C" AnimationDocumentView *__stdcall AnimationDocumentLoadProbe(
 {
     const AnimationDocumentNameView *name =
         reinterpret_cast<const AnimationDocumentNameView *>(filename);
-    AnimationDocumentLoadContext context = { renderer, slot };
-    return name->BeginLoad(context);
+    return name->BeginLoad(renderer, slot);
 }
