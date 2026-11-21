@@ -321,3 +321,33 @@ Rebuild the expanded context selectively with:
 ```bash
 scripts/repo-python scripts/build-match-unit.py --unit update-stage-real-interpreter-graph
 ```
+
+
+## Fast isolated interpreter iteration
+
+The animation-execution-isolated frontier compiles AnimationExecution.cpp
+as the primary LTCG translation unit and calls it from a separate normal-COFF
+C++ probe. Missing dependencies are diagnostic linker data anchors, not code
+stubs. This keeps the public stack-argument ABI at the call boundary while
+allowing a one-minute source/codegen experiment without rebuilding the full
+stage-update support graph. The image is not runnable and carries no exact
+credit.
+
+| Isolated profile | Candidate | Aligned instruction keys |
+| --- | ---: | ---: |
+| /Oy- /Ob1 | 10,744 B / 3,115 instructions | 588/3,308 |
+| /Oy- /Ob2 | 10,744 B / 3,199 instructions | 589/3,308 |
+| /Oy /Ob1 | 10,744 B / 3,199 instructions | 589/3,308 |
+
+The /Oy variant emits the native eight-byte stack-alignment instruction,
+but still reserves 0xD4 bytes rather than 0xCC and keeps the VM pointer in EBX
+rather than EDI; the instruction cursor is in ESI rather than EBX. The /Ob2
+variant does not materially change the body. These results show that the
+alignment sequence is sensitive to frame-pointer policy, but changing those
+flags alone does not recover the native register assignment or frame layout.
+The larger full stage-update graph remains the primary diagnostic for
+callee/inlining and call-context effects.
+
+Rebuild the quick isolated frontier with:
+
+    scripts/repo-python scripts/build-match-unit.py --unit animation-execution-isolated

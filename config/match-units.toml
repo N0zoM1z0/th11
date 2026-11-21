@@ -9573,6 +9573,25 @@ linkages = [
   { offset = 0x641, type = "REL32", symbol = "?RandomNext32@@YGIPAURandomStateView@@@Z", target = 0x00458C30 },
 ]
 
+# Fast isolated natural-C++ diagnostic for the large interpreter owner.
+# Missing callees are linker data anchors; this frontier is not runnable/exact.
+[units.animation-execution-isolated]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/AnimationExecution.cpp"
+inputs = ["src/AnimationExecution.hpp", "src/AnimationExecutionInstructions.inc", "src/AnimationExecutionUpdate.inc", "src/AnimationVm.hpp", "src/AnimationTween.hpp", "src/Random.hpp", "src/RenderBatch.hpp", "src/AnimationVmFactory.hpp"]
+support_sources = ["probes/animation-execution-isolated-context.cpp"]
+normal_support_sources = ["probes/animation-execution-isolated-context.cpp"]
+output_dir = "build/match-linked/AnimationExecutionIsolatedOy"
+profile = ["/TP", "/O2", "/Oy", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationExecutionProbe@4"
+functions = ["ExecuteAnimationVm"]
+symbol = "?ExecuteAnimationVm@@YGHPAUAnimationVmView@@@Z"
+target_address = 0x0044B4B0
+size = 12056
+support_profiles = {}
+linkages = []
+
 # Standalone private-ESI timer owner. Kept out of StageTween's LTCG context so
 # its exact leaf proof cannot perturb the vector-tween caller's register layout.
 
