@@ -6,7 +6,7 @@ text section and checked the full owners, branches, callers and neighbors.
 
 | Function | Reviewed target owner | Current primary contribution | State |
 | --- | ---: | ---: | --- |
-| UpdateStage,0x00402AA0 | 1,677 bytes through0x0040312C | 1,679 bytes | Non-exact; 2-byte gap; 336/443 instruction keys aligned with real stage/mesh/tween/VM callees |
+| UpdateStage,0x00402AA0 | 1,677 bytes through0x0040312C | 1,679 bytes | Non-exact; 2-byte gap; 326/443 instruction keys aligned with real stage/mesh/tween/VM callees |
 | UpdateStageObjects,0x004040F0 | 153 bytes through0x00404188 | 148 bytes | Natural C++ owner-pointer traversal; non-exact (33/51 instruction keys aligned) |
 
 Both target bodies are contiguous, include internal alignment and have no
@@ -22,10 +22,10 @@ The seven-byte callback at403900 moves ECX to EAX and tail-jumps into the
 native entry. Maintained `StageUpdateCallback` is an ordinary C++ forwarding
 call rather than a naked adapter, so its separate pinned VC9 candidate is10
 bytes and remains non-exact. The anchor-only `update-stage` diagnostic is1683
-bytes with256/443 target instruction keys aligned. Adding the real
-`StageMesh.cpp` callee gives a1684-byte candidate with318/443 aligned. Adding
+bytes with322/443 target instruction keys aligned. Adding the real
+`StageMesh.cpp` callee gives a1684-byte candidate with326/443 aligned. Adding
 the real stage-script, tween, VM, binding and random translation units yields
-the current1679-byte candidate with336/443 aligned. All are diagnostic, not
+the current1679-byte candidate with326/443 aligned. All are diagnostic, not
 exact proofs.
 
 The two wave phase locals are copied with `memcpy` so VC9 preserves their raw
@@ -63,10 +63,15 @@ body directly, without the anchor-only candidate's extra stack pointer push.
 The expanded real-script frontier also links `ExecuteStageScript`,
 `AdvanceStageTimer`, both stage tween implementations, `ResetAnimationVm`,
 `ReleaseVmBindingBlock`, `RandomNext32` and other actual support owners. It
-improves the boss to1679 bytes and336/443 aligned. The candidate's final extra
-angle-wrap call lies beyond the native owner end and is intentionally not
-replayed as a target field. These bindings and real callee bodies improve the
-diagnostic context but do not establish boss exactness. The D3DX import thunk
+produces the best boss candidate so far at1679 bytes and326/443 aligned. The
+support-context `RandomNext32` contribution is158 bytes, while its dedicated
+`random-next32` unit is already a cold-replayed exact153-byte owner. A separate
+generic two-caller probe made the support contribution153 bytes but perturbed
+the boss to1684 bytes/327 aligned, so that probe is deliberately excluded from
+the best boss graph. The candidate's final extra angle-wrap call lies beyond
+the native owner end and is intentionally not replayed as a target field.
+These bindings and real callee bodies improve the diagnostic context but do
+not establish boss exactness. The D3DX import thunk
 and CRT routine retain their separately recorded provenance and acceptance
 limits.
 
@@ -161,14 +166,14 @@ indices/strides and null payloads are not sanitized.
 
 The anchor-only `update-stage` frontier builds `StageUpdate.cpp` as a primary
 VC9 RTM `/O2 /Oy- /Ob1 /Gy /MT /EHsc /GL` contribution. Its linked image
-contains the 1,683-byte `UpdateStage` candidate (native1677; 256/443
+contains the 1,683-byte `UpdateStage` candidate (native1677; 322/443
 instruction keys aligned) and the 148-byte natural C++ `UpdateStageObjects`
 candidate (native153; 33/51 aligned). The `update-stage-real-mesh-callee`
 frontier adds the actual `StageMesh.cpp` implementation and gives a1684-byte
-boss with318/443 aligned. The expanded
+boss with326/443 aligned. The expanded
 `update-stage-real-script-mesh-callees` frontier links real stage script,
 tween, timer, animation VM, binding and random source; its current boss is
-1679 bytes with336/443 aligned. The 325-byte `ResetStageMesh` body and
+1679 bytes with326/443 aligned. The 325-byte `ResetStageMesh` body and
 2,556-byte `ExecuteStageScript` body are linked from their real C++ owners, not
 hand-written adapters or target-byte stubs.
 
@@ -184,9 +189,10 @@ callback is still10 bytes versus the native seven-byte adapter.
 
 The next work is to close the remaining two-byte boss gap and recover the
 radial color conversion and x87 scheduling while preserving the real callee
-graph. The natural `RandomNext32` candidate is158 bytes versus the153-byte
-native owner, so it also remains a live leaf target. Do not mark `UpdateStage`
-exact from callback/helper evidence or improved size alone.
+graph. `RandomNext32` is already exact in its dedicated canonical unit; its
+158-byte broad-context support contribution is a call-graph scheduling issue,
+not an unresolved leaf implementation. Do not mark `UpdateStage` exact from
+callback/helper evidence or improved size alone.
 
 Rebuild the diagnostic contexts selectively with:
 
@@ -194,6 +200,7 @@ Rebuild the diagnostic contexts selectively with:
 scripts/repo-python scripts/build-match-unit.py --unit update-stage
 scripts/repo-python scripts/build-match-unit.py --unit update-stage-real-mesh-callee
 scripts/repo-python scripts/build-match-unit.py --unit update-stage-real-script-mesh-callees
+scripts/repo-python scripts/build-match-unit.py --unit reset-stage-mesh
 ```
 
 ExecuteStageScript404470 has complete non-exact source and a reviewed2,736-byte

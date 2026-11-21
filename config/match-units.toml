@@ -1487,6 +1487,28 @@ target_address = 0x40e890
 size = 123
 linkages = []
 
+[units.reset-stage-mesh]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/StageMesh.cpp"
+inputs = ["src/StageMesh.hpp"]
+support_sources = ["probes/stage-mesh-context.cpp", "src/AnimationVmFactory.cpp"]
+output_dir = "build/match-linked/StageMesh"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageMeshProbe@40"
+functions = ["ResetStageMesh"]
+symbol = "?ResetStageMesh@@YGXPAUStageMeshView@@MMMM@Z"
+target_address = 0x40e6c0
+size = 325
+linkages = [
+  { offset = 0x01a, type = "DIR32", symbol = "__real@4068000000000000", target = 0x497ea0, addend = 0x0 },
+  { offset = 0x023, type = "DIR32", symbol = "__real@4040000000000000", target = 0x497ee8, addend = 0x0 },
+  { offset = 0x035, type = "DIR32", symbol = "__real@4030000000000000", target = 0x497ee0, addend = 0x0 },
+  { offset = 0x08d, type = "DIR32", symbol = "__real@4084000000000000", target = 0x497e90, addend = 0x0 },
+  { offset = 0x094, type = "DIR32", symbol = "__real@407e000000000000", target = 0x497e88, addend = 0x0 },
+  { offset = 0x139, type = "REL32", symbol = "?PublishStageMesh@@YGXPAUStageMeshView@@@Z", target = 0x40e890, addend = 0x0 },
+]
+
 [units.stage-mesh-vm-callback]
 artifact_kind = "linked-pe"
 source = "src/StageMesh.cpp"

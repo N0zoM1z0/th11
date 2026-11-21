@@ -100,9 +100,15 @@ No register ABI or padding is imposed.
 Reset's scalar coordinate writes produced358 bytes; tuple-prefix copying
 restores325. Separating rounded originY and the two axis-step values reduces
 address-normalized diagnostic differences from75 to11 at+243..248 and+279..283.
-Native loads the position then adds a cached step; the candidate duplicates
-the step and adds the memory position. Both complete owners remain325 bytes.
-Casts, reversed additions, inline helpers, parameter forms and loop rewrites
-retain11 differences. Step arrays/pairs give41; double locals and accumulator
-variants are worse. `/fp:except` gives329 bytes and `/fp:fast`352; neither is
-retained. Continue from the default profile and current11-difference source.
+The dedicated `reset-stage-mesh` frontier builds the complete 325-byte natural
+C++ owner with100/104 normalized instruction keys aligned. The remaining four
+keys are the two x87 axis-advance pairs: native loads each cached step before
+adding the position held in the FPU stack, while VC9 loads the position first
+and adds the cached step from memory. The source retains ordinary compound
+assignments; volatile references and explicit temporary accumulators were
+experimented with and regressed to324/315 bytes and49/88 aligned instructions.
+The current owner remains non-exact; no register annotations or instruction
+bytes are embedded. Rebuild the bounded leaf frontier with
+`scripts/repo-python scripts/build-match-unit.py --unit reset-stage-mesh`.
+Continue from the default profile and current11-byte address-normalized
+difference.
