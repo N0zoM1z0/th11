@@ -99,6 +99,9 @@ int __fastcall UpdateStage(StageResourceView *self)
     {
         CameraVector displacement;
         CameraVector *position = StageMesh(self)->positions;
+        RenderVertex *vertex = 0;
+        int row = 0;
+        int column = 0;
         float phaseX;
         float phaseY;
         memcpy(&phaseX, &self->phaseX, sizeof(phaseX));
@@ -106,14 +109,14 @@ int __fastcall UpdateStage(StageResourceView *self)
         if (self->distortionMode == 1)
         {
             ResetStageMesh(StageMesh(self), -192.0f, 0.0f, 384.0f, 448.0f);
-            int row = 0;
-            RenderVertex *vertex = StageMesh(self)->vertices;
+            row = 0;
+            vertex = StageMesh(self)->vertices;
             for (; row < StageMesh(self)->rows; ++row)
             {
                 if (StageMesh(self)->columns > 0)
                 {
                     float offsetY = static_cast<float>(StageSine(phaseY) * 12.0);
-                    for (int column = 0; column < StageMesh(self)->columns; ++column, ++position, ++vertex)
+                    for (column = 0; column < StageMesh(self)->columns; ++column, ++position, ++vertex)
                     {
                         reinterpret_cast<unsigned char *>(&vertex->color)[3] = 0xc0;
                         displacement.x = static_cast<float>(StageSine(phaseX) * 12.0);
@@ -135,49 +138,55 @@ int __fastcall UpdateStage(StageResourceView *self)
         }
         else if (self->distortionMode == 2)
         {
-            displacement.z = 0.0f;
             float radius = self->radius;
             if (self->minimumRadius < self->radius)
                 self->radius = static_cast<float>(self->radius - 2.0);
             float diameter = static_cast<float>(radius * 2.0);
             ResetStageMesh(StageMesh(self), -radius, static_cast<float>(224.0 - radius), diameter, diameter);
-            int row = 0;
-            RenderVertex *vertex = StageMesh(self)->vertices;
+            row = 0;
+            vertex = StageMesh(self)->vertices;
             for (; row < StageMesh(self)->rows; ++row)
             {
-                double radiusSquared = radius * radius;
-                for (int column = 0; column < StageMesh(self)->columns; ++column, ++position, ++vertex)
+                column = 0;
+                if (column < StageMesh(self)->columns)
                 {
-                    displacement.x = static_cast<float>(position->x - 224.0);
-                    displacement.y = static_cast<float>(position->y - 240.0);
-                    displacement.z = position->z - displacement.z;
-                    CameraVector direction = displacement;
-                    float distance = displacement.x * displacement.x + displacement.y * displacement.y;
-                    float remaining = static_cast<float>(radiusSquared - distance);
-                    if (remaining >= 0.0f)
+                    double radiusSquared = radius * radius;
+                    do
                     {
-                        float factor = static_cast<float>(remaining / radiusSquared);
-                        vertex->color = 0xffffffff;
-                        reinterpret_cast<unsigned char *>(&vertex->color)[3] = 0x60;
-                        reinterpret_cast<unsigned char *>(&vertex->color)[2] = static_cast<unsigned char>(static_cast<int>(255.0 - (255 - reinterpret_cast<unsigned char *>(&vertex->color)[2]) * factor));
-                        reinterpret_cast<unsigned char *>(&vertex->color)[1] = static_cast<unsigned char>(static_cast<int>(255.0 - (255 - reinterpret_cast<unsigned char *>(&vertex->color)[1]) * factor));
-                        reinterpret_cast<unsigned char *>(&vertex->color)[0] = static_cast<unsigned char>(static_cast<int>(255.0 - (255 - reinterpret_cast<unsigned char *>(&vertex->color)[0]) * factor));
-                        float magnitude = static_cast<float>(factor * 32.0);
-                        D3DXVec3Normalize(&direction, &direction);
-                        direction.x *= magnitude;
-                        direction.y *= magnitude;
-                        direction.z *= magnitude;
-                        direction.x = static_cast<float>(StageSine(phaseX) * factor * 8.0 + direction.x);
-                        direction.y = static_cast<float>(StageSine(phaseY) * factor * 8.0 + direction.y);
-                        vertex->x += direction.x;
-                        vertex->y += direction.y;
-                        vertex->z = 0.0f;
-                        position->z = 0.0f;
-                    }
-                    else
-                        reinterpret_cast<unsigned char *>(&vertex->color)[3] = 0;
-                    phaseX = NormalizeAngle(static_cast<float>(phaseX + kQuarterTurn));
-                    phaseY = NormalizeAngle(static_cast<float>(phaseY - kColumnWaveStep));
+                        displacement.x = static_cast<float>(position->x - 224.0);
+                        displacement.y = static_cast<float>(position->y - 240.0);
+                        displacement.z = position->z - displacement.z;
+                        CameraVector direction = displacement;
+                        float distance = displacement.x * displacement.x + displacement.y * displacement.y;
+                        float remaining = static_cast<float>(radiusSquared - distance);
+                        if (remaining >= 0.0f)
+                        {
+                            float factor = static_cast<float>(remaining / radiusSquared);
+                            vertex->color = 0xffffffff;
+                            reinterpret_cast<unsigned char *>(&vertex->color)[3] = 0x60;
+                            reinterpret_cast<unsigned char *>(&vertex->color)[2] = static_cast<unsigned char>(static_cast<int>(255.0 - (255 - reinterpret_cast<unsigned char *>(&vertex->color)[2]) * factor));
+                            reinterpret_cast<unsigned char *>(&vertex->color)[1] = static_cast<unsigned char>(static_cast<int>(255.0 - (255 - reinterpret_cast<unsigned char *>(&vertex->color)[1]) * factor));
+                            reinterpret_cast<unsigned char *>(&vertex->color)[0] = static_cast<unsigned char>(static_cast<int>(255.0 - (255 - reinterpret_cast<unsigned char *>(&vertex->color)[0]) * factor));
+                            float magnitude = static_cast<float>(factor * 32.0);
+                            D3DXVec3Normalize(&direction, &direction);
+                            direction.x *= magnitude;
+                            direction.y *= magnitude;
+                            direction.z *= magnitude;
+                            direction.x = static_cast<float>(StageSine(phaseX) * factor * 8.0 + direction.x);
+                            direction.y = static_cast<float>(StageSine(phaseY) * factor * 8.0 + direction.y);
+                            vertex->x += direction.x;
+                            vertex->y += direction.y;
+                            vertex->z = 0.0f;
+                            position->z = 0.0f;
+                        }
+                        else
+                            reinterpret_cast<unsigned char *>(&vertex->color)[3] = 0;
+                        phaseX = NormalizeAngle(static_cast<float>(phaseX + kQuarterTurn));
+                        phaseY = NormalizeAngle(static_cast<float>(phaseY - kColumnWaveStep));
+                        ++position;
+                        ++vertex;
+                        ++column;
+                    } while (column < StageMesh(self)->columns);
                 }
             }
             self->phaseX = NormalizeAngle(static_cast<float>(self->phaseX + kPhaseXStep));

@@ -6,29 +6,41 @@ text section and checked the full owners, branches, callers and neighbors.
 
 | Function | Reviewed target owner | Current primary contribution | State |
 | --- | ---: | ---: | --- |
-| UpdateStage,0x00402AA0 | 1,677 bytes through0x0040312C | 1,710 bytes | Non-exact; 33-byte codegen gap; 240/443 instruction keys aligned in the current frontier |
+| UpdateStage,0x00402AA0 | 1,677 bytes through0x0040312C | 1,679 bytes | Non-exact; 2-byte gap; 336/443 instruction keys aligned with real stage/mesh/tween/VM callees |
 | UpdateStageObjects,0x004040F0 | 153 bytes through0x00404188 | 148 bytes | Natural C++ owner-pointer traversal; non-exact (33/51 instruction keys aligned) |
 
 Both target bodies are contiguous, include internal alignment and have no
 embedded tables or external code-interior references. The native `UpdateStage`
-entry receives the stage in EAX and returns status in EAX with RET. Its
-seven-byte callback at403900 moves ECX to EAX and tail-jumps into that entry.
-Maintained `StageUpdateCallback` is now an ordinary C++ forwarding call rather
-than a naked adapter, so it does not reproduce the native EAX boundary; the
-pinned VC9 candidate is10 bytes. The current `UpdateStage` candidate is
-`__fastcall`, consuming ECX instead of native EAX. In the current
-`update-stage` frontier it is1710 bytes versus1677 native, with242/443 target
-instructions aligned by the diagnostic comparator.
+entry receives the stage in EAX and returns status in EAX with RET. The
+selected natural C++ LTCG context also emits an EAX-consuming entry: the
+candidate begins by copying EAX into EBX, matching the native entry's live-in
+register. The `StageUpdateProbe` is an ordinary C++ stack-argument wrapper; the
+compiler materializes its argument in EAX before the boss call. Do not infer
+the final private ABI from the source-level `__fastcall` decoration alone.
+
+The seven-byte callback at403900 moves ECX to EAX and tail-jumps into the
+native entry. Maintained `StageUpdateCallback` is an ordinary C++ forwarding
+call rather than a naked adapter, so its separate pinned VC9 candidate is10
+bytes and remains non-exact. The anchor-only `update-stage` diagnostic is1683
+bytes with256/443 target instruction keys aligned. Adding the real
+`StageMesh.cpp` callee gives a1684-byte candidate with318/443 aligned. Adding
+the real stage-script, tween, VM, binding and random translation units yields
+the current1679-byte candidate with336/443 aligned. All are diagnostic, not
+exact proofs.
 
 The two wave phase locals are copied with `memcpy` so VC9 preserves their raw
 float bit patterns through the native integer-register loads instead of
-introducing x87 load/store round trips. The camera `updateOffset` vector is
-separate from the mesh displacement vector, matching the native temporary
-lifetime. The mesh vector's Z component is initialized only on entry to radial
-mode, since wave mode writes only X/Y and radial mode overwrites X/Y before
-use. These choices preserve the observed float rounding and stack lifetimes;
-the remaining differences are in local vector/stack layout, mesh-loop register
-allocation and final float scheduling.
+introducing x87 load/store round trips. The camera `updateOffset` vector is a
+separate local from the mesh displacement vector; preserving both lifetimes
+moves the candidate's camera scratch to the native stack slots and improves
+instruction alignment. Wave mode overwrites displacement X/Y before use;
+radial mode initializes and preserves its Z scratch across every vertex. The
+radial inner loop is expressed as the native guarded do/while, so its
+squared-radius value is computed only for nonempty rows and its signed column
+count is tested at the same loop boundary. These source-level lifetime and
+loop-shape changes preserve the observed rounding and update order. The
+remaining differences are in local stack layout, color conversion register
+allocation, mesh-loop scheduling and final float scheduling.
 
 The native `UpdateStageObjects` owner receives its stage through private EBX,
 returns zero in EAX and uses RET. Maintained source now expresses the complete
@@ -41,15 +53,22 @@ execution, and clears only the active flag when no VM remains live. The source
 uses no private-register entry, naked function or inline assembly. Original TU
 ownership remains unknown; origin is authored game logic.
 
-The `update-stage` frontier carries20 explicit REL32 dependency bindings for
-calls inside the native 1,677-byte owner: the D3DX normalize import thunk, stage
-script, animation VM, mesh reset, CRT sine, angle wrapping and text RNG. The
-candidate's final extra angle-wrap call lies beyond the native owner end and
-is intentionally not replayed as a target field. These bindings keep the
-linked diagnostic image on the native dependency addresses; they do not reduce
-the C++ code-generation differences or establish boss exactness. The D3DX
-import thunk and CRT routine retain their separately recorded provenance and
-acceptance limits.
+The three `UpdateStage` frontiers carry20 explicit REL32 dependency bindings
+for calls inside the native 1,677-byte owner: the D3DX normalize import thunk,
+stage script, animation VM, mesh reset, CRT sine, angle wrapping and text RNG.
+The real-mesh frontier compiles `StageMesh.cpp` as a support translation unit;
+its complete 325-byte `ResetStageMesh` candidate begins with the same private
+EAX-to-EBX handoff as the target. Both boss callsites call that real source
+body directly, without the anchor-only candidate's extra stack pointer push.
+The expanded real-script frontier also links `ExecuteStageScript`,
+`AdvanceStageTimer`, both stage tween implementations, `ResetAnimationVm`,
+`ReleaseVmBindingBlock`, `RandomNext32` and other actual support owners. It
+improves the boss to1679 bytes and336/443 aligned. The candidate's final extra
+angle-wrap call lies beyond the native owner end and is intentionally not
+replayed as a target field. These bindings and real callee bodies improve the
+diagnostic context but do not establish boss exactness. The D3DX import thunk
+and CRT routine retain their separately recorded provenance and acceptance
+limits.
 
 ## Update order
 
@@ -140,27 +159,41 @@ indices/strides and null payloads are not sanitized.
 
 ## Code generation and remaining work
 
-The `update-stage` frontier builds `StageUpdate.cpp` as a primary VC9 RTM
-`/O2 /Oy- /Ob1 /Gy /MT /EHsc /GL` contribution. Its current linked image
-contains the complete 1,710-byte `UpdateStage` candidate (native1677;
-242/443 instruction keys aligned) and the 148-byte natural C++
-`UpdateStageObjects` candidate (native153; 33/51 aligned). The former exact units for the object walker and update callback were retired
+The anchor-only `update-stage` frontier builds `StageUpdate.cpp` as a primary
+VC9 RTM `/O2 /Oy- /Ob1 /Gy /MT /EHsc /GL` contribution. Its linked image
+contains the 1,683-byte `UpdateStage` candidate (native1677; 256/443
+instruction keys aligned) and the 148-byte natural C++ `UpdateStageObjects`
+candidate (native153; 33/51 aligned). The `update-stage-real-mesh-callee`
+frontier adds the actual `StageMesh.cpp` implementation and gives a1684-byte
+boss with318/443 aligned. The expanded
+`update-stage-real-script-mesh-callees` frontier links real stage script,
+tween, timer, animation VM, binding and random source; its current boss is
+1679 bytes with336/443 aligned. The 325-byte `ResetStageMesh` body and
+2,556-byte `ExecuteStageScript` body are linked from their real C++ owners, not
+hand-written adapters or target-byte stubs.
+
+The former exact units for the object walker and update callback were retired
 when their maintained source was converted from private-register/naked
-implementations to ordinary C++. The callback remains available as a separate
-non-exact diagnostic frontier.
+implementations to ordinary C++. The object walk is ordinary signed C++ with
+an explicit stage pointer; LTCG naturally keeps the stage in EBX in the
+selected context. The boss source remains ordinary C++ with no private-register
+entry or inline assembly. The native boss receives EAX; the selected LTCG
+candidate also receives EAX even though the source declaration is
+`__fastcall`. A separate callback frontier shows the natural forwarding
+callback is still10 bytes versus the native seven-byte adapter.
 
-`UpdateStage` remains a `__fastcall` C++ candidate because this allows VC9
-`/Oy-` to keep the stage base in EBX through most of the body. Native receives
-EAX; the natural callback forwards the same context through the candidate's
-ECX ABI. A separate no-argument EAX-local experiment grew to1800 bytes and was
-rejected. The next work is to improve these natural C++ lowering choices and
-close the mesh/float gap without inline assembly or padding. Do not mark
-`UpdateStage` exact from callback/helper evidence or improved size alone.
+The next work is to close the remaining two-byte boss gap and recover the
+radial color conversion and x87 scheduling while preserving the real callee
+graph. The natural `RandomNext32` candidate is158 bytes versus the153-byte
+native owner, so it also remains a live leaf target. Do not mark `UpdateStage`
+exact from callback/helper evidence or improved size alone.
 
-Rebuild only the affected diagnostic context with:
+Rebuild the diagnostic contexts selectively with:
 
 ```bash
 scripts/repo-python scripts/build-match-unit.py --unit update-stage
+scripts/repo-python scripts/build-match-unit.py --unit update-stage-real-mesh-callee
+scripts/repo-python scripts/build-match-unit.py --unit update-stage-real-script-mesh-callees
 ```
 
 ExecuteStageScript404470 has complete non-exact source and a reviewed2,736-byte

@@ -9553,6 +9553,89 @@ linkages = [
 
 # Standalone private-ESI timer owner. Kept out of StageTween's LTCG context so
 # its exact leaf proof cannot perturb the vector-tween caller's register layout.
+
+# Real ResetStageMesh/PublishStageMesh source linked into the natural UpdateStage boss.
+[units.update-stage-real-mesh-callee]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/StageUpdate.cpp"
+inputs = ["src/StageUpdate.hpp", "src/StageResource.hpp", "src/AnimationVm.hpp", "src/Camera.hpp", "src/Random.hpp", "src/MainRuntime.hpp", "src/AngleMath.hpp", "src/StageMesh.hpp"]
+support_sources = ["probes/stage-update-context.cpp", "src/StageMesh.cpp"]
+output_dir = "build/match-linked/UpdateStageRealMeshCallee"
+profile = ["/TP", "/O2", "/Oy-", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageUpdateProbe@4"
+functions = ["UpdateStage"]
+symbol = "?UpdateStage@@YIHPAUStageResourceView@@@Z"
+target_address = 0x00402AA0
+size = 1677
+support_profiles = { "src/StageMesh.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"] }
+linkages = [
+  { offset = 0x078, type = "REL32", symbol = "D3DX9_37.DLL::D3DXVec3Normalize", target = 0x0045F9BC },
+  { offset = 0x09F, type = "REL32", symbol = "?ExecuteStageScript@@YGHPAUStageResourceView@@@Z", target = 0x00404470 },
+  { offset = 0x0B2, type = "REL32", symbol = "?ExecuteAnimationVm@@YGHPAUAnimationVmView@@@Z", target = 0x0044B4B0 },
+  { offset = 0x0E3, type = "REL32", symbol = "?ExecuteAnimationVm@@YGHPAUAnimationVmView@@@Z", target = 0x0044B4B0 },
+  { offset = 0x0EF, type = "REL32", symbol = "?ExecuteAnimationVm@@YGHPAUAnimationVmView@@@Z", target = 0x0044B4B0 },
+  { offset = 0x0FB, type = "REL32", symbol = "?ExecuteAnimationVm@@YGHPAUAnimationVmView@@@Z", target = 0x0044B4B0 },
+  { offset = 0x187, type = "REL32", symbol = "?ResetStageMesh@@YGXPAUStageMeshView@@MMMM@Z", target = 0x0040E6C0 },
+  { offset = 0x1BA, type = "REL32", symbol = "__CIsin", target = 0x00486CF0 },
+  { offset = 0x1E9, type = "REL32", symbol = "__CIsin", target = 0x00486CF0 },
+  { offset = 0x255, type = "REL32", symbol = "?NormalizeAngle@@YGMM@Z", target = 0x00458ED0 },
+  { offset = 0x28C, type = "REL32", symbol = "?NormalizeAngle@@YGMM@Z", target = 0x00458ED0 },
+  { offset = 0x2C4, type = "REL32", symbol = "?NormalizeAngle@@YGMM@Z", target = 0x00458ED0 },
+  { offset = 0x35B, type = "REL32", symbol = "?ResetStageMesh@@YGXPAUStageMeshView@@MMMM@Z", target = 0x0040E6C0 },
+  { offset = 0x4FA, type = "REL32", symbol = "D3DX9_37.DLL::D3DXVec3Normalize", target = 0x0045F9BC },
+  { offset = 0x527, type = "REL32", symbol = "__CIsin", target = 0x00486CF0 },
+  { offset = 0x54A, type = "REL32", symbol = "__CIsin", target = 0x00486CF0 },
+  { offset = 0x5A9, type = "REL32", symbol = "?NormalizeAngle@@YGMM@Z", target = 0x00458ED0 },
+  { offset = 0x5C8, type = "REL32", symbol = "?NormalizeAngle@@YGMM@Z", target = 0x00458ED0 },
+  { offset = 0x631, type = "REL32", symbol = "?NormalizeAngle@@YGMM@Z", target = 0x00458ED0 },
+  { offset = 0x641, type = "REL32", symbol = "?RandomNext32@@YGIPAURandomStateView@@@Z", target = 0x00458C30 },
+]
+
+# Standalone private-ESI timer owner. Kept out of StageTween's LTCG context so
+# its exact leaf proof cannot perturb the vector-tween caller's register layout.
+
+# Real stage script, tween, VM and mesh callees in the UpdateStage boss graph.
+[units.update-stage-real-script-mesh-callees]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/StageUpdate.cpp"
+inputs = ["src/StageUpdate.hpp", "src/StageResource.hpp", "src/AnimationVm.hpp", "src/Camera.hpp", "src/Random.hpp", "src/MainRuntime.hpp", "src/AngleMath.hpp", "src/StageMesh.hpp", "src/StageScript.hpp", "src/StageTween.hpp", "src/RuntimeSurfaces.hpp", "src/VmBindings.hpp", "src/AnimationVmFactory.hpp", "src/AnimationVmId.hpp"]
+support_sources = ["probes/stage-update-context.cpp", "src/StageMesh.cpp", "src/StageScript.cpp", "src/StageTween.cpp", "src/StageEasing.cpp", "src/AngleMath.cpp", "src/AnimationVm.cpp", "src/VmBindings.cpp", "src/Random.cpp"]
+normal_support_sources = ["src/AngleMath.cpp"]
+output_dir = "build/match-linked/UpdateStageRealScriptMeshCallees"
+profile = ["/TP", "/O2", "/Oy-", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageUpdateProbe@4"
+functions = ["UpdateStage"]
+symbol = "?UpdateStage@@YIHPAUStageResourceView@@@Z"
+target_address = 0x00402AA0
+size = 1677
+support_profiles = { "src/StageMesh.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/StageTween.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/AnimationVm.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"], "src/VmBindings.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"], "src/Random.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"] }
+linkages = [
+  { offset = 0x078, type = "REL32", symbol = "D3DX9_37.DLL::D3DXVec3Normalize", target = 0x0045F9BC },
+  { offset = 0x09F, type = "REL32", symbol = "?ExecuteStageScript@@YGHPAUStageResourceView@@@Z", target = 0x00404470 },
+  { offset = 0x0B2, type = "REL32", symbol = "?ExecuteAnimationVm@@YGHPAUAnimationVmView@@@Z", target = 0x0044B4B0 },
+  { offset = 0x0E3, type = "REL32", symbol = "?ExecuteAnimationVm@@YGHPAUAnimationVmView@@@Z", target = 0x0044B4B0 },
+  { offset = 0x0EF, type = "REL32", symbol = "?ExecuteAnimationVm@@YGHPAUAnimationVmView@@@Z", target = 0x0044B4B0 },
+  { offset = 0x0FB, type = "REL32", symbol = "?ExecuteAnimationVm@@YGHPAUAnimationVmView@@@Z", target = 0x0044B4B0 },
+  { offset = 0x187, type = "REL32", symbol = "?ResetStageMesh@@YGXPAUStageMeshView@@MMMM@Z", target = 0x0040E6C0 },
+  { offset = 0x1BA, type = "REL32", symbol = "__CIsin", target = 0x00486CF0 },
+  { offset = 0x1E9, type = "REL32", symbol = "__CIsin", target = 0x00486CF0 },
+  { offset = 0x255, type = "REL32", symbol = "?NormalizeAngle@@YGMM@Z", target = 0x00458ED0 },
+  { offset = 0x28C, type = "REL32", symbol = "?NormalizeAngle@@YGMM@Z", target = 0x00458ED0 },
+  { offset = 0x2C4, type = "REL32", symbol = "?NormalizeAngle@@YGMM@Z", target = 0x00458ED0 },
+  { offset = 0x35B, type = "REL32", symbol = "?ResetStageMesh@@YGXPAUStageMeshView@@MMMM@Z", target = 0x0040E6C0 },
+  { offset = 0x4FA, type = "REL32", symbol = "D3DX9_37.DLL::D3DXVec3Normalize", target = 0x0045F9BC },
+  { offset = 0x527, type = "REL32", symbol = "__CIsin", target = 0x00486CF0 },
+  { offset = 0x54A, type = "REL32", symbol = "__CIsin", target = 0x00486CF0 },
+  { offset = 0x5A9, type = "REL32", symbol = "?NormalizeAngle@@YGMM@Z", target = 0x00458ED0 },
+  { offset = 0x5C8, type = "REL32", symbol = "?NormalizeAngle@@YGMM@Z", target = 0x00458ED0 },
+  { offset = 0x631, type = "REL32", symbol = "?NormalizeAngle@@YGMM@Z", target = 0x00458ED0 },
+  { offset = 0x641, type = "REL32", symbol = "?RandomNext32@@YGIPAURandomStateView@@@Z", target = 0x00458C30 },
+]
+
+# Standalone private-ESI timer owner. Kept out of StageTween's LTCG context so
+# its exact leaf proof cannot perturb the vector-tween caller's register layout.
 [units.advance-stage-timer]
 artifact_kind = "linked-pe"
 source = "src/StageTimerExact.cpp"
