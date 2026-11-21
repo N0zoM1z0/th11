@@ -17,7 +17,7 @@ extern "C" int __stdcall AnimationFanProbe(int kind, RenderBatchView *renderer,
     case 6: return UpdateFanAnimationVm(vm);
     case 7: return DrawFanAnimationVm(vm);
     case 8: return static_cast<int>(RandomNext32(random));
-    case 9: return vm->DrawByMode(renderer);
+    case 9: return reinterpret_cast<ImmediateVmView *>(vm)->DrawByMode(renderer);
     }
     return 0;
 }

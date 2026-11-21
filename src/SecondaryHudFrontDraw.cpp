@@ -2,8 +2,10 @@
 #include "SecondaryActorState.hpp"
 #include "AnimationImmediateDraw.hpp"
 #include "AnimationImmediateDrawViews.hpp"
-#ifdef ANIMATION_VM_RENDERER_OWNER_MATCH
+#ifdef ANIMATION_VM_RENDERER_OWNER_HUD_PRIMARY
+#define ANIMATION_VM_RENDERER_OWNER_MATCH 1
 #include "AnimationVmRendererOwner.cpp"
+#undef ANIMATION_VM_RENDERER_OWNER_MATCH
 #endif
 
 // Original TH11 HUD front-layer drawing at 0x41C5F0. The owner is
@@ -15,7 +17,7 @@ int __stdcall DrawSecondaryHudFront(SecondaryHudView *self)
     int remaining = 9;
     do
     {
-        current->DrawByMode(g_RenderBatch);
+        reinterpret_cast<ImmediateVmView *>(current)->DrawByMode(g_RenderBatch);
         current = reinterpret_cast<AnimationVmView *>(
             reinterpret_cast<unsigned char *>(current) + 0x434);
     } while (--remaining);
@@ -30,7 +32,7 @@ int __stdcall DrawSecondaryHudFront(SecondaryHudView *self)
                 reinterpret_cast<const unsigned char *>(actor) + 0x25bc);
             if (((~(flags >> 5)) & 1u) != 0 &&
                 ((~flags) & 1u) != 0)
-                self->indicator.DrawByMode(g_RenderBatch);
+                reinterpret_cast<ImmediateVmView *>(&self->indicator)->DrawByMode(g_RenderBatch);
         }
     }
     return 1;

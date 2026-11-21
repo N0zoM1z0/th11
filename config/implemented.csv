@@ -242,7 +242,7 @@ DrawAnimationRendererLayer
 DrawAnimationVertexFan
 DrawAnimationVertexStrip
 DrawAnimationVm
-DrawAnimationVmByMode
+ImmediateVmView::DrawByMode
 DrawAsciiManager
 DrawAsciiOverlay
 DrawBillboardAnimationVm

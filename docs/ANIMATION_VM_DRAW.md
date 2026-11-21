@@ -48,6 +48,21 @@ fixed-nearest assumption or floor substitution is introduced. The current
 source still calls the CRT routine instead of reproducing the native inline
 FRNDINT codegen, so the submission function earns no exact credit.
 
+## Submission owner ABI correction (2026-11-21)
+
+The complete body is a renderer-owned private member, not a free three-argument
+`__stdcall` routine: ECX is the renderer, EAX carries the VM, and the byte flag
+is the one stack argument (`RET 4`). Both the full source and the combined
+renderer-owner context now express the body as
+`AnimationVmDrawRendererView::DrawAnimationVm`; this zero-storage derived view
+has a compile-time size equality check against `RenderBatchView`. A thin free
+adapter remains for source callers that still use the shared three-argument
+API, while the recovered immediate wrappers call the member directly. The
+focused VC9 `/GL` build now emits the correctly decorated member contribution
+(1,190 bytes against the 1,112-byte target). This corrects the owner ABI but
+is still source-present/non-exact; the remaining codegen gap includes the
+four CRT `_frnd` calls in place of inline FRNDINT and stack/register scheduling.
+
 A pinned-VC9 console check linked the real CRT and called `_frnd` on +1.5/-1.5
 in four x87 modes: nearest2/-2, down1/-2, up2/-1 and chop1/-1. Each mode remained
 unchanged across calls. This resolves the C ABI/rounding-mode question.
@@ -101,11 +116,15 @@ fallback corners are substituted. The adaptive wrapper
 and mode dispatcher now share the broader `AnimationVmRendererOwner.cpp`
 context; both remain non-exact while private register allocation is open.
 The complete mode dispatcher is276 bytes:217 code, three alignment bytes and
-56 bytes of jump table. Its current natural-C++ candidate is260 bytes:203 code,
-one alignment byte and the same complete table. The remaining16-byte gap is
-callee-save prologue/epilogue placement. Reviewed callers consistently pass
-the VM in EAX and renderer in ECX; the source uses the recovered
-`AnimationVmView::DrawByMode` member rather than a synthetic wrapper.
+56 bytes of jump table. Its current natural-C++ candidate is248 bytes:192 code
+bytes and the same complete table. The target saves EBX/ESI/EDI before its
+eligibility gates and restores all three on every exit; the candidate saves
+only ESI. The remaining28-byte gap is being traced through helper ownership
+and private register allocation, not filled with manual saves or padding.
+Reviewed callers consistently pass the VM in EAX and renderer in ECX; the
+source uses the recovered `ImmediateVmView::DrawByMode` member. Its 0x408-byte
+view asserts the accessed color/flag offsets, but the original C++ class
+identity remains unproved.
 
 ## Full cold proofs and ownership limits
 

@@ -243,7 +243,7 @@ DrawAnimationRendererLayer,0x00455660,function
 DrawAnimationVertexFan,0x00451E10,function
 DrawAnimationVertexStrip,0x00451A00,function
 DrawAnimationVm,0x0044F880,function
-DrawAnimationVmByMode,0x00451EF0,function
+ImmediateVmView::DrawByMode,0x00451EF0,function
 DrawAsciiManager,0x00401670,function
 DrawAsciiOverlay,0x00401CE0,function
 DrawBillboardAnimationVm,0x00450AD0,function

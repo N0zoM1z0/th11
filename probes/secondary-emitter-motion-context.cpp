@@ -7,6 +7,6 @@ extern "C" int __stdcall SecondaryEmitterMotionProbe(SecondaryDamageReferencesVi
 {
     ResetSecondaryPlayerEmitters(self);
     int result = DrawSecondaryPlayerEmitters(self);
-    vm->DrawByMode(renderer);
+    reinterpret_cast<ImmediateVmView *>(vm)->DrawByMode(renderer);
     return result;
 }

@@ -14,5 +14,5 @@ extern "C" int __stdcall SecondaryHudFrontDrawProbe(
     volatile SecondaryHudFrontDrawEntry callback =
         SecondaryHudFrontDrawCallback;
     const int result = callback(owner);
-    return result + vm->DrawByMode(renderer);
+    return result + reinterpret_cast<ImmediateVmView *>(vm)->DrawByMode(renderer);
 }

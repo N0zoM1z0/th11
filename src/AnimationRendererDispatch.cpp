@@ -6,8 +6,10 @@
 #include "SecondaryHud.hpp"
 #include "AnimationVmDraw.hpp"
 #include <new>
-#ifdef ANIMATION_VM_RENDERER_OWNER_MATCH
+#ifdef ANIMATION_VM_RENDERER_OWNER_DISPATCH_PRIMARY
+#define ANIMATION_VM_RENDERER_OWNER_MATCH 1
 #include "AnimationVmRendererOwner.cpp"
+#undef ANIMATION_VM_RENDERER_OWNER_MATCH
 #endif
 
 namespace
@@ -127,7 +129,7 @@ int __stdcall DrawAnimationRendererLayer(AnimationRenderer *self, int layer)
             if (DrawCallback(vm)) DrawCallback(vm)(vm);
             AnimationVmView *current = vm;
             RenderBatchView *renderer = reinterpret_cast<RenderBatchView *>(self);
-            current->DrawByMode(renderer);
+            reinterpret_cast<ImmediateVmView *>(current)->DrawByMode(renderer);
         }
         vm = DrawNext(vm);
     }

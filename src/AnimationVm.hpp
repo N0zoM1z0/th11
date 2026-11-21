@@ -117,7 +117,6 @@ struct AnimationVmView
     AnimationVmFlags flags;
     unsigned char unknown408[0x434 - 0x408];
 
-    int __fastcall DrawByMode(RenderBatchView *renderer);
 };
 
 struct AnimationTextureEntry

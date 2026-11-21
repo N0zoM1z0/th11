@@ -15,7 +15,7 @@ int __stdcall DrawSecondaryPlayerEmitters(SecondaryDamageReferencesView *self)
         animation->position.x = static_cast<float>(owner->position.x + 32.0 + 192.0);
         animation->position.y = static_cast<float>(owner->position.y + 16.0);
         animation->position.z = owner->position.z;
-        vm->DrawByMode(renderer);
+        reinterpret_cast<ImmediateVmView *>(vm)->DrawByMode(renderer);
         SecondaryEmitterObjectView *emitter = &owner->emitters[0];
         for (int remaining = 8; remaining; --remaining, ++emitter)
             if (emitter->onDraw) emitter->onDraw(emitter);

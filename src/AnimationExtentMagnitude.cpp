@@ -3,5 +3,6 @@
 
 float __stdcall AnimationExtentMagnitude(float value)
 {
-    return static_cast<float>(fabs(static_cast<double>(value)));
+    __declspec(align(8)) volatile float magnitude = static_cast<float>(fabs(static_cast<double>(value)));
+    return magnitude;
 }

@@ -9,7 +9,7 @@ int __stdcall DrawUnrotatedAnimationVm(RenderBatchView *renderer, AnimationVmVie
 void __stdcall BuildUnroundedAnimationVmQuad(AnimationVmView *vm, CameraVector *first,
     CameraVector *second, CameraVector *third, CameraVector *fourth);
 int __stdcall DrawUnroundedAnimationVm(RenderBatchView *renderer, AnimationVmView *vm);
-extern "C" int __stdcall DrawAdaptiveAnimationVm(RenderBatchView *renderer, AnimationVmView *vm);
+int __stdcall DrawAdaptiveAnimationVm(RenderBatchView *renderer, AnimationVmView *vm);
 
 // Reviewed 0x4503D0 complete rotated builder is implemented in AnimationVmRotation.cpp.
 void __stdcall BuildRotatedAnimationVmQuad(AnimationVmView *vm, CameraVector *first,

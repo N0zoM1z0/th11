@@ -10,6 +10,6 @@ extern "C" int __stdcall SecondaryPatternDispatchProbe(SecondaryDamageReferences
     result += EmitSecondaryPatternFrame(self, frame);
     result += UpdateSecondaryPattern(self);
     result += DrawSecondaryPlayerEmitters(self);
-    result += reinterpret_cast<AnimationVmView *>(reinterpret_cast<unsigned char *>(self) + 0x14)->DrawByMode(renderer);
+    result += reinterpret_cast<ImmediateVmView *>(reinterpret_cast<unsigned char *>(self) + 0x14)->DrawByMode(renderer);
     return result + (LoadResourceFile(filename, size, fromDisk) != 0);
 }

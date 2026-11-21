@@ -13,6 +13,11 @@
 #include "MainRuntime.hpp"
 #include <math.h>
 
+struct AnimationVmDrawRendererView : RenderBatchView
+{
+    int DrawAnimationVm(AnimationVmView *vm, unsigned char flags);
+};
+typedef char AnimationVmDrawRendererViewSize[(sizeof(AnimationVmDrawRendererView) == sizeof(RenderBatchView)) ? 1 : -1];
 
 namespace
 {
@@ -151,35 +156,28 @@ int ImmediateVmView::DrawWorld(RenderBatchView *renderer)
 }
 
 
-int __fastcall AnimationVmView::DrawByMode(RenderBatchView *renderer)
+int __fastcall ImmediateVmView::DrawByMode(RenderBatchView *renderer)
 {
-    unsigned int flags = this->flags.value;
-    if (!(flags & 1)) return -1;
-    if (!(flags & 2)) return -1;
-    if (!*reinterpret_cast<const unsigned char *>(reinterpret_cast<const unsigned char *>(this) + 0x377)) return -1;
-    switch ((flags >> 22) & 15)
+    ImmediateVmView *self = this;
+    AnimationVmView *vm = reinterpret_cast<AnimationVmView *>(self);
+    if (!(self->flags & 1)) return -1;
+    if (!(self->flags & 2)) return -1;
+    if (!self->color.bytes.alpha) return -1;
+    switch ((self->flags >> 22) & 15)
     {
-    case 0: return DrawUnrotatedAnimationVm(renderer, this);
-    case 1: return DrawAdaptiveAnimationVm(renderer, this);
-    case 4: return DrawBillboardAnimationVm(renderer, this);
-    case 5: return DrawProjectedAnimationVm(renderer, this);
-    case 6: return DrawFoggedBillboardAnimationVm(renderer, this);
-    case 7: return DrawFoggedProjectedAnimationVm(renderer, this);
-    case 8: return reinterpret_cast<ImmediateVmView *>(this)->DrawWorld(renderer);
+    case 0: return DrawUnrotatedAnimationVm(renderer, vm);
+    case 1: return DrawAdaptiveAnimationVm(renderer, vm);
+    case 4: return DrawBillboardAnimationVm(renderer, vm);
+    case 5: return DrawProjectedAnimationVm(renderer, vm);
+    case 6: return DrawFoggedBillboardAnimationVm(renderer, vm);
+    case 7: return DrawFoggedProjectedAnimationVm(renderer, vm);
+    case 8: return self->DrawWorld(renderer);
     case 9:
     case 12:
-    case 13:
-    {
-        ImmediateVmView *immediate = reinterpret_cast<ImmediateVmView *>(this);
-        return DrawAnimationVertexStrip(renderer, this, immediate->vertices, immediate->stripPairs * 2u);
-    }
-    case 11:
-    {
-        ImmediateVmView *immediate = reinterpret_cast<ImmediateVmView *>(this);
-        return DrawAnimationVertexFan(renderer, this, immediate->vertices, immediate->stripPairs * 2u);
-    }
-    case 2: return DrawUnroundedAnimationVm(renderer, this);
-    case 3: return DrawAdaptiveUnroundedAnimationVm(renderer, this);
+    case 13: return DrawAnimationVertexStrip(renderer, vm, self->vertices, self->stripPairs * 2u);
+    case 11: return DrawAnimationVertexFan(renderer, vm, self->vertices, self->stripPairs * 2u);
+    case 2: return DrawUnroundedAnimationVm(renderer, vm);
+    case 3: return DrawAdaptiveUnroundedAnimationVm(renderer, vm);
     default: return 0;
     }
 }
@@ -225,7 +223,7 @@ int __stdcall DrawFoggedProjectedAnimationVm(RenderBatchView *renderer, Animatio
         else
             g_AnimationQuad[i].color = color.value;
     }
-    int result = DrawAnimationVm(renderer, vm, 2);
+    int result = reinterpret_cast<AnimationVmDrawRendererView *>(renderer)->DrawAnimationVm(vm, 2);
     g_AnimationQuad[0].rhw = g_AnimationQuad[1].rhw =
         g_AnimationQuad[2].rhw = g_AnimationQuad[3].rhw = 1.0f;
     return result;
@@ -420,9 +418,9 @@ __forceinline CameraVector *Corner(int index)
 }
 }
 
-int __stdcall DrawAnimationVm(RenderBatchView *renderer, AnimationVmView *vm,
-    unsigned char flags)
+int AnimationVmDrawRendererView::DrawAnimationVm(AnimationVmView *vm, unsigned char flags)
 {
+    RenderBatchView *renderer = this;
     DrawVmView *self = reinterpret_cast<DrawVmView *>(vm);
     DrawRendererView *state = reinterpret_cast<DrawRendererView *>(renderer);
     g_AnimationQuad[0].x += renderer->cameraOffsetX;
@@ -505,10 +503,16 @@ int __stdcall DrawAnimationVm(RenderBatchView *renderer, AnimationVmView *vm,
     return 0;
 }
 
+int __stdcall DrawAnimationVm(RenderBatchView *renderer, AnimationVmView *vm,
+    unsigned char flags)
+{
+    return reinterpret_cast<AnimationVmDrawRendererView *>(renderer)->DrawAnimationVm(vm, flags);
+}
+
 int __stdcall DrawUnrotatedAnimationVm(RenderBatchView *renderer, AnimationVmView *vm)
 {
     BuildAnimationVmQuad(vm, Corner(0), Corner(1), Corner(2), Corner(3));
-    return DrawAnimationVm(renderer, vm, 1);
+    return reinterpret_cast<AnimationVmDrawRendererView *>(renderer)->DrawAnimationVm(vm, 1);
 }
 
 void __stdcall BuildUnroundedAnimationVmQuad(AnimationVmView *vm, CameraVector *first,
@@ -555,7 +559,7 @@ void __stdcall BuildUnroundedAnimationVmQuad(AnimationVmView *vm, CameraVector *
 int __stdcall DrawUnroundedAnimationVm(RenderBatchView *renderer, AnimationVmView *vm)
 {
     BuildUnroundedAnimationVmQuad(vm, Corner(0), Corner(1), Corner(2), Corner(3));
-    return DrawAnimationVm(renderer, vm, 0);
+    return reinterpret_cast<AnimationVmDrawRendererView *>(renderer)->DrawAnimationVm(vm, 0);
 }
 
 
@@ -826,12 +830,12 @@ int __stdcall DrawAdaptiveAnimationVm(RenderBatchView *renderer, AnimationVmView
     if (reinterpret_cast<DrawVmView *>(vm)->angle == 0.0f)
     {
         BuildAnimationVmQuad(vm, Corner(0), Corner(1), Corner(2), Corner(3));
-        return DrawAnimationVm(renderer, vm, 1);
+        return reinterpret_cast<AnimationVmDrawRendererView *>(renderer)->DrawAnimationVm(vm, 1);
     }
     else
     {
         BuildRotatedAnimationVmQuad(vm, Corner(0), Corner(1), Corner(2), Corner(3));
-        return DrawAnimationVm(renderer, vm, 0);
+        return reinterpret_cast<AnimationVmDrawRendererView *>(renderer)->DrawAnimationVm(vm, 0);
     }
 }
 
@@ -984,7 +988,7 @@ int __stdcall BuildProjectedAnimationVmQuad(RenderBatchView *renderer, Animation
 int __stdcall DrawProjectedAnimationVm(RenderBatchView *renderer, AnimationVmView *vm)
 {
     BuildProjectedAnimationVmQuad(renderer, vm);
-    int result = DrawAnimationVm(renderer, vm, 0);
+    int result = reinterpret_cast<AnimationVmDrawRendererView *>(renderer)->DrawAnimationVm(vm, 0);
     g_AnimationQuad[0].rhw = g_AnimationQuad[1].rhw =
         g_AnimationQuad[2].rhw = g_AnimationQuad[3].rhw = 1.0f;
     return result;
@@ -994,7 +998,7 @@ int __stdcall DrawBillboardAnimationVm(RenderBatchView *renderer, AnimationVmVie
 {
     if (BuildBillboardAnimationVmQuad(vm))
         return -1;
-    return DrawAnimationVm(renderer, vm, 0);
+    return reinterpret_cast<AnimationVmDrawRendererView *>(renderer)->DrawAnimationVm(vm, 0);
 }
 
 int __stdcall DrawFoggedBillboardAnimationVm(RenderBatchView *renderer, AnimationVmView *vm)
@@ -1045,7 +1049,7 @@ int __stdcall DrawFoggedBillboardAnimationVm(RenderBatchView *renderer, Animatio
     g_AnimationQuad[1].color = g_AnimationQuad[0].color;
     g_AnimationQuad[2].color = g_AnimationQuad[0].color;
     g_AnimationQuad[3].color = g_AnimationQuad[0].color;
-    return DrawAnimationVm(renderer, vm, 2);
+    return reinterpret_cast<AnimationVmDrawRendererView *>(renderer)->DrawAnimationVm(vm, 2);
 }
 
 int __stdcall DrawAdaptiveUnroundedAnimationVm(RenderBatchView *renderer, AnimationVmView *vm)
@@ -1055,7 +1059,7 @@ int __stdcall DrawAdaptiveUnroundedAnimationVm(RenderBatchView *renderer, Animat
         BuildUnroundedAnimationVmQuad(vm, ProjectedCorner(0), ProjectedCorner(1), ProjectedCorner(2), ProjectedCorner(3));
     else
         BuildRotatedAnimationVmQuad(vm, ProjectedCorner(0), ProjectedCorner(1), ProjectedCorner(2), ProjectedCorner(3));
-    return DrawAnimationVm(renderer, vm, 0);
+    return reinterpret_cast<AnimationVmDrawRendererView *>(renderer)->DrawAnimationVm(vm, 0);
 }
 
 void __stdcall BuildAnimationVmModeQuad(AnimationVmView *vm, CameraVector *quad)
