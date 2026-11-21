@@ -1,6 +1,7 @@
 #include "SecondarySpellStage.hpp"
 #include "SecondaryActorRuntime.hpp"
 #include "AnimationImmediateDraw.hpp"
+#include "AnimationImmediateDrawViews.hpp"
 #include "AsciiLifecycle.hpp"
 #include "AsciiFormatting.hpp"
 
@@ -16,8 +17,8 @@ int __stdcall DrawSecondarySpellStage(SecondarySpellStageView *self)
     if (!(self->flags & 1u))
         return 1;
 
-    DrawAnimationVmByMode(&self->vm0, g_RenderBatch);
-    DrawAnimationVmByMode(&self->vm1, g_RenderBatch);
+    self->vm0.DrawByMode(g_RenderBatch);
+    self->vm1.DrawByMode(g_RenderBatch);
 
     AnimationVmView *vm = FindAnimationVmById(
         g_RenderBatch, AnimationVmId(self->followerIds[2]));

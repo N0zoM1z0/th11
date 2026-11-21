@@ -32,14 +32,15 @@ code-only boundary is superseded; the existing review count is unchanged.
 | UpdateStripVertexUv | 4518C0 | 258 | Exact; no address fields |
 | DrawAnimationVertexStrip | 451A00 | 224 | Exact;7 reviewed fields |
 | DrawAnimationVertexFan | 451E10 | 224 | Exact;10 reviewed fields |
-| DrawAnimationVmByMode | 451EF0 | 276 | `AnimationImmediateDraw.cpp`; candidate260/276, 16-byte callee-save gap |
+| DrawAnimationVmByMode | 451EF0 | 276 | `AnimationVmRendererOwner.cpp`; candidate260/276, 16-byte callee-save gap |
 
 The complete dispatcher bound451EF0..452003 includes its three-byte no-op LEA
 and fourteen owned table cells. All14 apparent foreign DATA refs come from
 that table; twelve CC precede452010. Independent full PE CFG/table/neighbor
 review supplements the mapped-text-attested Ghidra code/table references.
-The natural-C++ dispatcher lives in `AnimationImmediateDraw.cpp`, alongside
-`ImmediateVmView::DrawWorld` and the strip/fan submitters. Its cold candidate
+The natural-C++ dispatcher lives in `AnimationVmRendererOwner.cpp` beside
+`ImmediateVmView::DrawWorld`; the strip/fan submitters remain in
+`AnimationImmediateDraw.cpp`. Its cold candidate
 contribution is260 bytes:203 code bytes, one alignment byte and the complete
 56-byte table. All14 mode slots select the reviewed helper paths in the original
 order. The target has an additional16 bytes of callee-save prologue/epilogue

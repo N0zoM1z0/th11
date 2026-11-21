@@ -2,6 +2,7 @@
 #include "SecondaryHud.hpp"
 #include "AsciiFormatting.hpp"
 #include "AnimationImmediateDraw.hpp"
+#include "AnimationImmediateDrawViews.hpp"
 #include "SecondaryActorRuntime.hpp"
 #include <stdio.h>
 #include <string.h>
@@ -137,7 +138,7 @@ int __stdcall DrawSecondaryHud(SecondaryHudView *self)
             }
         }
     }
-    for (int i = 0; i < 4; ++i) DrawAnimationVmByMode(&self->gauges[i], g_RenderBatch);
+    for (int i = 0; i < 4; ++i) self->gauges[i].DrawByMode(g_RenderBatch);
     HudTextPosition position(508.0f, 48.0f, 0.0f);
     ascii = Ascii();
     ascii->unknown18498 = 3;
@@ -212,7 +213,7 @@ int __stdcall DrawSecondaryHud(SecondaryHudView *self)
         *reinterpret_cast<int *>(g_SecondaryMaster->indexed01c) &&
         !(*reinterpret_cast<unsigned int *>(g_SecondaryMaster->indexed01c + 0x20) & 1) && !self->dialogue)
     {
-        for (int i = 0; i < 2; ++i) DrawAnimationVmByMode(&self->digits[i], g_RenderBatch);
+        for (int i = 0; i < 2; ++i) self->digits[i].DrawByMode(g_RenderBatch);
         ascii = Ascii();
         position[0] = 394.0f;
         position[1] = 16.0f;

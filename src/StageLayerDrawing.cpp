@@ -1,6 +1,7 @@
 #include "StageLayerDrawing.hpp"
 #include "StageDrawing.hpp"
 #include "AnimationImmediateDraw.hpp"
+#include "AnimationImmediateDrawViews.hpp"
 #include "FrameLoop.hpp"
 
 // Native stage+2FE4/+2FE8/+2FEC are integer counters, although some other
@@ -146,7 +147,7 @@ int __stdcall DrawStageLayer(StageResourceView *stage, int layer)
                     SetLayerRenderState(D3DRS_ZWRITEENABLE, TRUE);
                     zWritesEnabled = 1;
                 }
-                DrawAnimationVmByMode(vm, g_RenderBatch);
+                vm->DrawByMode(g_RenderBatch);
                 ++DrawCounters(stage).drawnPrimitives;
             }
             command = reinterpret_cast<StagePrimitiveDrawView *>(

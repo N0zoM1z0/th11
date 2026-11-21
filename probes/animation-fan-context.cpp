@@ -1,3 +1,5 @@
+#include "AnimationImmediateDraw.hpp"
+#include "AnimationImmediateDrawViews.hpp"
 // Non-runnable context with independent renderer/VM/storage/count/RNG inputs.
 #include "AnimationFan.hpp"
 extern "C" int __stdcall AnimationFanProbe(int kind, RenderBatchView *renderer,
@@ -15,7 +17,7 @@ extern "C" int __stdcall AnimationFanProbe(int kind, RenderBatchView *renderer,
     case 6: return UpdateFanAnimationVm(vm);
     case 7: return DrawFanAnimationVm(vm);
     case 8: return static_cast<int>(RandomNext32(random));
-    case 9: return DrawAnimationVmByMode(vm, renderer);
+    case 9: return vm->DrawByMode(renderer);
     }
     return 0;
 }

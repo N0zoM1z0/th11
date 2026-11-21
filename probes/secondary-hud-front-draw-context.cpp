@@ -1,5 +1,6 @@
 #include "SecondaryHud.hpp"
 #include "AnimationImmediateDraw.hpp"
+#include "AnimationImmediateDrawViews.hpp"
 
 typedef int (__fastcall *SecondaryHudFrontDrawEntry)(SecondaryHudView *);
 int __fastcall SecondaryHudFrontDrawCallback(SecondaryHudView *owner);
@@ -13,5 +14,5 @@ extern "C" int __stdcall SecondaryHudFrontDrawProbe(
     volatile SecondaryHudFrontDrawEntry callback =
         SecondaryHudFrontDrawCallback;
     const int result = callback(owner);
-    return result + DrawAnimationVmByMode(vm, renderer);
+    return result + vm->DrawByMode(renderer);
 }

@@ -53,6 +53,7 @@ SecondaryHudScreenEffect *__stdcall CreateSecondaryHudScreenEffect(
     int mode, int duration, int color0, int color1, int drawPriority);
 
 int __stdcall UpdateSecondaryHud(SecondaryHudView *self);
+int __stdcall DrawSecondaryHudFront(SecondaryHudView *self);
 int __fastcall SecondaryHudUpdateCallback(SecondaryHudView *self);
 
 typedef char SecondaryHudDigitsOffset[(offsetof(SecondaryHudView, digits) == 0x25e4) ? 1 : -1];

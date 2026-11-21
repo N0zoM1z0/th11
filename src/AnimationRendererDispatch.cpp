@@ -1,6 +1,14 @@
+#include "AnimationImmediateDraw.hpp"
+#include "AnimationImmediateDrawViews.hpp"
 #include "AnimationRendererDispatch.hpp"
 #include "MainRuntime.hpp"
+#include "SecondaryActorState.hpp"
+#include "SecondaryHud.hpp"
+#include "AnimationVmDraw.hpp"
 #include <new>
+#ifdef ANIMATION_VM_RENDERER_OWNER_MATCH
+#include "AnimationVmRendererOwner.cpp"
+#endif
 
 namespace
 {
@@ -34,6 +42,7 @@ __forceinline void LeaveVmSection()
     }
 }
 }
+
 
 int __stdcall UpdateAnimationRenderer(AnimationRenderer *self)
 {
@@ -116,7 +125,9 @@ int __stdcall DrawAnimationRendererLayer(AnimationRenderer *self, int layer)
         if (!(vm->flags.value & 0x04000000))
         {
             if (DrawCallback(vm)) DrawCallback(vm)(vm);
-            DrawAnimationVmByMode(vm, reinterpret_cast<RenderBatchView *>(self));
+            AnimationVmView *current = vm;
+            RenderBatchView *renderer = reinterpret_cast<RenderBatchView *>(self);
+            current->DrawByMode(renderer);
         }
         vm = DrawNext(vm);
     }

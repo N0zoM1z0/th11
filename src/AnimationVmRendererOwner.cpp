@@ -1,3 +1,5 @@
+#ifndef ANIMATION_VM_RENDERER_OWNER_INCLUDED
+#define ANIMATION_VM_RENDERER_OWNER_INCLUDED
 #ifdef ANIMATION_VM_RENDERER_OWNER_MATCH
 // Reconstructed original animation VM renderer translation unit.
 // Related C++ helpers share one VC9 LTCG owner so internal register
@@ -146,6 +148,40 @@ int ImmediateVmView::DrawWorld(RenderBatchView *renderer)
     }
     Device()->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
     return 0;
+}
+
+
+int __fastcall AnimationVmView::DrawByMode(RenderBatchView *renderer)
+{
+    unsigned int flags = this->flags.value;
+    if (!(flags & 1)) return -1;
+    if (!(flags & 2)) return -1;
+    if (!*reinterpret_cast<const unsigned char *>(reinterpret_cast<const unsigned char *>(this) + 0x377)) return -1;
+    switch ((flags >> 22) & 15)
+    {
+    case 0: return DrawUnrotatedAnimationVm(renderer, this);
+    case 1: return DrawAdaptiveAnimationVm(renderer, this);
+    case 4: return DrawBillboardAnimationVm(renderer, this);
+    case 5: return DrawProjectedAnimationVm(renderer, this);
+    case 6: return DrawFoggedBillboardAnimationVm(renderer, this);
+    case 7: return DrawFoggedProjectedAnimationVm(renderer, this);
+    case 8: return reinterpret_cast<ImmediateVmView *>(this)->DrawWorld(renderer);
+    case 9:
+    case 12:
+    case 13:
+    {
+        ImmediateVmView *immediate = reinterpret_cast<ImmediateVmView *>(this);
+        return DrawAnimationVertexStrip(renderer, this, immediate->vertices, immediate->stripPairs * 2u);
+    }
+    case 11:
+    {
+        ImmediateVmView *immediate = reinterpret_cast<ImmediateVmView *>(this);
+        return DrawAnimationVertexFan(renderer, this, immediate->vertices, immediate->stripPairs * 2u);
+    }
+    case 2: return DrawUnroundedAnimationVm(renderer, this);
+    case 3: return DrawAdaptiveUnroundedAnimationVm(renderer, this);
+    default: return 0;
+    }
 }
 
 int __stdcall DrawFoggedProjectedAnimationVm(RenderBatchView *renderer, AnimationVmView *vm)
@@ -1038,3 +1074,4 @@ void __stdcall BuildAnimationVmModeQuad(AnimationVmView *vm, CameraVector *quad)
 
 
 #endif
+#endif // ANIMATION_VM_RENDERER_OWNER_INCLUDED

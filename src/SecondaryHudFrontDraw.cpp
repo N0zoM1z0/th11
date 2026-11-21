@@ -1,6 +1,10 @@
 #include "SecondaryHud.hpp"
 #include "SecondaryActorState.hpp"
 #include "AnimationImmediateDraw.hpp"
+#include "AnimationImmediateDrawViews.hpp"
+#ifdef ANIMATION_VM_RENDERER_OWNER_MATCH
+#include "AnimationVmRendererOwner.cpp"
+#endif
 
 // Original TH11 HUD front-layer drawing at 0x41C5F0. The owner is
 // supplied through the private VC9 call context by its registered
@@ -11,7 +15,7 @@ int __stdcall DrawSecondaryHudFront(SecondaryHudView *self)
     int remaining = 9;
     do
     {
-        DrawAnimationVmByMode(current, g_RenderBatch);
+        current->DrawByMode(g_RenderBatch);
         current = reinterpret_cast<AnimationVmView *>(
             reinterpret_cast<unsigned char *>(current) + 0x434);
     } while (--remaining);
@@ -26,7 +30,7 @@ int __stdcall DrawSecondaryHudFront(SecondaryHudView *self)
                 reinterpret_cast<const unsigned char *>(actor) + 0x25bc);
             if (((~(flags >> 5)) & 1u) != 0 &&
                 ((~flags) & 1u) != 0)
-                DrawAnimationVmByMode(&self->indicator, g_RenderBatch);
+                self->indicator.DrawByMode(g_RenderBatch);
         }
     }
     return 1;
