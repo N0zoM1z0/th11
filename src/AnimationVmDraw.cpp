@@ -200,7 +200,7 @@ int __stdcall DrawUnroundedAnimationVm(RenderBatchView *renderer, AnimationVmVie
     return DrawAnimationVm(renderer, vm, 0);
 }
 
-int __stdcall DrawAdaptiveAnimationVm(RenderBatchView *renderer, AnimationVmView *vm)
+extern "C" int __stdcall DrawAdaptiveAnimationVm(RenderBatchView *renderer, AnimationVmView *vm)
 {
     DrawVmView *self = reinterpret_cast<DrawVmView *>(vm);
     if (self->angle == 0.0f)
