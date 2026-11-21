@@ -70,7 +70,7 @@ The narrow real-script frontier also links `ExecuteStageScript`,
 The full interpreter frontier adds `AnimationExecution.cpp`,
 `AnimationExecutionArguments.cpp` and the actual tween, drawing, fan, mesh,
 renderer and secondary-animation support sources. It links the complete
-11,704-byte `ExecuteAnimationVm` contribution from its natural C++ source,
+11,620-byte `ExecuteAnimationVm` contribution from its natural C++ source,
 along with `ReadAnimationFloat` (544 bytes),
 `ReadAnimationInteger` (219 bytes), `RandomNext32` (153 bytes),
 `ResetStageMesh` (325 bytes) and `ExecuteStageScript` (2,560 bytes). The
@@ -188,8 +188,8 @@ tween, timer, mesh, VM and binding source graph; its boss candidate is1679 bytes
 with336/443 keys aligned. The full
 `update-stage-real-interpreter-graph` frontier links the complete
 `ExecuteAnimationVm` C++ source and its argument-reader/rendering dependencies;
-its boss is1684 bytes with327/443 keys aligned and its interpreter is11704 bytes
-versus12056 native. The 325-byte `ResetStageMesh` and 2,560-byte
+its boss is1684 bytes with327/443 keys aligned and its interpreter is11620 bytes
+versus12056 native (704/3308 instruction keys aligned). The 325-byte `ResetStageMesh` and 2,560-byte
 `ExecuteStageScript` bodies are linked from their real C++ owners, not
 hand-written adapters or target-byte stubs.
 

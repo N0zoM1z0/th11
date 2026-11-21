@@ -294,7 +294,7 @@ assembly adapter, target-byte stub or padding is used.
 
 | Function | Native extent | Linked natural C++ candidate | Diagnostic alignment |
 | --- | ---: | ---: | ---: |
-| ExecuteAnimationVm | 12,056 B | 11,704 B | 703/3,308 instruction keys |
+| ExecuteAnimationVm | 12,056 B | 11,620 B | 704/3,308 instruction keys |
 | ReadAnimationFloat | 540 B | 544 B | 55/169 instruction keys |
 | ReadAnimationInteger | 219 B | 219 B | 42/63 instruction keys |
 | RandomNext32 | 153 B | 153 B | 37/39 instruction keys; two import-thunk address differences |
@@ -302,11 +302,14 @@ assembly adapter, target-byte stub or padding is used.
 
 The interpreter candidate has264 call instructions versus262 native and380
 conditional branches versus406. The native prologue uses an EBP frame, aligns
-ESP to eight bytes and reserves0xCC bytes; this candidate reserves0xE8 bytes
-without the explicit alignment and keeps the VM pointer in EBX instead of EDI.
-The full owner is present and callable from the stage-update candidate, but its
-control-flow and code-generation differences remain large. The byte-size
-reduction is not exactness evidence.
+ESP to eight bytes and reserves0xCC bytes; the current candidate reserves0xE0
+bytes without the explicit alignment and keeps the VM pointer in EBX instead of
+EDI. Scalar component sums in `EmitStripPair` preserve both native operand
+orders while avoiding two materialized 12-byte temporary vectors; this reduced
+the candidate by84 bytes, reduced its frame by8 bytes and added one aligned
+instruction key. The full owner is present and callable from the stage-update
+candidate, but its control-flow and code-generation differences remain large.
+The byte-size reduction is not exactness evidence.
 
 The 153-byte `RandomNext32` candidate uses the real generic `RandomStateView *`
 caller in the interpreter's argument readers. Its dedicated canonical
