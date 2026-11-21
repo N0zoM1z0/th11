@@ -287,9 +287,10 @@ The `update-stage-real-interpreter-graph` diagnostic frontier now links the
 complete natural C++ `ExecuteAnimationVm` implementation and its actual source
 dependencies into the same image as `UpdateStage`. It includes
 `AnimationExecution.cpp`, `AnimationExecutionArguments.cpp`,
-`AnimationExecutionSupport.cpp`, `AnimationTween.cpp`, and the real VM drawing,
-fan, projected-quad, mesh, renderer and secondary-animation support sources.
-No private-register assembly adapter, target-byte stub or padding is used.
+`AnimationTween.cpp`, and the real VM drawing, fan, projected-quad, mesh,
+renderer and secondary-animation support sources. Remaining external helper
+edges are still anchored to reviewed target addresses. No private-register
+assembly adapter, target-byte stub or padding is used.
 
 | Function | Native extent | Linked natural C++ candidate | Diagnostic alignment |
 | --- | ---: | ---: | ---: |
@@ -308,10 +309,10 @@ control-flow and code-generation differences remain large. The byte-size
 reduction is not exactness evidence.
 
 The 153-byte `RandomNext32` candidate uses the real generic `RandomStateView *`
-callers in the interpreter's argument readers and range helper. Its dedicated
-canonical `random-next32` unit remains the independent cold-replayed exact
-proof; the broad graph's two remaining instruction-key differences are only
-the linked addresses of `EnterCriticalSection` and `LeaveCriticalSection`.
+caller in the interpreter's argument readers. Its dedicated canonical
+`random-next32` unit remains the independent cold-replayed exact proof; the
+broad graph's two remaining instruction-key differences are only the linked
+addresses of `EnterCriticalSection` and `LeaveCriticalSection`.
 Rebuild the expanded context selectively with:
 
 ```bash

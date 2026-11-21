@@ -68,10 +68,10 @@ The narrow real-script frontier also links `ExecuteStageScript`,
 `ReleaseVmBindingBlock`, `RandomNext32` and other actual support owners.
 
 The full interpreter frontier adds `AnimationExecution.cpp`,
-`AnimationExecutionArguments.cpp`, `AnimationExecutionSupport.cpp` and the
-actual tween, drawing, fan, mesh, renderer and secondary-animation dependencies.
-It links the complete 11,704-byte `ExecuteAnimationVm` contribution from its
-natural C++ source, along with `ReadAnimationFloat` (544 bytes),
+`AnimationExecutionArguments.cpp` and the actual tween, drawing, fan, mesh,
+renderer and secondary-animation support sources. It links the complete
+11,704-byte `ExecuteAnimationVm` contribution from its natural C++ source,
+along with `ReadAnimationFloat` (544 bytes),
 `ReadAnimationInteger` (219 bytes), `RandomNext32` (153 bytes),
 `ResetStageMesh` (325 bytes) and `ExecuteStageScript` (2,560 bytes). The
 interpreter candidate aligns703/3,308 instruction keys; it has264 calls versus
