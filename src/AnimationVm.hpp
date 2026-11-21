@@ -4,6 +4,7 @@
 #include <stddef.h>
 
 struct AnimationVmView;
+struct RenderBatchView;
 struct AnimationFileView;
 struct AnimationVmId;
 struct CameraVector;
@@ -66,7 +67,6 @@ union AnimationVmFlags
 };
 
 // Observed 0x434-byte reset/bind span; unknown storage is retained.
-struct RenderBatchView;
 struct AnimationVmView
 {
     unsigned int unknown000;
@@ -117,7 +117,6 @@ struct AnimationVmView
     AnimationVmFlags flags;
     unsigned char unknown408[0x434 - 0x408];
 
-    int DrawByMode(RenderBatchView *renderer);
 };
 
 struct AnimationTextureEntry

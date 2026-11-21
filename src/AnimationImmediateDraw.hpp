@@ -11,9 +11,9 @@ struct AnimationTransformVector { float x, y, z, w; };
 extern "C" AnimationTransformVector *WINAPI D3DXVec3Transform(
     AnimationTransformVector *output, const CameraVector *input, const D3DMATRIX *matrix);
 
-extern "C" float __stdcall AnimationExtentMagnitude(float value);
-int __stdcall DrawAnimationVmByMode(RenderBatchView *renderer, AnimationVmView *vm);
-void __stdcall ApplyAnimationVmWorldState(RenderBatchView *renderer, AnimationVmView *vm);
+float __stdcall AnimationExtentMagnitude(float value);
+int __stdcall DrawAnimationVmByMode(AnimationVmView *vm, RenderBatchView *renderer);
+__declspec(noinline) void __stdcall ApplyAnimationVmWorldState(RenderBatchView *renderer, AnimationVmView *vm);
 int __stdcall DrawFoggedProjectedAnimationVm(RenderBatchView *renderer, AnimationVmView *vm);
 int __stdcall DrawAnimationVertexStrip(RenderBatchView *renderer, AnimationVmView *vm,
     const RenderVertex *vertices, unsigned int vertexCount);

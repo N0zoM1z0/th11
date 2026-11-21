@@ -11,7 +11,7 @@ int __stdcall DrawSecondaryHudFront(SecondaryHudView *self)
     int remaining = 9;
     do
     {
-        DrawAnimationVmByMode(g_RenderBatch, current);
+        DrawAnimationVmByMode(current, g_RenderBatch);
         current = reinterpret_cast<AnimationVmView *>(
             reinterpret_cast<unsigned char *>(current) + 0x434);
     } while (--remaining);
@@ -26,7 +26,7 @@ int __stdcall DrawSecondaryHudFront(SecondaryHudView *self)
                 reinterpret_cast<const unsigned char *>(actor) + 0x25bc);
             if (((~(flags >> 5)) & 1u) != 0 &&
                 ((~flags) & 1u) != 0)
-                DrawAnimationVmByMode(g_RenderBatch, &self->indicator);
+                DrawAnimationVmByMode(&self->indicator, g_RenderBatch);
         }
     }
     return 1;

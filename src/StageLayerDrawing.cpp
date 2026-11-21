@@ -146,7 +146,7 @@ int __stdcall DrawStageLayer(StageResourceView *stage, int layer)
                     SetLayerRenderState(D3DRS_ZWRITEENABLE, TRUE);
                     zWritesEnabled = 1;
                 }
-                DrawAnimationVmByMode(g_RenderBatch, vm);
+                DrawAnimationVmByMode(vm, g_RenderBatch);
                 ++DrawCounters(stage).drawnPrimitives;
             }
             command = reinterpret_cast<StagePrimitiveDrawView *>(

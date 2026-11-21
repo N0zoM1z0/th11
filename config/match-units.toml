@@ -1823,12 +1823,13 @@ linkages = []
 
 [units.scale-animation-color-channel]
 artifact_kind = "linked-pe"
-source = "src/AnimationQuad.cpp"
-inputs = ["src/AnimationQuad.hpp"]
-support_sources = ["probes/animation-vm-draw-context.cpp", "src/AnimationVmDraw.cpp", "src/RenderBatch.cpp"]
-output_dir = "build/match-linked/AnimationQuad"
-profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
-entry = "AnimationVmDrawProbe@36"
+source = "src/AnimationVmRendererOwner.cpp"
+inputs = ["src/AnimationImmediateDrawViews.hpp", "src/AnimationImmediateDraw.hpp", "src/AnimationVm.hpp", "src/AnimationExecution.hpp", "src/MainRuntime.hpp", "src/RenderBatch.hpp", "src/StageDrawing.hpp", "src/FrameLoop.hpp", "src/StageLayerDrawing.hpp", "src/SecondarySpellStage.hpp", "src/SecondaryActorRuntime.hpp", "src/AsciiLifecycle.hpp", "src/AsciiFormatting.hpp", "src/SecondaryHud.hpp", "src/SecondaryActorState.hpp", "src/SecondaryHudDraw.hpp", "src/SecondaryPattern.hpp", "src/ResourceFile.hpp", "src/InputBackend.hpp", "src/AnimationRendererDispatch.hpp", "src/AnimationVmDraw.hpp", "src/AnimationQuad.hpp", "src/AnimationProjectedQuad.hpp", "src/CrtRounding.hpp"]
+support_sources = ["probes/animation-world-draw-context.cpp", "src/AnimationImmediateDrawWorldState.cpp", "src/RenderBatch.cpp", "src/AnimationExtentMagnitude.cpp", "src/StageDrawing.cpp", "src/StageLayerDrawing.cpp", "src/SecondarySpellStageDrawing.cpp", "src/SecondaryHudFrontDraw.cpp", "src/SecondaryHudDraw.cpp", "src/SecondaryPatternDispatch.cpp", "src/AnimationRendererDispatch.cpp", "probes/animation-adaptive-abi-context.cpp"]
+normal_support_sources = ["src/AnimationExtentMagnitude.cpp"]
+output_dir = "build/match-linked/AnimationVmRendererOwner/ScaleAnimationColorChannel"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL", "/DANIMATION_VM_RENDERER_OWNER_MATCH=1"]
+entry = "AnimationWorldDrawProbe@8"
 functions = ["ScaleAnimationColorChannel"]
 symbol = "?ScaleAnimationColorChannel@@YGIEE@Z"
 target_address = 0x44f490
@@ -1851,12 +1852,13 @@ linkages = []
 
 [units.build-animation-vm-quad]
 artifact_kind = "linked-pe"
-source = "src/AnimationQuad.cpp"
-inputs = ["src/AnimationQuad.hpp"]
-support_sources = ["probes/animation-vm-draw-context.cpp", "src/AnimationVmDraw.cpp", "src/RenderBatch.cpp"]
-output_dir = "build/match-linked/AnimationQuad"
-profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
-entry = "AnimationVmDrawProbe@36"
+source = "src/AnimationVmRendererOwner.cpp"
+inputs = ["src/AnimationImmediateDrawViews.hpp", "src/AnimationImmediateDraw.hpp", "src/AnimationVm.hpp", "src/AnimationExecution.hpp", "src/MainRuntime.hpp", "src/RenderBatch.hpp", "src/StageDrawing.hpp", "src/FrameLoop.hpp", "src/StageLayerDrawing.hpp", "src/SecondarySpellStage.hpp", "src/SecondaryActorRuntime.hpp", "src/AsciiLifecycle.hpp", "src/AsciiFormatting.hpp", "src/SecondaryHud.hpp", "src/SecondaryActorState.hpp", "src/SecondaryHudDraw.hpp", "src/SecondaryPattern.hpp", "src/ResourceFile.hpp", "src/InputBackend.hpp", "src/AnimationRendererDispatch.hpp", "src/AnimationVmDraw.hpp", "src/AnimationQuad.hpp", "src/AnimationProjectedQuad.hpp", "src/CrtRounding.hpp"]
+support_sources = ["probes/animation-world-draw-context.cpp", "src/AnimationImmediateDrawWorldState.cpp", "src/RenderBatch.cpp", "src/AnimationExtentMagnitude.cpp", "src/StageDrawing.cpp", "src/StageLayerDrawing.cpp", "src/SecondarySpellStageDrawing.cpp", "src/SecondaryHudFrontDraw.cpp", "src/SecondaryHudDraw.cpp", "src/SecondaryPatternDispatch.cpp", "src/AnimationRendererDispatch.cpp", "probes/animation-adaptive-abi-context.cpp"]
+normal_support_sources = ["src/AnimationExtentMagnitude.cpp"]
+output_dir = "build/match-linked/AnimationVmRendererOwner/BuildAnimationVmQuad"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL", "/DANIMATION_VM_RENDERER_OWNER_MATCH=1"]
+entry = "AnimationWorldDrawProbe@8"
 functions = ["BuildAnimationVmQuad"]
 symbol = "?BuildAnimationVmQuad@@YGXPAUAnimationVmView@@PAUCameraVector@@111@Z"
 target_address = 0x44fe30
@@ -2506,7 +2508,7 @@ linkages = [
   { offset = 16, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8e8 },
   { offset = 22, type = "DIR32", symbol = "__imp__EnterCriticalSection@4", target = 0x48b084, addend = 0x0 },
   { offset = 28, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x939 },
-  { offset = 80, type = "REL32", symbol = "?DrawAnimationVmByMode@@YGHPAURenderBatchView@@PAUAnimationVmView@@@Z", target = 0x451ef0, addend = 0x0 },
+  { offset = 80, type = "REL32", symbol = "?DrawAnimationVmByMode@@YGHPAUAnimationVmView@@PAURenderBatchView@@@Z", target = 0x451ef0, addend = 0x0 },
   { offset = 93, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x590 },
   { offset = 105, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8e8 },
   { offset = 111, type = "DIR32", symbol = "__imp__LeaveCriticalSection@4", target = 0x48b088, addend = 0x0 },
@@ -10669,10 +10671,10 @@ target_address = 0x0041C5F0
 size = 105
 linkages = [
   { offset = 18, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x004C3268 },
-  { offset = 25, type = "REL32", symbol = "?DrawAnimationVmByMode@@YGHPAURenderBatchView@@PAUAnimationVmView@@@Z", target = 0x00451EF0 },
+  { offset = 25, type = "REL32", symbol = "?DrawAnimationVmByMode@@YGHPAUAnimationVmView@@PAURenderBatchView@@@Z", target = 0x00451EF0 },
   { offset = 41, type = "DIR32", symbol = "?g_SecondaryMaster@@3PAUSecondaryMasterView@@A", target = 0x004A8D7C },
   { offset = 84, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x004C3268 },
-  { offset = 95, type = "REL32", symbol = "?DrawAnimationVmByMode@@YGHPAURenderBatchView@@PAUAnimationVmView@@@Z", target = 0x00451EF0 },
+  { offset = 95, type = "REL32", symbol = "?DrawAnimationVmByMode@@YGHPAUAnimationVmView@@PAURenderBatchView@@@Z", target = 0x00451EF0 },
 ]
 
 # The callback's real ECX-to-EBX handoff is preserved by an independent
@@ -10861,12 +10863,12 @@ linkages = []
 # and all 23 call/data fields replay exactly against the original image.
 [units.draw-world-animation-vm]
 artifact_kind = "linked-pe"
-source = "src/AnimationImmediateDraw.cpp"
-inputs = ["src/AnimationImmediateDrawViews.hpp", "src/AnimationImmediateDraw.hpp", "src/AnimationVm.hpp", "src/AnimationExecution.hpp", "src/MainRuntime.hpp", "src/RenderBatch.hpp"]
-support_sources = ["probes/animation-world-draw-context.cpp", "src/AnimationImmediateDrawWorldState.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationVmDraw.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp", "src/AnimationExtentMagnitude.cpp"]
+source = "src/AnimationVmRendererOwner.cpp"
+inputs = ["src/AnimationImmediateDrawViews.hpp", "src/AnimationImmediateDraw.hpp", "src/AnimationVm.hpp", "src/AnimationExecution.hpp", "src/MainRuntime.hpp", "src/RenderBatch.hpp", "src/StageDrawing.hpp", "src/FrameLoop.hpp", "src/StageLayerDrawing.hpp", "src/SecondarySpellStage.hpp", "src/SecondaryActorRuntime.hpp", "src/AsciiLifecycle.hpp", "src/AsciiFormatting.hpp", "src/SecondaryHud.hpp", "src/SecondaryActorState.hpp", "src/SecondaryHudDraw.hpp", "src/SecondaryPattern.hpp", "src/ResourceFile.hpp", "src/InputBackend.hpp", "src/AnimationRendererDispatch.hpp", "src/AnimationVmDraw.hpp", "src/AnimationQuad.hpp", "src/AnimationProjectedQuad.hpp", "src/CrtRounding.hpp"]
+support_sources = ["probes/animation-world-draw-context.cpp", "src/AnimationImmediateDrawWorldState.cpp", "src/RenderBatch.cpp", "src/AnimationExtentMagnitude.cpp", "src/StageDrawing.cpp", "src/StageLayerDrawing.cpp", "src/SecondarySpellStageDrawing.cpp", "src/SecondaryHudFrontDraw.cpp", "src/SecondaryHudDraw.cpp", "src/SecondaryPatternDispatch.cpp", "src/AnimationRendererDispatch.cpp", "probes/animation-adaptive-abi-context.cpp"]
 normal_support_sources = ["src/AnimationExtentMagnitude.cpp"]
 output_dir = "build/match-linked/AnimationWorldDraw"
-profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL", "/DANIMATION_VM_RENDERER_OWNER_MATCH=1"]
 entry = "AnimationWorldDrawProbe@8"
 functions = ["DrawWorldAnimationVm"]
 symbol = "?DrawWorld@ImmediateVmView@@QAEHPAURenderBatchView@@@Z"
@@ -10881,12 +10883,12 @@ linkages = [
   { offset = 0x105, type = "REL32", symbol = "_D3DXMatrixRotationZ@8", target = 0x0045F9FE, addend = 0x0 },
   { offset = 0x117, type = "REL32", symbol = "_D3DXMatrixMultiply@12", target = 0x0045F9F2, addend = 0x0 },
   { offset = 0x124, type = "DIR32", symbol = "__real@3fe0000000000000", target = 0x00497E60, addend = 0x0 },
-  { offset = 0x173, type = "REL32", symbol = "_AnimationExtentMagnitude@4", target = 0x0040B930, addend = 0x0 },
+  { offset = 0x173, type = "REL32", symbol = "?AnimationExtentMagnitude@@YGMM@Z", target = 0x0040B930, addend = 0x0 },
   { offset = 0x191, type = "DIR32", symbol = "__real@3fe0000000000000", target = 0x00497E60, addend = 0x0 },
-  { offset = 0x1C2, type = "REL32", symbol = "_AnimationExtentMagnitude@4", target = 0x0040B930, addend = 0x0 },
+  { offset = 0x1C2, type = "REL32", symbol = "?AnimationExtentMagnitude@@YGMM@Z", target = 0x0040B930, addend = 0x0 },
   { offset = 0x1D0, type = "DIR32", symbol = "__real@3fe0000000000000", target = 0x00497E60, addend = 0x0 },
-  { offset = 0x21A, type = "REL32", symbol = "_AnimationExtentMagnitude@4", target = 0x0040B930, addend = 0x0 },
-  { offset = 0x263, type = "REL32", symbol = "_AnimationExtentMagnitude@4", target = 0x0040B930, addend = 0x0 },
+  { offset = 0x21A, type = "REL32", symbol = "?AnimationExtentMagnitude@@YGMM@Z", target = 0x0040B930, addend = 0x0 },
+  { offset = 0x263, type = "REL32", symbol = "?AnimationExtentMagnitude@@YGMM@Z", target = 0x0040B930, addend = 0x0 },
   { offset = 0x2A4, type = "REL32", symbol = "?ApplyAnimationVmWorldState@RenderBatchView@@QAEXPAUAnimationVmView@@@Z", target = 0x0044F4B0, addend = 0x0 },
   { offset = 0x2AF, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x8 },
   { offset = 0x2F3, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x8 },
@@ -10897,3 +10899,35 @@ linkages = [
   { offset = 0x3D0, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x8 },
   { offset = 0x3ED, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x8 },
 ]
+
+[units.draw-adaptive-animation-vm]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/AnimationVmDraw.cpp"
+inputs = ["src/AnimationVmDraw.hpp", "src/AnimationVm.hpp", "src/AnimationQuad.hpp", "src/AnimationProjectedQuad.hpp", "src/AnimationImmediateDraw.hpp", "src/AnimationImmediateDrawViews.hpp", "src/CrtRounding.hpp", "src/MainRuntime.hpp"]
+support_sources = ["probes/animation-world-draw-context.cpp", "src/AnimationImmediateDraw.cpp", "src/AnimationQuad.cpp", "src/AnimationVmRotation.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationImmediateDrawWorldState.cpp", "src/RenderBatch.cpp", "src/AnimationExtentMagnitude.cpp", "src/StageDrawing.cpp", "src/StageLayerDrawing.cpp", "src/SecondarySpellStageDrawing.cpp", "src/SecondaryHudFrontDraw.cpp", "src/SecondaryHudDraw.cpp", "src/SecondaryPatternDispatch.cpp", "src/AnimationRendererDispatch.cpp"]
+normal_support_sources = ["src/AnimationImmediateDraw.cpp", "src/AnimationExtentMagnitude.cpp"]
+output_dir = "build/match-linked/AnimationVmDraw/DrawAdaptiveAnimationVm"
+profile = ["/O2", "/TP", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL", "/EHsc"]
+entry = "AnimationWorldDrawProbe@8"
+functions = ["DrawAdaptiveAnimationVm"]
+symbol = "?DrawAdaptiveAnimationVm@@YGHPAURenderBatchView@@PAUAnimationVmView@@@Z"
+target_address = 0x00450610
+size = 115
+linkages = []
+
+[units.draw-animation-vm-by-mode]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/AnimationVmRendererOwner.cpp"
+inputs = ["src/AnimationVmDraw.hpp", "src/AnimationVm.hpp", "src/AnimationQuad.hpp", "src/AnimationProjectedQuad.hpp", "src/AnimationImmediateDraw.hpp", "src/AnimationImmediateDrawViews.hpp", "src/CrtRounding.hpp", "src/MainRuntime.hpp"]
+support_sources = ["probes/animation-world-draw-context.cpp", "src/AnimationImmediateDrawWorldState.cpp", "src/RenderBatch.cpp", "src/AnimationExtentMagnitude.cpp", "src/StageDrawing.cpp", "src/StageLayerDrawing.cpp", "src/SecondarySpellStageDrawing.cpp", "src/SecondaryHudFrontDraw.cpp", "src/SecondaryHudDraw.cpp", "src/SecondaryPatternDispatch.cpp", "src/AnimationRendererDispatch.cpp", "probes/animation-adaptive-abi-context.cpp", "probes/animation-fan-context.cpp", "probes/animation-immediate-draw-context.cpp", "probes/secondary-emitter-motion-context.cpp", "probes/secondary-hud-front-draw-context.cpp", "probes/secondary-pattern-dispatch-context.cpp"]
+normal_support_sources = ["src/AnimationExtentMagnitude.cpp", "probes/animation-adaptive-abi-context.cpp"]
+output_dir = "build/match-linked/AnimationVmRendererOwner/DrawAnimationVmByMode"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL", "/DANIMATION_VM_RENDERER_OWNER_MATCH=1", "/fp:fast"]
+entry = "AnimationWorldDrawProbe@8"
+functions = ["DrawByMode"]
+symbol = "?DrawByMode@AnimationVmView@@QAIHPAURenderBatchView@@@Z"
+target_address = 0x00451EF0
+size = 276
+linkages = []

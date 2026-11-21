@@ -1,7 +1,9 @@
 # Animation quad construction and submission review
 
-Six further complete target owners have boundary and origin reviews. Five helper owners have source in `src/AnimationQuad.cpp`. The1,112-byte
-submission body is now maintained separately in `src/AnimationVmDraw.cpp`; see
+Six further complete target owners have boundary and origin reviews. The
+shared renderer owner context is maintained in `src/AnimationVmRendererOwner.cpp`;
+`ApplyAnimationVmDrawState` and `AppendRenderQuad` remain in `src/AnimationQuad.cpp`.
+The1,112-byte submission body is maintained in `src/AnimationVmDraw.cpp`; see
 [VM submission](ANIMATION_VM_DRAW.md). Authorship is indeterminate for
 all six: their custom renderer/ANM role is established, but that does not
 independently distinguish game authorship, reused engine utilities or (for the
@@ -9,11 +11,11 @@ floor adapter) compiler/library support.
 
 | Function | Address | Complete target bytes | Source |
 | --- | --- | ---: | --- |
-| ScaleAnimationColorChannel | 44F490 | 25 | Present |
+| ScaleAnimationColorChannel | 44F490 | 25 | `AnimationVmRendererOwner.cpp` |
 | ApplyAnimationVmDrawState | 44F710 | 368 | Present |
 | DrawAnimationVm | 44F880 | 1,112 | Present; non-exact |
 | AppendRenderQuad | 44FDA0 | 142 | Present |
-| BuildAnimationVmQuad | 44FE30 | 632 | Present |
+| BuildAnimationVmQuad | 44FE30 | 632 | `AnimationVmRendererOwner.cpp` |
 | FloorAnimationCoordinate | 4520C0 | 40 | Exact linked proof |
 
 ## Complete boundaries
@@ -127,8 +129,12 @@ is a diagnostic context, not the game.
 ## Current exact and compiler evidence
 
 The expanded canonical caller context includes the actual submission and its
-dispatch wrappers. It closes the complete632-byte coordinate function and
-40-byte floor adapter with three/one independently reviewed fields. Color25
+dispatch wrappers. `ScaleAnimationColorChannel` and `BuildAnimationVmQuad` now
+compile from the shared
+`AnimationVmRendererOwner.cpp` context and replays all632 bytes with three
+independently reviewed fields. `ScaleAnimationColorChannel` also replays all25
+bytes in that same owner context with no address fields. The 40-byte floor
+adapter closes with one independently reviewed field. Color25
 and appender142 remain exact after cold replay in that same context. The new
 VM-draw primary family also closes the537-byte unrounded coordinate function
 and54-byte unrounded dispatch. All six full primary-TU PDB contributions,

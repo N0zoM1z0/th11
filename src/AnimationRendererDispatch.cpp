@@ -116,7 +116,7 @@ int __stdcall DrawAnimationRendererLayer(AnimationRenderer *self, int layer)
         if (!(vm->flags.value & 0x04000000))
         {
             if (DrawCallback(vm)) DrawCallback(vm)(vm);
-            DrawAnimationVmByMode(reinterpret_cast<RenderBatchView *>(self), vm);
+            DrawAnimationVmByMode(vm, reinterpret_cast<RenderBatchView *>(self));
         }
         vm = DrawNext(vm);
     }

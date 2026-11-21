@@ -92,8 +92,17 @@ No missing-VM or fallback behavior is invented.
 
 The571-byte rotated owner contains FSINCOS, anchored local corners and rotation
 around the origin. Selector3 leaves the corresponding local axis unwritten
-in the native code. Its source is still open; separate sin/cos approximations
-or initialized fallback corners are not substituted.
+in the native code. Natural C++ source remains in `AnimationVmRotation.cpp`;
+its separate `sin`/`cos` operations still do not reproduce paired x87 FSINCOS,
+and initialized fallback corners are not substituted. The adaptive wrapper
+and mode dispatcher now share the broader `AnimationVmRendererOwner.cpp`
+context; both remain non-exact while private register allocation is open.
+The complete mode dispatcher is276 bytes:217 code, three alignment bytes and
+56 bytes of jump table. Its current natural-C++ candidate is260 bytes:203 code,
+one alignment byte and the same complete table. The remaining16-byte gap is
+callee-save prologue/epilogue placement. Reviewed callers consistently pass
+the VM in EAX and renderer in ECX; the source uses the recovered
+`AnimationVmView::DrawByMode` member rather than a synthetic wrapper.
 
 ## Full cold proofs and ownership limits
 

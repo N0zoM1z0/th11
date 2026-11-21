@@ -16,8 +16,8 @@ int __stdcall DrawSecondarySpellStage(SecondarySpellStageView *self)
     if (!(self->flags & 1u))
         return 1;
 
-    DrawAnimationVmByMode(g_RenderBatch, &self->vm0);
-    DrawAnimationVmByMode(g_RenderBatch, &self->vm1);
+    DrawAnimationVmByMode(&self->vm0, g_RenderBatch);
+    DrawAnimationVmByMode(&self->vm1, g_RenderBatch);
 
     AnimationVmView *vm = FindAnimationVmById(
         g_RenderBatch, AnimationVmId(self->followerIds[2]));

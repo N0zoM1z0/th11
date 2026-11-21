@@ -2,11 +2,19 @@
 
 `src/AnimationImmediateDraw.cpp`, `src/AnimationImmediateDrawViews.hpp` and
 `src/AnimationImmediateDrawWorldState.cpp` cover the immediate VM drawing and
-world-state paths. Six functions now have complete cold exact proofs: the four
+world-state paths. The full world-space `ImmediateVmView::DrawWorld` body is
+now grouped into `src/AnimationVmRendererOwner.cpp` with the quad builders,
+so its real `/GL` owner context is shared rather than simulated by a wrapper. Six functions now have complete cold exact proofs: the four
 strip/fan/UV leafs (964 bytes), the world-state code+table owner (600 bytes),
 and the full world-space drawing owner (1,036 bytes). The projected fog and
 mode-dispatch owners remain non-exact; the magnitude helper is still an
-independently open 28-byte leaf.
+independently open 28-byte leaf. The complete276-byte `DrawByMode` owner
+includes217 code bytes, three alignment bytes and its14-entry/56-byte switch
+table. Its natural `__fastcall` member source now lives in
+`AnimationVmRendererOwner.cpp`; the linked candidate is260 bytes (203 code,
+one alignment byte and the full table). The remaining16-byte gap is in
+callee-save prologue/epilogue placement, not the dispatch cases or table.
+Original callers consistently supply VM in EAX and renderer in ECX.
 
 Nine additional boundary/origin reviews cover eight engine/math owners and
 one verified D3DX import thunk. Engine/math origins remain indeterminate;
