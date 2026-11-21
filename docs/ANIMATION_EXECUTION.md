@@ -279,3 +279,41 @@ Float destinations for
 shares its RNG call in source but has two physical native sites. Preserve complete
 extents and /GL; no volatile, fake returns,
 private-register declarations, padding or cropped extents are used.
+
+
+## Full stage-update interpreter graph
+
+The `update-stage-real-interpreter-graph` diagnostic frontier now links the
+complete natural C++ `ExecuteAnimationVm` implementation and its actual source
+dependencies into the same image as `UpdateStage`. It includes
+`AnimationExecution.cpp`, `AnimationExecutionArguments.cpp`,
+`AnimationExecutionSupport.cpp`, `AnimationTween.cpp`, and the real VM drawing,
+fan, projected-quad, mesh, renderer and secondary-animation support sources.
+No private-register assembly adapter, target-byte stub or padding is used.
+
+| Function | Native extent | Linked natural C++ candidate | Diagnostic alignment |
+| --- | ---: | ---: | ---: |
+| ExecuteAnimationVm | 12,056 B | 11,704 B | 703/3,308 instruction keys |
+| ReadAnimationFloat | 540 B | 544 B | 55/169 instruction keys |
+| ReadAnimationInteger | 219 B | 219 B | 42/63 instruction keys |
+| RandomNext32 | 153 B | 153 B | 37/39 instruction keys; two import-thunk address differences |
+| ResetStageMesh | 325 B | 325 B | 100/104 instruction keys |
+
+The interpreter candidate has264 call instructions versus262 native and380
+conditional branches versus406. The native prologue uses an EBP frame, aligns
+ESP to eight bytes and reserves0xCC bytes; this candidate reserves0xE8 bytes
+without the explicit alignment and keeps the VM pointer in EBX instead of EDI.
+The full owner is present and callable from the stage-update candidate, but its
+control-flow and code-generation differences remain large. The byte-size
+reduction is not exactness evidence.
+
+The 153-byte `RandomNext32` candidate uses the real generic `RandomStateView *`
+callers in the interpreter's argument readers and range helper. Its dedicated
+canonical `random-next32` unit remains the independent cold-replayed exact
+proof; the broad graph's two remaining instruction-key differences are only
+the linked addresses of `EnterCriticalSection` and `LeaveCriticalSection`.
+Rebuild the expanded context selectively with:
+
+```bash
+scripts/repo-python scripts/build-match-unit.py --unit update-stage-real-interpreter-graph
+```

@@ -108,7 +108,14 @@ and adds the cached step from memory. The source retains ordinary compound
 assignments; volatile references and explicit temporary accumulators were
 experimented with and regressed to324/315 bytes and49/88 aligned instructions.
 The current owner remains non-exact; no register annotations or instruction
-bytes are embedded. Rebuild the bounded leaf frontier with
+bytes are embedded. The pinned VC9 primary-TU contribution is exactly325 bytes
+and aligns100/104 instruction keys. Four target keys remain unmatched across
+two x87 load/add pairs: native reloads each current axis from its stack slot
+before adding the step held in the FPU stack, while the candidate uses an x87
+register for the current axis and reloads the step from memory. The remaining
+address-normalized difference is11 bytes across those two short regions.
+Volatile-axis references, scalar coordinate locals and explicit do/while
+counter rewrites were tested and regressed to306–335 bytes with22–55 aligned
+keys; those experiments were discarded. The default natural C++ loop remains
+the best candidate. Rebuild the bounded leaf frontier with
 `scripts/repo-python scripts/build-match-unit.py --unit reset-stage-mesh`.
-Continue from the default profile and current11-byte address-normalized
-difference.
