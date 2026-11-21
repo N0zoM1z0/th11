@@ -1,12 +1,8 @@
 #include "StageResource.hpp"
 
-__declspec(naked) int __fastcall StageUpdateCallback(void *context)
+int __fastcall StageUpdateCallback(void *context)
 {
-    __asm
-    {
-        mov eax, ecx
-        jmp UpdateStage
-    }
+    return UpdateStage(static_cast<StageResourceView *>(context));
 }
 
 int __fastcall StageDrawCallback(void *context)

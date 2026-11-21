@@ -12,7 +12,7 @@ part of the reconstruction, not a closed native game build.
 | InitializeStageResource | 0x004024C0..0x00402735, 630 bytes | 630 | canonical linked-PE exact |
 | StageResourceDestructor | 0x00402740..0x0040299A, 603 bytes | 597 | non-exact; EH owner also open |
 | CreateStageResource | 0x004029C0..0x00402A5E, 159 bytes | 159 | diagnostic address-field match; EH owner remains open |
-| StageUpdateCallback | 0x00403900..0x00403906, 7 bytes | 7 | canonical linked-PE exact |
+| StageUpdateCallback | 0x00403900..0x00403906, 7 bytes | 10 | Natural C++ forwarding; non-exact |
 | StageDrawCallback | 0x00403910..0x00403916, 7 bytes | 7 | canonical linked-PE exact |
 | StageOverlayCallback | 0x00403920..0x00403926, 7 bytes | 7 | canonical linked-PE exact |
 
@@ -20,11 +20,13 @@ Direct hash-attested Ghidra review covers complete contiguous code, all exits,
 incoming/interior references, adjacent RET/CC and helper/caller contracts.
 There are no embedded tables or external code-interior references in these
 spans. The three callback entries were missing from the provisional inventory;
-explicit seven-byte span reviews establish them without changing the private
-database or refreshing maintained inventory rows. Their implementation origin
-is indeterminate: wrappers cannot be attributed to hand-written source versus
-compiler-generated adapters from instructions alone. Other new lifecycle rows
-have reviewed game-specific stage/VM ownership and initialization integration.
+explicit seven-byte native span reviews establish their boundaries and
+references. `StageDrawCallback` and `StageOverlayCallback` remain exact. The
+maintained `StageUpdateCallback` is now an ordinary C++ forwarding call and
+compiles to10 bytes in the pinned VC9 context, rather than reproducing the
+native seven-byte ECX-to-EAX tail adapter. The original callback's implementation
+origin remains indeterminate. Other lifecycle rows have reviewed game-specific
+stage/VM ownership and initialization integration.
 
 Default decompiler signatures omit the initializer's filename and some real
 callback inputs; complete instructions take precedence.
@@ -108,19 +110,19 @@ scripts/repo-python scripts/replay-exact-units.py \
   --unit stage-embedded-vm-constructor \
   --unit stage-embedded-vm-destructor \
   --unit stage-draw-callback \
-  --unit stage-overlay-callback \
-  --unit stage-update-callback
+  --unit stage-overlay-callback
 ```
 
-These six non-EH public primary-TU contributions add786 exact bytes.
+These five non-EH public primary-TU contributions add779 exact bytes.
 The initializer has21 reviewed bindings; the VM constructor/destructor and
-three callback adapters contribute five more, for26 independently reviewed
-fields. Sources, headers, tools, producer and PE/MAP/PDB
-identity/ownership are receipt-bound; complete extents and all bytes agree
-after exhaustive replay. The four float constant contents were separately
-checked against the target. Callback proofs use StageCallbacks.cpp as primary,
-not a borrowed support-TU owner. Earlier45 exact contexts were unchanged and
-were not replayed.
+two draw callback adapters contribute four more, for25 independently reviewed
+fields. Sources, headers, tools, producer and PE/MAP/PDB identity/ownership are
+receipt-bound; complete extents and all bytes agree after exhaustive replay.
+The four float constant contents were separately checked against the target.
+Callback proofs use StageCallbacks.cpp as primary, not a borrowed support-TU
+owner. The non-exact natural C++ update callback can be rebuilt separately
+with `scripts/repo-python scripts/build-match-unit.py --unit stage-update-callback`.
+Earlier45 exact contexts were unchanged and were not replayed.
 
 Constructor/destructor/factory EH and specialized-owner gaps remain open.
 The older loader contexts remain non-exact:297/434/131 source bytes. The new

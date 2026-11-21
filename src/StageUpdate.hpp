@@ -4,6 +4,7 @@
 #include "AnimationVm.hpp"
 #include "AnimationVmId.hpp"
 #include "Random.hpp"
+#include <stddef.h>
 
 // The draw grid shares the binding block's six observed words.
 struct StageMeshView
@@ -30,7 +31,12 @@ struct StagePrimitiveView
     short kind, byteSize, unknown004, vmIndex;
 };
 
-int __stdcall UpdateStageObjects();
+typedef char StageObjectViewSize[(sizeof(StageObjectView) == 0x1c) ? 1 : -1];
+typedef char StageObjectFlagsOffset[(offsetof(StageObjectView, flags) == 3) ? 1 : -1];
+typedef char StagePrimitiveViewSize[(sizeof(StagePrimitiveView) == 8) ? 1 : -1];
+typedef char StagePrimitiveVmIndexOffset[(offsetof(StagePrimitiveView, vmIndex) == 6) ? 1 : -1];
+
+int __fastcall UpdateStageObjects(StageResourceView *self);
 int __stdcall ExecuteStageScript(StageResourceView *self);
 void __stdcall ResetStageMesh(StageMeshView *self, float x, float y, float width, float height);
 extern RandomStateView g_TextRandomState;
