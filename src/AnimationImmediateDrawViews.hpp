@@ -57,7 +57,7 @@ struct ImmediateVmView
     unsigned int flags;
 
     int DrawWorld(RenderBatchView *renderer);
-    int __fastcall DrawByMode(RenderBatchView *renderer);
+    int DrawByMode(RenderBatchView *renderer);
 };
 
 typedef char ImmediateVmTweenStorageSize[(sizeof(ImmediateVmTweenStorage) == 0x224) ? 1 : -1];

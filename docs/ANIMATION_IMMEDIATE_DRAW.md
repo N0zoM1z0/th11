@@ -10,13 +10,14 @@ and the full world-space drawing owner (1,036 bytes). The projected fog and
 mode-dispatch owners remain non-exact; the magnitude helper is still an
 independently open 28-byte leaf. The complete 276-byte `DrawByMode` owner
 includes 217 code bytes, three alignment bytes and its 14-entry/56-byte switch
-table. Its natural `__fastcall` member source lives in
-`AnimationVmRendererOwner.cpp`; the current linked candidate is 248 bytes
-(192 code bytes plus the full table). The target saves EBX, ESI and EDI before
-the eligibility gates and restores all three on every exit; the candidate
-currently saves only ESI. This 28-byte code gap is a helper-owner/private
-register-allocation problem, not missing switch cases or table data. Original
-callers consistently supply VM in EAX and renderer in ECX.
+table. Its natural default-member source lives in
+`AnimationVmRendererOwner.cpp`; LTCG privately assigns the VM `this` pointer
+to EAX and renderer to ECX at the observed callers. The `/O2 /Ob1` linked
+candidate is 260 bytes (203 code bytes, one alignment byte and the full table).
+The target saves EBX/ESI/EDI at entry and restores all three on every exit; the
+candidate saves ESI/EDI at entry but shrink-wraps EBX around the world branch,
+leaving a 16-byte codegen gap. This is a register-allocation difference, not
+missing switch cases or table data.
 
 Nine additional boundary/origin reviews cover eight engine/math owners and
 one verified D3DX import thunk. Engine/math origins remain indeterminate;
@@ -34,7 +35,7 @@ code-only boundary is superseded; the existing review count is unchanged.
 | UpdateStripVertexUv | 4518C0 | 258 | Exact; no address fields |
 | DrawAnimationVertexStrip | 451A00 | 224 | Exact;7 reviewed fields |
 | DrawAnimationVertexFan | 451E10 | 224 | Exact;10 reviewed fields |
-| DrawAnimationVmByMode | 451EF0 | 276 | `AnimationVmRendererOwner.cpp`; candidate248/276, 28-byte callee-save gap |
+| DrawAnimationVmByMode | 451EF0 | 276 | `AnimationVmRendererOwner.cpp`; candidate260/276, 16-byte callee-save gap |
 
 The 28-byte magnitude leaf now has a dedicated cold context. Its natural C++
 source uses an 8-byte-aligned volatile float temporary so VC9 preserves the
@@ -50,14 +51,14 @@ that table; twelve CC precede452010. Independent full PE CFG/table/neighbor
 review supplements the mapped-text-attested Ghidra code/table references.
 The natural-C++ dispatcher lives in `AnimationVmRendererOwner.cpp` beside
 `ImmediateVmView::DrawWorld`; the strip/fan submitters remain in
-`AnimationImmediateDraw.cpp`. Its current cold candidate contribution is248
-bytes:192 code bytes and the complete 56-byte table. All14 mode slots select
-the reviewed helper paths in the original order. The target's prologue saves
-EBX/ESI/EDI before the eligibility gates and every return restores all three;
-the candidate saves only ESI. The remaining28-byte code gap therefore points
-to helper ownership/private-register allocation in the shared LTCG context.
-The complete276-byte owner remains non-exact; no byte credit is claimed.
-Earlier272/115 code-only diagnostics do not establish full-owner equality. See
+`AnimationImmediateDraw.cpp`. Its `/O2 /Ob1` cold candidate contribution is260
+bytes:203 code bytes, one alignment byte and the complete 56-byte table. All14
+mode slots select the reviewed helper paths in the original order. The target
+saves EBX/ESI/EDI at entry and restores all three on every return; the candidate
+saves ESI/EDI at entry but shrink-wraps EBX around the world branch. The
+remaining16-byte gap is a callee-save placement difference. The complete276-
+byte owner remains non-exact; no byte credit is claimed. Earlier272/115
+code-only diagnostics do not establish full-owner equality. See
 [HUD drawing](SECONDARY_HUD_DRAW.md) for the caller/context evidence.
 
 ## Physical immediate-VM view

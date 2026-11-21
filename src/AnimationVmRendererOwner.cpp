@@ -156,7 +156,7 @@ int ImmediateVmView::DrawWorld(RenderBatchView *renderer)
 }
 
 
-int __fastcall ImmediateVmView::DrawByMode(RenderBatchView *renderer)
+int ImmediateVmView::DrawByMode(RenderBatchView *renderer)
 {
     ImmediateVmView *self = this;
     AnimationVmView *vm = reinterpret_cast<AnimationVmView *>(self);

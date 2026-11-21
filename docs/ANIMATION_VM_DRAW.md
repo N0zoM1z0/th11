@@ -116,15 +116,14 @@ fallback corners are substituted. The adaptive wrapper
 and mode dispatcher now share the broader `AnimationVmRendererOwner.cpp`
 context; both remain non-exact while private register allocation is open.
 The complete mode dispatcher is276 bytes:217 code, three alignment bytes and
-56 bytes of jump table. Its current natural-C++ candidate is248 bytes:192 code
-bytes and the same complete table. The target saves EBX/ESI/EDI before its
-eligibility gates and restores all three on every exit; the candidate saves
-only ESI. The remaining28-byte gap is being traced through helper ownership
-and private register allocation, not filled with manual saves or padding.
-Reviewed callers consistently pass the VM in EAX and renderer in ECX; the
-source uses the recovered `ImmediateVmView::DrawByMode` member. Its 0x408-byte
-view asserts the accessed color/flag offsets, but the original C++ class
-identity remains unproved.
+56 bytes of jump table. Its current `/O2 /Ob1` natural-C++ candidate is260
+bytes:203 code bytes, one alignment byte and the same complete table. The
+target saves EBX/ESI/EDI at entry and restores all three on every exit; the
+candidate saves ESI/EDI at entry but shrink-wraps EBX around the world branch,
+leaving a16-byte callee-save placement gap. Reviewed callers consistently
+pass the VM in EAX and renderer in ECX; the source uses the recovered default
+member `ImmediateVmView::DrawByMode`. Its 0x408-byte view asserts the accessed
+color/flag offsets, but the original C++ class identity remains unproved.
 
 ## Full cold proofs and ownership limits
 
