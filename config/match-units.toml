@@ -10919,6 +10919,22 @@ linkages = []
 [units.draw-animation-vm-by-mode]
 frontier = true
 artifact_kind = "linked-pe"
+source = "src/AnimationVmDispatch.cpp"
+inputs = ["src/AnimationVmDraw.hpp", "src/AnimationVm.hpp", "src/AnimationQuad.hpp", "src/AnimationProjectedQuad.hpp", "src/AnimationImmediateDraw.hpp", "src/AnimationImmediateDrawViews.hpp", "src/CrtRounding.hpp", "src/MainRuntime.hpp"]
+support_sources = ["probes/animation-world-draw-context.cpp", "src/AnimationVmDraw.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationImmediateDraw.cpp", "src/AnimationVmRotation.cpp", "src/AnimationQuad.cpp", "src/AnimationImmediateDrawWorldState.cpp", "src/RenderBatch.cpp", "src/AnimationExtentMagnitude.cpp", "src/StageDrawing.cpp", "src/StageLayerDrawing.cpp", "src/SecondarySpellStageDrawing.cpp", "src/SecondaryHudFrontDraw.cpp", "src/SecondaryHudDraw.cpp", "src/SecondaryPatternDispatch.cpp", "src/AnimationRendererDispatch.cpp", "probes/animation-adaptive-abi-context.cpp", "probes/animation-fan-context.cpp", "probes/animation-immediate-draw-context.cpp", "probes/secondary-emitter-motion-context.cpp", "probes/secondary-hud-front-draw-context.cpp", "probes/secondary-pattern-dispatch-context.cpp"]
+normal_support_sources = ["src/AnimationExtentMagnitude.cpp", "probes/animation-adaptive-abi-context.cpp"]
+output_dir = "build/match-linked/AnimationVmDispatch/DrawAnimationVmByMode"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationWorldDrawProbe@8"
+functions = ["DrawAnimationVmByMode"]
+symbol = "?DrawAnimationVmByMode@@YGHPAUAnimationVmView@@PAURenderBatchView@@@Z"
+target_address = 0x00451EF0
+size = 276
+linkages = []
+
+[units.build-rotated-animation-vm-quad]
+frontier = true
+artifact_kind = "linked-pe"
 source = "src/AnimationVmRendererOwner.cpp"
 inputs = ["src/AnimationVmDraw.hpp", "src/AnimationVm.hpp", "src/AnimationQuad.hpp", "src/AnimationProjectedQuad.hpp", "src/AnimationImmediateDraw.hpp", "src/AnimationImmediateDrawViews.hpp", "src/CrtRounding.hpp", "src/MainRuntime.hpp"]
 support_sources = ["probes/animation-world-draw-context.cpp", "src/AnimationImmediateDrawWorldState.cpp", "src/RenderBatch.cpp", "src/AnimationExtentMagnitude.cpp", "src/StageDrawing.cpp", "src/StageLayerDrawing.cpp", "src/SecondarySpellStageDrawing.cpp", "src/SecondaryHudFrontDraw.cpp", "src/SecondaryHudDraw.cpp", "src/SecondaryPatternDispatch.cpp", "src/AnimationRendererDispatch.cpp", "probes/animation-adaptive-abi-context.cpp", "probes/animation-fan-context.cpp", "probes/animation-immediate-draw-context.cpp", "probes/secondary-emitter-motion-context.cpp", "probes/secondary-hud-front-draw-context.cpp", "probes/secondary-pattern-dispatch-context.cpp"]
@@ -10926,8 +10942,8 @@ normal_support_sources = ["src/AnimationExtentMagnitude.cpp", "probes/animation-
 output_dir = "build/match-linked/AnimationVmRendererOwner/DrawAnimationVmByMode"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL", "/DANIMATION_VM_RENDERER_OWNER_MATCH=1", "/fp:fast"]
 entry = "AnimationWorldDrawProbe@8"
-functions = ["DrawByMode"]
-symbol = "?DrawByMode@AnimationVmView@@QAIHPAURenderBatchView@@@Z"
-target_address = 0x00451EF0
-size = 276
+functions = ["BuildRotatedAnimationVmQuad"]
+symbol = "?BuildRotatedAnimationVmQuad@@YGXPAUAnimationVmView@@PAUCameraVector@@111@Z"
+target_address = 0x004503D0
+size = 571
 linkages = []

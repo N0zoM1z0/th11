@@ -93,8 +93,11 @@ No missing-VM or fallback behavior is invented.
 The571-byte rotated owner contains FSINCOS, anchored local corners and rotation
 around the origin. Selector3 leaves the corresponding local axis unwritten
 in the native code. Natural C++ source remains in `AnimationVmRotation.cpp`;
-its separate `sin`/`cos` operations still do not reproduce paired x87 FSINCOS,
-and initialized fallback corners are not substituted. The adaptive wrapper
+its separate `sin`/`cos` operations still do not reproduce paired x87 FSINCOS.
+The shared renderer context now exposes a complete479-byte natural-C++ candidate
+against the reviewed571-byte owner; the remaining gap includes the native
+FSINCOS lowering and surrounding float/register scheduling. No initialized
+fallback corners are substituted. The adaptive wrapper
 and mode dispatcher now share the broader `AnimationVmRendererOwner.cpp`
 context; both remain non-exact while private register allocation is open.
 The complete mode dispatcher is276 bytes:217 code, three alignment bytes and

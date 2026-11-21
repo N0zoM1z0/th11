@@ -30,54 +30,67 @@ void __stdcall BuildRotatedAnimationVmQuad(AnimationVmView *vm, CameraVector *fi
     CameraVector *second, CameraVector *third, CameraVector *fourth)
 {
     const RotatedDrawVmView *self = reinterpret_cast<const RotatedDrawVmView *>(vm);
-    float cosine = static_cast<float>(cos(self->angle));
-    float sine = static_cast<float>(sin(self->angle));
+    float angle = self->angle;
+    float cosine = static_cast<float>(cos(angle));
+    float sine = static_cast<float>(sin(angle));
     float centerX = self->offset.x + self->position.x + self->extraOffset.x;
     float centerY = self->offset.y + self->position.y + self->extraOffset.y;
     float width = self->width * self->scaleX;
     float height = self->height * self->scaleY;
-    float localX[4], localY[4];
+    float local_20, local_1c, local_18, local_14;
+    float local_10, local_c, local_8, local_4;
 
     switch ((self->flags >> 18) & 3)
     {
     case 0:
-        localX[0] = localX[2] = static_cast<float>(-width * 0.5);
-        localX[1] = localX[3] = static_cast<float>(width * 0.5);
+        local_10 = static_cast<float>(-width * 0.5);
+        local_c = static_cast<float>(width * 0.5);
+        local_8 = local_10;
+        local_4 = static_cast<float>(width * 0.5);
         break;
     case 1:
-        localX[0] = localX[2] = 0.0f;
-        localX[1] = localX[3] = width;
+        local_8 = 0.0f;
+        local_10 = local_8;
+        local_c = width;
+        local_4 = width;
         break;
     case 2:
-        localX[0] = localX[2] = -width;
-        localX[1] = localX[3] = 0.0f;
+        local_10 = -width;
+        local_4 = 0.0f;
+        local_c = local_4;
+        local_8 = local_10;
         break;
     }
     switch ((self->flags >> 20) & 3)
     {
     case 0:
-        localY[0] = localY[1] = static_cast<float>(-height * 0.5);
-        localY[2] = localY[3] = static_cast<float>(height * 0.5);
+        local_20 = static_cast<float>(-height * 0.5);
+        local_18 = static_cast<float>(height * 0.5);
+        local_1c = local_20;
+        local_14 = local_18;
         break;
     case 1:
-        localY[0] = localY[1] = 0.0f;
-        localY[2] = localY[3] = height;
+        local_1c = 0.0f;
+        local_20 = 0.0f;
+        local_18 = height;
+        local_14 = height;
         break;
     case 2:
-        localY[0] = localY[1] = -height;
-        localY[2] = localY[3] = 0.0f;
+        local_20 = -height;
+        local_14 = 0.0f;
+        local_18 = 0.0f;
+        local_1c = local_20;
         break;
     }
-    // Selector 3 has no writes to this axis in the native owner. In particular
-    // no default initialization or fallback corner is supplied here.
-    first->x = centerX + (cosine * localX[0] - sine * localY[0]);
-    first->y = centerY + (cosine * localY[0] + sine * localX[0]);
-    second->x = centerX + (cosine * localX[1] - sine * localY[1]);
-    second->y = centerY + (cosine * localY[1] + sine * localX[1]);
-    third->x = centerX + (cosine * localX[2] - sine * localY[2]);
-    third->y = centerY + (cosine * localY[2] + sine * localX[2]);
-    fourth->x = centerX + (cosine * localX[3] - sine * localY[3]);
-    fourth->y = centerY + (cosine * localY[3] + sine * localX[3]);
+
+    first->x = centerX + (cosine * local_10 - sine * local_20);
+    first->y = centerY + (cosine * local_20 + sine * local_10);
+    second->x = centerX + (local_c * cosine - local_1c * sine);
+    second->y = centerY + (local_1c * cosine + local_c * sine);
+    third->x = centerX + (local_8 * cosine - local_18 * sine);
+    third->y = centerY + (local_18 * cosine + local_8 * sine);
+    fourth->x = centerX + (local_4 * cosine - local_14 * sine);
+    fourth->y = centerY + (local_14 * cosine + local_4 * sine);
     float z = self->offset.z + self->position.z + self->extraOffset.z;
     fourth->z = third->z = second->z = first->z = z;
 }
