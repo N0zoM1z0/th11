@@ -32,15 +32,19 @@ code-only boundary is superseded; the existing review count is unchanged.
 | UpdateStripVertexUv | 4518C0 | 258 | Exact; no address fields |
 | DrawAnimationVertexStrip | 451A00 | 224 | Exact;7 reviewed fields |
 | DrawAnimationVertexFan | 451E10 | 224 | Exact;10 reviewed fields |
-| DrawAnimationVmByMode | 451EF0 | 276 | Source; general-input candidate276 /220, all26 fields |
+| DrawAnimationVmByMode | 451EF0 | 276 | `AnimationVmDispatch.cpp`; candidate260/276, 16-byte callee-save placement gap |
 
 The complete dispatcher bound451EF0..452003 includes its three-byte no-op LEA
 and fourteen owned table cells. All14 apparent foreign DATA refs come from
 that table; twelve CC precede452010. Independent full PE CFG/table/neighbor
 review supplements the mapped-text-attested Ghidra code/table references.
-Current general renderer-input /GL support gives276=219 code+1 alignment+56
-table, with26 complete field bindings and220 full differences. Earlier272/115
-code-only diagnostics do not establish full-owner equality. See
+The dedicated natural-C++ dispatcher owner now emits a260-byte contribution:
+203 code bytes, one alignment byte and the complete56-byte table. Its14 table
+slots select the reviewed helper paths in the original order, but the target
+uses an additional16 bytes of callee-save prologue/epilogue code. The complete
+276-byte target remains non-exact; no byte credit is claimed. Earlier272/115
+code-only diagnostics and the general-input 276-byte contribution do not
+establish full-owner equality. See
 [HUD drawing](SECONDARY_HUD_DRAW.md) for the caller/context evidence.
 
 ## Physical immediate-VM view
