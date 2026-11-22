@@ -66,15 +66,23 @@ to a same-section compiler CIL static in the MAP's `Static symbols`
 section. An arbitrary hidden symbol or an EH handler's separate
 machine-code body is not accepted. Negative tests are in
 `scripts/test-linked-eh-static.py`. Local bindings must retain the same destination offset inside
-both complete owners. Every declared field is replayed at its reviewed target
+both complete owners. Every declared field is replayed at its declared target
 address; every remaining byte is compared directly. These are address
 relocations, never a masked exactness score.
+
+The comparator binds only the candidate side to the MAP symbol. The target
+side is the manifest's `target` value, so a source call to the wrong function
+would pass if its declared target were the original callee.
+`validate-tracking.py` closes that gap for exact units: a symbol that is
+itself an exact unit's owner must target that unit's address, and one symbol
+may name only one target address across all exact units. Symbols resolved
+through diagnostic anchors still depend on manual target review.
 
 ## Oracle maintenance and unit replay
 
 Run the synthetic tests when changing Oracle/receipt/build infrastructure.
 They are not per-function or per-documentation checkpoint requirements.
-Twenty-five public synthetic tests use generated PE32/MSF7/PDB fixtures,
+Twenty-seven public synthetic tests use generated PE32/MSF7/PDB fixtures,
 without game bytes or the historical compiler. They cover complete positive
 replay, final-byte corruption, cropped/overlapping contributions, wrong
 owners, interior entries, MAP/PDB identity conflicts, undeclared fields, wrong
@@ -88,8 +96,10 @@ scripts/repo-python scripts/test-linked-oracle.py
 scripts/repo-python scripts/replay-exact-units.py --unit poll-joystick-buttons
 ```
 
-Public CI installs pinned Capstone5.0.6 and runs both synthetic suites. Only
-private target-bound cold builds provide actual game exactness evidence.
+Public CI runs `scripts/ci.py`, which includes `validate-tracking.py` but not
+the synthetic suites; run `scripts/ci.py --full` (with pinned Capstone 5.0.6)
+for those. Only private target-bound cold builds provide actual game exactness
+evidence.
 
 The registration pair now also validates nonzero member addends: fields name
 one runtime object base plus reviewed offsets. The comparator first binds the

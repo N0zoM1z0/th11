@@ -16,7 +16,9 @@ extern char g_SecondaryProgramFilename[];      // Native 0x4C9928
 extern void *g_SecondaryHudPreparedData;       // Native 0x4C3238
 extern const char g_SecondaryHudResourceErrorMessage[];
 extern const char g_SecondaryHudLoadSkipFormat[];
-void __cdecl InputAcquireHook(const char *format, ...);
+// Native 0x41F6E0 is a separate one-byte RET whose only caller is this
+// load-skip trace. It is not the shared 0x459BC0 InputAcquireHook no-op.
+void __cdecl SecondaryHudLoadTrace(const char *format, ...);
 
 // Full native 0x41A520..0x41A66F (336 bytes). The ordinary C++ call
 // retains the original selection and animation file ownership. All
@@ -41,7 +43,7 @@ int __stdcall InitializeSecondaryDebugHudVisuals(SecondaryDebugHudOwned *self)
         const int selection =
             (g_SecondaryHudCharacterIndex + 2) * 3 + g_SecondaryHudPartnerIndex;
         const char *selectedFilename = g_SecondaryHudFilenameTable[selection];
-        InputAcquireHook(g_SecondaryHudLoadSkipFormat, selectedFilename);
+        SecondaryHudLoadTrace(g_SecondaryHudLoadSkipFormat, selectedFilename);
         g_SecondaryHudPreparedData = 0;
     }
     else

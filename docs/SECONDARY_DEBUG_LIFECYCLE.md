@@ -375,7 +375,11 @@ registering any HUD callbacks.
 The next path checks the real global prepared-resource cache at
 4C3238. A cache hit publishes the cached pointer to HUD+443C,
 calls the independently owned RET-only diagnostic tracer with the
-current selection filename, then clears the global cache. A
+current selection filename, then clears the global cache. That tracer is
+the one-byte RET at 0x41F6E0, whose only caller is 0x41A58E. It is a
+different function from the shared 0x459BC0 `InputAcquireHook` sink, so the
+source declares it separately as `SecondaryHudLoadTrace` (corrected
+2026-11-22; the earlier source reused the `InputAcquireHook` symbol). A
 cache miss constructs the path in the existing shared filename
 buffer at 4C9928 using the original unbounded append semantics,
 calls `LoadResourceFile` with null size and disk mode zero, stores

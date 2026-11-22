@@ -29,12 +29,15 @@ authority. `--unit NAME` requires the declared canonical context and a current
 artifact receipt. Its extent comes from a COFF function-definition auxiliary
 record or one complete single-function COMDAT section, never a caller-chosen
 slice or an adjacent section. Every COFF relocation must match offset, type,
-and symbol, then resolve to the separately reviewed target value. All bytes
-must agree after replay. The original TU partition and /GL ownership remain
+and symbol, then resolve to the declared target value; `validate-tracking.py`
+checks that exact-owner symbols and repeated symbols agree with those targets.
+The normal-COFF comparator does not itself read the boundary ledger; the
+tracking validator ties the unit size to the reviewed `functions.csv` extent.
+All bytes must agree after replay. The original TU partition and /GL ownership remain
 separate unknowns even when normal-COFF code generation reproduces a body.
 
 Synthetic public negative controls reject wrong final bytes, truncated bodies,
-escaping auxiliary extents, undeclared relocations, wrong relocation values,
+escaping auxiliary extents, undeclared relocations, a wrong target SHA-256
 and stale receipts. Private target-bound cold replays provide the actual
 exactness evidence; public CI checks cannot replace them. Run the public Oracle
 tests when changing the comparison/receipt/build infrastructure; they are not a

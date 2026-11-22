@@ -226,7 +226,15 @@ header, draws filename/ECL state, `Quit` and a category arrow for state 1,
 prints the loading filename in state 2, or the two converted position fields
 in state 3. The actual AsciiManager color is set for loading and position
 lines and restored to white. The arrow Y is category*10+16. The source uses
-the existing browser layout and `AsciiManagerPrint` rather than a mock draw.
+the existing browser layout and `AsciiManagerPrintSmall` rather than a mock draw.
+
+Correction (2026-11-22): all nine native print calls target 0x401600,
+`AsciiManagerPrintSmall`. The source previously called `AsciiManagerPrint`
+(0x4015A0) while the manifest declared each call's target as 0x401600, so
+the comparator replayed the right bytes for the wrong callee. The source and
+manifest now name `AsciiManagerPrintSmall`. `validate-tracking.py` rejects
+this pattern: a symbol owned by an exact unit must target that unit's
+address.
 
 Historical diagnostic (superseded by strict exact proof below): the first
 pinned VC9 `/GL` source cached the ASCII singleton across all calls. This forced a competing long-lived register, and linking the real

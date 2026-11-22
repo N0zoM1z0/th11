@@ -41,6 +41,34 @@ def one_column(name: str) -> list[str]:
         return result
 
 
+def validate_binding_targets(units: dict[str, dict]) -> None:
+    """Tie each declared external relocation target to the symbol it names.
+
+    The comparators resolve the candidate side through the MAP and take the
+    target side from the manifest. Without this check, a call to the wrong
+    function passes when its declared target is the original callee.
+    """
+    owner_address = {unit["symbol"]: int(unit["target_address"]) for unit in units.values()}
+    seen: dict[str, tuple[int, str]] = {}
+    for unit_name, unit in sorted(units.items()):
+        for field in [*unit.get("relocations", []), *unit.get("linkages", [])]:
+            if field.get("local") or field.get("eh_static"):
+                continue
+            symbol, target = field["symbol"], int(field["target"])
+            owner = owner_address.get(symbol)
+            if owner is not None and owner != target:
+                raise ValueError(
+                    f"unit {unit_name!r} binds {symbol} to {target:#x}, "
+                    f"but its exact owner is at {owner:#x}"
+                )
+            previous = seen.setdefault(symbol, (target, unit_name))
+            if previous[0] != target:
+                raise ValueError(
+                    f"{symbol} is bound to {previous[0]:#x} in {previous[1]!r} "
+                    f"and to {target:#x} in {unit_name!r}"
+                )
+
+
 def validate() -> dict[str, int]:
     with (CONFIG / "target.toml").open("rb") as stream:
         target_manifest = tomllib.load(stream)
@@ -179,6 +207,8 @@ def validate() -> dict[str, int]:
         if (function["status"] != "exact" or function["match_percent"] != "100.00"
                 or function["proposed_name"] != row["name"]):
             raise ValueError(f"exact match differs from function inventory at {row['address']}")
+        if int(function["size"], 0) != size:
+            raise ValueError(f"exact unit {unit_name!r} size differs from the reviewed extent")
         archive_unit = unit.get("artifact_kind") == "coff-archive"
         if archive_unit:
             if function["source_file"] or mapping is not None:
@@ -201,6 +231,7 @@ def validate() -> dict[str, int]:
         raise ValueError(
             f"canonical units and exact ledger differ: missing={missing!r} extra={extra!r}"
         )
+    validate_binding_targets({name: configured_units[name] for name in matched_units})
     for address, function in functions_by_address.items():
         if function["status"] == "exact" and address not in match_addresses:
             raise ValueError(f"function inventory has unregistered exact claim at {function['address']}")
