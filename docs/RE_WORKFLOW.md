@@ -21,15 +21,23 @@ For each coherent subsystem:
    bytes, artificial padding, fake return paths, or incorrect calling conventions.
 4. For a normal-COFF candidate, recover the decorated symbol's complete extent
    and exhaustive relocation list. Review every relocation's meaning and target
-   independently of its masked diagnostic. Configure a canonical unit only when
-   its complete zero-difference replay is reproducible.
-5. Cold-replay affected canonical units, update ledgers/generated progress,
-   check the diff, and make a concise `gpt-web: ...` checkpoint.
+   independently of its masked diagnostic. For a call, confirm the source calls
+   the same function as the original, not only that the declared target address
+   matches; `validate-tracking.py` catches this only for exact-owner symbols.
+   Configure a canonical unit only when its complete zero-difference replay is
+   reproducible.
+5. Cold-replay the changed unit. When you change a shared source that exact
+   units link (a callee body, a support TU or a probe), also replay those exact
+   units before committing; LTCG can change their private register ABI. Unit
+   manifests list consumers in `source`, `support_sources` and `inputs`.
+   Update ledgers/generated progress, check the diff, and make a concise
+   checkpoint commit with your agent prefix.
 
 Broad behavior tests, null/allocation-failure matrices, randomized/multiframe
 execution and caller regressions are not part of this loop. Use focused
 execution only to answer a specific codegen/ABI question. Do not rebuild callers
-or rerun historical suites merely because a dependency now has source. Run
+or rerun historical suites merely because a dependency now has source; the
+step 5 replay is only for exact units whose linked inputs you changed. Run
 Oracle/infrastructure tests when those tools change; full CI is not a per-function
 or per-documentation-edit prerequisite.
 

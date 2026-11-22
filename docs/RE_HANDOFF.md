@@ -166,13 +166,10 @@ the strict unit replay command before updating `config/matches.csv`.
 
 ## Storage and current workspace
 
-On 2026-11-20, **510 ignored cache files** were removed, saving about
-**10.4 MiB** by before/after directory measurements. This included old trial
-PE/PDB/MAP snapshots, source-sweep objects, one rotatable Ghidra application
-log and Python bytecode. Trial `source.cpp`, `comparison.log`, referenced
-machine-code snapshots, canonical exact output families, all active Boss
-frontiers, target, tools, Wine prefix and Ghidra project were preserved.
-See [ARTIFACTS](ARTIFACTS.md) and the ignored local inventory
-`.analysis/handoff-storage-cleanup-20261120.txt`. Rebuild a missing historical
-scratch binary before investigating it; do not use its old receipt as a current
-exactness proof. No compilation or full replay is required just to edit docs.
+The 2026-11-22 cleanup removed 488 MB of regenerable build intermediates and
+packed Git (`build/` 1.15 GB to 676 MB, `.git` 172 MB to 5.7 MB); see
+[ARTIFACTS](ARTIFACTS.md). Canonical exact families, active frontiers, the
+target, compiler, Wine prefix and Ghidra project are intact. Many receipts are
+stale after shared-header edits; the comparator then refuses, so cold-replay a
+unit before relying on its receipt. No compilation or replay is required just
+to edit docs.
