@@ -11190,3 +11190,44 @@ linkages = [
   { offset = 24, type = "DIR32", symbol = "__real@3e00000000000000", target = 0x00498028 },
   { offset = 30, type = "DIR32", symbol = "__real@3ff0000000000000", target = 0x00497E48 },
 ]
+
+[units.animation-random-unit]
+artifact_kind = "linked-pe"
+source = "src/AnimationExecutionSupport.cpp"
+inputs = ["src/AnimationExecution.hpp", "src/Random.hpp", "src/MainRuntime.hpp"]
+support_sources = ["src/Random.cpp", "src/AnimationExecutionArguments.cpp", "probes/animation-random-signed-range-context.cpp"]
+normal_support_sources = ["probes/animation-random-signed-range-context.cpp"]
+output_dir = "build/match-linked/AnimationRandomUnit"
+profile = ["/TP", "/O2", "/Oy", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+support_profiles = { "src/AnimationExecutionArguments.cpp" = ["/TP", "/O2", "/Oy", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"] }
+entry = "AnimationRandomSignedRangeProbe@8"
+functions = ["AnimationRandomUnit"]
+symbol = "?AnimationRandomUnit@@YGMPAURandomStateView@@@Z"
+target_address = 0x00458DA0
+size = 36
+linkages = [
+  { offset = 2, type = "REL32", symbol = "?RandomNext32@@YGIPAURandomStateView@@@Z", target = 0x00458C30 },
+  { offset = 18, type = "DIR32", symbol = "__real@4f800000", target = 0x00497F98 },
+  { offset = 24, type = "DIR32", symbol = "__real@3df0000000000000", target = 0x00498030 },
+]
+
+[units.animation-random-signed-unit]
+artifact_kind = "linked-pe"
+source = "src/AnimationExecutionSupport.cpp"
+inputs = ["src/AnimationExecution.hpp", "src/Random.hpp", "src/MainRuntime.hpp"]
+support_sources = ["src/Random.cpp", "src/AnimationExecutionArguments.cpp", "probes/animation-random-signed-range-context.cpp"]
+normal_support_sources = ["probes/animation-random-signed-range-context.cpp"]
+output_dir = "build/match-linked/AnimationRandomSignedUnit"
+profile = ["/TP", "/O2", "/Oy", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+support_profiles = { "src/AnimationExecutionArguments.cpp" = ["/TP", "/O2", "/Oy", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"] }
+entry = "AnimationRandomSignedRangeProbe@8"
+functions = ["AnimationRandomSignedUnit"]
+symbol = "?AnimationRandomSignedUnit@@YGMPAURandomStateView@@@Z"
+target_address = 0x00458DD0
+size = 42
+linkages = [
+  { offset = 2, type = "REL32", symbol = "?RandomNext32@@YGIPAURandomStateView@@@Z", target = 0x00458C30 },
+  { offset = 18, type = "DIR32", symbol = "__real@4f800000", target = 0x00497F98 },
+  { offset = 24, type = "DIR32", symbol = "__real@3e00000000000000", target = 0x00498028 },
+  { offset = 30, type = "DIR32", symbol = "__real@3ff0000000000000", target = 0x00497E48 },
+]

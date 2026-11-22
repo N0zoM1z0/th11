@@ -387,16 +387,28 @@ differences across the complete PDB-owned extent. The original 4070A0..4070D7
 body ends in RET4; eight CC bytes precede the separate 4070E0 function. This
 proves the source/codegen match, not original TU or class ownership.
 
-AnimationRandomSignedRange now has its own canonical linked-PE unit. Its
-complete 56-byte public primary-TU contribution replays with zero differences
-across four reviewed relocation fields (the RandomNext32 call and three
-floating-point constants). The boundary is reviewed from 0x4070A0 through
-0x4070D7; the sole direct caller is ReadAnimationFloat at 0x44B18F, with no
-interior control-flow or absolute-pointer references. The probe deliberately
-enters through ReadAnimationFloat rather than calling the helper directly:
-the real caller context lets LTCG recover the private ESI random-state input
-and one stack float/RET4 ABI. A synthetic direct caller instead produced a
-64-byte ordinary stack-argument function and was rejected.
+All three random-conversion leaves now have independent canonical linked-PE
+units and complete public primary-TU PDB extents:
+
+| Function | Target extent | Replayed relocation fields | Result |
+| --- | ---: | ---: | --- |
+| AnimationRandomUnit | 36 B | 3 | 0 differences |
+| AnimationRandomSignedUnit | 42 B | 4 | 0 differences |
+| AnimationRandomSignedRange | 56 B | 4 | 0 differences |
+
+The unit and signed-unit boundaries are reviewed at 0x458DA0..0x458DC3 and
+0x458DD0..0x458DF9. Raw reference scans identify their direct callers and find
+no interior control-flow or absolute-pointer references. The signed-range
+boundary is reviewed at 0x4070A0..0x4070D7, with its sole direct caller at
+0x44B18F and no interior references.
+
+The non-runnable caller-context probe enters through ReadAnimationFloat rather
+than calling these helpers directly. This lets LTCG infer the private ESI
+random-state input and, for signed-range, the one stack float/RET4 ABI. A
+synthetic direct signed-range caller instead produced a 64-byte ordinary
+stack-argument function and was rejected. The probes grant no runtime
+execution or original-TU authorship claim; exactness comes from the complete
+56/42/36-byte linked-owner replays and all reviewed relocation fields.
 
 The argument-reader leaf also improved:
 
