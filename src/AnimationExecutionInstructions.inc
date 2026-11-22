@@ -122,12 +122,8 @@
         case 88:
         {
             short script = static_cast<short>(ReadI(vm, instruction, 0));
-            AnimationVmId id = CreateAnimationVmId(self->file, script, vm->persistent020);
-            AnimationVmView *child = ClearMissingAnimationId(&id.value);
-            InsertAnimationRelatedNode(&vm->drawNode, &child->drawNode);
-            State(child)->otherPosition = self->position;
-            State(child)->translation = self->translation;
-            break;
+            drawChildId = CreateAnimationVmId(self->file, script, vm->persistent020).value;
+            goto animation_child_draw;
         }
         case 96:
         {
@@ -162,33 +158,33 @@
         case 91:
         {
             short script = static_cast<short>(ReadI(vm, instruction, 0));
-            AnimationVmId id = CreateSecondaryEmitterAnimationVmId(self->file, script, vm->persistent020);
-            AnimationVmView *child = ClearMissingAnimationId(&id.value);
+            drawChildId = CreateSecondaryEmitterAnimationVmId(self->file, script, vm->persistent020).value;
+            goto animation_child_draw;
+        }
+        animation_child_draw:
+            child = ClearMissingAnimationId(&drawChildId);
             InsertAnimationRelatedNode(&vm->drawNode, &child->drawNode);
             State(child)->otherPosition = self->position;
             State(child)->translation = self->translation;
             break;
-        }
         case 90:
         {
             short script = static_cast<short>(ReadI(vm, instruction, 0));
-            AnimationVmId id = CreateSecondaryDrawAnimationVmId(self->file, script, vm->persistent020);
-            AnimationVmView *child = ClearMissingAnimationId(&id.value);
-            InsertAnimationRelatedNode(&vm->drawNode, &child->drawNode);
-            State(child)->otherPosition = self->position;
-            State(child)->translation = self->translation;
-            break;
+            frontChildId = CreateSecondaryDrawAnimationVmId(self->file, script, vm->persistent020).value;
+            goto animation_child_front;
         }
         case 92:
         {
             short script = static_cast<short>(ReadI(vm, instruction, 0));
-            AnimationVmId id = CreateFrontSecondaryDrawAnimationVmId(self->file, script, vm->persistent020);
-            AnimationVmView *child = ClearMissingAnimationId(&id.value);
+            frontChildId = CreateFrontSecondaryDrawAnimationVmId(self->file, script, vm->persistent020).value;
+            goto animation_child_front;
+        }
+        animation_child_front:
+            child = ClearMissingAnimationId(&frontChildId);
             InsertAnimationRelatedNode(&vm->drawNode, &child->drawNode);
             State(child)->otherPosition = self->position;
             State(child)->translation = self->translation;
             break;
-        }
         case 3:
         {
             self->flags |= 1;

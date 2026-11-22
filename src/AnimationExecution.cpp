@@ -124,6 +124,8 @@ int __stdcall ExecuteAnimationVm(AnimationVmView *vm)
     register AnimationExecutionView *self = State(vm);
     register AnimationInstruction *instruction;
     float floatResult;
+    unsigned int drawChildId, frontChildId;
+    AnimationVmView *child;
     if (!self->instruction) return 1;
     if (self->flags & 0x20000) return 0;
     float savedScale = g_AnimationTimeScale;
