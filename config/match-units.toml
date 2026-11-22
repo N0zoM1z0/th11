@@ -9583,7 +9583,7 @@ inputs = ["src/AnimationExecution.hpp", "src/AnimationExecutionInstructions.inc"
 support_sources = ["probes/animation-execution-isolated-context.cpp"]
 normal_support_sources = ["probes/animation-execution-isolated-context.cpp"]
 output_dir = "build/match-linked/AnimationExecutionIsolatedOy"
-profile = ["/TP", "/O2", "/Oy", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+profile = ["/TP", "/O2", "/Oy-", "/Ob2", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "AnimationExecutionProbe@4"
 functions = ["ExecuteAnimationVm"]
 symbol = "?ExecuteAnimationVm@@YGHPAUAnimationVmView@@@Z"
@@ -9735,7 +9735,7 @@ functions = ["UpdateStage"]
 symbol = "?UpdateStage@@YIHPAUStageResourceView@@@Z"
 target_address = 0x00402AA0
 size = 1677
-support_profiles = { "src/StageMesh.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/StageTween.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/AnimationVm.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"], "src/VmBindings.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"], "src/Random.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"], "src/AnimationExecution.cpp" = ["/TP", "/O2", "/Oy", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/AnimationExecutionArguments.cpp" = ["/TP", "/O2", "/Oy", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/AnimationExecutionSupport.cpp" = ["/TP", "/O2", "/Oy", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]}
+support_profiles = { "src/StageMesh.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/StageTween.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/AnimationVm.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"], "src/VmBindings.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"], "src/Random.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"], "src/AnimationExecution.cpp" = ["/TP", "/O2", "/Oy-", "/Ob2", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/AnimationExecutionArguments.cpp" = ["/TP", "/O2", "/Oy", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/AnimationExecutionSupport.cpp" = ["/TP", "/O2", "/Oy", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]}
 linkages = [
   { offset = 0x078, type = "REL32", symbol = "D3DX9_37.DLL::D3DXVec3Normalize", target = 0x0045F9BC },
   { offset = 0x09F, type = "REL32", symbol = "?ExecuteStageScript@@YGHPAUStageResourceView@@@Z", target = 0x00404470 },

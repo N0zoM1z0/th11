@@ -532,9 +532,8 @@
         {
             float right = ReadF(vm, instruction, 2);
             float left = ReadF(vm, instruction, 1);
-            float result = static_cast<float>(fmod(left, right));
-            *FloatDestination(vm, instruction) = result;
-            break;
+            floatResult = static_cast<float>(fmod(left, right));
+            goto animation_float_destination;
         }
         case 8:
         {
@@ -603,9 +602,8 @@
         {
             float right = ReadF(vm, instruction, 1);
             float left = ReadF(vm, instruction, 0);
-            float result = static_cast<float>(fmod(left, right));
-            *FloatDestination(vm, instruction) = result;
-            break;
+            floatResult = static_cast<float>(fmod(left, right));
+            goto animation_float_destination;
         }
         case 40:
         {
@@ -663,16 +661,14 @@
         case 45:
         {
             float value = ReadF(vm, instruction, 1);
-            float result = static_cast<float>(acos(value));
-            *FloatDestination(vm, instruction) = result;
-            break;
+            floatResult = static_cast<float>(acos(value));
+            goto animation_float_destination;
         }
         case 46:
         {
             float value = ReadF(vm, instruction, 1);
-            float result = static_cast<float>(atan(value));
-            *FloatDestination(vm, instruction) = result;
-            break;
+            floatResult = static_cast<float>(atan(value));
+            goto animation_float_destination;
         }
         case 47:
         {
@@ -681,6 +677,10 @@
             *destination = AddAngles(value, 0.0f);
             break;
         }
+
+animation_float_destination:
+            *FloatDestination(vm, instruction) = floatResult;
+            break;
 
         case 85: ReplaceBits(self->flags, static_cast<unsigned int>(static_cast<unsigned char>(Words(instruction)[0])) << 28, 0x10000000); break;
         case 68: vm->persistent020 = static_cast<unsigned char>(Words(instruction)[0]); break;

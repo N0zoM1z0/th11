@@ -273,12 +273,47 @@ static per-op traces remain. This is a compiler observation under a fuller
 context, not proof of original TU ownership or whole-function equality.
 
 Next gaps are the full interpreter frame/alignment, VM register, pair-tween
-result-buffer home, temporary/vector lifetimes and the two remaining call merges.
-Float destinations for
-17/27/45/46 share a native tail; the source also folds7 into it. Integer random40
-shares its RNG call in source but has two physical native sites. Preserve complete
-extents and /GL; no volatile, fake returns,
+result-buffer home, temporary/vector lifetimes and the remaining call-site
+differences. Float destinations for17/27/45/46 share a native tail; the source
+now uses one natural C++ result local and common destination writeback for
+exactly those four opcodes, leaving assignment7 on its separate path. This
+restores the native15 AnimationFloatDestination calls (the earlier source had
+18). Integer random40 still merges two native RNG call sites in the source.
+Preserve complete extents and /GL; no volatile, fake returns,
 private-register declarations, padding or cropped extents are used.
+
+## 2026-11-22 shared float-result path and full-graph rebuild
+
+The four float-result handlers now converge on one C++ writeback label after
+their original operand reads and calculations. This is based on the native
+tail-sharing pattern, not on deleting handlers or changing their input order.
+The full stage-update graph was rebuilt with the AnimationExecution.cpp
+support translation unit explicitly using VC9 /Oy- /Ob2; the isolated
+interpreter unit uses the same profile for comparison. Both receipts are
+current and verified.
+
+| Context | PDB-owned interpreter | Instructions | Aligned target keys |
+| --- | ---: | ---: | ---: |
+| Full stage-update graph | 11,640 B | 3,377 | 743/3,308 |
+| Isolated interpreter | 10,740 B | 3,207 | 633/3,308 |
+| Native | 12,056 B | 3,308 | 3,308 |
+
+The full graph's call-site census now has15/15 float-destination calls,
+78/78 float reads,76/76 integer reads,13/13 integer destinations,4/4 VM-ID
+creations,4/4 timer setups and6/6 AddAngles calls. Remaining count deltas
+include ClearMissingAnimationId6/5, InsertAnimationRelatedNode4/3 and
+RandomNext32 3/4 (candidate/native). Total calls are260/259 and branch
+mnemonics375/406. These are static code-shape diagnostics, not semantic or
+exactness proof.
+
+The isolated candidate now emits the native eight-byte stack-alignment
+instruction, but its frame is0xD4 rather than0xCC and it still keeps the VM
+pointer in EBX rather than EDI. In the fuller graph, the owner is11,640 bytes,
+416 bytes shorter than native; its frame is0xE0, it does not emit the native
+stack-alignment instruction, and the VM pointer remains in EBX. The distinct
+prologues show that whole-graph LTCG context changes frame/register decisions.
+Neither candidate has the native complete extent, and neither receives exact
+credit. No bytes are padded to close the size gap.
 
 
 ## Earlier full stage-update interpreter graph baseline
