@@ -817,3 +817,4 @@ WriteSharedFile
 WriteToSurface
 WriteUnsupportedPbgMemoryFile
 WriteWholeFile
+AnimationRandomSignedRange

@@ -376,6 +376,28 @@ subtraction order; the unsigned conversion retains 2^-32. The signed-range
 owner performs the final maximum multiplication after converting the random
 integer. All three call the real RandomNext32 implementation.
 
+AnimationRandomSignedRange is now independently linked and accepted as the
+complete 56-byte owner at4070A0. Its caller is ReadAnimationFloat case10010 at
+44B18F, which chooses scene/text RNG from the VM flag and supplies PI. The
+isolated context compiles the real ReadAnimationFloat caller together with
+RandomNext32 and the signed-range helper; this reproduces the target private
+ESI state/one stack-float ABI without register annotations. The four reviewed
+fields (one REL32 call and three x87 literal references) replay with zero byte
+differences across the complete PDB-owned extent. The original 4070A0..4070D7
+body ends in RET4; eight CC bytes precede the separate 4070E0 function. This
+proves the source/codegen match, not original TU or class ownership.
+
+AnimationRandomSignedRange now has its own canonical linked-PE unit. Its
+complete 56-byte public primary-TU contribution replays with zero differences
+across four reviewed relocation fields (the RandomNext32 call and three
+floating-point constants). The boundary is reviewed from 0x4070A0 through
+0x4070D7; the sole direct caller is ReadAnimationFloat at 0x44B18F, with no
+interior control-flow or absolute-pointer references. The probe deliberately
+enters through ReadAnimationFloat rather than calling the helper directly:
+the real caller context lets LTCG recover the private ESI random-state input
+and one stack float/RET4 ABI. A synthetic direct caller instead produced a
+64-byte ordinary stack-argument function and was rejected.
+
 The argument-reader leaf also improved:
 
 | Function | Native extent | Current candidate | Aligned instruction keys |
