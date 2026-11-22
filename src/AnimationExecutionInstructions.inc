@@ -19,7 +19,11 @@
             self.flags &= ~1u;
             // Continue through the same event/pause operation as instruction63.
         case 63:
-            if (self.event) goto animation_event;
+            if (self.event)
+            {
+                event = self.event;
+                goto animation_event;
+            }
             self.flags |= 0x1000;
             goto animation_pause;
         case 81:
@@ -182,8 +186,8 @@
         animation_child_front:
             child = ClearMissingAnimationId(&frontChildId);
             InsertAnimationRelatedNode(&vm->drawNode, &child->drawNode);
-            State(child)->otherPosition = self.position;
             State(child)->translation = self.translation;
+            State(child)->otherPosition = self.position;
             break;
         case 3:
         {
@@ -621,18 +625,21 @@
         }
         case 41:
         {
-            float result;
+            RandomStateView *random;
+            float maximum;
             if (reinterpret_cast<unsigned char *>(&self.flags)[3] & 0x40)
             {
-                float maximum = ReadF(vm, instruction, 1);
-                result = AnimationRandomRange(&g_AnimationSceneRandomState, maximum);
+                maximum = ReadF(vm, instruction, 1);
+                random = &g_AnimationSceneRandomState;
             }
             else
             {
-                float maximum = ReadF(vm, instruction, 1);
-                result = AnimationRandomRange(&g_TextRandomState, maximum);
+                maximum = ReadF(vm, instruction, 1);
+                random = &g_TextRandomState;
             }
-            *FloatDestination(vm, instruction) = result;
+            float result = AnimationRandomRange(random, maximum);
+            float *destination = FloatDestination(vm, instruction);
+            *destination = result;
             break;
         }
         case 42:

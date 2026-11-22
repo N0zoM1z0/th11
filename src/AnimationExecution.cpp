@@ -130,7 +130,12 @@ int __stdcall ExecuteAnimationVm(AnimationVmView *vm)
     if (self.flags & 0x20000) return 0;
     float savedScale = g_AnimationTimeScale;
     if (self.flags & 0x20000000) g_AnimationTimeScale = 1.0f;
-    if (self.event) goto animation_event;
+    register int event;
+    if (self.event)
+    {
+        event = self.event;
+        goto animation_event;
+    }
     for (;;)
     {
         instruction = self.instruction;
@@ -150,7 +155,7 @@ animation_jump:
 animation_event:
         AnimationInstruction *fallback = 0;
         AnimationInstruction *label = reinterpret_cast<AnimationInstruction *>(self.scriptStart);
-        while ((label->opcode != 64 || self.event != Words(label)[0]) && label->opcode != -1)
+        while ((label->opcode != 64 || event != Words(label)[0]) && label->opcode != -1)
         {
             if (label->opcode == 64 && -1 == Words(label)[0]) fallback = label;
             label = Next(label);
