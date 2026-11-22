@@ -24,6 +24,7 @@ AllocateSecondaryDeathEffect,0x00422560,function
 AllocateStageHeapBytes,0x00405D80,function
 AngleToSecondaryPlayer,0x00431D90,function
 AnimationDistanceRoot,0x004196E0,function
+AnimationExecutionPolarPoint::Set,0x0044EF80,function
 AnimationExtentMagnitude,0x0040B930,function
 AnimationFileView::CreatePositionedVmId,0x00455B10,function
 AnimationFloatDestination,0x0044B380,function

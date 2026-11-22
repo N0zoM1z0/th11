@@ -9579,8 +9579,8 @@ linkages = [
 frontier = true
 artifact_kind = "linked-pe"
 source = "src/AnimationExecution.cpp"
-inputs = ["src/AnimationExecution.hpp", "src/AnimationExecutionInstructions.inc", "src/AnimationExecutionUpdate.inc", "src/AnimationVm.hpp", "src/AnimationTween.hpp", "src/Random.hpp", "src/RenderBatch.hpp", "src/AnimationVmFactory.hpp"]
-support_sources = ["probes/animation-execution-isolated-context.cpp"]
+inputs = ["src/AnimationExecution.hpp", "src/AnimationExecutionInstructions.inc", "src/AnimationExecutionUpdate.inc", "src/AnimationVm.hpp", "src/AnimationTween.hpp", "src/Random.hpp", "src/RenderBatch.hpp", "src/AnimationVmFactory.hpp", "src/AnimationExecutionPolarPoint.cpp"]
+support_sources = ["probes/animation-execution-isolated-context.cpp", "src/AnimationExecutionPolarPoint.cpp"]
 normal_support_sources = ["probes/animation-execution-isolated-context.cpp"]
 output_dir = "build/match-linked/AnimationExecutionIsolatedOy"
 profile = ["/TP", "/O2", "/Oy-", "/Ob2", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -9589,6 +9589,24 @@ functions = ["ExecuteAnimationVm"]
 symbol = "?ExecuteAnimationVm@@YGHPAUAnimationVmView@@@Z"
 target_address = 0x0044B4B0
 size = 12056
+support_profiles = { "src/AnimationExecutionPolarPoint.cpp" = ["/TP", "/O2", "/Oy", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"] }
+linkages = []
+
+# Natural C++ source for the polar-point helper called by both strip loops.
+[units.animation-execution-polar-point]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/AnimationExecutionPolarPoint.cpp"
+inputs = ["src/AnimationExecution.hpp"]
+support_sources = ["probes/animation-execution-polar-point-context.cpp"]
+normal_support_sources = ["probes/animation-execution-polar-point-context.cpp"]
+output_dir = "build/match-linked/AnimationExecutionPolarPoint"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationExecutionPolarPointProbe@12"
+functions = ["AnimationExecutionPolarPoint::Set"]
+symbol = "?Set@AnimationExecutionPolarPoint@@QAEXMM@Z"
+target_address = 0x0044EF80
+size = 30
 support_profiles = {}
 linkages = []
 
@@ -9725,8 +9743,8 @@ linkages = [
 frontier = true
 artifact_kind = "linked-pe"
 source = "src/StageUpdate.cpp"
-inputs = ["src/StageUpdate.hpp", "src/StageResource.hpp", "src/AnimationVm.hpp", "src/Camera.hpp", "src/Random.hpp", "src/MainRuntime.hpp", "src/AngleMath.hpp", "src/StageMesh.hpp", "src/StageScript.hpp", "src/StageTween.hpp", "src/RuntimeSurfaces.hpp", "src/VmBindings.hpp", "src/AnimationVmFactory.hpp", "src/AnimationVmId.hpp", "src/AnimationExecution.hpp", "src/AnimationExecution.cpp", "src/AnimationExecutionArguments.cpp", "src/AnimationExecutionSupport.cpp", "src/AnimationExecutionInstructions.inc", "src/AnimationExecutionUpdate.inc", "src/AnimationProjectedQuad.hpp", "src/AnimationSpriteBinding.hpp", "src/AnimationFan.hpp", "src/SecondaryEmitterAnimation.hpp"]
-support_sources = ["probes/stage-update-context.cpp", "src/StageMesh.cpp", "src/StageScript.cpp", "src/StageTween.cpp", "src/StageEasing.cpp", "src/AngleMath.cpp", "src/AnimationVm.cpp", "src/VmBindings.cpp", "src/Random.cpp", "src/ScreenEffectInitialization.cpp", "src/SecondaryGameplay.cpp", "src/SecondaryActorInstructions.cpp", "src/SecondaryEclDebug.cpp", "src/SecondaryScript.cpp", "src/SecondaryHostArguments.cpp", "src/SecondaryActorCreation.cpp", "src/SecondaryActorLifetime.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorUpdate.cpp", "src/StageLifecycle.cpp", "src/FrameRuntime.cpp", "src/SecondaryGameplayCallbacks.cpp", "src/SecondaryGameplaySupport.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryDialogueAnimation.cpp", "src/AnimationSpriteBinding.cpp", "src/FormattedTextureText.cpp", "src/SecondaryDamageSupport.cpp", "src/SecondaryPlayerMovement.cpp", "src/MeshEffects.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryActorCounters.cpp", "src/OutlinedTextureText.cpp", "src/TextTextureDispatch.cpp", "src/TextDrawing.cpp", "src/TextProcessing.cpp", "src/SecondaryDialogue.cpp", "src/SecondaryHudCallbacks.cpp", "probes/screen-effect-initialization-context.cpp", "src/SecondaryHud.cpp", "src/AnimationExecutionArguments.cpp", "src/AnimationTween.cpp", "src/SecondaryEmitterAnimation.cpp", "src/AnimationFan.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationImmediateDraw.cpp", "src/AnimationVmDraw.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp", "src/SecondaryProjectileCallbacks.cpp", "src/AnimationExecution.cpp", "src/ChainRegistration.cpp", "src/AnimationExecutionSupport.cpp"]
+inputs = ["src/StageUpdate.hpp", "src/StageResource.hpp", "src/AnimationVm.hpp", "src/Camera.hpp", "src/Random.hpp", "src/MainRuntime.hpp", "src/AngleMath.hpp", "src/StageMesh.hpp", "src/StageScript.hpp", "src/StageTween.hpp", "src/RuntimeSurfaces.hpp", "src/VmBindings.hpp", "src/AnimationVmFactory.hpp", "src/AnimationVmId.hpp", "src/AnimationExecution.hpp", "src/AnimationExecution.cpp", "src/AnimationExecutionArguments.cpp", "src/AnimationExecutionSupport.cpp", "src/AnimationExecutionInstructions.inc", "src/AnimationExecutionUpdate.inc", "src/AnimationExecutionPolarPoint.cpp", "src/AnimationProjectedQuad.hpp", "src/AnimationSpriteBinding.hpp", "src/AnimationFan.hpp", "src/SecondaryEmitterAnimation.hpp"]
+support_sources = ["probes/stage-update-context.cpp", "src/StageMesh.cpp", "src/StageScript.cpp", "src/StageTween.cpp", "src/StageEasing.cpp", "src/AngleMath.cpp", "src/AnimationVm.cpp", "src/VmBindings.cpp", "src/Random.cpp", "src/ScreenEffectInitialization.cpp", "src/SecondaryGameplay.cpp", "src/SecondaryActorInstructions.cpp", "src/SecondaryEclDebug.cpp", "src/SecondaryScript.cpp", "src/SecondaryHostArguments.cpp", "src/SecondaryActorCreation.cpp", "src/SecondaryActorLifetime.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorUpdate.cpp", "src/StageLifecycle.cpp", "src/FrameRuntime.cpp", "src/SecondaryGameplayCallbacks.cpp", "src/SecondaryGameplaySupport.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryDialogueAnimation.cpp", "src/AnimationSpriteBinding.cpp", "src/FormattedTextureText.cpp", "src/SecondaryDamageSupport.cpp", "src/SecondaryPlayerMovement.cpp", "src/MeshEffects.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryActorCounters.cpp", "src/OutlinedTextureText.cpp", "src/TextTextureDispatch.cpp", "src/TextDrawing.cpp", "src/TextProcessing.cpp", "src/SecondaryDialogue.cpp", "src/SecondaryHudCallbacks.cpp", "probes/screen-effect-initialization-context.cpp", "src/SecondaryHud.cpp", "src/AnimationExecutionArguments.cpp", "src/AnimationTween.cpp", "src/SecondaryEmitterAnimation.cpp", "src/AnimationFan.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationImmediateDraw.cpp", "src/AnimationVmDraw.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp", "src/SecondaryProjectileCallbacks.cpp", "src/AnimationExecution.cpp", "src/AnimationExecutionPolarPoint.cpp", "src/ChainRegistration.cpp", "src/AnimationExecutionSupport.cpp"]
 normal_support_sources = ["src/AngleMath.cpp", "src/SecondaryGameplayCallbacks.cpp", "src/SecondaryHudCallbacks.cpp", "probes/screen-effect-initialization-context.cpp"]
 output_dir = "build/match-linked/UpdateStageRealInterpreterAnimationOy"
 profile = ["/TP", "/O2", "/Oy-", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -9735,7 +9753,7 @@ functions = ["UpdateStage"]
 symbol = "?UpdateStage@@YIHPAUStageResourceView@@@Z"
 target_address = 0x00402AA0
 size = 1677
-support_profiles = { "src/StageMesh.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/StageTween.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/AnimationVm.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"], "src/VmBindings.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"], "src/Random.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"], "src/AnimationExecution.cpp" = ["/TP", "/O2", "/Oy-", "/Ob2", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/AnimationExecutionArguments.cpp" = ["/TP", "/O2", "/Oy", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/AnimationExecutionSupport.cpp" = ["/TP", "/O2", "/Oy", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]}
+support_profiles = { "src/StageMesh.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/StageTween.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/AnimationVm.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"], "src/VmBindings.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"], "src/Random.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"], "src/AnimationExecution.cpp" = ["/TP", "/O2", "/Oy-", "/Ob2", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/AnimationExecutionArguments.cpp" = ["/TP", "/O2", "/Oy", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/AnimationExecutionSupport.cpp" = ["/TP", "/O2", "/Oy", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/AnimationExecutionPolarPoint.cpp" = ["/TP", "/O2", "/Oy", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]}
 linkages = [
   { offset = 0x078, type = "REL32", symbol = "D3DX9_37.DLL::D3DXVec3Normalize", target = 0x0045F9BC },
   { offset = 0x09F, type = "REL32", symbol = "?ExecuteStageScript@@YGHPAUStageResourceView@@@Z", target = 0x00404470 },

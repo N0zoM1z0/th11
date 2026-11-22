@@ -820,3 +820,4 @@ WriteWholeFile
 AnimationRandomSignedRange
 AnimationRandomUnit
 AnimationRandomSignedUnit
+AnimationExecutionPolarPoint::Set

@@ -93,6 +93,15 @@ remain integer words despite misleading float temporaries in the decompiler.
 
 ## Real direct dependencies
 
+`AnimationExecutionPolarPoint::Set` at `0x0044EF80` is now maintained as
+natural C++ in `AnimationExecutionPolarPoint.cpp`. The complete 30-byte target
+body is a single `FSINCOS`, two radius multiplies, two stores and `RET 8`; four
+calls originate in the ring/arc strip loops, with no external interior entry.
+VC9 emits separate `cos` and `sin` CRT calls instead: 38 bytes in the isolated
+leaf context and 34 bytes when linked into the interpreter LTCG context. The
+source now supplies the real operation instead of the diagnostic link anchor,
+but the x87 dual-result instruction and private receiver register remain open.
+
 AnimationExecutionArguments.cpp provides the four variable decoders/destinations
 and UV conversion. Their full reviewed extents include all tables/selectors:
 

@@ -852,7 +852,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0044EE00,unknown,AnimationTween,indeterminate,unknown,animation-tween-dispatch-origin-2026-10-29
 0x0044EE30,unknown,AnimationTween,indeterminate,unknown,animation-tween-dispatch-origin-2026-10-29
 0x0044EE60,unknown,AnimationTween,indeterminate,unknown,animation-tween-dispatch-origin-2026-10-29
-0x0044EF80,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0044EF80,unknown,AnimationExecution,review,unknown,animation-execution-polar-point-origin-2026-11-22
 0x0044F000,unknown,AnimationExecution,indeterminate,unknown,animation-execution-origin-2026-11-06
 0x0044F080,unknown,AnimationExecution,indeterminate,unknown,animation-execution-origin-2026-11-06
 0x0044F270,unknown,AnimationExecution,indeterminate,unknown,animation-execution-origin-2026-11-06
