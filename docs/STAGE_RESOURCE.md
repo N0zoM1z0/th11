@@ -80,7 +80,7 @@ It allocates and clears20 bytes per texture/chunk, allocates72 bytes per sprite
 and4 bytes per script, then loads chunk texture sources in order. A negative result
 returns null without undoing the published document/tables. The source loader
 at0x004543E0 is recovered as LoadAnimationChunkSource and is now strict
-221/221-byte linked-PE exact under its real BeginLoad producer; the later worker
+221/221-byte linked-PE exact with the real `BeginLoadAnimationDocument` producer; the later worker
 decodes textures/sprites/scripts at0x004545A0. See ANIMATION_CHUNKS.md.
 
 ## Acquisition and waiting
@@ -100,9 +100,24 @@ anchor-only context. The cached path now preserves EAX/ECX across the no-op
 trace call as native does. The slow path remains non-exact: native creation
 receives ECX filename plus renderer/index on the stack and RET8; the current
 candidate instead uses EDX filename with a different stack/register setup.
-The two exact HUD callers, `RegisterSecondaryHudChains` and
-`InitializeSecondaryDebugHudVisuals`, both passed strict cold replay after
-this source change. No ABI or operand normalization grants exact credit.
+No ABI or operand normalization grants exact credit.
+
+**Reverted 2026-11-22.** The 2026-11-20 change (`24ec565`) modelled the
+slow-path creator as a `__thiscall` member of a `reinterpret_cast` filename
+view (`AnimationDocumentNameView::BeginLoad`) to put the filename in ECX.
+That is a declared-ABI device, not natural source, and it broke four exact
+callers: `RegisterSecondaryHudChains`, `InitializeSecondaryDebugHudVisuals`
+(both one byte: the index moved from ECX to EAX), and
+`ProcessSecondaryProgramExtensions` and `InitializeTitleMenuResources`
+(owner size changed). The earlier note that both HUD callers still passed
+was wrong; `git bisect` over `e7e6e15..24ec565` with the registration unit
+identified `24ec565` as the first failing commit. The free function
+`BeginLoadAnimationDocument` and the `4636b12` source are restored; all 19
+exact units that link `AnimationDocument.cpp` or its probes were replayed.
+The `int busy` field and the later `AnimationChunk.cpp` texture-store
+changes were kept because `LoadAnimationChunkSource` depends on them.
+Any new attempt at the native ECX-filename slow path must replay those 19
+units before it is committed.
 
 Stage loading already has the native EAX filename/stack stage view/RET4; its
 separate real-ResourceFile frontier remains 297 bytes with 84/99 aligned

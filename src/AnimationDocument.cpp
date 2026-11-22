@@ -6,12 +6,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-AnimationDocumentView *__thiscall AnimationDocumentNameView::BeginLoad(
-    AnimationDocumentLoadContext context) const
+AnimationDocumentView *__stdcall BeginLoadAnimationDocument(RenderBatchView *renderer,
+    const char *filename, int index)
 {
-    int index = context.index;
-    RenderBatchView *renderer = context.renderer;
-    const char *filename = reinterpret_cast<const char *>(this);
     char path[260];
     TraceAnimationLoad(g_AnimationLoadTraceFormat, filename);
     if (index >= 32)
@@ -20,25 +17,22 @@ AnimationDocumentView *__thiscall AnimationDocumentNameView::BeginLoad(
         return 0;
     }
     sprintf(path, g_AnimationPathFormat, filename);
-    register AnimationChunkHeaderView *data = reinterpret_cast<AnimationChunkHeaderView *>(
+    AnimationChunkHeaderView *data = reinterpret_cast<AnimationChunkHeaderView *>(
         LoadResourceFile(path, 0, 0));
-    int scriptCount;
     int chunkIndex = 0;
     AnimationDocumentView *file = new AnimationDocumentView;
     if (file)
         memset(file, 0, sizeof(*file));
-    else
-        file = 0;
     reinterpret_cast<AnimationDocumentSlotsView *>(renderer)->files[index] = file;
     if (!data)
-        goto animationChunkError;
+        return 0;
     file->index = index;
     file->data = data;
     strcpy(file->filename, filename);
-    scriptCount = data->scriptCount;
+    int scriptCount = data->scriptCount;
     int spriteCount = data->spriteCount;
     int textureCount = 1;
-    for (register AnimationChunkHeaderView *chunk = data; chunk->nextOffset; )
+    for (AnimationChunkHeaderView *chunk = data; chunk->nextOffset; )
     {
         chunk = reinterpret_cast<AnimationChunkHeaderView *>(
             reinterpret_cast<unsigned char *>(chunk) + chunk->nextOffset);
@@ -47,56 +41,45 @@ AnimationDocumentView *__thiscall AnimationDocumentNameView::BeginLoad(
         ++textureCount;
     }
     file->textureCount = textureCount;
-    file->textures = static_cast<AnimationDocumentTextureView *>(malloc(textureCount * sizeof(*file->textures)));
-    memset(file->textures, 0, textureCount * sizeof(*file->textures));
-    file->sprites = static_cast<AnimationSpriteView *>(malloc(spriteCount * sizeof(*file->sprites)));
-    file->scripts = static_cast<unsigned char **>(malloc(scriptCount * sizeof(*file->scripts)));
+    file->textures = static_cast<AnimationDocumentTextureView *>(malloc(textureCount * 20));
+    memset(file->textures, 0, textureCount * 20);
+    file->sprites = static_cast<AnimationSpriteView *>(malloc(spriteCount * 72));
+    file->scripts = static_cast<unsigned char **>(malloc(scriptCount * 4));
     file->spriteCount = spriteCount;
     file->scriptCount = scriptCount;
-    register AnimationChunkHeaderView *chunk = file->data;
+    AnimationChunkHeaderView *chunk = data;
     while (chunk)
     {
         if (LoadAnimationChunkSource(file, chunkIndex, chunk) < 0)
-            goto animationChunkError;
+            return 0;
         ++chunkIndex;
         if (!chunk->nextOffset)
             return file;
         chunk = reinterpret_cast<AnimationChunkHeaderView *>(
             reinterpret_cast<unsigned char *>(chunk) + chunk->nextOffset);
     }
-animationChunkError:
     AppendErrorLog(&g_RuntimeLog, g_AnimationChunkError);
     return 0;
 }
 
-static __forceinline void WaitForAnimationDocument(AnimationDocumentView *file)
-{
-    void (__stdcall *sleepFunction)(unsigned long) = Sleep;
-    file->busy = 1;
-waitForAnimationDocument:
-    if (g_MainRuntime.flags & 0x180)
-        return;
-    sleepFunction(1);
-    if (file->busy != 0)
-        goto waitForAnimationDocument;
-}
-
 AnimationDocumentView *__stdcall AcquireAnimationDocument(int index, const char *filename)
 {
-    RenderBatchView *renderer = g_RenderBatch;
-    AnimationDocumentSlotsView *slots = reinterpret_cast<AnimationDocumentSlotsView *>(renderer);
+    AnimationDocumentSlotsView *slots = reinterpret_cast<AnimationDocumentSlotsView *>(g_RenderBatch);
     if (slots->files[index])
     {
         TraceAnimationLoad(g_AnimationCachedTraceFormat, filename);
         return slots->files[index];
     }
-    const AnimationDocumentNameView *name =
-        reinterpret_cast<const AnimationDocumentNameView *>(filename);
-    AnimationDocumentLoadContext context = { renderer, index };
-    AnimationDocumentView *file = name->BeginLoad(context);
+    AnimationDocumentView *file = BeginLoadAnimationDocument(g_RenderBatch, filename, index);
     if (!file)
         return 0;
-    WaitForAnimationDocument(file);
+    file->busy = 1;
+    while (!(g_MainRuntime.flags & 0x180))
+    {
+        Sleep(1);
+        if (!file->busy)
+            break;
+    }
     TraceAnimationLoad(g_AnimationReadyTraceFormat, filename);
     return file;
 }
