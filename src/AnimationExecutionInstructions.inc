@@ -269,7 +269,7 @@
         }
         case 66: ReplaceBits(self->flags, static_cast<unsigned int>(Words(instruction)[0]) << 4, 0x70); break;
         case 48:
-            if (self->flags & 0x100)
+            if ((reinterpret_cast<unsigned char *>(&self->flags)[1] % 2u))
             {
                 float z = ReadF(vm, instruction, 2);
                 float y = ReadF(vm, instruction, 1);
@@ -303,7 +303,7 @@
             self->positionTween.duration = ReadI(vm, instruction, 0);
             ZeroControls(self->positionTween);
             self->positionTween.mode = Words(instruction)[1];
-            self->positionTween.initial = (self->flags & 0x100) ? self->otherPosition : self->position;
+            self->positionTween.initial = ((reinterpret_cast<unsigned char *>(&self->flags)[1] % 2u)) ? self->otherPosition : self->position;
             float z = ReadF(vm, instruction, 4);
             float y = ReadF(vm, instruction, 3);
             CameraVector target = {ReadF(vm, instruction, 2), y, z};
@@ -325,7 +325,7 @@
             self->positionTween.control1 = control1;
             self->positionTween.control2 = control2;
             self->positionTween.mode = 8;
-            self->positionTween.initial = (self->flags & 0x100) ? self->otherPosition : self->position;
+            self->positionTween.initial = ((reinterpret_cast<unsigned char *>(&self->flags)[1] % 2u)) ? self->otherPosition : self->position;
             float z = ReadF(vm, instruction, 6);
             float y = ReadF(vm, instruction, 5);
             CameraVector target = {ReadF(vm, instruction, 4), y, z};
@@ -610,7 +610,7 @@
         case 40:
         {
             unsigned int result = 0;
-            if (self->flags & 0x40000000)
+            if (reinterpret_cast<unsigned char *>(&self->flags)[3] & 0x40)
             {
                 unsigned int maximum = ReadI(vm, instruction, 1);
                 if (maximum) result = RandomNext32(&g_AnimationSceneRandomState) % maximum;
@@ -626,7 +626,7 @@
         case 41:
         {
             float result;
-            if (self->flags & 0x40000000)
+            if (reinterpret_cast<unsigned char *>(&self->flags)[3] & 0x40)
             {
                 float maximum = ReadF(vm, instruction, 1);
                 result = AnimationRandomRange(&g_AnimationSceneRandomState, maximum);
@@ -686,4 +686,10 @@
         case 68: vm->persistent020 = static_cast<unsigned char>(Words(instruction)[0]); break;
         case 80: ReplaceBits(self->flags, static_cast<unsigned int>(static_cast<unsigned char>(Words(instruction)[0])) << 15, 0x8000); break;
         case 82: ReplaceBits(self->flags, static_cast<unsigned int>(static_cast<unsigned char>(Words(instruction)[0])) << 27, 0x8000000); break;
-        case 87: ReplaceBits(self->flags, static_cast<unsigned int>(static_cast<unsigned char>(Words(instruction)[0])) << 30, 0x40000000); break;
+        case 87:
+        {
+            unsigned char *flags = reinterpret_cast<unsigned char *>(&self->flags);
+            flags[3] = static_cast<unsigned char>((flags[3] & 0xbf) |
+                ((static_cast<unsigned char>(Words(instruction)[0]) & 1u) << 6));
+            break;
+        }

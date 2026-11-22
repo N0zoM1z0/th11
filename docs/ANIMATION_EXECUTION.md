@@ -281,7 +281,11 @@ extents and /GL; no volatile, fake returns,
 private-register declarations, padding or cropped extents are used.
 
 
-## Full stage-update interpreter graph
+## Earlier full stage-update interpreter graph baseline
+
+The following figures are the earlier /Oy- baseline checkpoint, before the
+random conversion leaves below were restored as real C++ functions. They are
+kept as a comparison point rather than current build metrics.
 
 The `update-stage-real-interpreter-graph` diagnostic frontier now links the
 complete natural C++ `ExecuteAnimationVm` implementation and its actual source
@@ -350,29 +354,58 @@ callee/inlining and call-context effects.
 
 Rebuild the quick isolated frontier with:
 
-    scripts/repo-python scripts/build-match-unit.py --unit animation-execution-isolated\n\n
-## Full stage-graph register-allocation experiment
+    scripts/repo-python scripts/build-match-unit.py --unit animation-execution-isolated
 
-A second full stage-update linked frontier keeps every existing support object
-and recompiles only AnimationExecution.cpp with /Oy. The interpreter owner uses
-register hints for its state and instruction cursors, and the event scan uses
-the 16-bit unsigned wrap test for the -1 opcode sentinel. This is ordinary
-C++ control flow; it does not inject machine instructions or alter the ABI.
 
-The targeted incremental link reuses51 unchanged support objects. Its
-ExecuteAnimationVm body is10,936 bytes / 3,110 instructions, with1,031 of the
-3,308 target instruction keys aligned. The prior default full-graph candidate
-was11,620 bytes / 3,390 instructions, with704 aligned keys. This is a useful
-combined improvement in body size and instruction correspondence, but remains
-a diagnostic linked image with unresolved dependency anchors and is not
-runnable or exact.
+## Full stage-graph interpreter and random leaves
 
-The /Oy variant exposes an important remaining allocator difference: EBP is
-used as the VM-state pointer and EBX as the current instruction, while the
-native body keeps EBP as its frame pointer and EDI as the VM-state pointer.
-The next experiments focus on expressing parameter/state lifetimes so the
-native register roles emerge from VC9 without inline assembly.
+The bounded update-stage-real-interpreter-animation-oy frontier now includes
+AnimationExecutionSupport.cpp as a real support translation unit. Three
+previously unresolved random-conversion dependencies are implemented in
+natural C++ and linked as real functions, not as diagnostic aliases:
 
-Build the bounded variant with:
+| Function | Native extent | Candidate extent | Aligned instruction keys |
+| --- | ---: | ---: | ---: |
+| AnimationRandomUnit | 36 B / 12 ins | 36 B / 12 ins | 12/12 |
+| AnimationRandomSignedUnit | 42 B / 13 ins | 42 B / 13 ins | 13/13 |
+| AnimationRandomSignedRange | 56 B / 16 ins | 56 B / 16 ins | 16/16 |
+
+Their instruction sequences match after normalizing relocated call and data
+addresses. The signed conversion retains the native 2^-31 scale and -1
+subtraction order; the unsigned conversion retains 2^-32. The signed-range
+owner performs the final maximum multiplication after converting the random
+integer. All three call the real RandomNext32 implementation.
+
+The argument-reader leaf also improved:
+
+| Function | Native extent | Current candidate | Aligned instruction keys |
+| --- | ---: | ---: | ---: |
+| ReadAnimationFloat | 540 B / 169 ins | 516 B / 164 ins | 117/169 |
+| ReadAnimationInteger | 219 B / 63 ins | 219 B / 62 ins | 37/63 |
+| AnimationFloatDestination | 124 B / 40 ins | 124 B / 46 ins | 20/40 |
+| AnimationIntegerDestination | 104 B / 34 ins | 104 B / 46 ins | 17/34 |
+
+ReadAnimationFloat now has the native entry sequence
+fld [esp+4], push esi, fld st(0), mov esi,eax. Its three random selector
+paths call the actual signed-range, unit and signed-unit C++ helpers. The
+remaining five-instruction-count difference includes native float spill/reload
+sequences after the helper calls; this is still a diagnostic match, not an
+exact leaf claim.
+
+With the actual helper definitions linked, the complete interpreter owner is
+12,084 B / 3,217 instructions, with 1,048/3,308 target instruction keys
+aligned. It has 262 call instructions, matching the native count, and 383
+conditional branches versus 406 native. Its prologue still uses the EBP
+register as the VM-state pointer and reserves a 0xD8 frame; the native owner
+uses EBP as its frame pointer, aligns ESP to eight bytes, reserves 0xCC bytes
+and keeps the VM pointer in EDI. The main owner and the other three argument
+leaves remain open.
+
+The linked image is still a diagnostic graph with unrelated dependency anchors;
+it is not runnable and earns no exactness credit. No ASM, byte stubs, padding,
+or clipped extents are used. The targeted incremental link reuses the other
+52 support objects and recompiles only the affected translation unit.
+
+Build the bounded frontier with:
 
     scripts/repo-python scripts/build-match-unit.py --unit update-stage-real-interpreter-animation-oy

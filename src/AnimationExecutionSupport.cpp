@@ -90,3 +90,25 @@ float __stdcall AnimationRandomRange(RandomStateView *random, float maximum)
     maximum *= unit;
     return maximum;
 }
+
+
+float __stdcall AnimationRandomUnit(RandomStateView *random)
+{
+    return static_cast<float>(static_cast<float>(RandomNext32(random)) *
+        (1.0 / 4294967296.0));
+}
+
+float __stdcall AnimationRandomSignedUnit(RandomStateView *random)
+{
+    float unit = static_cast<float>(static_cast<float>(RandomNext32(random)) *
+        (1.0 / 2147483648.0) - 1.0);
+    return unit;
+}
+
+float __stdcall AnimationRandomSignedRange(RandomStateView *random, float maximum)
+{
+    float unit = static_cast<float>(static_cast<float>(RandomNext32(random)) *
+        (1.0 / 2147483648.0) - 1.0);
+    maximum *= unit;
+    return maximum;
+}

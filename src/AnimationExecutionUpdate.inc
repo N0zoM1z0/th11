@@ -46,7 +46,7 @@
     }
     if (self->positionTween.duration)
     {
-        if (self->flags & 0x100) self->otherPosition = StepStageVectorTween(&self->positionTween);
+        if ((reinterpret_cast<unsigned char *>(&self->flags)[1] % 2u)) self->otherPosition = StepStageVectorTween(&self->positionTween);
         else self->position = StepStageVectorTween(&self->positionTween);
     }
     if (self->colorTween.duration)
