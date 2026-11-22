@@ -1,59 +1,88 @@
-# TH11 reconstruction handoff — 2026-11-20
+# TH11 reconstruction handoff — 2026-11-22
 
 ## Start here
-
-The source baseline was verified on clean `main` at **`9accb5a`**
-(`gpt-web: express stage VM allocation with owned type size`). Subsequent
-handoff commits correct stale documentation/ledger notes and prune **ignored
-regenerable caches**, not game C/C++ source. Run `git status --short --branch`
-and `git log -8 --oneline` before continuing; any new dirty changes are the
-current agent's work to integrate, not a reason to skip a file.
-
-**Remote synchronization:** At the November 20 handoff check, local `main`
-was ahead of `origin/main`; an attempted `git push origin main` failed because
-the host could not resolve `github.com`. All changes are saved in local Git,
-but a fresh remote clone may not yet include the latest handoff commits. Resume
-from this Factory worktree, or push/reconcile `main` once networking works.
-Do not assume the remote received a commit merely because it exists locally.
 
 Work against **Japanese TH11 1.00a only**: private `resources/th11.exe`,
 688,128 bytes, SHA-256
 `2978b17f6184d100d249d4311348dd30c5c32ec75c014b667a525b797d3d8813`.
 The code-generation target is **VC9 RTM build 21022**; retain `/GL` in
 LTCG owner contexts. Use the repository shell, `scripts/repo-python`, and
-`scripts/ghidra.py` for direct Ghidra analysis.
+`scripts/ghidra.py` for direct Ghidra analysis. Reconstruction stays natural
+C/C++: no inline assembly, padding, byte stubs or cropped extents.
+
+Run `git status --short --branch` and `git log -8 --oneline` before
+continuing. Dirty changes in the worktree are the current agent's work to
+integrate. `main` was in sync with `origin/main` on 2026-11-22.
 
 ## Canonical local progress
 
-[PROGRESS](PROGRESS.md), generated from the ledgers, reports **2,175** tracked
-function candidates, **1,610** reviewed boundaries, **565** needing boundary
-review, **819** source mappings and **130** confirmed authored functions.
-It records **487 canonical exact functions / 54,214 exact code bytes**; **68**
-exact functions / **15,260 bytes** have confirmed authored origin. These
-numbers are *local exact-codegen ledger claims*, not native game closure or
-Factory-accepted Oracle coverage. Rerun `scripts/repo-python scripts/progress.py`
-only when canonical ledger status actually changes.
+[PROGRESS](PROGRESS.md) is generated from the ledgers with
+`scripts/repo-python scripts/progress.py`; read the counts there rather than
+copying them here. On 2026-11-22 it reported 491 canonical exact functions
+(56,045 bytes), 68 of them with confirmed authored origin (15,328 bytes),
+out of 2,175 tracked candidates with 562 boundaries still needing review.
+These are local exact-codegen ledger claims, not native game closure.
 
-Recently relevant selected exact owners include:
+Since the 2026-11-20 handoff:
 
-| Function (target address) | Exact extent and proof lane |
-| --- | --- |
-| `InitializeStageResource` (`0x4024C0`) | 630/630 B; strict linked-PE `/GL` owner and reviewed fields |
-| `SeekStageScriptMarker` (`0x404F20`) | 113/113 B; normal COFF, two relocations |
-| `BeginPrimaryStageTransition` (`0x4051D0`) | 103/103 B; normal COFF, three relocations |
-| `StepStageVectorTween` (`0x405240`) | 883/883 B; linked PE, four relocations |
-| `StepStageFogTween` (`0x4055D0`) | 737/737 B; linked PE, sixteen relocations |
+- Six new exact owners in the animation VM area: `DrawWorldAnimationVm`
+  (0x4513A0, 1,036 B), `ApplyAnimationVmWorldState` (0x44F4B0, 600 B with its
+  owned blend table), `LoadAnimationChunkSource` (0x4543E0, 221 B) and the
+  three random-conversion leaves at 0x4070A0, 0x458DA0 and 0x458DD0.
+- `StageUpdateCallback` (0x403900) and `UpdateStageObjects` (0x4040F0) were
+  withdrawn from exact when their sources returned to ordinary C++ forwarding
+  and traversal (`656511a`). The natural callback compiles to 10 bytes
+  against the native 7-byte ECX-to-EAX adapter. See
+  [STAGE_LIFECYCLE](STAGE_LIFECYCLE.md) and [STAGE_UPDATE](STAGE_UPDATE.md).
+- An Oracle review on 2026-11-22 found one exact row whose source called the
+  wrong function. `DrawSecondaryProgramBrowser` called `AsciiManagerPrint`
+  while the native calls `AsciiManagerPrintSmall`, and the manifest targets
+  hid the difference. The source now calls the native callee, and
+  `validate-tracking.py` checks that relocation targets agree with the
+  symbols they name. See [KNOWLEDGE_BASE](KNOWLEDGE_BASE.md) ("Relocation
+  targets must match the named symbol").
+- The same review found four exact rows that no longer reproduced at HEAD:
+  `RegisterSecondaryHudChains`, `InitializeSecondaryDebugHudVisuals`,
+  `ProcessSecondaryProgramExtensions` and `InitializeTitleMenuResources`.
+  `git bisect` traced them to `24ec565`, which changed the shared
+  `AnimationDocument.cpp` without replaying its exact callers. That change
+  was reverted and the callers pass again. Lesson: when a frontier edits a
+  shared source, replay the exact units that link it before committing.
 
-The stage marker, transition and both tween owners passed a **selected four-unit
-cold replay** in the retained `.analysis/` logs. The stage initializer also
-passed an independent **one-unit** replay after the two natural C++ typed
-layout refinements. The exact status of other owners is in
-`config/matches.csv`; a source mapping or byte-length match is not a proof.
+## Current main thread: `ExecuteAnimationVm` (0x44B4B0, 12,056 B)
 
-## Large functions still in progress
+The animation interpreter is the active large owner. It is measured in two
+frontier contexts with `.analysis/compare-execute-animation-vm-20261122.py`
+(whole-extent mnemonic/operand alignment, immediates normalised):
 
-These are **nonexact**, measured on their focused natural-C++ VC9 frontiers.
-Instruction-key alignment is diagnostic only:
+| Context | Unit | Size | Aligned keys | Calls |
+| --- | --- | ---: | ---: | ---: |
+| Full stage-update graph | `update-stage-real-interpreter-animation-oy` | 11,520 B | 964/3,308 | 262/262 |
+| Isolated | `animation-execution-isolated` | 10,672 B | 1,173/3,308 | 259/262 |
+
+The native frame uses EBP as frame pointer, aligns ESP to 8, reserves 0xCC
+bytes and holds the VM pointer in EDI. The full graph reserves 0xE0 without
+alignment; the isolated build aligns but reserves 0xDC. Both hold the VM
+pointer in EBX. The call census is now complete in the full graph (the
+opcode 40 split-zero change restored the fourth RandomNext32 call). Details
+and failed trials are in [ANIMATION_EXECUTION](ANIMATION_EXECUTION.md).
+
+Next experiments, ordered by expected value (TH09 evidence in
+[KNOWLEDGE_BASE](KNOWLEDGE_BASE.md), "Lessons from TH09"):
+
+1. Find which handlers decide EBX versus EDI. In scratch, remove groups of
+   opcode handlers and watch the VM register; then replace any hand-shared
+   tails in the coupled handlers with plain statements.
+2. Move handler temporaries into block scope to approach the 0xCC frame.
+3. Replace the remaining diagnostic anchors in the interpreter graph with
+   real `/GL` callee bodies; opaque callees change caller allocation.
+4. Find all native callers and address-taken references, to learn why the
+   isolated build emits the stack alignment and the full graph does not.
+
+## Other large functions still in progress
+
+These are **nonexact** (figures from 2026-11-20), measured on their focused
+natural-C++ VC9 frontiers. Instruction-key alignment is diagnostic only:
 
 | Owner | Native / candidate | Matched keys | Next concrete issue |
 | --- | --- | ---: | --- |
@@ -64,7 +93,7 @@ Instruction-key alignment is diagnostic only:
 | `LoadStageResource` (`0x403FC0`) | 297 / 297 B | 84/99 | Real ResourceFile EAX-filename call restored; AcquireAnimationDocument ECX/EBX inputs, section pointer and VM-count register scheduling remain |
 | `UpdateSecondarySpellStageState` (`0x40C0A0`) | 624 / 624 B | 165/167 | Only remaining instruction-key difference: final Z x87 load/add operand order |
 | `InitializeSecondaryDebugHudAnimations` (`0x41A6D0`) | 1,619 / 1,619 B | 385/402 | Initial return buffer, frame reservation, zero-ID wrap and retained animation scheduling |
-| `SecondaryEclDebugOwner::~SecondaryEclDebugOwner` (`0x40D320`) | 462 / 462 B | 126/127 | One compiler-generated EH state initializer (`1` native vs `0` candidate) |
+| `SecondaryEclDebugOwner::~SecondaryEclDebugOwner` (`0x40D320`) | 462 / 462 B | 126/127 | One compiler-generated EH state initializer (`1` native vs `0` candidate); decode the native FuncInfo/unwind map first, the likely cause is a missing member or base with a non-trivial destructor |
 | `InitializeSecondarySpellStage` (`0x40C650`) | 1,777 B native | diagnostic | Real caller uses EAX spell-name pointer and two stack integers, not three stack arguments |
 
 Read [STAGE_SCRIPT](STAGE_SCRIPT.md), [STAGE_CULLING](STAGE_CULLING.md),
@@ -81,13 +110,12 @@ large initializer's linked 246-byte result is newer than its historical
 C++ expression still emits the *wrong x87 operand load order*; multiple
 mathematically equivalent C++ trials did not resolve that difference.
 
-The `AcquireAnimationDocument` helper now has a trace-aware 128-byte
-diagnostic candidate with 28/38 aligned instruction keys (the external-anchor
-candidate was 131 bytes / 26/38). The real no-op `AnimationTrace.cpp` body
-restores cached-path EAX/ECX preservation. The slow-path `BeginLoad` register
-and stack ABI remains open. Strict cold replay still passes for both
-`secondary-debug-hud-registration` (339 bytes) and
-`secondary-debug-hud-visual-init` (336 bytes).
+`AcquireAnimationDocument` (0x454360) remains open. Its native slow path
+passes the filename in ECX with renderer/index on the stack. The 2026-11-20
+attempt to get that through a `__thiscall` member on a cast filename view
+broke four exact callers and was reverted on 2026-11-22; see
+[STAGE_RESOURCE](STAGE_RESOURCE.md) ("Acquisition and waiting"). Any new
+attempt must replay the 19 exact units that link `AnimationDocument.cpp`.
 
 The `DrawStageLayer` frontier links the real camera, render-batch flush and
 immediate VM-draw implementations with their direct source dependencies. The
@@ -115,6 +143,9 @@ Do not run a full cold replay. Successful checkpoints should be saved as
 Useful current scoped entry points:
 
 ```bash
+scripts/repo-python scripts/build-match-unit.py --unit animation-execution-isolated   # ~30 s
+scripts/repo-python scripts/build-match-unit.py --unit update-stage-real-interpreter-animation-oy   # ~5 min
+scripts/repo-python .analysis/compare-execute-animation-vm-20261122.py build/match-linked/UpdateStageRealInterpreterAnimationOy
 scripts/repo-python scripts/build-match-unit.py --unit execute-stage-script-frontier
 scripts/repo-python .analysis/compare-stage-script-frontier-20261118.py
 scripts/repo-python scripts/build-match-unit.py --unit cull-stage-object-frontier

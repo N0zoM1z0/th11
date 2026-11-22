@@ -280,8 +280,8 @@ exactly those four opcodes, leaving assignment7 on its separate path. This
 restores the native15 AnimationFloatDestination calls (the earlier source had
 18). Child creation also uses two separate shared C++ tails: opcodes88/91 and
 90/92. Each pair shares its native ClearMissingAnimationId and
-InsertAnimationRelatedNode calls. Integer random40 still merges two native RNG
-call sites in the source.
+InsertAnimationRelatedNode calls. Integer random40 now assigns its zero result
+inside each RNG branch, which restores the native fourth RandomNext32 call.
 Preserve complete extents and /GL; no volatile, fake returns,
 private-register declarations, padding or cropped extents are used.
 
@@ -323,6 +323,32 @@ than0xCC and it also keeps the VM pointer in EBX. The different prologues show
 that whole-graph LTCG context changes frame/register decisions. Neither
 candidate has the native complete extent, and neither receives exact credit.
 No bytes are padded to close the size gap.
+
+## 2026-11-22 split random-integer zero results
+
+Opcode 40 chooses the scene or text RNG from the VM flag and returns zero for
+a zero maximum. Declaring the result uninitialised and assigning `0` in each
+branch's `else`, instead of initialising it once before the branch, stops
+VC9 from folding the two RNG paths into one call. This restores the native
+fourth RandomNext32 call site.
+
+Measured with `.analysis/compare-execute-animation-vm-20261122.py`, which
+aligns mnemonic-plus-operand keys over the full 12,056-byte extent after
+replacing every hexadecimal immediate. Its counts are not comparable with the
+key totals in earlier tables, so both columns below come from the same
+script and the same build settings:
+
+| Context | HEAD 5a688d6 | Split zero results |
+| --- | ---: | ---: |
+| Full graph size | 11,504 B | 11,520 B |
+| Full graph aligned keys | 949/3,308 | 964/3,308 |
+| Full graph `call` mnemonics (candidate/native) | 261/262 | 262/262 |
+| Isolated size | 10,672 B | 10,672 B |
+| Isolated aligned keys | 1,171/3,308 | 1,173/3,308 |
+
+The full graph's call count now equals native. The frame (0xE0 full, 0xDC
+isolated, native 0xCC), the missing stack alignment in the full graph and the
+EBX-held VM pointer are unchanged.
 
 ## Earlier full stage-update interpreter graph baseline
 

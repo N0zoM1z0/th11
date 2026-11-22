@@ -603,16 +603,18 @@
         }
         case 40:
         {
-            unsigned int result = 0;
+            unsigned int result;
             if (reinterpret_cast<unsigned char *>(&self->flags)[3] & 0x40)
             {
                 unsigned int maximum = ReadI(vm, instruction, 1);
                 if (maximum) result = RandomNext32(&g_AnimationSceneRandomState) % maximum;
+                else result = 0;
             }
             else
             {
                 unsigned int maximum = ReadI(vm, instruction, 1);
                 if (maximum) result = RandomNext32(&g_TextRandomState) % maximum;
+                else result = 0;
             }
             *IntegerDestination(vm, instruction) = static_cast<int>(result);
             break;

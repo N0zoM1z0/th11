@@ -28,6 +28,54 @@ compiler observations and useful failed approaches.
   notes below saying EH acceptance was still unimplemented describe
   earlier tool revisions; see [LINKED_ORACLE](LINKED_ORACLE.md).
 
+## Relocation targets must match the named symbol (2026-11-22)
+
+Both comparators bind the candidate side of a relocation through the MAP
+symbol, but take the original side from the manifest's `target`. A source
+call to the wrong function therefore passes if its target is set to the
+original callee. This happened once: `DrawSecondaryProgramBrowser`
+(0x438E70) called `AsciiManagerPrint` (0x4015A0) nine times while every native
+call goes to `AsciiManagerPrintSmall` (0x401600). A second, harmless case
+reused the `InputAcquireHook` symbol (0x459BC0) for the distinct one-byte RET at
+0x41F6E0. Both sources were corrected and both owner units pass strict cold
+replay with the native callee symbols.
+
+`validate-tracking.py` now rejects the pattern for exact units: a symbol owned
+by an exact unit must target that unit's address, one symbol may name only one
+target, and an exact row's size must equal its `functions.csv` extent.
+Symbols that resolve to diagnostic link anchors still rely on manual target
+review, so check the callee's identity in the target, not only its address.
+
+## Lessons from TH09 that apply to TH11 (2026-11-22)
+
+TH09 (VC7.1 13.10.3077, no `/GL`) reached 1,036 exact functions mostly by
+changing compile context rather than flags. The applicable lessons, with the
+TH09 commit that demonstrated each:
+
+- Hand-merged tails in one switch handler can move registers in other
+  handlers of the same interpreter. Plain per-handler statements let the
+  compiler do the merging (RunEcl, `5fc16212`). This is the first thing to
+  test for `ExecuteAnimationVm`'s EBX-versus-EDI VM pointer: isolate handler
+  groups in scratch to find which ones decide the allocation.
+- A visible callee body changes caller scheduling and register choice far
+  from the call, even when it is not inlined (`352d8577`, `e2c63478`,
+  `eeab4cf1`). Under TH11's `/GL`, "visible" means compiled as `/GL` code in
+  the same link. Opaque diagnostic anchors behave like declaration-only
+  callees.
+- Block-scoped locals, not function-wide temporaries, restored a native frame
+  size and input registers (`c309298a`). Relevant to the 0xCC interpreter
+  frame.
+- Real headers and types beat locally invented helper views (`81b307f0`,
+  `5be571a8`).
+- A destructor's initial EH state of 1 rather than 0 usually means one more
+  member or base with a non-trivial destructor. Decode the native FuncInfo and
+  unwind map before editing the body (TH09 EH comparison, `33eb1939`).
+
+VC7.1 backend addresses, its allocator heuristics and `/Gr` defaults do not
+transfer. TH09 traced `c2.dll` in a debugger to explain ties; for TH11's
+LTCG, code generation runs in the linker-loaded `c2.dll`, which would need a
+separate investigation.
+
 ## Stage culling and auxiliary switch owners (2026-11-17)
 
 - The stage layer's formerly source-less `CullStageObject` (403950, 1,643
