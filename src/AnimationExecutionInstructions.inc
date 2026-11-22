@@ -1,7 +1,7 @@
 // Instruction groups follow reviewed native entry order; fallthroughs stay atomic.
         case 4:
-            SetStageTimer(&self->time, Words(instruction)[1]);
-            self->instruction = reinterpret_cast<AnimationInstruction *>(self->scriptStart + Words(instruction)[0]);
+            SetStageTimer(&self.time, Words(instruction)[1]);
+            self.instruction = reinterpret_cast<AnimationInstruction *>(self.scriptStart + Words(instruction)[0]);
             continue;
         case 5:
         {
@@ -9,22 +9,22 @@
             --*value;
             if (ReadI(vm, instruction, 0) > 0)
             {
-                SetStageTimer(&self->time, Words(instruction)[2]);
-                self->instruction = reinterpret_cast<AnimationInstruction *>(self->scriptStart + Words(instruction)[1]);
+                SetStageTimer(&self.time, Words(instruction)[2]);
+                self.instruction = reinterpret_cast<AnimationInstruction *>(self.scriptStart + Words(instruction)[1]);
                 continue;
             }
             break;
         }
         case 69:
-            self->flags &= ~1u;
+            self.flags &= ~1u;
             // Continue through the same event/pause operation as instruction63.
         case 63:
-            if (self->event) goto animation_event;
-            self->flags |= 0x1000;
+            if (self.event) goto animation_event;
+            self.flags |= 0x1000;
             goto animation_pause;
         case 81:
-            self->time = self->savedTime;
-            self->instruction = self->savedInstruction;
+            self.time = self.savedTime;
+            self.instruction = self.savedInstruction;
             continue;
 // Integer/float arguments and destinations retain their separate read order.
         case 28:
@@ -113,98 +113,98 @@
         }
         case -1:
         case 1:
-            self->flags &= ~1u;
+            self.flags &= ~1u;
         case 2:
-            self->instruction = 0;
+            self.instruction = 0;
             g_AnimationTimeScale = savedScale;
             return 1;
-        case 86: ReplaceBits(self->flags, static_cast<unsigned int>(ReadI(vm, instruction, 0)) << 29, 0x20000000); break;
+        case 86: ReplaceBits(self.flags, static_cast<unsigned int>(ReadI(vm, instruction, 0)) << 29, 0x20000000); break;
         case 88:
         {
             short script = static_cast<short>(ReadI(vm, instruction, 0));
-            drawChildId = CreateAnimationVmId(self->file, script, vm->persistent020).value;
+            drawChildId = CreateAnimationVmId(self.file, script, vm->persistent020).value;
             goto animation_child_draw;
         }
         case 96:
         {
             short script = static_cast<short>(ReadI(vm, instruction, 0));
-            AnimationVmId id = CreateAnimationVmId(self->file, script, vm->persistent020);
+            AnimationVmId id = CreateAnimationVmId(self.file, script, vm->persistent020);
             AnimationVmView *child = ClearMissingAnimationId(&id.value);
             InsertAnimationRelatedNode(&vm->drawNode, &child->drawNode);
             State(child)->otherPosition.x = ReadF(vm, instruction, 1);
             State(child)->otherPosition.y = ReadF(vm, instruction, 2);
-            State(child)->translation = self->translation;
+            State(child)->translation = self.translation;
             break;
         }
         case 97:
         {
             short script = static_cast<short>(ReadI(vm, instruction, 0));
-            AnimationVmId id = CreateAnimationVmId(self->file, script, vm->persistent020);
+            AnimationVmId id = CreateAnimationVmId(self.file, script, vm->persistent020);
             AnimationVmView *child = ClearMissingAnimationId(&id.value);
             State(child)->otherPosition.x = ReadF(vm, instruction, 1);
             State(child)->otherPosition.y = ReadF(vm, instruction, 2);
-            State(child)->translation = self->translation;
+            State(child)->translation = self.translation;
             break;
         }
         case 95:
         {
             short script = static_cast<short>(ReadI(vm, instruction, 0));
-            AnimationVmId id = CreateAnimationVmId(self->file, script, vm->persistent020);
+            AnimationVmId id = CreateAnimationVmId(self.file, script, vm->persistent020);
             AnimationVmView *child = ClearMissingAnimationId(&id.value);
-            State(child)->otherPosition = self->position;
-            State(child)->translation = self->translation;
+            State(child)->otherPosition = self.position;
+            State(child)->translation = self.translation;
             break;
         }
         case 91:
         {
             short script = static_cast<short>(ReadI(vm, instruction, 0));
-            drawChildId = CreateSecondaryEmitterAnimationVmId(self->file, script, vm->persistent020).value;
+            drawChildId = CreateSecondaryEmitterAnimationVmId(self.file, script, vm->persistent020).value;
             goto animation_child_draw;
         }
         animation_child_draw:
             child = ClearMissingAnimationId(&drawChildId);
             InsertAnimationRelatedNode(&vm->drawNode, &child->drawNode);
-            State(child)->otherPosition = self->position;
-            State(child)->translation = self->translation;
+            State(child)->otherPosition = self.position;
+            State(child)->translation = self.translation;
             break;
         case 90:
         {
             short script = static_cast<short>(ReadI(vm, instruction, 0));
-            frontChildId = CreateSecondaryDrawAnimationVmId(self->file, script, vm->persistent020).value;
+            frontChildId = CreateSecondaryDrawAnimationVmId(self.file, script, vm->persistent020).value;
             goto animation_child_front;
         }
         case 92:
         {
             short script = static_cast<short>(ReadI(vm, instruction, 0));
-            frontChildId = CreateFrontSecondaryDrawAnimationVmId(self->file, script, vm->persistent020).value;
+            frontChildId = CreateFrontSecondaryDrawAnimationVmId(self.file, script, vm->persistent020).value;
             goto animation_child_front;
         }
         animation_child_front:
             child = ClearMissingAnimationId(&frontChildId);
             InsertAnimationRelatedNode(&vm->drawNode, &child->drawNode);
-            State(child)->otherPosition = self->position;
-            State(child)->translation = self->translation;
+            State(child)->otherPosition = self.position;
+            State(child)->translation = self.translation;
             break;
         case 3:
         {
-            self->flags |= 1;
+            self.flags |= 1;
             int sprite;
-            if (self->spriteTransform) sprite = self->spriteTransform(vm, ReadI(vm, instruction, 0));
+            if (self.spriteTransform) sprite = self.spriteTransform(vm, ReadI(vm, instruction, 0));
             else sprite = ReadI(vm, instruction, 0);
-            BindAnimationSprite(reinterpret_cast<AnimationDocumentView *>(self->file), sprite, vm);
-            self->spriteFrame = self->time.current;
+            BindAnimationSprite(reinterpret_cast<AnimationDocumentView *>(self.file), sprite, vm);
+            self.spriteFrame = self.time.current;
             break;
         }
         case 102:
         {
-            self->flags |= 1;
+            self.flags |= 1;
             int sprite;
-            if (self->spriteTransform)
+            if (self.spriteTransform)
             {
                 int first = ReadI(vm, instruction, 0);
                 unsigned int count = ReadI(vm, instruction, 1);
                 int value = Add(static_cast<int>(RandomNext32(&g_TextRandomState) % count), first);
-                sprite = self->spriteTransform(vm, value);
+                sprite = self.spriteTransform(vm, value);
             }
             else
             {
@@ -212,14 +212,14 @@
                 unsigned int count = ReadI(vm, instruction, 1);
                 sprite = Add(static_cast<int>(RandomNext32(&g_TextRandomState) % count), first);
             }
-            BindAnimationSprite(reinterpret_cast<AnimationDocumentView *>(self->file), sprite, vm);
-            self->spriteFrame = self->time.current;
+            BindAnimationSprite(reinterpret_cast<AnimationDocumentView *>(self.file), sprite, vm);
+            self.spriteFrame = self.time.current;
             break;
         }
         case 50:
-            self->scale.x = ReadF(vm, instruction, 0);
-            self->scale.y = ReadF(vm, instruction, 1);
-            self->flags |= 8;
+            self.scale.x = ReadF(vm, instruction, 0);
+            self.scale.y = ReadF(vm, instruction, 1);
+            self.flags |= 8;
             break;
         case 51: Byte(vm, 0x377) = static_cast<unsigned char>(ReadI(vm, instruction, 0)); break;
         case 52:
@@ -234,28 +234,28 @@
             Byte(vm, 0x378) = static_cast<unsigned char>(ReadI(vm, instruction, 2));
             break;
         case 61:
-            self->flags = (self->flags ^ 0x200) | 8;
-            self->scale.x = static_cast<float>(self->scale.x * -1.0);
+            self.flags = (self.flags ^ 0x200) | 8;
+            self.scale.x = static_cast<float>(self.scale.x * -1.0);
             break;
         case 62:
-            self->flags = (self->flags ^ 0x400) | 8;
-            self->scale.y = static_cast<float>(self->scale.y * -1.0);
+            self.flags = (self.flags ^ 0x400) | 8;
+            self.scale.y = static_cast<float>(self.scale.y * -1.0);
             break;
         case 49:
-            self->rotation.x = ReadF(vm, instruction, 0);
-            self->rotation.y = ReadF(vm, instruction, 1);
-            self->rotation.z = ReadF(vm, instruction, 2);
-            self->flags |= 4;
+            self.rotation.x = ReadF(vm, instruction, 0);
+            self.rotation.y = ReadF(vm, instruction, 1);
+            self.rotation.z = ReadF(vm, instruction, 2);
+            self.flags |= 4;
             break;
         case 53:
-            self->angularVelocity.x = ReadF(vm, instruction, 0);
-            self->angularVelocity.y = ReadF(vm, instruction, 1);
-            self->angularVelocity.z = ReadF(vm, instruction, 2);
-            self->flags |= 4;
+            self.angularVelocity.x = ReadF(vm, instruction, 0);
+            self.angularVelocity.y = ReadF(vm, instruction, 1);
+            self.angularVelocity.z = ReadF(vm, instruction, 2);
+            self.flags |= 4;
             break;
         case 54:
-            self->scaleVelocity.x = ReadF(vm, instruction, 0);
-            self->scaleVelocity.y = ReadF(vm, instruction, 1);
+            self.scaleVelocity.x = ReadF(vm, instruction, 0);
+            self.scaleVelocity.y = ReadF(vm, instruction, 1);
             break;
         case 55:
         {
@@ -263,48 +263,48 @@
             SetAnimationAlphaTween(vm, duration, 0, Byte(vm, 0x377), static_cast<unsigned char>(Words(instruction)[0]));
             break;
         }
-        case 66: ReplaceBits(self->flags, static_cast<unsigned int>(Words(instruction)[0]) << 4, 0x70); break;
+        case 66: ReplaceBits(self.flags, static_cast<unsigned int>(Words(instruction)[0]) << 4, 0x70); break;
         case 48:
-            if ((reinterpret_cast<unsigned char *>(&self->flags)[1] % 2u))
+            if ((reinterpret_cast<unsigned char *>(&self.flags)[1] % 2u))
             {
                 float z = ReadF(vm, instruction, 2);
                 float y = ReadF(vm, instruction, 1);
                 CameraVector value = {ReadF(vm, instruction, 0), y, z};
-                self->otherPosition = value;
+                self.otherPosition = value;
             }
             else
             {
                 float z = ReadF(vm, instruction, 2);
                 float y = ReadF(vm, instruction, 1);
                 CameraVector value = {ReadF(vm, instruction, 0), y, z};
-                self->position = value;
+                self.position = value;
             }
             break;
-        case 75: RewindSecondaryTimer(&self->time, ReadI(vm, instruction, 0)); break;
-        case 72: ReplaceBits(self->flags, Words(instruction)[0], 1); break;
+        case 75: RewindSecondaryTimer(&self.time, ReadI(vm, instruction, 0)); break;
+        case 72: ReplaceBits(self.flags, Words(instruction)[0], 1); break;
         case 65:
         {
             unsigned short *values = reinterpret_cast<unsigned short *>(instruction + 1);
-            ReplaceBits(self->flags, static_cast<unsigned int>(values[0]) << 18, 0xc0000);
-            ReplaceBits(self->flags, static_cast<unsigned int>(values[1]) << 20, 0x300000);
+            ReplaceBits(self.flags, static_cast<unsigned int>(values[0]) << 18, 0xc0000);
+            ReplaceBits(self.flags, static_cast<unsigned int>(values[1]) << 20, 0x300000);
             break;
         }
-        case 70: self->uVelocity = ReadF(vm, instruction, 0); break;
-        case 71: self->vVelocity = ReadF(vm, instruction, 0); break;
-        case 73: ReplaceBits(self->flags, static_cast<unsigned int>(Words(instruction)[0]) << 11, 0x800); break;
-        case 74: ReplaceBits(self->flags, static_cast<unsigned int>(Words(instruction)[0]) << 13, 0x2000); break;
-        case 89: ReplaceBits(self->flags, static_cast<unsigned int>(Words(instruction)[0]) << 31, 0x80000000); break;
+        case 70: self.uVelocity = ReadF(vm, instruction, 0); break;
+        case 71: self.vVelocity = ReadF(vm, instruction, 0); break;
+        case 73: ReplaceBits(self.flags, static_cast<unsigned int>(Words(instruction)[0]) << 11, 0x800); break;
+        case 74: ReplaceBits(self.flags, static_cast<unsigned int>(Words(instruction)[0]) << 13, 0x2000); break;
+        case 89: ReplaceBits(self.flags, static_cast<unsigned int>(Words(instruction)[0]) << 31, 0x80000000); break;
         case 56:
         {
-            self->positionTween.duration = ReadI(vm, instruction, 0);
-            ZeroControls(self->positionTween);
-            self->positionTween.mode = Words(instruction)[1];
-            self->positionTween.initial = ((reinterpret_cast<unsigned char *>(&self->flags)[1] % 2u)) ? self->otherPosition : self->position;
+            self.positionTween.duration = ReadI(vm, instruction, 0);
+            ZeroControls(self.positionTween);
+            self.positionTween.mode = Words(instruction)[1];
+            self.positionTween.initial = ((reinterpret_cast<unsigned char *>(&self.flags)[1] % 2u)) ? self.otherPosition : self.position;
             float z = ReadF(vm, instruction, 4);
             float y = ReadF(vm, instruction, 3);
             CameraVector target = {ReadF(vm, instruction, 2), y, z};
-            self->positionTween.target = target;
-            ResetAnimationVectorTweenTime(&self->positionTween);
+            self.positionTween.target = target;
+            ResetAnimationVectorTweenTime(&self.positionTween);
             break;
         }
         case 100:
@@ -317,16 +317,16 @@
             control2.x = ReadF(vm, instruction, 7);
             control2.y = ReadF(vm, instruction, 8);
             control2.z = ReadF(vm, instruction, 9);
-            self->positionTween.duration = ReadI(vm, instruction, 0);
-            self->positionTween.control1 = control1;
-            self->positionTween.control2 = control2;
-            self->positionTween.mode = 8;
-            self->positionTween.initial = ((reinterpret_cast<unsigned char *>(&self->flags)[1] % 2u)) ? self->otherPosition : self->position;
+            self.positionTween.duration = ReadI(vm, instruction, 0);
+            self.positionTween.control1 = control1;
+            self.positionTween.control2 = control2;
+            self.positionTween.mode = 8;
+            self.positionTween.initial = ((reinterpret_cast<unsigned char *>(&self.flags)[1] % 2u)) ? self.otherPosition : self.position;
             float z = ReadF(vm, instruction, 6);
             float y = ReadF(vm, instruction, 5);
             CameraVector target = {ReadF(vm, instruction, 4), y, z};
-            self->positionTween.target = target;
-            ResetAnimationVectorTweenTime(&self->positionTween);
+            self.positionTween.target = target;
+            ResetAnimationVectorTweenTime(&self.positionTween);
             break;
         }
         case 57:
@@ -370,13 +370,13 @@
             float z = ReadF(vm, instruction, 4);
             float y = ReadF(vm, instruction, 3);
             CameraVector target = {ReadF(vm, instruction, 2), y, z};
-            self->rotationTween.duration = ReadI(vm, instruction, 0);
-            ZeroControls(self->rotationTween);
-            self->rotationTween.mode = Words(instruction)[1];
-            self->rotationTween.initial = self->rotation;
-            self->rotationTween.target = target;
-            ResetAnimationVectorTweenTime(&self->rotationTween);
-            self->flags |= 4;
+            self.rotationTween.duration = ReadI(vm, instruction, 0);
+            ZeroControls(self.rotationTween);
+            self.rotationTween.mode = Words(instruction)[1];
+            self.rotationTween.initial = self.rotation;
+            self.rotationTween.target = target;
+            ResetAnimationVectorTweenTime(&self.rotationTween);
+            self.flags |= 4;
             break;
         }
         case 60:
@@ -384,60 +384,60 @@
             float y = ReadF(vm, instruction, 3);
             AnimationFloatPair target(ReadF(vm, instruction, 2), y);
             int duration = ReadI(vm, instruction, 0);
-            SetAnimationScaleTween(vm, &target, &self->scale, duration, static_cast<unsigned char>(Words(instruction)[1]));
-            self->flags |= 8;
+            SetAnimationScaleTween(vm, &target, &self.scale, duration, static_cast<unsigned char>(Words(instruction)[1]));
+            self.flags |= 8;
             break;
         }
         case 93:
         {
             float target = ReadF(vm, instruction, 2);
-            self->uVelocityTween.duration = ReadI(vm, instruction, 0);
-            self->uVelocityTween.control1 = self->uVelocityTween.control2 = 0.0f;
-            self->uVelocityTween.mode = Words(instruction)[1];
-            self->uVelocityTween.initial = self->uVelocity;
-            self->uVelocityTween.target = target;
-            ResetAnimationScalarTweenTime(reinterpret_cast<AnimationScalarTweenTimeView *>(&self->uVelocityTween));
+            self.uVelocityTween.duration = ReadI(vm, instruction, 0);
+            self.uVelocityTween.control1 = self.uVelocityTween.control2 = 0.0f;
+            self.uVelocityTween.mode = Words(instruction)[1];
+            self.uVelocityTween.initial = self.uVelocity;
+            self.uVelocityTween.target = target;
+            ResetAnimationScalarTweenTime(reinterpret_cast<AnimationScalarTweenTimeView *>(&self.uVelocityTween));
             break;
         }
         case 94:
         {
             float target = ReadF(vm, instruction, 2);
-            self->vVelocityTween.duration = ReadI(vm, instruction, 0);
-            self->vVelocityTween.control1 = self->vVelocityTween.control2 = 0.0f;
-            self->vVelocityTween.mode = Words(instruction)[1];
-            self->vVelocityTween.initial = self->vVelocity;
-            self->vVelocityTween.target = target;
-            ResetAnimationScalarTweenTime(reinterpret_cast<AnimationScalarTweenTimeView *>(&self->vVelocityTween));
+            self.vVelocityTween.duration = ReadI(vm, instruction, 0);
+            self.vVelocityTween.control1 = self.vVelocityTween.control2 = 0.0f;
+            self.vVelocityTween.mode = Words(instruction)[1];
+            self.vVelocityTween.initial = self.vVelocity;
+            self.vVelocityTween.target = target;
+            ResetAnimationScalarTweenTime(reinterpret_cast<AnimationScalarTweenTimeView *>(&self.vVelocityTween));
             break;
         }
         case 67:
-            ReplaceBits(self->flags, static_cast<unsigned int>(Words(instruction)[0]) << 22, 0x3c00000);
-            if ((self->flags & 0x3c00000) == 0x2800000) InitializeFanAnimationVm(vm);
+            ReplaceBits(self.flags, static_cast<unsigned int>(Words(instruction)[0]) << 22, 0x3c00000);
+            if ((self.flags & 0x3c00000) == 0x2800000) InitializeFanAnimationVm(vm);
             break;
         case 83:
-            self->position = self->translation;
-            self->translation.x = self->translation.y = self->translation.z = 0.0f;
+            self.position = self.translation;
+            self.translation.x = self.translation.y = self.translation.z = 0.0f;
             break;
         case 84:
-            self->flags = (self->flags & ~0x1800000u) | 0x2400000;
-            self->vertices = static_cast<RenderVertex *>(malloc(static_cast<unsigned int>(ReadI(vm, instruction, 0)) * 56u));
+            self.flags = (self.flags & ~0x1800000u) | 0x2400000;
+            self.vertices = static_cast<RenderVertex *>(malloc(static_cast<unsigned int>(ReadI(vm, instruction, 0)) * 56u));
             break;
         case 101:
-            self->flags = (self->flags & ~0x800000u) | 0x3400000;
-            self->vertices = static_cast<RenderVertex *>(malloc(static_cast<unsigned int>(ReadI(vm, instruction, 0)) * 56u));
+            self.flags = (self.flags & ~0x800000u) | 0x3400000;
+            self.vertices = static_cast<RenderVertex *>(malloc(static_cast<unsigned int>(ReadI(vm, instruction, 0)) * 56u));
             break;
 
         case 98:
         {
             CameraVector quad[4];
             BuildAnimationVmModeQuad(vm, quad);
-            SetAnimationUv(&self->uv[0], &quad[0]);
-            SetAnimationUv(&self->uv[1], &quad[1]);
-            SetAnimationUv(&self->uv[2], &quad[2]);
-            SetAnimationUv(&self->uv[3], &quad[3]);
+            SetAnimationUv(&self.uv[0], &quad[0]);
+            SetAnimationUv(&self.uv[1], &quad[1]);
+            SetAnimationUv(&self.uv[2], &quad[2]);
+            SetAnimationUv(&self.uv[3], &quad[3]);
             break;
         }
-        case 99: ReplaceBits(self->flags2, static_cast<unsigned int>(ReadI(vm, instruction, 0)) << 2, 4); break;
+        case 99: ReplaceBits(self.flags2, static_cast<unsigned int>(ReadI(vm, instruction, 0)) << 2, 4); break;
         case 6:
         {
             int right = ReadI(vm, instruction, 1);
@@ -604,7 +604,7 @@
         case 40:
         {
             unsigned int result;
-            if (reinterpret_cast<unsigned char *>(&self->flags)[3] & 0x40)
+            if (reinterpret_cast<unsigned char *>(&self.flags)[3] & 0x40)
             {
                 unsigned int maximum = ReadI(vm, instruction, 1);
                 if (maximum) result = RandomNext32(&g_AnimationSceneRandomState) % maximum;
@@ -622,7 +622,7 @@
         case 41:
         {
             float result;
-            if (reinterpret_cast<unsigned char *>(&self->flags)[3] & 0x40)
+            if (reinterpret_cast<unsigned char *>(&self.flags)[3] & 0x40)
             {
                 float maximum = ReadF(vm, instruction, 1);
                 result = AnimationRandomRange(&g_AnimationSceneRandomState, maximum);
@@ -680,13 +680,13 @@ animation_float_destination:
             *FloatDestination(vm, instruction) = floatResult;
             break;
 
-        case 85: ReplaceBits(self->flags, static_cast<unsigned int>(static_cast<unsigned char>(Words(instruction)[0])) << 28, 0x10000000); break;
+        case 85: ReplaceBits(self.flags, static_cast<unsigned int>(static_cast<unsigned char>(Words(instruction)[0])) << 28, 0x10000000); break;
         case 68: vm->persistent020 = static_cast<unsigned char>(Words(instruction)[0]); break;
-        case 80: ReplaceBits(self->flags, static_cast<unsigned int>(static_cast<unsigned char>(Words(instruction)[0])) << 15, 0x8000); break;
-        case 82: ReplaceBits(self->flags, static_cast<unsigned int>(static_cast<unsigned char>(Words(instruction)[0])) << 27, 0x8000000); break;
+        case 80: ReplaceBits(self.flags, static_cast<unsigned int>(static_cast<unsigned char>(Words(instruction)[0])) << 15, 0x8000); break;
+        case 82: ReplaceBits(self.flags, static_cast<unsigned int>(static_cast<unsigned char>(Words(instruction)[0])) << 27, 0x8000000); break;
         case 87:
         {
-            unsigned char *flags = reinterpret_cast<unsigned char *>(&self->flags);
+            unsigned char *flags = reinterpret_cast<unsigned char *>(&self.flags);
             flags[3] = static_cast<unsigned char>((flags[3] & 0xbf) |
                 ((static_cast<unsigned char>(Words(instruction)[0]) & 1u) << 6));
             break;

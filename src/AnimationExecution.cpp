@@ -121,60 +121,60 @@ __forceinline void EmitStripPair(AnimationExecutionView *self, RenderVertex *&ve
 
 int __stdcall ExecuteAnimationVm(AnimationVmView *vm)
 {
-    register AnimationExecutionView *self = State(vm);
+    AnimationExecutionView &self = *State(vm);
     register AnimationInstruction *instruction;
     float floatResult;
     unsigned int drawChildId, frontChildId;
     AnimationVmView *child;
-    if (!self->instruction) return 1;
-    if (self->flags & 0x20000) return 0;
+    if (!self.instruction) return 1;
+    if (self.flags & 0x20000) return 0;
     float savedScale = g_AnimationTimeScale;
-    if (self->flags & 0x20000000) g_AnimationTimeScale = 1.0f;
-    if (self->event) goto animation_event;
+    if (self.flags & 0x20000000) g_AnimationTimeScale = 1.0f;
+    if (self.event) goto animation_event;
     for (;;)
     {
-        instruction = self->instruction;
-        if (instruction->frame > self->time.current) break;
+        instruction = self.instruction;
+        if (instruction->frame > self.time.current) break;
         switch (instruction->opcode)
         {
 #include "AnimationExecutionInstructions.inc"
         default:
             break;
         }
-        self->instruction = Next(instruction);
+        self.instruction = Next(instruction);
         continue;
 animation_jump:
-        SetStageTimer(&self->time, Words(instruction)[3]);
-        self->instruction = reinterpret_cast<AnimationInstruction *>(self->scriptStart + Words(instruction)[2]);
+        SetStageTimer(&self.time, Words(instruction)[3]);
+        self.instruction = reinterpret_cast<AnimationInstruction *>(self.scriptStart + Words(instruction)[2]);
         continue;
 animation_event:
         AnimationInstruction *fallback = 0;
-        AnimationInstruction *label = reinterpret_cast<AnimationInstruction *>(self->scriptStart);
-        while ((label->opcode != 64 || self->event != Words(label)[0]) && label->opcode != -1)
+        AnimationInstruction *label = reinterpret_cast<AnimationInstruction *>(self.scriptStart);
+        while ((label->opcode != 64 || self.event != Words(label)[0]) && label->opcode != -1)
         {
             if (label->opcode == 64 && -1 == Words(label)[0]) fallback = label;
             label = Next(label);
         }
-        self->flags &= ~0x1000u;
-        self->event = 0;
+        self.flags &= ~0x1000u;
+        self.event = 0;
         if (label->opcode != 64)
         {
             if (!fallback) goto animation_pause;
             label = fallback;
         }
-        self->savedTime = self->time;
-        self->savedInstruction = self->instruction;
-        SetStageTimer(&self->time, label->frame);
-        self->flags |= 1;
-        self->instruction = Next(label);
+        self.savedTime = self.time;
+        self.savedInstruction = self.instruction;
+        SetStageTimer(&self.time, label->frame);
+        self.flags |= 1;
+        self.instruction = Next(label);
     }
     goto animation_update;
 animation_pause:
-    OffsetSecondaryTimer(&self->time, -1.0f);
+    OffsetSecondaryTimer(&self.time, -1.0f);
 animation_update:
 #include "AnimationExecutionUpdate.inc"
-    if (self->update && self->update(vm)) return 1;
-    Tick(&self->time);
+    if (self.update && self.update(vm)) return 1;
+    Tick(&self.time);
     g_AnimationTimeScale = savedScale;
     return 0;
 }
