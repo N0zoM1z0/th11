@@ -381,9 +381,9 @@ The argument-reader leaf also improved:
 | Function | Native extent | Current candidate | Aligned instruction keys |
 | --- | ---: | ---: | ---: |
 | ReadAnimationFloat | 540 B / 132 code ins | 540 B / 132 code ins | 128/132 |
-| ReadAnimationInteger | 219 B / 63 ins | 219 B / 62 ins | 37/63 |
-| AnimationFloatDestination | 124 B / 40 ins | 124 B / 46 ins | 20/40 |
-| AnimationIntegerDestination | 104 B / 34 ins | 104 B / 46 ins | 17/34 |
+| ReadAnimationInteger | 219 B / 33 code ins | 219 B / 33 code ins | 32/33 |
+| AnimationFloatDestination | 124 B / 22 code ins | 124 B / 22 code ins | 21/22 |
+| AnimationIntegerDestination | 104 B / 17 code ins | 104 B / 17 code ins | 16/17 |
 
 ReadAnimationFloat now has the native entry sequence
 fld [esp+4], push esi, fld st(0), mov esi,eax. Its 23-entry jump table has the
@@ -391,19 +391,35 @@ same relative case offsets as the target, including the non-monotonic random
 case order 10011, 10012, then 10010. The code region is 448 bytes / 132
 instructions on both sides, followed by the 92-byte jump table. The three
 random paths now share the native float spill/reload return shape and call the
-real signed-range, unit and signed-unit C++ helpers. The remaining code-only
-difference is localized to the signed-range path: the candidate selects the
-random-state address before loading the 3.1415927f argument, while the target
-loads that constant first. This is a diagnostic match, not an exact leaf
-claim.
+real signed-range, unit and signed-unit C++ helpers. The remaining four
+code-only differences are localized to the signed-range path: the candidate
+selects the random-state address before loading the 3.1415927f argument, while
+the target loads that constant first. This is a diagnostic match, not an exact
+leaf claim.
 
-With the actual helper definitions linked, the complete interpreter owner is
-12,084 B, with 1,050/3,308 target instruction keys aligned. It has 262 call
-instructions, matching the native count, and 383 conditional branches versus
-406 native. Its prologue still uses EBP as the VM-state pointer and reserves a
-0xD8 frame; the native owner keeps EBP as its frame pointer, aligns ESP to
-eight bytes, reserves 0xCC bytes and keeps the VM pointer in EDI. The main
-owner and the other three argument leaves remain open.
+At the earlier baseline, before the event-scan source spelling experiment, the
+complete interpreter owner was 12,084 B with 1,050/3,308 target instruction
+keys aligned. The argument-reader code regions are now measured without
+disassembling their jump tables as instructions: the integer reader is
+32/33, the float destination is 21/22, and the integer destination is 16/17.
+For each of these three leaves, the only unmatched code key is the absolute
+jump-table base; all case bodies and default returns align after relocation
+normalization. Their full function extents and trailing data remain intact.
+
+A source-only event-scan comparison-order simplification now produces a
+12,372-byte full interpreter owner, with 1,114/3,308 whole-extent instruction
+keys aligned (the full owner disassembly contains 3,475 candidate keys). The
+candidate has 262 call mnemonics, equal to the target, and 384 branch mnemonics
+versus 406. This improves the diagnostic key alignment over the earlier
+12,084-byte baseline, but also grows the owner by 288 bytes; it is a compiler
+experiment, not an unconditional size improvement or an exactness claim. The
+event scan still reloads the event field during the loop and uses different
+registers from the native sequence.
+
+The main owner remains open. Its current prologue still uses EBP as the VM
+state pointer and reserves 0xD8 bytes without the native frame-pointer setup;
+the native owner uses EBP as its frame pointer, aligns ESP to eight bytes,
+reserves 0xCC bytes and keeps the VM pointer in EDI.
 
 The linked image is still a diagnostic graph with unrelated dependency anchors;
 it is not runnable and earns no exactness credit. No ASM, byte stubs, padding,

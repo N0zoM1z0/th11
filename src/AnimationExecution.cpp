@@ -147,10 +147,9 @@ animation_jump:
 animation_event:
         AnimationInstruction *fallback = 0;
         AnimationInstruction *label = reinterpret_cast<AnimationInstruction *>(self->scriptStart);
-        while ((label->opcode != 64 || Words(label)[0] != self->event) && label->opcode != -1)
+        while ((label->opcode != 64 || self->event != Words(label)[0]) && label->opcode != -1)
         {
-            if (label->opcode == 64 &&
-                static_cast<unsigned int>(Words(label)[0]) + 1u == 0u) fallback = label;
+            if (label->opcode == 64 && -1 == Words(label)[0]) fallback = label;
             label = Next(label);
         }
         self->flags &= ~0x1000u;
