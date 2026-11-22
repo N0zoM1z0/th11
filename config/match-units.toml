@@ -10976,6 +10976,23 @@ linkages = [
   { offset = 13, type = "REL32", symbol = "__CIcos", target = 0x00486BA0 },
 ]
 
+# Native animation opcode 44 tangent wrapper; preserve its float stack ABI.
+[units.animation-unary-tangent]
+artifact_kind = "linked-pe"
+source = "src/AnimationUnaryTangent.cpp"
+inputs = ["src/AnimationExecution.hpp"]
+support_sources = ["probes/animation-unary-tangent-context.cpp"]
+output_dir = "build/match-linked/AnimationUnaryTangent"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationUnaryTangentProbe@4"
+functions = ["AnimationUnaryMathC"]
+symbol = "?AnimationUnaryMathC@@YIMM@Z"
+target_address = 0x0042B6D0
+size = 31
+linkages = [
+  { offset = 13, type = "REL32", symbol = "__CItan", target = 0x004869B0 },
+]
+
 # Complete 101-byte native angular difference at 0x40B830, separately reviewed.
 [units.secondary-angle-difference-40b830]
 artifact_kind = "linked-pe"

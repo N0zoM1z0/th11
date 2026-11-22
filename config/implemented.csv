@@ -821,3 +821,4 @@ AnimationRandomSignedRange
 AnimationRandomUnit
 AnimationRandomSignedUnit
 AnimationExecutionPolarPoint::Set
+AnimationUnaryMathC

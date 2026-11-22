@@ -84,7 +84,7 @@ float __stdcall AnimationRandomUnit(RandomStateView *random);
 float __stdcall AnimationRandomSignedUnit(RandomStateView *random);
 float __stdcall SecondaryUnaryMathA(float value);
 float __stdcall SecondaryUnaryMathB(float value);
-float __stdcall AnimationUnaryMathC(float value);
+float __fastcall AnimationUnaryMathC(float value);
 AnimationVmId __stdcall CreateFrontSecondaryDrawAnimationVmId(AnimationFileView *file, int script, int layer);
 struct AnimationExecutionPolarPoint
 {

@@ -68,6 +68,7 @@ AnimationRendererDrawPriority62,0x004553F0,function
 AnimationRendererDrawPriority63,0x004553A0,function
 AnimationRendererUpdatePriority08,0x00455130,function
 AnimationRendererUpdatePriority26,0x00455120,function
+AnimationUnaryMathC,0x0042B6D0,function
 AnimationVectorLength,0x00452090,function
 AppendErrorLog,0x00458AF0,function
 AppendLog,0x00458A10,function

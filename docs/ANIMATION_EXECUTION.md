@@ -93,6 +93,18 @@ remain integer words despite misleading float temporaries in the decompiler.
 
 ## Real direct dependencies
 
+`AnimationUnaryMathC` at `0x0042B6D0` is the opcode-44 tangent wrapper. Its
+31-byte body loads the float argument from the stack, calls the pinned VC9
+`__CItan` entry at `0x004869B0`, rounds the x87 result through an aligned
+float local, reloads the rounded value and returns with `RET 4`. The Ghidra
+signature reports `__fastcall`; as expected for a floating-point parameter on
+this x86 ABI, the value is still stack-passed and callee-cleaned. Natural C++
+`tan(double)` with an aligned float local emits the complete 31-byte owner and
+the single `__CItan` REL32 at offset `+13`. Three native callers are reviewed;
+there are no external interior references. The source is wired into the
+interpreter diagnostic frontier, but exactness remains pending the targeted
+linked comparison.
+
 `AnimationExecutionPolarPoint::Set` at `0x0044EF80` is now maintained as
 natural C++ in `AnimationExecutionPolarPoint.cpp`. The complete 30-byte target
 body is a single `FSINCOS`, two radius multiplies, two stores and `RET 8`; four
