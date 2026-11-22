@@ -97,10 +97,21 @@ remain integer words despite misleading float temporaries in the decompiler.
 natural C++ in `AnimationExecutionPolarPoint.cpp`. The complete 30-byte target
 body is a single `FSINCOS`, two radius multiplies, two stores and `RET 8`; four
 calls originate in the ring/arc strip loops, with no external interior entry.
-VC9 emits separate `cos` and `sin` CRT calls instead: 38 bytes in the isolated
-leaf context and 34 bytes when linked into the interpreter LTCG context. The
-source now supplies the real operation instead of the diagnostic link anchor,
-but the x87 dual-result instruction and private receiver register remain open.
+The natural C++ implementation uses double-precision `cos` and `sin`, with a
+volatile output-pointer spill so the public `__thiscall` receiver remains in
+ECX across both CRT calls. A local frame-pointer-omission pragma keeps the
+normal-COFF body at 45 bytes in both isolated and full Stage Update contexts;
+all four interpreter call sites use the native ECX receiver plus two stack
+float arguments. This replaces the earlier LTCG-private EAX/ESI receiver
+variants. The target's single `FSINCOS` still makes its body 30 bytes, so the
+helper remains non-exact; no assembly or padding is used.
+
+The current full Stage Update diagnostic links an 11,520-byte natural C++
+`ExecuteAnimationVm` owner against the 12,056-byte native body. Its disassembly
+has 3,351 instructions, of which 964 align with native instruction forms, plus
+262 calls and 376 conditional branches. The native owner has 3,308 instructions,
+262 calls and 406 conditional branches. These are progress measurements only,
+not an exact replay.
 
 AnimationExecutionArguments.cpp provides the four variable decoders/destinations
 and UV conversion. Their full reviewed extents include all tables/selectors:
