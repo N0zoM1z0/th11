@@ -380,26 +380,30 @@ The argument-reader leaf also improved:
 
 | Function | Native extent | Current candidate | Aligned instruction keys |
 | --- | ---: | ---: | ---: |
-| ReadAnimationFloat | 540 B / 169 ins | 516 B / 164 ins | 117/169 |
+| ReadAnimationFloat | 540 B / 132 code ins | 540 B / 132 code ins | 128/132 |
 | ReadAnimationInteger | 219 B / 63 ins | 219 B / 62 ins | 37/63 |
 | AnimationFloatDestination | 124 B / 40 ins | 124 B / 46 ins | 20/40 |
 | AnimationIntegerDestination | 104 B / 34 ins | 104 B / 46 ins | 17/34 |
 
 ReadAnimationFloat now has the native entry sequence
-fld [esp+4], push esi, fld st(0), mov esi,eax. Its three random selector
-paths call the actual signed-range, unit and signed-unit C++ helpers. The
-remaining five-instruction-count difference includes native float spill/reload
-sequences after the helper calls; this is still a diagnostic match, not an
-exact leaf claim.
+fld [esp+4], push esi, fld st(0), mov esi,eax. Its 23-entry jump table has the
+same relative case offsets as the target, including the non-monotonic random
+case order 10011, 10012, then 10010. The code region is 448 bytes / 132
+instructions on both sides, followed by the 92-byte jump table. The three
+random paths now share the native float spill/reload return shape and call the
+real signed-range, unit and signed-unit C++ helpers. The remaining code-only
+difference is localized to the signed-range path: the candidate selects the
+random-state address before loading the 3.1415927f argument, while the target
+loads that constant first. This is a diagnostic match, not an exact leaf
+claim.
 
 With the actual helper definitions linked, the complete interpreter owner is
-12,084 B / 3,217 instructions, with 1,048/3,308 target instruction keys
-aligned. It has 262 call instructions, matching the native count, and 383
-conditional branches versus 406 native. Its prologue still uses the EBP
-register as the VM-state pointer and reserves a 0xD8 frame; the native owner
-uses EBP as its frame pointer, aligns ESP to eight bytes, reserves 0xCC bytes
-and keeps the VM pointer in EDI. The main owner and the other three argument
-leaves remain open.
+12,084 B, with 1,050/3,308 target instruction keys aligned. It has 262 call
+instructions, matching the native count, and 383 conditional branches versus
+406 native. Its prologue still uses EBP as the VM-state pointer and reserves a
+0xD8 frame; the native owner keeps EBP as its frame pointer, aligns ESP to
+eight bytes, reserves 0xCC bytes and keeps the VM pointer in EDI. The main
+owner and the other three argument leaves remain open.
 
 The linked image is still a diagnostic graph with unrelated dependency anchors;
 it is not runnable and earns no exactness credit. No ASM, byte stubs, padding,

@@ -14,6 +14,7 @@ __forceinline float RuntimeFloat(unsigned int offset)
 float __stdcall ReadAnimationFloat(AnimationVmView *vm, float encoded)
 {
     AnimationExecutionView *self = State(vm);
+    float randomResult;
     switch (static_cast<int>(encoded))
     {
     case 10000: return static_cast<float>(self->integerVariables[0]);
@@ -26,9 +27,17 @@ float __stdcall ReadAnimationFloat(AnimationVmView *vm, float encoded)
     case 10007: return self->floatVariables[3];
     case 10008: return static_cast<float>(self->integer3d4);
     case 10009: return static_cast<float>(self->integer3d8);
-    case 10010: return AnimationRandomSignedRange(Random(vm), 3.1415927f);
-    case 10011: return AnimationRandomUnit(Random(vm));
-    case 10012: return AnimationRandomSignedUnit(Random(vm));
+    case 10011:
+        randomResult = AnimationRandomUnit(Random(vm));
+        goto animation_random_result;
+    case 10012:
+        randomResult = AnimationRandomSignedUnit(Random(vm));
+        goto animation_random_result;
+    case 10010:
+    {
+        randomResult = AnimationRandomSignedRange(Random(vm), 3.1415927f);
+        goto animation_random_result;
+    }
     case 10013: return self->position.x;
     case 10014: return self->position.y;
     case 10015: return self->position.z;
@@ -41,6 +50,8 @@ float __stdcall ReadAnimationFloat(AnimationVmView *vm, float encoded)
     case 10022: return static_cast<float>(RandomNext32(Random(vm)));
     default: return encoded;
     }
+animation_random_result:
+    return randomResult;
 }
 
 int __stdcall ReadAnimationInteger(AnimationVmView *vm, int encoded)
