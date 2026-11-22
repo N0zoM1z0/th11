@@ -121,12 +121,12 @@ __forceinline void EmitStripPair(AnimationExecutionView *self, RenderVertex *&ve
 
 int __stdcall ExecuteAnimationVm(AnimationVmView *vm)
 {
-    AnimationExecutionView *self = State(vm);
+    register AnimationExecutionView *self = State(vm);
     if (!self->instruction) return 1;
     if (self->flags & 0x20000) return 0;
     float savedScale = g_AnimationTimeScale;
     if (self->flags & 0x20000000) g_AnimationTimeScale = 1.0f;
-    AnimationInstruction *instruction;
+    register AnimationInstruction *instruction;
     if (self->event) goto animation_event;
     for (;;)
     {
@@ -147,7 +147,8 @@ animation_jump:
 animation_event:
         AnimationInstruction *fallback = 0;
         AnimationInstruction *label = reinterpret_cast<AnimationInstruction *>(self->scriptStart);
-        while ((label->opcode != 64 || Words(label)[0] != self->event) && label->opcode != -1)
+        while ((label->opcode != 64 || Words(label)[0] != self->event) &&
+            static_cast<unsigned short>(label->opcode + 1) != 0)
         {
             if (label->opcode == 64 && Words(label)[0] == -1) fallback = label;
             label = Next(label);

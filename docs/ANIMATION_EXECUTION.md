@@ -350,4 +350,29 @@ callee/inlining and call-context effects.
 
 Rebuild the quick isolated frontier with:
 
-    scripts/repo-python scripts/build-match-unit.py --unit animation-execution-isolated
+    scripts/repo-python scripts/build-match-unit.py --unit animation-execution-isolated\n\n
+## Full stage-graph register-allocation experiment
+
+A second full stage-update linked frontier keeps every existing support object
+and recompiles only AnimationExecution.cpp with /Oy. The interpreter owner uses
+register hints for its state and instruction cursors, and the event scan uses
+the 16-bit unsigned wrap test for the -1 opcode sentinel. This is ordinary
+C++ control flow; it does not inject machine instructions or alter the ABI.
+
+The targeted incremental link reuses51 unchanged support objects. Its
+ExecuteAnimationVm body is10,936 bytes / 3,110 instructions, with1,031 of the
+3,308 target instruction keys aligned. The prior default full-graph candidate
+was11,620 bytes / 3,390 instructions, with704 aligned keys. This is a useful
+combined improvement in body size and instruction correspondence, but remains
+a diagnostic linked image with unresolved dependency anchors and is not
+runnable or exact.
+
+The /Oy variant exposes an important remaining allocator difference: EBP is
+used as the VM-state pointer and EBX as the current instruction, while the
+native body keeps EBP as its frame pointer and EDI as the VM-state pointer.
+The next experiments focus on expressing parameter/state lifetimes so the
+native register roles emerge from VC9 without inline assembly.
+
+Build the bounded variant with:
+
+    scripts/repo-python scripts/build-match-unit.py --unit update-stage-real-interpreter-animation-oy
