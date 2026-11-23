@@ -573,6 +573,33 @@ aggregate-return expression and call context, not the full owner: its
 prologue, frame size, dispatch body and overall byte sequence remain
 non-exact.
 
+### Full tween-context diagnostic
+
+The dedicated `animation-execution-tween-context` frontier compiles the
+interpreter together with the maintained `AnimationTween.cpp`, `StageTween.cpp`
+and `StageEasing.cpp` sources. The tween TU is built with frame-pointer omission
+(`/Oy`) while the interpreter retains its own profile. This is a real linked
+C++ dependency context, not an opaque helper declaration.
+
+PDB contribution ownership independently identifies the complete
+`StepAnimationFloatPairTween` body at candidate `0x00404760`, exactly 673 bytes
+and 221 instructions, matching the native extent `0x0044E910..0x0044EBB0`.
+Its four relocation fields are the timer call at `+19`, time-scale address at
+`+70`, double literal at `+363`, and factor call at `+579`. After replaying
+those four fields, 52 bytes remain different; 217/221 instruction keys align.
+The remaining differences are localized to mode 8's first coefficient-A
+x87 operand scheduling. This leaf is therefore still non-exact.
+
+In this same linked context the complete PDB-owned interpreter is 11,636 bytes
+with 3,423 candidate instructions, 1,139/3,308 native instruction keys aligned,
+258/262 calls and 375/406 conditional branches. Its prologue aligns ESP to
+eight bytes and reserves `0xD4`, but keeps the VM argument in ESI; native uses
+EDI and a `0xCC` frame. These measurements make the dependency context
+reproducible and expose the next boss-level gap; they do not grant exactness or
+runtime credit. Build it with:
+
+    scripts/repo-python scripts/build-match-unit.py --unit animation-execution-tween-context
+
 The linked image is still a diagnostic graph with unrelated dependency anchors;
 it is not runnable and earns no exactness credit. No ASM, byte stubs, padding,
 or clipped extents are used. The targeted incremental link reuses the other

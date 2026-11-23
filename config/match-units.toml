@@ -2315,6 +2315,25 @@ linkages = [
   { offset = 307, type = "REL32", symbol = "?AnimationFloatScalarTweenFactor@@YGMPAUAnimationFloatScalarTween@@@Z", target = 0x44ee60, addend = 0x0 },
 ]
 
+[units.step-animation-float-pair-tween]
+artifact_kind = "linked-pe"
+source = "src/AnimationTween.cpp"
+inputs = ["src/AnimationTween.hpp"]
+support_sources = ["probes/animation-tween-context.cpp", "src/StageTween.cpp", "src/StageEasing.cpp"]
+output_dir = "build/match-linked/AnimationTween"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationTweenProbe@40"
+functions = ["StepAnimationFloatPairTween"]
+symbol = "?StepAnimationFloatPairTween@@YG?AUAnimationFloatPair@@PAUAnimationFloatPairTween@@@Z"
+target_address = 0x44e910
+size = 673
+linkages = [
+  { offset = 19, type = "REL32", symbol = "?AdvanceStageTimer@@YGHPAUStageTimerView@@@Z", target = 0x459270, addend = 0x0 },
+  { offset = 70, type = "DIR32", symbol = "?g_AnimationTimeScale@@3MA", target = 0x4a7948, addend = 0x0 },
+  { offset = 363, type = "DIR32", symbol = "__real@4008000000000000", target = 0x498168, addend = 0x0 },
+  { offset = 579, type = "REL32", symbol = "?AnimationFloatPairTweenFactor@@YGMPAUAnimationFloatPairTween@@@Z", target = 0x44ee30, addend = 0x0 },
+]
+
 [units.animation-int-vector-tween-factor]
 artifact_kind = "linked-pe"
 source = "src/AnimationTween.cpp"
@@ -9590,6 +9609,25 @@ symbol = "?ExecuteAnimationVm@@YGHPAUAnimationVmView@@@Z"
 target_address = 0x0044B4B0
 size = 12056
 support_profiles = {}
+linkages = []
+
+# Interpreter diagnostic with the real natural C++ tween/timer dependency graph.
+# The tween TU uses /Oy so its frame-pointer policy can be compared to the native leaf.
+[units.animation-execution-tween-context]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/AnimationExecution.cpp"
+inputs = ["src/AnimationUnaryTangent.cpp", "src/AnimationExecution.hpp", "src/AnimationExecutionInstructions.inc", "src/AnimationExecutionUpdate.inc", "src/AnimationVm.hpp", "src/AnimationTween.hpp", "src/AnimationTween.cpp", "src/StageTween.hpp", "src/StageTween.cpp", "src/StageEasing.cpp", "src/StageScript.hpp", "src/StageResource.hpp", "src/Random.hpp", "src/RenderBatch.hpp", "src/AnimationVmFactory.hpp", "src/AnimationExecutionPolarPoint.cpp"]
+support_sources = ["src/AnimationUnaryTangent.cpp", "probes/animation-execution-isolated-context.cpp", "src/AnimationExecutionPolarPoint.cpp", "src/AnimationTween.cpp", "src/StageTween.cpp", "src/StageEasing.cpp"]
+normal_support_sources = ["src/AnimationUnaryTangent.cpp", "probes/animation-execution-isolated-context.cpp", "src/AnimationExecutionPolarPoint.cpp"]
+output_dir = "build/match-linked/AnimationExecutionTweenContext"
+profile = ["/TP", "/O2", "/Oy-", "/Ob2", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationExecutionProbe@4"
+functions = ["ExecuteAnimationVm"]
+symbol = "?ExecuteAnimationVm@@YGHPAUAnimationVmView@@@Z"
+target_address = 0x0044B4B0
+size = 12056
+support_profiles = { "src/AnimationTween.cpp" = ["/TP", "/O2", "/Oy", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/StageTween.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/StageEasing.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"] }
 linkages = []
 
 # Natural C++ polar helper; normal COFF preserves its public ECX thiscall ABI.
