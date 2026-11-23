@@ -11268,6 +11268,7 @@ linkages = [
   { offset = 30, type = "DIR32", symbol = "__real@3ff0000000000000", target = 0x00497E48 },
 ]
 
+# Leaf used by the animation interpreter for variable-backed float writes.
 [units.animation-float-destination]
 artifact_kind = "linked-pe"
 source = "src/AnimationExecutionArguments.cpp"
@@ -11298,3 +11299,20 @@ linkages = [
 ]
 
 # Leaf used by animation VM sprite-selection opcodes and UI animation bindings.
+[units.bind-animation-sprite]
+artifact_kind = "linked-pe"
+source = "src/AnimationSpriteBinding.cpp"
+inputs = ["src/AnimationSpriteBinding.hpp"]
+support_sources = ["src/AnimationExecution.cpp", "src/AnimationUnaryTangent.cpp", "probes/animation-execution-isolated-context.cpp", "src/AnimationExecutionPolarPoint.cpp"]
+normal_support_sources = ["src/AnimationUnaryTangent.cpp", "probes/animation-execution-isolated-context.cpp", "src/AnimationExecutionPolarPoint.cpp"]
+output_dir = "build/match-linked/BindAnimationSpriteFresh"
+profile = ["/TP", "/O2", "/Oy", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationExecutionProbe@4"
+functions = ["BindAnimationSprite"]
+symbol = "?BindAnimationSprite@@YGHPAUAnimationDocumentView@@HPAUAnimationVmView@@@Z"
+target_address = 0x0044AB40
+size = 389
+support_profiles = { "src/AnimationExecution.cpp" = ["/TP", "/O2", "/Oy-", "/Ob2", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"] }
+linkages = [
+  { offset = 316, type = "DIR32", symbol = "__real@3f70000000000000", target = 0x00497F50 },
+]

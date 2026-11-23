@@ -56,12 +56,13 @@ int __stdcall BindAnimationSprite(AnimationDocumentView *file, int sprite, Anima
     self->spriteId = static_cast<short>(sprite);
     self->file = file;
     self->sprite = &source->sprites[sprite];
+    AnimationSpriteView *spriteData = self->sprite;
     self->corners[0].u = self->corners[2].u = self->sprite->u0;
-    self->corners[1].u = self->corners[3].u = self->sprite->u1;
+    self->corners[1].u = self->corners[3].u = spriteData->u1;
     self->corners[0].v = self->corners[1].v = self->sprite->v0;
-    self->corners[2].v = self->corners[3].v = self->sprite->v1;
+    self->corners[2].v = self->corners[3].v = spriteData->v1;
     self->width = self->sprite->width;
-    self->height = self->sprite->height;
+    self->height = spriteData->height;
     Identity(self->transform);
     Identity(self->textureTransform);
     self->transform._11 = self->width * (1.0 / 256.0);
