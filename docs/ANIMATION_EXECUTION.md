@@ -551,10 +551,27 @@ experiment, not an unconditional size improvement or an exactness claim. The
 event scan still reloads the event field during the loop and uses different
 registers from the native sequence.
 
-The main owner remains open. Its current prologue still uses EBP as the VM
-state pointer and reserves 0xD8 bytes without the native frame-pointer setup;
-the native owner uses EBP as its frame pointer, aligns ESP to eight bytes,
-reserves 0xCC bytes and keeps the VM pointer in EDI.
+The main owner remains open. The current full-graph candidate establishes
+EBP as its frame pointer, reserves 0xE0 bytes without the native eight-byte
+ESP alignment, and keeps the VM pointer in EBX. The native owner aligns ESP
+to eight bytes, reserves 0xCC bytes and keeps the VM pointer in EDI.
+
+### Two-float tween result lifetime
+
+ExecuteAnimationVm now gives the scale-tween result an explicit natural C++
+lifetime in the caller. The named AnimationFloatPair scaleResult is passed
+through the compiler's ordinary hidden structure-return parameter, then copied
+into self.scale; it is not an ABI shim or byte patch.
+
+In the full stage-linked candidate, the StepAnimationFloatPairTween call now
+has the native private register roles: EDI addresses scaleTween, EBX carries
+the hidden result buffer, and EAX returns its address; the caller then copies
+the two float members and sets the scale flag. The native call at 0x44DBEC uses
+the same EDI/EBX/EAX roles. The current candidate call is at 0x41B25D in the
+PDB-owned 11,552-byte ExecuteAnimationVm contribution. This validates the
+aggregate-return expression and call context, not the full owner: its
+prologue, frame size, dispatch body and overall byte sequence remain
+non-exact.
 
 The linked image is still a diagnostic graph with unrelated dependency anchors;
 it is not runnable and earns no exactness credit. No ASM, byte stubs, padding,

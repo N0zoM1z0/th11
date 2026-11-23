@@ -59,7 +59,8 @@
     if (self.alphaTween.duration) Byte(vm, 0x377) = static_cast<unsigned char>(StepAnimationIntScalarTween(&self.alphaTween));
     if (self.scaleTween.duration)
     {
-        self.scale = StepAnimationFloatPairTween(&self.scaleTween);
+        scaleResult = StepAnimationFloatPairTween(&self.scaleTween);
+        self.scale = scaleResult;
         self.flags |= 8;
     }
     if (self.rotationTween.duration)
