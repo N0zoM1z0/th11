@@ -167,8 +167,13 @@ AnimationFloatPair __stdcall StepAnimationFloatPairTween(AnimationFloatPairTween
         float b = static_cast<float>((3.0 - 2.0 * progress) * (progress * progress));
         float c = static_cast<float>((1.0 - progress) * (1.0 - progress) * progress);
         float d = static_cast<float>((progress - 1.0) * progress * progress);
+        float control2X = d;
+        float control2Y = d;
+        control2X *= self->control2.x;
+        control2Y *= self->control2.y;
+        AnimationFloatPair control2(control2X, control2Y);
         AnimationFloatPair result = Add(Add(Add(Scale(self->initial, a), Scale(self->target, b)),
-            Scale(self->control1, c)), Scale(self->control2, d));
+            Scale(self->control1, c)), control2);
         return result;
     }
     float factor = AnimationFloatPairTweenFactor(self);
