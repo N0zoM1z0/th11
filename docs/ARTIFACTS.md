@@ -51,6 +51,25 @@ does not. For example, about 200 receipts include `AnimationDocument.hpp`
 through `StageResource.hpp`. A stale receipt makes the comparator refuse;
 cold-replay the unit before relying on it. That is expected, not a lost proof.
 
+## Storage cleanup: 2026-11-23
+
+A conservative second pass removed only unconfigured and unreferenced linked
+build output directories. The classifier compared every directory with all
+current output_dir entries and searched tracked files plus retained .analysis
+scripts/receipts before deletion. Configured exact/frontier outputs and
+referenced diagnostic outputs were retained.
+
+| Removed | Directories | Files | Bytes |
+| --- | ---: | ---: | ---: |
+| Unconfigured, unreferenced build/match-linked outputs | 37 | 281 | 4,853,458 |
+
+The build tree fell from approximately 694 MiB to 689 MiB. The 63.28 MiB
+AnimationVmRendererOwner output was retained because it is still referenced
+by configuration and renderer documentation. build/match, build/probe-ltcg,
+.analysis, the target executable, compiler/toolchain, Wine prefix and Ghidra
+project were not touched. The exact removed directory list and byte count are
+preserved in ignored .analysis/storage-cleanup-20261123.txt.
+
 ## Older cleanups and regeneration
 
 Earlier local handoffs reclaimed roughly 55.4 MiB on November 17, 3.6 MiB
