@@ -5,6 +5,47 @@ instruction interpreter, events, all nine tween updates and both generated-strip
 paths. Its full12056-byte owner remains non-exact. Physical views and compiler
 observations do not establish original class identities, authorship or TU layout.
 
+## Current status (2026-11-23)
+
+The current reproducible boss diagnostic is `animation-execution-tween-context`.
+Its PDB-owned `ExecuteAnimationVm` contribution is 11,636 bytes / 3,423
+instructions, with 1,139/3,308 native instruction keys aligned, 258/262 calls
+and 375/406 conditional branches. Its prologue aligns ESP to eight bytes and
+reserves `0xD4`, but holds the VM pointer in ESI; native reserves `0xCC` and
+uses EDI. This remains a non-runnable diagnostic graph, not an exact owner.
+
+The same linked image owns `StepAnimationFloatPairTween` at candidate
+`0x00404760`, exactly 673 bytes / 221 instructions. After replaying its four
+reviewed relocation fields at `+19`, `+70`, `+363` and `+579`, 33 bytes differ
+and 215/221 instruction keys align. The remaining mismatch includes mode-17
+component-add operand order and mode-8 x87 scheduling. The pair leaf remains
+non-exact.
+
+`AnimationFloatDestination` is a complete 124-byte source/diagnostic owner, but
+its function inventory status is unclassified and it has no exact-ledger row;
+it is a frontier dependency, not an accepted exact leaf. `BindAnimationSprite`
+is likewise source-present and non-exact (see ASCII_LIFECYCLE.md and
+MENU_JOYSTICK.md). Complete extent/PDB ownership is not exactness.
+
+`UpdateStageRealInterpreterAnimationOy` is stale: its receipt records an older
+`src/AnimationTween.cpp` hash (`b527a00b...`) than the current source. Do not
+quote its 11,552-byte interpreter as a current full-Stage result; rebuild that
+frontier before using its measurements. The current focused context is built by:
+
+```bash
+scripts/repo-python scripts/build-match-unit.py --unit animation-execution-tween-context
+scripts/repo-python .analysis/compare-execute-animation-vm-20261122.py build/match-linked/AnimationExecutionTweenContext
+```
+
+The rejected 2026-11-23 component-expression experiment is preserved as
+`.analysis/AnimationTween.mode8-components-20261123.cpp`. It built a 677-byte
+pair owner with 219 normalized byte differences and 219/221 instruction keys
+aligned, worse than the committed 673/33 baseline; maintained source is restored
+to HEAD `1cc8b50`.
+
+Older dated tables below are historical snapshots. Use this section and the
+current linked receipt before treating any old size or alignment count as live.
+
 ## Complete owner and ABI
 
 Fresh direct mapped-text-attested Ghidra review/disassembly and independent full
@@ -118,12 +159,12 @@ float arguments. This replaces the earlier LTCG-private EAX/ESI receiver
 variants. The target's single `FSINCOS` still makes its body 30 bytes, so the
 helper remains non-exact; no assembly or padding is used.
 
-The current full Stage Update diagnostic links an 11,520-byte natural C++
-`ExecuteAnimationVm` owner against the 12,056-byte native body. Its disassembly
-has 3,351 instructions, of which 964 align with native instruction forms, plus
-262 calls and 376 conditional branches. The native owner has 3,308 instructions,
-262 calls and 406 conditional branches. These are progress measurements only,
-not an exact replay.
+The 2026-11-22 full Stage Update diagnostic (historical; its linked receipt is
+now stale after `AnimationTween.cpp` changed) recorded an 11,520-byte natural
+C++ `ExecuteAnimationVm` owner against the 12,056-byte native body. Its
+disassembly had 3,351 instructions, 964 aligned native instruction forms, 262
+calls and 376 conditional branches. These are archived measurements, not a
+current full-Stage result or an exact replay.
 
 AnimationExecutionArguments.cpp provides the four variable decoders/destinations
 and UV conversion. Their full reviewed extents include all tables/selectors:
@@ -249,17 +290,17 @@ EAX/EDX. The maintained two-component value constructor writes the actual X/Y
 components; nominal class/constructor identity and original TU remain hypotheses.
 See ANIMATION_TWEEN_DISPATCH.md for the complete673-byte callee and six returns.
 
-The source pair callee is now673/frame28 versus native673/frame28, with359
-complete byte differences after its four reviewed fields replay. Six paths each
-fill both buffer words and return the buffer pointer. Named final pair values
-restore the observed temporary-to-result DWORD copies; four independent float
-coefficients recover the frame. Target/source7/17/8/ordinary paths have
-23/35/93/38 versus23/35/92/38 instructions and2/4/19/7 float-round stores.
-A bounded operand trace agrees only after commutative add/multiply normalization;
-strict order still differs in17/8. It grants no floating exception/status or
-full-function semantic proof. The first Hermite coefficient now squares t-1
-before multiplying by t+t+1, as directly reviewed in all four interpolation
-bodies. Separate X/Y float locals were byte-identical in the earlier value model.
+At HEAD `1cc8b50`, the source pair callee is673/frame28 versus native673/frame28.
+After the four reviewed relocation fields replay, 33 bytes differ and 215/221
+instruction keys align. Six paths each fill both buffer words and return the
+buffer pointer. Named final pair values restore the observed temporary-to-result
+DWORD copies; four independent float coefficients recover the frame. The
+target/source7/17/8/ordinary paths have23/35/93/38 versus23/35/92/38 instructions
+and2/4/19/7 float-round stores. The remaining strict-order differences are in
+mode17 component addition and mode8 x87 scheduling; no floating exception/status
+or full-function semantic proof is claimed. The first Hermite coefficient still
+squares t-1 before multiplying by t+t+1, as directly reviewed in all four
+interpolation bodies.
 Thirteen already accepted exact units affected by AnimationTween.hpp/cpp share
 one cold context and all strictly replay with zero differences. No new exact
 unit, source mapping or original-type credit follows from this ABI correction.
@@ -563,15 +604,14 @@ lifetime in the caller. The named AnimationFloatPair scaleResult is passed
 through the compiler's ordinary hidden structure-return parameter, then copied
 into self.scale; it is not an ABI shim or byte patch.
 
-In the full stage-linked candidate, the StepAnimationFloatPairTween call now
-has the native private register roles: EDI addresses scaleTween, EBX carries
-the hidden result buffer, and EAX returns its address; the caller then copies
-the two float members and sets the scale flag. The native call at 0x44DBEC uses
-the same EDI/EBX/EAX roles. The current candidate call is at 0x41B25D in the
-PDB-owned 11,552-byte ExecuteAnimationVm contribution. This validates the
-aggregate-return expression and call context, not the full owner: its
-prologue, frame size, dispatch body and overall byte sequence remain
-non-exact.
+The 2026-11-22 full Stage-linked snapshot showed the StepAnimationFloatPairTween
+call using the native private register roles: EDI addresses scaleTween, EBX
+carries the hidden result buffer, and EAX returns its address; the caller then
+copies the two float members and sets the scale flag. The native call at
+0x44DBEC uses the same EDI/EBX/EAX roles. That old candidate call was at
+0x41B25D in an 11,552-byte ExecuteAnimationVm contribution, but its receipt is
+now stale after AnimationTween.cpp changed. Treat this as historical ABI
+evidence, not a current call-site address or full-owner match.
 
 ### Full tween-context diagnostic
 
@@ -585,10 +625,10 @@ PDB contribution ownership independently identifies the complete
 `StepAnimationFloatPairTween` body at candidate `0x00404760`, exactly 673 bytes
 and 221 instructions, matching the native extent `0x0044E910..0x0044EBB0`.
 Its four relocation fields are the timer call at `+19`, time-scale address at
-`+70`, double literal at `+363`, and factor call at `+579`. After replaying
-those four fields, 52 bytes remain different; 217/221 instruction keys align.
-The remaining differences are localized to mode 8's first coefficient-A
-x87 operand scheduling. This leaf is therefore still non-exact.
+`+70`, double literal at `+363`, and factor call at `+579`. At HEAD `1cc8b50`,
+replaying those fields leaves 33 differing bytes; 215/221 instruction keys
+align. The remaining differences include the mode-17 component-add order and
+mode-8 x87 operand scheduling. This leaf is still non-exact.
 
 In this same linked context the complete PDB-owned interpreter is 11,636 bytes
 with 3,423 candidate instructions, 1,139/3,308 native instruction keys aligned,

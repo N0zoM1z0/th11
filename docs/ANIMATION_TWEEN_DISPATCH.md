@@ -1,22 +1,45 @@
 # Animation interpolation, layer dispatch and allocation
 
-Twenty-two complete source mappings cover3,129 target bytes, including integer
-XYZ interpolation768, integer scalar332, float pair673 and float scalar331.
-The renderer's two updates221/249, layer draw127 and allocation177 now also
-have maintained source. Fifteen new complete cold linked proofs add551 bytes;
-the four large interpolation bodies and two update bodies remain non-exact.
 
-All22 boundaries and origins are reviewed. Nine tiny entries were absent from
-the prior inventory, bringing it to2,047 candidates. Each origin remains
-indeterminate: interpolation, scalar field access and engine roles do not prove
-original authorship or distinguish templates/headers/reused code. No Ghidra
-function was created and no maintained inventory was regenerated away.
+## Current pair-tween checkpoint (2026-11-23)
+
+At HEAD `1cc8b50`, the complete `StepAnimationFloatPairTween` owner is 673 bytes
+and 221 instructions, with frame size `0x28`. Four reviewed relocation fields
+are replayed; 33 bytes remain different and 215/221 instruction keys align.
+The outstanding differences are mode-17 component-add operand order and
+mode-8 x87 scheduling. The function is not exact.
+
+The current linked context is `animation-execution-tween-context`; rebuild it
+with `scripts/repo-python scripts/build-match-unit.py --unit
+animation-execution-tween-context`. The PDB-owned interpreter in that same image
+is 11,636 bytes / 3,423 instructions (1,139/3,308 aligned keys), with frame
+`0xD4`, eight-byte ESP alignment and VM pointer in ESI. Native uses frame
+`0xCC` and EDI.
+
+A rejected 2026-11-23 expression experiment is saved in
+`.analysis/AnimationTween.mode8-components-20261123.cpp`. It produced a 677-byte
+pair owner with 219 normalized byte differences and 219/221 aligned keys, so
+the maintained source was restored to HEAD `1cc8b50`. The old 359-byte-difference
+figures below are earlier snapshots, not the current baseline.
+
+
+Historical topic snapshot (2026-11-20): twenty-two source mappings covered
+3,129 target bytes, including the four interpolation owners and renderer
+updates/layer/allocation. The four large interpolation bodies and two update
+bodies were non-exact at that snapshot. Its 2,047-candidate inventory and
+22-boundary/origin counts are superseded by the current generated project
+inventory in PROGRESS.md; they are not current TH11 totals.
+
+The origin conclusions from that review remain: interpolation, scalar field
+access and engine roles do not prove original authorship or distinguish
+templates, headers or reused code. No Ghidra function was created by that
+topic review.
 
 | Function | Address | Target bytes | Recorded candidate / diagnostic differences |
 | --- | --- | ---: | --- |
 | StepAnimationIntVectorTween | 44E4B0 | 768 | 768 /339 |
 | StepAnimationIntScalarTween | 44E7C0 | 332 | 321 /283 |
-| StepAnimationFloatPairTween | 44E910 | 673 | 673 /359 |
+| StepAnimationFloatPairTween | 44E910 | 673 | 673 /33 at HEAD `1cc8b50` (four fields replayed) |
 | StepAnimationFloatScalarTween | 44EBD0 | 331 | 326 /282 |
 | UpdateAnimationRenderer | 455480 | 221 | 231 /180 |
 | UpdateOtherAnimationRenderer | 455560 | 249 | 232 /193 |
@@ -130,14 +153,11 @@ It models a value type; it does not prove the original nominal math class,
 constructor API or TU partition. The original diagnostics for other rows above
 retain their separate interpolation/renderer contexts.
 
-Complete source is now673/frame28 versus target673/frame28. All four address
-fields (timer advance, time-scale pointer, double3 and pair factor) replay;359
-full bytes still differ. The same673/359 is reproduced in the complete animation
-family and the canonical AnimationTween primary context. Mode17 snapshots initial
-before adding control2, retaining the observed four copy instructions. Before
-that snapshot the value model was628/614. The preceding POD in the complete
-animation family was615/593, with a different result ABI; its smaller byte count
-was not a complete reconstruction.
+The earlier 673/359 report is superseded by the 2026-11-23 HEAD `1cc8b50`
+checkpoint: 673/frame28, four relocation fields replayed, 33 differing bytes
+and 215/221 aligned instruction keys. Mode17 still has an operand-load-order
+gap; mode8 retains x87 scheduling differences. The preceding POD candidate
+used a different result ABI and is not a comparable complete reconstruction.
 
 Static arithmetic paths for modes7/17/8/ordinary contain target23/35/93/38 versus
 source23/35/92/38 instructions. Corresponding float-round stores are2/4/19/7 on
@@ -148,12 +168,14 @@ not an exceptional-value/status or full-function semantic proof. Separate X/Y
 locals before pair construction were byte-identical in the earlier value model;
 repeating that spelling is unhelpful.
 
-The animation caller remains non-exact at12296/frameE0/11741 complete differences,
-with407 fields and416 static opcode traces. It uses the correct EDI/EBX/EAX
-callee contract but buffers the pair atESP+B0 versus native88. Its frame/alignment
-and VM register remain open. The thirteen accepted factor/duration/scalar-setting
-units affected by the shared header/source have one common cold compilation;
-all thirteen strict full-field replays remain exact. They receive no new credit.
+The older 12,296-byte / frame-E0 caller figure is a historical full-owner
+snapshot. The current tween-context interpreter is 11,636 bytes with frame
+`0xD4`, VM pointer ESI, and 1,139/3,308 aligned instruction keys; native uses
+frame `0xCC` and VM pointer EDI. The pair caller's EDI/EBX/EAX hidden-result
+contract is modelled, but the result-buffer home and whole-interpreter frame/
+register assignment remain open. The thirteen accepted factor/duration/
+scalar-setting units affected by the shared header/source remain historical
+exact proofs; do not infer new exact credit from this diagnostic context.
 
 ## Hermite grouping and pair temporary lifetimes
 
@@ -173,7 +195,7 @@ aggregate recovers the native28-byte frame and all local homes in that path.
 No new class constructor, ABI declaration, padding or instruction is introduced.
 These compiler observations do not identify the original math class or TU.
 
-| Full-animation context | Prior source bytes / differences | Current source bytes / differences |
+| Historical full-animation context snapshot | Prior source bytes / differences | Historical candidate bytes / differences |
 | --- | ---: | ---: |
 | Integer XYZ768 | 768 /353 | 768 /348 |
 | Integer scalar332 | 329 /282 | 329 /286 |
@@ -185,7 +207,7 @@ is retained from operand evidence even where the whole-byte diagnostic worsens.
 The complete12292-byte interpreter is byte-identical to the prior candidate
 after all407 fields replay; its pair result buffer remainsB0 versus native88.
 
-Rejected probes: an explicit field-copy constructor gives648/569 but adds four
+Historical rejected probes: an explicit field-copy constructor gives648/569 but adds four
 float-round stores to each of modes7/17, failing to reproduce their2/4 stores.
 Named results with aggregate coefficients give674/frame30/625; separate
 coefficients recover673/frame28/359. Using cached duration gives640/599 and
@@ -193,13 +215,13 @@ drops a target stack store. Reversing coefficient-B operands with a direct-field
 completion comparison gives675/627 and retains the extra duration-register copy.
 These variants receive no partial or masked credit.
 
-Remaining pair gaps are the post-advance EAX-to-ECX duration copy, mode17's
-control2-X add operand order, and mode8's doubling/subtraction/product scheduling.
-Full extent,221 instructions, six complete result returns and frame28 now agree;
-359 differing bytes still prevent acceptance. Fourteen existing exact units
-affected by AnimationTween.cpp are cold-replayed in two families: thirteen in
-AnimationTween and the1168-byte screen initializer. No new exact unit or source
-mapping is added; totals remain234 exact functions/27,546 bytes.
+Remaining pair gaps at HEAD `1cc8b50` are mode17's component-add operand
+order and mode8's x87 scheduling. Full extent, 221 instructions, six complete
+result returns and frame `0x28` agree; 33 bytes still differ after the four
+relocation fields and 215/221 instruction keys align. The function remains
+non-exact. Historical cold replays of the fourteen shared-header exact units
+are not new exact credit; use the generated ledger in PROGRESS.md for current
+exact totals.
 
 ## Integer XYZ value and actual color consumers
 

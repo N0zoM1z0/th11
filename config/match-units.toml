@@ -2316,6 +2316,7 @@ linkages = [
 ]
 
 [units.step-animation-float-pair-tween]
+frontier = true
 artifact_kind = "linked-pe"
 source = "src/AnimationTween.cpp"
 inputs = ["src/AnimationTween.hpp"]
@@ -11308,6 +11309,7 @@ linkages = [
 
 # Leaf used by the animation interpreter for variable-backed float writes.
 [units.animation-float-destination]
+frontier = true
 artifact_kind = "linked-pe"
 source = "src/AnimationExecutionArguments.cpp"
 inputs = ["src/AnimationExecution.hpp", "src/AnimationVm.hpp"]
@@ -11338,6 +11340,7 @@ linkages = [
 
 # Leaf used by animation VM sprite-selection opcodes and UI animation bindings.
 [units.bind-animation-sprite]
+frontier = true
 artifact_kind = "linked-pe"
 source = "src/AnimationSpriteBinding.cpp"
 inputs = ["src/AnimationSpriteBinding.hpp"]
