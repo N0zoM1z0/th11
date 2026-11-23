@@ -16,6 +16,94 @@ namespace
 {
 __forceinline AnimationExecutionView *State(AnimationVmView *vm)
 { return reinterpret_cast<AnimationExecutionView *>(vm); }
+#pragma optimize("y", on)
+__forceinline RandomStateView *ExecutionRandom(AnimationVmView *vm)
+{ return (vm->flags.value & 0x40000000) ? &g_AnimationSceneRandomState : &g_TextRandomState; }
+__forceinline float ExecutionRuntimeFloat(unsigned int offset)
+{ return *reinterpret_cast<float *>(reinterpret_cast<unsigned char *>(&g_MainRuntime) + offset); }
+float __stdcall ReadAnimationFloat(AnimationVmView *vm, float encoded)
+{
+    AnimationExecutionView *self = State(vm);
+    float randomResult;
+    switch (static_cast<int>(encoded))
+    {
+    case 10000: return static_cast<float>(self->integerVariables[0]);
+    case 10001: return static_cast<float>(self->integerVariables[1]);
+    case 10002: return static_cast<float>(self->integerVariables[2]);
+    case 10003: return static_cast<float>(self->integerVariables[3]);
+    case 10004: return self->floatVariables[0];
+    case 10005: return self->floatVariables[1];
+    case 10006: return self->floatVariables[2];
+    case 10007: return self->floatVariables[3];
+    case 10008: return static_cast<float>(self->integer3d4);
+    case 10009: return static_cast<float>(self->integer3d8);
+    case 10010: randomResult = AnimationRandomUnit(ExecutionRandom(vm)); goto animation_random_result;
+    case 10011: randomResult = AnimationRandomSignedUnit(ExecutionRandom(vm)); goto animation_random_result;
+    case 10012: randomResult = AnimationRandomSignedRange(ExecutionRandom(vm), 3.1415927f); goto animation_random_result;
+    case 10013: return self->position.x;
+    case 10014: return self->position.y;
+    case 10015: return self->position.z;
+    case 10016: return ExecutionRuntimeFloat(0x434);
+    case 10017: return ExecutionRuntimeFloat(0x438);
+    case 10018: return ExecutionRuntimeFloat(0x43c);
+    case 10019: return ExecutionRuntimeFloat(0x458);
+    case 10020: return ExecutionRuntimeFloat(0x45c);
+    case 10021: return ExecutionRuntimeFloat(0x460);
+    case 10022: return static_cast<float>(RandomNext32(ExecutionRandom(vm)));
+    default: return encoded;
+    }
+animation_random_result:
+    return randomResult;
+}
+int __stdcall ReadAnimationInteger(AnimationVmView *vm, int encoded)
+{
+    AnimationExecutionView *self = State(vm);
+    switch (encoded)
+    {
+    case 10000: return self->integerVariables[0];
+    case 10001: return self->integerVariables[1];
+    case 10002: return self->integerVariables[2];
+    case 10003: return self->integerVariables[3];
+    case 10004: return static_cast<int>(self->floatVariables[0]);
+    case 10005: return static_cast<int>(self->floatVariables[1]);
+    case 10006: return static_cast<int>(self->floatVariables[2]);
+    case 10007: return static_cast<int>(self->floatVariables[3]);
+    case 10008: return self->integer3d4;
+    case 10009: return self->integer3d8;
+    case 10022: return static_cast<int>(RandomNext32(ExecutionRandom(vm)));
+    default: return encoded;
+    }
+}
+float *__stdcall AnimationFloatDestination(AnimationVmView *vm, float *encoded)
+{
+    AnimationExecutionView *self = State(vm);
+    switch (static_cast<int>(*encoded))
+    {
+    case 10004: return &self->floatVariables[0];
+    case 10005: return &self->floatVariables[1];
+    case 10006: return &self->floatVariables[2];
+    case 10007: return &self->floatVariables[3];
+    case 10013: return &self->position.x;
+    case 10014: return &self->position.y;
+    case 10015: return &self->position.z;
+    default: return encoded;
+    }
+}
+int *__stdcall AnimationIntegerDestination(AnimationVmView *vm, int *encoded)
+{
+    AnimationExecutionView *self = State(vm);
+    switch (*encoded)
+    {
+    case 10000: return &self->integerVariables[0];
+    case 10001: return &self->integerVariables[1];
+    case 10002: return &self->integerVariables[2];
+    case 10003: return &self->integerVariables[3];
+    case 10008: return &self->integer3d4;
+    case 10009: return &self->integer3d8;
+    default: return encoded;
+    }
+}
+#pragma optimize("y", off)
 __forceinline int *Words(AnimationInstruction *instruction)
 { return reinterpret_cast<int *>(instruction + 1); }
 __forceinline float *Floats(AnimationInstruction *instruction)
@@ -121,7 +209,7 @@ __forceinline void EmitStripPair(AnimationExecutionView *self, RenderVertex *&ve
 
 int __stdcall ExecuteAnimationVm(AnimationVmView *vm)
 {
-    AnimationExecutionView &self = *State(vm);
+    AnimationExecutionView *self = State(vm);
     register AnimationInstruction *instruction;
     union
     {
@@ -130,60 +218,60 @@ int __stdcall ExecuteAnimationVm(AnimationVmView *vm)
         AnimationVmView *child;
     } scratch;
     AnimationFloatPair scaleResult(0.0f, 0.0f);
-    if (!self.instruction) return 1;
-    if (self.flags & 0x20000) return 0;
+    if (!self->instruction) return 1;
+    if (self->flags & 0x20000) return 0;
     float savedScale = g_AnimationTimeScale;
-    if (self.flags & 0x20000000) g_AnimationTimeScale = 1.0f;
+    if (self->flags & 0x20000000) g_AnimationTimeScale = 1.0f;
     register int event;
-    if (self.event)
+    if (self->event)
     {
-        event = self.event;
+        event = self->event;
         goto animation_event;
     }
     for (;;)
     {
-        instruction = self.instruction;
-        if (instruction->frame > self.time.current) break;
+        instruction = self->instruction;
+        if (instruction->frame > self->time.current) break;
         switch (instruction->opcode)
         {
 #include "AnimationExecutionInstructions.inc"
         default:
             break;
         }
-        self.instruction = Next(instruction);
+        self->instruction = Next(instruction);
         continue;
 animation_jump:
-        SetStageTimer(&self.time, Words(instruction)[3]);
-        self.instruction = reinterpret_cast<AnimationInstruction *>(self.scriptStart + Words(instruction)[2]);
+        SetStageTimer(&self->time, Words(instruction)[3]);
+        self->instruction = reinterpret_cast<AnimationInstruction *>(self->scriptStart + Words(instruction)[2]);
         continue;
 animation_event:
         AnimationInstruction *fallback = 0;
-        AnimationInstruction *label = reinterpret_cast<AnimationInstruction *>(self.scriptStart);
+        AnimationInstruction *label = reinterpret_cast<AnimationInstruction *>(self->scriptStart);
         while ((label->opcode != 64 || event != Words(label)[0]) && label->opcode != -1)
         {
             if (label->opcode == 64 && -1 == Words(label)[0]) fallback = label;
             label = Next(label);
         }
-        self.flags &= ~0x1000u;
-        self.event = 0;
+        self->flags &= ~0x1000u;
+        self->event = 0;
         if (label->opcode != 64)
         {
             if (!fallback) goto animation_pause;
             label = fallback;
         }
-        self.savedTime = self.time;
-        self.savedInstruction = self.instruction;
-        SetStageTimer(&self.time, label->frame);
-        self.flags |= 1;
-        self.instruction = Next(label);
+        self->savedTime = self->time;
+        self->savedInstruction = self->instruction;
+        SetStageTimer(&self->time, label->frame);
+        self->flags |= 1;
+        self->instruction = Next(label);
     }
     goto animation_update;
 animation_pause:
-    OffsetSecondaryTimer(&self.time, -1.0f);
+    OffsetSecondaryTimer(&self->time, -1.0f);
 animation_update:
 #include "AnimationExecutionUpdate.inc"
-    if (self.update && self.update(vm)) return 1;
-    Tick(&self.time);
+    if (self->update && self->update(vm)) return 1;
+    Tick(&self->time);
     g_AnimationTimeScale = savedScale;
     return 0;
 }
