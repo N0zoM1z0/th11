@@ -55,6 +55,18 @@ __forceinline AnimationFloatPair Scale(const AnimationFloatPair &value, float sc
     AnimationFloatPair result(value.x * scale, value.y * scale);
     return result;
 }
+__forceinline AnimationFloatPair operator+(const AnimationFloatPair &left, const AnimationFloatPair &right)
+{
+    return AnimationFloatPair(left.x + right.x, left.y + right.y);
+}
+__forceinline AnimationFloatPair operator*(const AnimationFloatPair &value, float scale)
+{
+    return AnimationFloatPair(value.x * scale, value.y * scale);
+}
+__forceinline AnimationFloatPair operator*(float scale, const AnimationFloatPair &value)
+{
+    return AnimationFloatPair(scale * value.x, scale * value.y);
+}
 }
 
 AnimationIntVector __stdcall StepAnimationIntVectorTween(AnimationIntVectorTween *self)
@@ -172,8 +184,7 @@ AnimationFloatPair __stdcall StepAnimationFloatPairTween(AnimationFloatPairTween
         control2X *= self->control2.x;
         control2Y *= self->control2.y;
         AnimationFloatPair control2(control2X, control2Y);
-        AnimationFloatPair result = Add(Add(Add(Scale(self->initial, a), Scale(self->target, b)),
-            Scale(self->control1, c)), control2);
+        AnimationFloatPair result = self->initial * a + self->target * b + self->control1 * c + d * self->control2;
         return result;
     }
     float factor = AnimationFloatPairTweenFactor(self);
