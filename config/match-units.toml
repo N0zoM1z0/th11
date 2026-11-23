@@ -11267,3 +11267,34 @@ linkages = [
   { offset = 24, type = "DIR32", symbol = "__real@3e00000000000000", target = 0x00498028 },
   { offset = 30, type = "DIR32", symbol = "__real@3ff0000000000000", target = 0x00497E48 },
 ]
+
+[units.animation-float-destination]
+artifact_kind = "linked-pe"
+source = "src/AnimationExecutionArguments.cpp"
+inputs = ["src/AnimationExecution.hpp", "src/AnimationVm.hpp"]
+support_sources = ["probes/animation-float-destination-context.cpp"]
+output_dir = "build/match-linked/AnimationFloatDestination"
+profile = ["/TP", "/O2", "/Oy", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationFloatDestinationProbe@8"
+functions = ["AnimationFloatDestination"]
+symbol = "?AnimationFloatDestination@@YGPAMPAUAnimationVmView@@PAM@Z"
+target_address = 0x0044B380
+size = 124
+linkages = [
+  { offset = 3, type = "REL32", symbol = "__ftol2_sse", target = 0x004864E0, addend = 0x0 },
+  { offset = 20, type = "DIR32", local = true, target = 0x0044B3CC },
+  { offset = 76, type = "DIR32", local = true, target = 0x0044B398 },
+  { offset = 80, type = "DIR32", local = true, target = 0x0044B39F },
+  { offset = 84, type = "DIR32", local = true, target = 0x0044B3A6 },
+  { offset = 88, type = "DIR32", local = true, target = 0x0044B3AD },
+  { offset = 92, type = "DIR32", local = true, target = 0x0044B3C9 },
+  { offset = 96, type = "DIR32", local = true, target = 0x0044B3C9 },
+  { offset = 100, type = "DIR32", local = true, target = 0x0044B3C9 },
+  { offset = 104, type = "DIR32", local = true, target = 0x0044B3C9 },
+  { offset = 108, type = "DIR32", local = true, target = 0x0044B3C9 },
+  { offset = 112, type = "DIR32", local = true, target = 0x0044B3B4 },
+  { offset = 116, type = "DIR32", local = true, target = 0x0044B3BB },
+  { offset = 120, type = "DIR32", local = true, target = 0x0044B3C2 },
+]
+
+# Leaf used by animation VM sprite-selection opcodes and UI animation bindings.
