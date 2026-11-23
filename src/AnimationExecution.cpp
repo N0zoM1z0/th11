@@ -37,9 +37,9 @@ float __stdcall ReadAnimationFloat(AnimationVmView *vm, float encoded)
     case 10007: return self->floatVariables[3];
     case 10008: return static_cast<float>(self->integer3d4);
     case 10009: return static_cast<float>(self->integer3d8);
-    case 10010: randomResult = AnimationRandomUnit(ExecutionRandom(vm)); goto animation_random_result;
-    case 10011: randomResult = AnimationRandomSignedUnit(ExecutionRandom(vm)); goto animation_random_result;
-    case 10012: randomResult = AnimationRandomSignedRange(ExecutionRandom(vm), 3.1415927f); goto animation_random_result;
+    case 10011: randomResult = AnimationRandomUnit(ExecutionRandom(vm)); goto animation_random_result;
+    case 10012: randomResult = AnimationRandomSignedUnit(ExecutionRandom(vm)); goto animation_random_result;
+    case 10010: randomResult = AnimationRandomSignedRange(ExecutionRandom(vm), 3.1415927f); goto animation_random_result;
     case 10013: return self->position.x;
     case 10014: return self->position.y;
     case 10015: return self->position.z;
