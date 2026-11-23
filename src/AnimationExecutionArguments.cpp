@@ -1,4 +1,59 @@
 #include "AnimationExecution.hpp"
+#include "MainRuntime.hpp"
+
+namespace
+{
+__forceinline AnimationExecutionView *State(AnimationVmView *vm)
+{ return reinterpret_cast<AnimationExecutionView *>(vm); }
+__forceinline RandomStateView *Random(AnimationVmView *vm)
+{ return (vm->flags.value & 0x40000000) ? &g_AnimationSceneRandomState : &g_TextRandomState; }
+__forceinline float RuntimeFloat(unsigned int offset)
+{ return *reinterpret_cast<float *>(reinterpret_cast<unsigned char *>(&g_MainRuntime) + offset); }
+}
+
+float __stdcall ReadAnimationFloatContext(AnimationVmView *vm, float encoded)
+{
+    AnimationExecutionView *self = State(vm);
+    float randomResult;
+    switch (static_cast<int>(encoded))
+    {
+    case 10000: return static_cast<float>(self->integerVariables[0]);
+    case 10001: return static_cast<float>(self->integerVariables[1]);
+    case 10002: return static_cast<float>(self->integerVariables[2]);
+    case 10003: return static_cast<float>(self->integerVariables[3]);
+    case 10004: return self->floatVariables[0];
+    case 10005: return self->floatVariables[1];
+    case 10006: return self->floatVariables[2];
+    case 10007: return self->floatVariables[3];
+    case 10008: return static_cast<float>(self->integer3d4);
+    case 10009: return static_cast<float>(self->integer3d8);
+    case 10011:
+        randomResult = AnimationRandomUnit(Random(vm));
+        goto animation_random_result;
+    case 10012:
+        randomResult = AnimationRandomSignedUnit(Random(vm));
+        goto animation_random_result;
+    case 10010:
+    {
+        randomResult = AnimationRandomSignedRange(Random(vm), 3.1415927f);
+        goto animation_random_result;
+    }
+    case 10013: return self->position.x;
+    case 10014: return self->position.y;
+    case 10015: return self->position.z;
+    case 10016: return RuntimeFloat(0x434);
+    case 10017: return RuntimeFloat(0x438);
+    case 10018: return RuntimeFloat(0x43c);
+    case 10019: return RuntimeFloat(0x458);
+    case 10020: return RuntimeFloat(0x45c);
+    case 10021: return RuntimeFloat(0x460);
+    case 10022: return static_cast<float>(RandomNext32(Random(vm)));
+    default: return encoded;
+    }
+animation_random_result:
+    return randomResult;
+}
+
 
 void __stdcall SetAnimationUv(AnimationFloatPair *output, const CameraVector *point)
 {
