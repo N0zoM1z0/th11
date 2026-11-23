@@ -16,9 +16,10 @@ uses EDI. This remains a non-runnable diagnostic graph, not an exact owner.
 
 The same linked image owns `StepAnimationFloatPairTween` at candidate
 `0x00404760`, exactly 673 bytes / 221 instructions. After replaying its four
-reviewed relocation fields at `+19`, `+70`, `+363` and `+579`, 33 bytes differ
-and 215/221 instruction keys align. The remaining mismatch includes mode-17
-component-add operand order and mode-8 x87 scheduling. The pair leaf remains
+reviewed relocation fields at `+19`, `+70`, `+363` and `+579`, only 2 bytes
+differ and all 221/221 instruction keys align. Natural vector operators now
+match the mode-8 x87 schedule; the remaining two bytes are the mode-17
+Y-component add operand order. The pair leaf remains frontier-only and
 non-exact.
 
 `AnimationFloatDestination` is a complete 124-byte source/diagnostic owner, but

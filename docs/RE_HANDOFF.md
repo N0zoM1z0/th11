@@ -11,25 +11,22 @@ for direct Ghidra analysis. Reconstruction stays natural C/C++: no inline
 assembly, padding, byte stubs or cropped extents.
 
 Read this handoff first, then the focused owner notes linked below. Check git
-status and git log before changing anything. The rejected 2026-11-23 pair-tween
-experiment was saved under .analysis and src/AnimationTween.cpp was restored
-to HEAD; no source experiment is left uncommitted.
+status and git log before changing anything. The current pair-tween source is
+committed in `4adaf18`; rejected source spellings and compiler trials remain in
+`.analysis/` as local evidence. The tracked worktree is clean at this checkpoint.
 
 ## Repository state
 
-- Branch: main, HEAD 1cc8b50 (gpt-web: preserve pair tween control2 evaluation order).
-- Upstream: origin/main; local branch is 4 commits ahead and 0 behind.
-- Tracked source worktree was clean after restoring the rejected pair-tween trial.
-- The current focused linked receipt was rebuilt from the HEAD source.
-- docs/PROGRESS.md and resources/progress.svg were regenerated from the ledgers.
-- Current handoff/docs changes are committed separately from source changes.
+- Branch: main, HEAD 4adaf18 (gpt-web: recover pair tween Hermite expression scheduling).
+- Upstream: origin/main; local branch is 2 commits ahead and 0 behind.
+- Tracked worktree is clean.
+- Pair-tween and interpreter linked diagnostics were rebuilt from HEAD.
+- Canonical progress remains generated from the existing ledgers; no exact row was added.
 
 Recent commits on top of origin/main:
 
-- 1cc8b50 gpt-web: preserve pair tween control2 evaluation order
-- 58be0e3 gpt-web: add animation tween interpreter context
-- 94c6f68 gpt-web: model animation tween aggregate result lifetime
-- 10e8976 gpt-web: recover exact animation sprite binding leaf
+- 4adaf18 gpt-web: recover pair tween Hermite expression scheduling
+- 97876a9 gpt-web: match pair tween mode-17 add operand order
 
 Important exactness correction: the commit subjects 631c214 and 10e8976
 overstate their acceptance. AnimationFloatDestination (124 B) and
@@ -76,14 +73,15 @@ The same image owns StepAnimationFloatPairTween at candidate 0x00404760:
 | --- | ---: |
 | Complete owner extent | 673 / 673 bytes |
 | Instructions | 221 / 221 |
-| Instruction keys aligned | 215 / 221 |
-| Differing bytes after four relocation fields | 33 |
+| Instruction keys aligned | 221 / 221 |
+| Differing bytes after four relocation fields | 2 |
 | Frame size | 0x28 / 0x28 |
 
 The four relocation fields are at +19 (timer call), +70 (time-scale address),
-+363 (double literal) and +579 (pair factor call). The remaining strict-order
-gaps include mode-17 component-add operand order and mode-8 x87 scheduling.
-The pair leaf is not exact.
++363 (double literal) and +579 (pair factor call). Natural vector `operator+`
+and `operator*` expressions now reproduce the complete mode-8 x87 schedule.
+The only remaining byte differences are the Y-component mode-17 add operand
+order at +0x11A/+0x11D. The pair leaf remains non-exact and frontier-only.
 
 Rebuild and compare only this frontier:
 
@@ -95,10 +93,10 @@ measurement: its receipt has an older src/AnimationTween.cpp hash (b527a00b...),
 so that output is stale. Rebuild that frontier before using its metrics.
 
 The rejected component-expression experiment is preserved at
-.analysis/AnimationTween.mode8-components-20261123.cpp. It built a 677-byte
-pair owner with 219 normalized byte differences and 219/221 aligned keys,
-worse than the HEAD 673/33 baseline. Do not restore that variant without a
-new measured reason.
+`.analysis/AnimationTween.mode8-components-20261123.cpp`; it built a 677-byte
+owner with 219 normalized byte differences. The selected vector-operator source
+is the 673-byte / 2-difference result at HEAD; do not replace it with the
+larger component-local variant.
 
 ## Efficient continuation
 
@@ -111,9 +109,9 @@ cropped extents to simulate progress.
 
 Immediate next work:
 
-1. Continue the pair tween's mode-17 add operand order and mode-8 x87 scheduling
-   in AnimationTween.cpp; compare the full 673-byte PDB contribution and all
-   four relocation fields after each meaningful change.
+1. Continue the final two-byte mode-17 Y-component operand-order gap in the
+   pair tween. Mode-8 x87 scheduling is now aligned; compare the full 673-byte
+   PDB contribution and all four relocation fields after each meaningful change.
 2. Continue ExecuteAnimationVm's frame, VM-register and result-buffer-home gaps
    in the current tween-context; do not infer whole-owner exactness from leaf
    alignment or call-count improvements.

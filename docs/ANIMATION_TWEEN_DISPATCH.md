@@ -3,11 +3,12 @@
 
 ## Current pair-tween checkpoint (2026-11-23)
 
-At HEAD `1cc8b50`, the complete `StepAnimationFloatPairTween` owner is 673 bytes
+At HEAD `4adaf18`, the complete `StepAnimationFloatPairTween` owner is 673 bytes
 and 221 instructions, with frame size `0x28`. Four reviewed relocation fields
-are replayed; 33 bytes remain different and 215/221 instruction keys align.
-The outstanding differences are mode-17 component-add operand order and
-mode-8 x87 scheduling. The function is not exact.
+are replayed; 2 bytes remain different and all 221/221 instruction keys align.
+Natural vector `operator+` / `operator*` expressions now reproduce the mode-8
+x87 schedule. The remaining two bytes are the mode-17 Y-component add operand
+order. The function remains frontier-only and is not exact.
 
 The current linked context is `animation-execution-tween-context`; rebuild it
 with `scripts/repo-python scripts/build-match-unit.py --unit
@@ -153,11 +154,11 @@ It models a value type; it does not prove the original nominal math class,
 constructor API or TU partition. The original diagnostics for other rows above
 retain their separate interpolation/renderer contexts.
 
-The earlier 673/359 report is superseded by the 2026-11-23 HEAD `1cc8b50`
-checkpoint: 673/frame28, four relocation fields replayed, 33 differing bytes
-and 215/221 aligned instruction keys. Mode17 still has an operand-load-order
-gap; mode8 retains x87 scheduling differences. The preceding POD candidate
-used a different result ABI and is not a comparable complete reconstruction.
+The earlier 673/359 report was superseded first by the `1cc8b50` 673/33
+checkpoint and then by HEAD `4adaf18`: 673/frame28, four relocation fields
+replayed, 2 differing bytes and 221/221 aligned instruction keys. Mode8 x87
+scheduling now aligns; only the mode-17 Y-component operand order remains. The
+preceding POD candidate used a different result ABI and is not comparable.
 
 Static arithmetic paths for modes7/17/8/ordinary contain target23/35/93/38 versus
 source23/35/92/38 instructions. Corresponding float-round stores are2/4/19/7 on
@@ -215,11 +216,11 @@ drops a target stack store. Reversing coefficient-B operands with a direct-field
 completion comparison gives675/627 and retains the extra duration-register copy.
 These variants receive no partial or masked credit.
 
-Remaining pair gaps at HEAD `1cc8b50` are mode17's component-add operand
-order and mode8's x87 scheduling. Full extent, 221 instructions, six complete
-result returns and frame `0x28` agree; 33 bytes still differ after the four
-relocation fields and 215/221 instruction keys align. The function remains
-non-exact. Historical cold replays of the fourteen shared-header exact units
+Remaining pair gaps at HEAD `4adaf18` are the two Y-component mode17 add
+operand-order bytes. Full extent, 221 instructions, six complete result returns
+and frame `0x28` agree; 2 bytes differ after the four relocation fields and
+221/221 instruction keys align. The function remains non-exact. Historical
+cold replays of the fourteen shared-header exact units
 are not new exact credit; use the generated ledger in PROGRESS.md for current
 exact totals.
 
