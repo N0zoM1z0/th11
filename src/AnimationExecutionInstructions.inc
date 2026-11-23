@@ -126,68 +126,68 @@
         case 88:
         {
             short script = static_cast<short>(ReadI(vm, instruction, 0));
-            drawChildId = CreateAnimationVmId(self.file, script, vm->persistent020).value;
+            scratch.childId = CreateAnimationVmId(self.file, script, vm->persistent020).value;
             goto animation_child_draw;
         }
         case 96:
         {
             short script = static_cast<short>(ReadI(vm, instruction, 0));
-            AnimationVmId id = CreateAnimationVmId(self.file, script, vm->persistent020);
-            AnimationVmView *child = ClearMissingAnimationId(&id.value);
-            InsertAnimationRelatedNode(&vm->drawNode, &child->drawNode);
-            State(child)->otherPosition.x = ReadF(vm, instruction, 1);
-            State(child)->otherPosition.y = ReadF(vm, instruction, 2);
-            State(child)->translation = self.translation;
+            scratch.childId = CreateAnimationVmId(self.file, script, vm->persistent020).value;
+            scratch.child = ClearMissingAnimationId(&scratch.childId);
+            InsertAnimationRelatedNode(&vm->drawNode, &scratch.child->drawNode);
+            State(scratch.child)->otherPosition.x = ReadF(vm, instruction, 1);
+            State(scratch.child)->otherPosition.y = ReadF(vm, instruction, 2);
+            State(scratch.child)->translation = self.translation;
             break;
         }
         case 97:
         {
             short script = static_cast<short>(ReadI(vm, instruction, 0));
-            AnimationVmId id = CreateAnimationVmId(self.file, script, vm->persistent020);
-            AnimationVmView *child = ClearMissingAnimationId(&id.value);
-            State(child)->otherPosition.x = ReadF(vm, instruction, 1);
-            State(child)->otherPosition.y = ReadF(vm, instruction, 2);
-            State(child)->translation = self.translation;
+            scratch.childId = CreateAnimationVmId(self.file, script, vm->persistent020).value;
+            scratch.child = ClearMissingAnimationId(&scratch.childId);
+            State(scratch.child)->otherPosition.x = ReadF(vm, instruction, 1);
+            State(scratch.child)->otherPosition.y = ReadF(vm, instruction, 2);
+            State(scratch.child)->translation = self.translation;
             break;
         }
         case 95:
         {
             short script = static_cast<short>(ReadI(vm, instruction, 0));
-            AnimationVmId id = CreateAnimationVmId(self.file, script, vm->persistent020);
-            AnimationVmView *child = ClearMissingAnimationId(&id.value);
-            State(child)->otherPosition = self.position;
-            State(child)->translation = self.translation;
+            scratch.childId = CreateAnimationVmId(self.file, script, vm->persistent020).value;
+            scratch.child = ClearMissingAnimationId(&scratch.childId);
+            State(scratch.child)->otherPosition = self.position;
+            State(scratch.child)->translation = self.translation;
             break;
         }
         case 91:
         {
             short script = static_cast<short>(ReadI(vm, instruction, 0));
-            drawChildId = CreateSecondaryEmitterAnimationVmId(self.file, script, vm->persistent020).value;
+            scratch.childId = CreateSecondaryEmitterAnimationVmId(self.file, script, vm->persistent020).value;
             goto animation_child_draw;
         }
         animation_child_draw:
-            child = ClearMissingAnimationId(&drawChildId);
-            InsertAnimationRelatedNode(&vm->drawNode, &child->drawNode);
-            State(child)->otherPosition = self.position;
-            State(child)->translation = self.translation;
+            scratch.child = ClearMissingAnimationId(&scratch.childId);
+            InsertAnimationRelatedNode(&vm->drawNode, &scratch.child->drawNode);
+            State(scratch.child)->otherPosition = self.position;
+            State(scratch.child)->translation = self.translation;
             break;
         case 90:
         {
             short script = static_cast<short>(ReadI(vm, instruction, 0));
-            frontChildId = CreateSecondaryDrawAnimationVmId(self.file, script, vm->persistent020).value;
+            scratch.childId = CreateSecondaryDrawAnimationVmId(self.file, script, vm->persistent020).value;
             goto animation_child_front;
         }
         case 92:
         {
             short script = static_cast<short>(ReadI(vm, instruction, 0));
-            frontChildId = CreateFrontSecondaryDrawAnimationVmId(self.file, script, vm->persistent020).value;
+            scratch.childId = CreateFrontSecondaryDrawAnimationVmId(self.file, script, vm->persistent020).value;
             goto animation_child_front;
         }
         animation_child_front:
-            child = ClearMissingAnimationId(&frontChildId);
-            InsertAnimationRelatedNode(&vm->drawNode, &child->drawNode);
-            State(child)->translation = self.translation;
-            State(child)->otherPosition = self.position;
+            scratch.child = ClearMissingAnimationId(&scratch.childId);
+            InsertAnimationRelatedNode(&vm->drawNode, &scratch.child->drawNode);
+            State(scratch.child)->translation = self.translation;
+            State(scratch.child)->otherPosition = self.position;
             break;
         case 3:
         {
@@ -532,7 +532,7 @@
         {
             float right = ReadF(vm, instruction, 2);
             float left = ReadF(vm, instruction, 1);
-            floatResult = static_cast<float>(fmod(left, right));
+            scratch.floatResult = static_cast<float>(fmod(left, right));
             goto animation_float_destination;
         }
         case 8:
@@ -602,7 +602,7 @@
         {
             float right = ReadF(vm, instruction, 1);
             float left = ReadF(vm, instruction, 0);
-            floatResult = static_cast<float>(fmod(left, right));
+            scratch.floatResult = static_cast<float>(fmod(left, right));
             goto animation_float_destination;
         }
         case 40:
@@ -638,8 +638,7 @@
                 random = &g_TextRandomState;
             }
             float result = AnimationRandomRange(random, maximum);
-            float *destination = FloatDestination(vm, instruction);
-            *destination = result;
+            *FloatDestination(vm, instruction) = result;
             break;
         }
         case 42:
@@ -666,14 +665,16 @@
         case 45:
         {
             float value = ReadF(vm, instruction, 1);
-            floatResult = static_cast<float>(acos(value));
-            goto animation_float_destination;
+            scratch.floatResult = static_cast<float>(acos(value));
+            *FloatDestination(vm, instruction) = scratch.floatResult;
+            break;
         }
         case 46:
         {
             float value = ReadF(vm, instruction, 1);
-            floatResult = static_cast<float>(atan(value));
-            goto animation_float_destination;
+            scratch.floatResult = static_cast<float>(atan(value));
+            *FloatDestination(vm, instruction) = scratch.floatResult;
+            break;
         }
         case 47:
         {
@@ -684,7 +685,7 @@
         }
 
 animation_float_destination:
-            *FloatDestination(vm, instruction) = floatResult;
+            *FloatDestination(vm, instruction) = scratch.floatResult;
             break;
 
         case 85: ReplaceBits(self.flags, static_cast<unsigned int>(static_cast<unsigned char>(Words(instruction)[0])) << 28, 0x10000000); break;
