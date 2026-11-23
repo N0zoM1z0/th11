@@ -9618,8 +9618,8 @@ linkages = []
 frontier = true
 artifact_kind = "linked-pe"
 source = "src/AnimationExecution.cpp"
-inputs = ["src/AnimationUnaryTangent.cpp", "src/AnimationExecution.hpp", "src/AnimationExecutionInstructions.inc", "src/AnimationExecutionUpdate.inc", "src/AnimationVm.hpp", "src/AnimationTween.hpp", "src/AnimationTween.cpp", "src/StageTween.hpp", "src/StageTween.cpp", "src/StageEasing.cpp", "src/StageScript.hpp", "src/StageResource.hpp", "src/Random.hpp", "src/RenderBatch.hpp", "src/AnimationVmFactory.hpp", "src/AnimationExecutionPolarPoint.cpp", "src/AnimationExecutionSupport.cpp", "src/Random.cpp", "src/MainRuntime.hpp"]
-support_sources = ["src/AnimationUnaryTangent.cpp", "probes/animation-execution-isolated-context.cpp", "src/AnimationExecutionPolarPoint.cpp", "src/AnimationTween.cpp", "src/StageTween.cpp", "src/StageEasing.cpp", "src/AnimationExecutionSupport.cpp", "src/Random.cpp"]
+inputs = ["src/AnimationUnaryTangent.cpp", "src/AnimationExecution.hpp", "src/AnimationExecutionInstructions.inc", "src/AnimationExecutionUpdate.inc", "src/AnimationVm.hpp", "src/AnimationTween.hpp", "src/AnimationTween.cpp", "src/StageTween.hpp", "src/StageTween.cpp", "src/StageEasing.cpp", "src/StageScript.hpp", "src/StageResource.hpp", "src/Random.hpp", "src/RenderBatch.hpp", "src/AnimationVmFactory.hpp", "src/AnimationExecutionPolarPoint.cpp", "src/AnimationExecutionSupport.cpp", "src/Random.cpp", "src/MainRuntime.hpp", "src/AnimationExecutionArguments.cpp"]
+support_sources = ["src/AnimationUnaryTangent.cpp", "probes/animation-execution-isolated-context.cpp", "src/AnimationExecutionPolarPoint.cpp", "src/AnimationTween.cpp", "src/StageTween.cpp", "src/StageEasing.cpp", "src/AnimationExecutionSupport.cpp", "src/Random.cpp", "src/AnimationExecutionArguments.cpp"]
 normal_support_sources = ["src/AnimationUnaryTangent.cpp", "probes/animation-execution-isolated-context.cpp", "src/AnimationExecutionPolarPoint.cpp"]
 output_dir = "build/match-linked/AnimationExecutionTweenContext"
 profile = ["/TP", "/O2", "/Oy-", "/Ob2", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -9628,7 +9628,7 @@ functions = ["ExecuteAnimationVm"]
 symbol = "?ExecuteAnimationVm@@YGHPAUAnimationVmView@@@Z"
 target_address = 0x0044B4B0
 size = 12056
-support_profiles = { "src/AnimationTween.cpp" = ["/TP", "/O2", "/Oy", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/StageTween.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/StageEasing.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/AnimationExecutionSupport.cpp" = ["/TP", "/O2", "/Oy", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/Random.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"]}
+support_profiles = { "src/AnimationTween.cpp" = ["/TP", "/O2", "/Oy", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/StageTween.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/StageEasing.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/AnimationExecutionSupport.cpp" = ["/TP", "/O2", "/Oy", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/Random.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"], "src/AnimationExecutionArguments.cpp" = ["/TP", "/O2", "/Oy", "/Ob0", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"] }
 linkages = []
 
 # Natural C++ polar helper; normal COFF preserves its public ECX thiscall ABI.
