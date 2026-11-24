@@ -37,12 +37,11 @@
     }
     if (self->flags2 & 4)
     {
-        CameraVector quad[4];
-        BuildAnimationVmModeQuad(vm, quad);
-        InlineUv(&self->uv[0], &quad[0]);
-        InlineUv(&self->uv[1], &quad[1]);
-        InlineUv(&self->uv[2], &quad[2]);
-        InlineUv(&self->uv[3], &quad[3]);
+        AnimationVmModeQuad quad = vm->BuildModeQuad();
+        InlineUv(&self->uv[0], &quad.corners[0]);
+        InlineUv(&self->uv[1], &quad.corners[1]);
+        InlineUv(&self->uv[2], &quad.corners[2]);
+        InlineUv(&self->uv[3], &quad.corners[3]);
     }
     if (self->positionTween.duration)
     {

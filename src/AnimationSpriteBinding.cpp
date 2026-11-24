@@ -47,12 +47,12 @@ __forceinline void Identity(D3DMATRIX &m)
 }
 }
 
-int __stdcall BindAnimationSprite(AnimationDocumentView *file, int sprite, AnimationVmView *vm)
+int __fastcall AnimationVmView::BindAnimationSprite(AnimationDocumentView *file, int sprite)
 {
     const SpriteBindingFileView *source = reinterpret_cast<const SpriteBindingFileView *>(file);
     if (!source->data || source->busy)
         return -1;
-    SpriteBindingVmView *self = reinterpret_cast<SpriteBindingVmView *>(vm);
+    SpriteBindingVmView *self = reinterpret_cast<SpriteBindingVmView *>(this);
     self->spriteId = static_cast<short>(sprite);
     self->file = file;
     self->sprite = &source->sprites[sprite];
@@ -71,6 +71,12 @@ int __stdcall BindAnimationSprite(AnimationDocumentView *file, int sprite, Anima
     self->textureTransform._22 = self->height / self->sprite->textureHeight * self->sprite->scaleY;
     self->savedTransform = self->transform;
     return 0;
+}
+
+
+int __stdcall BindAnimationSprite(AnimationDocumentView *file, int sprite, AnimationVmView *vm)
+{
+    return vm->BindAnimationSprite(file, sprite);
 }
 
 void __stdcall SetAnimationSpriteUv(AnimationVmView *vm, AnimationSpriteView *sprite)

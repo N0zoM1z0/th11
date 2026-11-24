@@ -4,6 +4,8 @@
 #include <stddef.h>
 
 struct AnimationVmView;
+struct AnimationVmModeQuad;
+struct AnimationDocumentView;
 struct RenderBatchView;
 struct AnimationFileView;
 struct AnimationVmId;
@@ -117,6 +119,8 @@ struct AnimationVmView
     AnimationVmFlags flags;
     unsigned char unknown408[0x434 - 0x408];
 
+    int __fastcall BindAnimationSprite(AnimationDocumentView *file, int sprite);
+    AnimationVmModeQuad __thiscall BuildModeQuad();
 };
 
 struct AnimationTextureEntry

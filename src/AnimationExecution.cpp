@@ -1,8 +1,10 @@
 #include "AnimationExecution.hpp"
 #include "AnimationProjectedQuad.hpp"
+#include "AnimationQuad.hpp"
 #include "AnimationSpriteBinding.hpp"
 #include "AnimationFan.hpp"
 #include "SecondaryEmitterAnimation.hpp"
+
 #include "AngleMath.hpp"
 #include "MainRuntime.hpp"
 #include <math.h>
@@ -11,6 +13,28 @@
 AnimationVmView *__stdcall ClearMissingAnimationId(unsigned int *id);
 int __stdcall OffsetSecondaryTimer(StageTimerView *self, float amount);
 void __stdcall RewindSecondaryTimer(StageTimerView *self, int frame);
+
+__declspec(noinline) AnimationVmModeQuad __thiscall AnimationVmView::BuildModeQuad()
+{
+    AnimationVmModeQuad quad;
+    switch ((flags.value >> 22) & 15)
+    {
+    case 0:
+        BuildAnimationVmQuad(this, &quad.corners[0], &quad.corners[1],
+            &quad.corners[2], &quad.corners[3]);
+        break;
+    case 1:
+        BuildRotatedAnimationVmQuad(this, &quad.corners[0], &quad.corners[1],
+            &quad.corners[2], &quad.corners[3]);
+        break;
+    case 2:
+    case 3:
+        BuildUnroundedAnimationVmQuad(this, &quad.corners[0], &quad.corners[1],
+            &quad.corners[2], &quad.corners[3]);
+        break;
+    }
+    return quad;
+}
 
 namespace
 {
@@ -209,8 +233,8 @@ __forceinline void EmitStripPair(AnimationExecutionView *self, RenderVertex *&ve
 
 int __stdcall ExecuteAnimationVm(AnimationVmView *vm)
 {
-    AnimationExecutionView *self = State(vm);
-    register AnimationInstruction *instruction;
+    register AnimationInstruction *instruction = State(vm)->instruction;
+    register AnimationExecutionView *self = State(vm);
     union
     {
         float floatResult;
@@ -218,7 +242,7 @@ int __stdcall ExecuteAnimationVm(AnimationVmView *vm)
         AnimationVmView *child;
     } scratch;
     AnimationFloatPair scaleResult(0.0f, 0.0f);
-    if (!self->instruction) return 1;
+    if (!instruction) return 1;
     if (self->flags & 0x20000) return 0;
     float savedScale = g_AnimationTimeScale;
     if (self->flags & 0x20000000) g_AnimationTimeScale = 1.0f;

@@ -131,7 +131,7 @@
         }
         case 96:
         {
-            short script = static_cast<short>(ReadI(vm, instruction, 0));
+            int script = ReadI(vm, instruction, 0);
             AnimationVmId childId = CreateAnimationVmId(self->file, script, vm->persistent020);
             scratch.child = ClearMissingAnimationId(&childId.value);
             InsertAnimationRelatedNode(&vm->drawNode, &scratch.child->drawNode);
@@ -143,7 +143,7 @@
         }
         case 97:
         {
-            short script = static_cast<short>(ReadI(vm, instruction, 0));
+            int script = ReadI(vm, instruction, 0);
             AnimationVmId positionedChildId = CreateAnimationVmId(self->file, script, vm->persistent020);
             scratch.child = ClearMissingAnimationId(&positionedChildId.value);
             State(scratch.child)->otherPosition.x = ReadF(vm, instruction, 1);
@@ -196,7 +196,7 @@
             int sprite;
             if (self->spriteTransform) sprite = self->spriteTransform(vm, ReadI(vm, instruction, 0));
             else sprite = ReadI(vm, instruction, 0);
-            BindAnimationSprite(reinterpret_cast<AnimationDocumentView *>(self->file), sprite, vm);
+            vm->BindAnimationSprite(reinterpret_cast<AnimationDocumentView *>(self->file), sprite);
             self->spriteFrame = self->time.current;
             break;
         }
@@ -217,7 +217,7 @@
                 unsigned int count = ReadI(vm, instruction, 1);
                 sprite = Add(static_cast<int>(RandomNext32(&g_TextRandomState) % count), first);
             }
-            BindAnimationSprite(reinterpret_cast<AnimationDocumentView *>(self->file), sprite, vm);
+            vm->BindAnimationSprite(reinterpret_cast<AnimationDocumentView *>(self->file), sprite);
             self->spriteFrame = self->time.current;
             break;
         }
@@ -326,10 +326,30 @@
             self->positionTween.control1 = control1;
             self->positionTween.control2 = control2;
             self->positionTween.mode = 8;
-            self->positionTween.initial = ((reinterpret_cast<unsigned char *>(&self->flags)[1] % 2u)) ? self->otherPosition : self->position;
+            unsigned int initialX;
+            unsigned int initialY;
+            unsigned int initialZ;
+            unsigned int *initialWords =
+                reinterpret_cast<unsigned int *>(&self->positionTween.initial);
+            if (!(self->flags & 0x100))
+            {
+                initialX = *reinterpret_cast<unsigned int *>(&self->position.x);
+                initialY = *reinterpret_cast<unsigned int *>(&self->position.y);
+                initialZ = *reinterpret_cast<unsigned int *>(&self->position.z);
+            }
+            else
+            {
+                initialX = *reinterpret_cast<unsigned int *>(&self->otherPosition.x);
+                initialY = *reinterpret_cast<unsigned int *>(&self->otherPosition.y);
+                initialZ = *reinterpret_cast<unsigned int *>(&self->otherPosition.z);
+            }
+            initialWords[0] = initialX;
+            initialWords[1] = initialY;
+            initialWords[2] = initialZ;
             float z = ReadF(vm, instruction, 6);
             float y = ReadF(vm, instruction, 5);
-            CameraVector target = {ReadF(vm, instruction, 4), y, z};
+            float x = ReadF(vm, instruction, 4);
+            CameraVector target = {x, y, z};
             self->positionTween.target = target;
             ResetAnimationVectorTweenTime(&self->positionTween);
             break;
@@ -434,12 +454,11 @@
 
         case 98:
         {
-            CameraVector quad[4];
-            BuildAnimationVmModeQuad(vm, quad);
-            SetAnimationUv(&self->uv[0], &quad[0]);
-            SetAnimationUv(&self->uv[1], &quad[1]);
-            SetAnimationUv(&self->uv[2], &quad[2]);
-            SetAnimationUv(&self->uv[3], &quad[3]);
+            AnimationVmModeQuad quad = vm->BuildModeQuad();
+            SetAnimationUv(&self->uv[0], &quad.corners[0]);
+            SetAnimationUv(&self->uv[1], &quad.corners[1]);
+            SetAnimationUv(&self->uv[2], &quad.corners[2]);
+            SetAnimationUv(&self->uv[3], &quad.corners[3]);
             break;
         }
         case 99: ReplaceBits(self->flags2, static_cast<unsigned int>(ReadI(vm, instruction, 0)) << 2, 4); break;

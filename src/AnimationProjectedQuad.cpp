@@ -220,14 +220,3 @@ int __stdcall DrawAdaptiveUnroundedAnimationVm(RenderBatchView *renderer, Animat
         BuildRotatedAnimationVmQuad(vm, Corner(0), Corner(1), Corner(2), Corner(3));
     return DrawAnimationVm(renderer, vm, 0);
 }
-
-void __stdcall BuildAnimationVmModeQuad(AnimationVmView *vm, CameraVector *quad)
-{
-    switch ((vm->flags.value >> 22) & 15)
-    {
-    case 0: BuildAnimationVmQuad(vm, &quad[0], &quad[1], &quad[2], &quad[3]); break;
-    case 1: BuildRotatedAnimationVmQuad(vm, &quad[0], &quad[1], &quad[2], &quad[3]); break;
-    case 2:
-    case 3: BuildUnroundedAnimationVmQuad(vm, &quad[0], &quad[1], &quad[2], &quad[3]); break;
-    }
-}
