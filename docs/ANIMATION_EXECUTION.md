@@ -17,19 +17,26 @@ a second function track.
 ## Current status (2026-11-24)
 
 The current reproducible boss diagnostic is `animation-execution-tween-context`.
-Its PDB-owned `ExecuteAnimationVm` contribution is 11,968 bytes / 3,359
-decoded instructions, with 1,368/3,308 native instruction keys aligned,
-261/262 calls and 378/406 conditional branches. The opcode-97 child path now
-retains its own two float-decoder calls instead of tail-merging into opcode 96;
-it decodes both offsets before copying the parent's translation, matching the
-native ordering. Opcode 96 captures the parent's translation through a pointer
-before decoding the child's offsets, which preserves the parent-state source
-while allowing the compiler to schedule the final child copy after decoding.
-These two natural-source ordering changes improve the focused build over the
-previous hidden-result-only candidate. The selected unit cold-builds
-successfully with the pinned VC9 toolchain, but remains a non-runnable
-diagnostic frontier: its linkage manifest is not exhaustive and there is no
-accepted full-owner replay.
+Its PDB-owned `ExecuteAnimationVm` contribution is 11,968 bytes, comprising
+11,552 bytes of executable code and the complete 416-byte dispatch table. The
+candidate has 3,191 code instructions versus 3,203 in the target; 1,361 native
+instruction keys align. It has 261/262 calls and 376/406 conditional branches.
+These instruction counts and alignment figures exclude the dispatch table,
+which is verified separately; older 3,308-instruction counts decoded table
+bytes as instructions and are superseded.
+
+Opcode 96 and opcode 97 each retain their own two `ReadAnimationFloat` call
+sites rather than tail-merging the decoder calls. Opcode 96 keeps a natural
+pointer alias to the parent's translation across the two offset reads and
+copies through it afterward, preserving the native load order. Its factory
+result is now held in an `AnimationVmId` local and passed to
+`ClearMissingAnimationId` through the local's value field, so VC9 can use the
+local as the hidden result buffer instead of copying the returned integer
+through the shared scratch union. Opcode 97 still uses the scratch-union
+integer result path and remains a useful refinement target within this locked
+function. The selected unit cold-builds successfully with the pinned VC9
+toolchain, but remains a non-runnable diagnostic frontier: its linkage
+manifest is not exhaustive and there is no accepted full-owner replay.
 
 Native entry saves EBX/ESI/EDI, loads the stack VM pointer into EDI, and reserves
 an aligned `0xCC` frame. The current candidate loads the VM pointer into EBX

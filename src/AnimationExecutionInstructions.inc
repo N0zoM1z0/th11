@@ -132,8 +132,8 @@
         case 96:
         {
             short script = static_cast<short>(ReadI(vm, instruction, 0));
-            scratch.childId = CreateAnimationVmId(self->file, script, vm->persistent020).value;
-            scratch.child = ClearMissingAnimationId(&scratch.childId);
+            AnimationVmId childId = CreateAnimationVmId(self->file, script, vm->persistent020);
+            scratch.child = ClearMissingAnimationId(&childId.value);
             InsertAnimationRelatedNode(&vm->drawNode, &scratch.child->drawNode);
             CameraVector *childTranslation = &self->translation;
             State(scratch.child)->otherPosition.x = ReadF(vm, instruction, 1);
