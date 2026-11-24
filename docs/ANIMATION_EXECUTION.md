@@ -16,9 +16,8 @@ a second function track.
 
 ## Current status (2026-11-24)
 
-The current reproducible boss diagnostic is `animation-integer-destination`,
-which links the complete interpreter dependency graph and also owns the
-integer-destination leaf. The full linked candidate owns 11,972 bytes at
+The current reproducible boss diagnostic is
+`animation-execution-tween-context`. The full linked candidate owns 11,972 bytes at
 `0x00401870`: 11,556 bytes of executable code followed by the 416-byte,
 104-entry dispatch table. The native owner has 11,640 executable bytes plus
 the same table. The code-only decoder sees 3,183 candidate instructions versus
@@ -71,7 +70,7 @@ replay.
 Native entry saves EBX/ESI/EDI, loads the stack VM pointer into EDI, and reserves
 an aligned `0xCC` frame. The current candidate loads the VM pointer into EBX
 and uses EDI for the instruction pointer, with a `0xDC` frame. A diagnostic
-register-label swap raises normalized instruction alignment to 2,342/3,308;
+register-label swap raises normalized instruction alignment to 2,384/3,203;
 this identifies the EBX/EDI allocation inversion as a major source of mismatch,
 not an exactness result or permission to rename registers in the comparison.
 
@@ -93,25 +92,17 @@ full-owner integration is measured separately. Its function-inventory status
 remains unclassified and the replay is not yet an accepted canonical
 exact-ledger row.
 
-`AnimationIntegerDestination` remains in the interpreter TU because its
-EAX-encoded-pointer / EDX-VM convention is naturally selected by VC9 LTCG in
-that context. The `animation-integer-destination` linked unit owns the complete
-104-byte PDB contribution, replays the dispatch-table pointer and all ten table
-entries (11 relocation fields total), and reports zero byte differences. Its
-function-inventory status remains unclassified pending canonical exact-ledger
-acceptance. `BindAnimationSprite` is likewise source-present and non-exact (see
-ASCII_LIFECYCLE.md and MENU_JOYSTICK.md). Complete extent/PDB ownership is not
-exactness.
-
 `AnimationIntegerDestination` is retained in the interpreter TU as an internal
 natural-C++ helper. Its dedicated `animation-integer-destination` unit uses the
 full interpreter LTCG dependency context and reproduces the complete 104-byte
 owner after replaying its 11 reviewed local jump-table relocations; the result
 is zero byte differences. The emitted EAX encoded-pointer / EDX VM / EAX result
 convention comes from the original TU's compiler-selected internal calling
-convention, not a hand-written ABI shim. The helper remains origin-indeterminate
-and is not promoted to canonical exact inventory solely by this linked replay.
-
+convention, not a hand-written ABI shim. The helper remains origin-indeterminate,
+its function-inventory status remains unclassified, and it is not promoted to
+canonical exact inventory solely by this linked replay. `BindAnimationSprite` is
+likewise source-present and non-exact (see ASCII_LIFECYCLE.md and
+MENU_JOYSTICK.md). Complete extent/PDB ownership is not exactness.
 
 `UpdateStageRealInterpreterAnimationOy` is stale: its receipt records an older
 `src/AnimationTween.cpp` hash (`b527a00b...`) than the current source. Do not
