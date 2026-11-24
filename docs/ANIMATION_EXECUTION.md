@@ -16,17 +16,22 @@ a second function track.
 
 ## Current status (2026-11-24)
 
-The current reproducible boss diagnostic is `animation-execution-tween-context`.
-The current linked candidate owns 11,972 bytes at `0x004018F0`: 11,556 bytes
-of executable code followed by the 416-byte, 104-entry dispatch table. The
-native owner has 11,640 executable bytes plus the same table. The code-only
-decoder sees 3,183 candidate instructions versus 3,203 native instructions;
-1,324 native instruction keys align under the current mnemonic/operand-key
-comparison without register rewriting. The native/candidate call counts are
-262/261 and conditional-branch counts are 406/377. Only 4/104 dispatch entries
-have matching relative handler offsets. These are diagnostic counts, not an
-exactness score. The older 3,308/3,319 totals decoded dispatch-table bytes as
-instructions and are superseded.
+The current reproducible boss diagnostic is `animation-integer-destination`,
+which links the complete interpreter dependency graph and also owns the
+integer-destination leaf. The full linked candidate owns 11,972 bytes at
+`0x00401870`: 11,556 bytes of executable code followed by the 416-byte,
+104-entry dispatch table. The native owner has 11,640 executable bytes plus
+the same table. The code-only decoder sees 3,183 candidate instructions versus
+3,203 native instructions; 1,324 native instruction keys align under the
+mnemonic/operand-key comparison without register rewriting. The native/candidate
+call counts are 262/261, conditional-branch counts 259/260, and unconditional
+jump counts 147/117. Only 4/104 dispatch entries have matching relative handler
+offsets. A diagnostic EBX/EDI label swap raises normalized instruction
+alignment to 2,384/3,203; this identifies the major register-allocation
+inversion, not an exactness result or permission to rename registers in the
+comparison. These are diagnostic counts, not an exactness score. The older
+3,308/3,319 totals decoded dispatch-table bytes as instructions and are
+superseded.
 
 Focused handler counts (native / candidate) are opcode 96: 38 / 47, opcode 97:
 35 / 45, opcode 98: 19 / 19, and opcode 100: 124 / 124. Equal instruction
@@ -71,7 +76,7 @@ this identifies the EBX/EDI allocation inversion as a major source of mismatch,
 not an exactness result or permission to rename registers in the comparison.
 
 The same linked image owns `StepAnimationFloatPairTween` at candidate
-`0x00404760`, exactly 673 bytes / 221 instructions. After replaying its four
+`0x00404D00`, exactly 673 bytes / 221 instructions. After replaying its four
 reviewed relocation fields at `+19`, `+70`, `+363` and `+579`, only 2 bytes
 differ and all 221/221 instruction keys align. Natural vector operators now
 match the mode-8 x87 schedule; the remaining two bytes are the mode-17
@@ -86,9 +91,27 @@ emitted a 140-byte PDB contribution for the same function under a different
 support profile, so the isolated context remains the canonical leaf check;
 full-owner integration is measured separately. Its function-inventory status
 remains unclassified and the replay is not yet an accepted canonical
-exact-ledger row. `BindAnimationSprite` is likewise source-present and
-non-exact (see ASCII_LIFECYCLE.md and MENU_JOYSTICK.md). Complete extent/PDB
-ownership is not exactness.
+exact-ledger row.
+
+`AnimationIntegerDestination` remains in the interpreter TU because its
+EAX-encoded-pointer / EDX-VM convention is naturally selected by VC9 LTCG in
+that context. The `animation-integer-destination` linked unit owns the complete
+104-byte PDB contribution, replays the dispatch-table pointer and all ten table
+entries (11 relocation fields total), and reports zero byte differences. Its
+function-inventory status remains unclassified pending canonical exact-ledger
+acceptance. `BindAnimationSprite` is likewise source-present and non-exact (see
+ASCII_LIFECYCLE.md and MENU_JOYSTICK.md). Complete extent/PDB ownership is not
+exactness.
+
+`AnimationIntegerDestination` is retained in the interpreter TU as an internal
+natural-C++ helper. Its dedicated `animation-integer-destination` unit uses the
+full interpreter LTCG dependency context and reproduces the complete 104-byte
+owner after replaying its 11 reviewed local jump-table relocations; the result
+is zero byte differences. The emitted EAX encoded-pointer / EDX VM / EAX result
+convention comes from the original TU's compiler-selected internal calling
+convention, not a hand-written ABI shim. The helper remains origin-indeterminate
+and is not promoted to canonical exact inventory solely by this linked replay.
+
 
 `UpdateStageRealInterpreterAnimationOy` is stale: its receipt records an older
 `src/AnimationTween.cpp` hash (`b527a00b...`) than the current source. Do not
@@ -98,6 +121,8 @@ frontier before using its measurements. The current focused context is built by:
 ```bash
 scripts/repo-python scripts/build-match-unit.py --unit animation-execution-tween-context
 scripts/repo-python .analysis/compare-execute-animation-vm-20261122.py build/match-linked/AnimationExecutionTweenContext
+scripts/repo-python scripts/build-match-unit.py --unit animation-integer-destination
+scripts/repo-python scripts/compare-linked-function.py --unit animation-integer-destination
 ```
 
 The rejected 2026-11-23 component-expression experiment is preserved as
