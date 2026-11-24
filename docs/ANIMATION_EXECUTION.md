@@ -17,17 +17,16 @@ a second function track.
 ## Current status (2026-11-24)
 
 The current reproducible boss diagnostic is `animation-execution-tween-context`.
-Its PDB-owned `ExecuteAnimationVm` contribution is 11,976 bytes / 3,230
-decoded instructions, with 1,366/3,308 native instruction keys aligned,
-261/262 calls and 377/406 conditional branches. The opcode-97 child path now
+Its PDB-owned `ExecuteAnimationVm` contribution is 11,968 bytes / 3,359
+decoded instructions, with 1,368/3,308 native instruction keys aligned,
+261/262 calls and 378/406 conditional branches. The opcode-97 child path now
 retains its own two float-decoder calls instead of tail-merging into opcode 96;
-copying the parent's translation before decoding the child's two offsets is
-semantically independent because those decoders read the parent VM and random
-state, not the child translation. Opcode 96 now stores the factory result in a
-real `AnimationVmId` local, allowing VC9 to construct the hidden result
-directly in the buffer consumed by `ClearMissingAnimationId`; this removes
-the prior integer copy/reload sequence. Opcode 97 still has that copy sequence
-and is the next child-handler refinement. The selected unit cold-builds
+it decodes both offsets before copying the parent's translation, matching the
+native ordering. Opcode 96 captures the parent's translation through a pointer
+before decoding the child's offsets, which preserves the parent-state source
+while allowing the compiler to schedule the final child copy after decoding.
+These two natural-source ordering changes improve the focused build over the
+previous hidden-result-only candidate. The selected unit cold-builds
 successfully with the pinned VC9 toolchain, but remains a non-runnable
 diagnostic frontier: its linkage manifest is not exhaustive and there is no
 accepted full-owner replay.
