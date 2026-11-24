@@ -5,14 +5,33 @@ instruction interpreter, events, all nine tween updates and both generated-strip
 paths. Its full12056-byte owner remains non-exact. Physical views and compiler
 observations do not establish original class identities, authorship or TU layout.
 
-## Current status (2026-11-23)
+## Active focus lock (2026-11-24)
+
+The sole active function is `ExecuteAnimationVm` at `0x0044B4B0`, with the
+complete 12,056-byte physical owner ending at `0x0044E3C7`. No other function
+becomes the focus until this owner, including its 104-cell dispatch table, is
+reconstructed as natural C++ and its exactness is accepted. Helper implementations
+may be changed only as dependencies of this locked function; that does not open
+a second function track.
+
+## Current status (2026-11-24)
 
 The current reproducible boss diagnostic is `animation-execution-tween-context`.
-Its PDB-owned `ExecuteAnimationVm` contribution is 11,636 bytes / 3,423
-instructions, with 1,139/3,308 native instruction keys aligned, 258/262 calls
-and 375/406 conditional branches. Its prologue aligns ESP to eight bytes and
-reserves `0xD4`, but holds the VM pointer in ESI; native reserves `0xCC` and
-uses EDI. This remains a non-runnable diagnostic graph, not an exact owner.
+Its PDB-owned `ExecuteAnimationVm` contribution is 11,856 bytes / 3,243
+decoded instructions, with 1,349/3,308 native instruction keys aligned,
+259/262 calls and 374/406 conditional branches. This improves the previous
+11,636-byte / 1,139-aligned frontier after adding the real VM factory, child
+animation, renderer-dispatch and stage-mesh dependency sources. The selected
+unit cold-builds successfully with the pinned VC9 toolchain, but remains a
+non-runnable diagnostic frontier: its linkage manifest is not exhaustive and
+there is no accepted full-owner replay.
+
+Native entry saves EBX/ESI/EDI, loads the stack VM pointer into EDI, and reserves
+an aligned `0xCC` frame. The current candidate loads the VM pointer into EBX
+and uses EDI for the instruction pointer, with a `0xDC` frame. A diagnostic
+register-label swap raises normalized instruction alignment to 2,342/3,308;
+this identifies the EBX/EDI allocation inversion as a major source of mismatch,
+not an exactness result or permission to rename registers in the comparison.
 
 The same linked image owns `StepAnimationFloatPairTween` at candidate
 `0x00404760`, exactly 673 bytes / 221 instructions. After replaying its four
