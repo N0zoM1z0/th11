@@ -17,14 +17,16 @@ a second function track.
 ## Current status (2026-11-24)
 
 The current reproducible boss diagnostic is `animation-execution-tween-context`.
-Its PDB-owned `ExecuteAnimationVm` contribution is 11,856 bytes / 3,243
-decoded instructions, with 1,349/3,308 native instruction keys aligned,
-259/262 calls and 374/406 conditional branches. This improves the previous
-11,636-byte / 1,139-aligned frontier after adding the real VM factory, child
-animation, renderer-dispatch and stage-mesh dependency sources. The selected
-unit cold-builds successfully with the pinned VC9 toolchain, but remains a
-non-runnable diagnostic frontier: its linkage manifest is not exhaustive and
-there is no accepted full-owner replay.
+Its PDB-owned `ExecuteAnimationVm` contribution is 11,936 bytes / 3,350
+decoded instructions, with 1,363/3,308 native instruction keys aligned,
+261/262 calls and 377/406 conditional branches. The opcode-97 child path now
+retains its own two float-decoder calls instead of tail-merging into opcode 96;
+copying the parent's translation before decoding the child's two offsets is
+semantically independent because those decoders read the parent VM and random
+state, not the child translation. The selected unit cold-builds successfully
+with the pinned VC9 toolchain, but remains a non-runnable diagnostic frontier:
+its linkage manifest is not exhaustive and there is no accepted full-owner
+replay.
 
 Native entry saves EBX/ESI/EDI, loads the stack VM pointer into EDI, and reserves
 an aligned `0xCC` frame. The current candidate loads the VM pointer into EBX
