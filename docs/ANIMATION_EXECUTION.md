@@ -17,21 +17,20 @@ a second function track.
 ## Current status (2026-11-24)
 
 The current reproducible boss diagnostic is `animation-execution-tween-context`.
-The current linked candidate owns 11,984 bytes at `0x004018F0`: 11,568 bytes
+The current linked candidate owns 11,972 bytes at `0x004018F0`: 11,556 bytes
 of executable code followed by the 416-byte, 104-entry dispatch table. The
 native owner has 11,640 executable bytes plus the same table. The code-only
-decoder sees 3,187 candidate instructions versus 3,203 native instructions;
-1,323 native instruction keys align under the current mnemonic/operand-key
-comparison without register rewriting. The candidate has 261/262 calls and
-378/406 conditional branches. Only 4/104 dispatch entries have matching
-relative handler offsets. These are diagnostic counts, not an exactness score.
-The older 3,308/3,319 totals decoded dispatch-table bytes as instructions and
-are superseded.
+decoder sees 3,183 candidate instructions versus 3,203 native instructions;
+1,324 native instruction keys align under the current mnemonic/operand-key
+comparison without register rewriting. The native/candidate call counts are
+262/261 and conditional-branch counts are 406/377. Only 4/104 dispatch entries
+have matching relative handler offsets. These are diagnostic counts, not an
+exactness score. The older 3,308/3,319 totals decoded dispatch-table bytes as
+instructions and are superseded.
 
 Focused handler counts (native / candidate) are opcode 96: 38 / 47, opcode 97:
 35 / 45, opcode 98: 19 / 19, and opcode 100: 124 / 124. Equal instruction
-counts do not imply matching instruction streams: opcode 100 remains a
-substantial operand/order mismatch in the current comparison.
+counts do not imply matching instruction streams.
 
 Opcode 100 (the position Bézier-tween initializer) now aligns all 124/124
 instructions after the same EBX/EDI register-label normalization. The source
@@ -42,16 +41,18 @@ embedded directly in the aggregate initializer. This is a per-handler
 instruction-key result, not a byte-exact or whole-function result.
 
 Opcode 96 and opcode 97 each retain their own two `ReadAnimationFloat` call
-sites rather than tail-merging the decoder calls. Opcode 96 keeps a natural
-pointer alias to the parent's translation across the two offset reads and
-copies through it afterward, preserving the native load order. Both child
-handlers now hold the factory result in a local `AnimationVmId` object and
-pass its value address to `ClearMissingAnimationId`; this lets VC9 use each
-local as the hidden result buffer and keeps the factory/clear calls adjacent,
-instead of copying the returned integer through the shared scratch union. A
-single shared function-scope result object and a by-value forwarding overload
-were also tested; both reintroduced a copy on opcode 97 and regressed the
-focused comparison.
+sites rather than tail-merging the decoder calls. Both child handlers hold the
+factory result in a local `AnimationVmId` object and pass its value address to
+`ClearMissingAnimationId`; this lets VC9 use each local as the hidden result
+buffer and keeps the factory/clear calls adjacent, instead of copying the
+returned integer through the shared scratch union. The returned child is now
+viewed as an `AnimationExecutionView *`, so the child position/translation
+fields are accessed directly in natural C++ rather than repeatedly casting
+through the VM base view. In opcode 97, this changes the emitted order to load
+the first x87 operand, test its variable bit, and only then move the returned
+child pointer into ESI, matching the native order at that point. The complete
+opcode handler is still non-exact: stack slots, later x87 spills, translation
+copy placement, and the enclosing VM/instruction register allocation differ.
 
 The update-mode quad helper is still an ABI mismatch. Native callsite
 `0x0044D9B2` passes the VM in EAX and the 48-byte corner buffer in ECX; the

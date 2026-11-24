@@ -133,22 +133,25 @@
         {
             int script = ReadI(vm, instruction, 0);
             AnimationVmId childId = CreateAnimationVmId(self->file, script, vm->persistent020);
-            scratch.child = ClearMissingAnimationId(&childId.value);
-            InsertAnimationRelatedNode(&vm->drawNode, &scratch.child->drawNode);
+            AnimationExecutionView *child = reinterpret_cast<AnimationExecutionView *>(
+                ClearMissingAnimationId(&childId.value));
+            InsertAnimationRelatedNode(&vm->drawNode,
+                &reinterpret_cast<AnimationVmView *>(child)->drawNode);
             CameraVector *childTranslation = &self->translation;
-            State(scratch.child)->otherPosition.x = ReadF(vm, instruction, 1);
-            State(scratch.child)->otherPosition.y = ReadF(vm, instruction, 2);
-            State(scratch.child)->translation = *childTranslation;
+            child->otherPosition.x = ReadF(vm, instruction, 1);
+            child->otherPosition.y = ReadF(vm, instruction, 2);
+            child->translation = *childTranslation;
             break;
         }
         case 97:
         {
             int script = ReadI(vm, instruction, 0);
             AnimationVmId positionedChildId = CreateAnimationVmId(self->file, script, vm->persistent020);
-            scratch.child = ClearMissingAnimationId(&positionedChildId.value);
-            State(scratch.child)->otherPosition.x = ReadF(vm, instruction, 1);
-            State(scratch.child)->otherPosition.y = ReadF(vm, instruction, 2);
-            State(scratch.child)->translation = self->translation;
+            AnimationExecutionView *child = reinterpret_cast<AnimationExecutionView *>(
+                ClearMissingAnimationId(&positionedChildId.value));
+            child->otherPosition.x = ReadF(vm, instruction, 1);
+            child->otherPosition.y = ReadF(vm, instruction, 2);
+            child->translation = self->translation;
             break;
         }
         case 95:
