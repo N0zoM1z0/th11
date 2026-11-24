@@ -17,26 +17,30 @@ a second function track.
 ## Current status (2026-11-24)
 
 The current reproducible boss diagnostic is `animation-execution-tween-context`.
-Its PDB-owned `ExecuteAnimationVm` contribution is 11,968 bytes, comprising
-11,552 bytes of executable code and the complete 416-byte dispatch table. The
-candidate has 3,191 code instructions versus 3,203 in the target; 1,361 native
-instruction keys align. It has 261/262 calls and 376/406 conditional branches.
-These instruction counts and alignment figures exclude the dispatch table,
-which is verified separately; older 3,308-instruction counts decoded table
+Its PDB-owned `ExecuteAnimationVm` contribution is 11,956 bytes, comprising
+11,540 bytes of executable code and the complete 416-byte dispatch table. The
+native owner is 12,056 bytes: 11,640 bytes of code/alignment plus the same
+416-byte table. The candidate has 3,187 code instructions versus 3,203 in the
+target; 1,364 native instruction keys align without register renaming
+(2,377/3,203 after a diagnostic EBX/EDI label swap). It has 261/262 calls and
+376/406 conditional branches. The dispatch table's handler offsets coincide
+at only 4/104 entries. These code-only instruction counts exclude the table,
+which is measured separately; older 3,308-instruction counts decoded table
 bytes as instructions and are superseded.
 
 Opcode 96 and opcode 97 each retain their own two `ReadAnimationFloat` call
 sites rather than tail-merging the decoder calls. Opcode 96 keeps a natural
 pointer alias to the parent's translation across the two offset reads and
-copies through it afterward, preserving the native load order. Its factory
-result is now held in an `AnimationVmId` local and passed to
-`ClearMissingAnimationId` through the local's value field, so VC9 can use the
-local as the hidden result buffer instead of copying the returned integer
-through the shared scratch union. Opcode 97 still uses the scratch-union
-integer result path and remains a useful refinement target within this locked
-function. The selected unit cold-builds successfully with the pinned VC9
-toolchain, but remains a non-runnable diagnostic frontier: its linkage
-manifest is not exhaustive and there is no accepted full-owner replay.
+copies through it afterward, preserving the native load order. Both child
+handlers now hold the factory result in a local `AnimationVmId` object and
+pass its value address to `ClearMissingAnimationId`; this lets VC9 use each
+local as the hidden result buffer and keeps the factory/clear calls adjacent,
+instead of copying the returned integer through the shared scratch union. A
+single shared function-scope result object and a by-value forwarding overload
+were also tested; both reintroduced a copy on opcode 97 and regressed the
+focused comparison. The selected unit cold-builds successfully with the
+pinned VC9 toolchain, but remains a non-runnable diagnostic frontier: its
+linkage manifest is not exhaustive and there is no accepted full-owner replay.
 
 Native entry saves EBX/ESI/EDI, loads the stack VM pointer into EDI, and reserves
 an aligned `0xCC` frame. The current candidate loads the VM pointer into EBX

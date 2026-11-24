@@ -144,8 +144,8 @@
         case 97:
         {
             short script = static_cast<short>(ReadI(vm, instruction, 0));
-            scratch.childId = CreateAnimationVmId(self->file, script, vm->persistent020).value;
-            scratch.child = ClearMissingAnimationId(&scratch.childId);
+            AnimationVmId positionedChildId = CreateAnimationVmId(self->file, script, vm->persistent020);
+            scratch.child = ClearMissingAnimationId(&positionedChildId.value);
             State(scratch.child)->otherPosition.x = ReadF(vm, instruction, 1);
             State(scratch.child)->otherPosition.y = ReadF(vm, instruction, 2);
             State(scratch.child)->translation = self->translation;
