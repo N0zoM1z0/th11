@@ -17,16 +17,20 @@ a second function track.
 ## Current status (2026-11-24)
 
 The current reproducible boss diagnostic is `animation-execution-tween-context`.
-Its PDB-owned `ExecuteAnimationVm` contribution is 11,936 bytes / 3,350
-decoded instructions, with 1,363/3,308 native instruction keys aligned,
+Its PDB-owned `ExecuteAnimationVm` contribution is 11,976 bytes / 3,230
+decoded instructions, with 1,366/3,308 native instruction keys aligned,
 261/262 calls and 377/406 conditional branches. The opcode-97 child path now
 retains its own two float-decoder calls instead of tail-merging into opcode 96;
 copying the parent's translation before decoding the child's two offsets is
 semantically independent because those decoders read the parent VM and random
-state, not the child translation. The selected unit cold-builds successfully
-with the pinned VC9 toolchain, but remains a non-runnable diagnostic frontier:
-its linkage manifest is not exhaustive and there is no accepted full-owner
-replay.
+state, not the child translation. Opcode 96 now stores the factory result in a
+real `AnimationVmId` local, allowing VC9 to construct the hidden result
+directly in the buffer consumed by `ClearMissingAnimationId`; this removes
+the prior integer copy/reload sequence. Opcode 97 still has that copy sequence
+and is the next child-handler refinement. The selected unit cold-builds
+successfully with the pinned VC9 toolchain, but remains a non-runnable
+diagnostic frontier: its linkage manifest is not exhaustive and there is no
+accepted full-owner replay.
 
 Native entry saves EBX/ESI/EDI, loads the stack VM pointer into EDI, and reserves
 an aligned `0xCC` frame. The current candidate loads the VM pointer into EBX
