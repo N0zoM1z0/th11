@@ -65,6 +65,7 @@ struct AnimationExecutionView
 extern CameraVector g_AnimationExecutionZero;
 extern RandomStateView g_AnimationSceneRandomState, g_TextRandomState;
 void __stdcall SetAnimationUv(AnimationFloatPair *output, const CameraVector *point);
+float *__stdcall AnimationFloatDestination(AnimationVmView *vm, float *encoded);
 void __stdcall ResetAnimationVectorTweenTime(StageVectorTween *self);
 void __stdcall InsertAnimationRelatedNode(AnimationVmNode *after, AnimationVmNode *node);
 void __stdcall SetAnimationScaleTween(AnimationVmView *vm,

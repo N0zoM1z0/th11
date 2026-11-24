@@ -78,11 +78,17 @@ match the mode-8 x87 schedule; the remaining two bytes are the mode-17
 Y-component add operand order. The pair leaf remains frontier-only and
 non-exact.
 
-`AnimationFloatDestination` is a complete 124-byte source/diagnostic owner, but
-its function inventory status is unclassified and it has no exact-ledger row;
-it is a frontier dependency, not an accepted exact leaf. `BindAnimationSprite`
-is likewise source-present and non-exact (see ASCII_LIFECYCLE.md and
-MENU_JOYSTICK.md). Complete extent/PDB ownership is not exactness.
+`AnimationFloatDestination` now lives in `AnimationExecutionArguments.cpp` as
+a public natural-C++ leaf. The isolated `animation-float-destination` linked
+unit reproduces the complete 124-byte owner, replays all 14 reviewed relocation
+fields, and reports zero byte differences. A broader interpreter LTCG context
+emitted a 140-byte PDB contribution for the same function under a different
+support profile, so the isolated context remains the canonical leaf check;
+full-owner integration is measured separately. Its function-inventory status
+remains unclassified and the replay is not yet an accepted canonical
+exact-ledger row. `BindAnimationSprite` is likewise source-present and
+non-exact (see ASCII_LIFECYCLE.md and MENU_JOYSTICK.md). Complete extent/PDB
+ownership is not exactness.
 
 `UpdateStageRealInterpreterAnimationOy` is stale: its receipt records an older
 `src/AnimationTween.cpp` hash (`b527a00b...`) than the current source. Do not

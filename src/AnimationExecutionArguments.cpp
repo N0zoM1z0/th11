@@ -55,6 +55,23 @@ animation_random_result:
 }
 
 
+float *__stdcall AnimationFloatDestination(AnimationVmView *vm, float *encoded)
+{
+    AnimationExecutionView *self = State(vm);
+    switch (static_cast<int>(*encoded))
+    {
+    case 10004: return &self->floatVariables[0];
+    case 10005: return &self->floatVariables[1];
+    case 10006: return &self->floatVariables[2];
+    case 10007: return &self->floatVariables[3];
+    case 10013: return &self->position.x;
+    case 10014: return &self->position.y;
+    case 10015: return &self->position.z;
+    default: return encoded;
+    }
+}
+
+
 void __stdcall SetAnimationUv(AnimationFloatPair *output, const CameraVector *point)
 {
     output->x = static_cast<float>(point->x / 640.0);
