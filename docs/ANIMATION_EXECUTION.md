@@ -17,20 +17,20 @@ a second function track.
 ## Current status (2026-11-25)
 
 The focused `animation-execution-tween-context` build was rebuilt after the
-TH10-style instruction-cursor loop and VM/self-pointer lifetime experiments.
-The current natural-C++ candidate owns 11,960 bytes and 3,357 decoded
-instructions against the native 12,056-byte owner and 3,308 instructions. The
-complete-extent mnemonic/operand-key comparison aligns 1,389 native instruction
-keys. The code-only comparison is 11,544 candidate bytes / 3,183 instructions,
-with 1,379/3,203 native instruction keys aligned; calls are 261/262,
-conditional branches 259/259 and unconditional jumps 120/147 (candidate/native).
-These are diagnostic measurements, not an exactness score. The latest change
-removed the named `scaleResult` pair temporary and assigns the tween return
-directly to `vm->scale`; this raised the full-extent diagnostic alignment from
-1,382 to 1,389 keys without changing owner extent or call/branch counts. The
-candidate frame is still `0xDC` rather than native `0xCC`, and the VM pointer
-remains in EBX rather than native EDI; the instruction cursor/register
-assignment is not yet recovered.
+TH10-style instruction-cursor loop, result-lifetime reduction and VM-state
+aliasing experiments. The current natural-C++ candidate owns 11,960 bytes and
+3,355 decoded instructions against the native 12,056-byte owner and 3,308
+instructions. The complete-extent mnemonic/operand-key comparison aligns
+1,396 native instruction keys; calls are 261/262 and conditional branches are
+379/406 (candidate/native). These are diagnostic measurements, not an exactness
+score. Removing the named `scaleResult` pair temporary first raised alignment
+from 1,382 to 1,389 keys. Routing the interpreter, opcode handlers and update
+body consistently through the single `self` state alias raised it again to
+1,396 keys and removed two decoded instructions without changing owner extent.
+The candidate frame remains `0xDC` rather than native `0xCC`, and its prologue
+still assigns the VM pointer to EBX and the instruction cursor to EDI, opposite
+the native EDI/EBX allocation. The instruction cursor/register assignment and
+complete 104-entry dispatch table remain open.
 
 The VM event word at `+0x37C` is now declared `unsigned short`. Native entry
 loads this field with `movzx` before testing and carrying the event through the

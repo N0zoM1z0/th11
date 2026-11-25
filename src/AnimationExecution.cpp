@@ -211,10 +211,10 @@ __forceinline void EmitStripPair(AnimationExecutionView *self, RenderVertex *&ve
 }
 }
 
-int __stdcall ExecuteAnimationVm(AnimationVmView *vm)
+int __stdcall ExecuteAnimationVm(AnimationVmView *vmInput)
 {
-    register AnimationInstruction *instruction = State(vm)->instruction;
-    register AnimationExecutionView *self = State(vm);
+    register AnimationExecutionView *self = State(vmInput);
+    register AnimationInstruction *instruction = self->instruction;
     union
     {
         float floatResult;
@@ -271,7 +271,7 @@ animation_pause:
     OffsetSecondaryTimer(&self->time, -1.0f);
 animation_update:
 #include "AnimationExecutionUpdate.inc"
-    if (self->update && self->update(vm)) return 1;
+    if (self->update && self->update(self)) return 1;
     Tick(&self->time);
     g_AnimationTimeScale = savedScale;
     return 0;
