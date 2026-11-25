@@ -5,11 +5,6 @@
 #include "RenderBatch.hpp"
 #include "Random.hpp"
 
-struct AnimationVmModeQuad
-{
-    CameraVector corners[4];
-};
-
 struct AnimationInstruction
 {
     short opcode;

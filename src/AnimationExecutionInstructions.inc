@@ -125,47 +125,47 @@
         case 86: ReplaceBits(self->flags, static_cast<unsigned int>(ReadI(vm, instruction, 0)) << 29, 0x20000000); break;
         case 88:
         {
-            short script = static_cast<short>(ReadI(vm, instruction, 0));
+            int script = ReadI(vm, instruction, 0);
             scratch.childId = CreateAnimationVmId(self->file, script, vm->persistent020).value;
             goto animation_child_draw;
         }
+        // Keep the factory's hidden-result temporary alive through ID cleanup;
+        // ClearMissingAnimationId may clear this non-const temporary in place.
         case 96:
         {
             int script = ReadI(vm, instruction, 0);
-            AnimationVmId childId = CreateAnimationVmId(self->file, script, vm->persistent020);
-            AnimationExecutionView *child = reinterpret_cast<AnimationExecutionView *>(
-                ClearMissingAnimationId(&childId.value));
-            InsertAnimationRelatedNode(&vm->drawNode,
-                &reinterpret_cast<AnimationVmView *>(child)->drawNode);
-            CameraVector *childTranslation = &self->translation;
-            child->otherPosition.x = ReadF(vm, instruction, 1);
-            child->otherPosition.y = ReadF(vm, instruction, 2);
-            child->translation = *childTranslation;
+            const AnimationVmId &childId = CreateAnimationVmId(self->file, script, vm->persistent020);
+            scratch.child = ClearMissingAnimationId(const_cast<unsigned int *>(&childId.value));
+            InsertAnimationRelatedNode(&vm->drawNode, &scratch.child->drawNode);
+            State(scratch.child)->otherPosition.x = ReadF(vm, instruction, 1);
+            State(scratch.child)->otherPosition.y = ReadF(vm, instruction, 2);
+            State(scratch.child)->translation = self->translation;
             break;
         }
         case 97:
         {
             int script = ReadI(vm, instruction, 0);
-            AnimationVmId positionedChildId = CreateAnimationVmId(self->file, script, vm->persistent020);
-            AnimationExecutionView *child = reinterpret_cast<AnimationExecutionView *>(
-                ClearMissingAnimationId(&positionedChildId.value));
-            child->otherPosition.x = ReadF(vm, instruction, 1);
-            child->otherPosition.y = ReadF(vm, instruction, 2);
-            child->translation = self->translation;
+            const AnimationVmId &childId = CreateAnimationVmId(self->file, script, vm->persistent020);
+            scratch.child = ClearMissingAnimationId(const_cast<unsigned int *>(&childId.value));
+            float x = ReadF(vm, instruction, 1);
+            AnimationExecutionView *positionedChild = State(scratch.child);
+            positionedChild->otherPosition.x = x;
+            positionedChild->otherPosition.y = ReadF(vm, instruction, 2);
+            positionedChild->translation = self->translation;
             break;
         }
         case 95:
         {
-            short script = static_cast<short>(ReadI(vm, instruction, 0));
-            scratch.childId = CreateAnimationVmId(self->file, script, vm->persistent020).value;
-            scratch.child = ClearMissingAnimationId(&scratch.childId);
+            int script = ReadI(vm, instruction, 0);
+            const AnimationVmId &childId = CreateAnimationVmId(self->file, script, vm->persistent020);
+            scratch.child = ClearMissingAnimationId(const_cast<unsigned int *>(&childId.value));
             State(scratch.child)->otherPosition = self->position;
             State(scratch.child)->translation = self->translation;
             break;
         }
         case 91:
         {
-            short script = static_cast<short>(ReadI(vm, instruction, 0));
+            int script = ReadI(vm, instruction, 0);
             scratch.childId = CreateSecondaryEmitterAnimationVmId(self->file, script, vm->persistent020).value;
             goto animation_child_draw;
         }
@@ -177,13 +177,13 @@
             break;
         case 90:
         {
-            short script = static_cast<short>(ReadI(vm, instruction, 0));
+            int script = ReadI(vm, instruction, 0);
             scratch.childId = CreateSecondaryDrawAnimationVmId(self->file, script, vm->persistent020).value;
             goto animation_child_front;
         }
         case 92:
         {
-            short script = static_cast<short>(ReadI(vm, instruction, 0));
+            int script = ReadI(vm, instruction, 0);
             scratch.childId = CreateFrontSecondaryDrawAnimationVmId(self->file, script, vm->persistent020).value;
             goto animation_child_front;
         }
@@ -457,11 +457,12 @@
 
         case 98:
         {
-            AnimationVmModeQuad quad = vm->BuildModeQuad();
-            SetAnimationUv(&self->uv[0], &quad.corners[0]);
-            SetAnimationUv(&self->uv[1], &quad.corners[1]);
-            SetAnimationUv(&self->uv[2], &quad.corners[2]);
-            SetAnimationUv(&self->uv[3], &quad.corners[3]);
+            CameraVector quad[4];
+            vm->BuildModeQuad(quad);
+            SetAnimationUv(&self->uv[0], &quad[0]);
+            SetAnimationUv(&self->uv[1], &quad[1]);
+            SetAnimationUv(&self->uv[2], &quad[2]);
+            SetAnimationUv(&self->uv[3], &quad[3]);
             break;
         }
         case 99: ReplaceBits(self->flags2, static_cast<unsigned int>(ReadI(vm, instruction, 0)) << 2, 4); break;

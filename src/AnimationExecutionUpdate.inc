@@ -37,11 +37,18 @@
     }
     if (self->flags2 & 4)
     {
-        AnimationVmModeQuad quad = vm->BuildModeQuad();
-        InlineUv(&self->uv[0], &quad.corners[0]);
-        InlineUv(&self->uv[1], &quad.corners[1]);
-        InlineUv(&self->uv[2], &quad.corners[2]);
-        InlineUv(&self->uv[3], &quad.corners[3]);
+        CameraVector quad[4];
+        switch ((vm->flags.value >> 22) & 15)
+        {
+        case 0: BuildAnimationVmQuad(vm, &quad[0], &quad[1], &quad[2], &quad[3]); break;
+        case 1: BuildRotatedAnimationVmQuad(vm, &quad[0], &quad[1], &quad[2], &quad[3]); break;
+        case 2:
+        case 3: BuildUnroundedAnimationVmQuad(vm, &quad[0], &quad[1], &quad[2], &quad[3]); break;
+        }
+        InlineUv(&self->uv[0], &quad[0]);
+        InlineUv(&self->uv[1], &quad[1]);
+        InlineUv(&self->uv[2], &quad[2]);
+        InlineUv(&self->uv[3], &quad[3]);
     }
     if (self->positionTween.duration)
     {

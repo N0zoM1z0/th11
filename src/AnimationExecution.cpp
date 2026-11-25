@@ -14,26 +14,21 @@ AnimationVmView *__stdcall ClearMissingAnimationId(unsigned int *id);
 int __stdcall OffsetSecondaryTimer(StageTimerView *self, float amount);
 void __stdcall RewindSecondaryTimer(StageTimerView *self, int frame);
 
-__declspec(noinline) AnimationVmModeQuad __thiscall AnimationVmView::BuildModeQuad()
+__declspec(noinline) void __fastcall AnimationVmView::BuildModeQuad(CameraVector *quad)
 {
-    AnimationVmModeQuad quad;
     switch ((flags.value >> 22) & 15)
     {
     case 0:
-        BuildAnimationVmQuad(this, &quad.corners[0], &quad.corners[1],
-            &quad.corners[2], &quad.corners[3]);
+        BuildAnimationVmQuad(this, &quad[0], &quad[1], &quad[2], &quad[3]);
         break;
     case 1:
-        BuildRotatedAnimationVmQuad(this, &quad.corners[0], &quad.corners[1],
-            &quad.corners[2], &quad.corners[3]);
+        BuildRotatedAnimationVmQuad(this, &quad[0], &quad[1], &quad[2], &quad[3]);
         break;
     case 2:
     case 3:
-        BuildUnroundedAnimationVmQuad(this, &quad.corners[0], &quad.corners[1],
-            &quad.corners[2], &quad.corners[3]);
+        BuildUnroundedAnimationVmQuad(this, &quad[0], &quad[1], &quad[2], &quad[3]);
         break;
     }
-    return quad;
 }
 
 namespace
@@ -218,8 +213,9 @@ __forceinline void EmitStripPair(AnimationExecutionView *self, RenderVertex *&ve
 
 int __stdcall ExecuteAnimationVm(AnimationVmView *vm)
 {
-    register AnimationInstruction *instruction = State(vm)->instruction;
-    register AnimationExecutionView *self = State(vm);
+    register AnimationInstruction *instruction =
+        reinterpret_cast<AnimationInstruction *>(vm->instruction);
+    AnimationExecutionView *self = State(vm);
     union
     {
         float floatResult;
