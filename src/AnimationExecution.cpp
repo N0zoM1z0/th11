@@ -213,15 +213,14 @@ __forceinline void EmitStripPair(AnimationExecutionView *self, RenderVertex *&ve
 
 int __stdcall ExecuteAnimationVm(AnimationVmView *vm)
 {
+    register AnimationInstruction *instruction = State(vm)->instruction;
     register AnimationExecutionView *self = State(vm);
-    register AnimationInstruction *instruction = self->instruction;
     union
     {
         float floatResult;
         unsigned int childId;
         AnimationVmView *child;
     } scratch;
-    AnimationFloatPair scaleResult(0.0f, 0.0f);
     if (!instruction) return 1;
     if (self->flags.value & 0x20000) return 0;
     float savedScale = g_AnimationTimeScale;
