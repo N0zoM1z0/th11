@@ -14,25 +14,24 @@ AnimationVmView *__stdcall ClearMissingAnimationId(unsigned int *id);
 int __stdcall OffsetSecondaryTimer(StageTimerView *self, float amount);
 void __stdcall RewindSecondaryTimer(StageTimerView *self, int frame);
 
-__declspec(noinline) void __fastcall AnimationVmView::BuildModeQuad(CameraVector *quad)
+namespace
 {
-    switch ((flags.value >> 22) & 15)
+__declspec(noinline) void __fastcall BuildModeQuad(CameraVector *quad, AnimationVmView *vm)
+{
+    switch ((vm->flags.value >> 22) & 15)
     {
     case 0:
-        BuildAnimationVmQuad(this, &quad[0], &quad[1], &quad[2], &quad[3]);
+        BuildAnimationVmQuad(vm, &quad[0], &quad[1], &quad[2], &quad[3]);
         break;
     case 1:
-        BuildRotatedAnimationVmQuad(this, &quad[0], &quad[1], &quad[2], &quad[3]);
+        BuildRotatedAnimationVmQuad(vm, &quad[0], &quad[1], &quad[2], &quad[3]);
         break;
     case 2:
     case 3:
-        BuildUnroundedAnimationVmQuad(this, &quad[0], &quad[1], &quad[2], &quad[3]);
+        BuildUnroundedAnimationVmQuad(vm, &quad[0], &quad[1], &quad[2], &quad[3]);
         break;
     }
 }
-
-namespace
-{
 __forceinline AnimationExecutionView *State(AnimationVmView *vm)
 { return reinterpret_cast<AnimationExecutionView *>(vm); }
 #pragma optimize("y", on)
@@ -213,9 +212,9 @@ __forceinline void EmitStripPair(AnimationExecutionView *self, RenderVertex *&ve
 
 int __stdcall ExecuteAnimationVm(AnimationVmView *vm)
 {
-    register AnimationInstruction *instruction =
-        reinterpret_cast<AnimationInstruction *>(vm->instruction);
-    AnimationExecutionView *self = State(vm);
+    register AnimationExecutionView *self = State(vm);
+    if (!self->instruction) return 1;
+    if (self->flags & 0x20000) return 0;
     union
     {
         float floatResult;
@@ -223,10 +222,9 @@ int __stdcall ExecuteAnimationVm(AnimationVmView *vm)
         AnimationVmView *child;
     } scratch;
     AnimationFloatPair scaleResult(0.0f, 0.0f);
-    if (!instruction) return 1;
-    if (self->flags & 0x20000) return 0;
     float savedScale = g_AnimationTimeScale;
     if (self->flags & 0x20000000) g_AnimationTimeScale = 1.0f;
+    register AnimationInstruction *instruction;
     register int event;
     if (self->event)
     {
