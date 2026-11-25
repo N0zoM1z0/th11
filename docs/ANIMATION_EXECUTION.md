@@ -17,13 +17,23 @@ a second function track.
 ## Current status (2026-11-25)
 
 The focused `animation-execution-tween-context` build was rebuilt after the
-child-creation and quad-output changes. The current natural-C++ candidate owns
-11,828 bytes and 3,153 decoded instructions against the native 12,056-byte
-owner and 3,308 instructions. The unnormalized mnemonic/operand-key comparison
-aligns 1,380 native instruction keys. Calls are 259/262 and conditional
-branches are 375/406 (candidate/native). These are diagnostic measurements,
-not an exactness score; the candidate frame is still `0xDC` rather than native
-`0xCC`, and its main VM/instruction register allocation remains inverted.
+TH10-style instruction-cursor loop and VM/self-pointer lifetime experiments.
+The current natural-C++ candidate owns 11,960 bytes and 3,357 decoded
+instructions against the native 12,056-byte owner and 3,308 instructions. The
+complete-extent mnemonic/operand-key comparison aligns 1,384 native instruction
+keys. The code-only comparison is 11,544 candidate bytes / 3,183 instructions,
+with 1,379/3,203 native instruction keys aligned; calls are 261/262,
+conditional branches 259/259 and unconditional jumps 120/147 (candidate/native).
+These are diagnostic measurements, not an exactness score. The candidate frame
+is still `0xDC` rather than native `0xCC`, and the VM pointer remains in EBX
+rather than native EDI; the instruction cursor/register assignment is not yet
+recovered.
+
+The VM event word at `+0x37C` is now declared `unsigned short`. Native entry
+loads this field with `movzx` before testing and carrying the event through the
+interrupt scan, so the unsigned type models the observed zero-extension rather
+than sign-extending negative 16-bit values. This is a field-type correction,
+not proof of the surrounding VM class identity or whole-owner exactness.
 
 Child-creation opcodes 88, 90, 91, 92 and 95 now retain the full 32-bit script
 operand read by `ReadI`; the previous `short` forms were rejected because they

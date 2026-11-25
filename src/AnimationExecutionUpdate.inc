@@ -65,7 +65,8 @@
     if (vm->alphaTween.duration) Byte(vm, 0x377) = static_cast<unsigned char>(StepAnimationIntScalarTween(&vm->alphaTween));
     if (vm->scaleTween.duration)
     {
-        vm->scale = StepAnimationFloatPairTween(&vm->scaleTween);
+        scaleResult = StepAnimationFloatPairTween(&vm->scaleTween);
+        vm->scale = scaleResult;
         vm->flags.value |= 8;
     }
     if (vm->rotationTween.duration)
