@@ -67,7 +67,7 @@ struct AnimationVmView
         struct { unsigned int color, color2; };
         int spriteIndex;
     };
-    short event;
+    unsigned short event;
     unsigned short unknown37e;
     StageTimerView savedTime;
     AnimationInstruction *savedInstruction;
