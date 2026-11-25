@@ -119,7 +119,6 @@ struct AnimationVmView
     unsigned char unknown408[0x434 - 0x408];
 
     int __fastcall BindAnimationSprite(AnimationDocumentView *file, int sprite);
-    void __fastcall BuildModeQuad(CameraVector *quad);
 };
 
 struct AnimationTextureEntry

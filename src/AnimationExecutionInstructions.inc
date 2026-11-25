@@ -458,7 +458,7 @@
         case 98:
         {
             CameraVector quad[4];
-            vm->BuildModeQuad(quad);
+            BuildModeQuad(quad, vm);
             SetAnimationUv(&self->uv[0], &quad[0]);
             SetAnimationUv(&self->uv[1], &quad[1]);
             SetAnimationUv(&self->uv[2], &quad[2]);
