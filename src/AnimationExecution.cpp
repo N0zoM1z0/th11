@@ -14,8 +14,6 @@ AnimationVmView *__stdcall ClearMissingAnimationId(unsigned int *id);
 int __stdcall OffsetSecondaryTimer(StageTimerView *self, float amount);
 void __stdcall RewindSecondaryTimer(StageTimerView *self, int frame);
 
-namespace
-{
 __declspec(noinline) void __fastcall BuildModeQuad(CameraVector *quad, AnimationVmView *vm)
 {
     switch ((vm->flags.value >> 22) & 15)
@@ -32,8 +30,11 @@ __declspec(noinline) void __fastcall BuildModeQuad(CameraVector *quad, Animation
         break;
     }
 }
+
+namespace
+{
 __forceinline AnimationExecutionView *State(AnimationVmView *vm)
-{ return reinterpret_cast<AnimationExecutionView *>(vm); }
+{ return vm; }
 #pragma optimize("y", on)
 __forceinline RandomStateView *ExecutionRandom(AnimationVmView *vm)
 { return (vm->flags.value & 0x40000000) ? &g_AnimationSceneRandomState : &g_TextRandomState; }
@@ -212,69 +213,68 @@ __forceinline void EmitStripPair(AnimationExecutionView *self, RenderVertex *&ve
 
 int __stdcall ExecuteAnimationVm(AnimationVmView *vm)
 {
-    register AnimationExecutionView *self = State(vm);
-    if (!self->instruction) return 1;
-    if (self->flags & 0x20000) return 0;
+    if (!vm->instruction) return 1;
+    if (vm->flags.value & 0x20000) return 0;
     union
     {
         float floatResult;
         unsigned int childId;
         AnimationVmView *child;
     } scratch;
-    AnimationFloatPair scaleResult(0.0f, 0.0f);
+    AnimationFloatPair scaleResult = {0.0f, 0.0f};
     float savedScale = g_AnimationTimeScale;
-    if (self->flags & 0x20000000) g_AnimationTimeScale = 1.0f;
+    if (vm->flags.value & 0x20000000) g_AnimationTimeScale = 1.0f;
     register AnimationInstruction *instruction;
     register int event;
-    if (self->event)
+    if (vm->event)
     {
-        event = self->event;
+        event = vm->event;
         goto animation_event;
     }
     for (;;)
     {
-        instruction = self->instruction;
-        if (instruction->frame > self->time.current) break;
+        instruction = vm->instruction;
+        if (instruction->frame > vm->time.current) break;
         switch (instruction->opcode)
         {
 #include "AnimationExecutionInstructions.inc"
         default:
             break;
         }
-        self->instruction = Next(instruction);
+        vm->instruction = Next(instruction);
         continue;
 animation_jump:
-        SetStageTimer(&self->time, Words(instruction)[3]);
-        self->instruction = reinterpret_cast<AnimationInstruction *>(self->scriptStart + Words(instruction)[2]);
+        SetStageTimer(&vm->time, Words(instruction)[3]);
+        vm->instruction = reinterpret_cast<AnimationInstruction *>(vm->scriptStart + Words(instruction)[2]);
         continue;
 animation_event:
         AnimationInstruction *fallback = 0;
-        AnimationInstruction *label = reinterpret_cast<AnimationInstruction *>(self->scriptStart);
+        AnimationInstruction *label = reinterpret_cast<AnimationInstruction *>(vm->scriptStart);
         while ((label->opcode != 64 || event != Words(label)[0]) && label->opcode != -1)
         {
             if (label->opcode == 64 && -1 == Words(label)[0]) fallback = label;
             label = Next(label);
         }
-        self->flags &= ~0x1000u;
-        self->event = 0;
+        vm->flags.value &= ~0x1000u;
+        vm->event = 0;
         if (label->opcode != 64)
         {
             if (!fallback) goto animation_pause;
             label = fallback;
         }
-        self->savedTime = self->time;
-        self->savedInstruction = self->instruction;
-        SetStageTimer(&self->time, label->frame);
-        self->flags |= 1;
-        self->instruction = Next(label);
+        vm->savedTime = vm->time;
+        vm->savedInstruction = vm->instruction;
+        SetStageTimer(&vm->time, label->frame);
+        vm->flags.value |= 1;
+        vm->instruction = Next(label);
     }
     goto animation_update;
 animation_pause:
-    OffsetSecondaryTimer(&self->time, -1.0f);
+    OffsetSecondaryTimer(&vm->time, -1.0f);
 animation_update:
 #include "AnimationExecutionUpdate.inc"
-    if (self->update && self->update(vm)) return 1;
-    Tick(&self->time);
+    if (vm->update && vm->update(vm)) return 1;
+    Tick(&vm->time);
     g_AnimationTimeScale = savedScale;
     return 0;
 }

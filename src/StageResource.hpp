@@ -15,7 +15,12 @@ struct StageTimerView
     float *scale;
     unsigned int flags;
 
-    StageTimerView() { flags &= ~1u; }
+    void ResetFields()
+    {
+        current = 0;
+        fraction = 0.0f;
+        previous = -999999;
+    }
     int Advance();
     __forceinline void SetFrame(int value)
     {

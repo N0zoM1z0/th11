@@ -70,7 +70,7 @@ void __stdcall BindAnimationFileScript(AnimationFileView *file, int script, Anim
         vm->flags.value &= ~0x600u;
         vm->file = file;
         vm->scriptStart = file->scripts[script];
-        vm->instruction = vm->scriptStart;
+        vm->instruction = reinterpret_cast<AnimationInstruction *>(vm->scriptStart);
         vm->time.SetFrame(-1);
         vm->flags.value &= ~1u;
         reinterpret_cast<SceneVmRegistryView *>(g_RenderBatch)->Execute(vm);

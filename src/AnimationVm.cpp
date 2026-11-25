@@ -19,15 +19,6 @@ void __stdcall ResetAnimationVm(AnimationVmView *self)
     m._11 = m._22 = m._33 = m._44 = 1.0f;
     self->flags.halves.low = 7;
     self->time.ResetFields();
-    self->reset0d4 = 0;
-    self->reset120 = 0;
-    self->reset14c = 0;
-    self->reset198 = 0;
-    self->reset1d4 = 0;
-    self->reset220 = 0;
-    self->reset24c = 0;
-    self->reset278 = 0;
-    self->reset2a4 = 0;
     self->updateNode.Reset(self);
     self->drawNode.Reset(self);
 }
@@ -42,7 +33,7 @@ void __stdcall BindAnimationScript(AnimationFileView *file, int scriptId, Animat
         self->fileId = file->id;
         self->file = file;
         self->scriptStart = file->scripts[scriptId];
-        self->instruction = self->scriptStart;
+        self->instruction = reinterpret_cast<AnimationInstruction *>(self->scriptStart);
         self->time.SetFrame(-1);
         self->flags.value &= ~1u;
         ExecuteAnimationVm(self);

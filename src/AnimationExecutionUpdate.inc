@@ -1,41 +1,41 @@
-    if (self->angularVelocity.x != 0.0f)
+    if (vm->angularVelocity.x != 0.0f)
     {
-        self->rotation.x = AddAngles(self->rotation.x, g_AnimationTimeScale * self->angularVelocity.x);
-        self->flags |= 4;
+        vm->rotation.x = AddAngles(vm->rotation.x, g_AnimationTimeScale * vm->angularVelocity.x);
+        vm->flags.value |= 4;
     }
-    if (self->angularVelocity.y != 0.0f)
+    if (vm->angularVelocity.y != 0.0f)
     {
-        self->rotation.y = AddAngles(self->rotation.y, self->angularVelocity.y * g_AnimationTimeScale);
-        self->flags |= 4;
+        vm->rotation.y = AddAngles(vm->rotation.y, vm->angularVelocity.y * g_AnimationTimeScale);
+        vm->flags.value |= 4;
     }
-    if (self->angularVelocity.z != 0.0f)
+    if (vm->angularVelocity.z != 0.0f)
     {
-        self->rotation.z = AddAngles(self->rotation.z, g_AnimationTimeScale * self->angularVelocity.z);
-        self->flags |= 4;
+        vm->rotation.z = AddAngles(vm->rotation.z, g_AnimationTimeScale * vm->angularVelocity.z);
+        vm->flags.value |= 4;
     }
-    if (self->scaleVelocity.y != 0.0f)
+    if (vm->scaleVelocity.y != 0.0f)
     {
-        self->flags |= 8;
-        self->scale.y = g_AnimationTimeScale * self->scaleVelocity.y + self->scale.y;
+        vm->flags.value |= 8;
+        vm->scale.y = g_AnimationTimeScale * vm->scaleVelocity.y + vm->scale.y;
     }
-    if (self->scaleVelocity.x != 0.0f)
+    if (vm->scaleVelocity.x != 0.0f)
     {
-        self->flags |= 0xc;
-        self->scale.x = self->scaleVelocity.x * g_AnimationTimeScale + self->scale.x;
+        vm->flags.value |= 0xc;
+        vm->scale.x = vm->scaleVelocity.x * g_AnimationTimeScale + vm->scale.x;
     }
-    self->uOffset = g_AnimationTimeScale * self->uVelocity + self->uOffset;
-    if (self->uOffset >= 1.0) self->uOffset = static_cast<float>(self->uOffset - 1.0);
-    else if (self->uOffset < 0.0f) self->uOffset = static_cast<float>(self->uOffset + 1.0);
-    self->vOffset = self->vVelocity * g_AnimationTimeScale + self->vOffset;
-    if (self->vOffset >= 1.0) self->vOffset = static_cast<float>(self->vOffset - 1.0);
-    else if (self->vOffset < 0.0f) self->vOffset = static_cast<float>(self->vOffset + 1.0);
-    if (self->flags & 0x2000)
+    vm->uOffset = g_AnimationTimeScale * vm->uVelocity + vm->uOffset;
+    if (vm->uOffset >= 1.0) vm->uOffset = static_cast<float>(vm->uOffset - 1.0);
+    else if (vm->uOffset < 0.0f) vm->uOffset = static_cast<float>(vm->uOffset + 1.0);
+    vm->vOffset = vm->vVelocity * g_AnimationTimeScale + vm->vOffset;
+    if (vm->vOffset >= 1.0) vm->vOffset = static_cast<float>(vm->vOffset - 1.0);
+    else if (vm->vOffset < 0.0f) vm->vOffset = static_cast<float>(vm->vOffset + 1.0);
+    if (vm->flags.value & 0x2000)
     {
         const CameraVector *delta = reinterpret_cast<CameraVector *>(
             reinterpret_cast<unsigned char *>(&g_MainRuntime) + 0x524);
-        self->translation = Sum(self->translation, *delta);
+        vm->translation = Sum(vm->translation, *delta);
     }
-    if (self->flags2 & 4)
+    if (vm->flags2 & 4)
     {
         CameraVector quad[4];
         switch ((vm->flags.value >> 22) & 15)
@@ -45,80 +45,80 @@
         case 2:
         case 3: BuildUnroundedAnimationVmQuad(vm, &quad[0], &quad[1], &quad[2], &quad[3]); break;
         }
-        InlineUv(&self->uv[0], &quad[0]);
-        InlineUv(&self->uv[1], &quad[1]);
-        InlineUv(&self->uv[2], &quad[2]);
-        InlineUv(&self->uv[3], &quad[3]);
+        InlineUv(&vm->uv[0], &quad[0]);
+        InlineUv(&vm->uv[1], &quad[1]);
+        InlineUv(&vm->uv[2], &quad[2]);
+        InlineUv(&vm->uv[3], &quad[3]);
     }
-    if (self->positionTween.duration)
+    if (vm->positionTween.duration)
     {
-        if ((reinterpret_cast<unsigned char *>(&self->flags)[1] % 2u)) self->otherPosition = StepStageVectorTween(&self->positionTween);
-        else self->position = StepStageVectorTween(&self->positionTween);
+        if ((reinterpret_cast<unsigned char *>(&vm->flags.value)[1] % 2u)) vm->otherPosition = StepStageVectorTween(&vm->positionTween);
+        else vm->position = StepStageVectorTween(&vm->positionTween);
     }
-    if (self->colorTween.duration)
+    if (vm->colorTween.duration)
     {
-        AnimationIntVector color = StepAnimationIntVectorTween(&self->colorTween);
+        AnimationIntVector color = StepAnimationIntVectorTween(&vm->colorTween);
         Byte(vm, 0x376) = static_cast<unsigned char>(color.z);
         Byte(vm, 0x375) = static_cast<unsigned char>(color.y);
         Byte(vm, 0x374) = static_cast<unsigned char>(color.x);
     }
-    if (self->alphaTween.duration) Byte(vm, 0x377) = static_cast<unsigned char>(StepAnimationIntScalarTween(&self->alphaTween));
-    if (self->scaleTween.duration)
+    if (vm->alphaTween.duration) Byte(vm, 0x377) = static_cast<unsigned char>(StepAnimationIntScalarTween(&vm->alphaTween));
+    if (vm->scaleTween.duration)
     {
-        scaleResult = StepAnimationFloatPairTween(&self->scaleTween);
-        self->scale = scaleResult;
-        self->flags |= 8;
+        scaleResult = StepAnimationFloatPairTween(&vm->scaleTween);
+        vm->scale = scaleResult;
+        vm->flags.value |= 8;
     }
-    if (self->rotationTween.duration)
+    if (vm->rotationTween.duration)
     {
-        self->rotation = StepStageVectorTween(&self->rotationTween);
-        self->flags |= 4;
+        vm->rotation = StepStageVectorTween(&vm->rotationTween);
+        vm->flags.value |= 4;
     }
-    if (self->color2Tween.duration)
+    if (vm->color2Tween.duration)
     {
-        AnimationIntVector color = StepAnimationIntVectorTween(&self->color2Tween);
+        AnimationIntVector color = StepAnimationIntVectorTween(&vm->color2Tween);
         Byte(vm, 0x37a) = static_cast<unsigned char>(color.z);
         Byte(vm, 0x379) = static_cast<unsigned char>(color.y);
         Byte(vm, 0x378) = static_cast<unsigned char>(color.x);
     }
-    if (self->alpha2Tween.duration) Byte(vm, 0x37b) = static_cast<unsigned char>(StepAnimationIntScalarTween(&self->alpha2Tween));
-    if (self->uVelocityTween.duration) self->uVelocity = StepAnimationFloatScalarTween(&self->uVelocityTween);
-    if (self->vVelocityTween.duration) self->vVelocity = StepAnimationFloatScalarTween(&self->vVelocityTween);
-    unsigned int mode = (self->flags >> 22) & 15;
+    if (vm->alpha2Tween.duration) Byte(vm, 0x37b) = static_cast<unsigned char>(StepAnimationIntScalarTween(&vm->alpha2Tween));
+    if (vm->uVelocityTween.duration) vm->uVelocity = StepAnimationFloatScalarTween(&vm->uVelocityTween);
+    if (vm->vVelocityTween.duration) vm->vVelocity = StepAnimationFloatScalarTween(&vm->vVelocityTween);
+    unsigned int mode = (vm->flags.value >> 22) & 15;
     if (mode == 9)
     {
-        float angle = self->rotation.z;
-        int count = Subtract(self->integerVariables[0], 1);
+        float angle = vm->rotation.z;
+        int count = Subtract(vm->integerVariables[0], 1);
         float denominator = static_cast<float>(count);
         float angleStep = static_cast<float>(6.2831854820251465 / denominator);
         float v = 0.0f;
-        float vStep = static_cast<float>(self->integerVariables[1]) / denominator;
-        unsigned int color = (self->flags & 0x8000) ? self->color2 : self->color;
-        RenderVertex *vertex = self->vertices;
+        float vStep = static_cast<float>(vm->integerVariables[1]) / denominator;
+        unsigned int color = (vm->flags.value & 0x8000) ? vm->color2 : vm->color;
+        RenderVertex *vertex = vm->vertices;
         for (int left = count; left > 0; --left)
         {
-            EmitStripPair(self, vertex, color, angle, v);
+            EmitStripPair(vm, vertex, color, angle, v);
             v = vStep + v;
             angle = AddAngles(angle, angleStep);
         }
-        vertex[0] = self->vertices[0];
-        vertex[0].v = v + self->vOffset;
-        vertex[1] = self->vertices[1];
-        vertex[1].v = v + self->vOffset;
+        vertex[0] = vm->vertices[0];
+        vertex[0].v = v + vm->vOffset;
+        vertex[1] = vm->vertices[1];
+        vertex[1].v = v + vm->vOffset;
     }
     else if (mode == 13)
     {
-        int count = self->integerVariables[0];
-        float angle = NormalizeAngle(static_cast<float>(self->rotation.z - self->rotation.x * 0.5));
+        int count = vm->integerVariables[0];
+        float angle = NormalizeAngle(static_cast<float>(vm->rotation.z - vm->rotation.x * 0.5));
         float denominator = static_cast<float>(Subtract(count, 1));
-        float angleStep = self->rotation.x / denominator;
+        float angleStep = vm->rotation.x / denominator;
         float v = 0.0f;
-        float vStep = static_cast<float>(self->integerVariables[1]) / denominator;
-        unsigned int color = (self->flags & 0x8000) ? self->color2 : self->color;
-        RenderVertex *vertex = self->vertices;
-        for (int left = self->integerVariables[0]; left > 0; --left)
+        float vStep = static_cast<float>(vm->integerVariables[1]) / denominator;
+        unsigned int color = (vm->flags.value & 0x8000) ? vm->color2 : vm->color;
+        RenderVertex *vertex = vm->vertices;
+        for (int left = vm->integerVariables[0]; left > 0; --left)
         {
-            EmitStripPair(self, vertex, color, angle, v);
+            EmitStripPair(vm, vertex, color, angle, v);
             v = vStep + v;
             angle = AddAngles(angle, angleStep);
         }

@@ -26,46 +26,49 @@ __forceinline void SetTweenTimer(StageTimerView *self, int frame)
 }
 __forceinline AnimationIntVector Add(const AnimationIntVector &left, const AnimationIntVector &right)
 {
-    AnimationIntVector result(AddInt(left.x, right.x), AddInt(left.y, right.y), AddInt(left.z, right.z));
+    AnimationIntVector result = {AddInt(left.x, right.x), AddInt(left.y, right.y), AddInt(left.z, right.z)};
     return result;
 }
 __forceinline AnimationIntVector Subtract(const AnimationIntVector &left, const AnimationIntVector &right)
 {
-    AnimationIntVector result(SubtractInt(left.x, right.x), SubtractInt(left.y, right.y), SubtractInt(left.z, right.z));
+    AnimationIntVector result = {SubtractInt(left.x, right.x), SubtractInt(left.y, right.y), SubtractInt(left.z, right.z)};
     return result;
 }
 __forceinline AnimationIntVector Scale(const AnimationIntVector &value, float scale)
 {
-    AnimationIntVector result(static_cast<int>(value.x * scale),
-        static_cast<int>(value.y * scale), static_cast<int>(value.z * scale));
+    AnimationIntVector result = {static_cast<int>(value.x * scale),
+        static_cast<int>(value.y * scale), static_cast<int>(value.z * scale)};
+    return result;
+}
+__forceinline AnimationFloatPair MakeAnimationFloatPair(float x, float y)
+{
+    AnimationFloatPair result = {x, y};
     return result;
 }
 __forceinline AnimationFloatPair Add(const AnimationFloatPair &left, const AnimationFloatPair &right)
 {
-    AnimationFloatPair result(left.x + right.x, left.y + right.y);
-    return result;
+    return MakeAnimationFloatPair(left.x + right.x, left.y + right.y);
 }
 __forceinline AnimationFloatPair Subtract(const AnimationFloatPair &left, const AnimationFloatPair &right)
 {
-    AnimationFloatPair result(left.x - right.x, left.y - right.y);
+    AnimationFloatPair result = {left.x - right.x, left.y - right.y};
     return result;
 }
 __forceinline AnimationFloatPair Scale(const AnimationFloatPair &value, float scale)
 {
-    AnimationFloatPair result(value.x * scale, value.y * scale);
-    return result;
+    return MakeAnimationFloatPair(value.x * scale, value.y * scale);
 }
 __forceinline AnimationFloatPair operator+(const AnimationFloatPair &left, const AnimationFloatPair &right)
 {
-    return AnimationFloatPair(left.x + right.x, left.y + right.y);
+    return MakeAnimationFloatPair(left.x + right.x, left.y + right.y);
 }
 __forceinline AnimationFloatPair operator*(const AnimationFloatPair &value, float scale)
 {
-    return AnimationFloatPair(value.x * scale, value.y * scale);
+    return MakeAnimationFloatPair(value.x * scale, value.y * scale);
 }
 __forceinline AnimationFloatPair operator*(float scale, const AnimationFloatPair &value)
 {
-    return AnimationFloatPair(scale * value.x, scale * value.y);
+    return MakeAnimationFloatPair(scale * value.x, scale * value.y);
 }
 }
 
@@ -183,7 +186,7 @@ AnimationFloatPair __stdcall StepAnimationFloatPairTween(AnimationFloatPairTween
         float control2Y = d;
         control2X *= self->control2.x;
         control2Y *= self->control2.y;
-        AnimationFloatPair control2(control2X, control2Y);
+        AnimationFloatPair control2 = {control2X, control2Y};
         AnimationFloatPair result = self->initial * a + self->target * b + self->control1 * c + d * self->control2;
         return result;
     }

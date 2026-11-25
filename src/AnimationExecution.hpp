@@ -13,49 +13,7 @@ struct AnimationInstruction
     unsigned short variables;
 };
 struct AnimationColorTriple { unsigned char blue, green, red; };
-// Observed interpreter fields; this is not a recovered original class.
-struct AnimationExecutionView
-{
-    unsigned char unknown000[0x24];
-    CameraVector rotation, angularVelocity;
-    AnimationFloatPair scale, scaleVelocity;
-    float width, height, uOffset, vOffset;
-    StageTimerView time;
-    AnimationFloatPair uv[4];
-    StageVectorTween positionTween;
-    AnimationIntVectorTween colorTween;
-    AnimationIntScalarTween alphaTween;
-    StageVectorTween rotationTween;
-    AnimationFloatPairTween scaleTween;
-    AnimationIntVectorTween color2Tween;
-    AnimationIntScalarTween alpha2Tween;
-    AnimationFloatScalarTween uVelocityTween, vVelocityTween;
-    float uVelocity, vVelocity;
-    D3DMATRIX transform;
-    unsigned char unknown2f4[0x374 - 0x2f4];
-    unsigned int color, color2;
-    short event;
-    unsigned short unknown37e;
-    StageTimerView savedTime;
-    AnimationInstruction *savedInstruction;
-    int spriteFrame;
-    short marker;
-    unsigned short fileId, unknown3a0, scriptId;
-    unsigned char *scriptStart;
-    AnimationInstruction *instruction;
-    unsigned int unknown3ac;
-    AnimationFileView *file;
-    int integerVariables[4];
-    float floatVariables[4];
-    int integer3d4, integer3d8;
-    CameraVector position, translation, otherPosition;
-    RenderVertex *vertices;
-    unsigned int flags, flags2;
-    unsigned char unknown40c[0x428 - 0x40c];
-    int (__fastcall *update)(AnimationVmView *);
-    int (__fastcall *spriteTransform)(AnimationVmView *, int);
-    unsigned int unknown430;
-};
+typedef AnimationVmView AnimationExecutionView;
 
 extern CameraVector g_AnimationExecutionZero;
 extern RandomStateView g_AnimationSceneRandomState, g_TextRandomState;
