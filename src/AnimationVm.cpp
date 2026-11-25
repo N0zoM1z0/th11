@@ -7,8 +7,8 @@ void __stdcall ResetAnimationVm(AnimationVmView *self)
     AnimationPersistentState saved = self->persistent3e8;
     unsigned int saved020 = self->persistent020;
     memset(self, 0, sizeof(*self));
-    self->scaleX = 1.0f;
-    self->scaleY = 1.0f;
+    self->scale.x = 1.0f;
+    self->scale.y = 1.0f;
     self->persistent020 = saved020;
     self->persistent3e8 = saved;
     self->spriteIndex = -1;

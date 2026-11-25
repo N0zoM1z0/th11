@@ -82,8 +82,8 @@ __forceinline void SpawnActor(SecondaryInstruction *instruction, const Secondary
 __forceinline void HitDimensions(SecondaryActorStateView *self, AnimationVmView *vm)
 {
     SecondaryHostAnimationMetrics *metrics = reinterpret_cast<SecondaryHostAnimationMetrics *>(vm);
-    self->hitWidth = metrics->value50 * vm->scaleY;
-    self->hitHeight = metrics->value4c * vm->scaleX;
+    self->hitWidth = metrics->value50 * vm->scale.y;
+    self->hitHeight = metrics->value4c * vm->scale.x;
 }
 __forceinline void FinishAnimationReplacement(SecondaryActorStateView *self,
     unsigned int *id, int slot, AnimationVmView *vm)

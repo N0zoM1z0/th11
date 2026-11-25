@@ -52,6 +52,6 @@ int __stdcall UpdateSecondarySpecialMode4(StageAuxiliaryView *self)
     if (frame % 10 == 0 && frame < 50 && frame > 1)
         QueueSecondaryActorSound(0x26, self->origin.x);
     UpdateStageAuxiliaryMode4Effect(self);
-    self->radius = vm->scaleY;
+    self->radius = vm->scale.y;
     return 0;
 }

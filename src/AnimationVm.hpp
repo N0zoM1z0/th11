@@ -46,11 +46,7 @@ struct AnimationVmView
     unsigned int unknown01c;
     unsigned int persistent020;
     CameraVector rotation, angularVelocity;
-    union
-    {
-        AnimationFloatPair scale;
-        struct { float scaleX, scaleY; };
-    };
+    AnimationFloatPair scale;
     AnimationFloatPair scaleVelocity;
     float width, height, uOffset, vOffset;
     StageTimerView time;

@@ -61,10 +61,10 @@ int __stdcall UpdateStageAuxiliaryMode4Effect(StageAuxiliaryView *self)
                 center.y = static_cast<float>(center.y - 16.0);
 
                 const unsigned int mask = (~SecondaryActorSpell()->flags) & 1u;
-                ClearSceneProjectilesInRadius(&center, child->scaleY,
+                ClearSceneProjectilesInRadius(&center, child->scale.y,
                     static_cast<int>(mask), 1);
                 const unsigned int nextMask = (~SecondaryActorSpell()->flags) & 1u;
-                ClearSecondaryObjectsInRadius(&center, child->scaleY,
+                ClearSecondaryObjectsInRadius(&center, child->scale.y,
                     static_cast<int>(nextMask), 1);
             }
             break;

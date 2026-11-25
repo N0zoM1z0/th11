@@ -37,7 +37,7 @@ int __stdcall UpdateSecondarySpecialMode2(StageAuxiliaryView *self)
     PositionSecondaryAnimationVm(vm, &playerPosition);
     UpdateStageAuxiliaryMode2Effect(self);
 
-    const float vmRadius = vm->scaleY;
+    const float vmRadius = vm->scale.y;
     self->radius = vmRadius;
     StageMeshView *mesh = reinterpret_cast<StageMeshView *>(self->bindings);
     CameraVector *position = mesh->positions;
