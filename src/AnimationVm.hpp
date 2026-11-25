@@ -120,7 +120,6 @@ struct AnimationVmView
 
     int __fastcall BindAnimationSprite(AnimationDocumentView *file, int sprite);
     void __fastcall BuildModeQuad(CameraVector *quad);
-    void __fastcall BuildModeQuad(CameraVector *quad);
 };
 
 struct AnimationTextureEntry
