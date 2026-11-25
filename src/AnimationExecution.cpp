@@ -221,7 +221,6 @@ int __stdcall ExecuteAnimationVm(AnimationVmView *vm)
         unsigned int childId;
         AnimationVmView *child;
     } scratch;
-    AnimationFloatPair scaleResult = {0.0f, 0.0f};
     float savedScale = g_AnimationTimeScale;
     if (vm->flags.value & 0x20000000) g_AnimationTimeScale = 1.0f;
     register AnimationInstruction *instruction;
