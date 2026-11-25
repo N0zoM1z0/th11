@@ -14,7 +14,61 @@ reconstructed as natural C++ and its exactness is accepted. Helper implementatio
 may be changed only as dependencies of this locked function; that does not open
 a second function track.
 
-## Current status (2026-11-24)
+## Current status (2026-11-25)
+
+The focused `animation-execution-tween-context` build was rebuilt after the
+child-creation and quad-output changes. The current natural-C++ candidate owns
+11,828 bytes and 3,153 decoded instructions against the native 12,056-byte
+owner and 3,308 instructions. The unnormalized mnemonic/operand-key comparison
+aligns 1,380 native instruction keys. Calls are 259/262 and conditional
+branches are 375/406 (candidate/native). These are diagnostic measurements,
+not an exactness score; the candidate frame is still `0xDC` rather than native
+`0xCC`, and its main VM/instruction register allocation remains inverted.
+
+Child-creation opcodes 88, 90, 91, 92 and 95 now retain the full 32-bit script
+operand read by `ReadI`; the previous `short` forms were rejected because they
+truncate script IDs before the factory call. For opcodes 95, 96 and 97,
+`const AnimationVmId &` binds the factory's hidden-result temporary through
+`ClearMissingAnimationId`, which may clear the underlying non-const temporary
+in place. This keeps the factory and cleanup calls adjacent and avoids copying
+the returned ID into a second buffer. Opcode 96 still inserts the child into
+the draw-related list before writing its position; opcode 97 does not insert it
+and writes the decoded x/y position and translation. Opcode 95 copies the
+parent position and translation. The code remains natural C++; no ASM, padding
+or placeholder bytes were introduced.
+
+The quad-mode helper is currently expressed as the natural C++ member
+`void __fastcall AnimationVmView::BuildModeQuad(CameraVector *quad)`. It writes
+the four output corners directly, selecting the standard, rotated or unrounded
+quad builder from the VM mode flags. The candidate helper owns 100 bytes. The
+native opcode-98 call site passes the VM in EAX and the 48-byte corner buffer
+in ECX; this candidate passes the VM in EDX and the output buffer in EAX. The
+helper boundary and its register assignment therefore remain non-exact, but
+this output-buffer form is closer to the target call shape than the rejected
+aggregate-return experiment. No register-forcing shim was introduced.
+
+The separate `animation-integer-destination` leaf was rebuilt in the same
+session: all 104 bytes match after replaying its 11 reviewed local jump-table
+relocations (`difference_count = 0`). This is a focused leaf replay, not proof
+that the enclosing interpreter or original source-TU ownership is exact.
+
+The builds were limited to the selected VM owner and the integer-destination
+leaf plus their direct dependencies:
+
+```bash
+scripts/repo-python scripts/build-match-unit.py --check
+scripts/repo-python scripts/build-match-unit.py --unit animation-execution-tween-context
+scripts/repo-python .analysis/compare-execute-animation-vm-20261122.py build/match-linked/AnimationExecutionTweenContext
+scripts/repo-python scripts/build-match-unit.py --unit animation-integer-destination
+scripts/repo-python scripts/compare-linked-function.py --unit animation-integer-destination
+```
+
+This remains a focused diagnostic frontier, not a full cold replay or an
+accepted exact-owner result. Original class identities, source-TU provenance,
+complete dispatch-table recovery and canonical ownership remain open.
+
+
+## Historical status (2026-11-24)
 
 The current reproducible boss diagnostic is
 `animation-execution-tween-context`. The full linked candidate owns 11,972 bytes at
