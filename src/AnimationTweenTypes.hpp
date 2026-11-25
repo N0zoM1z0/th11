@@ -11,16 +11,10 @@ struct AnimationIntVector
 struct AnimationFloatPair
 {
     float x, y;
+    AnimationFloatPair() {}
+    AnimationFloatPair(float xValue, float yValue) : x(xValue), y(yValue) {}
 };
 typedef char AnimationFloatPairSize[(sizeof(AnimationFloatPair) == 8) ? 1 : -1];
-
-__forceinline AnimationFloatPair MakeAnimationFloatPair(float x, float y)
-{
-    AnimationFloatPair result;
-    result.x = x;
-    result.y = y;
-    return result;
-}
 
 struct AnimationIntVectorTween
 {

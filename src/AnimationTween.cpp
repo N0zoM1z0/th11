@@ -40,35 +40,33 @@ __forceinline AnimationIntVector Scale(const AnimationIntVector &value, float sc
         static_cast<int>(value.y * scale), static_cast<int>(value.z * scale)};
     return result;
 }
-__forceinline AnimationFloatPair MakeAnimationFloatPair(float x, float y)
-{
-    AnimationFloatPair result = {x, y};
-    return result;
-}
 __forceinline AnimationFloatPair Add(const AnimationFloatPair &left, const AnimationFloatPair &right)
 {
-    return MakeAnimationFloatPair(left.x + right.x, left.y + right.y);
+    AnimationFloatPair result(left.x + right.x, left.y + right.y);
+    return result;
 }
 __forceinline AnimationFloatPair Subtract(const AnimationFloatPair &left, const AnimationFloatPair &right)
 {
-    AnimationFloatPair result = {left.x - right.x, left.y - right.y};
+    AnimationFloatPair result(left.x - right.x, left.y - right.y);
     return result;
 }
 __forceinline AnimationFloatPair Scale(const AnimationFloatPair &value, float scale)
 {
-    return MakeAnimationFloatPair(value.x * scale, value.y * scale);
+    AnimationFloatPair result(value.x * scale, value.y * scale);
+    return result;
 }
 __forceinline AnimationFloatPair operator+(const AnimationFloatPair &left, const AnimationFloatPair &right)
 {
-    return MakeAnimationFloatPair(left.x + right.x, left.y + right.y);
+    AnimationFloatPair result(left.x + right.x, left.y + right.y);
+    return result;
 }
 __forceinline AnimationFloatPair operator*(const AnimationFloatPair &value, float scale)
 {
-    return MakeAnimationFloatPair(value.x * scale, value.y * scale);
+    return AnimationFloatPair(value.x * scale, value.y * scale);
 }
 __forceinline AnimationFloatPair operator*(float scale, const AnimationFloatPair &value)
 {
-    return MakeAnimationFloatPair(scale * value.x, scale * value.y);
+    return AnimationFloatPair(scale * value.x, scale * value.y);
 }
 }
 
@@ -186,7 +184,7 @@ AnimationFloatPair __stdcall StepAnimationFloatPairTween(AnimationFloatPairTween
         float control2Y = d;
         control2X *= self->control2.x;
         control2Y *= self->control2.y;
-        AnimationFloatPair control2 = {control2X, control2Y};
+        AnimationFloatPair control2(control2X, control2Y);
         AnimationFloatPair result = self->initial * a + self->target * b + self->control1 * c + d * self->control2;
         return result;
     }
