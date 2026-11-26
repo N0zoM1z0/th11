@@ -43,9 +43,9 @@ Only consumer controller **86905** is live. It runs
 `.analysis/gpt-6.1-sol-strip-rounding-last-four.log`. Seventy prior unit proofs
 are carried only after receipt checks. The retained scope is 73 exact owners
 plus the pending quad helper, in 41 contexts. It is cold-building
-`load-secondary-debug-script`, followed by `apply-menu-joystick-bindings`
-and `clear-scene-projectiles`; `copy-secondary-host-vector` passed its
-complete 27-byte cold comparison.
+`apply-menu-joystick-bindings`, then `clear-scene-projectiles`.
+`copy-secondary-host-vector` and `load-secondary-debug-script` passed their
+complete cold comparisons.
 Sessions 2509, 5924 and 58199 are terminal failures; keep their logs and never
 restart them merely because the new run is slow.
 
@@ -94,7 +94,12 @@ result remains on the stack. This is a concrete nonlocal packing effect, not
 removal of the float spill. Both bodies retain immediate four-byte `FSTP`
 stack stores at all four math calls; see
 `.analysis/gpt-6.1-sol-active-scratch-math-rounding.txt`. Consider this source
-model after the current replay finishes. All private probes are terminal.
+model after the current replay finishes. A paired constructed-result control
+keeps frame `0xCC` but shifts the recovered tween result slot from `ESP+24`
+to `ESP+28`; smaller scratch/color layouts are not automatically better.
+Its C2 traces again remove one three-byte color, with both complete ordinary
+text controls exact. The inline child-setter control also retains 76 reads.
+All private probes are terminal.
 
 Rebuild and inspect only the main owner:
 

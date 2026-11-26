@@ -715,6 +715,12 @@ pointer leaves all nonfield bytes and field locations identical. A case-local
 child reference changes eighteen nonfield bytes but still leaves 76 reads.
 These controls give no reason to replace the maintained VM view.
 
+A later inline component-setter control also keeps 76 reads and the complete
+11,940-byte owner. Its opcode 97 still jumps into opcode 96 immediately after
+copying the child to ESI; passing the float by value does not delay that copy.
+Evidence: `.analysis/gpt-6.1-sol-execution-child-setter-control{.py,.log}` and
+`gpt-6.1-sol-child-setter-case-windows.txt`.
+
 The copied control's complete 33,446-byte text differs at one raw byte in the
 PE DIR32 field at `40929D`. Its owner-qualified compiler EH FuncInfo moves
 `40A1DC`→`40A1D4`; equal nonpointer fields lead to byte-identical unwind maps.
@@ -757,6 +763,19 @@ Evidence: `.analysis/gpt-6.1-sol-execution-active-scratch-control{.py,.log}`,
 `active-scratch-stack-comparison.txt`, `active-scratch-stack-offsets.txt` and
 `trace-stack-scratch-{baseline,separated}-run.log`. The four rounding windows
 are in `.analysis/gpt-6.1-sol-active-scratch-math-rounding.txt`.
+
+The same scratch change is not additive with the constructed tween-result
+model. In its real-timer graph, the owner changes 12,016→12,008 bytes and
+3,213→3,212 instructions while frame `0xCC` stays unchanged. Paired C2 traces
+still show 26→25 colors and 205→202 payload bytes, but the five hidden-result
+buffers move `-180`→`-176`. All three vector calls use `ESP+0x28` instead of
+the native-matching `ESP+0x24`; the interleaved publication instructions remain.
+Both traced links reproduce their ordinary complete 33,622-byte text sections
+with zero differences. Keep the scratch model private: its smaller body loses
+an independently recovered native layout. Evidence:
+`.analysis/gpt-6.1-sol-constructed-active-scratch-control{.py,.log}` and
+`.analysis/compiler-vc9/constructed-active-scratch-stack-comparison.txt`, with
+`trace-stack-constructed-scratch-{baseline,separated}-run.log`.
 
 ## Stage culling and auxiliary switch owners (2026-11-17)
 
