@@ -689,6 +689,20 @@ The preceding family is preserved at
 `build/probe-ltcg/ExecutionBeforeRealTimers`; keep the constructed-result and
 RGB/source controls private until the pending source checkpoint.
 
+## Dynamic renderer input and flag width do not close the wrapper (2026-11-26)
+
+The full unrotated-draw cold replay produces 53 bytes / seven fields instead
+of native 51 / six. Its renderer becomes a constant global under LTCG. An
+existing generic `/GL` producer restores dynamic renderer input and RET4,
+but the complete owner is 49 bytes and its submission flag uses BL. A real
+32-bit member flag declaration restores stack flag passing without changing
+that size; native additionally saves/restores a four-byte slot with ECX.
+TH10's `DrawInner` takes an integer flag, but TH11's byte tests do not settle
+its nominal width. Neither private control is promoted. The obsolete exact
+claim is withdrawn, preserving the full extent and failed receipts. See
+[the focused draw note](ANIMATION_VM_DRAW.md#unrotated-wrapper-exact-claim-withdrawn-2026-11-26)
+for evidence and the remaining compiler-layout question.
+
 ## Stage culling and auxiliary switch owners (2026-11-17)
 
 - The stage layer's formerly source-less `CullStageObject` (403950, 1,643

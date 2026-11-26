@@ -47,22 +47,27 @@ still referenced the old opaque `unknown408` array. Native writes VM bytes
 `+0x41C/+0x41D`; spelling these as `unknown40c[0x10/0x11]` preserves both offsets.
 Its seven exact consumers are precisely the remaining seven contexts.
 
-The resumed controller in shell session **5924** is now terminal (exit 1).
-It passed `step-stage-fog-tween`, context 37/43, then stopped on
-`draw-unrotated-animation-vm`. Its log is
-`.analysis/gpt-6.1-sol-strip-rounding-consumer-resume.log`; keep both failed
-controller logs unchanged. Five later contexts remain unrun.
+The resumed controller in shell session **5924** is terminal (exit 1).
+It passed `step-stage-fog-tween`, then stopped at the old context 38/43 on
+`draw-unrotated-animation-vm`. Its complete cold owner is 53 bytes / seven
+fields, against native 51 / six: renderer input is replaced by `g_RenderBatch`
+and the submission flag is passed in BL. A generic `/GL` renderer producer
+restores renderer input and RET4 but gives 49 bytes; a private word-flag control
+restores stack flag passing but still lacks native's `push/pop ecx` slot.
+All controls are terminal. The old exact claim is withdrawn, with the full
+51-byte target extent retained as a frontier; no C++ flag change was adopted.
+See `ANIMATION_VM_DRAW.md` and the preserved failed controller logs.
 
-The unrotated draw cold owner is 53 bytes / seven fields, against native
-51 / six: LTCG removes its renderer parameter in favor of `g_RenderBatch`,
-and passes the submission member's flag in BL instead of on the stack.
-Adding the existing generic `animation-vm-draw-context.cpp` producer under
-`/GL` restores dynamic renderer input and RET4, but gives 49 bytes because
-that flag still uses BL. Source and failed family are preserved. Shell session
-**93098** runs the private byte-versus-word member flag control:
-`.analysis/gpt-6.1-sol-draw-flag-width-controls.py` / `.log`. TH10's corresponding
-`DrawInner` takes an integer flag; TH11's nominal width is not established by
-its low-byte tests. Do not carry this failed exact claim as a current proof.
+Only shell session **58199** is live. It runs
+`.analysis/gpt-6.1-sol-replay-strip-rounding-remaining.py`, logging to
+`.analysis/gpt-6.1-sol-strip-rounding-consumer-remaining.log`.
+It verifies receipts before carrying the seventy earlier proofs and rebuilds
+the five remaining exact contexts, starting with
+`draw-secondary-player-callback`. The retained affected scope is 74 exact
+owners plus the pending quad helper in 42 contexts. Keep both prior failed
+controller logs unchanged; do not restart them. The interpreter hashes remain
+`.analysis/gpt-6.1-sol-strip-rounding-frozen.sha256`; the field-spelling repair
+is frozen separately in `.analysis/gpt-6.1-sol-player-field-split-frozen.sha256`.
 
 The main frontier now links the real `SecondaryActorMotion.cpp` and
 `SecondaryProjectileCallbacks.cpp` timer implementations with `/Ob1 /GL`.
@@ -82,7 +87,7 @@ eight fields and zero differences. Proof:
 Only that context's rotation support TU uses `/fp:fast`. Removing its CRT
 trig calls restores EAX-VM/ECX-output in the caller. The rotation itself stays
 non-exact (482 versus native 571 bytes, no paired FSINCOS). Promote the helper
-at the shared-source checkpoint; the canonical ledger still has 493 exact.
+at the shared-source checkpoint; the canonical ledger now has 492 exact.
 The ordinary main frontier retains its original support profiles.
 
 Earlier replay repairs remain in the worktree: the signal caller's normal-COFF
@@ -103,7 +108,7 @@ See the focused notes in `KNOWLEDGE_BASE.md` and
 
 Next: finish the affected replay, retain strip rounding and promote the
 verified quad helper at the coherent `gpt-6.1-sol: ...` source checkpoint.
-The canonical ledger still has 493 exact owners. Do not change the four
+The canonical ledger now has 492 exact owners. Do not change the four
 frozen interpreter/header inputs during this replay.
 
 Private probes now explain additional layout effects. Native RGB handlers

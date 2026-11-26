@@ -48,6 +48,29 @@ fixed-nearest assumption or floor substitution is introduced. The current
 source still calls the CRT routine instead of reproducing the native inline
 FRNDINT codegen, so the submission function earns no exact credit.
 
+## Unrotated wrapper exact claim withdrawn (2026-11-26)
+
+The current canonical cold family emits a complete 53-byte public primary-TU
+`DrawUnrotatedAnimationVm`, against native 51 bytes. It replaces the renderer
+stack argument with `g_RenderBatch` and sends the submission flag in BL.
+Its seven fields differ from the native six. The old exact row is withdrawn;
+the reviewed native extent remains 51 bytes and is not cropped.
+
+Adding the existing generic `animation-vm-draw-context.cpp` producer under
+`/GL` restores the renderer stack input and RET4, giving 49 bytes / six fields.
+A copied-source byte-flag control reproduces that body. A private 32-bit member
+flag declaration then restores native stack flag passing, but still gives
+49 bytes: native additionally reserves and restores a four-byte slot with
+`push ecx` / `pop ecx`. TH10's corresponding `DrawInner` takes `int flags`;
+TH11's low-byte tests alone do not establish its nominal type. The word-flag
+change remains private, and no source padding is added.
+
+Evidence: `.analysis/gpt-6.1-sol-draw-unrotated-consumer-failure.txt`,
+`gpt-6.1-sol-draw-unrotated-dynamic-producer{.py,.log}` and
+`gpt-6.1-sol-draw-flag-width-controls{.py,.log}`. The failed cold receipt and
+controller logs are preserved. These observations concern the complete wrapper;
+they do not add exact credit for the non-exact submission body.
+
 ## Submission owner ABI correction (2026-11-21)
 
 The complete body is a renderer-owned private member, not a free three-argument

@@ -9167,6 +9167,7 @@ linkages = [
 ]
 
 [units.draw-unrotated-animation-vm]
+frontier = true
 artifact_kind = "linked-pe"
 source = "src/AnimationVmDraw.cpp"
 inputs = ["src/SecondaryHud.hpp", "src/ChainRegistration.hpp"]
