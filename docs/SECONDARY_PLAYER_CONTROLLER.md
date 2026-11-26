@@ -432,3 +432,29 @@ spell status at 4A8D6C remain independently sourced. Mode-five's
 159-byte initializer at 407680 now has natural source; see
 [STAGE_AUXILIARY](STAGE_AUXILIARY.md). No byte-exact credit is
 claimed for the 268-byte dispatcher.
+
+## Draw callback exact claim withdrawn (2026-11-26)
+
+The current cold `draw-secondary-player-callback` family emits a complete
+seven-byte public primary-TU owner: move ECX to EAX and tail-jump to
+`DrawSecondaryPlayerEmitters`. Native owns ten bytes and performs the move,
+saves ECX, calls the helper, restores ECX and returns. The former exact row
+is withdrawn; the complete ten-byte target boundary remains reviewed.
+
+A copied-primary control reproduces seven bytes. Calling the real helper
+and explicitly returning its independently established constant success value
+produces thirteen bytes, not ten. Changing the actual callee and its using
+caller to a source-level `__cdecl` hypothesis still produces the same seven
+bytes; native's private EAX input and RET alone do not establish its original
+C++ calling convention. A primary `/Oy-` control also retains seven bytes.
+All changes remain private, and the maintained callback stays unchanged.
+
+Direct hash-attested Ghidra xrefs find the call at `431C63` to `431BC0` and
+callback publication at `42F9B7`. Evidence:
+`.analysis/gpt-6.1-sol-player-draw-consumer-failure.txt`,
+`gpt-6.1-sol-player-draw-callee-xrefs{.txt,.log}`,
+`gpt-6.1-sol-player-draw-return-control{.py,.log}`,
+`gpt-6.1-sol-player-draw-cdecl-callee{.py,.log}` and
+`gpt-6.1-sol-player-draw-frame-pointer-control{.py,.log}`.
+The update callback's separate seven-byte normal-COFF proof remains its own
+accepted lane; it does not establish this draw callback.

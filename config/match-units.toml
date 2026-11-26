@@ -9189,6 +9189,7 @@ linkages = [
 ]
 
 [units.draw-secondary-player-callback]
+frontier = true
 artifact_kind = "linked-pe"
 source = "src/SecondaryPlayerCallbacks.cpp"
 inputs = ["src/SecondaryHud.hpp", "src/ChainRegistration.hpp"]

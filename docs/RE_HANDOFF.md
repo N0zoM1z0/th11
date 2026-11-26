@@ -11,165 +11,92 @@ Ghidra through `scripts/ghidra.py`.
 
 ## Current focus: ExecuteAnimationVm (0x44B4B0, 12,056 B)
 
-The maintained interpreter remains non-exact. The latest cold candidate owns
-11,940 bytes: 11,524 code/alignment bytes plus the complete 416-byte opcode
-table, against native 11,640 + 416. Candidate/native calls are 260/262,
-conditional branches 256/259 and jumps 142/147. All direct calls resolve;
-only `ReadAnimationFloat` differs in count (76/78). The complete candidate
-field inventory has 407 entries versus native 415. Code-key alignment is
-1,439/3,203, or 2,558 after a diagnostic EBX/EDI swap. No exact credit follows.
-The frame is `0xE4` versus native `0xCC`; VM/cursor remain EBX/EDI versus EDI/EBX.
+The maintained interpreter remains non-exact. Its current cold owner is
+11,940 bytes: 11,524 code/alignment plus the complete 416-byte opcode table,
+against native 11,640 + 416. It has 3,183 instructions, 260/262 calls,
+256/259 conditional branches and 142/147 jumps (candidate/native). All direct
+calls bind; only `ReadAnimationFloat` differs (76/78). The exhaustive inventory
+has 407 fields versus native 415. Frame is `0xE4` versus native `0xCC`, and
+VM/cursor are EBX/EDI versus native EDI/EBX. Diagnostic alignment is 1,439/3,203,
+or 2,558 after a register-label swap. No exact credit follows.
 
-The main frontier now uses `/Ob1` for `AnimationExecutionArguments.cpp`, matching
-the canonical leaf profile. Its cold family restores the complete 124-byte
-float-destination body and ESI-VM/EDI-operand input; all fourteen support fields
-replay with zero differences. Evidence:
-`.analysis/gpt-6.1-sol-execution-argument-profile-cold{,-code,-fields}.log` and
-`gpt-6.1-sol-argument-profile-leaf-cold-replay.log`. Other unit settings stay
-unchanged; the integer-destination and quad-helper receipts still verify.
+The frontier uses the canonical argument TU's `/Ob1` profile and links both
+actual timer TUs with `/Ob1 /GL`. Full support replays recover the native
+124-byte/fourteen-field float destination and twenty-byte/one-field rewind
+wrapper. Timer inputs are ESI-timer/EAX-integer/stack-float. Evidence:
+`.analysis/gpt-6.1-sol-execution-real-timers-cold{,-code,-fields}.log` and
+`gpt-6.1-sol-real-timers-{rewind,float-destination}-support.log`.
+The preceding families remain in `build/probe-ltcg/ExecutionBeforeRealTimers`
+and `ExecutionBeforeArgumentProfile`.
 
-The latest source correction restores two float-rounded vector additions per
-strip vertex. Native stores the position-plus-offset vector before adding
-translation, then stores that result before vertex updates. Scalar flattening
-in `06b6b93` removed the first rounding. Nested `Sum` return objects restore
-it. This adds 136 owned bytes to the 11,816-byte pre-correction candidate.
-Keep this semantic correction despite the larger frame. That source-only cold
-candidate owned 11,952 bytes; the later real-timer graph owns 11,940. Evidence:
-`.analysis/gpt-6.1-sol-strip-call-windows.txt` and
-`gpt-6.1-sol-execution-strip-rounding-cold{,-code,-fields}.log`.
-Earlier pending changes restore the shared quad helper call and pass child IDs
-directly to lookup. Three real geometry TUs remain in the frontier's `/GL` graph.
+The dirty source is frozen. Keep
+`.analysis/gpt-6.1-sol-strip-rounding-frozen.sha256` and
+`.analysis/gpt-6.1-sol-player-field-split-frozen.sha256` intact. Pending changes
+restore the shared quad call, direct child-ID temporaries, the effect-local
+timer's native pre-memset flag clear, and the player initializer's opaque field
+spelling. The latter still writes VM bytes `+41C/+41D`. Nested strip sums retain
+two complete float-rounding stages; the former scalar flattening lost the first.
+Do not change these sources before the affected replay finishes.
 
-The frozen interpreter inputs are
-`.analysis/gpt-6.1-sol-strip-rounding-frozen.sha256`.
-The first replay stopped at context 37/43: `SecondaryPlayerInitialization.cpp`
-still referenced the old opaque `unknown408` array. Native writes VM bytes
-`+0x41C/+0x41D`; spelling these as `unknown40c[0x10/0x11]` preserves both offsets.
-Its seven exact consumers are precisely the remaining seven contexts.
+Only consumer controller **86905** is live. It runs
+`.analysis/gpt-6.1-sol-replay-strip-rounding-last-four.py` and logs to
+`.analysis/gpt-6.1-sol-strip-rounding-last-four.log`. Seventy prior unit proofs
+are carried only after receipt checks. The retained scope is 73 exact owners
+plus the pending quad helper, in 41 contexts. It is cold-building
+`load-secondary-debug-script`, followed by `apply-menu-joystick-bindings`
+and `clear-scene-projectiles`; `copy-secondary-host-vector` passed its
+complete 27-byte cold comparison.
+Sessions 2509, 5924 and 58199 are terminal failures; keep their logs and never
+restart them merely because the new run is slow.
 
-The resumed controller in shell session **5924** is terminal (exit 1).
-It passed `step-stage-fog-tween`, then stopped at the old context 38/43 on
-`draw-unrotated-animation-vm`. Its complete cold owner is 53 bytes / seven
-fields, against native 51 / six: renderer input is replaced by `g_RenderBatch`
-and the submission flag is passed in BL. A generic `/GL` renderer producer
-restores renderer input and RET4 but gives 49 bytes; a private word-flag control
-restores stack flag passing but still lacks native's `push/pop ecx` slot.
-All controls are terminal. The old exact claim is withdrawn, with the full
-51-byte target extent retained as a frontier; no C++ flag change was adopted.
-See `ANIMATION_VM_DRAW.md` and the preserved failed controller logs.
+Two old draw claims were withdrawn after complete cold failures. The unrotated
+wrapper is 53 bytes / seven fields versus native 51 / six. Dynamic renderer
+input gives 49; a private word flag restores stack passing but still lacks
+native's ECX slot. The player draw callback is seven bytes with a tail jump,
+versus native's complete ten-byte call/return sequence. Explicit success return,
+source-level cdecl callee and primary `/Oy-` controls do not recover it. All
+controls are terminal and no C++ interface change was adopted. See
+`ANIMATION_VM_DRAW.md` and `SECONDARY_PLAYER_CONTROLLER.md`. The canonical ledger
+now has 491 exact owners; do not carry these failed rows as current proofs.
 
-Only shell session **58199** is live. It runs
-`.analysis/gpt-6.1-sol-replay-strip-rounding-remaining.py`, logging to
-`.analysis/gpt-6.1-sol-strip-rounding-consumer-remaining.log`.
-It verifies receipts before carrying the seventy earlier proofs and rebuilds
-the five remaining exact contexts, starting with
-`draw-secondary-player-callback`. The retained affected scope is 74 exact
-owners plus the pending quad helper in 42 contexts. Keep both prior failed
-controller logs unchanged; do not restart them. The interpreter hashes remain
-`.analysis/gpt-6.1-sol-strip-rounding-frozen.sha256`; the field-spelling repair
-is frozen separately in `.analysis/gpt-6.1-sol-player-field-split-frozen.sha256`.
+The pending `build-animation-vm-mode-quad` frontier still has a complete cold
+108-byte public primary-TU proof: 89 code, three alignment and sixteen table
+bytes, all eight fields and zero differences. Evidence:
+`.analysis/gpt-6.1-sol-mode-quad-post-strip-compare.json`. Only that context's
+rotation TU uses `/fp:fast`, restoring the helper's EAX-VM/ECX-output interface;
+rotation itself remains non-exact. Promote the helper after the four remaining
+consumer contexts pass, refresh ledgers/progress and commit the coherent source
+checkpoint with `gpt-6.1-sol: ...`. The ordinary main frontier keeps its own
+rotation profile. Renderer-layer draw remains a 127-byte frontier with two
+setup-MOV ordering differences.
 
-The main frontier now links the real `SecondaryActorMotion.cpp` and
-`SecondaryProjectileCallbacks.cpp` timer implementations with `/Ob1 /GL`.
-Its complete 11,940-byte / 3,183-instruction cold owner and exhaustive 407-field
-inventory are recorded in
-`.analysis/gpt-6.1-sol-execution-real-timers-cold{,-code,-fields}.log`.
-The natural support bodies reproduce all 20 rewind bytes / one field and
-124 float-destination bytes / fourteen fields with zero differences. Both
-recovered timer interfaces match native ESI-timer/EAX-integer/stack-float roles.
-The frozen source hashes still verify. The preceding main family is preserved
-in `build/probe-ltcg/ExecutionBeforeRealTimers`.
-
-The `build-animation-vm-mode-quad` frontier passes strict cold replay again
-after the strip correction: complete 108-byte public primary-TU owner, all
-eight fields and zero differences. Proof:
-`.analysis/gpt-6.1-sol-mode-quad-post-strip-compare.json`.
-Only that context's rotation support TU uses `/fp:fast`. Removing its CRT
-trig calls restores EAX-VM/ECX-output in the caller. The rotation itself stays
-non-exact (482 versus native 571 bytes, no paired FSINCOS). Promote the helper
-at the shared-source checkpoint; the canonical ledger now has 492 exact.
-The ordinary main frontier retains its original support profiles.
-
-Earlier replay repairs remain in the worktree: the signal caller's normal-COFF
-producer preserves its stack VM input; the effect-local timer constructor
-restores the native pre-memset flag clear. Their older 95/80/1,168-byte cold
-proofs are retained, and the new replay rechecks every stale context.
-HUD front draw's symbol correction has a complete 105-byte/five-field proof.
-The renderer-layer caller remains a 127-byte/nine-field frontier with reversed
-setup MOVs; its old exact claim was withdrawn in `08af80a`.
-
-The pre-strip VC9 traces explain two other gaps. Late flow merges opcode 97's
-two float readers into opcode 96's continuation. During integer allocation,
-the main VM split wins EBX at priority 7,466 over the original cursor's 5,760;
-`UpdateAffectedGlobregs` empties the cursor mask and it is split again into
-EDI at 5,134. These numeric scores describe the older 11,816-byte input.
-See the focused notes in `KNOWLEDGE_BASE.md` and
-`.analysis/compiler-vc9/execution-cursor-deferral.txt`.
-
-Next: finish the affected replay, retain strip rounding and promote the
-verified quad helper at the coherent `gpt-6.1-sol: ...` source checkpoint.
-The canonical ledger now has 492 exact owners. Do not change the four
-frozen interpreter/header inputs during this replay.
-
-Private probes now explain additional layout effects. Native RGB handlers
-keep full-word blue/green values through the red read, as TH10 does. The
-corresponding TH11 control improves whole-owner diagnostic alignment without
-adding stack colors. Opcode 17's literal store is local; only its variable
-resolver is shared. Splitting those pointer lifetimes restores its missing
-test without adding float-destination calls. Full TH10-style math expansion
-and case-local child-tail expansion instead add wrong callees and are rejected.
-
-The combined RGB/zero-copy/partial-math/component-translation control with
-constructed vector sums owns 12,032 bytes, 3,216 instructions and 413 fields.
-Its frame is `0xD4`, against native `0xCC`; diagnostic EBX/EDI-normalized
-alignment is 2,676. Only the two opcode 97 reader fields are missing. This
-remains a private non-exact probe, not the maintained source. C2 traces show
-that its 16-byte frame reduction comes from three 12-byte stack colors
-changing alignment 8→4, with all 26 colors and 205 payload bytes retained.
-Both traced whole-text controls have zero differences. All four strip call
-windows still preserve both float-rounding stages. The last eight-aligned
-12-byte color is now mapped: three float-vector and two integer-vector hidden
-return buffers impose that alignment. Naming caller temporaries or constructing
-only the rotation target does not remove it.
-
-A new private graph changes both actual tween result definitions and all their
-declarations to constructed three-component values, recompiling all 21 TUs.
-It restores frame `0xCC` and the shared native `ESP+0x24` result slot. C2 confirms
-the same 26 colors; the five return buffers and their shared color change
-alignment 8→4. Its complete traced/ordinary 32,134-byte text sections match.
-The main owner is 12,016 bytes / 3,215 instructions / 413 fields, still missing
-two readers and still EBX-VM/EDI-cursor. The three float result publication
-sequences reproduce all seven/seven/eight native instructions without register
-or offset normalization; diagnostic whole-owner normalized alignment is 2,584. This is a type-model experiment, not an exact
-claim or maintained-source change. Evidence and limits are in
+Useful private source models remain separate. Full-word RGB reads and zero-vector
+byte copies restore native channel lifetimes and all six missing DIR32 reads.
+A partial opcode-17 variable tail restores its missing test without extra
+float-destination calls. Constructed vector sums and actual constructed tween
+result definitions can recover frame `0xCC` and the three native seven/seven/eight
+instruction result-copy sequences, but still miss both opcode-97 readers and
+keep the VM/cursor register inversion. These type models do not establish the
+original nominal classes. Focused evidence and failed controls are in
 `KNOWLEDGE_BASE.md`.
 
-The copied-family and constructed-return traces are terminal. The copied
-baseline restores `0xD4`, with one raw text byte difference confined to the
-`AllocateSceneAnimationVm` EH FuncInfo DIR32 field. The shifted FuncInfo and
-unwind maps agree; replaying that reviewed address leaves zero text differences
-(`.analysis/gpt-6.1-sol-return-context-control-eh-replay.txt`). The constructor
-trace's ordinary whole-text control also matches. Both explicit TH10-style
-event scans have zero nonfield differences over their complete 12,032-byte
-owners. Fresh constructed-result allocation traces show VM split 461 taking
-EBX at priority 5,507 over cursor 37 at 4,282, then cursor split 443 taking EDI
-at 3,556. These values precede the real-timer graph addition.
+This turn's view controls do not recover the readers. Derived, flat independent,
+formal-input and child-reference models all retain 76 reads. The flat/formal
+models have identical nonfield bytes and field layouts to the maintained owner.
+Old images really have 78 reads, but still narrow the script ID; two also publish
+translation too early. Do not restore those differences to influence allocation.
 
-Earlier zero-vector traces show why ordinary typed copies retain only six
-of native's twelve loads: global allocation promotes the components and
-`SubsumePseudos` removes the original load tuples. TH10's corresponding
-`memcpy` model restores all six missing DIR32 fields. It remains isolated
-until the current source checkpoint. The old `/Ob0` family is preserved in
-`build/probe-ltcg/ExecutionBeforeArgumentProfile`.
+Separating the active scratch union gives an 11,924-byte private owner and
+frame `0xDC`, with the same instruction/call/field counts. Both debugger/ordinary
+whole-text controls match. Stack colors fall 26→25 and payload 205→202:
+a three-byte RGB target now shares the vertex-pointer word slot; the float
+result remains on the stack. This is a concrete nonlocal packing effect, not
+removal of the float spill. Both bodies retain immediate four-byte `FSTP`
+stack stores at all four math calls; see
+`.analysis/gpt-6.1-sol-active-scratch-math-rounding.txt`. Consider this source
+model after the current replay finishes. All private probes are terminal.
 
-The comparison-handler diagnostic discovers the current dispatch table
-from the owner disassembly and reports the twelve handlers independently:
-
-```bash
-scripts/repo-python .analysis/compare-animation-comparison-handlers-20261126.py
-```
-
-Rebuild and compare only this owner:
+Rebuild and inspect only the main owner:
 
 ```bash
 scripts/repo-python scripts/build-match-unit.py --unit animation-execution-tween-context

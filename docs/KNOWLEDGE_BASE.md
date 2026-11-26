@@ -678,7 +678,7 @@ Evidence: `.analysis/gpt-6.1-sol-execution-real-timer-contexts{.py,.log}`,
 `.analysis/compiler-vc9/execution-register-allocation-constructed-return.txt`,
 `execution-register-allocation-constructed-return-deferral.txt` and the
 corresponding `trace-constructed-return-{registers,deferral}-run.log` files.
-The main frontier's new 22-TU cold family owns 11,940 bytes / 3,183
+The main frontier's new 23-TU cold family owns 11,940 bytes / 3,183
 instructions / 407 fields, with frame `0xE4` and diagnostic normalized alignment
 2,558. Its complete twenty-byte rewind / one-field support replay is exact,
 as is the 124-byte / fourteen-field float-destination support replay. These
@@ -702,6 +702,61 @@ its nominal width. Neither private control is promoted. The obsolete exact
 claim is withdrawn, preserving the full extent and failed receipts. See
 [the focused draw note](ANIMATION_VM_DRAW.md#unrotated-wrapper-exact-claim-withdrawn-2026-11-26)
 for evidence and the remaining compiler-layout question.
+
+## Execution-view identity does not recover the two reader calls (2026-11-26)
+
+The type merge in `9abb56f` is not, by itself, the cause of opcode 97's lost
+reader calls. A complete copied 23-TU control reproduces the maintained
+11,940-byte / 3,183-instruction owner. A zero-storage derived execution view
+produces 11,936 / 3,181, while a separate flat view of the same observed fields
+returns to 11,940 / 3,183. All retain 407 fields, frame `0xE4`, and 76 float
+reads. Routing the flat view's operand helpers through the original formal VM
+pointer leaves all nonfield bytes and field locations identical. A case-local
+child reference changes eighteen nonfield bytes but still leaves 76 reads.
+These controls give no reason to replace the maintained VM view.
+
+The copied control's complete 33,446-byte text differs at one raw byte in the
+PE DIR32 field at `40929D`. Its owner-qualified compiler EH FuncInfo moves
+`40A1DC`→`40A1D4`; equal nonpointer fields lead to byte-identical unwind maps.
+Replaying this independently checked field leaves zero text differences.
+Evidence: `.analysis/gpt-6.1-sol-execution-{view-copy-control,distinct-view-context,flat-view-context,flat-formal-input,child-reference-control}.py`,
+`gpt-6.1-sol-view-and-reference-body-controls.txt` and
+`gpt-6.1-sol-view-copy-control-eh-replay.txt`.
+
+The retained 2026-11-24 child-result images really contain 78 reader calls to
+the same 540-byte reader. They are not a clean comparison for the current
+source: all still narrow script IDs to sixteen bits before the factory, and
+two copy translation before the X/Y reads. The child-result variant has the
+correct later translation publication but still has the narrowing. The actual
+factory indexes `file->scripts` with the full integer; do not restore the old
+narrowing to influence allocation. Evidence:
+`.analysis/gpt-6.1-sol-historical-child-reader-inventories.txt` and
+`gpt-6.1-sol-historical-child97-publication-review{,s-more}.txt`.
+
+## Separating scratch values changes a distant RGB stack color (2026-11-26)
+
+Replacing the active float/pointer scratch union with two ordinary locals
+reduces the maintained-context private owner from 11,940 to 11,924 bytes and
+frame `0xE4`→`0xDC`, with the same 3,183 instructions, 260 calls and 407 fields.
+It does not recover the two readers. C2 traces show 26→25 colors and
+205→202 payload bytes. The disappearing color is a three-byte RGB target,
+not the float result: that result remains a four-byte stack element and joins
+an existing word color. The RGB target (trace element 2) joins the vertex
+pointer's four-byte color, moving from `-116` to the shared `-180` slot.
+The quad stays at `-48`.
+
+Both complete traced text sections reproduce their ordinary links with zero
+differences: baseline 33,446 bytes, separated scratch 33,430. This explains a
+nonlocal frame change without inventing padding or assuming that eliminating
+a source union removes its float spill. At both `fmod` calls and the `acos`
+and `atan` calls, both bodies immediately materialize the result with a
+four-byte `FSTP` stack store. The alternative remains private pending the
+next affected-source comparison.
+Evidence: `.analysis/gpt-6.1-sol-execution-active-scratch-control{.py,.log}`,
+`.analysis/compiler-vc9/execution-stack-materialization-scratch-{baseline,separated}.txt`,
+`active-scratch-stack-comparison.txt`, `active-scratch-stack-offsets.txt` and
+`trace-stack-scratch-{baseline,separated}-run.log`. The four rounding windows
+are in `.analysis/gpt-6.1-sol-active-scratch-math-rounding.txt`.
 
 ## Stage culling and auxiliary switch owners (2026-11-17)
 
