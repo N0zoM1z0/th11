@@ -11342,7 +11342,6 @@ linkages = [
 
 # Leaf used by the animation interpreter for variable-backed float writes.
 [units.animation-float-destination]
-frontier = true
 artifact_kind = "linked-pe"
 source = "src/AnimationExecutionArguments.cpp"
 inputs = ["src/AnimationExecution.hpp", "src/AnimationVm.hpp"]

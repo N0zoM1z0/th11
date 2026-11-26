@@ -14,7 +14,7 @@ reconstructed as natural C++ and its exactness is accepted. Helper implementatio
 may be changed only as dependencies of this locked function; that does not open
 a second function track.
 
-## Current status (2026-11-25)
+## Current status (2026-11-26)
 
 The focused `animation-execution-tween-context` build was rebuilt after the
 TH10-style instruction-cursor loop, result-lifetime reduction and VM-state
@@ -64,6 +64,16 @@ The separate `animation-integer-destination` leaf was rebuilt in the same
 session: all 104 bytes match after replaying its 11 reviewed local jump-table
 relocations (`difference_count = 0`). This is a focused leaf replay, not proof
 that the enclosing interpreter or original source-TU ownership is exact.
+
+`AnimationFloatDestination` at `0x0044B380` is now a canonical exact 124-byte
+leaf. Its isolated `animation-float-destination` unit cold-builds the complete
+public primary-TU PDB contribution with the pinned VC9 `/GL` profile. The strict
+comparison replays all 14 reviewed relocation fields at `+3`, `+20`, `+76`,
+`+80`, `+84`, `+88`, `+92`, `+96`, `+100`, `+104`, `+108`, `+112`, `+116` and
+`+120`, then reports zero differing bytes. The maintained natural C++ remains
+in `src/AnimationExecutionArguments.cpp`; the original source-TU attribution
+remains unknown. This leaf result does not change the non-exact status of the
+12,056-byte `ExecuteAnimationVm` owner.
 
 The builds were limited to the selected VM owner and the integer-destination
 leaf plus their direct dependencies:
@@ -149,15 +159,14 @@ match the mode-8 x87 schedule; the remaining two bytes are the mode-17
 Y-component add operand order. The pair leaf remains frontier-only and
 non-exact.
 
-`AnimationFloatDestination` now lives in `AnimationExecutionArguments.cpp` as
+`AnimationFloatDestination` lives in `AnimationExecutionArguments.cpp` as
 a public natural-C++ leaf. The isolated `animation-float-destination` linked
-unit reproduces the complete 124-byte owner, replays all 14 reviewed relocation
-fields, and reports zero byte differences. A broader interpreter LTCG context
-emitted a 140-byte PDB contribution for the same function under a different
-support profile, so the isolated context remains the canonical leaf check;
-full-owner integration is measured separately. Its function-inventory status
-remains unclassified and the replay is not yet an accepted canonical
-exact-ledger row.
+unit is now a canonical exact checkpoint: its complete 124-byte public
+primary-TU PDB contribution replays all 14 reviewed relocation fields with
+zero byte differences. The broader interpreter LTCG context emits a 140-byte
+PDB contribution under a different support profile; that larger context remains
+diagnostic and does not replace the isolated leaf owner. Code generation is
+exact, while original TU/authorship attribution remains indeterminate.
 
 `AnimationIntegerDestination` is retained in the interpreter TU as an internal
 natural-C++ helper. Its dedicated `animation-integer-destination` unit uses the
@@ -706,6 +715,8 @@ The argument-reader leaf also improved:
 | ReadAnimationInteger | 219 B / 33 code ins | 219 B / 33 code ins | 32/33 |
 | AnimationFloatDestination | 124 B / 22 code ins | 124 B / 22 code ins | 21/22 |
 | AnimationIntegerDestination | 104 B / 17 code ins | 104 B / 17 code ins | 16/17 |
+
+The 21/22 `AnimationFloatDestination` key count above is the older instruction-key diagnostic (it treats the absolute jump-table base as an unmatched key). The strict linked comparison now replays all 14 relocation fields and all 124 owned bytes with zero differences; `config/matches.csv` records the canonical exact result.
 
 ReadAnimationFloat now has the native entry sequence
 fld [esp+4], push esi, fld st(0), mov esi,eax. Its 23-entry jump table has the
