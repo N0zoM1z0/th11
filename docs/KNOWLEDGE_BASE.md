@@ -167,6 +167,35 @@ constructor repair. A full operand dump reached the five-minute bound, so
 retain the call-only snapshots for phase localization and trace only the
 matched tails when investigating the register schedule.
 
+## One common-tail deletion removes both opcode 97 readers (2026-11-26)
+
+A focused trace inside the final late-flow pass catches one
+`FgDoCommonTailMerge` deletion containing both opcode 97 float-reader calls,
+their float spill/reloads, the child X/Y stores and the translation copy.
+The kept sequence belongs to opcode 96. This is a common suffix merge, rather
+than two independent call eliminations. All 241 observed deletion ranges
+were fully traversed; only this range contained float-reader calls.
+
+At `TupRemoveRange` entry (RVA `0x10F180`), EAX is the first removed tuple and
+EBX is the exclusive end. The caller at `FgDoCommonTailMerge + 0x4B7`
+(return RVA `0x4D1E7`) retains the kept range at `[EBP-0x4C]` and
+`[EBP-0x58]`. Check these conventions against this pinned backend before
+reusing the trace. Operand metadata is compiler IR, not game field offsets.
+
+The removed prefix already moves the lookup result from EAX to ESI
+(`scratch.child`) before the argument load and variable-bit test. Native
+opcode 97 makes that copy after the load/test. Its case-local
+`positionedChild` currently coalesces into the shared scratch pointer.
+A useful next control is to retain the returned child pointer locally from
+lookup onward and check the copy placement before late flow. This follows
+TH10's lifetime/allocation method; no register barrier or synthetic call is
+needed to test the hypothesis.
+
+Evidence: `.analysis/compiler-vc9/execution-merges.txt` and
+`.analysis/compiler-vc9/trace-merges-run.log`; reproduce with
+`scripts/repo-python .analysis/compiler-vc9/trace-merges.py`. The debugger
+link and ordinary control have identical 31,798-byte `.text` sections.
+
 ## Stage culling and auxiliary switch owners (2026-11-17)
 
 - The stage layer's formerly source-less `CullStageObject` (403950, 1,643
