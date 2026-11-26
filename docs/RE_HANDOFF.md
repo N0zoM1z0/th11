@@ -11,13 +11,13 @@ Ghidra through `scripts/ghidra.py`.
 
 ## Current focus: ExecuteAnimationVm (0x44B4B0, 12,056 B)
 
-The maintained interpreter remains non-exact. The new cold candidate owns
-11,952 bytes: 11,536 code/alignment bytes plus the complete 416-byte opcode
+The maintained interpreter remains non-exact. The latest cold candidate owns
+11,940 bytes: 11,524 code/alignment bytes plus the complete 416-byte opcode
 table, against native 11,640 + 416. Candidate/native calls are 260/262,
 conditional branches 256/259 and jumps 142/147. All direct calls resolve;
 only `ReadAnimationFloat` differs in count (76/78). The complete candidate
 field inventory has 407 entries versus native 415. Code-key alignment is
-1,440/3,203, or 2,564 after a diagnostic EBX/EDI swap. No exact credit follows.
+1,439/3,203, or 2,558 after a diagnostic EBX/EDI swap. No exact credit follows.
 The frame is `0xE4` versus native `0xCC`; VM/cursor remain EBX/EDI versus EDI/EBX.
 
 The main frontier now uses `/Ob1` for `AnimationExecutionArguments.cpp`, matching
@@ -33,7 +33,8 @@ strip vertex. Native stores the position-plus-offset vector before adding
 translation, then stores that result before vertex updates. Scalar flattening
 in `06b6b93` removed the first rounding. Nested `Sum` return objects restore
 it. This adds 136 owned bytes to the 11,816-byte pre-correction candidate.
-Keep this semantic correction despite the larger frame. Evidence:
+Keep this semantic correction despite the larger frame. That source-only cold
+candidate owned 11,952 bytes; the later real-timer graph owns 11,940. Evidence:
 `.analysis/gpt-6.1-sol-strip-call-windows.txt` and
 `gpt-6.1-sol-execution-strip-rounding-cold{,-code,-fields}.log`.
 Earlier pending changes restore the shared quad helper call and pass child IDs
@@ -46,15 +47,33 @@ still referenced the old opaque `unknown408` array. Native writes VM bytes
 `+0x41C/+0x41D`; spelling these as `unknown40c[0x10/0x11]` preserves both offsets.
 Its seven exact consumers are precisely the remaining seven contexts.
 
-Shell session **5924** now runs
-`.analysis/gpt-6.1-sol-resume-strip-rounding-consumers.py`; log:
-`.analysis/gpt-6.1-sol-strip-rounding-consumer-resume.log`.
-It verified receipts before carrying all 69 previously accepted owners and
-passed `step-stage-fog-tween` and is rebuilding `draw-unrotated-animation-vm`,
-context 38/43. The remaining families have 132/214 support TUs. The failed controller's session 2509 is
-terminal (exit 1); keep its log and do not restart it. The scope remains
-75 exact owners plus the pending quad helper in 43 contexts. Prior replay
-results belong to their inputs; carry only proofs whose receipts still verify.
+The resumed controller in shell session **5924** is now terminal (exit 1).
+It passed `step-stage-fog-tween`, context 37/43, then stopped on
+`draw-unrotated-animation-vm`. Its log is
+`.analysis/gpt-6.1-sol-strip-rounding-consumer-resume.log`; keep both failed
+controller logs unchanged. Five later contexts remain unrun.
+
+The unrotated draw cold owner is 53 bytes / seven fields, against native
+51 / six: LTCG removes its renderer parameter in favor of `g_RenderBatch`,
+and passes the submission member's flag in BL instead of on the stack.
+Adding the existing generic `animation-vm-draw-context.cpp` producer under
+`/GL` restores dynamic renderer input and RET4, but gives 49 bytes because
+that flag still uses BL. Source and failed family are preserved. Shell session
+**93098** runs the private byte-versus-word member flag control:
+`.analysis/gpt-6.1-sol-draw-flag-width-controls.py` / `.log`. TH10's corresponding
+`DrawInner` takes an integer flag; TH11's nominal width is not established by
+its low-byte tests. Do not carry this failed exact claim as a current proof.
+
+The main frontier now links the real `SecondaryActorMotion.cpp` and
+`SecondaryProjectileCallbacks.cpp` timer implementations with `/Ob1 /GL`.
+Its complete 11,940-byte / 3,183-instruction cold owner and exhaustive 407-field
+inventory are recorded in
+`.analysis/gpt-6.1-sol-execution-real-timers-cold{,-code,-fields}.log`.
+The natural support bodies reproduce all 20 rewind bytes / one field and
+124 float-destination bytes / fourteen fields with zero differences. Both
+recovered timer interfaces match native ESI-timer/EAX-integer/stack-float roles.
+The frozen source hashes still verify. The preceding main family is preserved
+in `build/probe-ltcg/ExecutionBeforeRealTimers`.
 
 The `build-animation-vm-mode-quad` frontier passes strict cold replay again
 after the strip correction: complete 108-byte public primary-TU owner, all
@@ -120,16 +139,16 @@ or offset normalization; diagnostic whole-owner normalized alignment is 2,584. T
 claim or maintained-source change. Evidence and limits are in
 `KNOWLEDGE_BASE.md`.
 
-Only the consumer replay in **5924** remains live. The 21-TU copied-family
-baseline in 26892 finished: it restores the earlier `0xD4` owner, with one raw
-text byte difference confined to the compiler EH FuncInfo DIR32 field for
-`AllocateSceneAnimationVm`. The shifted FuncInfo/unwind-map contents agree;
-replaying that reviewed address leaves zero text differences. The raw log is
-preserved. See `.analysis/gpt-6.1-sol-return-context-control-eh-replay.txt`.
-The constructed-return stack trace in 47344 also finished with a zero-difference
-whole-text ordinary control. Both explicit TH10-style event-scan probes have
-zero nonfield differences over their entire 12,032-byte owners; changing that
-source spelling does not change this layout. Keep all private artifacts.
+The copied-family and constructed-return traces are terminal. The copied
+baseline restores `0xD4`, with one raw text byte difference confined to the
+`AllocateSceneAnimationVm` EH FuncInfo DIR32 field. The shifted FuncInfo and
+unwind maps agree; replaying that reviewed address leaves zero text differences
+(`.analysis/gpt-6.1-sol-return-context-control-eh-replay.txt`). The constructor
+trace's ordinary whole-text control also matches. Both explicit TH10-style
+event scans have zero nonfield differences over their complete 12,032-byte
+owners. Fresh constructed-result allocation traces show VM split 461 taking
+EBX at priority 5,507 over cursor 37 at 4,282, then cursor split 443 taking EDI
+at 3,556. These values precede the real-timer graph addition.
 
 Earlier zero-vector traces show why ordinary typed copies retain only six
 of native's twelve loads: global allocation promotes the components and

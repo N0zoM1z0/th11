@@ -646,6 +646,49 @@ complete 12,032-byte owner, all 413 field locations and zero nonfield byte
 differences. Neither changes the event-loop layout. Evidence:
 `.analysis/gpt-6.1-sol-event-scan-body-controls.txt`.
 
+## Real timer callees repair two interpreter call interfaces (2026-11-26)
+
+The earlier main frontier omitted the actual timer TUs. Its declarations alone
+made the compiler use ordinary stack calls for `RewindSecondaryTimer` and
+`OffsetSecondaryTimer`; native uses ESI for the timer and EAX for rewind's
+integer, with only the floating offset on the stack. Adding the real
+`SecondaryActorMotion.cpp` and `SecondaryProjectileCallbacks.cpp` with the
+established `/O2 /Ob1 /GL` profile recovers those private interfaces naturally.
+The rewind support body is twenty bytes; offset is 96. Offset's known near-one
+x87 operand-order gap remains open.
+
+A paired private control uses the same two real TUs with either POD or
+constructed tween results. The POD graph owns 12,032 bytes / 3,214 instructions
+and frame `0xD4`; the constructed graph owns 12,016 / 3,213 and frame `0xCC`.
+Both retain 413 fields and only the two known missing opcode 97 reader calls.
+The type-dependent frame change survives the corrected timer interfaces.
+Whole-owner diagnostic normalized alignment is 2,668 / 2,576 respectively.
+These scores do not justify retaining a wrong callee interface.
+
+Fresh allocation traces of the constructed-result graph before the timer
+addition show VM split 461 (priority 5,507) winning EBX over original cursor
+37 (4,282). `UpdateAffectedGlobregs` empties the cursor's EBX mask; its new split
+443 receives EDI at priority 3,556. The earlier 449/431 IDs and 7,466/5,760/5,134
+scores belong to a different input. Both fresh traces reproduce their ordinary
+32,134-byte text controls with zero differences. The same mechanism persists
+after fixing the frame; the register numbers are evidence tied to this graph.
+
+Evidence: `.analysis/gpt-6.1-sol-execution-real-timer-contexts{.py,.log}`,
+`gpt-6.1-sol-real-timer-{pod-results,constructed-results}-{code,fields}.log`,
+`.analysis/compiler-vc9/execution-register-allocation-constructed-return.txt`,
+`execution-register-allocation-constructed-return-deferral.txt` and the
+corresponding `trace-constructed-return-{registers,deferral}-run.log` files.
+The main frontier's new 22-TU cold family owns 11,940 bytes / 3,183
+instructions / 407 fields, with frame `0xE4` and diagnostic normalized alignment
+2,558. Its complete twenty-byte rewind / one-field support replay is exact,
+as is the 124-byte / fourteen-field float-destination support replay. These
+support diagnostics do not replace primary-TU acceptance. Evidence:
+`.analysis/gpt-6.1-sol-execution-real-timers-cold{,-code,-fields}.log` and
+`gpt-6.1-sol-real-timers-{rewind,float-destination}-support.log`.
+The preceding family is preserved at
+`build/probe-ltcg/ExecutionBeforeRealTimers`; keep the constructed-result and
+RGB/source controls private until the pending source checkpoint.
+
 ## Stage culling and auxiliary switch owners (2026-11-17)
 
 - The stage layer's formerly source-less `CullStageObject` (403950, 1,643
