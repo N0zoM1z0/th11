@@ -29,6 +29,14 @@ wrapper. Timer inputs are ESI-timer/EAX-integer/stack-float. Evidence:
 The preceding families remain in `build/probe-ltcg/ExecutionBeforeRealTimers`
 and `ExecutionBeforeArgumentProfile`.
 
+Fresh current-graph C2 traces confirm VM split 462 winning EBX at priority
+7,466 over cursor 37 at 5,778. The cursor loses its only register and split
+444 then takes EDI at 5,032. Both complete 33,446-byte debugger/ordinary text
+controls match. Evidence: `.analysis/compiler-vc9/execution-registers-real-timers.txt`
+and `execution-register-allocation-real-timers.txt`. A rotation-only fast-math
+control repairs the two quad-call inputs but changes only four nonfield bytes;
+it leaves these allocation roles, frame and reader count unchanged.
+
 The dirty source is frozen. Keep
 `.analysis/gpt-6.1-sol-strip-rounding-frozen.sha256` and
 `.analysis/gpt-6.1-sol-player-field-split-frozen.sha256` intact. Pending changes
@@ -42,9 +50,9 @@ Only consumer controller **86905** is live. It runs
 `.analysis/gpt-6.1-sol-replay-strip-rounding-last-four.py` and logs to
 `.analysis/gpt-6.1-sol-strip-rounding-last-four.log`. Seventy prior unit proofs
 are carried only after receipt checks. The retained scope is 73 exact owners
-plus the pending quad helper, in 41 contexts. It is cold-building
-`apply-menu-joystick-bindings`, then `clear-scene-projectiles`.
-`copy-secondary-host-vector` and `load-secondary-debug-script` passed their
+plus the pending quad helper, in 41 contexts. It is cold-building the final
+`clear-scene-projectiles` context. `copy-secondary-host-vector`,
+`load-secondary-debug-script` and `apply-menu-joystick-bindings` passed their
 complete cold comparisons.
 Sessions 2509, 5924 and 58199 are terminal failures; keep their logs and never
 restart them merely because the new run is slow.
@@ -64,8 +72,8 @@ The pending `build-animation-vm-mode-quad` frontier still has a complete cold
 bytes, all eight fields and zero differences. Evidence:
 `.analysis/gpt-6.1-sol-mode-quad-post-strip-compare.json`. Only that context's
 rotation TU uses `/fp:fast`, restoring the helper's EAX-VM/ECX-output interface;
-rotation itself remains non-exact. Promote the helper after the four remaining
-consumer contexts pass, refresh ledgers/progress and commit the coherent source
+rotation itself remains non-exact. Promote the helper after the final consumer
+context passes, refresh ledgers/progress and commit the coherent source
 checkpoint with `gpt-6.1-sol: ...`. The ordinary main frontier keeps its own
 rotation profile. Renderer-layer draw remains a 127-byte frontier with two
 setup-MOV ordering differences.
@@ -98,7 +106,11 @@ model after the current replay finishes. A paired constructed-result control
 keeps frame `0xCC` but shifts the recovered tween result slot from `ESP+24`
 to `ESP+28`; smaller scratch/color layouts are not automatically better.
 Its C2 traces again remove one three-byte color, with both complete ordinary
-text controls exact. The inline child-setter control also retains 76 reads.
+text controls exact. A fresh color-choice trace explains the chain: maximum
+7 no longer excludes float element 8; later angle/color placements change,
+while vertex 13's full neighbor bitmap stays identical. See
+`.analysis/compiler-vc9/scratch-color-choice-comparison.txt`.
+The inline child-setter control also retains 76 reads.
 All private probes are terminal.
 
 Rebuild and inspect only the main owner:

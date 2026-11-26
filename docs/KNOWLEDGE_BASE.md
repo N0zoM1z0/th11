@@ -250,6 +250,16 @@ Evidence: `.analysis/compiler-vc9/execution-vm-split-markers.txt` and
 `trace-split-markers-verified-run.log` and `trace-cursor-deferral-run.log`.
 Both completed controls replay identical 31,798-byte `.text` sections.
 
+Fresh traces of the maintained 23-TU real-timer graph confirm the same
+competition with current identities. VM split 462 has priority 7,466; original
+cursor 37 has 5,778, and both allow only EBX. Assigning the VM empties the
+cursor mask; cursor split 444 later allows only EDI at priority 5,032.
+The two completed debugger/ordinary pairs each reproduce all 33,446 text
+bytes. These replace old range numbers when investigating the current graph.
+Evidence: `.analysis/compiler-vc9/execution-registers-real-timers.txt`,
+`execution-register-allocation-real-timers.txt`,
+`trace-registers-real-timers-run.log` and `trace-real-timers-deferral-run.log`.
+
 A case-local opcode 97 child-pointer control leaves its handler unchanged and
 retains the 11,816-byte owner, 260 calls and `0xD4` frame. Its only code changes
 swap x87 load/arithmetic operands in opcodes 9 and 13: addition improves while
@@ -277,6 +287,15 @@ FSINCOS. The option supplies a useful reproducible helper context; it does not
 establish the original rotation TU's math settings. Keep the main interpreter
 and rotated owner non-exact. Evidence:
 `.analysis/gpt-6.1-sol-execution-rotation-fast-control.log`.
+
+Repeating the isolated rotation-profile change in the current 23-TU real-timer
+graph leaves the whole interpreter at 11,940 bytes / 3,183 instructions /
+407 fields. Every field position stays the same; only four nonfield bytes
+change, swapping the EAX/ECX inputs at its two quad-helper calls. Frame `0xE4`,
+VM/cursor EBX/EDI and both missing readers remain. The downstream ABI repair
+therefore does not resolve the whole-owner allocation gap in this graph.
+Evidence: `.analysis/gpt-6.1-sol-real-timer-rotation-fast-control{.py,.log}` and
+`gpt-6.1-sol-real-timer-rotation-fast-owner-delta.txt`.
 
 Useful rejected controls: `/G6` leaves all 11,816 interpreter bytes unchanged.
 Putting the same geometry bodies in the shared renderer TU, then retaining its
@@ -750,6 +769,20 @@ not the float result: that result remains a four-byte stack element and joins
 an existing word color. The RGB target (trace element 2) joins the vertex
 pointer's four-byte color, moving from `-116` to the shared `-180` slot.
 The quad stays at `-48`.
+
+A focused color-choice trace exposes the propagation. Among the first fourteen
+nonparameter elements, the changed bitmap rows are 0/1/2/3/4/7; each loses
+element 8. In particular, maximum 7 no longer excludes the float/scratch
+element. The float can join that word color, displacing angle 11 into the
+instruction/v color. Color 12 then joins RGB initial 3, and vertex 13 joins
+RGB target 2. Vertex 13's entire neighbor bitmap is identical in both runs;
+the previously chosen color members differ. `colorElemental` scans colors
+backward, rejecting membership conflicts before `SbvAnyCommon`, so a changed
+earlier exclusion propagates through otherwise unchanged later lifetimes.
+Evidence: `.analysis/compiler-vc9/scratch-color-choice-comparison.txt`,
+`execution-stack-materialization-scratch-choice-{baseline,separated}.txt` and
+`trace-stack-scratch-choice-{baseline,separated}-run.log`. Both complete
+debugger/ordinary text controls again have zero differences.
 
 Both complete traced text sections reproduce their ordinary links with zero
 differences: baseline 33,446 bytes, separated scratch 33,430. This explains a
