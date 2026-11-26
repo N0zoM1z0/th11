@@ -11,23 +11,73 @@ Ghidra through `scripts/ghidra.py`.
 
 ## Current focus: ExecuteAnimationVm (0x44B4B0, 12,056 B)
 
-The complete natural-C++ interpreter, event paths, 104-entry signed-opcode
-dispatch table, nine tween updates and both generated-strip paths are present.
-The focused `animation-execution-tween-context` cold build currently owns
-11,976 bytes and aligns 1,484/3,308 native instruction keys; calls are 262/262
-and conditional branches 404/406. The twelve integer/float relation handlers
-now match their complete decoded bodies after only the proven EBX/EDI VM-vs-
-instruction register-label normalization, except for five temporary-register
-instructions in opcode 39's shared continuation. This was achieved by changing
-`ReadI` to test the variable bit before loading its operand, matching the
-native conditional-read order. The frame is `0xD4` rather than native
-`0xCC`, and the VM/cursor allocation remains EBX/EDI instead of native
-EDI/EBX. The VM event field remains unsigned 16-bit, but the interpreter
-keeps its local event ID as signed `short`, matching native zero-extension at
-the field load followed by sign-extension at the signed label comparison.
-Parameter-type, helper-argument-order and register-declaration-order trials
-were rejected; snapshots remain in `.analysis/`. The dispatch handler order
-is largely consistent with the native table.
+The maintained interpreter remains non-exact. Its latest canonical cold
+frontier owns 11,816 bytes: 11,400 code/alignment bytes plus the complete
+416-byte opcode table, against native 11,640 + 416. Candidate/native calls
+are 260/262, conditional branches 256/259 and jumps 142/147. The only
+callee-count deficit is `ReadAnimationFloat` (76/78). The complete candidate
+field inventory has 407 entries versus native 415. Code-key alignment is
+1,422/3,203, or 2,524 after a diagnostic EBX/EDI swap; neither grants exact credit.
+
+Pending source changes restore the shared quad-mode call in the UV update
+and pass child IDs directly from local objects to lookup. They remove 144
+and 16 owned bytes respectively. Three real geometry TUs now belong to the
+frontier's `/GL` graph. The quad helper has the native 108-byte size but still
+uses ECX-VM/EAX-output instead of native EAX/ECX. The interpreter frame stays
+`0xD4` versus `0xCC`, with EBX-VM/EDI-cursor instead of native EDI/EBX.
+
+Affected replay found two older failures and one stale claim:
+
+- The signal caller now uses the existing normal-COFF interpreter producer
+  to preserve its native stack input; the interpreter remains `/GL`.
+  Its complete 95-byte/four-field cold comparison passes.
+- An effect-local timer constructor restores the native pre-memset flag
+  clear lost when `StageTimerView` became POD. The 80-byte factory and
+  1,168-byte initializer pass complete cold comparisons (three/54 fields).
+- HUD front draw's old fastcall symbol binding is corrected to the ordinary
+  member decoration; all 105 bytes/five fields pass. The renderer-layer caller
+  still reverses two setup MOVs at +75/+77. Separate real `/GL` TUs retain
+  the same gap. Its prior exact claim is withdrawn in `08af80a`; the canonical
+  ledger now has 493 exact functions. Full 127-byte/nine-field frontier retained.
+
+The timer header expanded the affected scope to 76 units/43 contexts. After
+the renderer withdrawal, 75 exact units/42 contexts remain to verify. Four
+source files are frozen by
+`.analysis/gpt-6.1-sol-execution-timer-frozen.sha256`.
+Only shell session **37580** remains live, running
+`.analysis/gpt-6.1-sol-resume-execution-timer-remaining.py`; its log is
+`.analysis/gpt-6.1-sol-execution-timer-remaining.log`. At this checkpoint,
+50 current proofs are carried and seven more have passed; context 25/42
+(`read-secondary-host-integer-value`) is building. Earlier replay sessions
+are terminal. Reuse current cold receipts, preserve this run, and finish
+remaining comparisons before the source checkpoint. Several remaining
+contexts have 132/214 support TUs; standard cold builds remain in use.
+
+Compiler findings are committed in `a84e90d`, `cdf4d28`, `ccb9cb8` and
+`f4baeee`; see the focused VC9 sections in `KNOWLEDGE_BASE.md`:
+
+- Stack packing uses class and integer weight/size ratio. The ID-local
+  change regroups colors across the owner; it does not shrink the frame.
+- Final late flow removes both opcode 97 float reads in one common-tail
+  merge with opcode 96, including the XY stores and translation copy.
+- Integer `Spillcosts` reduces the original VM mask to EBP and the cursor to
+  EBX/EBP. Frame constraints remove EBP. Later main split ranges already
+  require EBX-VM/EDI-cursor before final selection. Nine hardware-watchpoint
+  hits identify fixed uses in timer setup, child-ID buffers, float destinations
+  and tween returns. Debugger/control `.text` sections match all 31,798 bytes.
+
+A case-local opcode 97 child pointer leaves that handler unchanged but swaps
+x87 operand order in opcodes 9/13. Explicitly loading X before its variable
+flag grows the owner to 11,840 bytes without restoring the missing calls.
+Both controls are rejected and remain under `.analysis/execution-opcode97-local`
+and `.analysis/gpt-6.1-sol-opcode97-*.log`. Maintained source is unchanged.
+
+After the source checkpoint, inspect split costs and real callee register
+use before more declaration-order trials. Keep the reader merge and result
+lifetimes in the same full-function analysis. Useful evidence:
+`.analysis/compiler-vc9/execution-merges.txt`, `execution-initial-splits.txt`
+and `execution-mask-writes.txt`. Native result homes are vector/color
+`ESP+0x24`, pair `+0x88`, quad `+0xA8`; current homes are `+0x38/+0xA0/+0xB0`.
 
 The comparison-handler diagnostic discovers the current dispatch table
 from the owner disassembly and reports the twelve handlers independently:
@@ -69,7 +119,7 @@ See `docs/ANIMATION_EXECUTION.md`, `docs/ANIMATION_TWEEN.md` and
 Keep the large boss and its real leaf dependencies in the same work stream.
 After each meaningful natural-C++ change, build and compare only the affected
 unit and directly affected exact consumers. Do not run the full cold replay.
-Save each coherent checkpoint with a `gpt-web: ...` commit. Preserve useful
+Save each coherent checkpoint with a `gpt-6.1-sol: ...` commit. Preserve useful
 failed experiments in `.analysis/`; do not replace maintained source with a
 worse candidate merely to keep a trial active.
 
@@ -132,7 +182,7 @@ Start with the full original owner plus call/reference review, change natural
 C/C++, then build/compare **only the affected unit**, its owned extent and
 relocation fields. Cold-replay only directly affected canonical exact units.
 Do not run a full cold replay. Successful checkpoints should be saved as
-`gpt-web: ...` commits; retain meaningful failed experiments in prose/logs.
+`gpt-6.1-sol: ...` commits; retain meaningful failed experiments in prose/logs.
 
 Current animation owner entry points:
 
