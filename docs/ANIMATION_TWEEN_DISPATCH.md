@@ -57,7 +57,7 @@ topic review.
 | StepAnimationFloatScalarTween | 44EBD0 | 331 | 326 /282 |
 | UpdateAnimationRenderer | 455480 | 221 | 231 /180 |
 | UpdateOtherAnimationRenderer | 455560 | 249 | 232 /193 |
-| DrawAnimationRendererLayer | 455660 | 127 | Exact;9 fields |
+| DrawAnimationRendererLayer | 455660 | 127 | 127 / 2 after nine fields; prior exact claim withdrawn |
 | AllocateSceneAnimationVm | 4569C0 | 177 | Exact;5 fields |
 | ResetAnimationScalarTweenTime | 44ED80 | 52 | Exact;1 field |
 | Four interpolation factors | 44EDD0 /44EE00 /44EE30 /44EE60 | 39 each | Exact;1 field each |
@@ -65,6 +65,25 @@ topic review.
 The first four rows use the current canonical AnimationTween primary context;
 their large bodies remain diagnostic, without acceptance units. Other historical
 compiler contexts are distinguished below.
+
+## Renderer-layer call scheduling gap (2026-11-26)
+
+A fresh affected cold replay of `DrawAnimationRendererLayer` resolves all nine
+fields and preserves the complete 127-byte PDB contribution, but the two MOVs
+before `DrawByMode` are reversed. Native sets EAX from the VM in ESI, then ECX
+from the renderer in EDI; the candidate sets ECX first. Only bytes +76/+78
+differ after complete field replay. The callee's private registers agree.
+
+The manifest still named the earlier explicit-fastcall member, although
+`5cd7357` changed the source to an ordinary member. Correcting that decoration
+exposes this scheduling gap. Separating the renderer owner into a real `/GL`
+support TU, with the same profile and bodies, produces the same two differences.
+The exact claim is withdrawn; the complete unit remains a frontier.
+
+Evidence: `.analysis/gpt-6.1-sol-execution-timer-consumer-resume.log` and
+`.analysis/gpt-6.1-sol-renderer-layer-context-control.log`. The HUD front-draw
+caller has only the stale decoration: its complete 105 bytes and five fields
+pass after the binding correction.
 
 ## Interpolation types and arithmetic
 
