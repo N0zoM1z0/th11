@@ -43,6 +43,8 @@ its complete extent/field inventory, and now runs
 Its scope is 75 affected exact owners plus the pending quad helper in 43
 contexts. It stops at the first failure and rebuilds stale contexts. Do not
 restart an earlier replay. Several remaining families have 132/214 support TUs.
+At this checkpoint it is building `read-secondary-host-integer-value`, context
+26/43, with no failure recorded.
 
 The `build-animation-vm-mode-quad` frontier passes strict cold replay again
 after the strip correction: complete 108-byte public primary-TU owner, all
@@ -70,11 +72,10 @@ EDI at 5,134. These numeric scores describe the older 11,816-byte input.
 See the focused notes in `KNOWLEDGE_BASE.md` and
 `.analysis/compiler-vc9/execution-cursor-deferral.txt`.
 
-Rejected controls stay isolated: capturing the ReadF literal grows the owner
-to 12,424 bytes; a TH10-style value constructor reduces the frame to `0xD4`
-but worsens other alignment metrics. `/G6`, the shared renderer owner, a live
-30-TU drawing graph and an inline update helper leave main nonfield bytes
-unchanged. Do not select a source form from frame size alone.
+Rejected controls remain in `.analysis/`: ReadF literal capture, a TH10-style
+value constructor, `/G6`, alternate renderer graphs and an inline update helper.
+Their findings are in the focused knowledge notes; size alone did not select
+the maintained source.
 
 Next: finish the live affected replay, retain the strip rounding and promote
 the verified quad helper at the coherent `gpt-6.1-sol: ...` source checkpoint.
@@ -88,8 +89,20 @@ copies use `memcpy`; its isolated TH11 control restores all six DIR32 fields
 (156/156) and owns 11,984 bytes with the same `0xE4` frame. Only the two known
 float-reader REL32 fields remain missing. Evidence:
 `.analysis/gpt-6.1-sol-execution-zero-memcpy{,-code}.log` and
-`gpt-6.1-sol-execution-zero-memcpy-fields.json`. A call-site copy control runs
-in session 21592. Keep the source frozen until the current replay completes.
+`gpt-6.1-sol-execution-zero-memcpy-fields.json`. Direct case-site copies are
+worse. Short C2 traces retain four block copies in both forms, with different
+destination alignment metadata; both pass whole-text debugger/normal controls.
+See the focused knowledge note for this distinction and the earlier timeout.
+
+Native translation accumulation writes each float sum directly to the VM.
+A component `+=` probe removes seven instructions / 32 bytes but keeps the
+frame, reverses x87 operand pairs and worsens diagnostic alignment. Explicit
+assignments with native grouping have identical nonfield bytes. Logs:
+`.analysis/gpt-6.1-sol-execution-translation-{accumulate,direct}*.log`.
+The combined byte-copy/accumulation probe also remains isolated. All private
+probes are terminal. Keep the four maintained source inputs frozen until the
+current affected replay completes, then promote the quad helper at the source
+checkpoint before considering the zero-copy change.
 
 The comparison-handler diagnostic discovers the current dispatch table
 from the owner disassembly and reports the twelve handlers independently:

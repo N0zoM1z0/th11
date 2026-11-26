@@ -352,6 +352,49 @@ that the second control reloads all three words. Evidence:
 `gpt-6.1-sol-zero-memcpy-windows.txt`. Keep it isolated until the current
 shared-input checkpoint; field-count agreement alone does not close the owner.
 
+Moving those copies directly into the two opcode cases gives 12,016 bytes
+and 3,194 instructions, still 156 DIR32 / 257 REL32 fields. Its diagnostic
+register-normalized alignment falls to 2,541 despite the closer size; the
+helper form scores 2,568. Evidence:
+`.analysis/gpt-6.1-sol-execution-zero-direct-memcpy{,-code}.log`.
+
+The cold quad-helper context also permits a full interpreter-side control of
+the corrected callee ABI. Its 11,952-byte interpreter differs from the ordinary
+frontier in just four nonfield bytes: at `+0x1771/+0x1773` and
+`+0x2480/+0x2482`, VM/output setup changes from ECX/EAX to EAX/ECX. Its frame,
+pointer allocation and complete branch/call counts stay unchanged. Evidence:
+`.analysis/gpt-6.1-sol-execution-mode-quad-context-{code.log,delta.txt}`.
+
+Read-only C2 traces narrow the copy distinction further. Both variants reach
+`PRE_LOWER` with 805 regions, 5,634 tuples and 81 `OPMBASSIGN` operations.
+The four zero-vector copies have the same 12-byte block opcode and type word;
+the destination indirect operand's byte at `+0x20` is 3 for typed assignment
+and 4 for `memcpy`. This is alignment metadata: the pinned C2's
+`TupMakeIndir` writes it at RVA `0x1101AB/0x1101D1/0x1101E0`, including paths
+through `MscRestrictAlign`. Do not label it an alias flag. The two debugger
+links equal their ordinary controls over all 31,958/32,006 `.text` bytes.
+Evidence: `.analysis/compiler-vc9/execution-zero-{typed,byte-copy}-prelower.txt`,
+`trace-zero-{typed,byte-copy}-prelower-run.log` and
+`tup-make-indir-review.txt`. An earlier seven-stage trace exceeded its
+300-second bound; its partial `execution-zero-typed.txt` is diagnostic only.
+
+Native translation accumulation at `0x44D970..0x44D9A0` stores each float
+sum directly to the VM. The maintained aggregate `Sum` introduces three stack
+stores and integer reloads. A component `+=` control removes seven instructions
+and 32 owned bytes, but leaves the `0xE4` frame and reverses all three x87
+load/add operand pairs. Combined with the zero-vector byte copies it owns
+11,952 bytes / 3,186 instructions / 413 fields; diagnostic normalized alignment
+is 2,472, versus 2,568 for byte copies alone. Keep this control isolated while
+checking operand order. Evidence:
+`.analysis/gpt-6.1-sol-execution-translation-accumulate{,-code}.log`,
+`gpt-6.1-sol-execution-zero-and-translation{,-code}.log` and
+`gpt-6.1-sol-translation-accumulate-windows.txt`.
+Writing explicit assignments with native operand grouping produces identical
+nonfield bytes across the whole 11,920-byte control; it does not recover the
+x87 order. See `.analysis/gpt-6.1-sol-execution-translation-direct-code.log`
+and `gpt-6.1-sol-translation-direct-delta.txt`. Further local expression
+spelling trials have no support from this control.
+
 ## Stage culling and auxiliary switch owners (2026-11-17)
 
 - The stage layer's formerly source-less `CullStageObject` (403950, 1,643
