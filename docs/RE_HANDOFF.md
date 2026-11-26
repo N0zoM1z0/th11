@@ -39,20 +39,22 @@ Keep this semantic correction despite the larger frame. Evidence:
 Earlier pending changes restore the shared quad helper call and pass child IDs
 directly to lookup. Three real geometry TUs remain in the frontier's `/GL` graph.
 
-The old replay in session 37580 was deliberately stopped (exit 137) after
-65 accepted owners, before changing source. Its results remain bound to the
-old inputs; unchanged contexts can still be carried after receipt checks.
-The new frozen inputs are
+The frozen interpreter inputs are
 `.analysis/gpt-6.1-sol-strip-rounding-frozen.sha256`.
-Only shell session **2509** is live. It cold-built the main frontier, compared
-its complete extent/field inventory, and now runs
-`.analysis/gpt-6.1-sol-replay-strip-rounding-consumers.py`; log:
-`.analysis/gpt-6.1-sol-strip-rounding-consumer-replays.log`.
-Its scope is 75 affected exact owners plus the pending quad helper in 43
-contexts. It stops at the first failure and rebuilds stale contexts. Do not
-restart an earlier replay. Several remaining families have 132/214 support TUs.
-At this checkpoint it is building `bind-secondary-dialogue-sprite`, context
-29/43, with no failure recorded.
+The first replay stopped at context 37/43: `SecondaryPlayerInitialization.cpp`
+still referenced the old opaque `unknown408` array. Native writes VM bytes
+`+0x41C/+0x41D`; spelling these as `unknown40c[0x10/0x11]` preserves both offsets.
+Its seven exact consumers are precisely the remaining seven contexts.
+
+Shell session **5924** now runs
+`.analysis/gpt-6.1-sol-resume-strip-rounding-consumers.py`; log:
+`.analysis/gpt-6.1-sol-strip-rounding-consumer-resume.log`.
+It verified receipts before carrying all 69 previously accepted owners and
+is rebuilding `step-stage-fog-tween`, context 37/43. The other six remaining
+families have 132/214 support TUs. The failed controller's session 2509 is
+terminal (exit 1); keep its log and do not restart it. The scope remains
+75 exact owners plus the pending quad helper in 43 contexts. Prior replay
+results belong to their inputs; carry only proofs whose receipts still verify.
 
 The `build-animation-vm-mode-quad` frontier passes strict cold replay again
 after the strip correction: complete 108-byte public primary-TU owner, all
@@ -80,49 +82,38 @@ EDI at 5,134. These numeric scores describe the older 11,816-byte input.
 See the focused notes in `KNOWLEDGE_BASE.md` and
 `.analysis/compiler-vc9/execution-cursor-deferral.txt`.
 
-Rejected controls remain in `.analysis/`: ReadF literal capture, a TH10-style
-value constructor, `/G6`, alternate renderer graphs and an inline update helper.
-Their findings are in the focused knowledge notes; size alone did not select
-the maintained source.
+Next: finish the affected replay, retain strip rounding and promote the
+verified quad helper at the coherent `gpt-6.1-sol: ...` source checkpoint.
+The canonical ledger still has 493 exact owners. Do not change the four
+frozen interpreter/header inputs during this replay.
 
-Next: finish the live affected replay, retain the strip rounding and promote
-the verified quad helper at the coherent `gpt-6.1-sol: ...` source checkpoint.
-The six missing DIR32 fields are repeated reads of the global zero vector:
-native reads each component four times, candidate twice. Explicit scalar copies
-retain the same six missing fields and are rejected; evidence is in
-`.analysis/gpt-6.1-sol-execution-zero-components.log`. Direct Ghidra xrefs find
-13 reads of each component and no direct writes:
-`.analysis/gpt-6.1-sol-zero-vector-xrefs.txt`. TH10's corresponding tangent
-copies use `memcpy`; its isolated TH11 control restores all six DIR32 fields
-(156/156) and owns 11,984 bytes with the same `0xE4` frame. Only the two known
-float-reader REL32 fields remain missing. Evidence:
-`.analysis/gpt-6.1-sol-execution-zero-memcpy{,-code}.log` and
-`gpt-6.1-sol-execution-zero-memcpy-fields.json`. Direct case-site copies are
-worse. Corrected C2 traces show twelve loads at global-allocation entry in both
-forms; typed assignment promotes the components and emits only six loads.
-`SubsumePseudos` frees all twelve original load tuples. The targeted trace and
-ordinary link match completely. These traces use the older `/Ob0` argument
-context, preserved in `build/probe-ltcg/ExecutionBeforeArgumentProfile`.
-Taking the global's address alone also restores the reads but gives worse
-diagnostic alignment. See the focused knowledge note for these distinctions.
+Private probes now explain additional layout effects. Native RGB handlers
+keep full-word blue/green values through the red read, as TH10 does. The
+corresponding TH11 control improves whole-owner diagnostic alignment without
+adding stack colors. Opcode 17's literal store is local; only its variable
+resolver is shared. Splitting those pointer lifetimes restores its missing
+test without adding float-destination calls. Full TH10-style math expansion
+and case-local child-tail expansion instead add wrong callees and are rejected.
 
-The zero-copy control combined with the repaired argument profile retains
-413 fields and improves diagnostic alignment to 2,581. Its two remaining
-missing call fields are the opcode 97 float readers. The third missing
-conditional is opcode 17's destination test: native keeps its literal store
-local and shares only the variable slow path. Local-result and cached-pointer
-controls restore that test but add an unwanted sixteenth float-destination
-call, including with the corrected callee ABI. Keep them isolated.
+The combined RGB/zero-copy/partial-math/component-translation control with
+constructed vector sums owns 12,032 bytes, 3,216 instructions and 413 fields.
+Its frame is `0xD4`, against native `0xCC`; diagnostic EBX/EDI-normalized
+alignment is 2,676. Only the two opcode 97 reader fields are missing. This
+remains a private non-exact probe, not the maintained source. C2 traces show
+that its 16-byte frame reduction comes from three 12-byte stack colors
+changing alignment 8→4, with all 26 colors and 205 payload bytes retained.
+Both traced whole-text controls have zero differences. All four strip call
+windows still preserve both float-rounding stages. Naming tween return objects
+does not reduce the remaining frame gap. Map members of the last eight-aligned
+12-byte color before drawing a return-buffer conclusion. Focused findings and
+private evidence paths are in `KNOWLEDGE_BASE.md`.
 
-Native translation accumulation writes each float sum directly to the VM.
-A component `+=` probe removes seven instructions / 32 bytes but keeps the
-frame, reverses x87 operand pairs and worsens diagnostic alignment. Explicit
-assignments with native grouping have identical nonfield bytes. Logs:
-`.analysis/gpt-6.1-sol-execution-translation-{accumulate,direct}*.log`.
-The combined byte-copy/accumulation probe also remains isolated. All private
-probes are terminal. Keep the four maintained source inputs frozen until the
-current affected replay completes, then promote the quad helper at the source
-checkpoint before considering the zero-copy change.
+Earlier zero-vector traces show why ordinary typed copies retain only six
+of native's twelve loads: global allocation promotes the components and
+`SubsumePseudos` removes the original load tuples. TH10's corresponding
+`memcpy` model restores all six missing DIR32 fields. It remains isolated
+until the current source checkpoint. The old `/Ob0` family is preserved in
+`build/probe-ltcg/ExecutionBeforeArgumentProfile`.
 
 The comparison-handler diagnostic discovers the current dispatch table
 from the owner disassembly and reports the twelve handlers independently:

@@ -488,6 +488,92 @@ frame `0xE4` and EBX-VM/EDI-cursor. Evidence:
 `gpt-6.1-sol-argument-coupled-{zero,opcode17}-code.log` and
 `gpt-6.1-sol-argument-coupled-zero-fields.log`.
 
+## RGB operand lifetimes affect distant interpreter layout (2026-11-26)
+
+Native opcode 57/78 handlers retain blue and green reader results as full
+32-bit values until red has been read, then pack the three bytes before
+reading the duration. The maintained source truncates each channel immediately.
+TH10's `src/AnmManager.cpp` uses full `finalBlue`, `finalGreen` and `finalRed`
+locals followed by byte packing in both corresponding color-time cases
+(lines 3553–3596). This supplies a useful source model after the TH11 observation;
+it does not establish TH11's original nominal color type.
+
+With the repaired argument profile, preserving full channel values produces a
+12,000-byte interpreter, 3,202 instructions and 407 fields. Each physical RGB
+handler aligns 45 of 47 native instruction keys; the native handler is 169 bytes
+and the candidate 174. Whole-owner diagnostic register-normalized alignment
+rises from 2,564 to 2,633. The frame stays `0xE4`. C2 stack traces explain why:
+the four additional blue/green word locals join two existing stack colors,
+raising their weights from 122/97 to 128/103 without adding colors. Both traces
+retain 26 colors and 205 payload bytes, and their ordinary whole-text controls
+have zero differences. Keep the existing three-byte color view; there is no
+basis for adding a fourth padding byte. Evidence:
+`.analysis/gpt-6.1-sol-execution-rgb-word-temporaries{.py,.log}`,
+`gpt-6.1-sol-rgb-word-temporaries-handler-diff.txt`,
+`.analysis/compiler-vc9/execution-stack-materialization-{baseline,rgb}.txt`
+and `stack-materialization-summary.txt`.
+
+## Opcode 17 shares only the variable-destination tail (2026-11-26)
+
+Direct Ghidra references confirm the native opcode 17 trampoline at `44D474`
+branches to `44D6E5`; another incoming branch at `44D6E1` reaches `44D6F3`.
+The literal result stays local. Separating the raw operand's local role from
+the pointer passed to the shared variable resolver restores the destination
+test without adding a sixteenth float-destination call. This control owns
+11,984 bytes, 3,194 instructions and 407 fields. It still misses the two opcode
+97 float readers. Evidence:
+`.analysis/gpt-6.1-sol-math-slow-tail-xrefs.txt` and
+`gpt-6.1-sol-opcode17-split-roles{.py,.log}`.
+
+Inlining all four math destinations in TH10's direct-expression style gives
+12,096 bytes, 263 calls and 410 fields. Its call inventory has eighteen
+float-destination calls versus native fifteen, while still missing two float
+readers. Likewise expanding all child-creation tails reaches the native total
+of 262 calls by adding an ID lookup and list insertion; it does not recover
+the missing readers. Reject both controls. The aggregate call count can conceal
+wrong callees. Evidence:
+`.analysis/gpt-6.1-sol-execution-direct-math-family.log`,
+`gpt-6.1-sol-execution-local-child-family.log` and
+`gpt-6.1-sol-materialization-call-inventories.log`.
+
+## Vector construction changes stack alignment without removing colors (2026-11-26)
+
+A scoped three-float value constructor changes VC9's temporary alignment in
+the interpreter. This was measured in a private context combining the full-word
+RGB reads, zero-vector byte copies, opcode 17's partial shared tail and direct
+component translation stores. The POD-sum variant owns 12,064 bytes with frame
+`0xE4`; returning constructed vector values owns 12,032 with frame `0xD4`.
+Both have 3,216 instructions, 413 fields and the same 26 stack colors with
+205 payload bytes, identical sizes, members and weights. No color disappears.
+
+Three twelve-byte colors change alignment from eight to four. Their allocations
+move from `-152/-168/-184` to `-144/-156/-168`; the remaining eight-aligned
+12-byte color moves from `-200` to `-184`. The quad slot stays 48 bytes at
+`-48`, and the eight-byte pair stays at `-64`. The compiler's authenticated
+`StackPacking+0x27B5` instruction (RVA `108F85`) loads color field `+0x14`,
+then passes it with the size to `allotemp` at `1F68C0`; the latter's mask and
+rounding operations confirm that this field is alignment. The 16-byte frame
+reduction therefore comes from packing, not fewer source temporaries.
+
+Both traced links reproduce their ordinary controls' complete 32,086-byte
+text sections with zero differences. All four strip call windows still contain
+two complete three-component `FSTP32` rounding stages. The constructed variant
+has diagnostic normalized alignment 2,676, still receives VM/cursor in EBX/EDI,
+and still lacks the two opcode 97 readers; native frame is `0xCC`. Naming the
+five vector/color return results and passing their addresses to ordinary
+inline copy helpers does not close the remaining eight-byte frame gap. The
+members of the last shared color must be mapped before attributing that gap
+to a specific return buffer.
+
+Evidence: `.analysis/gpt-6.1-sol-execution-vector-value-context{.py,.log}`,
+`gpt-6.1-sol-vector-value-strip-rounding.txt`,
+`.analysis/compiler-vc9/execution-stack-materialization-{component-vector,constructed-vector}.txt`,
+`stack-value-context-summary.txt`, `stack-color-alignment-review.txt` and
+`.analysis/gpt-6.1-sol-execution-named-results.log`. These private source
+controls remain separate from the maintained interpreter. Earlier isolated
+constructor trials worsened alignment; the useful result depends on the
+surrounding data lifetimes and branch graph.
+
 ## Stage culling and auxiliary switch owners (2026-11-17)
 
 - The stage layer's formerly source-less `CullStageObject` (403950, 1,643
