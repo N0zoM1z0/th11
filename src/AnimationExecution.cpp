@@ -114,8 +114,9 @@ __forceinline float *Floats(AnimationInstruction *instruction)
 { return reinterpret_cast<float *>(instruction + 1); }
 __forceinline int ReadI(AnimationVmView *vm, AnimationInstruction *instruction, int index)
 {
-    int value = Words(instruction)[index];
-    return (instruction->variables & (1u << index)) ? ReadAnimationInteger(vm, value) : value;
+    if (instruction->variables & (1u << index))
+        return ReadAnimationInteger(vm, Words(instruction)[index]);
+    return Words(instruction)[index];
 }
 __forceinline float ReadF(AnimationVmView *vm, AnimationInstruction *instruction, int index)
 {

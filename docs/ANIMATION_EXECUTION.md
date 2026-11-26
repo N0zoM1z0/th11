@@ -17,21 +17,34 @@ a second function track.
 ## Current status (2026-11-26)
 
 The focused `animation-execution-tween-context` build was rebuilt after the
-TH10-style instruction-cursor loop, result-lifetime reduction and VM-state
-aliasing experiments. The current natural-C++ candidate owns 11,816 bytes and
-3,301 decoded instructions against the native 12,056-byte owner and 3,308
-instructions. The complete-extent mnemonic/operand-key comparison aligns
-1,425 native instruction keys; calls are 261/262 and conditional branches are
-381/406 (candidate/native). These are diagnostic measurements, not an exactness
-score. The twelve integer/float relation handlers now branch explicitly to a
-shared instruction-advance label or the timed-jump path. The float inversions
-use negated ordered comparisons so unordered values retain their original
-fallthrough behavior. This change raises alignment from 1,396 to 1,425 keys and
-reduces the candidate by 144 bytes. The candidate frame remains `0xDC` rather
-than native `0xCC`, and its prologue still assigns the VM pointer to EBX and
-the instruction cursor to EDI, opposite the native EDI/EBX allocation. The
-complete 104-entry dispatch table and remaining owner-wide codegen gaps remain
-open.
+TH10-style instruction-cursor loop, result-lifetime reduction, VM-state
+aliasing and conditional argument-decode experiments. The current natural-C++
+candidate owns 11,976 bytes and 3,372 decoded instructions against the native
+12,056-byte owner and 3,308 instructions. The complete-extent
+mnemonic/operand-key comparison aligns 1,484 native instruction keys; calls
+are 262/262 and conditional branches are 404/406 (candidate/native). These are
+diagnostic measurements, not an exactness score.
+
+The twelve integer/float relation handlers now branch explicitly to a shared
+instruction-advance label or the timed-jump path. Their operand-read order was
+then debugged at the helper boundary: the previous `ReadI` loaded the encoded
+word before testing its variable bit, whereas the native integer handlers test
+the bit first and only load/decode through `ReadAnimationInteger` on the
+variable path. Rewriting `ReadI` as a conditional read (rather than a
+preloaded temporary and conditional expression) makes opcodes 28, 30, 32, 34,
+36 and 38 match all 16 decoded instructions each after only the proven
+VM/instruction register-label normalization. The six float handlers also
+match their complete 22/23-instruction bodies under that normalization;
+opcode 39's shared continuation still has five register-temporary differences.
+The twelve handlers' x87 comparison instructions, status-bit tests and
+unordered/NaN branches now line up.
+
+A controlled rebuild with the termination-label experiment removed retained
+the same 11,976-byte/1,484-key result, so that unrelated trial was rejected.
+The candidate frame is now `0xD4` rather than native `0xCC`, and its prologue
+still assigns the VM pointer to EBX and instruction cursor to EDI, opposite
+native EDI/EBX allocation. The complete 104-entry dispatch table and remaining
+owner-wide codegen gaps remain open.
 
 The VM event word at `+0x37C` is now declared `unsigned short`. Native entry
 loads this field with `movzx` before testing and carrying the event through the

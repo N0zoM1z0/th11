@@ -14,16 +14,24 @@ Ghidra through `scripts/ghidra.py`.
 The complete natural-C++ interpreter, event paths, 104-entry signed-opcode
 dispatch table, nine tween updates and both generated-strip paths are present.
 The focused `animation-execution-tween-context` cold build currently owns
-11,816 bytes and aligns 1,425/3,308 native instruction keys; calls are 261/262
-and conditional branches 381/406. The twelve integer/float relation handlers
-now branch through a shared instruction-advance path while preserving unordered
-float comparisons. Its frame is `0xDC` rather than native
-`0xCC`, and it assigns VM/cursor to EBX/EDI instead of native EDI/EBX. Recent
-parameter-type, helper-argument-order and register-declaration-order trials
-were rejected because they did not improve the complete comparison; snapshots
-remain in `.analysis/`. The dispatch handler order is largely consistent with
-the native table; the notable final-layout difference is the placement of
-`-1/1/2` termination blocks relative to the default `0/64` path.
+11,976 bytes and aligns 1,484/3,308 native instruction keys; calls are 262/262
+and conditional branches 404/406. The twelve integer/float relation handlers
+now match their complete decoded bodies after only the proven EBX/EDI VM-vs-
+instruction register-label normalization, except for five temporary-register
+instructions in opcode 39's shared continuation. This was achieved by changing
+`ReadI` to test the variable bit before loading its operand, matching the
+native conditional-read order. The frame is `0xD4` rather than native
+`0xCC`, and the VM/cursor allocation remains EBX/EDI instead of native
+EDI/EBX. Parameter-type, helper-argument-order and register-declaration-order
+trials were rejected; snapshots remain in `.analysis/`. The dispatch handler
+order is largely consistent with the native table.
+
+The comparison-handler diagnostic discovers the current dispatch table
+from the owner disassembly and reports the twelve handlers independently:
+
+```bash
+scripts/repo-python .analysis/compare-animation-comparison-handlers-20261126.py
+```
 
 Rebuild and compare only this owner:
 
