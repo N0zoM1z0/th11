@@ -136,6 +136,37 @@ trace with `scripts/repo-python .analysis/compiler-vc9/trace-stack.py` after
 building the intended focused context. The trace changes no IR, weights,
 register assignments or generated instruction bytes.
 
+## The extra animation-reader merge occurs in late flow optimization (2026-11-26)
+
+A complete call-only VC9 trace localizes the opcode 96/97 merge to
+`FgDoLateFlowOpts` (RVA `0x48BD0`), called from `dop2_FinalFlowOpts` at
+`+0x125403`. On the 11,816-byte interpreter candidate, all 78 float-reader
+calls survive lowering and remain present at global-register-allocation
+entry. The late flow pass removes two of them; subsequent code motion does
+not restore them.
+
+| Candidate stage | Float reader | ID lookup | RNG next | All calls |
+| --- | ---: | ---: | ---: | ---: |
+| Before final late flow | 78 | 7 | 4 | 264 |
+| After `FgDoLateFlowOpts` | 76 | 5 | 3 | 259 |
+| Before encoding | 76 | 5 | 4 | 260 |
+
+The two ID-lookup merges reproduce the native shared factory continuations.
+An RNG call is merged and then duplicated again before encoding. The native
+interpreter has 78 float reads, five ID lookups, four RNG calls and 262 calls
+in total. This separates the unwanted reader merge from legitimate merges
+and shows why a total call count alone is insufficient.
+
+The three snapshots cover the complete function's region chain. The traced
+link and normal relink have identical 31,798-byte `.text` sections. Evidence:
+`.analysis/compiler-vc9/execution-phase-counts.txt` and
+`.analysis/compiler-vc9/trace-phase-counts-run.log`; reproduce with
+`scripts/repo-python .analysis/compiler-vc9/trace-phase-counts.py` against the
+intended cold input family. This observation precedes the effect-local timer
+constructor repair. A full operand dump reached the five-minute bound, so
+retain the call-only snapshots for phase localization and trace only the
+matched tails when investigating the register schedule.
+
 ## Stage culling and auxiliary switch owners (2026-11-17)
 
 - The stage layer's formerly source-less `CullStageObject` (403950, 1,643
