@@ -136,6 +136,60 @@ trace with `scripts/repo-python .analysis/compiler-vc9/trace-stack.py` after
 building the intended focused context. The trace changes no IR, weights,
 register assignments or generated instruction bytes.
 
+## A conditional return preserves both opcode 97 readers (2026-11-26)
+
+Changing only `ReadF` from two early returns to one conditional return restores
+78 float reads and all 262 calls in the real-timer graph, with full-width script
+IDs and the existing child-publication order. A TH10-style conditional macro
+also restores them; the ordinary inline function suffices. A control using the same source and object paths keeps the exact reader symbol
+and returns to 76 reads when the
+old body is restored. The source path's anonymous-namespace hash is unchanged.
+
+The maintained cold candidate owns 12,096 bytes: 11,680 code/alignment plus
+416 table bytes, with 3,223 instructions and frame `0xE4`. Every direct call
+resolves, and the complete 259-field REL32 destination inventory and
+multiplicities agree with native. The complete inventory is 409 fields versus
+415: the zero-vector components still have two reads each versus native four.
+Conditional branches are 258/259 and jumps 142/147. VM/cursor remain EBX/EDI.
+This restores a specific codegen property; the complete owner remains non-exact.
+
+Both forms enter late flow with 78 reads and the child copy before the first
+float load/test. `FgDoLateFlowOpts` leaves 76 reads for the old form and 78
+for the conditional form. In the latter, the copy is still early at pre-encode
+entry. The final `Schedule` call at RVA `0x125581` moves that same EAX→ESI
+tuple after FLD/test, observed at its return `0x125586`. The earlier pointer-
+placement difference is therefore a later scheduling result, not a sufficient
+explanation of the merge choice. Both branch tags encode equality through
+`TupCCEncode`; the raw tags cannot index the machine `CondCodeName` array
+directly.
+
+All paired debugger/ordinary text controls match: 33,446 bytes for the old
+form, 33,542 for the macro and 33,590 for the conditional function. Four math
+results retain immediate FSTP32 materialization, and all four strip windows
+retain both three-component rounding stages. The complete 540-byte reader
+and 104-byte integer destination have identical nonfield bytes and field
+positions across the old/new control.
+
+Evidence: `.analysis/gpt-6.1-sol-execution-readf-{macro,conditional}-control{.py,.log}`,
+`gpt-6.1-sol-readf-same-path-control{.py,.log}`,
+`gpt-6.1-sol-readf-conditional-main-{cold,code,fields}.log`,
+`gpt-6.1-sol-readf-main-cold-rounding-review.txt`,
+`gpt-6.1-sol-readf-expression-child-windows.txt` and
+`.analysis/compiler-vc9/execution-child-{flow,flow-macro,conditions-baseline,conditions-conditional,schedule}.txt`,
+with their `trace-child-*-run.log` controls.
+
+The private constructed-result model also retains the restored readers. It
+owns 12,176 bytes / 3,254 instructions, frame `0xCC`, all 415 fields, and the
+native call/conditional/jump counts 262/259/147. Its direct-call inventory has
+no missing or extra destinations. It remains non-exact and private: matching
+these counts and the frame does not close the remaining allocation/copy gaps.
+Evidence: `.analysis/gpt-6.1-sol-constructed-readf-conditional-{control,code,fields}.log`.
+Replacing the sum value's three-argument constructor with a default constructor
+and three component assignments leaves those size/count/frame results intact.
+The copied control changes 22 nonfield bytes and retains every field position
+and `ESP+24` vector-result slot. Evidence:
+`.analysis/gpt-6.1-sol-constructed-sum-default-{control.log,body-comparison.txt}`.
+
 ## The extra animation-reader merge occurs in late flow optimization (2026-11-26)
 
 A complete call-only VC9 trace localizes the opcode 96/97 merge to
@@ -186,10 +240,9 @@ The removed prefix already moves the lookup result from EAX to ESI
 (`scratch.child`) before the argument load and variable-bit test. Native
 opcode 97 makes that copy after the load/test. Its case-local
 `positionedChild` currently coalesces into the shared scratch pointer.
-A useful next control is to retain the returned child pointer locally from
-lookup onward and check the copy placement before late flow. This follows
-TH10's lifetime/allocation method; no register barrier or synthetic call is
-needed to test the hypothesis.
+Later local-pointer/reference controls do not recover the calls. The
+conditional-return and final-scheduler traces above separate the preserved
+reader calls from the eventual child-copy placement.
 
 Evidence: `.analysis/compiler-vc9/execution-merges.txt` and
 `.analysis/compiler-vc9/trace-merges-run.log`; reproduce with
