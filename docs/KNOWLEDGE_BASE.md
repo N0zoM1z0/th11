@@ -76,6 +76,66 @@ transfer. TH09 traced `c2.dll` in a debugger to explain ties; for TH11's
 LTCG, code generation runs in the linker-loaded `c2.dll`, which would need a
 separate investigation.
 
+## Interpreter layout: preserve real helper calls (2026-11-26)
+
+TH11 VC9 RTM `/GL` confirms TH10's warning about manually expanded helpers.
+The UV update in `ExecuteAnimationVm` calls the same `0x452010` quad-mode
+helper as opcode 98. Expanding that call into a switch added two calls and a
+16-byte jump table to the interpreter, concealing two missing float-reader
+call sites elsewhere in its total call count. Restoring the call removes
+144 owned bytes. Compare the complete owner, but count instructions only in
+its code region; decoding trailing dispatch data distorted earlier metrics.
+
+Linking the three real geometry TUs changes the helper from 100 to 108 bytes
+and changes its private argument registers without changing interpreter size.
+The helper remains non-exact. This is concrete evidence to inspect the real
+callee graph before attempting local register or source-order adjustments.
+See [ANIMATION_EXECUTION](ANIMATION_EXECUTION.md#current-status-2026-11-26)
+for native call sites, result-buffer offsets and retained failed controls.
+
+## VC9 stack packing traced in the actual linker backend (2026-11-26)
+
+The pinned VC9 RTM `c2.dll` uses the same stack-color ordering principle found
+in TH10: compare the color class, then the signed integer ratio
+`weight * 1000 / size`. This was checked in the VC9 binary itself, not inferred
+from VC7.1 addresses. Relevant RVAs are `StackPacking` at `0x1067D0`,
+`StkColorCmp` at `0x1096D0` and `QSortColors` at `0x109750`. Runtime DLL bases
+vary under Wine, so resolve the mapped `.text` before placing breakpoints.
+
+The compiler component SHA-256 is
+`215c21b66b7769e65fff3ca6a9af498c5a896695abdf69e2412f3c2cacd73c5b`.
+The downloaded public PDB has the compiler's GUID
+`53BF9F1F-671F-4485-AC1E-CA8A9B7FC280`; its stripped age is 12 while the DLL
+records 11. Its four exported-function RVAs and section headers agree with
+the DLL, and the named routines were checked against local machine code.
+Use those names for compiler analysis, not as an Oracle identity receipt.
+
+A read-only linker trace of the pre-child-local interpreter records 26 stack
+colors. Four single-use, four-byte temporaries have weight 1 and ratio 250;
+they occupy offsets -4, -8, -12 and -16 before the shared 48-byte quad group
+at -64. That quad group combines two source arrays, with total weight 14
+and ratio 291. The scale pair's eight-byte return shares a color with a
+source target pair, with total weight 4 and ratio 500. The four word slots
+come from copying factory return values into `scratch.childId`; the native
+child paths pass the returned ID object directly to `ClearMissingAnimationId`.
+This identifies a source-level return-object issue before changing stack-slot
+or declaration order.
+
+The group records are `0x1C` bytes. Unlike the TH10 trace's 32-bit sparse
+vectors, this VC9 backend uses 64-bit nodes with base, low/high bit words and
+a next pointer. Do not reuse TH10's vector decoder unchanged. Read groups
+before and after sorting; they have already been recycled when
+`StackPacking` returns.
+
+The traced link and an ordinary relink of the same inputs/output paths have
+identical 31,814-byte `.text` sections. Local evidence is in
+`.analysis/compiler-vc9/execution-stack.baseline.txt`,
+`.analysis/compiler-vc9/trace-stack-baseline-run.log` and
+`.analysis/compiler-vc9/baseline.linked.receipt.json`. Reproduce the local
+trace with `scripts/repo-python .analysis/compiler-vc9/trace-stack.py` after
+building the intended focused context. The trace changes no IR, weights,
+register assignments or generated instruction bytes.
+
 ## Stage culling and auxiliary switch owners (2026-11-17)
 
 - The stage layer's formerly source-less `CullStageObject` (403950, 1,643
