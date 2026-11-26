@@ -395,6 +395,99 @@ x87 order. See `.analysis/gpt-6.1-sol-execution-translation-direct-code.log`
 and `gpt-6.1-sol-translation-direct-delta.txt`. Further local expression
 spelling trials have no support from this control.
 
+## VC9 promotes the zero-vector components during register allocation (2026-11-26)
+
+These traces use the 11,952-byte strip-rounding context with the argument
+support TU still at `/Ob0`. The typed and byte-copy variants both still have
+twelve global-zero loads at
+`dop2_GlobalRegAlloc` entry. By `dop2_PostCodegenFlowOpts`, typed assignment
+has six loads whose destination symbols are the global's own three scalar
+equivalents. The byte-copy variant retains twelve loads into temporary symbols.
+This localizes the difference after global-allocation entry, rather than to
+the original block-copy expansion. All equivalents here have type `0x1004`
+and four-byte scalar accesses; scalar destination alignment is 3 in both
+variants. The earlier block alignment difference alone does not explain the
+later register promotion.
+
+Scalar equivalents lose their direct names. The pinned C2's `SymNewEquiv`
+copies the root link at `SYM+8`, clears the direct symbol pointer at `+0`,
+and stores the byte offset at `+0x24`. Following the root recovers the zero
+vector's `+0/+4/+8` names. A direct-name-only search incorrectly reports no
+late references. Static review and corrected traces are in
+`.analysis/compiler-vc9/sym-new-equiv-review.txt`,
+`execution-zero-{typed,byte-copy}-equiv-lowering-verified.txt` and
+`zero-global-promotion-summary.txt`. Both corrected debugger links match their
+ordinary controls over all 31,958/32,006 `.text` bytes; see
+`trace-zero-{typed,byte-copy}-equiv-lowering-verified-run.log`.
+
+All twelve original typed-load tuples are freed from `SubsumePseudos` through
+the call at C2 RVA `0x31C1E` to `TupFree` (stack return `0x31C23`). A trace
+restricted to those twelve tuples completes and matches all 31,958 `.text`
+bytes against its ordinary control. See
+`.analysis/compiler-vc9/execution-zero-typed-free-fast.txt`,
+`trace-zero-typed-free-fast-run.log` and `subsume-zero-loads-review.txt`.
+The earlier unfiltered allocator breakpoint exceeded 300 seconds; its partial
+trace is retained separately.
+
+A local `const CameraVector *zero = &g_AnimationExecutionZero` followed by the
+original aggregate assignments also restores all twelve reads, without calling
+`memcpy`. It gives 11,984 bytes / 3,193 instructions / 413 fields, but diagnostic
+normalized alignment is 2,462 rather than the byte-copy form's 2,568. This
+isolates source addressability as a useful lead; the byte-copy form is still
+the better complete-owner control. Evidence:
+`.analysis/gpt-6.1-sol-execution-zero-address{,-code}.log`.
+
+The third missing interpreter conditional belongs to opcode 17's `fmod`
+assignment tail. Native `0x44D41B` tests operand-zero decoding and `0x44D44B`
+separately tests destination decoding. The candidate's explicit jump to
+`animation_float_destination` shares the second test with other math cases.
+The other two missing conditionals accompany opcode 97's known merged readers.
+The physical case comparison is in
+`.analysis/gpt-6.1-sol-execution-case-predicates.txt`.
+
+Replacing opcode 17's shared tail with a local result restores its destination
+test but adds a sixteenth `AnimationFloatDestination` call; native has fifteen.
+Caching its raw operand pointer while retaining `scratch.floatResult` still
+adds that call. Both isolated owners are 12,016 bytes / 408 fields; the pointer
+form has 3,205 instructions and 257 conditional branches. Native shares the
+variable-destination slow path at `0x44D6E5` while keeping the literal store
+local. Preserve that distinction in further lifetime and callee-context work.
+Evidence: `.analysis/gpt-6.1-sol-opcode17-{local,pointer}-code.log` and
+`gpt-6.1-sol-opcode17-pointer-fields.{log,json}`.
+
+## The exact argument profile repairs its ABI inside the interpreter graph (2026-11-26)
+
+Using the canonical float-destination leaf's `/O2 /Oy /Ob1 /GL` profile for
+`AnimationExecutionArguments.cpp` in the main frontier restores its complete
+124-byte body and ESI-VM/EDI-operand interface. The previous `/Ob0` support
+profile emitted 140 bytes and received the VM in EAX. Only that support TU's
+`/Ob0` changes to `/Ob1`; its source and the other TU profiles stay the same.
+
+The maintained cold interpreter remains 11,952 bytes / 3,187 instructions,
+260 calls and 407 address fields, with frame `0xE4` and EBX-VM/EDI-cursor.
+Diagnostic register-normalized alignment improves from 2,551 to 2,564 keys.
+The complete cold support contribution also replays the existing fourteen
+float-destination bindings with zero byte differences. The canonical leaf's
+separate primary-TU proof remains its accepted exact row. Evidence:
+`.analysis/gpt-6.1-sol-execution-argument-profile-cold{,-code,-fields}.log`
+and `gpt-6.1-sol-argument-profile-leaf-cold-replay.log`.
+
+The integer-destination and pending quad-helper receipts verify before and
+after this frontier-only setting change. Their contexts, including their own
+argument support profiles, remain unchanged. The complete earlier frontier
+family is preserved in `build/probe-ltcg/ExecutionBeforeArgumentProfile`.
+
+Relinking the zero-vector byte-copy primary object with the repaired argument
+support gives 11,984 bytes / 3,193 instructions / 413 fields and raises
+diagnostic normalized alignment to 2,581. Its only missing call fields remain
+the two opcode 97 float readers. Relinking the opcode 17 pointer control still
+gives sixteen float-destination calls, so correcting that callee interface
+alone does not restore the native partial tail sharing. Both controls keep
+frame `0xE4` and EBX-VM/EDI-cursor. Evidence:
+`.analysis/gpt-6.1-sol-execution-argument-couplings.log`,
+`gpt-6.1-sol-argument-coupled-{zero,opcode17}-code.log` and
+`gpt-6.1-sol-argument-coupled-zero-fields.log`.
+
 ## Stage culling and auxiliary switch owners (2026-11-17)
 
 - The stage layer's formerly source-less `CullStageObject` (403950, 1,643

@@ -17,8 +17,16 @@ table, against native 11,640 + 416. Candidate/native calls are 260/262,
 conditional branches 256/259 and jumps 142/147. All direct calls resolve;
 only `ReadAnimationFloat` differs in count (76/78). The complete candidate
 field inventory has 407 entries versus native 415. Code-key alignment is
-1,440/3,203, or 2,551 after a diagnostic EBX/EDI swap. No exact credit follows.
+1,440/3,203, or 2,564 after a diagnostic EBX/EDI swap. No exact credit follows.
 The frame is `0xE4` versus native `0xCC`; VM/cursor remain EBX/EDI versus EDI/EBX.
+
+The main frontier now uses `/Ob1` for `AnimationExecutionArguments.cpp`, matching
+the canonical leaf profile. Its cold family restores the complete 124-byte
+float-destination body and ESI-VM/EDI-operand input; all fourteen support fields
+replay with zero differences. Evidence:
+`.analysis/gpt-6.1-sol-execution-argument-profile-cold{,-code,-fields}.log` and
+`gpt-6.1-sol-argument-profile-leaf-cold-replay.log`. Other unit settings stay
+unchanged; the integer-destination and quad-helper receipts still verify.
 
 The latest source correction restores two float-rounded vector additions per
 strip vertex. Native stores the position-plus-offset vector before adding
@@ -43,8 +51,8 @@ its complete extent/field inventory, and now runs
 Its scope is 75 affected exact owners plus the pending quad helper in 43
 contexts. It stops at the first failure and rebuilds stale contexts. Do not
 restart an earlier replay. Several remaining families have 132/214 support TUs.
-At this checkpoint it is building `read-secondary-host-integer-value`, context
-26/43, with no failure recorded.
+At this checkpoint it is building `bind-secondary-dialogue-sprite`, context
+29/43, with no failure recorded.
 
 The `build-animation-vm-mode-quad` frontier passes strict cold replay again
 after the strip correction: complete 108-byte public primary-TU owner, all
@@ -90,9 +98,21 @@ copies use `memcpy`; its isolated TH11 control restores all six DIR32 fields
 float-reader REL32 fields remain missing. Evidence:
 `.analysis/gpt-6.1-sol-execution-zero-memcpy{,-code}.log` and
 `gpt-6.1-sol-execution-zero-memcpy-fields.json`. Direct case-site copies are
-worse. Short C2 traces retain four block copies in both forms, with different
-destination alignment metadata; both pass whole-text debugger/normal controls.
-See the focused knowledge note for this distinction and the earlier timeout.
+worse. Corrected C2 traces show twelve loads at global-allocation entry in both
+forms; typed assignment promotes the components and emits only six loads.
+`SubsumePseudos` frees all twelve original load tuples. The targeted trace and
+ordinary link match completely. These traces use the older `/Ob0` argument
+context, preserved in `build/probe-ltcg/ExecutionBeforeArgumentProfile`.
+Taking the global's address alone also restores the reads but gives worse
+diagnostic alignment. See the focused knowledge note for these distinctions.
+
+The zero-copy control combined with the repaired argument profile retains
+413 fields and improves diagnostic alignment to 2,581. Its two remaining
+missing call fields are the opcode 97 float readers. The third missing
+conditional is opcode 17's destination test: native keeps its literal store
+local and shares only the variable slow path. Local-result and cached-pointer
+controls restore that test but add an unwanted sixteenth float-destination
+call, including with the corrected callee ABI. Keep them isolated.
 
 Native translation accumulation writes each float sum directly to the VM.
 A component `+=` probe removes seven instructions / 32 bytes but keeps the
