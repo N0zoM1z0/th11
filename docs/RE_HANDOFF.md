@@ -47,8 +47,8 @@ source files are frozen by
 Only shell session **37580** remains live, running
 `.analysis/gpt-6.1-sol-resume-execution-timer-remaining.py`; its log is
 `.analysis/gpt-6.1-sol-execution-timer-remaining.log`. At this checkpoint,
-50 current proofs are carried and seven more have passed; context 25/42
-(`read-secondary-host-integer-value`) is building. Earlier replay sessions
+50 current proofs are carried and 13 more have passed; context 31/42
+(`reset-animation-vector-tween-time`) is building. Earlier replay sessions
 are terminal. Reuse current cold receipts, preserve this run, and finish
 remaining comparisons before the source checkpoint. Several remaining
 contexts have 132/214 support TUs; standard cold builds remain in use.
@@ -71,6 +71,22 @@ x87 operand order in opcodes 9/13. Explicitly loading X before its variable
 flag grows the owner to 11,840 bytes without restoring the missing calls.
 Both controls are rejected and remain under `.analysis/execution-opcode97-local`
 and `.analysis/gpt-6.1-sol-opcode97-*.log`. Maintained source is unchanged.
+
+The `build-animation-vm-mode-quad` frontier now has a complete cold strict
+proof: 108 bytes/eight fields/zero differences, public primary-TU ownership.
+Only its rotation support TU uses `/fp:fast`, removing CRT trig calls and
+restoring the helper's EAX-VM/ECX-output interface. The rotation remains
+non-exact (482 versus 571 bytes, no paired FSINCOS). Proof files:
+`.analysis/gpt-6.1-sol-mode-quad-cold.log` and
+`gpt-6.1-sol-mode-quad-cold-compare.json`. Keep the unit pending promotion
+until the shared-source checkpoint; the canonical count remains 493.
+
+The refined allocation trace shows the main VM split taking EBX at priority
+7,466 ahead of the original cursor at 5,760. `UpdateAffectedGlobregs` empties
+the cursor's mask; a new cursor split then takes EDI at 5,134. Evidence:
+`.analysis/compiler-vc9/execution-cursor-deferral.txt`. `/G6`, a shared renderer
+owner, a live 30-TU drawing graph and an inline update helper do not improve
+the interpreter's nonfield bytes. Preserve the rejected controls in `.analysis/`.
 
 After the source checkpoint, inspect split costs and real callee register
 use before more declaration-order trials. Keep the reader merge and result

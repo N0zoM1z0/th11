@@ -234,6 +234,21 @@ Evidence: `.analysis/compiler-vc9/execution-registers.txt`,
 31,798-byte `.text` sections. The traces explain this candidate's decisions;
 the native split graph is not available.
 
+A later trace follows the competition directly. Before the first integer
+selection, both the original cursor and the main VM split allow only EBX.
+Their allocation priorities are 5,760 and 7,466 respectively. The VM wins;
+`UpdateAffectedGlobregs` empties the cursor's mask, and a new cursor split
+with priority 5,134 subsequently allows EDI. This explains the inversion as
+a primary allocation followed by cursor splitting, rather than two unrelated
+register preferences. The original VM receives 13 split-marker insertions,
+mostly around tween-result stores. Range numbers are reused between floating
+and integer rounds: qualify them by register class and source identity.
+
+Evidence: `.analysis/compiler-vc9/execution-vm-split-markers.txt` and
+`execution-cursor-deferral.txt`, with their independent control logs
+`trace-split-markers-verified-run.log` and `trace-cursor-deferral-run.log`.
+Both completed controls replay identical 31,798-byte `.text` sections.
+
 A case-local opcode 97 child-pointer control leaves its handler unchanged and
 retains the 11,816-byte owner, 260 calls and `0xD4` frame. Its only code changes
 swap x87 load/arithmetic operands in opcodes 9 and 13: addition improves while
@@ -241,6 +256,36 @@ multiplication loses native order. The copied-source baseline reproduces the
 entire maintained interpreter byte-for-byte. Keep the local-pointer trial in
 `.analysis/gpt-6.1-sol-opcode97-local-control.log` and
 `gpt-6.1-sol-opcode97-local-diff.log`; it is not a maintained improvement.
+
+## Geometry math options change the interpreter helper ABI (2026-11-26)
+
+The rotated quad's two CRT trig calls force its VM into ESI in the interpreter
+context. Compiling only `AnimationVmRotation.cpp` with `/fp:fast` replaces those
+calls with FCOS/FSIN and restores EAX-VM. That change propagates into
+`BuildModeQuad`: its inputs become native EAX-VM/ECX-output, and the complete
+108-byte helper has zero diagnostic differences across all nonfield bytes,
+including three alignment bytes and its four-entry table. The new worktree unit
+`build-animation-vm-mode-quad` subsequently passes strict cold replay: all eight
+fields, complete public primary-TU PDB ownership and all 108 bytes match.
+Its receipt and comparison are in `.analysis/gpt-6.1-sol-mode-quad-cold.log`
+and `gpt-6.1-sol-mode-quad-cold-compare.json`. Canonical promotion waits for
+the pending shared-input source checkpoint; it remains a frontier meanwhile.
+
+The rotated body is then 482 bytes, not native 571, and still lacks the paired
+FSINCOS. The option supplies a useful reproducible helper context; it does not
+establish the original rotation TU's math settings. Keep the main interpreter
+and rotated owner non-exact. Evidence:
+`.analysis/gpt-6.1-sol-execution-rotation-fast-control.log`.
+
+Useful rejected controls: `/G6` leaves all 11,816 interpreter bytes unchanged.
+Putting the same geometry bodies in the shared renderer TU, then retaining its
+real drawing root in a merged 30-TU graph, leaves every interpreter nonfield
+byte unchanged. An inline update helper also leaves those bytes unchanged and
+adds an unused 2,286-byte helper copy. These controls are retained in
+`.analysis/gpt-6.1-sol-execution-{g6,renderer-owner,live-renderer}-control.log`,
+`gpt-6.1-sol-execution-update-helper.log` and
+`gpt-6.1-sol-execution-context-controls-nonfields.log`. The maintained source
+and original frontier profiles are unchanged.
 
 ## Stage culling and auxiliary switch owners (2026-11-17)
 
