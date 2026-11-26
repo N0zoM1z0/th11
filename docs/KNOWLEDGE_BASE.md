@@ -198,7 +198,8 @@ link and ordinary control have identical 31,798-byte `.text` sections.
 
 ## VC9 splits the interpreter pointers before choosing their registers (2026-11-26)
 
-The interpreter's EBX-VM/EDI-cursor inversion is already constrained before
+The 11,816-byte pre-strip-rounding interpreter's EBX-VM/EDI-cursor inversion
+is already constrained before
 `ChoosePhysReg` selects the final registers. In the integer allocation round,
 the original pointer ranges change as follows:
 
@@ -286,6 +287,70 @@ adds an unused 2,286-byte helper copy. These controls are retained in
 `gpt-6.1-sol-execution-update-helper.log` and
 `gpt-6.1-sol-execution-context-controls-nonfields.log`. The maintained source
 and original frontier profiles are unchanged.
+
+## Strip coordinate sums require two float rounding stages (2026-11-26)
+
+The native ring and arc loops store a complete three-float intermediate after
+adding position and other-position, then add translation and store a second
+three-float result. For the first ring vertex, `0x44DD98..0x44DDC6` forms the
+first result and `0x44DDCA..0x44DDF0` forms the second. The same boundaries
+appear after the other three polar calls. Scalar flattening in `06b6b93`
+removed the first float rounding. With round-to-nearest, the exact integer
+inputs `(2^24, 1, -2^24)` produce 0 through the two rounded additions and 1
+through the flattened extended-precision chain.
+
+`EmitStripPair` now uses nested `Sum` return objects for both vertices,
+preserving each observed operand grouping. The maintained cold owner is
+11,952 bytes (11,536 code/alignment + 416 table), with 3,187 instructions and
+a `0xE4` frame. Native has 12,056 bytes, 3,203 instructions and a `0xCC` frame.
+The candidate still has 260/262 calls and 407/415 complete address fields.
+Keep the rounding correction even though its frame is larger. Evidence:
+`.analysis/gpt-6.1-sol-strip-call-windows.txt`,
+`gpt-6.1-sol-execution-strip-rounding-cold-code.log` and
+`gpt-6.1-sol-execution-strip-rounding-cold-fields.log`.
+
+A scoped result constructor inspired by TH10's `AnmFloat3View` retains the
+rounding and gives 11,920 bytes / `0xD4`, but diagnostic register-normalized
+alignment drops from 2,551 to 2,448 native keys. It is not maintained. Capturing
+ReadF's literal before the flag test instead grows the owner to 12,424 bytes
+without restoring the missing calls. Both controls preserve the frozen source;
+see `.analysis/gpt-6.1-sol-execution-vector-result-constructor*.log` and
+`gpt-6.1-sol-execution-readf-capture.log`.
+
+The old consumer replay was deliberately stopped before the source update.
+Its logs/receipts are preserved. The new replay carries a prior result only
+when the complete current receipt still verifies. The quad helper's complete
+108-byte/eight-field cold proof repeats after the correction in
+`.analysis/gpt-6.1-sol-mode-quad-post-strip-compare.json`; canonical promotion
+remains pending the shared-source checkpoint.
+
+The six missing DIR32 fields are all reads of the global zero vector at
+`0x4C326C`: native reads each component four times, candidate twice. Expanding
+the two aggregate assignments in `ZeroControls` into six scalar assignments
+does not restore those fields. That isolated control stays at 11,952 bytes,
+260 calls and 407 fields; its full-owner copied-source baseline has zero byte
+differences. Evidence: `.analysis/gpt-6.1-sol-execution-zero-components.log`.
+Investigate the global's ownership and alias context before changing its type
+or access semantics.
+
+Direct Ghidra xrefs find 13 reads of each component and no direct write to
+these three addresses (`.analysis/gpt-6.1-sol-zero-vector-xrefs.txt`). Native
+copies interleave each integer load and destination store, then reload all
+three components for the second control. TH10's corresponding two tangent
+copies use `memcpy` in `AnmManager.cpp`; this motivates a bit-preserving copy
+control, rather than adding volatile access to the global. TH10 supplies the
+source hypothesis; the TH11 load/store sequence supplies target evidence.
+
+That isolated `memcpy` control restores all six missing DIR32 fields. The
+complete owner has 156 DIR32 and 257 REL32 fields versus native 156/259;
+only the two known float-reader calls remain missing. It owns 11,984 bytes
+with 3,193 instructions, retains the `0xE4` frame, and raises diagnostic
+register-normalized alignment from 2,551 to 2,568 keys. Local windows confirm
+that the second control reloads all three words. Evidence:
+`.analysis/gpt-6.1-sol-execution-zero-memcpy{,-code}.log`,
+`gpt-6.1-sol-execution-zero-memcpy-fields.json` and
+`gpt-6.1-sol-zero-memcpy-windows.txt`. Keep it isolated until the current
+shared-input checkpoint; field-count agreement alone does not close the owner.
 
 ## Stage culling and auxiliary switch owners (2026-11-17)
 

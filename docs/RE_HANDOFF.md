@@ -11,89 +11,85 @@ Ghidra through `scripts/ghidra.py`.
 
 ## Current focus: ExecuteAnimationVm (0x44B4B0, 12,056 B)
 
-The maintained interpreter remains non-exact. Its latest canonical cold
-frontier owns 11,816 bytes: 11,400 code/alignment bytes plus the complete
-416-byte opcode table, against native 11,640 + 416. Candidate/native calls
-are 260/262, conditional branches 256/259 and jumps 142/147. The only
-callee-count deficit is `ReadAnimationFloat` (76/78). The complete candidate
+The maintained interpreter remains non-exact. The new cold candidate owns
+11,952 bytes: 11,536 code/alignment bytes plus the complete 416-byte opcode
+table, against native 11,640 + 416. Candidate/native calls are 260/262,
+conditional branches 256/259 and jumps 142/147. All direct calls resolve;
+only `ReadAnimationFloat` differs in count (76/78). The complete candidate
 field inventory has 407 entries versus native 415. Code-key alignment is
-1,422/3,203, or 2,524 after a diagnostic EBX/EDI swap; neither grants exact credit.
+1,440/3,203, or 2,551 after a diagnostic EBX/EDI swap. No exact credit follows.
+The frame is `0xE4` versus native `0xCC`; VM/cursor remain EBX/EDI versus EDI/EBX.
 
-Pending source changes restore the shared quad-mode call in the UV update
-and pass child IDs directly from local objects to lookup. They remove 144
-and 16 owned bytes respectively. Three real geometry TUs now belong to the
-frontier's `/GL` graph. The quad helper has the native 108-byte size but still
-uses ECX-VM/EAX-output instead of native EAX/ECX. The interpreter frame stays
-`0xD4` versus `0xCC`, with EBX-VM/EDI-cursor instead of native EDI/EBX.
+The latest source correction restores two float-rounded vector additions per
+strip vertex. Native stores the position-plus-offset vector before adding
+translation, then stores that result before vertex updates. Scalar flattening
+in `06b6b93` removed the first rounding. Nested `Sum` return objects restore
+it. This adds 136 owned bytes to the 11,816-byte pre-correction candidate.
+Keep this semantic correction despite the larger frame. Evidence:
+`.analysis/gpt-6.1-sol-strip-call-windows.txt` and
+`gpt-6.1-sol-execution-strip-rounding-cold{,-code,-fields}.log`.
+Earlier pending changes restore the shared quad helper call and pass child IDs
+directly to lookup. Three real geometry TUs remain in the frontier's `/GL` graph.
 
-Affected replay found two older failures and one stale claim:
+The old replay in session 37580 was deliberately stopped (exit 137) after
+65 accepted owners, before changing source. Its results remain bound to the
+old inputs; unchanged contexts can still be carried after receipt checks.
+The new frozen inputs are
+`.analysis/gpt-6.1-sol-strip-rounding-frozen.sha256`.
+Only shell session **2509** is live. It cold-built the main frontier, compared
+its complete extent/field inventory, and now runs
+`.analysis/gpt-6.1-sol-replay-strip-rounding-consumers.py`; log:
+`.analysis/gpt-6.1-sol-strip-rounding-consumer-replays.log`.
+Its scope is 75 affected exact owners plus the pending quad helper in 43
+contexts. It stops at the first failure and rebuilds stale contexts. Do not
+restart an earlier replay. Several remaining families have 132/214 support TUs.
 
-- The signal caller now uses the existing normal-COFF interpreter producer
-  to preserve its native stack input; the interpreter remains `/GL`.
-  Its complete 95-byte/four-field cold comparison passes.
-- An effect-local timer constructor restores the native pre-memset flag
-  clear lost when `StageTimerView` became POD. The 80-byte factory and
-  1,168-byte initializer pass complete cold comparisons (three/54 fields).
-- HUD front draw's old fastcall symbol binding is corrected to the ordinary
-  member decoration; all 105 bytes/five fields pass. The renderer-layer caller
-  still reverses two setup MOVs at +75/+77. Separate real `/GL` TUs retain
-  the same gap. Its prior exact claim is withdrawn in `08af80a`; the canonical
-  ledger now has 493 exact functions. Full 127-byte/nine-field frontier retained.
+The `build-animation-vm-mode-quad` frontier passes strict cold replay again
+after the strip correction: complete 108-byte public primary-TU owner, all
+eight fields and zero differences. Proof:
+`.analysis/gpt-6.1-sol-mode-quad-post-strip-compare.json`.
+Only that context's rotation support TU uses `/fp:fast`. Removing its CRT
+trig calls restores EAX-VM/ECX-output in the caller. The rotation itself stays
+non-exact (482 versus native 571 bytes, no paired FSINCOS). Promote the helper
+at the shared-source checkpoint; the canonical ledger still has 493 exact.
+The ordinary main frontier retains its original support profiles.
 
-The timer header expanded the affected scope to 76 units/43 contexts. After
-the renderer withdrawal, 75 exact units/42 contexts remain to verify. Four
-source files are frozen by
-`.analysis/gpt-6.1-sol-execution-timer-frozen.sha256`.
-Only shell session **37580** remains live, running
-`.analysis/gpt-6.1-sol-resume-execution-timer-remaining.py`; its log is
-`.analysis/gpt-6.1-sol-execution-timer-remaining.log`. At this checkpoint,
-50 current proofs are carried and 13 more have passed; context 31/42
-(`reset-animation-vector-tween-time`) is building. Earlier replay sessions
-are terminal. Reuse current cold receipts, preserve this run, and finish
-remaining comparisons before the source checkpoint. Several remaining
-contexts have 132/214 support TUs; standard cold builds remain in use.
+Earlier replay repairs remain in the worktree: the signal caller's normal-COFF
+producer preserves its stack VM input; the effect-local timer constructor
+restores the native pre-memset flag clear. Their older 95/80/1,168-byte cold
+proofs are retained, and the new replay rechecks every stale context.
+HUD front draw's symbol correction has a complete 105-byte/five-field proof.
+The renderer-layer caller remains a 127-byte/nine-field frontier with reversed
+setup MOVs; its old exact claim was withdrawn in `08af80a`.
 
-Compiler findings are committed in `a84e90d`, `cdf4d28`, `ccb9cb8` and
-`f4baeee`; see the focused VC9 sections in `KNOWLEDGE_BASE.md`:
+The pre-strip VC9 traces explain two other gaps. Late flow merges opcode 97's
+two float readers into opcode 96's continuation. During integer allocation,
+the main VM split wins EBX at priority 7,466 over the original cursor's 5,760;
+`UpdateAffectedGlobregs` empties the cursor mask and it is split again into
+EDI at 5,134. These numeric scores describe the older 11,816-byte input.
+See the focused notes in `KNOWLEDGE_BASE.md` and
+`.analysis/compiler-vc9/execution-cursor-deferral.txt`.
 
-- Stack packing uses class and integer weight/size ratio. The ID-local
-  change regroups colors across the owner; it does not shrink the frame.
-- Final late flow removes both opcode 97 float reads in one common-tail
-  merge with opcode 96, including the XY stores and translation copy.
-- Integer `Spillcosts` reduces the original VM mask to EBP and the cursor to
-  EBX/EBP. Frame constraints remove EBP. Later main split ranges already
-  require EBX-VM/EDI-cursor before final selection. Nine hardware-watchpoint
-  hits identify fixed uses in timer setup, child-ID buffers, float destinations
-  and tween returns. Debugger/control `.text` sections match all 31,798 bytes.
+Rejected controls stay isolated: capturing the ReadF literal grows the owner
+to 12,424 bytes; a TH10-style value constructor reduces the frame to `0xD4`
+but worsens other alignment metrics. `/G6`, the shared renderer owner, a live
+30-TU drawing graph and an inline update helper leave main nonfield bytes
+unchanged. Do not select a source form from frame size alone.
 
-A case-local opcode 97 child pointer leaves that handler unchanged but swaps
-x87 operand order in opcodes 9/13. Explicitly loading X before its variable
-flag grows the owner to 11,840 bytes without restoring the missing calls.
-Both controls are rejected and remain under `.analysis/execution-opcode97-local`
-and `.analysis/gpt-6.1-sol-opcode97-*.log`. Maintained source is unchanged.
-
-The `build-animation-vm-mode-quad` frontier now has a complete cold strict
-proof: 108 bytes/eight fields/zero differences, public primary-TU ownership.
-Only its rotation support TU uses `/fp:fast`, removing CRT trig calls and
-restoring the helper's EAX-VM/ECX-output interface. The rotation remains
-non-exact (482 versus 571 bytes, no paired FSINCOS). Proof files:
-`.analysis/gpt-6.1-sol-mode-quad-cold.log` and
-`gpt-6.1-sol-mode-quad-cold-compare.json`. Keep the unit pending promotion
-until the shared-source checkpoint; the canonical count remains 493.
-
-The refined allocation trace shows the main VM split taking EBX at priority
-7,466 ahead of the original cursor at 5,760. `UpdateAffectedGlobregs` empties
-the cursor's mask; a new cursor split then takes EDI at 5,134. Evidence:
-`.analysis/compiler-vc9/execution-cursor-deferral.txt`. `/G6`, a shared renderer
-owner, a live 30-TU drawing graph and an inline update helper do not improve
-the interpreter's nonfield bytes. Preserve the rejected controls in `.analysis/`.
-
-After the source checkpoint, inspect split costs and real callee register
-use before more declaration-order trials. Keep the reader merge and result
-lifetimes in the same full-function analysis. Useful evidence:
-`.analysis/compiler-vc9/execution-merges.txt`, `execution-initial-splits.txt`
-and `execution-mask-writes.txt`. Native result homes are vector/color
-`ESP+0x24`, pair `+0x88`, quad `+0xA8`; current homes are `+0x38/+0xA0/+0xB0`.
+Next: finish the live affected replay, retain the strip rounding and promote
+the verified quad helper at the coherent `gpt-6.1-sol: ...` source checkpoint.
+The six missing DIR32 fields are repeated reads of the global zero vector:
+native reads each component four times, candidate twice. Explicit scalar copies
+retain the same six missing fields and are rejected; evidence is in
+`.analysis/gpt-6.1-sol-execution-zero-components.log`. Direct Ghidra xrefs find
+13 reads of each component and no direct writes:
+`.analysis/gpt-6.1-sol-zero-vector-xrefs.txt`. TH10's corresponding tangent
+copies use `memcpy`; its isolated TH11 control restores all six DIR32 fields
+(156/156) and owns 11,984 bytes with the same `0xE4` frame. Only the two known
+float-reader REL32 fields remain missing. Evidence:
+`.analysis/gpt-6.1-sol-execution-zero-memcpy{,-code}.log` and
+`gpt-6.1-sol-execution-zero-memcpy-fields.json`. A call-site copy control runs
+in session 21592. Keep the source frozen until the current replay completes.
 
 The comparison-handler diagnostic discovers the current dispatch table
 from the owner disassembly and reports the twelve handlers independently:
