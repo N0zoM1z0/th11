@@ -26,9 +26,9 @@ child factory results through local `AnimationVmId` objects then removes the
 scalar copies through `scratch.childId`, leaving an 11,816-byte owner at that
 stage. The later strip-coordinate correction restores two float-rounded vector
 additions per vertex: position plus offset, then translation. Flattening these
-into scalar expressions had removed the first rounding. The maintained cold
-owner is now 11,940 bytes, with 11,524 code/alignment bytes followed by exactly
-104 four-byte dispatch entries; native has 11,640 bytes before its 416-byte
+into scalar expressions had removed the first rounding. The current frozen
+conditional-return source owns 12,096 bytes, with 11,680 code/alignment bytes
+followed by exactly 104 four-byte dispatch entries; native has 11,640 bytes before its 416-byte
 table. See the [rounding evidence](KNOWLEDGE_BASE.md#strip-coordinate-sums-require-two-float-rounding-stages-2026-11-26).
 Compare code instructions separately from these data tables:
 the older whole-extent instruction counts decoded table bytes as instructions.
@@ -51,17 +51,21 @@ anchor assumptions. Full support replays match the twenty-byte rewind and
 `.analysis/gpt-6.1-sol-execution-real-timers-cold{,-code,-fields}.log` and
 `gpt-6.1-sol-real-timers-{rewind,float-destination}-support.log`.
 
-The code-only diagnostic currently aligns 1,439/3,203 native instruction keys,
-or 2,558 after the diagnostic EBX/EDI label swap. It counts 260/262 calls,
-256/259 conditional branches and 142/147 unconditional jumps
-(candidate/native). Two float-reader call sites in opcode 97 are merged into
-opcode 96's continuation; the former inline quad switch's two extra calls
-had concealed that deficit in the total call count. All direct calls resolve
-to the reviewed native callee names; the only
-count difference is `ReadAnimationFloat` (76/78). The complete inventory has
-415 native address/call fields versus 407 candidate fields. The candidate field decoder
-covers the full owner. The relation-handler bodies retain their previous
-alignment. The complete interpreter remains non-exact.
+The code-only diagnostic now aligns 1,445/3,203 native instruction keys,
+or 2,579 after the diagnostic EBX/EDI label swap. The candidate has 3,223
+instructions, 262/262 calls, 258/259 conditional branches and 142/147 jumps
+(candidate/native). `ReadF`'s conditional return restores both opcode 97
+readers, giving 78 reads and the complete native direct-call inventory with
+matching multiplicities. The complete field inventory is 409 versus native
+415; the six-field count difference is accounted for by the global zero-vector
+reads. All candidate fields are decoded. The complete interpreter remains
+non-exact.
+
+This source epoch is awaiting its affected exact-consumer replay before a
+source commit. The prior 74-unit checkpoint covers the earlier two-return
+reader. Current evidence and the running process are in
+[RE_HANDOFF](RE_HANDOFF.md); the compiler finding is in
+[KNOWLEDGE_BASE](KNOWLEDGE_BASE.md#a-conditional-return-preserves-both-opcode-97-readers-2026-11-26).
 
 The twelve integer/float relation handlers now branch explicitly to a shared
 instruction-advance label or the timed-jump path. Their operand-read order was
@@ -236,7 +240,7 @@ leaf plus their direct dependencies:
 ```bash
 scripts/repo-python scripts/build-match-unit.py --check
 scripts/repo-python scripts/build-match-unit.py --unit animation-execution-tween-context
-scripts/repo-python .analysis/compare-execute-animation-vm-20261122.py build/match-linked/AnimationExecutionTweenContext
+scripts/repo-python .analysis/compare-execute-animation-vm-code-only.py build/match-linked/AnimationExecutionTweenContext
 scripts/repo-python scripts/build-match-unit.py --unit animation-integer-destination
 scripts/repo-python scripts/compare-linked-function.py --unit animation-integer-destination
 ```

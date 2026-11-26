@@ -1,8 +1,10 @@
 # Projected quads and software fog
 
-`src/AnimationProjectedQuad.cpp` adds seven complete source mappings covering
-1,915 reviewed target owner bytes. The two larger owners are the792-byte
-projected-coordinate builder and794-byte software-fog submission. All seven remain non-exact.
+The projected draw paths have natural source in `AnimationProjectedQuad.cpp`,
+`AnimationBillboardQuad.cpp`, `AnimationVmRendererOwner.cpp` and the interpreter's
+mode helper. The 792-byte projected-coordinate builder and 794-byte software-fog
+submission remain non-exact. The distance root and mode helper have canonical
+exact proofs, as listed below.
 Fourteen additional boundary/origin reviews cover nine engine/math owners and
 five independently identified D3DX import thunks. The nine engine/math origins
 remain indeterminate; the five import thunks are exclusions.
@@ -11,13 +13,18 @@ remain indeterminate; the five import thunks are exclusions.
 | --- | --- | ---: | --- |
 | AnimationDistanceRoot | 4196E0 | 31 | Exact (`animation-distance-root`) |
 | DrawAdaptiveUnroundedAnimationVm | 450690 | 111 | Complete source; non-exact |
-| BuildBillboardAnimationVmQuad | 450700 | 976 | Complete review; source open |
+| BuildBillboardAnimationVmQuad | 450700 | 976 | Complete source; non-exact |
 | DrawBillboardAnimationVm | 450AD0 | 33 | Complete source; non-exact |
 | DrawFoggedBillboardAnimationVm | 450B00 | 794 | Complete source; non-exact |
 | BuildProjectedAnimationVmQuad | 450E20 | 792 | Complete source; non-exact |
 | DrawProjectedAnimationVm | 451140 | 46 | Complete source; non-exact |
-| DrawAnimationVmByMode | 451EF0 | 276 | Complete code/alignment/14-cell owner; non-exact |
-| BuildAnimationVmModeQuad | 452010 | 108 | Complete code/alignment/4-cell owner; non-exact |
+| ImmediateVmView::DrawByMode | 451EF0 | 276 | Complete code/alignment/14-cell owner; non-exact |
+| BuildAnimationVmModeQuad | 452010 | 108 | Exact (`build-animation-vm-mode-quad`) |
+
+The mode helper's complete 108-byte public primary-TU cold comparison covers
+all eight fields, alignment and four table cells. Its maintained implementation
+is `BuildModeQuad` in `AnimationExecution.cpp`; see
+[the current proof](ANIMATION_EXECUTION.md#complete-quad-helper-exact-proof-2026-11-26).
 
 ## Matrix cache and projection
 
@@ -90,7 +97,8 @@ four apparent foreign DATA references. Three-byte no-op LEAs precede both tables
 twelve/four following CC bytes precede452010/452080. Full mapped-text-attested
 Ghidra references and independent PE CFG/table/padding/neighbor review supersede
 the former code-only217/89 boundaries. Code, alignment and table bytes remain
-separate counts within each full owner; neither function earns exact credit.
+separate counts within each full owner. The 108-byte query has since passed
+its canonical exact comparison; the 276-byte dispatcher remains non-exact.
 
 | Six-byte import thunk | IAT slot | Original PE import name |
 | --- | --- | --- |
@@ -116,7 +124,9 @@ frame-pointer profile and distance-lifetime variants were compared over full
 PDB contributions. No diagnostic comparison grants exact credit.
 
 The /Oy- experiment does not recover native alignment or allocation and is
-not adopted. The sqrt adapter still lacks its native8-byte-aligned frame.
+not adopted. That earlier projected-context sqrt body lacked the native
+eight-byte-aligned frame; the selected `animation-distance-root` unit now has
+its own exact proof.
 Projected construction differs in frame allocation and cached-register use;
 fog retains billboard private-ABI, distance-expression and scheduling gaps.
 Remaining wrappers also depend on the opaque rotated/billboard callees.

@@ -303,12 +303,12 @@ Evidence: `.analysis/compiler-vc9/execution-vm-split-markers.txt` and
 `trace-split-markers-verified-run.log` and `trace-cursor-deferral-run.log`.
 Both completed controls replay identical 31,798-byte `.text` sections.
 
-Fresh traces of the maintained 23-TU real-timer graph confirm the same
-competition with current identities. VM split 462 has priority 7,466; original
+Traces of the preceding 11,940-byte, 23-TU real-timer graph confirm the same
+competition in that source epoch. VM split 462 has priority 7,466; original
 cursor 37 has 5,778, and both allow only EBX. Assigning the VM empties the
 cursor mask; cursor split 444 later allows only EDI at priority 5,032.
 The two completed debugger/ordinary pairs each reproduce all 33,446 text
-bytes. These replace old range numbers when investigating the current graph.
+bytes. These range numbers apply before the conditional-return change.
 Evidence: `.analysis/compiler-vc9/execution-registers-real-timers.txt`,
 `execution-register-allocation-real-timers.txt`,
 `trace-registers-real-timers-run.log` and `trace-real-timers-deferral-run.log`.
@@ -342,7 +342,7 @@ establish the original rotation TU's math settings. Keep the main interpreter
 and rotated owner non-exact. Evidence:
 `.analysis/gpt-6.1-sol-execution-rotation-fast-control.log`.
 
-Repeating the isolated rotation-profile change in the current 23-TU real-timer
+Repeating the isolated rotation-profile change in the preceding 23-TU real-timer
 graph leaves the whole interpreter at 11,940 bytes / 3,183 instructions /
 407 fields. Every field position stays the same; only four nonfield bytes
 change, swapping the EAX/ECX inputs at its two quad-helper calls. Frame `0xE4`,
@@ -537,7 +537,7 @@ Using the canonical float-destination leaf's `/O2 /Oy /Ob1 /GL` profile for
 profile emitted 140 bytes and received the VM in EAX. Only that support TU's
 `/Ob0` changes to `/Ob1`; its source and the other TU profiles stay the same.
 
-The maintained cold interpreter remains 11,952 bytes / 3,187 instructions,
+At this stage the cold interpreter owns 11,952 bytes / 3,187 instructions,
 260 calls and 407 address fields, with frame `0xE4` and EBX-VM/EDI-cursor.
 Diagnostic register-normalized alignment improves from 2,551 to 2,564 keys.
 The complete cold support contribution also replays the existing fourteen
@@ -752,7 +752,7 @@ Evidence: `.analysis/gpt-6.1-sol-execution-real-timer-contexts{.py,.log}`,
 `.analysis/compiler-vc9/execution-register-allocation-constructed-return.txt`,
 `execution-register-allocation-constructed-return-deferral.txt` and the
 corresponding `trace-constructed-return-{registers,deferral}-run.log` files.
-The main frontier's new 23-TU cold family owns 11,940 bytes / 3,183
+Before the conditional-return change, the 23-TU cold family owned 11,940 bytes / 3,183
 instructions / 407 fields, with frame `0xE4` and diagnostic normalized alignment
 2,558. Its complete twenty-byte rewind / one-field support replay is exact,
 as is the 124-byte / fourteen-field float-destination support replay. These
@@ -761,7 +761,7 @@ support diagnostics do not replace primary-TU acceptance. Evidence:
 `gpt-6.1-sol-real-timers-{rewind,float-destination}-support.log`.
 The preceding family is preserved at
 `build/probe-ltcg/ExecutionBeforeRealTimers`; keep the constructed-result and
-RGB/source controls private until the pending source checkpoint.
+RGB/source controls private while their whole-owner differences remain open.
 
 ## Dynamic renderer input and flag width do not close the wrapper (2026-11-26)
 
@@ -780,7 +780,7 @@ for evidence and the remaining compiler-layout question.
 ## Execution-view identity does not recover the two reader calls (2026-11-26)
 
 The type merge in `9abb56f` is not, by itself, the cause of opcode 97's lost
-reader calls. A complete copied 23-TU control reproduces the maintained
+reader calls. A complete copied pre-conditional-return control reproduces the
 11,940-byte / 3,183-instruction owner. A zero-storage derived execution view
 produces 11,936 / 3,181, while a separate flat view of the same observed fields
 returns to 11,940 / 3,183. All retain 407 fields, frame `0xE4`, and 76 float
@@ -816,7 +816,7 @@ narrowing to influence allocation. Evidence:
 ## Separating scratch values changes a distant RGB stack color (2026-11-26)
 
 Replacing the active float/pointer scratch union with two ordinary locals
-reduces the maintained-context private owner from 11,940 to 11,924 bytes and
+reduces the pre-conditional-return private owner from 11,940 to 11,924 bytes and
 frame `0xE4`→`0xDC`, with the same 3,183 instructions, 260 calls and 407 fields.
 It does not recover the two readers. C2 traces show 26→25 colors and
 205→202 payload bytes. The disappearing color is a three-byte RGB target,

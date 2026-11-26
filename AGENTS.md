@@ -117,7 +117,7 @@ in `.tools/`, and the mutable private database in `ghidra-project/`. Never
 commit game executables/data/archives, compiler payloads, decompiler output,
 Ghidra databases, credentials, or local private endpoints.
 
-Use commits prefixed `gpt-web: `. The operator authorized a public GitHub
+Use commits prefixed `gpt-6.1-sol: `. The operator authorized a public GitHub
 repository and pushes for this project. Save meaningful progress promptly.
 Cold-replay only changed exact units and directly affected dependencies. Update
 tracking/generated progress and run `git diff --check`; do not replay the full
