@@ -8771,7 +8771,9 @@ linkages = [
 artifact_kind = "linked-pe"
 source = "src/ConfigurationMenuAnimation.cpp"
 inputs = ["src/ConfigurationAudioMenu.hpp"]
-support_sources = ["src/ConfigurationAudioMenu.cpp", "src/SoundQueue.cpp", "src/MusicStream.cpp", "probes/sound-queue-context.cpp", "src/StageMesh.cpp", "probes/stage-mesh-context.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmFactory.cpp", "probes/configuration-audio-menu-context.cpp", "src/SecondaryPlayerMovement.cpp", "src/SecondaryDamageSupport.cpp", "src/MeshEffects.cpp", "src/ConfigurationMenuSelection.cpp", "probes/configuration-menu-support-context.cpp", "src/AnimationExecution.cpp"]
+support_sources = ["src/ConfigurationAudioMenu.cpp", "src/SoundQueue.cpp", "src/MusicStream.cpp", "probes/sound-queue-context.cpp", "src/StageMesh.cpp", "probes/stage-mesh-context.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmFactory.cpp", "probes/configuration-audio-menu-context.cpp", "src/SecondaryPlayerMovement.cpp", "src/SecondaryDamageSupport.cpp", "src/MeshEffects.cpp", "src/ConfigurationMenuSelection.cpp", "probes/configuration-menu-support-context.cpp", "src/AnimationExecution.cpp", "probes/animation-execution-isolated-context.cpp"]
+# Preserve the observed stack VM input across the external C++ call boundary.
+normal_support_sources = ["probes/animation-execution-isolated-context.cpp"]
 output_dir = "build/match-linked/SignalAndExecuteConfigurationAnimation"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "ConfigurationAudioMenuProbe@4"
@@ -9634,6 +9636,33 @@ target_address = 0x0044B4B0
 size = 12056
 support_profiles = { "src/AnimationTween.cpp" = ["/TP", "/O2", "/Oy", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/StageTween.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/StageEasing.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/AnimationExecutionSupport.cpp" = ["/TP", "/O2", "/Oy", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/Random.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"], "src/AnimationExecutionArguments.cpp" = ["/TP", "/O2", "/Oy", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"] , "src/AnimationVmFactory.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"] , "src/SecondaryEmitterAnimation.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"] , "src/SecondaryDrawPublisher.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"] , "src/SecondaryDrawFrontAnimation.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"] , "src/SecondaryActorAnimation.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"] , "src/AnimationRendererDispatch.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"] , "src/StageMesh.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"] , "src/AnimationSpriteBinding.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/AnimationQuad.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/AnimationVmRotation.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/AnimationVmDraw.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/SecondaryActorMotion.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/SecondaryProjectileCallbacks.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]}
 linkages = []
+
+# Complete interpreter quad helper; rotation fast-math restores its observed private ABI.
+
+[units.build-animation-vm-mode-quad]
+artifact_kind = "linked-pe"
+source = "src/AnimationExecution.cpp"
+inputs = ["src/AnimationUnaryTangent.cpp", "src/AnimationExecution.hpp", "src/AnimationExecutionInstructions.inc", "src/AnimationExecutionUpdate.inc", "src/AnimationVm.hpp", "src/AnimationTween.hpp", "src/AnimationTween.cpp", "src/StageTween.hpp", "src/StageTween.cpp", "src/StageEasing.cpp", "src/StageScript.hpp", "src/StageResource.hpp", "src/Random.hpp", "src/RenderBatch.hpp", "src/AnimationVmFactory.hpp", "src/AnimationExecutionPolarPoint.cpp", "src/AnimationExecutionSupport.cpp", "src/Random.cpp", "src/MainRuntime.hpp", "src/AnimationExecutionArguments.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryEmitterAnimation.cpp", "src/SecondaryDrawPublisher.cpp", "src/SecondaryDrawFrontAnimation.cpp", "src/SecondaryActorAnimation.cpp", "src/AnimationVmId.hpp", "src/SecondaryEmitterAnimation.hpp", "src/SecondaryActorRuntime.hpp", "src/SecondaryActorState.hpp", "src/PerspectiveCamera.hpp", "src/AnimationRendererDispatch.cpp", "src/StageMesh.cpp", "src/AnimationRendererDispatch.hpp", "src/StageMesh.hpp", "src/AnimationSpriteBinding.hpp", "src/AnimationDocument.hpp", "src/AnimationProjectedQuad.hpp", "src/AnimationQuad.hpp", "src/AnimationQuad.cpp", "src/AnimationVmRotation.cpp", "src/AnimationVmDraw.cpp"]
+support_sources = ["src/AnimationUnaryTangent.cpp", "probes/animation-execution-isolated-context.cpp", "src/AnimationExecutionPolarPoint.cpp", "src/AnimationTween.cpp", "src/StageTween.cpp", "src/StageEasing.cpp", "src/AnimationExecutionSupport.cpp", "src/Random.cpp", "src/AnimationExecutionArguments.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryEmitterAnimation.cpp", "src/SecondaryDrawPublisher.cpp", "src/SecondaryDrawFrontAnimation.cpp", "src/SecondaryActorAnimation.cpp", "src/AnimationRendererDispatch.cpp", "src/StageMesh.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationQuad.cpp", "src/AnimationVmRotation.cpp", "src/AnimationVmDraw.cpp"]
+normal_support_sources = ["src/AnimationUnaryTangent.cpp", "probes/animation-execution-isolated-context.cpp", "src/AnimationExecutionPolarPoint.cpp"]
+output_dir = "build/match-linked/AnimationVmModeQuad"
+profile = ["/TP", "/O2", "/Oy-", "/Ob2", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationExecutionProbe@4"
+functions = ["BuildAnimationVmModeQuad"]
+symbol = "?BuildModeQuad@@YIXPAUCameraVector@@PAUAnimationVmView@@@Z"
+target_address = 0x00452010
+size = 108
+support_profiles = { "src/AnimationTween.cpp" = ["/TP", "/O2", "/Oy", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/StageTween.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/StageEasing.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/AnimationExecutionSupport.cpp" = ["/TP", "/O2", "/Oy", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/Random.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/GL"], "src/AnimationExecutionArguments.cpp" = ["/TP", "/O2", "/Oy", "/Ob0", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"] , "src/AnimationVmFactory.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"] , "src/SecondaryEmitterAnimation.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"] , "src/SecondaryDrawPublisher.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"] , "src/SecondaryDrawFrontAnimation.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"] , "src/SecondaryActorAnimation.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"] , "src/AnimationRendererDispatch.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"] , "src/StageMesh.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"] , "src/AnimationSpriteBinding.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/AnimationQuad.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"], "src/AnimationVmRotation.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL", "/fp:fast"], "src/AnimationVmDraw.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]}
+linkages = [
+  { offset = 23, type = "DIR32", local = true, target = 0x0045206C },
+  { offset = 41, type = "REL32", symbol = "?BuildAnimationVmQuad@@YGXPAUAnimationVmView@@PAUCameraVector@@111@Z", target = 0x0044FE30 },
+  { offset = 60, type = "REL32", symbol = "?BuildRotatedAnimationVmQuad@@YGXPAUAnimationVmView@@PAUCameraVector@@111@Z", target = 0x004503D0 },
+  { offset = 81, type = "REL32", symbol = "?BuildUnroundedAnimationVmQuad@@YGXPAUAnimationVmView@@PAUCameraVector@@111@Z", target = 0x004500F0 },
+  { offset = 92, type = "DIR32", local = true, target = 0x0045202B },
+  { offset = 96, type = "DIR32", local = true, target = 0x00452041 },
+  { offset = 100, type = "DIR32", local = true, target = 0x00452054 },
+  { offset = 104, type = "DIR32", local = true, target = 0x00452054 },
+]
 
 # Internal integer destination helper, linked in its real interpreter LTCG context.
 # Its EAX/EDX argument convention is compiler-selected by this owner TU.

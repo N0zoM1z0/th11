@@ -188,12 +188,10 @@ __forceinline void EmitStripPair(AnimationExecutionView *self, RenderVertex *&ve
     reinterpret_cast<AnimationExecutionPolarPoint *>(&vertex[0])->Set(angle,
         static_cast<float>(self->scale.x * 0.5 + self->scale.y));
     vertex[0].z = 0.0f;
-    float worldX = (self->position.x + self->otherPosition.x) + self->translation.x;
-    float worldY = (self->position.y + self->otherPosition.y) + self->translation.y;
-    float worldZ = (self->position.z + self->otherPosition.z) + self->translation.z;
-    vertex[0].x = vertex[0].x + worldX;
-    vertex[0].y = worldY + vertex[0].y;
-    vertex[0].z = static_cast<float>(worldZ + 0.0);
+    CameraVector world = Sum(Sum(self->position, self->otherPosition), self->translation);
+    vertex[0].x = vertex[0].x + world.x;
+    vertex[0].y = world.y + vertex[0].y;
+    vertex[0].z = static_cast<float>(world.z + 0.0);
     ++vertex;
     vertex[0].color = color;
     vertex[0].rhw = 1.0f;
@@ -202,12 +200,10 @@ __forceinline void EmitStripPair(AnimationExecutionView *self, RenderVertex *&ve
     reinterpret_cast<AnimationExecutionPolarPoint *>(&vertex[0])->Set(angle,
         static_cast<float>(self->scale.y - self->scale.x * 0.5));
     vertex[0].z = 0.0f;
-    float secondWorldX = (self->otherPosition.x + self->position.x) + self->translation.x;
-    float secondWorldY = (self->otherPosition.y + self->position.y) + self->translation.y;
-    float secondWorldZ = (self->otherPosition.z + self->position.z) + self->translation.z;
-    vertex[0].x = vertex[0].x + secondWorldX;
-    vertex[0].y = secondWorldY + vertex[0].y;
-    vertex[0].z = static_cast<float>(secondWorldZ + 0.0);
+    CameraVector secondWorld = Sum(Sum(self->otherPosition, self->position), self->translation);
+    vertex[0].x = vertex[0].x + secondWorld.x;
+    vertex[0].y = secondWorld.y + vertex[0].y;
+    vertex[0].z = static_cast<float>(secondWorld.z + 0.0);
     ++vertex;
 }
 }
@@ -219,7 +215,6 @@ int __stdcall ExecuteAnimationVm(AnimationVmView *vmInput)
     union
     {
         float floatResult;
-        unsigned int childId;
         AnimationVmView *child;
     } scratch;
     if (!instruction) return 1;

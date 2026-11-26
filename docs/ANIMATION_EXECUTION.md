@@ -16,14 +16,52 @@ a second function track.
 
 ## Current status (2026-11-26)
 
-The focused `animation-execution-tween-context` build was rebuilt after the
-TH10-style instruction-cursor loop, result-lifetime reduction, VM-state
-aliasing and conditional argument-decode experiments. The current natural-C++
-candidate owns 11,976 bytes and 3,372 decoded instructions against the native
-12,056-byte owner and 3,308 instructions. The complete-extent
-mnemonic/operand-key comparison aligns 1,484 native instruction keys; calls
-are 262/262 and conditional branches are 404/406 (candidate/native). These are
-diagnostic measurements, not an exactness score.
+The update path now calls the same out-of-line quad-mode helper as opcode 98.
+Direct Ghidra review confirms both native calls (`0x44CCF9`, `0x44D9BB`) target
+`0x452010`. The previous hand-expanded update switch introduced three calls
+and a second, 16-byte dispatch table inside the interpreter. Restoring the
+helper call removes that table and reduces the complete candidate from
+11,976 to 11,832 bytes in that controlled comparison. Passing the four
+child factory results through local `AnimationVmId` objects then removes the
+scalar copies through `scratch.childId`, leaving an 11,816-byte owner at that
+stage. The later strip-coordinate correction restores two float-rounded vector
+additions per vertex: position plus offset, then translation. Flattening these
+into scalar expressions had removed the first rounding. The maintained cold
+owner is now 11,940 bytes, with 11,524 code/alignment bytes followed by exactly
+104 four-byte dispatch entries; native has 11,640 bytes before its 416-byte
+table. See the [rounding evidence](KNOWLEDGE_BASE.md#strip-coordinate-sums-require-two-float-rounding-stages-2026-11-26).
+Compare code instructions separately from these data tables:
+the older whole-extent instruction counts decoded table bytes as instructions.
+
+The focused graph now includes the real `AnimationQuad.cpp`,
+`AnimationVmRotation.cpp` and `AnimationVmDraw.cpp` dependencies under `/GL`.
+Their visibility grows the quad-mode helper from 100 to the native 108 bytes
+and changes its private register interface. In the main frontier it receives
+the VM in ECX and output buffer in EAX, opposite native EAX/ECX. The helper's
+separate exact context below recovers that interface through the real rotation
+TU's math profile. Matching the helper's size alone does not close it.
+Changing the helper to VM-first `__stdcall` with these real dependencies did
+not recover the native interface and was rejected.
+
+The main graph has 23 TUs and uses the argument TU's canonical `/Ob1` profile.
+It also includes the actual rewind and offset timer implementations with
+`/Ob1 /GL`. Their ESI-timer/EAX-integer/stack-float inputs replace the older
+anchor assumptions. Full support replays match the twenty-byte rewind and
+124-byte float destination, including all one/fourteen fields. Evidence:
+`.analysis/gpt-6.1-sol-execution-real-timers-cold{,-code,-fields}.log` and
+`gpt-6.1-sol-real-timers-{rewind,float-destination}-support.log`.
+
+The code-only diagnostic currently aligns 1,439/3,203 native instruction keys,
+or 2,558 after the diagnostic EBX/EDI label swap. It counts 260/262 calls,
+256/259 conditional branches and 142/147 unconditional jumps
+(candidate/native). Two float-reader call sites in opcode 97 are merged into
+opcode 96's continuation; the former inline quad switch's two extra calls
+had concealed that deficit in the total call count. All direct calls resolve
+to the reviewed native callee names; the only
+count difference is `ReadAnimationFloat` (76/78). The complete inventory has
+415 native address/call fields versus 407 candidate fields. The candidate field decoder
+covers the full owner. The relation-handler bodies retain their previous
+alignment. The complete interpreter remains non-exact.
 
 The twelve integer/float relation handlers now branch explicitly to a shared
 instruction-advance label or the timed-jump path. Their operand-read order was
@@ -39,12 +77,113 @@ opcode 39's shared continuation still has five register-temporary differences.
 The twelve handlers' x87 comparison instructions, status-bit tests and
 unordered/NaN branches now line up.
 
-A controlled rebuild with the termination-label experiment removed retained
-the same 11,976-byte/1,484-key result, so that unrelated trial was rejected.
-The candidate frame is now `0xD4` rather than native `0xCC`, and its prologue
+A shared termination-label trial produced 12,012 bytes versus the earlier
+11,976-byte baseline and did not fix register allocation; it was rejected.
+The candidate frame is now `0xE4` rather than native `0xCC`, and its prologue
 still assigns the VM pointer to EBX and instruction cursor to EDI, opposite
 native EDI/EBX allocation. The complete 104-entry dispatch table and remaining
 owner-wide codegen gaps remain open.
+
+### Complete quad-helper exact proof (2026-11-26)
+
+The canonical `build-animation-vm-mode-quad` unit reproduces the complete
+108-byte helper at `0x452010`, including 89 code bytes, three alignment bytes
+and the four-entry/16-byte jump table. Its pinned cold `/GL` build authenticates
+all eight reviewed fields and public primary-TU PE/MAP/PDB ownership with zero
+byte differences. Local proof: `.analysis/gpt-6.1-sol-mode-quad-cold.log` and
+`.analysis/gpt-6.1-sol-mode-quad-cold-compare.json`. The proof repeats after the
+strip rounding correction in
+`.analysis/gpt-6.1-sol-mode-quad-post-strip-compare.json` and at promotion in
+`gpt-6.1-sol-mode-quad-canonical-checkpoint.json`.
+
+This context changes only the rotation support TU to `/fp:fast`. Removing its
+two CRT trig calls restores EAX-VM in that callee and then EAX-VM/ECX-output in
+the quad-mode helper. The rotation itself becomes 482 bytes rather than native
+571 and still uses separate FCOS/FSIN; its remaining arithmetic and paired
+FSINCOS are open. The original frontier profiles stay unchanged. The helper
+is accepted after the complete affected shared-input replay; the interpreter
+remains non-exact.
+
+### Stack layout and integer-reader limit (2026-11-26)
+
+The pre-strip-rounding stack trace compares these layouts. The native tween
+calls share a 12-byte result buffer at `ESP+0x24` for
+position, rotation and both color tweens. The scale pair uses a separate
+8-byte buffer at `ESP+0x88`. Before the ID-local change the candidate used
+`ESP+0x30`, `ESP+0x98` and `ESP+0xA0` for the vector/color result, pair result
+and quad array. It now uses `ESP+0x38`, `ESP+0xA0` and `ESP+0xB0`; native uses
+`ESP+0xA8` for the quad array. The frame remains `0xD4` versus native `0xCC`.
+
+A read-only trace of the pinned VC9 linker backend explains why deleting
+four scalar copies does not simply shrink the frame. The old candidate has
+four independent single-use word colors at offsets -4/-8/-12/-16 before the
+quad color at -64. The new local IDs have weight 2 and several join existing
+word colors. Both candidates still have 26 colors; the quad moves to -48
+and the pair result moves from -72 to -64. The change affects grouping across
+the whole owner. The remaining frame and return-buffer positions require
+more than declaration-order changes. See the VC9 stack-packing note in
+[KNOWLEDGE_BASE](KNOWLEDGE_BASE.md#vc9-stack-packing-traced-in-the-actual-linker-backend-2026-11-26).
+
+The final ID-local trace and a normal relink have identical 31,798-byte
+`.text` sections. The earlier baseline had 31,814 bytes. Evidence is in
+`.analysis/compiler-vc9/execution-stack.baseline.txt`,
+`.analysis/compiler-vc9/execution-stack.child-local.txt` and
+`.analysis/compiler-vc9/trace-stack-child-local-run.log`.
+
+`ReadAnimationInteger` has zero nonfield differences over all 219 bytes
+after masking 21 fields: two local table pointers, twelve local table entries, four
+`__ftol2_sse` tails, two RNG-state addresses and the `RandomNext32` call.
+Its final 23 bytes are selector data, not code. The strict linked decoder
+currently stops at byte 218 and cannot account for the final selector byte,
+so this result is not accepted as exact. Keep the full extent; a future
+Oracle change needs an authenticated selector-table treatment.
+
+Local evidence: `.analysis/gpt-6.1-sol-mode-quad-review.txt`,
+`.analysis/gpt-6.1-sol-read-integer-review.txt`,
+`.analysis/gpt-6.1-sol-execution-child-direct-id-cold-code.log`,
+`.analysis/gpt-6.1-sol-execution-child-direct-id-buffers.log` and
+`.analysis/gpt-6.1-sol-execution-geometry-stdcall-code.log`. The compiler
+experiments reuse unchanged support objects; the maintained frontier is
+separately rebuilt through `build-match-unit.py`.
+
+
+### Interpreter ABI in exact caller contexts
+
+A cold replay exposed an older failure in the 95-byte
+`SignalAndExecuteConfigurationAnimation` context: LTCG passed its VM through
+EBX instead of the native stack argument. Recompiling the pre-quad-call source
+produced exactly the same nonfield bytes and field positions, so the new quad
+call did not cause it. Using the interpreter's selected `/Oy- /Ob2` profile
+also did not restore the stack interface.
+
+The existing `animation-execution-isolated-context.cpp` normal-COFF producer
+preserves the observed standard stack input while the interpreter remains
+`/GL`. Adding it to this caller context restores all 95 bytes after replaying
+the same four reviewed fields in a diagnostic link. The canonical context now
+includes that producer. Its fresh cold replay passes all 95 bytes and four
+fields in `.analysis/gpt-6.1-sol-execution-timer-consumer-replays.log`. This establishes a reproducible public boundary, not the
+original source-TU partition.
+
+A later consumer replay also found the 80-byte screen-effect factory missing
+its timer-member initialization, after the earlier shared timer view became
+POD. The effect-local constructed member restores that factory and preserves
+the common view's behavior. Its fresh 80-byte and 1,168-byte owner replays pass;
+see [SCREEN_EFFECT_INITIALIZATION](SCREEN_EFFECT_INITIALIZATION.md#effect-local-timer-construction-2026-11-26).
+After withdrawing two unreproduced draw claims and accepting the quad helper,
+the affected scope is 74 exact units in 41 contexts. The fresh replay after the
+strip correction is recorded in
+`.analysis/gpt-6.1-sol-strip-rounding-consumer-{replays,resume,remaining}.log`
+and `gpt-6.1-sol-strip-rounding-last-four.log`. It rebuilds stale contexts and
+carries earlier proofs only after their current receipts verify. The complete
+draw failures and bounded controls remain in `ANIMATION_VM_DRAW.md` and
+`SECONDARY_PLAYER_CONTROLLER.md`. The final controller completed all 41
+contexts: four newly compared units and seventy carried current proofs,
+without remaining failures.
+
+
+Local controls: `.analysis/gpt-6.1-sol-signal-before-quad.log`,
+`.analysis/gpt-6.1-sol-signal-interpreter-profile.log` and
+`.analysis/gpt-6.1-sol-signal-stack-producer.log`.
 
 The VM event word at `+0x37C` is declared `unsigned short`, matching the
 native entry's `movzx` load. The interpreter's saved local event ID is a
@@ -66,15 +205,10 @@ and writes the decoded x/y position and translation. Opcode 95 copies the
 parent position and translation. The code remains natural C++; no ASM, padding
 or placeholder bytes were introduced.
 
-The quad-mode helper is currently expressed as the natural C++ member
-`void __fastcall AnimationVmView::BuildModeQuad(CameraVector *quad)`. It writes
-the four output corners directly, selecting the standard, rotated or unrounded
-quad builder from the VM mode flags. The candidate helper owns 100 bytes. The
-native opcode-98 call site passes the VM in EAX and the 48-byte corner buffer
-in ECX; this candidate passes the VM in EDX and the output buffer in EAX. The
-helper boundary and its register assignment therefore remain non-exact, but
-this output-buffer form is closer to the target call shape than the rejected
-aggregate-return experiment. No register-forcing shim was introduced.
+The quad-mode helper is expressed as the natural C++ free function
+`void __fastcall BuildModeQuad(CameraVector *quad, AnimationVmView *vm)`.
+Its current geometry-supported extent and private registers are described
+above; the previous anchor-only 100-byte result is superseded.
 
 `AnimationIntegerDestination` at `0x0044B400` is now a canonical exact
 104-byte leaf. Its `animation-integer-destination` unit cold-builds the
@@ -156,18 +290,10 @@ child pointer into ESI, matching the native order at that point. The complete
 opcode handler is still non-exact: stack slots, later x87 spills, translation
 copy placement, and the enclosing VM/instruction register allocation differ.
 
-The update-mode quad helper is still an ABI mismatch. Native callsite
-`0x0044D9B2` passes the VM in EAX and the 48-byte corner buffer in ECX; the
-current natural C++ output-object member helper uses EDX for the VM and EAX
-for the output object. Its semantics are represented, but its call boundary
-and the helper body are not exact. The selected unit cold-builds successfully
-with the pinned VC9 toolchain, but remains a non-runnable diagnostic frontier:
-its linkage manifest is not exhaustive and there is no accepted full-owner
-replay.
 
 Native entry saves EBX/ESI/EDI, loads the stack VM pointer into EDI, and reserves
-an aligned `0xCC` frame. The current candidate loads the VM pointer into EBX
-and uses EDI for the instruction pointer, with a `0xDC` frame. A diagnostic
+an aligned `0xCC` frame. An earlier candidate loaded the VM pointer into EBX
+and used EDI for the instruction pointer, with a `0xDC` frame. A diagnostic
 register-label swap raises normalized instruction alignment to 2,384/3,203;
 this identifies the EBX/EDI allocation inversion as a major source of mismatch,
 not an exactness result or permission to rename registers in the comparison.
@@ -184,22 +310,19 @@ non-exact.
 a public natural-C++ leaf. The isolated `animation-float-destination` linked
 unit is now a canonical exact checkpoint: its complete 124-byte public
 primary-TU PDB contribution replays all 14 reviewed relocation fields with
-zero byte differences. The broader interpreter LTCG context emits a 140-byte
-PDB contribution under a different support profile; that larger context remains
-diagnostic and does not replace the isolated leaf owner. Code generation is
+zero byte differences. The previous broader interpreter LTCG context emitted a 140-byte
+PDB contribution under `/Ob0`. The main frontier now uses the canonical leaf's
+`/Ob1` support profile and cold-builds the same complete 124-byte body with
+ESI-VM/EDI-operand input. Its fourteen-field support replay has zero differences;
+see `.analysis/gpt-6.1-sol-argument-profile-leaf-cold-replay.log`. The isolated
+primary-TU proof remains the accepted leaf owner. Code generation is
 exact, while original TU/authorship attribution remains indeterminate.
 
-`AnimationIntegerDestination` is retained in the interpreter TU as an internal
-natural-C++ helper. Its dedicated `animation-integer-destination` unit uses the
-full interpreter LTCG dependency context and reproduces the complete 104-byte
-owner after replaying its 11 reviewed local jump-table relocations; the result
-is zero byte differences. The emitted EAX encoded-pointer / EDX VM / EAX result
-convention comes from the original TU's compiler-selected internal calling
-convention, not a hand-written ABI shim. The helper remains origin-indeterminate,
-its function-inventory status remains unclassified, and it is not promoted to
-canonical exact inventory solely by this linked replay. `BindAnimationSprite` is
-likewise source-present and non-exact (see ASCII_LIFECYCLE.md and
-MENU_JOYSTICK.md). Complete extent/PDB ownership is not exactness.
+`AnimationIntegerDestination` remains internal to the interpreter TU and has
+the canonical 104-byte exact proof described above. Its EAX encoded-pointer /
+EDX VM / EAX result convention is selected by LTCG. Original TU ownership
+remains indeterminate. `BindAnimationSprite` remains non-exact (see
+ASCII_LIFECYCLE.md and MENU_JOYSTICK.md).
 
 `UpdateStageRealInterpreterAnimationOy` is stale: its receipt records an older
 `src/AnimationTween.cpp` hash (`b527a00b...`) than the current source. Do not

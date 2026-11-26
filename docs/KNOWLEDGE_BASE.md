@@ -279,8 +279,9 @@ including three alignment bytes and its four-entry table. The new worktree unit
 `build-animation-vm-mode-quad` subsequently passes strict cold replay: all eight
 fields, complete public primary-TU PDB ownership and all 108 bytes match.
 Its receipt and comparison are in `.analysis/gpt-6.1-sol-mode-quad-cold.log`
-and `gpt-6.1-sol-mode-quad-cold-compare.json`. Canonical promotion waits for
-the pending shared-input source checkpoint; it remains a frontier meanwhile.
+and `gpt-6.1-sol-mode-quad-cold-compare.json`. The helper is now canonical
+after the complete affected shared-input replay; the promotion replay is
+`gpt-6.1-sol-mode-quad-canonical-checkpoint.json`.
 
 The rotated body is then 482 bytes, not native 571, and still lacks the paired
 FSINCOS. The option supplies a useful reproducible helper context; it does not
@@ -319,7 +320,8 @@ inputs `(2^24, 1, -2^24)` produce 0 through the two rounded additions and 1
 through the flattened extended-precision chain.
 
 `EmitStripPair` now uses nested `Sum` return objects for both vertices,
-preserving each observed operand grouping. The maintained cold owner is
+preserving each observed operand grouping. Before correcting the argument
+and timer context, this source-only cold owner was
 11,952 bytes (11,536 code/alignment + 416 table), with 3,187 instructions and
 a `0xE4` frame. Native has 12,056 bytes, 3,203 instructions and a `0xCC` frame.
 The candidate still has 260/262 calls and 407/415 complete address fields.
@@ -340,8 +342,8 @@ The old consumer replay was deliberately stopped before the source update.
 Its logs/receipts are preserved. The new replay carries a prior result only
 when the complete current receipt still verifies. The quad helper's complete
 108-byte/eight-field cold proof repeats after the correction in
-`.analysis/gpt-6.1-sol-mode-quad-post-strip-compare.json`; canonical promotion
-remains pending the shared-source checkpoint.
+`.analysis/gpt-6.1-sol-mode-quad-post-strip-compare.json`. The helper is now
+canonical after the complete affected shared-source replay.
 
 The six missing DIR32 fields are all reads of the global zero vector at
 `0x4C326C`: native reads each component four times, candidate twice. Expanding

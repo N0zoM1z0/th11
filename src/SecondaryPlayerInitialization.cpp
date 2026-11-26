@@ -136,8 +136,8 @@ int __stdcall InitializeSecondaryPlayerController(SecondaryDamageReferencesView 
         reinterpret_cast<unsigned char *>(owner) + 12) = draw;
 
     ResetAnimationVm(&owner->animation);
-    owner->animation.unknown408[0x14] = 16;
-    owner->animation.unknown408[0x15] = 16;
+    owner->animation.unknown40c[0x10] = 16;
+    owner->animation.unknown40c[0x11] = 16;
     BindAnimationScript(reinterpret_cast<AnimationFileView *>(document),
                         0, &owner->animation);
 

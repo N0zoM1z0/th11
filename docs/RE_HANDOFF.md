@@ -37,25 +37,21 @@ and `execution-register-allocation-real-timers.txt`. A rotation-only fast-math
 control repairs the two quad-call inputs but changes only four nonfield bytes;
 it leaves these allocation roles, frame and reader count unchanged.
 
-The dirty source is frozen. Keep
+The shared-input source checkpoint has passed its affected replay. It restores
+the shared quad call, direct child-ID temporaries, the effect-local timer's
+native pre-memset flag clear and the player initializer's opaque field spelling
+at VM bytes `+41C/+41D`. Nested strip sums retain two float-rounding stages;
+the former scalar flattening lost the first. The verified input snapshots are
 `.analysis/gpt-6.1-sol-strip-rounding-frozen.sha256` and
-`.analysis/gpt-6.1-sol-player-field-split-frozen.sha256` intact. Pending changes
-restore the shared quad call, direct child-ID temporaries, the effect-local
-timer's native pre-memset flag clear, and the player initializer's opaque field
-spelling. The latter still writes VM bytes `+41C/+41D`. Nested strip sums retain
-two complete float-rounding stages; the former scalar flattening lost the first.
-Do not change these sources before the affected replay finishes.
+`gpt-6.1-sol-player-field-split-frozen.sha256`.
 
-Only consumer controller **86905** is live. It runs
-`.analysis/gpt-6.1-sol-replay-strip-rounding-last-four.py` and logs to
-`.analysis/gpt-6.1-sol-strip-rounding-last-four.log`. Seventy prior unit proofs
-are carried only after receipt checks. The retained scope is 73 exact owners
-plus the pending quad helper, in 41 contexts. It is cold-building the final
-`clear-scene-projectiles` context. `copy-secondary-host-vector`,
-`load-secondary-debug-script` and `apply-menu-joystick-bindings` passed their
-complete cold comparisons.
-Sessions 2509, 5924 and 58199 are terminal failures; keep their logs and never
-restart them merely because the new run is slow.
+Consumer controller **86905** is terminal, exit zero: all 41 contexts and
+74 affected exact units passed, with four fresh comparisons and seventy
+current proofs carried after receipt checks. The final log is
+`.analysis/gpt-6.1-sol-strip-rounding-last-four.log`; earlier cold passes remain
+in the `strip-rounding-consumer-{replays,resume,remaining}.log` files. There
+are no active replay or private probe jobs. Keep prior failed logs from
+sessions 2509, 5924 and 58199 unchanged.
 
 Two old draw claims were withdrawn after complete cold failures. The unrotated
 wrapper is 53 bytes / seven fields versus native 51 / six. Dynamic renderer
@@ -64,17 +60,16 @@ native's ECX slot. The player draw callback is seven bytes with a tail jump,
 versus native's complete ten-byte call/return sequence. Explicit success return,
 source-level cdecl callee and primary `/Oy-` controls do not recover it. All
 controls are terminal and no C++ interface change was adopted. See
-`ANIMATION_VM_DRAW.md` and `SECONDARY_PLAYER_CONTROLLER.md`. The canonical ledger
-now has 491 exact owners; do not carry these failed rows as current proofs.
+`ANIMATION_VM_DRAW.md` and `SECONDARY_PLAYER_CONTROLLER.md`. Do not carry these
+failed rows as current proofs.
 
-The pending `build-animation-vm-mode-quad` frontier still has a complete cold
-108-byte public primary-TU proof: 89 code, three alignment and sixteen table
+The canonical `build-animation-vm-mode-quad` has a complete cold 108-byte
+public primary-TU proof: 89 code, three alignment and sixteen table
 bytes, all eight fields and zero differences. Evidence:
-`.analysis/gpt-6.1-sol-mode-quad-post-strip-compare.json`. Only that context's
+`.analysis/gpt-6.1-sol-mode-quad-canonical-checkpoint.json`. Only that context's
 rotation TU uses `/fp:fast`, restoring the helper's EAX-VM/ECX-output interface;
-rotation itself remains non-exact. Promote the helper after the final consumer
-context passes, refresh ledgers/progress and commit the coherent source
-checkpoint with `gpt-6.1-sol: ...`. The ordinary main frontier keeps its own
+rotation itself remains non-exact. Tracking now has 492 canonical exact
+owners. The ordinary main frontier keeps its own
 rotation profile. Renderer-layer draw remains a 127-byte frontier with two
 setup-MOV ordering differences.
 
@@ -88,7 +83,7 @@ keep the VM/cursor register inversion. These type models do not establish the
 original nominal classes. Focused evidence and failed controls are in
 `KNOWLEDGE_BASE.md`.
 
-This turn's view controls do not recover the readers. Derived, flat independent,
+The view controls do not recover the readers. Derived, flat independent,
 formal-input and child-reference models all retain 76 reads. The flat/formal
 models have identical nonfield bytes and field layouts to the maintained owner.
 Old images really have 78 reads, but still narrow the script ID; two also publish
@@ -101,17 +96,19 @@ a three-byte RGB target now shares the vertex-pointer word slot; the float
 result remains on the stack. This is a concrete nonlocal packing effect, not
 removal of the float spill. Both bodies retain immediate four-byte `FSTP`
 stack stores at all four math calls; see
-`.analysis/gpt-6.1-sol-active-scratch-math-rounding.txt`. Consider this source
-model after the current replay finishes. A paired constructed-result control
+`.analysis/gpt-6.1-sol-active-scratch-math-rounding.txt`. A paired constructed-result control
 keeps frame `0xCC` but shifts the recovered tween result slot from `ESP+24`
 to `ESP+28`; smaller scratch/color layouts are not automatically better.
-Its C2 traces again remove one three-byte color, with both complete ordinary
-text controls exact. A fresh color-choice trace explains the chain: maximum
+Its C2 traces again remove one three-byte color, with both debugger/ordinary
+text pairs matching. A fresh color-choice trace explains the chain: maximum
 7 no longer excludes float element 8; later angle/color placements change,
 while vertex 13's full neighbor bitmap stays identical. See
 `.analysis/compiler-vc9/scratch-color-choice-comparison.txt`.
 The inline child-setter control also retains 76 reads.
-All private probes are terminal.
+Next: inspect opcode 97's child-copy placement before late tail merging in the
+current graph, keeping full-width script IDs and correct translation ordering.
+Do not repeat the negative view/reference/setter controls or adopt a smaller
+scratch frame that loses the native tween-result slot.
 
 Rebuild and inspect only the main owner:
 

@@ -126,7 +126,8 @@
         case 88:
         {
             int script = ReadI(self, instruction, 0);
-            scratch.childId = CreateAnimationVmId(self->file, script, self->persistent020).value;
+            AnimationVmId childId = CreateAnimationVmId(self->file, script, self->persistent020);
+            scratch.child = ClearMissingAnimationId(&childId.value);
             goto animation_child_draw;
         }
         // Keep the factory's hidden-result temporary alive through ID cleanup;
@@ -166,11 +167,11 @@
         case 91:
         {
             int script = ReadI(self, instruction, 0);
-            scratch.childId = CreateSecondaryEmitterAnimationVmId(self->file, script, self->persistent020).value;
+            AnimationVmId childId = CreateSecondaryEmitterAnimationVmId(self->file, script, self->persistent020);
+            scratch.child = ClearMissingAnimationId(&childId.value);
             goto animation_child_draw;
         }
         animation_child_draw:
-            scratch.child = ClearMissingAnimationId(&scratch.childId);
             InsertAnimationRelatedNode(&self->drawNode, &scratch.child->drawNode);
             State(scratch.child)->otherPosition = self->position;
             State(scratch.child)->translation = self->translation;
@@ -178,17 +179,18 @@
         case 90:
         {
             int script = ReadI(self, instruction, 0);
-            scratch.childId = CreateSecondaryDrawAnimationVmId(self->file, script, self->persistent020).value;
+            AnimationVmId childId = CreateSecondaryDrawAnimationVmId(self->file, script, self->persistent020);
+            scratch.child = ClearMissingAnimationId(&childId.value);
             goto animation_child_front;
         }
         case 92:
         {
             int script = ReadI(self, instruction, 0);
-            scratch.childId = CreateFrontSecondaryDrawAnimationVmId(self->file, script, self->persistent020).value;
+            AnimationVmId childId = CreateFrontSecondaryDrawAnimationVmId(self->file, script, self->persistent020);
+            scratch.child = ClearMissingAnimationId(&childId.value);
             goto animation_child_front;
         }
         animation_child_front:
-            scratch.child = ClearMissingAnimationId(&scratch.childId);
             InsertAnimationRelatedNode(&self->drawNode, &scratch.child->drawNode);
             State(scratch.child)->translation = self->translation;
             State(scratch.child)->otherPosition = self->position;

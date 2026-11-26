@@ -38,13 +38,7 @@
     if (self->flags2 & 4)
     {
         CameraVector quad[4];
-        switch ((self->flags.value >> 22) & 15)
-        {
-        case 0: BuildAnimationVmQuad(self, &quad[0], &quad[1], &quad[2], &quad[3]); break;
-        case 1: BuildRotatedAnimationVmQuad(self, &quad[0], &quad[1], &quad[2], &quad[3]); break;
-        case 2:
-        case 3: BuildUnroundedAnimationVmQuad(self, &quad[0], &quad[1], &quad[2], &quad[3]); break;
-        }
+        BuildModeQuad(quad, self);
         InlineUv(&self->uv[0], &quad[0]);
         InlineUv(&self->uv[1], &quad[1]);
         InlineUv(&self->uv[2], &quad[2]);

@@ -4,9 +4,26 @@ InitializeSecondaryHudScreenEffect at448A90 now has complete natural C++ for all
 nine modes, registration and state initialization. Its full1168-byte owner passes
 the canonical linked Oracle: cold /GL primary-TU contribution, complete PE/MAP/PDB
 ownership and all54 reviewed address fields replay with zero byte differences.
-The actual80-byte factory at4489E0 is included as its real
-unknown-mode caller; its zero-difference diagnostic receives no separate leaf
-acceptance unit or exact credit. Both original class/TU origins are indeterminate.
+The actual 80-byte factory at 4489E0 is its real unknown-mode caller and has
+a separate canonical exact unit in the same cold family. Original class/TU
+origins remain indeterminate.
+
+## Effect-local timer construction (2026-11-26)
+
+The 80-byte factory requires the timer-member constructor's flag clear at
+object `+0x40` before the whole-object `memset`. Removing the default
+constructor from `StageTimerView` in `9abb56f` left this factory at 76 bytes;
+the missing instruction was not caused by the later interpreter changes.
+`SecondaryHudScreenEffect::Timer` now supplies that constructor locally while
+the shared physical timer view remains POD. The existing 0x44-byte size and
+0x30 timer-offset assertions remain valid.
+
+A fresh canonical cold build accepts both `create-secondary-hud-screen-effect`
+(80 bytes, three call fields) and `initialize-secondary-hud-screen-effect`
+(1,168 bytes, 54 fields), each with zero byte differences. Evidence:
+`.analysis/gpt-6.1-sol-screen-effect-timer-cold.log`. The affected
+`SecondaryHud.hpp`/interpreter replay subsequently completed without remaining
+failures; see [the interpreter checkpoint](ANIMATION_EXECUTION.md#interpreter-abi-in-exact-caller-contexts).
 
 ## Full extents and interfaces
 
@@ -113,8 +130,9 @@ preserved. A fresh cold build and compare-linked-function.py accept the complete
 differences, including all alignment and nine table cells. This grants one exact
 unit/1168 bytes. Original TU partition and nominal type identity remain unknown.
 
-The factory reproduces its complete80 bytes after its three call fields replay.
-It still has no independent acceptance unit. HUD retains4652/frameC/4101 full
+The factory has the separate canonical unit
+`create-secondary-hud-screen-effect`, sharing this cold family and replaying
+all 80 bytes after its three reviewed call fields. HUD retains4652/frameC/4101 full
 differences, all104 fields and all27 calls in this fuller dependency context.
 No native product, original TU, callback-body or runtime closure follows.
 
