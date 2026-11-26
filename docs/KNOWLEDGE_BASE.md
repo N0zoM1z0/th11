@@ -550,7 +550,7 @@ Three twelve-byte colors change alignment from eight to four. Their allocations
 move from `-152/-168/-184` to `-144/-156/-168`; the remaining eight-aligned
 12-byte color moves from `-200` to `-184`. The quad slot stays 48 bytes at
 `-48`, and the eight-byte pair stays at `-64`. The compiler's authenticated
-`StackPacking+0x27B5` instruction (RVA `108F85`) loads color field `+0x14`,
+`ColorStackElements+0x4A5` instruction (RVA `108F85`) loads color field `+0x14`,
 then passes it with the size to `allotemp` at `1F68C0`; the latter's mask and
 rounding operations confirm that this field is alignment. The 16-byte frame
 reduction therefore comes from packing, not fewer source temporaries.
@@ -562,8 +562,24 @@ has diagnostic normalized alignment 2,676, still receives VM/cursor in EBX/EDI,
 and still lacks the two opcode 97 readers; native frame is `0xCC`. Naming the
 five vector/color return results and passing their addresses to ordinary
 inline copy helpers does not close the remaining eight-byte frame gap. The
-members of the last shared color must be mapped before attributing that gap
-to a specific return buffer.
+five anonymous members of the last shared color require eight-byte alignment;
+the other twelve-byte elements have alignment code 3 (four bytes). A complete
+812-region / 6,058-tuple walk maps their address operands to three actual
+`StepStageVectorTween` calls (elements 153, 154, 156) and two
+`StepAnimationIntVectorTween` calls (155, 157). The call operand's source symbol
+matches the corresponding previously observed compiler-function symbol.
+These five return buffers impose the shared color's eight-byte alignment.
+`colorElemental` takes the maximum member requirement at RVA `1094B3`; the
+member encoding at `SYM+0x2C` is converted to `1 << (code - 1)`.
+
+Constructing only opcode 59's rotation target does not change frame `0xD4`;
+it adds four owned bytes and one instruction (12,036 / 3,217), with the same
+413 fields and two missing reader calls. Evidence:
+`.analysis/compiler-vc9/constructed-vector-return-buffer-map.txt`,
+`execution-stack-materialization-constructed-vector-return-calls.txt`,
+`trace-stack-constructed-vector-return-calls-run.log`,
+`stack-color-alignment-formation.txt` and
+`.analysis/gpt-6.1-sol-rotation-target-construction{.log,-fields.json}`.
 
 Evidence: `.analysis/gpt-6.1-sol-execution-vector-value-context{.py,.log}`,
 `gpt-6.1-sol-vector-value-strip-rounding.txt`,
@@ -573,6 +589,62 @@ Evidence: `.analysis/gpt-6.1-sol-execution-vector-value-context{.py,.log}`,
 controls remain separate from the maintained interpreter. Earlier isolated
 constructor trials worsened alignment; the useful result depends on the
 surrounding data lifetimes and branch graph.
+
+## Tween result types account for the remaining frame alignment (2026-11-26)
+
+Constructed three-component return values restore the native `0xCC` frame in
+a private interpreter graph. The control gives `StepStageVectorTween` and
+`StepAnimationIntVectorTween` ordinary derived value result classes with
+converting constructors, updates their actual definitions and declarations
+together, and recompiles the primary TU plus all twenty support TUs. Calling
+conventions and the three-component payloads stay unchanged. These classes
+are an experiment in value semantics; their original TH11 nominal identities
+are unknown. TH10's `AnmInt3View` also has constructors, and its update path
+keeps an evaluated color as a const value before publishing three bytes.
+
+C2 still packs exactly 26 colors with the same sizes, members and weights.
+The five hidden result buffers change alignment code 4→3 (eight→four bytes),
+and their shared color changes alignment 8→4. Its eight members move from
+`-184` to `-180`; the other twelve-byte colors keep their previous offsets.
+The final frame shrinks from `0xD4` to `0xCC`, and all five tween calls use
+`ESP+0x24`, matching the native result-buffer location. The complete traced
+32,134-byte text section reproduces its ordinary relink with zero differences.
+The primary owner is 12,016 bytes / 3,215 instructions / 413 address fields.
+Only the two known opcode 97 reader fields are missing; all direct calls bind.
+
+The three float-vector result copies now use the native interleaved
+load/store sequence through EDX, ECX and EAX, instead of loading three words
+before publishing them. Their complete seven/seven/eight-instruction
+post-call publication sequences have identical instruction texts without
+register or field-offset normalization; the enclosing owner still differs. The VM/cursor registers remain EBX/EDI. Whole-owner
+diagnostic register-normalized alignment is 2,584 versus the previous 2,676;
+this heuristic does not capture all the newly recovered local schedules.
+The main owner remains non-exact. Keeping the color locals in the constructed
+result type changes them to byte reads from a separate `ESP+0x20` slot and
+owns 12,032 bytes; it does not reproduce native sharing. Keep both controls
+private while investigating the actual shared vector type.
+
+Evidence: `.analysis/gpt-6.1-sol-execution-constructed-return-context{.py,.log}`,
+`gpt-6.1-sol-constructed-return-{code.log,fields.log,call-windows.txt}`,
+`gpt-6.1-sol-constructed-return-float-copy-sequences.txt`,
+`.analysis/compiler-vc9/execution-stack-materialization-constructed-return-types.txt`,
+`trace-stack-constructed-return-types-run.log` and
+`.analysis/gpt-6.1-sol-constructed-result-local-color-calls.txt`.
+The separate 21-TU copied-family baseline restores the prior 12,032-byte
+owner and `0xD4` frame. Its 32,086-byte text has one raw byte difference,
+inside the PE DIR32 field at `408D4D`: the `AllocateSceneAnimationVm` compiler
+EH handler's FuncInfo address moves from `409198` to `409180`. The FuncInfo
+records have equal nonpointer fields and refer to byte-identical unwind maps
+at `409190` / `409178`. Replaying this reviewed address field leaves zero
+text differences. Keep the raw log unchanged. Evidence:
+`.analysis/gpt-6.1-sol-execution-return-context-control{.py,.log}` and
+`gpt-6.1-sol-return-context-control-eh-replay.txt`.
+
+TH10's explicit infinite event scan and cursor-first local declaration order
+were also tested in the earlier constructed-sum context. Both retain the
+complete 12,032-byte owner, all 413 field locations and zero nonfield byte
+differences. Neither changes the event-loop layout. Evidence:
+`.analysis/gpt-6.1-sol-event-scan-body-controls.txt`.
 
 ## Stage culling and auxiliary switch owners (2026-11-17)
 

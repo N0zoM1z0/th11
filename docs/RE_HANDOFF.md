@@ -50,8 +50,8 @@ Shell session **5924** now runs
 `.analysis/gpt-6.1-sol-resume-strip-rounding-consumers.py`; log:
 `.analysis/gpt-6.1-sol-strip-rounding-consumer-resume.log`.
 It verified receipts before carrying all 69 previously accepted owners and
-is rebuilding `step-stage-fog-tween`, context 37/43. The other six remaining
-families have 132/214 support TUs. The failed controller's session 2509 is
+passed `step-stage-fog-tween` and is rebuilding `draw-unrotated-animation-vm`,
+context 38/43. The remaining families have 132/214 support TUs. The failed controller's session 2509 is
 terminal (exit 1); keep its log and do not restart it. The scope remains
 75 exact owners plus the pending quad helper in 43 contexts. Prior replay
 results belong to their inputs; carry only proofs whose receipts still verify.
@@ -103,10 +103,33 @@ remains a private non-exact probe, not the maintained source. C2 traces show
 that its 16-byte frame reduction comes from three 12-byte stack colors
 changing alignment 8→4, with all 26 colors and 205 payload bytes retained.
 Both traced whole-text controls have zero differences. All four strip call
-windows still preserve both float-rounding stages. Naming tween return objects
-does not reduce the remaining frame gap. Map members of the last eight-aligned
-12-byte color before drawing a return-buffer conclusion. Focused findings and
-private evidence paths are in `KNOWLEDGE_BASE.md`.
+windows still preserve both float-rounding stages. The last eight-aligned
+12-byte color is now mapped: three float-vector and two integer-vector hidden
+return buffers impose that alignment. Naming caller temporaries or constructing
+only the rotation target does not remove it.
+
+A new private graph changes both actual tween result definitions and all their
+declarations to constructed three-component values, recompiling all 21 TUs.
+It restores frame `0xCC` and the shared native `ESP+0x24` result slot. C2 confirms
+the same 26 colors; the five return buffers and their shared color change
+alignment 8→4. Its complete traced/ordinary 32,134-byte text sections match.
+The main owner is 12,016 bytes / 3,215 instructions / 413 fields, still missing
+two readers and still EBX-VM/EDI-cursor. The three float result publication
+sequences reproduce all seven/seven/eight native instructions without register
+or offset normalization; diagnostic whole-owner normalized alignment is 2,584. This is a type-model experiment, not an exact
+claim or maintained-source change. Evidence and limits are in
+`KNOWLEDGE_BASE.md`.
+
+Only the consumer replay in **5924** remains live. The 21-TU copied-family
+baseline in 26892 finished: it restores the earlier `0xD4` owner, with one raw
+text byte difference confined to the compiler EH FuncInfo DIR32 field for
+`AllocateSceneAnimationVm`. The shifted FuncInfo/unwind-map contents agree;
+replaying that reviewed address leaves zero text differences. The raw log is
+preserved. See `.analysis/gpt-6.1-sol-return-context-control-eh-replay.txt`.
+The constructed-return stack trace in 47344 also finished with a zero-difference
+whole-text ordinary control. Both explicit TH10-style event-scan probes have
+zero nonfield differences over their entire 12,032-byte owners; changing that
+source spelling does not change this layout. Keep all private artifacts.
 
 Earlier zero-vector traces show why ordinary typed copies retain only six
 of native's twelve loads: global allocation promotes the components and
