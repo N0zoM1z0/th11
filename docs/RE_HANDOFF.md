@@ -87,8 +87,8 @@ Earlier view/reference/setter controls did not recover the readers. Separate
 scratch locals reduce one RGB stack color but lose the constructed model's
 native tween-result slot; the causal chain is in
 `.analysis/compiler-vc9/scratch-color-choice-comparison.txt`. Historical
-78-reader child images narrow script IDs or publish translation early. Keep
-these as failed controls. Unrotated draw and player draw callback exact claims
+78-reader child images narrow script IDs or publish translation early. Retain
+their findings as failed controls; obsolete experiment binaries have been pruned. Unrotated draw and player draw callback exact claims
 remain withdrawn after complete cold failures; see `ANIMATION_VM_DRAW.md`
 and `SECONDARY_PLAYER_CONTROLLER.md`.
 
@@ -143,15 +143,23 @@ rebuild that context before using it. The retained stage comparison logs are
 
 ## Storage and current workspace
 
-The 2026-11-26 cleanup reclaimed 61.56 MiB by archiving 547 historical
-experimental objects and one partial trace, and removing one identical trace
-duplicate. Inventory: `.analysis/storage-cleanup-20261126.tsv`. Use
-[ARTIFACTS](ARTIFACTS.md) for restore commands. Configured build families,
-current probe inputs, target, compiler, Wine prefix and Ghidra project remain.
-The former 689 MiB build figure was a November 23 measurement.
+The second 2026-11-26 cleanup removed 5,282 obsolete files (286.15 MiB),
+including old object archives, unconfigured experiment builds, broad compiler
+dumps and the old Factory query cache. Combined with the earlier compression
+pass, 347.71 MiB of file content was removed. `build/` was about 571 MiB and
+`.analysis/` 102 MiB after cleanup. Inventory:
+`.analysis/storage-prune-20261126.tsv`; retention details: [ARTIFACTS](ARTIFACTS.md).
+There is no `.build/` directory. Exact families, current model/control inputs,
+target, compiler, Wine prefix, Ghidra project and the active replay remain.
+Historical private output paths are not all available; the old object archives
+were deleted, so rebuild an old experiment if needed. Two nested exact caches
+were mistakenly removed, then cold-built and compared with zero differences:
+`scale-animation-color-channel` and `build-animation-vm-quad`. Their recovery
+logs are listed in ARTIFACTS; they are excluded from the removed-file totals.
 
-The 11,552-byte UpdateStageRealInterpreterAnimationOy receipt is stale after
-AnimationTween.cpp changed; rebuild that frontier before using its metrics.
+The 11,552-byte UpdateStageRealInterpreterAnimationOy receipt was already stale
+after AnimationTween.cpp changed; its object intermediates are now pruned.
+Cold-build that frontier before using its metrics.
 Receipts can become stale when any hashed input changes, even when generated
 code does not. A stale receipt is not a lost proof; rebuild the affected unit
 and cold-replay only affected exact units. No full cold replay was run for this

@@ -19,6 +19,9 @@ compiler observations and useful failed approaches.
   complete differences. Do not encode private registers or add inert storage.
 - Rebuild affected exact contexts through `config/match-units.toml`. Cache
   retention is described in [ARTIFACTS](ARTIFACTS.md).
+  Obsolete private experiment outputs were pruned on 2026-11-26. Historical
+  paths below can identify the experiment without naming an available cache;
+  use the retained findings/drivers and rebuild the relevant context if needed.
 - **Updated 2026-11-17:** linked field replay authenticates
   `eh_static = true` for the owner-named compiler CIL EH handler.
   The spell-stage factory (206 B), spell-stage destructor (317 B),

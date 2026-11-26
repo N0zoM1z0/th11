@@ -1,66 +1,90 @@
 # TH11 private artifacts and storage hygiene
 
 The durable reconstruction is tracked in `src/`, `probes/`, `config/`,
-`scripts/` and `docs/`. Compiler output supports an exact claim only with its
-current receipt and complete comparison. Start with [RE_HANDOFF](RE_HANDOFF.md)
-for active work and [PROGRESS](PROGRESS.md) for generated ledger totals.
+`scripts/` and `docs/`. Start with [RE_HANDOFF](RE_HANDOFF.md) for active work
+and [PROGRESS](PROGRESS.md) for generated ledger totals.
 
 ## Assets to retain
 
 | Location | Purpose |
 | --- | --- |
 | `resources/th11.exe` | Original Japanese 1.00a target, pinned by `config/target.toml` |
-| `.tools/` and the configured TH11 Wine prefix | Pinned VC9 RTM toolchain and isolated shared-runtime configuration |
-| `ghidra-project/` | Mutable private TH11 analysis database |
-| Configured `build/match/` and `build/match-linked/` families | Exact/frontier objects, PE/MAP/PDB owners and receipts |
-| Current private probe inputs and linked images | Compiler comparisons and unfinished reconstruction work |
-| Useful `.analysis/` source snapshots, scripts, reviews and logs | Reusable target/compiler evidence |
+| `.tools/` and the configured TH11 Wine prefix | Pinned VC9 RTM toolchain and isolated shared runtime |
+| `ghidra-project/` and `.analysis/factory-runtime/` | Mutable TH11 database and active analyzer configuration |
+| Configured exact `build/match/` and `build/match-linked/` families | Current complete objects, PE/MAP/PDB owners and receipts |
+| Current private models, control images and their input objects | Unfinished interpreter/compiler work identified in the handoff |
+| Useful `.analysis/` sources, drivers, focused traces and reviews | Reusable findings and reproducible experiments |
 
-Check every `output_dir` in `config/match-units.toml` before removing build
-products. Several units can share a family. Preserve the active replay's
-outputs and inputs; its current process and log are in the handoff.
+Check `output_dir`, source/input paths and exact ledger rows in
+`config/match-units.toml` and `config/matches.csv` before removing build
+products. Several units can share a family. Protect active jobs and private
+models that reuse support objects from an older context. A historical path
+reference alone is not a reason to keep obsolete generated output.
 
 ## Cleanup on 2026-11-26
 
-Old experimental object files under `.analysis/` were archived with gzip.
-Their source snapshots, linked PE/MAP/PDB files, logs and historical receipts
-remain. Each archive was decompressed and checked against the original SHA-256
-before its uncompressed object was removed. One identical duplicate of the
-compiler phase dump was removed after comparing both complete files.
+The second cleanup removed **5,282 obsolete files / 300,048,206 bytes (286.15 MiB)**
+(excluding the two exact caches rebuilt below):
 
-| Operation | Files | Original bytes | Retained bytes |
-| --- | ---: | ---: | ---: |
-| Archive historical experimental `.obj` files | 547 | 72,506,778 | 20,792,811 |
-| Archive the partial first compiler-phase dump | 1 | 5,315,121 | 854,315 |
-| Remove identical `execution-phases.pre-late-timeout.txt`; keep `execution-phases.txt` | 1 | 8,375,515 | 0 |
-| **Total** | **549** | **86,197,414** | **21,647,126** |
+| Removed products | MiB |
+| --- | ---: |
+| Superseded, unconfigured linked build experiments | 141.56 |
+| Historical non-exact frontier build families | 5.65 |
+| Stale, non-exact frontier object intermediates | 79.31 |
+| Historical experimental object archives | 19.83 |
+| Superseded broad compiler dumps, including the partial archive | 8.80 |
+| Old Factory decompiler query cache | 7.88 |
+| Historical `.analysis/` PE/MAP/PDB output | 17.45 |
+| Generated debugger session files and old compiler-wrapper traces | 5.67 |
 
-This reclaimed **64,550,288 bytes (61.56 MiB)**. The path-level inventory is
-`.analysis/storage-cleanup-20261126.tsv`. Configured build families and current
-probe inputs were retained while the ReadF consumer replay continued.
+The path inventory is `.analysis/storage-prune-20261126.tsv`. At cleanup,
+`build/` fell from about 802 to 571 MiB and `.analysis/` from 165 to 102 MiB;
+active builds can change those figures. There was no `.build/` directory.
+The target, toolchain, game-specific prefix, Ghidra database and running ReadF
+consumer replay remain. Configured exact families were retained or recovered
+as described below. Seven private
+model/control families remain under `build/probe-ltcg/`, alongside configured
+probe families; the current model's source and timer/support objects remain.
 
-Restore an old experimental object only when it is needed:
+Five stale frontier contexts lost only their object intermediates; their
+linked images, receipts and recipes remain: `update-stage-real-interpreter-animation-oy`,
+`update-stage-real-interpreter-graph`, `update-stage-real-script-mesh-callees`,
+`draw-secondary-player-callback` and `draw-unrotated-animation-vm`.
+They require a cold rebuild before further comparison. The withdrawn draw
+claims were not restored. Old non-exact linked caches for `animation-extent-magnitude`,
+`draw-animation-vm-by-mode` and `build-rotated-animation-vm-quad` were also
+removed; their source and recipes remain. Legacy top-level renderer output
+was pruned from `build/match-linked/AnimationVmRendererOwner`; its two
+configured exact child directories remain.
 
-```bash
-gzip -dk .analysis/EXPERIMENT/build/source.ltcg.obj.gz
-```
+The first deletion pass missed configured children below that legacy parent
+and removed two exact caches. `scale-animation-color-channel` and
+`build-animation-vm-quad` were recovered through cold builds and complete
+linked comparisons, both with zero differences. Recovery logs are
+`.analysis/storage-recovery-{scale-animation-color-channel,build-animation-vm-quad}.log`.
+Their rebuilt caches are excluded from the removed-file total above and marked
+separately in the deletion inventory. Future cleanup must protect configured
+descendants as well as directly configured directories.
 
-Use the actual path from the inventory. Restoring preserves the original bytes;
-the usual receipt checks still determine whether its inputs are current. Read
-an archived text dump with `gzip -dc PATH.txt.gz`.
+The earlier same-day compression pass reclaimed 61.56 MiB. Its 547 object
+archives and partial trace archive were subsequently deleted in this pass;
+the old inventory `.analysis/storage-cleanup-20261126.tsv` describes that
+intermediate state, not available backups. Together the two passes removed
+**347.71 MiB** of file content. Historical notes may still name discarded
+private outputs: retain their findings and rebuild the relevant experiment
+when needed, rather than expecting every old cache to exist.
 
-## Earlier cleanup records
+## Earlier records and rebuilding
 
-The November 22 and 23 path inventories remain at
-`.analysis/storage-cleanup-20261122.txt` and
-`.analysis/storage-cleanup-20261123.txt`. Older cleanup details are retained in
-Git (`4fe024e`, `9accb5a`). The previously reported 689 MiB build size was a
-November 23 measurement. Inspect current usage with:
+November 22/23 inventories remain at `.analysis/storage-cleanup-20261122.txt`
+and `.analysis/storage-cleanup-20261123.txt`; earlier documentation is in Git
+(`4fe024e`, `9accb5a`). Inspect current usage with:
 
 ```bash
 du -sh .analysis build .tools ghidra-project
 ```
 
-Rebuild only the context needed for the task. A stale receipt requires that
-context's cold build and affected exact comparisons; artifact cleanup does not
-require a full cohort or broad runtime suite.
+Rebuild only the context needed for the task. Missing intermediates or stale
+receipts require that context's cold build and affected exact comparisons;
+cleanup does not require a full cohort or broad runtime suite. Never edit a
+historical receipt to make a pruned or changed family appear current.
