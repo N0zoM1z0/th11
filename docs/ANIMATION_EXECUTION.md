@@ -46,11 +46,13 @@ still assigns the VM pointer to EBX and instruction cursor to EDI, opposite
 native EDI/EBX allocation. The complete 104-entry dispatch table and remaining
 owner-wide codegen gaps remain open.
 
-The VM event word at `+0x37C` is now declared `unsigned short`. Native entry
-loads this field with `movzx` before testing and carrying the event through the
-interrupt scan, so the unsigned type models the observed zero-extension rather
-than sign-extending negative 16-bit values. This is a field-type correction,
-not proof of the surrounding VM class identity or whole-owner exactness.
+The VM event word at `+0x37C` is declared `unsigned short`, matching the
+native entry's `movzx` load. The interpreter's saved local event ID is a
+separate `short`: native event-label comparison sign-extends that captured
+16-bit value with `movsx` before comparing it to the signed script label
+operand. Keeping the field and local types distinct reproduces both observed
+conversion boundaries; it does not establish the surrounding VM class
+identity or whole-owner exactness.
 
 Child-creation opcodes 88, 90, 91, 92 and 95 now retain the full 32-bit script
 operand read by `ReadI`; the previous `short` forms were rejected because they

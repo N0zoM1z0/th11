@@ -22,9 +22,12 @@ instructions in opcode 39's shared continuation. This was achieved by changing
 `ReadI` to test the variable bit before loading its operand, matching the
 native conditional-read order. The frame is `0xD4` rather than native
 `0xCC`, and the VM/cursor allocation remains EBX/EDI instead of native
-EDI/EBX. Parameter-type, helper-argument-order and register-declaration-order
-trials were rejected; snapshots remain in `.analysis/`. The dispatch handler
-order is largely consistent with the native table.
+EDI/EBX. The VM event field remains unsigned 16-bit, but the interpreter
+keeps its local event ID as signed `short`, matching native zero-extension at
+the field load followed by sign-extension at the signed label comparison.
+Parameter-type, helper-argument-order and register-declaration-order trials
+were rejected; snapshots remain in `.analysis/`. The dispatch handler order
+is largely consistent with the native table.
 
 The comparison-handler diagnostic discovers the current dispatch table
 from the owner disassembly and reports the twelve handlers independently:

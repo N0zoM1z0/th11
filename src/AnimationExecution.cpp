@@ -226,7 +226,7 @@ int __stdcall ExecuteAnimationVm(AnimationVmView *vmInput)
     if (self->flags.value & 0x20000) return 0;
     float savedScale = g_AnimationTimeScale;
     if (self->flags.value & 0x20000000) g_AnimationTimeScale = 1.0f;
-    unsigned short event;
+    short event;
     if (self->event)
     {
         event = self->event;
