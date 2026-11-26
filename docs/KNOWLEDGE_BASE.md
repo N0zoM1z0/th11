@@ -196,6 +196,52 @@ Evidence: `.analysis/compiler-vc9/execution-merges.txt` and
 `scripts/repo-python .analysis/compiler-vc9/trace-merges.py`. The debugger
 link and ordinary control have identical 31,798-byte `.text` sections.
 
+## VC9 splits the interpreter pointers before choosing their registers (2026-11-26)
+
+The interpreter's EBX-VM/EDI-cursor inversion is already constrained before
+`ChoosePhysReg` selects the final registers. In the integer allocation round,
+the original pointer ranges change as follows:
+
+| Stage | VM | Instruction cursor |
+| --- | --- | --- |
+| Before integer `Spillcosts` | Seven general registers | Seven general registers |
+| After `Spillcosts` | EBP | EBX, EBP |
+| After frame constraints | Empty | EBX |
+| Main split range at `ChoosePhysReg` | EBX | EDI |
+
+The earlier floating-register round leaves the integer masks untouched; keep
+the two rounds separate when reading phase snapshots. The frame correctly
+reserves EBP. Changing declaration order to break a final register-choice tie
+therefore misses the earlier split planning that produced these singleton
+sets.
+
+Two hardware watchpoints on the original ranges' sparse-vector words capture
+nine mask changes inside `Spillcosts` (RVA `0x32440`). Fixed EAX setup and
+`SetStageTimer` first remove caller-clobbered registers. A child-ID result
+address in ESI removes ESI; the float-destination argument moved into EDI
+removes EDI; the vector-tween return buffer addressed through EBX removes EBX
+from the VM range. These are constraints from different interpreter regions,
+not only the handler currently being tuned. Inspect split costs and real
+callee register use before changing another local's spelling.
+
+Useful VC9 points: the pre-assignment selection at `ChoosePhysReg + 0x2A1`
+(RVA `0x36C41`), `CmdSetConstraints` at `0x1CA060`, and the integer
+`Spillcosts` call/return at `0x2F503/0x2F508`. The current tuple in that
+`Spillcosts` frame is `[EBP-4]`; `[EBP+8]` is its operand cursor.
+Evidence: `.analysis/compiler-vc9/execution-registers.txt`,
+`execution-initial-splits.txt`, `execution-mask-writes.txt` and their
+`trace-*-run.log` controls. Each completed debugger/control pair has identical
+31,798-byte `.text` sections. The traces explain this candidate's decisions;
+the native split graph is not available.
+
+A case-local opcode 97 child-pointer control leaves its handler unchanged and
+retains the 11,816-byte owner, 260 calls and `0xD4` frame. Its only code changes
+swap x87 load/arithmetic operands in opcodes 9 and 13: addition improves while
+multiplication loses native order. The copied-source baseline reproduces the
+entire maintained interpreter byte-for-byte. Keep the local-pointer trial in
+`.analysis/gpt-6.1-sol-opcode97-local-control.log` and
+`gpt-6.1-sol-opcode97-local-diff.log`; it is not a maintained improvement.
+
 ## Stage culling and auxiliary switch owners (2026-11-17)
 
 - The stage layer's formerly source-less `CullStageObject` (403950, 1,643
