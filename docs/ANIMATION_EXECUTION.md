@@ -18,19 +18,20 @@ a second function track.
 
 The focused `animation-execution-tween-context` build was rebuilt after the
 TH10-style instruction-cursor loop, result-lifetime reduction and VM-state
-aliasing experiments. The current natural-C++ candidate owns 11,960 bytes and
-3,355 decoded instructions against the native 12,056-byte owner and 3,308
+aliasing experiments. The current natural-C++ candidate owns 11,816 bytes and
+3,301 decoded instructions against the native 12,056-byte owner and 3,308
 instructions. The complete-extent mnemonic/operand-key comparison aligns
-1,396 native instruction keys; calls are 261/262 and conditional branches are
-379/406 (candidate/native). These are diagnostic measurements, not an exactness
-score. Removing the named `scaleResult` pair temporary first raised alignment
-from 1,382 to 1,389 keys. Routing the interpreter, opcode handlers and update
-body consistently through the single `self` state alias raised it again to
-1,396 keys and removed two decoded instructions without changing owner extent.
-The candidate frame remains `0xDC` rather than native `0xCC`, and its prologue
-still assigns the VM pointer to EBX and the instruction cursor to EDI, opposite
-the native EDI/EBX allocation. The instruction cursor/register assignment and
-complete 104-entry dispatch table remain open.
+1,425 native instruction keys; calls are 261/262 and conditional branches are
+381/406 (candidate/native). These are diagnostic measurements, not an exactness
+score. The twelve integer/float relation handlers now branch explicitly to a
+shared instruction-advance label or the timed-jump path. The float inversions
+use negated ordered comparisons so unordered values retain their original
+fallthrough behavior. This change raises alignment from 1,396 to 1,425 keys and
+reduces the candidate by 144 bytes. The candidate frame remains `0xDC` rather
+than native `0xCC`, and its prologue still assigns the VM pointer to EBX and
+the instruction cursor to EDI, opposite the native EDI/EBX allocation. The
+complete 104-entry dispatch table and remaining owner-wide codegen gaps remain
+open.
 
 The VM event word at `+0x37C` is now declared `unsigned short`. Native entry
 loads this field with `movzx` before testing and carrying the event through the

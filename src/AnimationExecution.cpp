@@ -239,6 +239,7 @@ int __stdcall ExecuteAnimationVm(AnimationVmView *vmInput)
         default:
             break;
         }
+animation_next:
         self->instruction = Next(instruction);
         continue;
 animation_jump:

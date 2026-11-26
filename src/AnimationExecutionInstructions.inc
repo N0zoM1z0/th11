@@ -35,85 +35,85 @@
         {
             int left = ReadI(self, instruction, 0);
             int right = ReadI(self, instruction, 1);
-            if (left == right) goto animation_jump;
-            break;
+            if (left != right) goto animation_next;
+            goto animation_jump;
         }
         case 29:
         {
             float left = ReadF(self, instruction, 0);
             float right = ReadF(self, instruction, 1);
-            if (left == right) goto animation_jump;
-            break;
+            if (!(left == right)) goto animation_next;
+            goto animation_jump;
         }
         case 30:
         {
             int left = ReadI(self, instruction, 0);
             int right = ReadI(self, instruction, 1);
-            if (left != right) goto animation_jump;
-            break;
+            if (left == right) goto animation_next;
+            goto animation_jump;
         }
         case 31:
         {
             float left = ReadF(self, instruction, 0);
             float right = ReadF(self, instruction, 1);
-            if (left != right) goto animation_jump;
-            break;
+            if (!(left != right)) goto animation_next;
+            goto animation_jump;
         }
         case 32:
         {
             int left = ReadI(self, instruction, 0);
             int right = ReadI(self, instruction, 1);
-            if (left < right) goto animation_jump;
-            break;
+            if (left >= right) goto animation_next;
+            goto animation_jump;
         }
         case 33:
         {
             float left = ReadF(self, instruction, 0);
             float right = ReadF(self, instruction, 1);
-            if (left < right) goto animation_jump;
-            break;
+            if (!(left < right)) goto animation_next;
+            goto animation_jump;
         }
         case 34:
         {
             int left = ReadI(self, instruction, 0);
             int right = ReadI(self, instruction, 1);
-            if (left <= right) goto animation_jump;
-            break;
+            if (left > right) goto animation_next;
+            goto animation_jump;
         }
         case 35:
         {
             float left = ReadF(self, instruction, 0);
             float right = ReadF(self, instruction, 1);
-            if (left <= right) goto animation_jump;
-            break;
+            if (!(left <= right)) goto animation_next;
+            goto animation_jump;
         }
         case 36:
         {
             int left = ReadI(self, instruction, 0);
             int right = ReadI(self, instruction, 1);
-            if (left > right) goto animation_jump;
-            break;
+            if (left <= right) goto animation_next;
+            goto animation_jump;
         }
         case 37:
         {
             float left = ReadF(self, instruction, 0);
             float right = ReadF(self, instruction, 1);
-            if (left > right) goto animation_jump;
-            break;
+            if (!(left > right)) goto animation_next;
+            goto animation_jump;
         }
         case 38:
         {
             int left = ReadI(self, instruction, 0);
             int right = ReadI(self, instruction, 1);
-            if (left >= right) goto animation_jump;
-            break;
+            if (left < right) goto animation_next;
+            goto animation_jump;
         }
         case 39:
         {
             float left = ReadF(self, instruction, 0);
             float right = ReadF(self, instruction, 1);
-            if (left >= right) goto animation_jump;
-            break;
+            if (!(left >= right)) goto animation_next;
+            goto animation_jump;
         }
         case -1:
         case 1:

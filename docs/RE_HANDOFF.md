@@ -14,8 +14,10 @@ Ghidra through `scripts/ghidra.py`.
 The complete natural-C++ interpreter, event paths, 104-entry signed-opcode
 dispatch table, nine tween updates and both generated-strip paths are present.
 The focused `animation-execution-tween-context` cold build currently owns
-11,960 bytes and aligns 1,396/3,308 native instruction keys; calls are 261/262
-and conditional branches 379/406. Its frame is `0xDC` rather than native
+11,816 bytes and aligns 1,425/3,308 native instruction keys; calls are 261/262
+and conditional branches 381/406. The twelve integer/float relation handlers
+now branch through a shared instruction-advance path while preserving unordered
+float comparisons. Its frame is `0xDC` rather than native
 `0xCC`, and it assigns VM/cursor to EBX/EDI instead of native EDI/EBX. Recent
 parameter-type, helper-argument-order and register-declaration-order trials
 were rejected because they did not improve the complete comparison; snapshots
