@@ -1,27 +1,40 @@
 # Animation interpolation, layer dispatch and allocation
 
 
-## Current pair-tween checkpoint (2026-11-23)
+## Current pair-tween checkpoint (2026-11-26)
 
-At HEAD `4adaf18`, the complete `StepAnimationFloatPairTween` owner is 673 bytes
-and 221 instructions, with frame size `0x28`. Four reviewed relocation fields
-are replayed; 2 bytes remain different and all 221/221 instruction keys align.
-Natural vector `operator+` / `operator*` expressions now reproduce the mode-8
-x87 schedule. The remaining two bytes are the mode-17 Y-component add operand
-order. The function remains frontier-only and is not exact.
+The complete `StepAnimationFloatPairTween` owner is 673 bytes and 221
+instructions, with frame size `0x28`, in both the standalone AnimationTween
+build and the real `animation-execution-tween-context` LTCG support object.
+Four reviewed relocation fields replay; strict linked comparison leaves two
+byte differences. All 221 instruction keys align, but the owner is not exact.
+
+The maintained mode-17 source now expresses the second mutation as
+`self->control2 = self->target + self->control2`. Its X-component x87 sequence
+matches native. The remaining two bytes are the Y-component memory operands:
+native loads `[edi+0x1c]` and adds `[edi+0xc]`; the candidate loads
+`[edi+0xc]` and adds `[edi+0x1c]`. Both are valid commutative float additions,
+but operand order remains part of strict code-generation matching.
+
+A controlled VC9 `/Op` build used a separate output directory and did not solve
+the two-byte gap: with the original aggregate operand order it moved the
+mismatch to X, and combining `/Op` with the swapped expression retained the Y
+mismatch. The formal unit profile remains unchanged. No assembly, padding or
+extent masking is used.
 
 The current linked context is `animation-execution-tween-context`; rebuild it
 with `scripts/repo-python scripts/build-match-unit.py --unit
-animation-execution-tween-context`. The PDB-owned interpreter in that same image
-is 11,636 bytes / 3,423 instructions (1,139/3,308 aligned keys), with frame
-`0xD4`, eight-byte ESP alignment and VM pointer in ESI. Native uses frame
-`0xCC` and EDI.
+animation-execution-tween-context`. Its PDB-owned interpreter is 11,976 bytes /
+3,372 instructions with 1,484/3,308 aligned keys, 262/262 calls and 404/406
+conditional branches. Its frame is `0xD4`, eight-byte ESP alignment and VM
+pointer in EBX; native uses frame `0xCC` and EDI. The pair leaf change does not
+alter these boss-wide measurements.
 
 A rejected 2026-11-23 expression experiment is saved in
 `.analysis/AnimationTween.mode8-components-20261123.cpp`. It produced a 677-byte
-pair owner with 219 normalized byte differences and 219/221 aligned keys, so
-the maintained source was restored to HEAD `1cc8b50`. The old 359-byte-difference
-figures below are earlier snapshots, not the current baseline.
+pair owner with 219 normalized byte differences and 219/221 aligned keys. The
+old 359-byte-difference figures below are earlier snapshots, not the current
+baseline.
 
 
 Historical topic snapshot (2026-11-20): twenty-two source mappings covered

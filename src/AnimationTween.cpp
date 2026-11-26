@@ -170,7 +170,7 @@ AnimationFloatPair __stdcall StepAnimationFloatPairTween(AnimationFloatPairTween
     {
         AnimationFloatPair previous = self->initial;
         self->initial = Add(previous, self->control2);
-        self->control2 = Add(self->control2, self->target);
+        self->control2 = self->target + self->control2;
         return self->initial;
     }
     if (self->mode == 8)

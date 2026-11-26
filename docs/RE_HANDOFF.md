@@ -52,9 +52,14 @@ relocations. `AnimationIntegerDestination` (`0x44B400`, 104 B) also has a
 zero-difference linked diagnostic, but remains unclassified pending its own
 canonical acceptance. Do not infer interpreter exactness from either leaf.
 
-The pair-tween helper still has a two-byte mode-17 operand-order gap and remains
-frontier-only. `BindAnimationSprite` (389 B) remains non-exact. See
-`docs/ANIMATION_EXECUTION.md`, `docs/ANIMATION_TWEEN.md` and
+`StepAnimationFloatPairTween` now has a 673-byte / 221-instruction owner in
+both standalone and boss-context LTCG builds. Four relocations replay and only
+two mode-17 Y-component x87 operand bytes remain different; the X component
+and mode-8 schedule align. The maintained expression is
+`self->target + self->control2`. A controlled `/Op` trial did not resolve the
+Y-order difference and the formal profile is unchanged. This leaf remains
+frontier-only, not exact. `BindAnimationSprite` (389 B) remains non-exact.
+See `docs/ANIMATION_EXECUTION.md`, `docs/ANIMATION_TWEEN.md` and
 `docs/ANIMATION_TWEEN_DISPATCH.md` for focused evidence.
 
 ## Efficient continuation
