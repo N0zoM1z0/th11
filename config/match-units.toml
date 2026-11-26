@@ -9634,7 +9634,6 @@ linkages = []
 # Internal integer destination helper, linked in its real interpreter LTCG context.
 # Its EAX/EDX argument convention is compiler-selected by this owner TU.
 [units.animation-integer-destination]
-frontier = true
 artifact_kind = "linked-pe"
 source = "src/AnimationExecution.cpp"
 inputs = ["src/AnimationUnaryTangent.cpp", "src/AnimationExecution.hpp", "src/AnimationExecutionInstructions.inc", "src/AnimationExecutionUpdate.inc", "src/AnimationVm.hpp", "src/AnimationTween.hpp", "src/AnimationTween.cpp", "src/StageTween.hpp", "src/StageTween.cpp", "src/StageEasing.cpp", "src/StageScript.hpp", "src/StageResource.hpp", "src/Random.hpp", "src/RenderBatch.hpp", "src/AnimationVmFactory.hpp", "src/AnimationExecutionPolarPoint.cpp", "src/AnimationExecutionSupport.cpp", "src/Random.cpp", "src/MainRuntime.hpp", "src/AnimationExecutionArguments.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryEmitterAnimation.cpp", "src/SecondaryDrawPublisher.cpp", "src/SecondaryDrawFrontAnimation.cpp", "src/SecondaryActorAnimation.cpp", "src/AnimationVmId.hpp", "src/SecondaryEmitterAnimation.hpp", "src/SecondaryActorRuntime.hpp", "src/SecondaryActorState.hpp", "src/PerspectiveCamera.hpp", "src/AnimationRendererDispatch.cpp", "src/StageMesh.cpp", "src/AnimationRendererDispatch.hpp", "src/StageMesh.hpp", "src/AnimationSpriteBinding.hpp", "src/AnimationDocument.hpp", "src/AnimationProjectedQuad.hpp", "src/AnimationQuad.hpp"]

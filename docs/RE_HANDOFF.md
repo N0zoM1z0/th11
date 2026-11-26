@@ -48,9 +48,11 @@ scripts/repo-python .analysis/compare-execute-animation-vm-20261122.py build/mat
 `AnimationFloatDestination` (`0x44B380`, 124 B) is now canonical exact. The
 isolated `animation-float-destination` VC9 `/GL` cold build matches its complete
 public primary-TU PDB contribution byte-for-byte after replaying all 14 reviewed
-relocations. `AnimationIntegerDestination` (`0x44B400`, 104 B) also has a
-zero-difference linked diagnostic, but remains unclassified pending its own
-canonical acceptance. Do not infer interpreter exactness from either leaf.
+relocations. `AnimationIntegerDestination` (`0x44B400`, 104 B) is now canonical exact
+in its complete interpreter LTCG support context. The strict linked replay
+reproduces all 104 bytes after replaying 11 reviewed local jump-table
+relocations. Its original source-TU attribution remains indeterminate. Neither
+destination leaf implies exactness for the enclosing interpreter.
 
 `StepAnimationFloatPairTween` now has a 673-byte / 221-instruction owner in
 both standalone and boss-context LTCG builds. Four relocations replay and only

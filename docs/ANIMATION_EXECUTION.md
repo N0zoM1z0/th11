@@ -76,10 +76,15 @@ helper boundary and its register assignment therefore remain non-exact, but
 this output-buffer form is closer to the target call shape than the rejected
 aggregate-return experiment. No register-forcing shim was introduced.
 
-The separate `animation-integer-destination` leaf was rebuilt in the same
-session: all 104 bytes match after replaying its 11 reviewed local jump-table
-relocations (`difference_count = 0`). This is a focused leaf replay, not proof
-that the enclosing interpreter or original source-TU ownership is exact.
+`AnimationIntegerDestination` at `0x0044B400` is now a canonical exact
+104-byte leaf. Its `animation-integer-destination` unit cold-builds the
+complete interpreter LTCG contribution with the pinned VC9 RTM `/GL` profile.
+The strict comparison replays all 11 reviewed local DIR32 jump-table
+relocations at `+16`, `+64`, `+68`, `+72`, `+76`, `+80`, `+84`,
+`+88`, `+92`, `+96` and `+100`; all 104 owned bytes match. The maintained
+natural C++ remains in `src/AnimationExecution.cpp`; original source-TU
+attribution remains indeterminate. This does not change the non-exact status
+of the 12,056-byte `ExecuteAnimationVm` owner.
 
 `AnimationFloatDestination` at `0x0044B380` is now a canonical exact 124-byte
 leaf. Its isolated `animation-float-destination` unit cold-builds the complete
