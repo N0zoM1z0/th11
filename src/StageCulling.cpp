@@ -9,24 +9,6 @@ extern "C" CameraVector *WINAPI D3DXVec3ProjectArray(
     const D3DMATRIX *projection, const D3DMATRIX *view,
     const D3DMATRIX *world, unsigned int count);
 
-// Preserve the native asymmetric x87 branches. If the first comparison is
-// false (including unordered/NaN), the native code writes the point to min.
-static __forceinline void ExtendProjectedBounds(const CameraVector &point,
-    float &smallestX, float &largestX, float &smallestY, float &largestY)
-{
-    if (point.z >= 0.0f && point.z <= 1.0f)
-    {
-        if (point.x < smallestX)
-            smallestX = point.x;
-        else if (point.x > largestX)
-            largestX = point.x;
-        if (point.y < smallestY)
-            smallestY = point.y;
-        else if (point.y > largestY)
-            largestY = point.y;
-    }
-}
-
 // Complete native 0x403950 object-culling algorithm. The 12 input positions
 // are eight cuboid corners plus four samples on the middle X plane.
 int __fastcall CullStageObject(const StageObjectDrawView *object,
@@ -100,7 +82,19 @@ int __fastcall CullStageObject(const StageObjectDrawView *object,
     float smallestX = 424.0f, smallestY = 472.0f;
     float largestX = 24.0f, largestY = 8.0f;
     for (int i = 0; i < 12; ++i)
-        ExtendProjectedBounds(projected[i], smallestX, largestX, smallestY, largestY);
+    {
+        if (projected[i].z >= 0.0f && projected[i].z <= 1.0f)
+        {
+            if (projected[i].x < smallestX)
+                smallestX = projected[i].x;
+            else if (projected[i].x > largestX)
+                largestX = projected[i].x;
+            if (projected[i].y < smallestY)
+                smallestY = projected[i].y;
+            else if (projected[i].y > largestY)
+                largestY = projected[i].y;
+        }
+    }
     // The native rectangle intersection includes all four viewport edges.
     if (largestX >= 32.0f && smallestX <= 416.0f &&
         largestY >= 16.0f && smallestY <= 464.0f)

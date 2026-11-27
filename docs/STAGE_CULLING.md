@@ -6,7 +6,7 @@ frontier results are:
 
 | Native owner | Native size | Candidate PDB contribution | Aligned native instructions | State |
 | --- | ---: | ---: | ---: | --- |
-| CullStageObject (0x403950) | 1,643 B | 1,646 B | 478/504 (2026-11-27) | Nonexact |
+| CullStageObject (0x403950) | 1,643 B | 1,646 B | 492/504 (2026-11-27) | Nonexact |
 | DrawStageLayer (0x404190) | 727 B | 740 B | 156/191 | Nonexact |
 
 These are diagnostic frontiers, not strict replay results. The original
@@ -15,7 +15,7 @@ still open. The native bodies and their callers were reviewed in Ghidra.
 
 ## CullStageObject: 2026-11-27 natural-source progress
 
-Alignment rose from 362 to 478/504 (mnemonics 0.98) with plainer source:
+Alignment rose from 362 to 492/504 (mnemonics 0.98) with plainer source:
 
 - Projected bounds use the symmetric `if (x < smallest) smallest = x; else if
   (x > largest) largest = x;` form for both axes, and the depth test is
@@ -29,8 +29,11 @@ Alignment rose from 362 to 478/504 (mnemonics 0.98) with plainer source:
 - The bound locals are declared smallestX, smallestY, largestX, largestY,
   the native initialization order.
 
-Remaining: the bounds loop pointer is biased by 4 (`[ecx-4]` for x, native
-`[ecx]`); the start still copies `*offset` to the stack, and `eye.x`'s operand
+- The bounds test is written directly in the loop. Passing each point by
+  reference to a helper made VC9 base the loop pointer at `.y` (`[ecx-4]` for
+  x); inline field access restores the native `[ecx]` base.
+
+Remaining: the start still copies `*offset` to the stack, and `eye.x`'s operand
 order and native's dead copy of the difference vector into a named `delta`
 (`esp+0x78`, later reused by `corners`) are missing. Rewriting the start with
 D3DX-style member operators fixes `center` and eye.y/z but perturbs the corner
