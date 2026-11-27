@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SecondaryGameplay.hpp"
+#include "StageResource.hpp"
 #include <stddef.h>
 
 // Native ThreadInf member at secondary debug root+0x10. The virtual
@@ -34,9 +35,11 @@ struct SecondaryEclDebugOwner
     int state;
     char **filenames;
     int fileCount;
-    unsigned char unknown03c[0x6c8 - 0x3c];
-    void *ownedData;
-    unsigned char unknown6cc[0x710 - 0x6cc];
+    unsigned char unknown03c[0x2c8 - 0x3c];
+    // Embedded script VM. Its inline destructor frees storage at +0x6C8
+    // after the body; the EH unwind map calls the out-of-line 0x402170.
+    StageEmbeddedVm vm;
+    unsigned char unknown6fc[0x710 - 0x6fc];
 
     ~SecondaryEclDebugOwner();
 };
@@ -49,7 +52,7 @@ typedef char SecondaryDebugOwnerFilenamesOffset[
     (offsetof(SecondaryEclDebugOwner, filenames) == 0x34) ? 1 : -1];
 typedef char SecondaryDebugOwnerCountOffset[
     (offsetof(SecondaryEclDebugOwner, fileCount) == 0x38) ? 1 : -1];
-typedef char SecondaryDebugOwnerDataOffset[
-    (offsetof(SecondaryEclDebugOwner, ownedData) == 0x6c8) ? 1 : -1];
+typedef char SecondaryDebugOwnerVmOffset[
+    (offsetof(SecondaryEclDebugOwner, vm) == 0x2c8) ? 1 : -1];
 
 void __stdcall ReleaseSecondaryDebugFilenames(SecondaryEclDebugView *self);

@@ -10602,14 +10602,12 @@ linkages = [
   { offset = 291, type = "REL32", symbol = "??_M@YGXPAXIHP6EX0@Z@Z", target = 0x00460066 },
 ]
 
-# Source-complete debug-session destructor with a genuine virtual
-# ThreadInf-derived member and live filename-cleanup helper.
-# Diagnostic only: native LTCG call ABI and vtable name are not exact.
-[units.secondary-debug-session-destructor-frontier]
-frontier = true
+# Complete 462-byte debug-session destructor: genuine virtual ThreadInf
+# member at +0x10 and embedded script VM at +0x2C8 (two EH states).
+[units.secondary-debug-session-destructor]
 artifact_kind = "linked-pe"
 source = "src/SecondaryDebugSessionLifecycle.cpp"
-inputs = ["src/SecondaryDebugSessionLifecycle.hpp",
+inputs = ["src/SecondaryDebugSessionLifecycle.hpp", "src/StageResource.hpp",
           "src/SecondaryGameplay.hpp", "src/SecondaryDebugFilenameCleanup.cpp",
           "probes/secondary-debug-session-lifecycle-context.cpp"]
 support_sources = ["src/SecondaryDebugFilenameCleanup.cpp",
@@ -10625,7 +10623,55 @@ functions = ["SecondaryEclDebugOwner::~SecondaryEclDebugOwner"]
 symbol = "??1SecondaryEclDebugOwner@@QAE@XZ"
 target_address = 0x0040D320
 size = 462
-linkages = []
+linkages = [
+  { offset = 3, type = "DIR32", symbol = "__ehhandler$??1SecondaryEclDebugOwner@@QAE@XZ", target = 0x0048A9A9, eh_static = true },
+  { offset = 19, type = "DIR32", symbol = "___security_cookie", target = 0x004A2088 },
+  { offset = 49, type = "REL32", symbol = "?ReleaseSecondaryDebugFilenames@@YGXPAUSecondaryEclDebugView@@@Z", target = 0x0040CFE0 },
+  { offset = 58, type = "DIR32", symbol = "?g_ChainManager@@3PAUChainManagerView@@A", target = 0x004C3234 },
+  { offset = 64, type = "DIR32", symbol = "__imp__EnterCriticalSection@4", target = 0x0048B084 },
+  { offset = 74, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x590 },
+  { offset = 85, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x810 },
+  { offset = 93, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x930 },
+  { offset = 102, type = "REL32", symbol = "?UnregisterChainElement@@YGXPAUChainManagerView@@PAUChainElement@@@Z", target = 0x00457080 },
+  { offset = 108, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x590 },
+  { offset = 119, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x810 },
+  { offset = 125, type = "DIR32", symbol = "__imp__LeaveCriticalSection@4", target = 0x0048B088 },
+  { offset = 131, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x930 },
+  { offset = 140, type = "DIR32", symbol = "?g_ChainManager@@3PAUChainManagerView@@A", target = 0x004C3234 },
+  { offset = 150, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x590 },
+  { offset = 161, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x810 },
+  { offset = 169, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x930 },
+  { offset = 178, type = "REL32", symbol = "?UnregisterChainElement@@YGXPAUChainManagerView@@PAUChainElement@@@Z", target = 0x00457080 },
+  { offset = 184, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x590 },
+  { offset = 195, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x810 },
+  { offset = 201, type = "DIR32", symbol = "__imp__LeaveCriticalSection@4", target = 0x0048B088 },
+  { offset = 207, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x930 },
+  { offset = 213, type = "DIR32", symbol = "?g_SecondaryActorHud@@3PAUSecondaryActorHudView@@A", target = 0x004A8D84 },
+  { offset = 223, type = "REL32", symbol = "??1SecondaryDebugHudOwned@@QAE@XZ", target = 0x0041AFC0 },
+  { offset = 229, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x0045FD49 },
+  { offset = 238, type = "DIR32", symbol = "?g_SecondaryPlayerControllerInstance@@3PAUSecondaryPlayerControllerView@@A", target = 0x004A8EB4 },
+  { offset = 248, type = "REL32", symbol = "?DestructSecondaryPlayerStorage@@YGXPAUSecondaryPlayerControllerView@@@Z", target = 0x00430010 },
+  { offset = 254, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x0045FD49 },
+  { offset = 263, type = "DIR32", symbol = "?g_SceneClearPool@@3PAUSceneClearPoolView@@A", target = 0x004A8D68 },
+  { offset = 273, type = "REL32", symbol = "?DestroySceneProjectilePool@@YGXPAUSceneClearPoolView@@@Z", target = 0x004085F0 },
+  { offset = 279, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x0045FD49 },
+  { offset = 288, type = "DIR32", symbol = "?g_SecondaryMaster@@3PAUSecondaryMasterView@@A", target = 0x004A8D7C },
+  { offset = 299, type = "REL32", symbol = "?DestroySecondaryMaster@@YGXPAUSecondaryMasterView@@@Z", target = 0x00410E90 },
+  { offset = 305, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x0045FD49 },
+  { offset = 314, type = "DIR32", symbol = "?g_MeshEffectEnemy@@3PAUMeshEffectEnemyView@@A", target = 0x004A8D64 },
+  { offset = 324, type = "REL32", symbol = "??1StageAuxiliaryView@@QAE@XZ", target = 0x00406260 },
+  { offset = 330, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x0045FD49 },
+  { offset = 339, type = "DIR32", symbol = "?g_SecondaryAttractionItems@@3PAUSecondaryAttractionManagerView@@A", target = 0x004A8E90 },
+  { offset = 349, type = "REL32", symbol = "?DestroySecondaryAttractionItems@@YGXPAUSecondaryAttractionManagerView@@@Z", target = 0x00423330 },
+  { offset = 355, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x0045FD49 },
+  { offset = 364, type = "DIR32", symbol = "?g_ReplayFileBrowser@@3PAUReplayFileBrowserView@@A", target = 0x004A8EC0 },
+  { offset = 374, type = "REL32", symbol = "?DestroyReplayFileBrowser@@YGXPAUReplayFileBrowserView@@@Z", target = 0x00437E40 },
+  { offset = 380, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x0045FD49 },
+  { offset = 395, type = "DIR32", symbol = "?g_SecondaryDebugSession@@3PAUSecondaryEclDebugOwner@@A", target = 0x004A8D70 },
+  { offset = 409, type = "REL32", symbol = "_free", target = 0x0045FC3B },
+  { offset = 431, type = "DIR32", symbol = "??_7SecondaryDebugThreadOwner@@6B@", target = 0x004978D0 },
+  { offset = 436, type = "REL32", symbol = "?StopRuntimeThread@@YGXPAURuntimeThreadView@@@Z", target = 0x00459430 },
+]
 
 # Source-owning 83-byte debug filename-array destructor leaf. The
 # real 462-byte owning destructor remains in the same bounded LTCG context.
@@ -10633,7 +10679,7 @@ linkages = []
 artifact_kind = "linked-pe"
 source = "src/SecondaryDebugFilenameCleanup.cpp"
 inputs = ["src/SecondaryGameplay.hpp", "src/SecondaryDebugSessionLifecycle.cpp",
-          "src/SecondaryDebugSessionLifecycle.hpp",
+          "src/SecondaryDebugSessionLifecycle.hpp", "src/StageResource.hpp",
           "probes/secondary-debug-session-lifecycle-context.cpp"]
 support_sources = ["src/SecondaryDebugSessionLifecycle.cpp",
                    "probes/secondary-debug-session-lifecycle-context.cpp"]

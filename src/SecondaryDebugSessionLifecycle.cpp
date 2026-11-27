@@ -105,10 +105,7 @@ SecondaryEclDebugOwner::~SecondaryEclDebugOwner()
     }
 
     g_SecondaryDebugSession = 0;
-    if (ownedData)
-        free(ownedData);
-    ownedData = 0;
 
-    // As in original C++, the embedded thread's actual virtual destructor
-    // is invoked automatically by the compiler after this body.
+    // Ordinary member destruction follows: the embedded VM releases its
+    // storage, then the embedded thread's virtual destructor stops it.
 }

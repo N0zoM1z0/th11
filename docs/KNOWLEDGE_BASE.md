@@ -73,6 +73,11 @@ TH09 commit that demonstrated each:
 - A destructor's initial EH state of 1 rather than 0 usually means one more
   member or base with a non-trivial destructor. Decode the native FuncInfo and
   unwind map before editing the body (TH09 EH comparison, `33eb1939`).
+  Confirmed for TH11 VC9: `~SecondaryEclDebugOwner` (0x40D320) became exact
+  once the +0x2C8 `StageEmbeddedVm` from unwind state 1 was declared; its
+  inline destructor was already visible as the body's final free/clear of
+  +0x6C8, so that explicit cleanup had to go
+  ([SECONDARY_DEBUG_LIFECYCLE](SECONDARY_DEBUG_LIFECYCLE.md)).
 
 VC7.1 backend addresses, its allocator heuristics and `/Gr` defaults do not
 transfer. TH09 traced `c2.dll` in a debugger to explain ties; for TH11's

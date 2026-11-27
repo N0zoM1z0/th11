@@ -57,7 +57,7 @@ thread lifetime; never replace it with an ASM or padding shim.
 retains the same fields already used by the non-owning
 `SecondaryEclDebugView`: update/draw chains at +8/+C,
 embedded thread at +10, filenames/count at +34/+38 and
-owned heap data at +6C8. The owning thread member has a **real
+an embedded script VM at +2C8 (its storage pointer is +6C8). The owning thread member has a **real
 virtual C++ destructor**, so compiler-generated destruction writes
 its genuine vtable pointer and calls the existing
 `StopRuntimeThread` rather than hardcoding the original vtable
@@ -75,32 +75,33 @@ Native teardown order is preserved:
    items and replay browser **in that order**. Each owner calls
    its genuine separately bounded original destructor before
    `operator delete`.
-4. Clear the debug-session singleton at 4A8D70, free and null
-   its +6C8 heap allocation, and let ordinary C++ member
-   destruction stop the embedded thread.
+4. Clear the debug-session singleton at 4A8D70 and let ordinary
+   C++ member destruction release the embedded VM's +0x6C8 storage
+   and stop the embedded thread.
 
 There are **no invented second singleton globals** and no
 naked/ASM machine-code wrappers. The original 462-byte span,
 14 callee sites, SEH ownership, boundaries and neighboring
-alignment were reviewed directly. The focused real-caller
-`secondary-debug-session-destructor-frontier` now emits a complete
-**462-byte candidate with 126/127 native instruction keys aligned**
-(the earlier 464-byte/124-key result is superseded). The scoped VC9 `/GL`
-producer includes the real `FrameRuntime.cpp` implementation of
-`StopRuntimeThread`, in addition to `ChainRemove`,
-`SecondaryMasterDestruction`, `StageAuxiliaryLifecycle` and
-`SecondaryDebugHudLifetime`. The member's genuine virtual destructor is
-an ordinary C++ `inline` function, so VC9 performs the native member
-vptr publication and transfers its ESI receiver directly to the real
-thread-stopper. The previous out-of-line destructor generated an extra
-call, different argument register and a 464-byte owner; forcing an inline
-without its real thread callee generated 471 bytes. The **only remaining
-normalized instruction mismatch** is compiler-generated EH state near
-+0x28: native initializes state 1, the candidate initializes state 0.
-No ASM, hand-authored vtable store, padding, or fake cleanup path is used.
-The large owner remains source-complete but **nonexact**. Focused comparison:
-`.analysis/compare-debug-session-dtor-20261119.py`.
+alignment were reviewed directly.
 
+**Canonical exact (2026-11-27)** under unit
+`secondary-debug-session-destructor`. The last difference was the
+compiler-generated initial EH state (native 1, candidate 0). The native
+FuncInfo at 0x49FD7C has two unwind states: state 0 destroys the ThreadInf
+member at +0x10 (0x459410) and state 1 destroys a `StageEmbeddedVm` at
++0x2C8 through the out-of-line 0x402170. The body's final "free +0x6C8, then
+clear it" is that member's inline destructor (0x2C8 + 0x400 = 0x6C8), not
+hand-written cleanup. Declaring the real member and dropping the explicit
+free gives all 462 bytes; the 46 reviewed fields include the owner-named EH
+handler (MAP static), the security cookie, chain/critical-section globals
+(`g_MainRuntime` +0x590/+0x810/+0x930), 14 callees and the thread vtable at
+0x4978D0. The 83-byte filename leaf in the same TU was cold-replayed and
+remains exact. Evidence: `.analysis/claude-debug-session-destructor-exact.log`.
+
+Method note: when only the initial EH state differs, decode the native
+FuncInfo unwind map first; each state names a member offset and destructor,
+and an inlined member destructor may already be present as ordinary-looking
+body code.
 
 ## Full 729-byte debug HUD destructor at 0x41AFC0
 
