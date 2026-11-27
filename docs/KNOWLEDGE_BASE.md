@@ -84,6 +84,18 @@ transfer. TH09 traced `c2.dll` in a debugger to explain ties; for TH11's
 LTCG, code generation runs in the linker-loaded `c2.dll`, which would need a
 separate investigation.
 
+## Barriers and volatiles often stand in for value-object code (2026-11-27)
+
+Several earlier fixes forced native store/reload order with
+`_ReadWriteBarrier()` or `volatile`. In three owners the real cause was the
+shape of ZUN's value code: the next-ID counter is an ID object (below), the
+stage fog bytes are fields of the same object (not a `char *`), and vector
+differences are by-value operators that return temporaries. When a frontier
+leans on a barrier or volatile, first look for a value-type or field-access
+form; see [STAGE_SCRIPT](STAGE_SCRIPT.md). Counter-example: replacing the
+program browser's volatile count read with TH10's `Select(value)` form let VC9
+constant-fold the count and was worse.
+
 ## The renderer next-ID counter is an ID object (2026-11-27)
 
 Every native scene-VM publisher (0x4556E0, 0x455760, 0x4557E0, 0x455860) and

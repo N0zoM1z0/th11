@@ -6,7 +6,7 @@ section and reconciled its full extent, instruction flow, callers and tables.
 
 | Function | Full target owner | Source contribution | State |
 | --- | ---: | ---: | --- |
-| ExecuteStageScript,0x00404470 | 2,736 bytes through0x00404F1F | 2,692 bytes | Non-exact; 582/610 aligned instructions; EH/funclet ownership open |
+| ExecuteStageScript,0x00404470 | 2,736 bytes through0x00404F1F | 2,724 bytes | Non-exact; 603/662 aligned; frame 0x90 vs 0x98 (see below) |
 | SeekStageScriptMarker,0x00404F20 | 113 bytes through0x00404F90 | 113 bytes | Exact normal-COFF, 2 relocations |
 | BeginSecondaryStageTransition,0x00405130 | 159 bytes through0x004051CE | 159 bytes | Exact normal-COFF, 6 relocations |
 | BeginPrimaryStageTransition,0x004051D0 | 103 bytes through0x00405236 | 103 bytes | Exact normal-COFF, 3 relocations |
@@ -23,6 +23,38 @@ tables and resolve inside the primary code body. The next function starts at
 incomplete; the ledger now includes both tables. Separate EH handler/cleanup
 ownership remains outside the exact lane. No target bytes or tables are embedded
 in the source; ordinary switches generate the compiler's tables.
+
+## 2026-11-27: barrier-free source and remaining stack layout
+
+All nine `_ReadWriteBarrier()` calls are gone and the candidate moved from
+2,692 bytes / 590 aligned instructions to **2,724 bytes / 603** (native 2,736 /
+662 including tables). Each fix is a natural source form:
+
+- The tween-timer initializer is ordinary field code in source order
+  (current, previous, fraction, scale, `flags |= 1`); VC9 then emits the native
+  `or` before the scale store by itself.
+- Case 8 converts the four fog bytes as fields of the same object
+  (`StageFogColorView`), not through a `char *`. VC9 then forwards the red byte
+  from the just-stored dword (`movzx eax, dl`), reads the other three before any
+  float store, and reuses one conversion slot, exactly as native.
+- Case 2 uses a by-value vector `operator-`. Native stores each difference to a
+  stack temporary and copies it with integer moves, the D3DX-style operator
+  shape. The native also has an out-of-line vector `operator+`
+  (`StageVectorMathLeaves.cpp`), which supports that ZUN used D3DX-like vector
+  operators.
+- Native tests `oscillator != 0` before the seven-way switch.
+- The Bezier cases store `mode = 8` before `control2`.
+
+Remaining differences: (1) the frame is 0x90 versus native 0x98. The native
+keeps every 12-byte vector temporary in its own slot (0x20..0x84, each dword
+used twice), while VC9 packs several of ours; the scratch slot and a 9-use slot
+are swapped (native scratch at `esp+0x14`). About 100 instructions differ only
+by these offsets. Trace with
+`.analysis/compiler-vc9/claude-trace-stack.py execute-stage-script-frontier ExecuteStageScript`.
+(2) The two `StepStageVectorTween` result copies are interleaved
+load/store in native but load-first in ours, as if native did not know that the
+returned pointer is the temporary. (3) Case 17 reloads the cursor after the
+phase stores; without the old barrier ours reloads it right after the call.
 
 ## Adjacent exact marker-seek helper
 

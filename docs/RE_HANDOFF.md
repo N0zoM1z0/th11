@@ -108,14 +108,15 @@ scripts/repo-python .analysis/compare-execute-animation-vm-code-only.py build/ma
 | `StepAnimationFloatPairTween` (673 B) | Non-exact; two mode-17 Y-component operand bytes remain | [ANIMATION_TWEEN](ANIMATION_TWEEN.md), [ANIMATION_TWEEN_DISPATCH](ANIMATION_TWEEN_DISPATCH.md) |
 | `BindAnimationSprite` (389 B) | Non-exact | [ANIMATION_EXECUTION](ANIMATION_EXECUTION.md) |
 
-## Secondary debug/HUD owners (2026-11-27)
+## Other large owners worked on 2026-11-27
 
 | Owner | State | Notes |
 | --- | --- | --- |
 | `~SecondaryEclDebugOwner` (`40D320`, 462 B) | Canonical exact | +0x2C8 `StageEmbeddedVm` member supplied the second EH state |
 | `InitializeSecondaryDebugHudAnimations` (`41A6D0`, 1,619 B) | Frontier, 1,635 B / 406 ins | ID wrap, tail order and lives-display ABI fixed; frame is 8 vs native 0xC (native has an extra never-accessed high-weight stack color), plus register choices |
 | `~SecondaryDebugHudOwned` (`41AFC0`, 729 B) | Frontier | Native caches both critical-section imports and keeps `this` on the stack |
-| `ResetStageMesh` (`40E6C0`, 325 B) | Frontier | Only two x87 add operand orders differ; `StageMesh.cpp` feeds ~40 exact contexts, so batch its replay |
+| `ResetStageMesh` (`40E6C0`, 325 B) | Frontier | Only two x87 add operand orders differ; swapping the source operands had no effect. `StageMesh.cpp` feeds ~40 exact contexts |
+| `ExecuteStageScript` (`404470`, 2,736 B) | Frontier, 2,724 B / 603 aligned | Barrier-free; frame 0x90 vs 0x98 and vector-temporary packing remain (STAGE_SCRIPT.md) |
 
 The four scene-VM publishers (0x4556E0, 0x455760, 0x4557E0, 0x455860) are
 now canonical exact: the next-ID counter is an `AnimationVmId` object (see the

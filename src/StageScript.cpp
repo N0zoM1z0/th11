@@ -10,6 +10,22 @@ static __forceinline StageScriptStateView &ScriptState(StageResourceView *self)
     return *reinterpret_cast<StageScriptStateView *>(self);
 }
 
+static inline CameraVector operator-(const CameraVector &left, const CameraVector &right)
+{
+    CameraVector result = { left.x - right.x, left.y - right.y, left.z - right.z };
+    return result;
+}
+
+// Byte view of StageFogView's packed D3DCOLOR (+0x18), read as fields of the
+// same object rather than through a separate byte pointer.
+struct StageFogColorView
+{
+    float start, end;
+    float channels[4];
+    unsigned char bytes[4];
+};
+typedef char StageFogColorViewSize[(sizeof(StageFogColorView) == sizeof(StageFogView)) ? 1 : -1];
+
 static __forceinline StageFogView &CameraFog(StageResourceView *self)
 {
     return *reinterpret_cast<StageFogView *>(&self->camera.fogStart);
@@ -24,25 +40,16 @@ static __forceinline void ScriptVector(CameraVector &output, const float *values
 
 static __forceinline void ScriptTweenFrame(StageTimerView &timer, int frame)
 {
-    unsigned int flags = timer.flags;
-    if (!(flags & 1))
+    if (!(timer.flags & 1))
     {
         timer.current = 0;
-        _ReadWriteBarrier();
         timer.previous = -999999;
-        _ReadWriteBarrier();
         timer.fraction = 0.0f;
-        _ReadWriteBarrier();
-        flags |= 1;
-        _ReadWriteBarrier();
         timer.scale = &g_AnimationTimeScale;
-        _ReadWriteBarrier();
-        timer.flags = flags;
+        timer.flags |= 1;
     }
     timer.current = 0;
-    _ReadWriteBarrier();
     timer.fraction = 0.0f;
-    _ReadWriteBarrier();
     timer.previous = frame;
 }
 
@@ -95,10 +102,7 @@ int __stdcall ExecuteStageScript(StageResourceView *self)
         {
             self->camera.updateOffset = self->camera.view.position;
             ScriptVector(self->camera.view.position, values);
-            bezierA.x = self->camera.view.position.x - self->camera.updateOffset.x;
-            bezierA.y = self->camera.view.position.y - self->camera.updateOffset.y;
-            bezierA.z = self->camera.view.position.z - self->camera.updateOffset.z;
-            self->camera.updateOffset = bezierA;
+            self->camera.updateOffset = self->camera.view.position - self->camera.updateOffset;
             break;
         }
         case 3:
@@ -134,16 +138,11 @@ int __stdcall ExecuteStageScript(StageResourceView *self)
         {
             StageFogView &fog = CameraFog(self);
             fog.packed = words[0];
-            const unsigned char *color = reinterpret_cast<const unsigned char *>(&fog.packed);
-            const int red = color[0];
-            const int green = color[1];
-            const int blue = color[2];
-            const int alpha = color[3];
-            _ReadWriteBarrier();
-            fog.channels[0] = static_cast<float>(red);
-            fog.channels[1] = static_cast<float>(green);
-            fog.channels[2] = static_cast<float>(blue);
-            fog.channels[3] = static_cast<float>(alpha);
+            StageFogColorView &color = reinterpret_cast<StageFogColorView &>(fog);
+            fog.channels[0] = static_cast<float>(color.bytes[0]);
+            fog.channels[1] = static_cast<float>(color.bytes[1]);
+            fog.channels[2] = static_cast<float>(color.bytes[2]);
+            fog.channels[3] = static_cast<float>(color.bytes[3]);
             fog.start = values[1];
             fog.end = values[2];
             break;
@@ -175,8 +174,8 @@ int __stdcall ExecuteStageScript(StageResourceView *self)
             state.positionTween.initial = self->camera.view.position;
             state.positionTween.control1 = bezierA;
             state.positionTween.target = bezierB;
-            state.positionTween.control2 = control2;
             state.positionTween.mode = 8;
+            state.positionTween.control2 = control2;
             ScriptTweenFrame(state.positionTween.time, -1);
             break;
         }
@@ -189,8 +188,8 @@ int __stdcall ExecuteStageScript(StageResourceView *self)
             state.targetTween.initial = self->camera.view.targetOffset;
             state.targetTween.control1 = bezierA;
             state.targetTween.target = bezierB;
-            state.targetTween.control2 = control2;
             state.targetTween.mode = 8;
+            state.targetTween.control2 = control2;
             ScriptTweenFrame(state.targetTween.time, -1);
             break;
         }
@@ -245,9 +244,6 @@ int __stdcall ExecuteStageScript(StageResourceView *self)
             self->radius = 192.0f;
             float phase = NormalizeAngle(0.0f);
             self->phaseY = self->phaseX = phase;
-            // Keep the cursor read after angle normalization: the native
-            // reloads this live member after the call sequence.
-            _ReadWriteBarrier();
             self->distortionMode = state.instruction->args.words[0];
             if (self->minimumRadius > 0.0f)
             {
@@ -276,6 +272,8 @@ ApplyTweens:
         CameraFog(self) = *result;
     }
 
+    if (!state.oscillator)
+        return 0;
     float value;
     switch (state.oscillator)
     {
