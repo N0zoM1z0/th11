@@ -1,4 +1,4 @@
-# TH11 reconstruction handoff — 2026-11-26
+# TH11 reconstruction handoff — 2026-11-27
 
 ## Start here
 
@@ -8,6 +8,30 @@ pinned code-generation target is VC9 RTM build 21022. Keep `/GL` for established
 LTCG owners and use natural C/C++ only: no inline assembly, padding, byte stubs
 or cropped extents. Use the repository shell, `scripts/repo-python` and direct
 Ghidra through `scripts/ghidra.py`.
+
+## 2026-11-27 summary
+
+Five owners became canonical exact (497 total): the 462-byte debug-session
+destructor and four 118/123-byte scene-VM publishers. Three systematic
+findings drive the next work (details in KNOWLEDGE_BASE, 2026-11-27):
+
+1. Barriers, `volatile` and `register` in frontier sources usually stand in
+   for ZUN's value-object or field-access code (ID counter object, fog bytes
+   as fields, by-value vector operators, direct flag updates). Removing them
+   improved ExecuteStageScript, UpdateStage, CullStageObject, DrawStageLayer
+   and the HUD precleanup.
+2. Native 0x4A56E0..0x4A576F is one address-exposed game-state object. Link
+   `probes/secondary-game-state-context.cpp` into frontiers whose owners mix
+   pointer stores with game-state reads (replay initialization: 327 -> 394 of
+   406 aligned; HUD precleanup: 62 -> 106).
+3. x87 commutative operand order is decided by the VC9 scheduler, not by the
+   source operand order; do not spend builds swapping operands.
+
+Replay helper for changed shared inputs:
+`scripts/repo-python .analysis/claude-replay-affected.py FILE...` replays every
+exact unit whose context contains one of the files and resumes from current
+receipts. Wide menu contexts take 10-25 minutes each under load; batch shared
+source changes.
 
 ## Current focus: ExecuteAnimationVm (0x44B4B0, 12,056 B)
 
