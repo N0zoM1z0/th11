@@ -6,8 +6,28 @@ text section and checked the full owners, branches, callers and neighbors.
 
 | Function | Reviewed target owner | Current primary contribution | State |
 | --- | ---: | ---: | --- |
-| UpdateStage,0x00402AA0 | 1,677 bytes through0x0040312C | 1,684 bytes | Non-exact; 7-byte gap; 327/443 instruction keys aligned in the full interpreter graph |
+| UpdateStage,0x00402AA0 | 1,677 bytes through0x0040312C | 1,672 bytes (real-script-mesh frontier) | Non-exact; 395/443 keys aligned (2026-11-27, was 364) |
 | UpdateStageObjects,0x004040F0 | 153 bytes through0x00404188 | 148 bytes | Natural C++ owner-pointer traversal; non-exact (33/51 instruction keys aligned) |
+
+## 2026-11-27 distortion-mesh fixes
+
+In `update-stage-real-script-mesh-callees` the boss is now 1,672 bytes with
+395/443 instruction keys aligned (was 1,679 / 364):
+
+- Mode 2 compares `radius > minimumRadius`; native loads the radius first.
+- The vector normalized in mode 2 is the same function-scope `displacement`
+  that mode 1 uses (native `esp+0x38`). Because its address goes to
+  `D3DXVec3Normalize`, VC9 keeps it in memory, so mode 1 stores `offsetY` into
+  `displacement.y` every iteration as native does. The mode-2 difference is a
+  separate block-local `offset`, copied into `displacement`.
+- Mode 1's column loop has the same `column = 0; if (column < columns) {
+  ...; do { } while (column < columns); }` shape as mode 2; native has no
+  second guard after the sine call. Mode 1 now aligns completely.
+
+Remaining: in mode 2 native reloads the mesh pointer for the column guard of
+each row, the `offset` to `displacement` copy is scheduled differently, the
+three color-channel computations are ordered differently, and several stack
+slots differ (frame layout).
 
 Both target bodies are contiguous, include internal alignment and have no
 embedded tables or external code-interior references. The native `UpdateStage`

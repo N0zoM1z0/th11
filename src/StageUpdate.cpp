@@ -113,10 +113,11 @@ int __fastcall UpdateStage(StageResourceView *self)
             vertex = StageMesh(self)->vertices;
             for (; row < StageMesh(self)->rows; ++row)
             {
-                if (StageMesh(self)->columns > 0)
+                column = 0;
+                if (column < StageMesh(self)->columns)
                 {
                     float offsetY = static_cast<float>(StageSine(phaseY) * 12.0);
-                    for (column = 0; column < StageMesh(self)->columns; ++column, ++position, ++vertex)
+                    do
                     {
                         reinterpret_cast<unsigned char *>(&vertex->color)[3] = 0xc0;
                         displacement.x = static_cast<float>(StageSine(phaseX) * 12.0);
@@ -129,7 +130,10 @@ int __fastcall UpdateStage(StageResourceView *self)
                             position->z = 0.0f;
                         }
                         phaseX = NormalizeAngle(static_cast<float>(phaseX + kColumnWaveStep));
-                    }
+                        ++position;
+                        ++vertex;
+                        ++column;
+                    } while (column < StageMesh(self)->columns);
                 }
                 phaseY = NormalizeAngle(static_cast<float>(phaseY - kRowWaveStep));
             }
@@ -139,7 +143,7 @@ int __fastcall UpdateStage(StageResourceView *self)
         else if (self->distortionMode == 2)
         {
             float radius = self->radius;
-            if (self->minimumRadius < self->radius)
+            if (self->radius > self->minimumRadius)
                 self->radius = static_cast<float>(self->radius - 2.0);
             float diameter = static_cast<float>(radius * 2.0);
             ResetStageMesh(StageMesh(self), -radius, static_cast<float>(224.0 - radius), diameter, diameter);
@@ -153,11 +157,12 @@ int __fastcall UpdateStage(StageResourceView *self)
                     double radiusSquared = radius * radius;
                     do
                     {
-                        displacement.x = static_cast<float>(position->x - 224.0);
-                        displacement.y = static_cast<float>(position->y - 240.0);
-                        displacement.z = position->z - displacement.z;
-                        CameraVector direction = displacement;
-                        float distance = displacement.x * displacement.x + displacement.y * displacement.y;
+                        CameraVector offset;
+                        offset.x = static_cast<float>(position->x - 224.0);
+                        offset.y = static_cast<float>(position->y - 240.0);
+                        offset.z = position->z - offset.z;
+                        displacement = offset;
+                        float distance = offset.x * offset.x + offset.y * offset.y;
                         float remaining = static_cast<float>(radiusSquared - distance);
                         if (remaining >= 0.0f)
                         {
@@ -168,14 +173,14 @@ int __fastcall UpdateStage(StageResourceView *self)
                             reinterpret_cast<unsigned char *>(&vertex->color)[1] = static_cast<unsigned char>(static_cast<int>(255.0 - (255 - reinterpret_cast<unsigned char *>(&vertex->color)[1]) * factor));
                             reinterpret_cast<unsigned char *>(&vertex->color)[0] = static_cast<unsigned char>(static_cast<int>(255.0 - (255 - reinterpret_cast<unsigned char *>(&vertex->color)[0]) * factor));
                             float magnitude = static_cast<float>(factor * 32.0);
-                            D3DXVec3Normalize(&direction, &direction);
-                            direction.x *= magnitude;
-                            direction.y *= magnitude;
-                            direction.z *= magnitude;
-                            direction.x = static_cast<float>(StageSine(phaseX) * factor * 8.0 + direction.x);
-                            direction.y = static_cast<float>(StageSine(phaseY) * factor * 8.0 + direction.y);
-                            vertex->x += direction.x;
-                            vertex->y += direction.y;
+                            D3DXVec3Normalize(&displacement, &displacement);
+                            displacement.x *= magnitude;
+                            displacement.y *= magnitude;
+                            displacement.z *= magnitude;
+                            displacement.x = static_cast<float>(StageSine(phaseX) * factor * 8.0 + displacement.x);
+                            displacement.y = static_cast<float>(StageSine(phaseY) * factor * 8.0 + displacement.y);
+                            vertex->x += displacement.x;
+                            vertex->y += displacement.y;
                             vertex->z = 0.0f;
                             position->z = 0.0f;
                         }
