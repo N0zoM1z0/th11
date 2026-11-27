@@ -119,6 +119,7 @@ scripts/repo-python .analysis/compare-execute-animation-vm-code-only.py build/ma
 | `ExecuteStageScript` (`404470`, 2,736 B) | Frontier, 2,724 B / 603 aligned | Barrier-free; frame 0x90 vs 0x98 and vector-temporary packing remain (STAGE_SCRIPT.md) |
 | `UpdateStage` (`402AA0`, 1,677 B) | Frontier, 1,672 B / 395 aligned | Mode 1 aligns; mode-2 mesh reload, copy and color scheduling remain (STAGE_UPDATE.md) |
 | `CullStageObject` (`403950`, 1,643 B) | Frontier, 1,646 B / 492 aligned | Natural bounds/corner/loop source; start-of-function vector copies and two corner add orders remain (STAGE_CULLING.md) |
+| `DrawStageLayer` (`404190`, 727 B) | Frontier, 722 B / 155 aligned | No volatile/register; stage-pointer register choice remains. Its four exact consumers pass (`.analysis/claude-stagelayer-replay.log`) |
 
 The four scene-VM publishers (0x4556E0, 0x455760, 0x4557E0, 0x455860) are
 now canonical exact: the next-ID counter is an `AnimationVmId` object (see the
