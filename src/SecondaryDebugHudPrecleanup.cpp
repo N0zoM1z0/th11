@@ -83,13 +83,12 @@ void __stdcall PrepareSecondaryDebugHudDestruction(SecondaryDebugHudOwned *self)
     if (self->updateChain)
         self->updateChain->flags &= ~2u;
 
-    volatile unsigned int *precleanupIds =
-        reinterpret_cast<volatile unsigned int *>(self->precleanupAnimationIds);
-    ReleaseSecondaryAnimation(AnimationVmId(precleanupIds[0]));
-    precleanupIds[0] = 0;
-    ReleaseSecondaryAnimation(AnimationVmId(precleanupIds[1]));
-    precleanupIds[1] = 0;
-    ReleaseSecondaryAnimation(AnimationVmId(self->precleanupAdditionalIds[0]));
+    AnimationVmId *ids = reinterpret_cast<AnimationVmId *>(self->precleanupAnimationIds);
+    ReleaseSecondaryAnimation(ids[0]);
+    ids[0] = 0;
+    ReleaseSecondaryAnimation(ids[1]);
+    ids[1] = 0;
+    ReleaseSecondaryAnimation(*reinterpret_cast<AnimationVmId *>(self->precleanupAdditionalIds));
 
     for (int i = 0; i < 11; ++i)
         self->precleanupAdditionalIds[i] = 0;

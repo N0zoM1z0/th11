@@ -7868,7 +7868,7 @@ frontier = true
 artifact_kind = "linked-pe"
 source = "src/SecondaryReplayStageLifecycle.cpp"
 inputs = ["src/SecondaryReplayState.hpp", "src/SecondaryReplayStageLifecycle.hpp", "src/SecondaryPlayerController.hpp", "src/SecondaryActorRuntime.hpp", "src/SecondaryPattern.hpp", "src/SecondaryDamage.hpp"]
-support_sources = ["src/ReplayStageSegmentCleanup.cpp", "src/ReplayWriter.cpp", "src/SecondaryIntegerPlayerPosition.cpp", "src/SecondaryEmitterReset.cpp", "src/ReplayCompressionEncoder.cpp", "src/ReplayCompressionSearch.cpp", "src/ReplayCompressionTreeOps.cpp", "src/ReplayCompressionTree.cpp", "src/ByteCipher.cpp", "src/SharedFile.cpp", "probes/secondary-replay-stage-lifecycle-context.cpp"]
+support_sources = ["probes/secondary-game-state-context.cpp", "src/ReplayStageSegmentCleanup.cpp", "src/ReplayWriter.cpp", "src/SecondaryIntegerPlayerPosition.cpp", "src/SecondaryEmitterReset.cpp", "src/ReplayCompressionEncoder.cpp", "src/ReplayCompressionSearch.cpp", "src/ReplayCompressionTreeOps.cpp", "src/ReplayCompressionTree.cpp", "src/ByteCipher.cpp", "src/SharedFile.cpp", "probes/secondary-replay-stage-lifecycle-context.cpp"]
 output_dir = "build/match-linked/SecondaryReplayStageLifecycle"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "SecondaryReplayStageLifecycleProbe@0"
@@ -10815,7 +10815,7 @@ source = "src/SecondaryDebugHudPrecleanup.cpp"
 inputs = ["src/SecondaryDebugHudLifetime.hpp", "src/SecondaryDebugHudDialogue.hpp",
           "src/SecondaryDebugHudLifetime.cpp", "src/SecondaryDebugHudDialogue.cpp",
           "probes/secondary-debug-hud-destructor-generic-context.cpp"]
-support_sources = ["src/SecondaryDebugHudLifetime.cpp",
+support_sources = ["probes/secondary-game-state-context.cpp", "src/SecondaryDebugHudLifetime.cpp",
                    "src/SecondaryDebugHudDialogue.cpp",
                    "src/StageLifecycle.cpp", "src/ChainRemove.cpp",
                    "src/AnimationDocumentDestructor.cpp",

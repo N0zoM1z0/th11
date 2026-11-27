@@ -189,6 +189,17 @@ remain separate, nonexact owners.
 
 ## HUD destructor precleanup — 468-byte native owner
 
+**2026-11-27:** 106/128 aligned (was 62). Two changes: the frontier links
+`probes/secondary-game-state-context.cpp`, which exposes the game-state field
+addresses (see KNOWLEDGE_BASE), so `g_StageResourceFlags` is reloaded after the
+pointer stores and VC9 now gives EBP to `self` and EBX to zero as native; and
+the three releases pass the stored IDs as `AnimationVmId` objects, which
+restores the native EDX/EAX/ECX loads and immediate clears without the old
+`volatile` pointer. Remaining: native materializes `&files[27]` in ESI, and the
+tracked-VM loop rematerializes `0x4000000` per use. Both exact consumers of
+this source pass (`.analysis/claude-precleanup-replay.log`).
+
+
 src/SecondaryDebugHudPrecleanup.cpp restores the complete 468-byte
 PrepareSecondaryDebugHudDestruction owner at 0x41AD30..0x41AF03. It uses
 the same 0x4458-byte physical HUD allocation as the owning destructor,
