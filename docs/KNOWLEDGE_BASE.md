@@ -84,6 +84,31 @@ transfer. TH09 traced `c2.dll` in a debugger to explain ties; for TH11's
 LTCG, code generation runs in the linker-loaded `c2.dll`, which would need a
 separate investigation.
 
+## Address-exposed game state changes /GL alias decisions (2026-11-27)
+
+Native 0x4A56E0..0x4A576F is one 0x90-byte global object: its constructor at
+0x420E20 does `memset(this, 0, 0x90)`, sets +0x40 and +0x6C to 1 and returns
+`this`, and several functions call members with `this = 0x4A56E0` (0x419790,
+0x41F510, 0x420A70). Score, power, lives, bombs, character, stage variant,
+replay flags and more are fields of it (several reconstruction names alias one
+address). Because its address escapes, VC9 must assume any pointer store can
+change a field and reloads it afterwards.
+
+The reconstruction names these fields as separate extern globals that no /GL
+code takes the address of, so whole-program alias analysis lets VC9 keep them
+in registers across pointer stores. Exposing the field addresses in the link
+context (`probes/secondary-game-state-context.cpp`, a `dllexport` root that
+only stores the addresses) moved `InitializeSecondaryReplay` from 1,327 bytes /
+327 aligned to 1,370 / 394 of 406 (native 1,380), with no change to its source.
+Functions that only read these fields between calls (the HUD animation
+initializer) are unaffected.
+
+Use this probe in frontier contexts whose owners interleave pointer stores
+with game-state reads; `g_MainRuntime` aliases such as `g_ReplayModeFlags`
+(+0x564) belong in it too. Modeling the object as a real struct would be more
+faithful but touches every user and many exact units; the probe records the
+same program property without changing owner code.
+
 ## x87 commutative operand order is a scheduling outcome (2026-11-27)
 
 Several near-exact owners differ only in which memory operand of a float add is

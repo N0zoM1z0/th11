@@ -7990,7 +7990,7 @@ inputs = [
   "src/VmBindings.hpp",
 ]
 
-support_sources = ["probes/secondary-replay-initialization-context.cpp", "src/ChainRegistration.cpp", "src/ReplayStageSegmentCleanup.cpp", "src/ReplayWriter.cpp", "src/ReplayHeaderStorageInitialization.cpp", "src/ReplayRecordFactories.cpp", "src/ReplayRecordStageConstructor.cpp", "src/ReplayRecordStageLink.cpp", "src/TitleMenuRecord.cpp", "src/ChainRemove.cpp", "src/SecondaryReplayLoad.cpp", "src/FileSystem.cpp", "src/SharedFile.cpp", "src/SharedFileReadHelpers.cpp", "src/ResourceFile.cpp", "src/ByteCipher.cpp", "src/ArchiveDecompress.cpp", "src/ReplayCompressionEncoder.cpp", "src/ReplayCompressionSearch.cpp", "src/ReplayCompressionTreeOps.cpp", "src/ReplayCompressionTree.cpp"]
+support_sources = ["probes/secondary-replay-initialization-context.cpp", "probes/secondary-game-state-context.cpp", "src/ChainRegistration.cpp", "src/ReplayStageSegmentCleanup.cpp", "src/ReplayWriter.cpp", "src/ReplayHeaderStorageInitialization.cpp", "src/ReplayRecordFactories.cpp", "src/ReplayRecordStageConstructor.cpp", "src/ReplayRecordStageLink.cpp", "src/TitleMenuRecord.cpp", "src/ChainRemove.cpp", "src/SecondaryReplayLoad.cpp", "src/FileSystem.cpp", "src/SharedFile.cpp", "src/SharedFileReadHelpers.cpp", "src/ResourceFile.cpp", "src/ByteCipher.cpp", "src/ArchiveDecompress.cpp", "src/ReplayCompressionEncoder.cpp", "src/ReplayCompressionSearch.cpp", "src/ReplayCompressionTreeOps.cpp", "src/ReplayCompressionTree.cpp"]
 output_dir = "build/match-linked/SecondaryReplayInitialization"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "SecondaryReplayInitializationProbe@8"
