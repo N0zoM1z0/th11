@@ -120,9 +120,9 @@ __forceinline int ReadI(AnimationVmView *vm, AnimationInstruction *instruction, 
 }
 __forceinline float ReadF(AnimationVmView *vm, AnimationInstruction *instruction, int index)
 {
-    if (instruction->variables & (1u << index))
-        return ReadAnimationFloat(vm, Floats(instruction)[index]);
-    return Floats(instruction)[index];
+    return (instruction->variables & (1u << index))
+        ? ReadAnimationFloat(vm, Floats(instruction)[index])
+        : Floats(instruction)[index];
 }
 __forceinline int *IntegerDestination(AnimationVmView *vm, AnimationInstruction *instruction)
 {

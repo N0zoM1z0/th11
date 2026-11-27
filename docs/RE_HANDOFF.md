@@ -20,35 +20,23 @@ multiplicity agrees. Conditional branches are 258/259 and jumps 142/147
 versus native four. Frame `0xE4`, EBX-VM and EDI-cursor remain wrong. Diagnostic
 alignment is 1,445/3,203, or 2,579 after a register-label swap. No exact credit.
 
-The only dirty source change is `ReadF`'s conditional return. It restores both
-opcode 97 readers with full-width script IDs and correct child-publication
-order. A same-source/object-path control restores the old 76 reads when the
-old body is reinstated, with the same reader symbol. A macro control also
-recovers 78 reads. Four math stores and all four strip windows retain FSTP32
-rounding; the complete 540-byte reader and 104-byte integer destination keep
-all nonfield bytes and field positions. Evidence:
+`ReadF` now uses one conditional return. It restores both opcode 97 readers
+with full-width script IDs and correct child-publication order. A
+same-source/object-path control restores the old 76 reads when the old body is
+reinstated, with the same reader symbol; a macro control also recovers 78
+reads. Four math stores and all four strip windows retain FSTP32 rounding; the
+complete 540-byte reader and 104-byte integer destination keep all nonfield
+bytes and field positions. Evidence:
 `.analysis/gpt-6.1-sol-readf-conditional-main-{cold,code,fields}.log`,
 `gpt-6.1-sol-readf-main-cold-rounding-review.txt` and
 `gpt-6.1-sol-readf-same-path-control.log`.
 
-**The source replay is still running at handoff: PID 577370**, script
-`.analysis/gpt-6.1-sol-replay-readf-conditional.py`, cwd this repository.
-Shell session 12304 belongs to the current conversation; a new agent should
-check the OS process and log directly:
-
-```bash
-ps -p 577370 -o pid,etime,args
-tail -n 12 .analysis/gpt-6.1-sol-readf-conditional-consumer-replays.log
-sha256sum -c .analysis/gpt-6.1-sol-readf-conditional-frozen.sha256
-```
-
-Confirm the process command before waiting. The scope is 24 exact units in
-23 contexts; the 108-byte quad helper, 104-byte integer destination and 95-byte
-signal caller have passed. The log records further passes and the final
-`TERMINAL` result. Keep `src/AnimationExecution.cpp` frozen until completion.
-Its pending patch is also saved at `.analysis/readf-conditional.pending.patch`.
-Commit the source only after all affected proofs pass. All private probes are
-terminal; a missing conversation tool handle is not evidence to restart this job.
+All 24 exact consumers in 23 contexts passed cold replay for this source
+epoch. The first run stopped at context 15 when the machine restarted; the
+resumed run reused the 14 current receipts and finished with
+`TERMINAL ... "passed_units": 24, "failures": []`. Logs:
+`.analysis/gpt-6.1-sol-readf-conditional-consumer-replays.log` and
+`.analysis/readf-conditional-consumer-replays-resume.log`.
 
 The preceding checkpoint is `0095348`: shared quad calls, direct child-ID
 forwarding, two strip rounding stages, the effect-local timer constructor and
