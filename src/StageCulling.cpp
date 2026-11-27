@@ -14,18 +14,16 @@ extern "C" CameraVector *WINAPI D3DXVec3ProjectArray(
 static __forceinline void ExtendProjectedBounds(const CameraVector &point,
     float &smallestX, float &largestX, float &smallestY, float &largestY)
 {
-    if (point.z > 0.0f && point.z <= 1.0f)
+    if (point.z >= 0.0f && point.z <= 1.0f)
     {
-        if (point.x >= smallestX)
-        {
-            if (point.x > largestX) largestX = point.x;
-        }
-        else smallestX = point.x;
-        if (point.y > smallestY)
-        {
-            if (point.y > largestY) largestY = point.y;
-        }
-        else smallestY = point.y;
+        if (point.x < smallestX)
+            smallestX = point.x;
+        else if (point.x > largestX)
+            largestX = point.x;
+        if (point.y < smallestY)
+            smallestY = point.y;
+        else if (point.y > largestY)
+            largestY = point.y;
     }
 }
 
@@ -70,22 +68,21 @@ int __fastcall CullStageObject(const StageObjectDrawView *object,
         static_cast<float>(object->extents.y * half),
         static_cast<float>(object->extents.z * half)
     };
-    float maxX = static_cast<float>(object->position.x + halfExtents.x);
-    float minX = static_cast<float>(object->position.x - halfExtents.x);
-    float maxY = static_cast<float>(object->position.y + halfExtents.y);
-    float minY = static_cast<float>(object->position.y - halfExtents.y);
-    float maxZ = static_cast<float>(object->position.z + halfExtents.z);
-    float minZ = static_cast<float>(object->position.z - halfExtents.z);
-
+    const CameraVector &p = object->position;
+    const CameraVector h = halfExtents;
     CameraVector corners[12] = {
-        {maxX, maxY, maxZ}, {maxX, maxY, minZ},
-        {maxX, minY, maxZ}, {maxX, minY, minZ},
-        {minX, maxY, maxZ}, {minX, maxY, minZ},
-        {minX, minY, maxZ}, {minX, minY, minZ},
-        {object->position.x, minY, minZ},
-        {object->position.x, maxY, minZ},
-        {object->position.x, minY, maxZ},
-        {object->position.x, maxY, maxZ}
+        {static_cast<float>(p.x + h.x), static_cast<float>(p.y + h.y), static_cast<float>(p.z + h.z)},
+        {static_cast<float>(p.x + h.x), static_cast<float>(p.y + h.y), static_cast<float>(p.z - h.z)},
+        {static_cast<float>(p.x + h.x), static_cast<float>(p.y - h.y), static_cast<float>(p.z + h.z)},
+        {static_cast<float>(p.x + h.x), static_cast<float>(p.y - h.y), static_cast<float>(p.z - h.z)},
+        {static_cast<float>(p.x - h.x), static_cast<float>(p.y + h.y), static_cast<float>(p.z + h.z)},
+        {static_cast<float>(p.x - h.x), static_cast<float>(p.y + h.y), static_cast<float>(p.z - h.z)},
+        {static_cast<float>(p.x - h.x), static_cast<float>(p.y - h.y), static_cast<float>(p.z + h.z)},
+        {static_cast<float>(p.x - h.x), static_cast<float>(p.y - h.y), static_cast<float>(p.z - h.z)},
+        {p.x, static_cast<float>(p.y - h.y), static_cast<float>(p.z - h.z)},
+        {p.x, static_cast<float>(p.y + h.y), static_cast<float>(p.z - h.z)},
+        {p.x, static_cast<float>(p.y - h.y), static_cast<float>(p.z + h.z)},
+        {p.x, static_cast<float>(p.y + h.y), static_cast<float>(p.z + h.z)}
     };
     // The original constructs an identity-valued matrix before applying
     // the translation through D3DX. Preserve the real sixteen float stores.
@@ -100,19 +97,10 @@ int __fastcall CullStageObject(const StageObjectDrawView *object,
     D3DXVec3ProjectArray(projected, sizeof(CameraVector), corners, sizeof(CameraVector),
         &camera->viewport, &camera->projection, &camera->view, &translation, 12);
 
-    float smallestX = 424.0f, largestX = 24.0f;
-    float smallestY = 472.0f, largestY = 8.0f;
-    // The native VC9 producer handles twelve projected points as two groups
-    // of six in a single outer loop; each point has its own clipping branch.
-    for (int group = 0; group < 2; ++group)
-    {
-        ExtendProjectedBounds(projected[group * 6 + 0], smallestX, largestX, smallestY, largestY);
-        ExtendProjectedBounds(projected[group * 6 + 1], smallestX, largestX, smallestY, largestY);
-        ExtendProjectedBounds(projected[group * 6 + 2], smallestX, largestX, smallestY, largestY);
-        ExtendProjectedBounds(projected[group * 6 + 3], smallestX, largestX, smallestY, largestY);
-        ExtendProjectedBounds(projected[group * 6 + 4], smallestX, largestX, smallestY, largestY);
-        ExtendProjectedBounds(projected[group * 6 + 5], smallestX, largestX, smallestY, largestY);
-    }
+    float smallestX = 424.0f, smallestY = 472.0f;
+    float largestX = 24.0f, largestY = 8.0f;
+    for (int i = 0; i < 12; ++i)
+        ExtendProjectedBounds(projected[i], smallestX, largestX, smallestY, largestY);
     // The native rectangle intersection includes all four viewport edges.
     if (largestX >= 32.0f && smallestX <= 416.0f &&
         largestY >= 16.0f && smallestY <= 464.0f)

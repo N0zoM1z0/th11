@@ -6,12 +6,36 @@ frontier results are:
 
 | Native owner | Native size | Candidate PDB contribution | Aligned native instructions | State |
 | --- | ---: | ---: | ---: | --- |
-| CullStageObject (0x403950) | 1,643 B | 1,644 B | 362/504 | Nonexact |
+| CullStageObject (0x403950) | 1,643 B | 1,646 B | 478/504 (2026-11-27) | Nonexact |
 | DrawStageLayer (0x404190) | 727 B | 740 B | 156/191 | Nonexact |
 
 These are diagnostic frontiers, not strict replay results. The original
 translation-unit ownership and remaining byte/relocation differences are
 still open. The native bodies and their callers were reviewed in Ghidra.
+
+## CullStageObject: 2026-11-27 natural-source progress
+
+Alignment rose from 362 to 478/504 (mnemonics 0.98) with plainer source:
+
+- Projected bounds use the symmetric `if (x < smallest) smallest = x; else if
+  (x > largest) largest = x;` form for both axes, and the depth test is
+  `z >= 0 && z <= 1` (decoded from the native `test ah,0x41; jp`).
+- The twelve points are a simple 12-iteration loop; VC9 itself produces the
+  native two-by-six unrolled loop (identical output to the old hand-unrolled
+  groups).
+- Corners are written as twelve aggregate entries of in-place sums
+  (`p.x + h.x`, ...); VC9's CSE then computes each value on first use, as
+  native does. Separate `maxX`/`minX` locals computed everything first.
+- The bound locals are declared smallestX, smallestY, largestX, largestY,
+  the native initialization order.
+
+Remaining: the bounds loop pointer is biased by 4 (`[ecx-4]` for x, native
+`[ecx]`); the start still copies `*offset` to the stack, and `eye.x`'s operand
+order and native's dead copy of the difference vector into a named `delta`
+(`esp+0x78`, later reused by `corners`) are missing. Rewriting the start with
+D3DX-style member operators fixes `center` and eye.y/z but perturbs the corner
+schedule (459), so it is not kept; see the KNOWLEDGE_BASE note on x87 operand
+order.
 
 ## CullStageObject: native algorithm
 
