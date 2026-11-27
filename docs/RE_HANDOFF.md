@@ -27,6 +27,19 @@ findings drive the next work (details in KNOWLEDGE_BASE, 2026-11-27):
 3. x87 commutative operand order is decided by the VC9 scheduler, not by the
    source operand order; do not spend builds swapping operands.
 
+**Blocker found 2026-11-27: two canonical exact units fail at HEAD.**
+`secondary-actor-state-constructor` (0x410440, 126 B) now links as a 14-byte
+call to the vector-constructor iterator, and `secondary-actor-instruction-adapter`
+links at 13 B instead of 11. Both reproduce with the committed
+`SecondaryScript.cpp`, so they predate this session. Cause of the first:
+`9abb56f` removed `StageTimerView() { flags &= ~1u; }` from
+`StageResource.hpp`. The native constructor clears bit 0 of every timer
+flag word (frame, both vector tweens, six pair tweens, two timers), so ZUN's
+timer type does have that constructor. `StageResource.hpp` is not a declared
+input of these units, so their receipts never noticed. Restoring the
+constructor is the faithful fix, but nearly every unit includes the header;
+it needs a deliberate wide replay. Treat both rows as unverified until then.
+
 Replay helper for changed shared inputs:
 `scripts/repo-python .analysis/claude-replay-affected.py FILE...` replays every
 exact unit whose context contains one of the files and resumes from current

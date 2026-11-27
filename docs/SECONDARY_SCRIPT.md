@@ -15,7 +15,7 @@ diagnostics below retain their recorded independent context.
 
 | Owner | Address | Full bytes | Current source / diagnostic differences |
 | --- | --- | ---: | --- |
-| RunSecondaryScript | 45B860 | 7,093 | 7,013 /5,821; actual-caller context, not exact |
+| RunSecondaryScript | 45B860 | 7,093 | 7,085 B, 1,309 aligned / 1,759 of 1,834 register-normalized (2026-11-27); not exact |
 | EnterSecondaryScriptFrame | 45B610 | 584 | 572 /546 |
 | UpdateSecondaryScripts | 45D420 | 142 | 155 /142 |
 | ReadSecondaryIntArgument | 45D4B0 | 146 | 124 /125 |
@@ -37,6 +37,37 @@ diagnostics below retain their recorded independent context.
 | SecondaryStackTop | 45B5E0 | 7 | Exact; no fields |
 | SetTop | 45B5F0 | 7 | Exact; no fields |
 | SecondaryScriptTable | 45B600 | 7 | Exact; no fields |
+
+## 2026-11-27: interpreter source forms and context
+
+Unit `run-secondary-script-frontier` compiles `SecondaryScript.cpp` as the
+primary TU inside the wide gameplay context and adds
+`probes/secondary-script-push-context.cpp`. Without that dynamic caller every
+`PushSecondaryValue` call passes a constant, VC9 drops the callee's `if (type)`
+test and moves the type to the stack; native keeps the test and passes the
+type in DL. (The small `SecondaryScript` context has the probe but gives the
+interpreter a 64-byte-aligned EBP frame of 0x134; native and the wide context
+use the plain 0x120 frame.)
+
+Four natural-source corrections, measured in that frontier:
+
+- Case 16 indexes the payload by dword: `((int *)payload)[(arg0 + 4) / 4]`
+  (native `shr ecx, 2` and a scaled index), not a masked byte offset.
+- Cases 43/45 are `PopInt(stack, SecondaryIntDestination(self))` and
+  `PopFloat(stack, SecondaryFloatDestination(self, 0))`; the native inlines the
+  generic pop straight into the destination, with the constant type removing
+  one conversion branch.
+- Cases 14/13/12 share one jump body: 14 jumps to it when the popped value is
+  non-zero, 13 falls through into it when it is zero.
+- Case 81 calls `vector.SetPolar(NormalizeAngle(Read(2)), Read(3))`; VC9's
+  right-to-left argument evaluation reads argument 3 first, as native does.
+
+Raw alignment went from 942 to 1,309 and register-normalized alignment from
+1,673 to 1,759 of 1,834 (7,085 bytes versus 7,093). Remaining: the VM pointer
+is in ESI versus native EDI, case 82 and case 87's identical tails are merged
+by VC9 but not in native, the integer operations keep a dead store of the
+converted left operand, and `SecondaryFloatDestination` receives `self` in EAX
+versus native EDX.
 
 ## Exact 34-byte interpreter angle adapter (0x40B900)
 

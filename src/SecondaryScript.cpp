@@ -468,7 +468,7 @@ int __stdcall RunSecondaryScript(SecondaryVm *self, float delta)
             case 16:
             {
                 unsigned int offset = Argument(self, 0)->bits + 4;
-                int id = *reinterpret_cast<int *>(Payload(self->instruction) + (offset & ~3u));
+                int id = reinterpret_cast<int *>(Payload(self->instruction))[offset / 4];
                 if (self->instruction->references & 2) id = ReadSecondaryIntReference(self, id);
                 StartSecondaryThread(self->owner, id, 1);
                 break;
@@ -512,28 +512,18 @@ int __stdcall RunSecondaryScript(SecondaryVm *self, float delta)
             case 14:
             {
                 int condition; PopInt(&self->stack, &condition);
-                if (condition)
-                {
-                    self->time = static_cast<float>(Argument(self, 1)->integer);
-                    self->instruction = reinterpret_cast<SecondaryInstruction *>(
-                        reinterpret_cast<unsigned char *>(self->instruction) + Argument(self, 0)->bits);
-                    advance = false;
-                }
+                if (condition) goto Jump;
                 break;
             }
             case 13:
             {
                 int condition; PopInt(&self->stack, &condition);
-                if (!condition)
-                {
-                    self->time = static_cast<float>(Argument(self, 1)->integer);
-                    self->instruction = reinterpret_cast<SecondaryInstruction *>(
-                        reinterpret_cast<unsigned char *>(self->instruction) + Argument(self, 0)->bits);
-                    advance = false;
-                }
-                break;
+                if (condition) break;
             }
+            // Falls through: an unsatisfied case 13 and a satisfied case 14
+            // share the unconditional jump.
             case 12:
+            Jump:
                 self->time = static_cast<float>(Argument(self, 1)->integer);
                 self->instruction = reinterpret_cast<SecondaryInstruction *>(
                     reinterpret_cast<unsigned char *>(self->instruction) + Argument(self, 0)->bits);
@@ -549,33 +539,9 @@ int __stdcall RunSecondaryScript(SecondaryVm *self, float delta)
             case 40: BeginSecondaryStackFrame(&self->stack, ReadSecondaryIntArgument(self, 0)); break;
             case 41: EndSecondaryStackFrame(&self->stack); break;
             case 42: PushInt(&self->stack, ReadSecondaryIntArgument(self, 0)); break;
-            case 43:
-            {
-                int *destination = SecondaryIntDestination(self);
-                SecondaryValue value;
-                if (PopRaw(&self->stack, &value))
-                {
-                    *destination = value.integer;
-                    self->stack.top = Add(self->stack.top, -4);
-                    if (self->stack.data[self->stack.top] == 'f')
-                        { SecondaryValue current; current.integer = *destination; *destination = static_cast<int>(current.real); }
-                }
-                break;
-            }
+            case 43: PopInt(&self->stack, SecondaryIntDestination(self)); break;
             case 44: PushFloat(&self->stack, ReadSecondaryFloatArgument(self, 0)); break;
-            case 45:
-            {
-                float *destination = SecondaryFloatDestination(self, 0);
-                SecondaryValue value;
-                if (PopRaw(&self->stack, &value))
-                {
-                    *destination = value.real;
-                    self->stack.top = Add(self->stack.top, -4);
-                    if (self->stack.data[self->stack.top] == 'i')
-                        { SecondaryValue current; current.real = *destination; *destination = static_cast<float>(current.integer); }
-                }
-                break;
-            }
+            case 45: PopFloat(&self->stack, SecondaryFloatDestination(self, 0)); break;
             case 50: IntegerOperation<50>(&self->stack); break;
             case 52: IntegerOperation<52>(&self->stack); break;
             case 54: IntegerOperation<54>(&self->stack); break;
@@ -656,10 +622,9 @@ int __stdcall RunSecondaryScript(SecondaryVm *self, float delta)
             }
             case 81:
             {
-                float magnitude = ReadSecondaryFloatArgument(self, 3);
-                float angle = NormalizeAngle(ReadSecondaryFloatArgument(self, 2));
                 SecondaryVector2 vector;
-                vector.SetPolar(angle, magnitude);
+                vector.SetPolar(NormalizeAngle(ReadSecondaryFloatArgument(self, 2)),
+                    ReadSecondaryFloatArgument(self, 3));
                 *SecondaryFloatDestination(self, 0) = vector.x;
                 *SecondaryFloatDestination(self, 1) = vector.y;
                 break;
