@@ -1,4 +1,5 @@
 #include "SecondaryEmitterAnimation.hpp"
+#include "AnimationVmIdCounter.hpp"
 #include "MainRuntime.hpp"
 #include "RenderBatch.hpp"
 
@@ -9,7 +10,7 @@ struct FrontDrawVmRegistryView
     unsigned char unknown000[0x7b562c];
     AnimationVmNode *first, *firstTail, *second, *secondTail;
     unsigned char unknown7b563c[0x7bd888 - 0x7b563c];
-    unsigned int nextId;
+    AnimationVmId nextId;
 };
 }
 
@@ -35,9 +36,9 @@ AnimationVmId __stdcall PrependSecondaryDrawAnimationVm(AnimationVmView *vm)
     }
     registry->second = node;
     ++registry->nextId;
-    if (!registry->nextId) ++registry->nextId;
-    vm->unknown000 = registry->nextId;
-    return AnimationVmId(registry->nextId);
+    if (registry->nextId == 0) ++registry->nextId;
+    vm->unknown000 = registry->nextId.value;
+    return registry->nextId;
 }
 
 // 00455FB0..00456018: front-chain VM without a layer override.

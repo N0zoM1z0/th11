@@ -1,4 +1,5 @@
 #include "SecondaryEmitterAnimation.hpp"
+#include "AnimationVmIdCounter.hpp"
 #include "RenderBatch.hpp"
 #include "MainRuntime.hpp"
 
@@ -9,7 +10,7 @@ struct EmitterVmRegistryView
     unsigned char unknown000[0x7b562c];
     AnimationVmNode *first, *tail, *second, *secondTail;
     unsigned char unknown7b563c[0x7bd888 - 0x7b563c];
-    unsigned int nextId;
+    AnimationVmId nextId;
 };
 }
 
@@ -34,9 +35,9 @@ AnimationVmId __stdcall PublishSecondaryEmitterAnimationVm(AnimationVmView *vm)
     }
     registry->first = node;
     ++registry->nextId;
-    if (!registry->nextId) ++registry->nextId;
-    vm->unknown000 = registry->nextId;
-    return AnimationVmId(registry->nextId);
+    if (registry->nextId == 0) ++registry->nextId;
+    vm->unknown000 = registry->nextId.value;
+    return registry->nextId;
 }
 
 AnimationVmId __stdcall CreateSecondaryEmitterAnimationVmId(AnimationFileView *file, int script, int layer)
@@ -81,7 +82,7 @@ AnimationVmId __stdcall PublishSecondaryDrawAnimationVm(AnimationVmView *vm)
     }
     registry->secondTail = node;
     ++registry->nextId;
-    if (!registry->nextId) ++registry->nextId;
-    vm->unknown000 = registry->nextId;
-    return AnimationVmId(registry->nextId);
+    if (registry->nextId == 0) ++registry->nextId;
+    vm->unknown000 = registry->nextId.value;
+    return registry->nextId;
 }

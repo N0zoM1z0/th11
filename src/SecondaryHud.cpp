@@ -1,4 +1,5 @@
 #include "SecondaryHud.hpp"
+#include "AnimationVmIdCounter.hpp"
 #include "SecondaryPlayerController.hpp"
 #include "StageMesh.hpp"
 #include "MeshEffects.hpp"
@@ -79,7 +80,7 @@ struct HudVmRegistryView
     unsigned char unknown000[0x7b562c];
     AnimationVmNode *first, *tail, *second;
     unsigned char unknown7b5638[0x7bd888 - 0x7b5638];
-    unsigned int nextId;
+    AnimationVmId nextId;
 };
 __forceinline unsigned int PublishBadge(AnimationVmView *vm)
 {
@@ -103,9 +104,9 @@ __forceinline unsigned int PublishBadge(AnimationVmView *vm)
     }
     registry->tail = node;
     ++registry->nextId;
-    if (!registry->nextId) ++registry->nextId;
-    vm->unknown000 = registry->nextId;
-    return registry->nextId;
+    if (registry->nextId == 0) ++registry->nextId;
+    vm->unknown000 = registry->nextId.value;
+    return registry->nextId.value;
 }
 }
 

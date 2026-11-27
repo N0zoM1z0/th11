@@ -113,15 +113,14 @@ scripts/repo-python .analysis/compare-execute-animation-vm-code-only.py build/ma
 | Owner | State | Notes |
 | --- | --- | --- |
 | `~SecondaryEclDebugOwner` (`40D320`, 462 B) | Canonical exact | +0x2C8 `StageEmbeddedVm` member supplied the second EH state |
-| `InitializeSecondaryDebugHudAnimations` (`41A6D0`, 1,619 B) | Frontier | See SECONDARY_DEBUG_LIFECYCLE.md; frame, lives-display ABI and ID-wrap gaps |
+| `InitializeSecondaryDebugHudAnimations` (`41A6D0`, 1,619 B) | Frontier, 1,635 B / 406 ins | ID wrap, tail order and lives-display ABI fixed; frame is 8 vs native 0xC (native has an extra never-accessed high-weight stack color), plus register choices |
 | `~SecondaryDebugHudOwned` (`41AFC0`, 729 B) | Frontier | Native caches both critical-section imports and keeps `this` on the stack |
 | `ResetStageMesh` (`40E6C0`, 325 B) | Frontier | Only two x87 add operand orders differ; `StageMesh.cpp` feeds ~40 exact contexts, so batch its replay |
 
-Every VC9 build of the scene-VM publishers folds the ID wrap into
-`add; jne; mov [nextId], 1`, while every native copy (0x4556E0, 0x455760,
-0x455860, HUD 0x41A96B and 0x41BD84) re-reads: `add; cmp [nextId], 0; jne;
-add`. This is one systematic source-form gap across all publishers;
-`.analysis/claude-nextid/` holds candidate spellings to test.
+The four scene-VM publishers (0x4556E0, 0x455760, 0x4557E0, 0x455860) are
+now canonical exact: the next-ID counter is an `AnimationVmId` object (see the
+KNOWLEDGE_BASE entry of 2026-11-27). Replay log of their 83 exact consumers:
+`.analysis/claude-counter-replay.log`.
 
 ## Continuation and other frontiers
 

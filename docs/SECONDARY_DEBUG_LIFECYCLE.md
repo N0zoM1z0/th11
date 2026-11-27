@@ -526,6 +526,34 @@ initial return-buffer, stack reservation, zero-ID wrap and retained-animation
 register scheduling still differ. The original's internal instruction
 alignment was never copied into source.
 
+## HUD animation initializer: 2026-11-27 status
+
+Three native properties are now reproduced:
+
+- The renderer next-ID wrap is `add; cmp [nextId], 0; jne; add` in all three
+  inline retained publishes, through the `AnimationVmId` counter object (see
+  KNOWLEDGE_BASE). The tail is again a plain store; the old `volatile` tail
+  pointer is gone and the store order is still native.
+- `UpdateSecondaryLivesDisplay` keeps its LTCG interface (EDI HUD, EDX lives,
+  fragments on the stack) once the probe calls it with dynamic arguments; the
+  HUD passes its cached `hud` pointer, not a re-read of the global.
+- The initial ID is stored through the returned hidden-result pointer
+  (`mov reg, [eax]`), because the source now uses the call's temporary
+  directly instead of a named local, and the discarded scene IDs and the
+  initial ID share one stack slot (one color of four members in the c2.dll
+  `StackPacking` trace).
+
+The candidate is 1,635 bytes / 406 instructions (native 1,619 / 402); 16 bytes
+are loop-alignment islands that move with the code. Its frame is 8 bytes. The
+native 0xC frame has a third color, allocated first (highest
+weight/size ratio) at -12, that no final instruction touches; the HUD pointer
+is at -8 and the shared ID slot at -4. Most remaining differences are register
+choices (EDX versus ECX for HUD reloads in the VM loops, ECX versus EAX for
+the initial ID) and the early hoist of the replay character and file before
+the lock test for script 0x39. A block-scoped macro form for the scene spawns
+was worse (it delays the file reads). Trace tool:
+`.analysis/compiler-vc9/claude-trace-stack.py UNIT FUNCTION`.
+
 ## HUD visual initialization codegen refinement
 
 The natural C++ visual initializer at 0x41A520 emits the complete

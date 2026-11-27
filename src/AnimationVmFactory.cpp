@@ -1,4 +1,5 @@
 #include "AnimationVmFactory.hpp"
+#include "AnimationVmIdCounter.hpp"
 #include "RenderBatch.hpp"
 #include "PerspectiveCamera.hpp"
 #include "MainRuntime.hpp"
@@ -9,7 +10,7 @@ struct SceneVmRegistryView
     unsigned char unknown000[0x7b562c];
     AnimationVmNode *first, *tail, *second;
     unsigned char unknown7b5638[0x7bd888 - 0x7b5638];
-    unsigned int nextId;
+    AnimationVmId nextId;
 
     // Observed member-call boundary at 0x405D60; implementation remains external.
     int Execute(AnimationVmView *vm);
@@ -43,10 +44,10 @@ AnimationVmId __stdcall PublishSceneAnimationVm(AnimationVmView *vm)
     }
     registry->tail = node;
     ++registry->nextId;
-    if (!registry->nextId)
+    if (registry->nextId == 0)
         ++registry->nextId;
-    vm->unknown000 = registry->nextId;
-    return AnimationVmId(registry->nextId);
+    vm->unknown000 = registry->nextId.value;
+    return registry->nextId;
 }
 
 void __stdcall InitializeSceneAnimationVm(AnimationVmView *vm, AnimationFileView *file, int script)

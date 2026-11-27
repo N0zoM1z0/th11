@@ -1528,7 +1528,7 @@ linkages = [
 [units.initialize-scene-animation-vm]
 artifact_kind = "linked-pe"
 source = "src/AnimationVmFactory.cpp"
-inputs = ["src/AnimationVmFactory.hpp", "src/AnimationVmId.hpp"]
+inputs = ["src/AnimationVmIdCounter.hpp", "src/AnimationVmFactory.hpp", "src/AnimationVmId.hpp"]
 support_sources = ["probes/stage-mesh-context.cpp", "src/StageMesh.cpp"]
 output_dir = "build/match-linked/AnimationVmFactory"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -1544,7 +1544,7 @@ linkages = [
 [units.bind-animation-file-script]
 artifact_kind = "linked-pe"
 source = "src/AnimationVmFactory.cpp"
-inputs = ["src/AnimationVmFactory.hpp", "src/AnimationVmId.hpp"]
+inputs = ["src/AnimationVmIdCounter.hpp", "src/AnimationVmFactory.hpp", "src/AnimationVmId.hpp"]
 support_sources = ["probes/stage-mesh-context.cpp", "src/StageMesh.cpp"]
 output_dir = "build/match-linked/AnimationVmFactory"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -1564,7 +1564,7 @@ linkages = [
 [units.create-animation-vm-id]
 artifact_kind = "linked-pe"
 source = "src/AnimationVmFactory.cpp"
-inputs = ["src/AnimationVmFactory.hpp", "src/AnimationVmId.hpp"]
+inputs = ["src/AnimationVmIdCounter.hpp", "src/AnimationVmFactory.hpp", "src/AnimationVmId.hpp"]
 support_sources = ["probes/stage-mesh-context.cpp", "src/StageMesh.cpp"]
 output_dir = "build/match-linked/AnimationVmFactory"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -1585,6 +1585,23 @@ linkages = [
   { offset = 91, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8e8 },
   { offset = 97, type = "DIR32", symbol = "__imp__LeaveCriticalSection@4", target = 0x48b088, addend = 0x0 },
   { offset = 103, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x939 },
+]
+
+# Scene VM publisher; its next-ID counter is an ID object (see AnimationVmIdCounter.hpp).
+[units.publish-scene-animation-vm]
+artifact_kind = "linked-pe"
+source = "src/AnimationVmFactory.cpp"
+inputs = ["src/AnimationVmIdCounter.hpp", "src/AnimationVmFactory.hpp", "src/AnimationVmId.hpp"]
+support_sources = ["probes/stage-mesh-context.cpp", "src/StageMesh.cpp"]
+output_dir = "build/match-linked/AnimationVmFactory"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "StageMeshProbe@40"
+functions = ["PublishSceneAnimationVm"]
+symbol = "?PublishSceneAnimationVm@@YG?AUAnimationVmId@@PAUAnimationVmView@@@Z"
+target_address = 0x004556E0
+size = 123
+linkages = [
+  { offset = 2, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x004C3268 },
 ]
 
 [units.find-animation-vm-by-id]
@@ -4268,10 +4285,9 @@ linkages = [
 ]
 
 [units.publish-secondary-draw-animation-vm]
-frontier = true
 artifact_kind = "linked-pe"
 source = "src/SecondaryEmitterAnimation.cpp"
-inputs = ["src/SecondaryEmitterAnimation.hpp", "src/RenderBatch.hpp", "src/MainRuntime.hpp", "src/AnimationVmId.hpp"]
+inputs = ["src/AnimationVmIdCounter.hpp", "src/SecondaryEmitterAnimation.hpp", "src/RenderBatch.hpp", "src/MainRuntime.hpp", "src/AnimationVmId.hpp"]
 support_sources = ["probes/secondary-draw-publisher-context.cpp", "src/AnimationVmFactory.cpp", "src/PauseContinueMenuSupport.cpp", "src/SecondaryDrawPublisher.cpp"]
 output_dir = "build/match-linked/SecondaryDrawPublisher"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -4281,13 +4297,13 @@ symbol = "?PublishSecondaryDrawAnimationVm@@YG?AUAnimationVmId@@PAUAnimationVmVi
 target_address = 0x004557E0
 size = 123
 linkages = [
-  { offset = 0x02, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x004C3268 },
+  { offset = 2, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x004C3268 },
 ]
 
 [units.create-secondary-emitter-animation-vm-id]
 artifact_kind = "linked-pe"
 source = "src/SecondaryEmitterAnimation.cpp"
-inputs = ["src/SecondaryEmitterAnimation.hpp", "src/AnimationVmFactory.hpp", "src/AnimationVmId.hpp"]
+inputs = ["src/AnimationVmIdCounter.hpp", "src/SecondaryEmitterAnimation.hpp", "src/AnimationVmFactory.hpp", "src/AnimationVmId.hpp"]
 support_sources = ["probes/secondary-emitter-reset-context.cpp", "src/SecondaryEmitterReset.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryMotionMath.cpp", "src/StageMesh.cpp", "src/AngleMath.cpp", "src/AnimationImmediateDraw.cpp", "src/AnimationVmFactory.cpp"]
 output_dir = "build/match-linked/SecondaryEmitterAnimation"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -4308,6 +4324,23 @@ linkages = [
   { offset = 91, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x8e8 },
   { offset = 97, type = "DIR32", symbol = "__imp__LeaveCriticalSection@4", target = 0x48b088, addend = 0x0 },
   { offset = 103, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x4c3280, addend = 0x939 },
+]
+
+# Secondary-list VM publisher.
+[units.publish-secondary-emitter-animation-vm]
+artifact_kind = "linked-pe"
+source = "src/SecondaryEmitterAnimation.cpp"
+inputs = ["src/AnimationVmIdCounter.hpp", "src/SecondaryEmitterAnimation.hpp", "src/AnimationVmFactory.hpp", "src/AnimationVmId.hpp"]
+support_sources = ["probes/secondary-emitter-reset-context.cpp", "src/SecondaryEmitterReset.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryMotionMath.cpp", "src/StageMesh.cpp", "src/AngleMath.cpp", "src/AnimationImmediateDraw.cpp", "src/AnimationVmFactory.cpp"]
+output_dir = "build/match-linked/SecondaryEmitterAnimation"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryEmitterResetProbe@20"
+functions = ["PublishSecondaryEmitterAnimationVm"]
+symbol = "?PublishSecondaryEmitterAnimationVm@@YG?AUAnimationVmId@@PAUAnimationVmView@@@Z"
+target_address = 0x00455760
+size = 118
+linkages = [
+  { offset = 2, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x004C3268 },
 ]
 
 [units.create-secondary-draw-animation-vm-id]
@@ -6193,7 +6226,7 @@ linkages = [
 [units.create-default-front-secondary-draw-animation-vm-id]
 artifact_kind = "linked-pe"
 source = "src/SecondaryDrawFrontAnimation.cpp"
-inputs = ["src/SecondaryEmitterAnimation.hpp", "src/AnimationVmFactory.hpp", "src/AnimationVmId.hpp", "src/AnimationVm.hpp", "src/MainRuntime.hpp"]
+inputs = ["src/AnimationVmIdCounter.hpp", "src/SecondaryEmitterAnimation.hpp", "src/AnimationVmFactory.hpp", "src/AnimationVmId.hpp", "src/AnimationVm.hpp", "src/MainRuntime.hpp"]
 support_sources = ["probes/secondary-draw-front-context.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryEmitterAnimation.cpp"]
 output_dir = "build/match-linked/SecondaryDrawFrontAnimation"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -6216,10 +6249,27 @@ linkages = [
   { offset = 0x60, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x939 },
 ]
 
+# Secondary-list front-insertion VM publisher.
+[units.prepend-secondary-draw-animation-vm]
+artifact_kind = "linked-pe"
+source = "src/SecondaryDrawFrontAnimation.cpp"
+inputs = ["src/AnimationVmIdCounter.hpp", "src/SecondaryEmitterAnimation.hpp", "src/AnimationVmFactory.hpp", "src/AnimationVmId.hpp", "src/AnimationVm.hpp", "src/MainRuntime.hpp"]
+support_sources = ["probes/secondary-draw-front-context.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryEmitterAnimation.cpp"]
+output_dir = "build/match-linked/SecondaryDrawFrontAnimation"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "FrontDrawVmProbe@12"
+functions = ["PrependSecondaryDrawAnimationVm"]
+symbol = "?PrependSecondaryDrawAnimationVm@@YG?AUAnimationVmId@@PAUAnimationVmView@@@Z"
+target_address = 0x00455860
+size = 118
+linkages = [
+  { offset = 2, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x004C3268 },
+]
+
 [units.create-front-secondary-draw-animation-vm-id]
 artifact_kind = "linked-pe"
 source = "src/SecondaryDrawFrontAnimation.cpp"
-inputs = ["src/SecondaryEmitterAnimation.hpp", "src/AnimationVmFactory.hpp", "src/AnimationVmId.hpp", "src/AnimationVm.hpp", "src/MainRuntime.hpp"]
+inputs = ["src/AnimationVmIdCounter.hpp", "src/SecondaryEmitterAnimation.hpp", "src/AnimationVmFactory.hpp", "src/AnimationVmId.hpp", "src/AnimationVm.hpp", "src/MainRuntime.hpp"]
 support_sources = ["probes/secondary-draw-front-context.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryEmitterAnimation.cpp"]
 output_dir = "build/match-linked/SecondaryDrawFrontAnimation"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -10973,7 +11023,7 @@ linkages = [
 frontier = true
 artifact_kind = "linked-pe"
 source = "src/SecondaryDebugHudAnimationInitialization.cpp"
-inputs = ["src/SecondaryDebugHudLifetime.hpp", "src/SecondaryActorRuntime.hpp",
+inputs = ["src/AnimationVmIdCounter.hpp", "src/SecondaryDebugHudLifetime.hpp", "src/SecondaryActorRuntime.hpp",
           "src/SecondaryPlayerDeath.hpp", "src/AsciiLifecycle.hpp",
           "src/AnimationVmFactory.hpp", "src/MainRuntime.hpp",
           "src/SecondaryDialogue.hpp", "src/VmBindings.hpp",
@@ -10983,7 +11033,7 @@ support_sources = ["src/AnimationVmFactory.cpp", "src/AnimationRendererDispatch.
                    "probes/secondary-debug-hud-animation-init-context.cpp"]
 output_dir = "build/match-linked/SecondaryDebugHudAnimationInitFrontier"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
-entry = "SecondaryDebugHudAnimationInitProbe@12"
+entry = "SecondaryDebugHudAnimationInitProbe@24"
 functions = ["InitializeSecondaryDebugHudAnimations"]
 symbol = "?InitializeSecondaryDebugHudAnimations@@YAXXZ"
 target_address = 0x0041A6D0

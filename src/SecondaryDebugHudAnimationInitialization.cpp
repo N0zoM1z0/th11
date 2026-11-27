@@ -6,6 +6,7 @@
 #include "MainRuntime.hpp"
 #include "SecondaryDialogue.hpp"
 #include "VmBindings.hpp"
+#include "AnimationVmIdCounter.hpp"
 
 // Original game globals already shared by the replay and HUD owners.
 // They are external game storage, not new copies owned by this TU.
@@ -50,17 +51,17 @@ __forceinline void UnlockHudAnimations()
     }
 }
 
-__forceinline AnimationVmId SpawnHudAnimation(
-    AnimationFileView *file, int script)
+// The scene effects discard their IDs: the published result stays an
+// unnamed temporary, so every spawn shares one return-buffer slot.
+__forceinline void SpawnHudAnimation(AnimationFileView *file, int script)
 {
     LockHudAnimations();
     AnimationVmView *vm = AllocateSceneAnimationVm();
     vm->flags.value |= 0x40000000u;
     vm->persistent020 = 0x16;
     InitializeSceneAnimationVm(vm, file, script);
-    AnimationVmId id = PublishSceneAnimationVm(vm);
+    PublishSceneAnimationVm(vm);
     UnlockHudAnimations();
-    return id;
 }
 
 // In the native owner, these retained scene animations publish directly
@@ -71,7 +72,7 @@ struct HudAnimationRegistryView
     unsigned char unknown000[0x7b562c];
     AnimationVmNode *first, *tail, *second;
     unsigned char unknown7b5638[0x7bd888 - 0x7b5638];
-    unsigned int nextId;
+    AnimationVmId nextId;
 };
 typedef char HudAnimationRegistryFirstOffset[
     (offsetof(HudAnimationRegistryView, first) == 0x7b562c) ? 1 : -1];
@@ -99,13 +100,12 @@ __forceinline AnimationVmId PublishHudAnimationInline(AnimationVmView *vm)
         tail->next = node;
         node->previous = tail;
     }
-    AnimationVmNode * volatile *tailSlot = &registry->tail;
-    *tailSlot = node;
+    registry->tail = node;
     ++registry->nextId;
-    if (!registry->nextId)
+    if (registry->nextId == 0)
         ++registry->nextId;
-    vm->unknown000 = registry->nextId;
-    return AnimationVmId(registry->nextId);
+    vm->unknown000 = registry->nextId.value;
+    return registry->nextId;
 }
 
 __forceinline AnimationVmId SpawnHudRetainedAnimation(
@@ -163,10 +163,7 @@ void InitializeSecondaryDebugHudAnimations()
     PauseHudChain(hud->overlayChain);
 
     if (!hud->initialVmId)
-    {
-        AnimationVmId initialId = CreateAnimationVmId(HudFrontFile(hud), 0, 0x16);
-        hud->initialVmId = initialId.value;
-    }
+        hud->initialVmId = CreateAnimationVmId(HudFrontFile(hud), 0, 0x16).value;
 
     if (!(EmbeddedVm(&hud->mainVms[0])->flags.value & 1u))
     {
@@ -194,7 +191,7 @@ void InitializeSecondaryDebugHudAnimations()
         } while (i < 2);
     }
 
-    UpdateSecondaryLivesDisplay(g_SecondaryActorHud,
+    UpdateSecondaryLivesDisplay(reinterpret_cast<SecondaryActorHudView *>(hud),
                                 g_SecondaryPlayerLives, g_SecondaryLifeFragments);
 
     if (SceneMode() != 8 && !(g_StageResourceFlags & 0x20u))
@@ -216,8 +213,8 @@ void InitializeSecondaryDebugHudAnimations()
 
     if (g_ReplayModeFlags)
     {
-        const int script = static_cast<int>(g_ReplayStageCharacter) + 0x39;
-        hud->effectVmId = SpawnHudRetainedAnimation(HudFrontFile(hud), script).value;
+        hud->effectVmId = SpawnHudRetainedAnimation(
+            HudFrontFile(hud), static_cast<int>(g_ReplayStageCharacter) + 0x39).value;
         SignalHudAnimation(hud->effectVmId, 3);
     }
 

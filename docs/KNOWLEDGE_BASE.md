@@ -84,6 +84,31 @@ transfer. TH09 traced `c2.dll` in a debugger to explain ties; for TH11's
 LTCG, code generation runs in the linker-loaded `c2.dll`, which would need a
 separate investigation.
 
+## The renderer next-ID counter is an ID object (2026-11-27)
+
+Every native scene-VM publisher (0x4556E0, 0x455760, 0x4557E0, 0x455860) and
+the inline copies in the HUD owners (0x41A96B, 0x41BD84 and two more) encode
+the ID wrap as `add [nextId], 1; cmp [nextId], 0; jne; add [nextId], 1`. With
+`unsigned int nextId; ++nextId; if (!nextId) ++nextId;` VC9 RTM folds it into
+`add; jne; mov [nextId], 1` in every link context we have built. Declaring the
+counter as an `AnimationVmId` object with an inline prefix `operator++` and
+`operator==(unsigned)` (TH10's `AnmVmIdView` shape, here free functions in
+`src/AnimationVmIdCounter.hpp`) reproduces the native sequence exactly. All
+four 118/123-byte publishers became canonical exact with their single
+`g_RenderBatch` field.
+
+Failed spellings, measured on `PublishSceneAnimationVm` in its own context
+(`.analysis/claude-nextid/`): a `volatile` counter adds a frame push and
+reorders the list update (124 bytes); a separate `unsigned *` alias still
+folds the second increment. A member postfix `operator++(int)` works as well
+as the prefix form.
+
+The HUD initializer previously stored the renderer tail through a local
+`volatile` pointer to recover store order. With the ID counter, a plain tail
+store already keeps the native order, and the `volatile` store was what kept
+VC9 from sharing one stack slot among the four hidden-return ID temporaries
+(frame 0x14 -> 8; native 0xC).
+
 ## Interpreter layout: preserve real helper calls (2026-11-26)
 
 TH11 VC9 RTM `/GL` confirms TH10's warning about manually expanded helpers.
