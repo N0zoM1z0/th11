@@ -58,7 +58,7 @@ int __stdcall DrawStageLayer(StageResourceView *stage, int layer)
 
     for (; entry->objectIndex >= 0; ++entry)
     {
-        StageObjectDrawView * volatile object = reinterpret_cast<StageObjectDrawView *>(
+        StageObjectDrawView *object = reinterpret_cast<StageObjectDrawView *>(
             stage->objects[entry->objectIndex]);
         if (object->layer != layer)
             continue;
@@ -86,8 +86,7 @@ int __stdcall DrawStageLayer(StageResourceView *stage, int layer)
                 command->vmIndex * static_cast<int>(sizeof(AnimationVmView)));
             if (command->type == 0)
             {
-                register unsigned int vmFlags = vm->flags.value;
-                if ((vmFlags & 0x03c00000) >= 0x01000000)
+                if ((vm->flags.value & 0x03c00000) >= 0x01000000)
                 {
                     float *position = reinterpret_cast<float *>(&vm->persistent3e8);
                     position[0] = static_cast<float>(command->offsetX + entry->offset.x);
@@ -98,25 +97,19 @@ int __stdcall DrawStageLayer(StageResourceView *stage, int layer)
                     {
                         StageSpriteDimensions *sprite =
                             reinterpret_cast<StageSpriteDimensions *>(vm->unknown3ac);
-                        const double ratio = static_cast<double>(command->scaleX) / sprite->width;
-                        vmFlags |= 8;
-                        vm->flags.value = vmFlags;
-                        vm->scale.x = static_cast<float>(ratio);
+                        vm->scale.x = static_cast<float>(static_cast<double>(command->scaleX) / sprite->width);
+                        vm->flags.value |= 8;
                     }
                     if (command->scaleY != 0.0f)
                     {
                         StageSpriteDimensions *sprite =
                             reinterpret_cast<StageSpriteDimensions *>(vm->unknown3ac);
-                        const double ratio = static_cast<double>(command->scaleY) / sprite->height;
-                        vmFlags |= 8;
-                        vm->flags.value = vmFlags;
-                        vm->scale.y = static_cast<float>(ratio);
+                        vm->scale.y = static_cast<float>(static_cast<double>(command->scaleY) / sprite->height);
+                        vm->flags.value |= 8;
                     }
                 }
 
-                // The native splits enable and disable into separate gates,
-                // each of which samples the current runtime fog state.
-                if ((vmFlags & 0x03c00000) == 0x02000000)
+                if ((vm->flags.value & 0x03c00000) == 0x02000000)
                 {
                     if (FrameRuntime().fogEnabled != 1)
                     {
@@ -133,10 +126,7 @@ int __stdcall DrawStageLayer(StageResourceView *stage, int layer)
                     static_cast<IDirect3DDevice9 *>(g_MainRuntime.d3dDevice)->
                         SetRenderState(D3DRS_FOGENABLE, 0);
                 }
-                // The native extracts bit 11 with a full DWORD shift/mask,
-                // keeping the result integer-valued until the Z state gates.
-                // The native path extracts bit 11 with a full-width SHR/AND.
-                const unsigned int disableZ = (vmFlags >> 11) & 1u;
+                const unsigned int disableZ = (vm->flags.value >> 11) & 1u;
                 if (disableZ && zWritesEnabled)
                 {
                     SetLayerRenderState(D3DRS_ZWRITEENABLE, FALSE);

@@ -7,7 +7,7 @@ frontier results are:
 | Native owner | Native size | Candidate PDB contribution | Aligned native instructions | State |
 | --- | ---: | ---: | ---: | --- |
 | CullStageObject (0x403950) | 1,643 B | 1,646 B | 492/504 (2026-11-27) | Nonexact |
-| DrawStageLayer (0x404190) | 727 B | 740 B | 156/191 | Nonexact |
+| DrawStageLayer (0x404190) | 727 B | 722 B | 155/191 (2026-11-27) | Nonexact |
 
 These are diagnostic frontiers, not strict replay results. The original
 translation-unit ownership and remaining byte/relocation differences are
@@ -39,6 +39,17 @@ order and native's dead copy of the difference vector into a named `delta`
 D3DX-style member operators fixes `center` and eye.y/z but perturbs the corner
 schedule (459), so it is not kept; see the KNOWLEDGE_BASE note on x87 operand
 order.
+
+## DrawStageLayer: 2026-11-27
+
+The `volatile` object pointer and the `register` flags local are gone. Native
+keeps the object in EBX across the culling call, so no forced reload is
+needed, and it updates `vm->flags` directly (a memory `or` in the second scale
+branch, then a reload for the fog test). With direct field code the candidate
+is 722 bytes (was 747; native 727) and 155/191 aligned. Native does not keep
+the stage pointer in a register: it reloads `[ebp+8]` for each use and gives
+EBX to the object, while ours holds the stage in EBX. The first scale branch
+still differs (native `or ecx, 8` on the cached flags).
 
 ## CullStageObject: native algorithm
 
