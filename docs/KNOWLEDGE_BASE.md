@@ -84,6 +84,25 @@ transfer. TH09 traced `c2.dll` in a debugger to explain ties; for TH11's
 LTCG, code generation runs in the linker-loaded `c2.dll`, which would need a
 separate investigation.
 
+## x87 commutative operand order is a scheduling outcome (2026-11-27)
+
+Several near-exact owners differ only in which memory operand of a float add is
+loaded first (`StepAnimationFloatPairTween` mode 17, `ResetStageMesh`, the
+`CullStageObject` eye/center sums). Swapping the source operands almost never
+changes the result. In VC9 RTM's `c2.dll` the binary op is first emitted as two
+loads plus a popping op; the list scheduler (`SchSchedGraph`, which consults
+`LfFPRegsPressure`) orders the two independent loads, x87 stack assignment
+follows (`FpAssignStackLevelAndFxch`), and the `try_fld_fopp_peep` /
+`try_rev_op_peep2` peepholes fold the later load into `fadd mem`. The integer
+commutation in `LoFinalLower` (via `LoFinalTupIsCommutative`) and
+`LfFPCanonicalForm` do not decide memory-operand order. The choice therefore
+depends on the whole block's dependence graph and tie-breaks, which explains
+why it flips between components and when nearby code changes: rewriting
+`CullStageObject`'s sums with D3DX-style member operators made the native
+asymmetric eye.y/eye.z order appear by itself, but flipped center.x.
+Treat these bytes as evidence about surrounding code shape, not about the
+operand spelling.
+
 ## Barriers and volatiles often stand in for value-object code (2026-11-27)
 
 Several earlier fixes forced native store/reload order with
