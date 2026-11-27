@@ -16,6 +16,21 @@ native loads `[edi+0x1c]` and adds `[edi+0xc]`; the candidate loads
 `[edi+0xc]` and adds `[edi+0x1c]`. Both are valid commutative float additions,
 but operand order remains part of strict code-generation matching.
 
+2026-11-27 controls, all in the real frontier context: a D3DX-style member
+`operator+`; `control2 + target` with either operator form; a field-by-field
+operator body; `initial = initial + control2` (drops the native `previous`
+stack copy, 661 bytes); `previous + control2` in the first statement; and
+`Add()` in the second. In every form VC9 loads the right operand first for X
+and the left operand first for Y, so one component is always reversed;
+native loads `control2` first for both. The choice is inside the x87 code
+generator; the next step is a c2.dll trace of the commutative-operand
+selection, not more spellings. `LfFPCanonicalForm` (RVA 0x1F43E0) only
+rewrites binary FP tuples into the ST0 form; the swap itself is more likely in
+a caller of `LoFinalTupIsCommutative` or `TupIsCommutative`. The same rule
+decides the two `ResetStageMesh` add operand orders.
+`.analysis/compiler-vc9/claude-dis-c2.py NAME_PREFIX` disassembles c2.dll
+publics with named call targets.
+
 A controlled VC9 `/Op` build used a separate output directory and did not solve
 the two-byte gap: with the original aggregate operand order it moved the
 mismatch to X, and combining `/Op` with the swapped expression retained the Y
