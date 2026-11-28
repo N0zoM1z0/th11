@@ -876,3 +876,9 @@ ItemManagerUpdateCallback
 ItemManagerDrawCallback
 DrawItemManager
 ConvertItemsToDrops
+BulletData::BulletData
+BulletData::~BulletData
+InitializeBulletManager
+ResetBulletManager
+BulletInf::~BulletInf
+CreateBulletManager

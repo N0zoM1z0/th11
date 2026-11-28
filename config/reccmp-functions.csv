@@ -877,3 +877,9 @@ ItemManagerUpdateCallback,0x00424090,function
 ItemManagerDrawCallback,0x004240D0,function
 DrawItemManager,0x00423F40,function
 ConvertItemsToDrops,0x004240F0,function
+BulletData::BulletData,0x004083D0,function
+BulletData::~BulletData,0x00408410,function
+InitializeBulletManager,0x00408450,function
+ResetBulletManager,0x00408550,function
+BulletInf::~BulletInf,0x004085F0,function
+CreateBulletManager,0x00408710,function
