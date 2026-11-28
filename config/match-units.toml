@@ -12213,7 +12213,7 @@ linkages = [
 [units.secondary-gameplay-music-pause]
 artifact_kind = "linked-pe"
 source = "src/SecondaryGameplayAudio.cpp"
-inputs = ["src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/MusicStream.hpp", "src/SoundDevice.hpp"]
+inputs = ["src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/MusicStream.hpp", "src/SoundDevice.hpp", "src/MainRuntime.hpp"]
 support_sources = ["probes/secondary-gameplay-audio-context.cpp", "src/SoundQueue.cpp", "src/MusicStream.cpp"]
 output_dir = "build/match-linked/SecondaryGameplayAudio"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -12231,7 +12231,7 @@ linkages = [
 [units.secondary-gameplay-music-resume]
 artifact_kind = "linked-pe"
 source = "src/SecondaryGameplayAudio.cpp"
-inputs = ["src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/MusicStream.hpp", "src/SoundDevice.hpp"]
+inputs = ["src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/MusicStream.hpp", "src/SoundDevice.hpp", "src/MainRuntime.hpp"]
 support_sources = ["probes/secondary-gameplay-audio-context.cpp", "src/SoundQueue.cpp", "src/MusicStream.cpp"]
 output_dir = "build/match-linked/SecondaryGameplayAudio"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
@@ -12244,4 +12244,90 @@ linkages = [
   { offset = 6, type = "DIR32", symbol = "??_C@_07OGJCKFMD@UnPause?$AA@", target = 0x00494268 },
   { offset = 11, type = "DIR32", symbol = "?g_SoundManagerQueue@@3USoundManagerQueueView@@A", target = 0x004C3E80 },
   { offset = 16, type = "REL32", symbol = "?EnqueueSoundCommand@@YGXPAUSoundManagerQueueView@@HHPBD@Z", target = 0x0044A9C0 },
+]
+
+# game.cpp scene-effect pause; plain cdecl normal-COFF unit. docs/SECONDARY_GAMEPLAY.md.
+[units.pause-secondary-gameplay-scene-effect]
+artifact_kind = "coff"
+source = "src/SecondaryGameplaySceneEffect.cpp"
+inputs = ["src/SecondaryGameplay.hpp"]
+object = "build/match/SecondaryGameplaySceneEffect.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["PauseSecondaryGameplaySceneEffect"]
+symbol = "?PauseSecondaryGameplaySceneEffect@@YAXXZ"
+target_address = 0x00421070
+size = 35
+relocations = [
+  { offset = 1, type = "DIR32", symbol = "?g_SecondaryGameplayChainsE8C@@3PAUSecondaryGameplayChainsView@@A", target = 0x004A8E8C },
+]
+
+[units.pause-secondary-gameplay-items]
+artifact_kind = "coff"
+source = "src/SecondaryGameplaySceneEffect.cpp"
+inputs = ["src/SecondaryGameplay.hpp"]
+object = "build/match/SecondaryGameplaySceneEffect.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["PauseSecondaryGameplayItems"]
+symbol = "?PauseSecondaryGameplayItems@@YAXXZ"
+target_address = 0x0040BE20
+size = 35
+relocations = [
+  { offset = 1, type = "DIR32", symbol = "?g_SecondaryGameplayChainsD6C@@3PAUSecondaryGameplayChainsView@@A", target = 0x004A8D6C },
+]
+
+[units.pause-secondary-gameplay-boss]
+artifact_kind = "coff"
+source = "src/SecondaryGameplaySceneEffect.cpp"
+inputs = ["src/SecondaryGameplay.hpp"]
+object = "build/match/SecondaryGameplaySceneEffect.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["PauseSecondaryGameplayBoss"]
+symbol = "?PauseSecondaryGameplayBoss@@YAXXZ"
+target_address = 0x0042BD90
+size = 35
+relocations = [
+  { offset = 1, type = "DIR32", symbol = "?g_SecondaryGameplayChainsEB0@@3PAUSecondaryGameplayChainsView@@A", target = 0x004A8EB0 },
+]
+
+[units.reset-secondary-gameplay-audio]
+artifact_kind = "linked-pe"
+source = "src/SecondaryGameplayAudio.cpp"
+inputs = ["src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/MusicStream.hpp", "src/SoundDevice.hpp", "src/MainRuntime.hpp"]
+support_sources = ["probes/secondary-gameplay-audio-context.cpp", "src/SoundQueue.cpp", "src/MusicStream.cpp"]
+output_dir = "build/match-linked/SecondaryGameplayAudio"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryGameplayAudioProbe@20"
+functions = ["ResetSecondaryGameplayAudio"]
+symbol = "?ResetSecondaryGameplayAudio@@YAHXZ"
+target_address = 0x0042A240
+size = 44
+linkages = [
+  { offset = 2, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x200 },
+  { offset = 11, type = "DIR32", symbol = "??_C@_05JLNEMJLN@dummy?$AA@", target = 0x00494D9C },
+  { offset = 16, type = "DIR32", symbol = "?g_SoundManagerQueue@@3USoundManagerQueueView@@A", target = 0x004C3E80 },
+  { offset = 25, type = "REL32", symbol = "?EnqueueSoundCommand@@YGXPAUSoundManagerQueueView@@HHPBD@Z", target = 0x0044A9C0 },
+  { offset = 36, type = "REL32", symbol = "?EnqueueSoundCommand@@YGXPAUSoundManagerQueueView@@HHPBD@Z", target = 0x0044A9C0 },
+]
+
+[units.start-secondary-gameplay-audio]
+artifact_kind = "linked-pe"
+source = "src/SecondaryGameplayAudio.cpp"
+inputs = ["src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/MusicStream.hpp", "src/SoundDevice.hpp", "src/MainRuntime.hpp"]
+support_sources = ["probes/secondary-gameplay-audio-context.cpp", "src/SoundQueue.cpp", "src/MusicStream.cpp"]
+output_dir = "build/match-linked/SecondaryGameplayAudio"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryGameplayAudioProbe@20"
+functions = ["StartSecondaryGameplayAudio"]
+symbol = "?StartSecondaryGameplayAudio@@YGHHH@Z"
+target_address = 0x0042A150
+size = 75
+linkages = [
+  { offset = 2, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x200 },
+  { offset = 15, type = "DIR32", symbol = "??_C@_05JLNEMJLN@dummy?$AA@", target = 0x00494D9C },
+  { offset = 20, type = "DIR32", symbol = "?g_SoundManagerQueue@@3USoundManagerQueueView@@A", target = 0x004C3E80 },
+  { offset = 25, type = "REL32", symbol = "?EnqueueSoundCommand@@YGXPAUSoundManagerQueueView@@HHPBD@Z", target = 0x0044A9C0 },
+  { offset = 37, type = "DIR32", symbol = "??_C@_05JLNEMJLN@dummy?$AA@", target = 0x00494D9C },
+  { offset = 42, type = "DIR32", symbol = "?g_SoundManagerQueue@@3USoundManagerQueueView@@A", target = 0x004C3E80 },
+  { offset = 47, type = "REL32", symbol = "?EnqueueSoundCommand@@YGXPAUSoundManagerQueueView@@HHPBD@Z", target = 0x0044A9C0 },
+  { offset = 53, type = "DIR32", symbol = "?g_SecondaryGameplayStatistics@@3PAEA", target = 0x004A8EBC },
 ]

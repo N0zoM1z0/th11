@@ -147,7 +147,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0040BB50,authored_game,SecondaryGameplay,authored,high,spell-record-checksum-ghidra-20261117
 0x0040BC70,unknown,ConfigurationMenu,indeterminate,unknown,menu-player-data-origin-2026-11-06
 0x0040BD00,authored_game,SecondaryGameplay,authored,high,spell-stage-chains-ghidra-pe-20261117
-0x0040BE20,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0040BE20,authored_game,SecondaryGameplay,authored,high,game-pause-chains-d6c-2026-11-28-origin
 0x0040BE50,authored_game,SecondaryGameplay,authored,high,spell-stage-lifecycle-ghidra-pe-20261117
 0x0040BF90,authored_game,SecondaryGameplay,authored,high,spell-stage-lifecycle-ghidra-pe-20261117
 0x0040C060,unknown,SecondaryGameplay,indeterminate,unknown,spell-stage-lifecycle-ghidra-pe-20261117
@@ -376,7 +376,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00420E50,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00420E90,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00420F90,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00421070,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00421070,authored_game,SecondaryGameplay,authored,high,game-scene-effect-pause-2026-11-28-origin
 0x004210A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00421210,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00421270,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
@@ -482,8 +482,8 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00429CA0,authored_game,Screenshot,authored,high,screenshot-ghidra-review-20261023
 0x00429EB0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042A0D0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0042A150,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0042A240,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0042A150,authored_game,SecondaryGameplay,authored,high,game-audio-start-2026-11-28-origin
+0x0042A240,authored_game,SecondaryGameplay,authored,high,game-audio-reset-2026-11-28-origin
 0x0042A270,unknown,ConfigurationMenu,indeterminate,unknown,menu-practice-stage-origin-2026-11-06
 0x0042A300,authored_game,FrameRuntime,authored,high,frame-loop-origin-review-20261023
 0x0042A500,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
@@ -508,7 +508,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x0042BA80,unknown,PauseMenu,indeterminate,unknown,pause-record-insertion-origin-2026-11-11
 0x0042BBF0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042BC60,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x0042BD90,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x0042BD90,authored_game,SecondaryGameplay,authored,high,game-pause-chains-eb0-2026-11-28-origin
 0x0042BDC0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042BEA0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x0042BF30,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

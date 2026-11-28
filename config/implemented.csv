@@ -859,3 +859,8 @@ LaserInfiniteInf::LaserInfiniteInf
 CreateSecondaryHostObject
 StartSecondaryGameplayExtraAudio
 AdvanceSecondaryGameplayExtraAudio
+PauseSecondaryGameplaySceneEffect
+PauseSecondaryGameplayItems
+PauseSecondaryGameplayBoss
+ResetSecondaryGameplayAudio
+StartSecondaryGameplayAudio

@@ -860,3 +860,8 @@ LaserInfiniteInf::LaserInfiniteInf,0x00424EE0,function
 CreateSecondaryHostObject,0x00424DF0,function
 StartSecondaryGameplayExtraAudio,0x00420BA0,function
 AdvanceSecondaryGameplayExtraAudio,0x00420B80,function
+PauseSecondaryGameplaySceneEffect,0x00421070,function
+PauseSecondaryGameplayItems,0x0040BE20,function
+PauseSecondaryGameplayBoss,0x0042BD90,function
+ResetSecondaryGameplayAudio,0x0042A240,function
+StartSecondaryGameplayAudio,0x0042A150,function

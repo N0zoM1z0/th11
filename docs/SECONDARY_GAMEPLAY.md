@@ -246,3 +246,16 @@ starts its music paused and resumes it at frame 300. Both are exact in
 `src/SecondaryGameplayAudio.cpp` (units `secondary-gameplay-music-pause` and
 `-resume`, with the real `SoundQueue.cpp` in the context). Their old names
 are kept so the declarations in the wide contexts stay unchanged.
+
+Also exact now: `ResetSecondaryGameplayAudio` (0x42A240) and
+`StartSecondaryGameplayAudio` (0x42A150) in the same file. Both test option
+bit 4 of byte `g_MainRuntime + 0x200` and queue command 4 "dummy"; the start
+helper then queues command 2 with the track and sets the heard flag at
+statistics +0x2DDFA + selection. They have callers in many TUs (menus, music
+room, title), so other frontiers can link this file. The three chain pauses
+`PauseSecondaryGameplayItems` (0x40BE20, object 0x4A8D6C),
+`PauseSecondaryGameplaySceneEffect` (0x421070, 0x4A8E8C) and
+`PauseSecondaryGameplayBoss` (0x42BD90, 0x4A8EB0) are exact normal-COFF units
+in `src/SecondaryGameplaySceneEffect.cpp`. They sit in different TUs in the
+target and each repeats the two tests; routing them through one
+`__forceinline` helper moves the ECX load ahead of the EDX constant.

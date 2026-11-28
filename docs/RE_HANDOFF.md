@@ -75,8 +75,8 @@ source change is committed and its affected exact consumers passed cold
 replay. Three earlier exact claims were withdrawn because they fail at HEAD
 (blocker below).
 
-Batch 1, laser.cpp and manager lifetimes (2026-11-28, later session; 39 new
-exact owners, 3 stale claims withdrawn):
+Batch 1, laser.cpp, manager lifetimes and gameplay helpers (2026-11-28, later
+session; 46 new exact owners, 3 stale claims withdrawn):
 
 - **The target names its TUs and classes.** `.rdata` keeps
   `.\src\game\<file>.cpp:<line> <Type>` tags in link order, and RTTI names the
@@ -109,6 +109,12 @@ exact owners, 3 stale claims withdrawn):
   constructor) became exact this way. `CreateStageResource` (0x4029C0) waits
   for the timer-constructor fix (its context is stale); the other hits live in
   support TUs and need their own context.
+- **Gameplay helpers.** Matching `UpdateSecondaryGameplay`'s native call
+  order to its declared-only callees gave seven small exact functions:
+  music pause/resume/reset/start and three chain pauses
+  (`src/SecondaryGameplayAudio.cpp`, `src/SecondaryGameplaySceneEffect.cpp`;
+  SECONDARY_GAMEPLAY.md). The same mapping trick works for any wide owner:
+  list its native calls in order and line them up with the source.
 - **Inline assembly removed.** The exact `AdvanceStageTimer` used a naked asm
   body; `src/StageTimer.cpp` now reproduces it from natural C++.
 - **Tools** (all in `.analysis/`): `claude-dis.py` (target disassembly with
