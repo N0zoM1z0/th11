@@ -5,6 +5,28 @@ SecondaryDialogue.cpp and its portrait/clear fragments. The original class,
 script-file format ownership and TU partition remain unproved. Source presence
 and compiler observations grant no exact credit.
 
+## 2026-11-27: native selection switches
+
+Frontier `run-secondary-dialogue-frontier` compiles `SecondaryDialogue.cpp` as
+the primary TU of the wide gameplay context. Three natural-source changes
+raised raw alignment from 946 to 1,256 and register-normalized alignment from
+1,724 to 1,775 of 1,848:
+
+- All twelve character tests are `switch (g_MeshEffectSelection0)` (native
+  `sub eax, 0; je; sub eax, 1; je`), and the opponent choice is
+  `switch (g_StageVariant)` with a default arm, instead of `if`/`else if`
+  chains.
+- The opponent sprite indices are `arg < 12 ? arg + low : arg + high`; native
+  compares with 12 and forms both values with `lea`.
+- Opcode 10 assigns a one-bit field (`DialogueFlagBits::advanceLocked`); the
+  native `xor`/`and`/`xor` on memory is the bit-field store, not a
+  hand-written mask expression.
+
+Next: the stage-clear statistics block (`SecondaryDialogueClear.inc`) still
+uses byte arithmetic, `goto` and helper casts; native indexes a structured
+record table, increments capped counters in memory, and passes the
+game-state object (`0x4A56E0`) as `this` in EAX to its clear-value member.
+
 ## Complete boundary and physical entry
 
 The initial6794-byte bounding extent omitted its tables. Direct mapped-text-

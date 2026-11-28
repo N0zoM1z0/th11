@@ -18,6 +18,12 @@ __forceinline unsigned int ScriptInput(unsigned int offset)
     return *reinterpret_cast<unsigned int *>(
         reinterpret_cast<unsigned char *>(&g_InputState) + offset);
 }
+// Bit 0 of the dialogue flags is a one-bit field set directly by opcode 10.
+struct DialogueFlagBits
+{
+    unsigned int advanceLocked : 1;
+    unsigned int other : 31;
+};
 __forceinline int Argument(SecondaryDialogueView *self)
 { return *reinterpret_cast<int *>(self->instruction + 1); }
 __forceinline AnimationFileView *PlayerFile()
@@ -176,38 +182,45 @@ int __stdcall RunSecondaryDialogue(SecondaryDialogueView *self)
             self->panel = CreateAnimationVmId(HudFile(0x444c), 0x2d, 0x16).value;
             break;
         case 1:
-            if (g_MeshEffectSelection0 == 0)
-                self->player = CreateAnimationVmId(PlayerFile(), 0x33, 0x16).value;
-            else if (g_MeshEffectSelection0 == 1)
-                self->player = CreateAnimationVmId(PlayerFile(), 0x47, 0x16).value;
+            switch (g_MeshEffectSelection0)
+            {
+            case 0: self->player = CreateAnimationVmId(PlayerFile(), 0x33, 0x16).value; break;
+            case 1: self->player = CreateAnimationVmId(PlayerFile(), 0x47, 0x16).value; break;
+            }
             break;
         case 2:
-            if (g_StageVariant == 5)
+            switch (g_StageVariant)
             {
-                if (g_MeshEffectSelection0 == 0)
-                    self->opponent = CreateAnimationVmId(PlayerFile(), 0x35, 0x16).value;
-                else if (g_MeshEffectSelection0 == 1)
-                    self->opponent = CreateAnimationVmId(PlayerFile(), 0x49, 0x16).value;
-            }
-            else if (g_StageVariant == 6)
-            {
-                if (g_MeshEffectSelection0 == 0)
+            case 5:
+                switch (g_MeshEffectSelection0)
                 {
+                case 0: self->opponent = CreateAnimationVmId(PlayerFile(), 0x35, 0x16).value; break;
+                case 1: self->opponent = CreateAnimationVmId(PlayerFile(), 0x49, 0x16).value; break;
+                }
+                break;
+            case 6:
+                switch (g_MeshEffectSelection0)
+                {
+                case 0:
                     if (self->mode == 2)
                         self->opponent = CreateAnimationVmId(PlayerFile(), 0x35, 0x16).value;
                     else self->opponent = CreateAnimationVmId(PlayerFile(), 0x36, 0x16).value;
-                }
-                else if (g_MeshEffectSelection0 == 1)
-                {
+                    break;
+                case 1:
                     if (self->mode == 2)
                         self->opponent = CreateAnimationVmId(PlayerFile(), 0x49, 0x16).value;
                     else self->opponent = CreateAnimationVmId(PlayerFile(), 0x4a, 0x16).value;
+                    break;
                 }
+                break;
+            default:
+                switch (g_MeshEffectSelection0)
+                {
+                case 0: self->opponent = CreateAnimationVmId(PlayerFile(), 0x34, 0x16).value; break;
+                case 1: self->opponent = CreateAnimationVmId(PlayerFile(), 0x48, 0x16).value; break;
+                }
+                break;
             }
-            else if (g_MeshEffectSelection0 == 0)
-                self->opponent = CreateAnimationVmId(PlayerFile(), 0x34, 0x16).value;
-            else if (g_MeshEffectSelection0 == 1)
-                self->opponent = CreateAnimationVmId(PlayerFile(), 0x48, 0x16).value;
             break;
         case 25:
         {
@@ -308,27 +321,29 @@ int __stdcall RunSecondaryDialogue(SecondaryDialogueView *self)
             break;
         }
         case 10:
-            self->flags ^= (static_cast<int>(*reinterpret_cast<signed char *>(self->instruction + 1)) ^ self->flags) & 1u;
+            reinterpret_cast<DialogueFlagBits &>(self->flags).advanceLocked =
+                *reinterpret_cast<signed char *>(self->instruction + 1);
             break;
         case 13:
         {
-            if (g_MeshEffectSelection0 == 0)
+            switch (g_MeshEffectSelection0)
             {
+            case 0:
                 ChangeSecondaryDialogueSprite(FindSecondaryDialogueChild(&self->player, 0x27),
                     AddInteger(Argument(self), 0x40));
                 ChangeSecondaryDialogueSprite(FindSecondaryDialogueChild(&self->player, 0x2b),
                     AddInteger(Argument(self), 0x48));
                 ChangeSecondaryDialogueSprite(FindSecondaryDialogueChild(&self->player, 0x2f),
                     AddInteger(Argument(self), 0x50));
-            }
-            else if (g_MeshEffectSelection0 == 1)
-            {
+                break;
+            case 1:
                 ChangeSecondaryDialogueSprite(FindSecondaryDialogueChild(&self->player, 0x3b),
                     AddInteger(Argument(self), 0x4d));
                 ChangeSecondaryDialogueSprite(FindSecondaryDialogueChild(&self->player, 0x3f),
                     AddInteger(Argument(self), 0x55));
                 ChangeSecondaryDialogueSprite(FindSecondaryDialogueChild(&self->player, 0x43),
                     AddInteger(Argument(self), 0x5d));
+                break;
             }
             break;
         }

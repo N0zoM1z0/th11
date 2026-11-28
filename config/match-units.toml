@@ -4957,6 +4957,27 @@ size = 7093
 normal_support_sources = ["src/SecondaryGameplayCallbacks.cpp", "src/SecondaryHudCallbacks.cpp", "probes/screen-effect-initialization-context.cpp"]
 linkages = []
 
+
+# Complete 6,980-byte dialogue interpreter in the wide gameplay context.
+[units.run-secondary-dialogue-frontier]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/SecondaryDialogue.cpp"
+inputs = ["src/SecondaryHud.hpp", "src/ChainRegistration.hpp"]
+support_sources = ["probes/secondary-script-push-context.cpp", "src/SecondaryGameplay.cpp", "src/SecondaryActorInstructions.cpp", "src/SecondaryEclDebug.cpp", "src/SecondaryScript.cpp", "src/SecondaryHostArguments.cpp", "src/SecondaryActorCreation.cpp", "src/SecondaryActorLifetime.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorUpdate.cpp", "src/StageLifecycle.cpp", "src/StageTween.cpp", "src/FrameRuntime.cpp", "src/SecondaryGameplayCallbacks.cpp", "src/SecondaryGameplaySupport.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryDialogueAnimation.cpp", "src/StageMesh.cpp", "src/AnimationSpriteBinding.cpp", "src/FormattedTextureText.cpp", "src/SecondaryDamageSupport.cpp", "src/SecondaryPlayerMovement.cpp", "src/MeshEffects.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryActorCounters.cpp", "src/OutlinedTextureText.cpp", "src/TextTextureDispatch.cpp", "src/TextDrawing.cpp", "src/TextProcessing.cpp", "src/ScreenEffectInitialization.cpp", "src/SecondaryHudCallbacks.cpp", "probes/screen-effect-initialization-context.cpp", "src/SecondaryHud.cpp", "src/AnimationExecutionArguments.cpp", "src/AnimationExecutionSupport.cpp", "src/AnimationTween.cpp", "src/SecondaryEmitterAnimation.cpp", "src/Random.cpp", "src/AngleMath.cpp", "src/AnimationFan.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationImmediateDraw.cpp", "src/AnimationVmDraw.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp", "src/SecondaryProjectileCallbacks.cpp", "src/AnimationExecution.cpp", "src/ChainRegistration.cpp"]
+output_dir = "build/match-linked/RunSecondaryDialogueFrontier"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryHudOwnersProbe@12"
+functions = ["RunSecondaryDialogue"]
+symbol = "?RunSecondaryDialogue@@YGHPAUSecondaryDialogueView@@@Z"
+target_address = 0x0041D380
+size = 6980
+normal_support_sources = ["src/SecondaryGameplayCallbacks.cpp", "src/SecondaryHudCallbacks.cpp", "probes/screen-effect-initialization-context.cpp"]
+linkages = []
+
+# Complete 7,093-byte ECL interpreter in the wide gameplay context, plus a
+# dynamic PushSecondaryValue caller (native keeps its DL type parameter).
+
 [units.draw-hud-solid-rectangle]
 artifact_kind = "linked-pe"
 source = "src/SecondaryHudDrawSupport.cpp"
