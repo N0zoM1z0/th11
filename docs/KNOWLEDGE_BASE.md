@@ -128,6 +128,23 @@ often describe the same objects: `g_SecondaryClearManager` (0x4A8E94) is the
 laser manager and `SecondaryClearObjectView` is `LaserDataInf`; see
 [LASER](LASER.md).
 
+## 0x4021A0 is the compiler's vector constructor iterator (2026-11-28)
+
+0x4021A0 (33 bytes; ledger name `ConstructSecondaryPlayerElementArray`) is
+VC9's `vector constructor iterator` (`??_H`) under LTCG: count in EAX,
+array in ECX, constructor in EBX, element size on the stack, calling the
+constructor with ECX = element. Our builds emit the same helper whenever an
+array member has a constructor and no destructor, which is why the withdrawn
+`SecondaryActorStateConstructor` now links as one call to it. It is
+compiler-generated, so its row should eventually move to an excluded
+compiler-generated origin rather than be matched from hand-written source.
+The timer-constructor restore is the real fix for 0x410440.
+
+Measuring that restore: 336 of the 546 exact units (165 contexts or objects)
+include `StageResource.hpp` transitively, so it is a multi-hour replay.
+`claude-replay-affected.py` matches only declared inputs and would miss most
+of them; compute the transitive include set instead.
+
 ## Plain-ABI leaves can still need /GL (2026-11-28)
 
 `PauseSelectionComparisonView::IsDifferent`/`IsSmaller` (0x42F340/0x42F350,
