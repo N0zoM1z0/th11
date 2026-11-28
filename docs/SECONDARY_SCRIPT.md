@@ -62,6 +62,15 @@ Four natural-source corrections, measured in that frontier:
 - Case 81 calls `vector.SetPolar(NormalizeAngle(Read(2)), Read(3))`; VC9's
   right-to-left argument evaluation reads argument 3 first, as native does.
 
+The frontier also links the real `SecondaryAngleMath.cpp`,
+`SecondaryUnaryCosine.cpp` and the new `SecondaryUnarySine.cpp` (0x405FB0),
+so these callees are visible to LTCG instead of being data anchors
+(register-normalized 1,759 -> 1,768). In this wide context both trig wrappers
+lose their eight-byte-aligned frame (21 bytes versus native 31); the cosine
+wrapper is exact only in its own small context. `SecondaryVector2::SetPolar`
+(0x45D890) stays external: native uses `fsincos` with the `this` spill of
+an inline-assembly body.
+
 Raw alignment went from 942 to 1,309 and register-normalized alignment from
 1,673 to 1,759 of 1,834 (7,085 bytes versus 7,093). Remaining: the VM pointer
 is in ESI versus native EDI, case 82 and case 87's identical tails are merged
