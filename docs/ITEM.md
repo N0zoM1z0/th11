@@ -15,7 +15,24 @@ KNOWLEDGE_BASE, "item.cpp needs /EHs, not /EHsc". The manager constructor is
 inlined into the create function: members first (the vector constructor
 iterator), then `memset`, flag 2 and the global publication.
 
-Open: `DeleteItemManager` (0x423530, `delete g_ItemManager`) loads the global
-into EAX and copies it to ESI where native loads ESI directly (frontier). The
-draw callback (0x4240D0) tail-jumps to the draw loop at 0x423F40 with EAX this,
-so it needs that function's source. The update loop is 0x423550 (2,478 bytes).
+`ItemManagerDrawCallback` (0x4240D0) is exact too. The draw loop
+`DrawItemManager` (0x423F40, 336 bytes, after the update loop's switch table)
+is a frontier at 334 bytes / 85 of 89 instructions: it loads
+`g_SecondaryActorFiles` into EAX where native uses EDX before computing the
+sprite argument. Item fields used there: position +0x434, state +0x464, type
++0x46C; the VM's position (+0x3DC), alpha byte (+0x377) and sprite number
+(`marker`, +0x39C). Items above the playfield top (y < 8 after the +16
+offset) are drawn as an arrow at y 24 with alpha `distance / 32 * 255`,
+written as `static_cast<unsigned char>(static_cast<int>(...))`, which VC9
+compiles to an inline truncating `fistp`. Writing the position through a
+`CameraVector &` and the alpha test as `distance >= 32.0f` were needed for the
+native shape.
+
+Context notes: `DrawByMode` needs `AnimationVmRendererOwner.cpp` compiled with
+`/DANIMATION_VM_RENDERER_OWNER_MATCH` (a support profile) and a probe call
+with a generic renderer; otherwise it stays an anchor or LTCG drops its
+renderer argument.
+
+Open: `DeleteItemManager` (0x423530) loads the global into EAX and copies it
+to ESI where native loads ESI directly (frontier). The update loop is
+0x423550 (2,478 bytes).

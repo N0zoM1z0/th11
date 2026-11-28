@@ -1,6 +1,8 @@
 #include "Item.hpp"
 #include "ChainRegistration.hpp"
 #include "GameInf.hpp"
+#include "AnimationImmediateDrawViews.hpp"
+#include "SecondaryActorRuntime.hpp"
 #include "MainRuntime.hpp"
 #include <new>
 #include <string.h>
@@ -80,6 +82,51 @@ int __fastcall ItemManagerUpdateCallback(ItemInf *self)
         if (game->flag10) return 1;
     }
     return UpdateItemManager(self);
+}
+
+// 0x423F40: draw every live item. Items above the playfield top are drawn as
+// an arrow at y 24 whose alpha grows with the distance over 32 units.
+int __stdcall DrawItemManager(ItemInf *self)
+{
+    ItemData *item = self->items;
+    for (int i = 0; i < 0x896; ++i, ++item)
+    {
+        if (!item->state) continue;
+        AnimationVmView *vm = reinterpret_cast<AnimationVmView *>(&item->vm);
+        unsigned char *alpha = reinterpret_cast<unsigned char *>(&vm->color) + 3;
+        CameraVector &position = vm->position;
+        position.x = static_cast<float>(item->position.x + 32.0 + 192.0);
+        position.y = static_cast<float>(item->position.y + 16.0);
+        position.z = item->position.z;
+        if (position.y < 8.0f)
+        {
+            float distance = static_cast<float>(position.y - 8.0);
+            position.y = 24.0f;
+            if (distance >= 32.0f)
+                *alpha = 0xff;
+            else
+                *alpha = static_cast<unsigned char>(static_cast<int>(distance / 32.0 * 255.0));
+            if (vm->marker != item->type + 0x162)
+                vm->BindAnimationSprite(reinterpret_cast<AnimationDocumentView *>(g_SecondaryActorFiles->file),
+                    item->type + 0x161);
+        }
+        else if (vm->marker != item->type + 0x159)
+        {
+            vm->BindAnimationSprite(reinterpret_cast<AnimationDocumentView *>(g_SecondaryActorFiles->file),
+                item->type + 0x158);
+            *alpha = 0xff;
+        }
+        reinterpret_cast<ImmediateVmView *>(vm)->DrawByMode(g_RenderBatch);
+    }
+    return 1;
+}
+
+// 0x4240D0
+int __fastcall ItemManagerDrawCallback(ItemInf *self)
+{
+    GameInf *game = g_Game;
+    if (game && game->flag2) return 1;
+    return DrawItemManager(self);
 }
 
 // 0x423330

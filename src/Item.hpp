@@ -10,9 +10,13 @@
 struct ItemData
 {
     StageEmbeddedVm vm;
-    unsigned char unknown434[0x450 - 0x434];
+    CameraVector position;
+    unsigned char unknown440[0x450 - 0x440];
     StageTimerView timer;
-    unsigned char unknown464[0x478 - 0x464];
+    int state;
+    unsigned int unknown468;
+    int type;
+    unsigned char unknown470[0x478 - 0x470];
 };
 
 struct ItemInf
@@ -31,6 +35,8 @@ struct ItemInf
 
 typedef char ItemDataSize[(sizeof(ItemData) == 0x478) ? 1 : -1];
 typedef char ItemDataTimer[(offsetof(ItemData, timer) == 0x450) ? 1 : -1];
+typedef char ItemDataState[(offsetof(ItemData, state) == 0x464) ? 1 : -1];
+typedef char ItemDataType[(offsetof(ItemData, type) == 0x46c) ? 1 : -1];
 typedef char ItemInfItems[(offsetof(ItemInf, items) == 0x14) ? 1 : -1];
 typedef char ItemInfSize[(sizeof(ItemInf) == 0x265e70) ? 1 : -1];
 
@@ -43,3 +49,4 @@ int __fastcall ItemManagerUpdateCallback(ItemInf *self);
 // 0x423550, the item update loop (not yet reconstructed).
 int __stdcall UpdateItemManager(ItemInf *self);
 int __fastcall ItemManagerDrawCallback(ItemInf *self);
+int __stdcall DrawItemManager(ItemInf *self);
