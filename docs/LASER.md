@@ -120,7 +120,7 @@ laser is at +0x18 (`head.next`). Further fields: +0x450 tail, +0x454 count
 | 0x424A70 | `LaserInf::~LaserInf`: unregister both chain elements, delete every laser after slot 4, clear the global; exact | LTCG EBX this |
 | 0x424B60 | `CreateLaserManager`: new 0x47C, inlined constructor, initialize, delete on failure; exact | cdecl |
 | 0x424BD0 | Unreferenced: destructor then `operator delete`, returns the pointer | LTCG EAX this |
-| 0x424BF0 | Unreferenced: `delete g_LaserManager` | no arguments |
+| 0x424BF0 | `DeleteLaserManager`: `delete g_LaserManager` (no caller); exact | no arguments |
 | 0x424C10 | `LaserInf::Update`: a set clear byte +0x68 deletes the laser one frame later; otherwise Update, then advance timer +0x14; exact | LTCG EDI manager |
 | 0x424D40 | `LaserInf::Draw`: Draw slot of every laser not in state 1; exact | LTCG EAX manager |
 | 0x424D70 | `LaserManagerUpdateCallback`: returns early on `GameInf` flag bits 0, 2 or 10; under bit 1 runs with the time scale set to zero; exact | ECX manager |

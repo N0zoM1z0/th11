@@ -885,3 +885,6 @@ CreateBulletManager
 InitializeHintManager
 FreeHintLists
 HintInf::HintInf
+DeleteBulletManager
+DeleteItemManager
+DeleteLaserManager

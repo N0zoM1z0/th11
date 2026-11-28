@@ -20,6 +20,6 @@ extern "C" int __stdcall LaserManagerProbe(ChainElement *external, int priority,
     result += CreateSecondaryHostObject(request, 0);
     request[1] = priority;
     result += CreateSecondaryHostObject(request, 1);
-    delete g_LaserManager;
+    DeleteLaserManager();
     return result;
 }

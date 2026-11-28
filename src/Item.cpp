@@ -189,5 +189,6 @@ ItemInf *__cdecl CreateItemManager()
 // 0x423530
 void __cdecl DeleteItemManager()
 {
-    delete g_ItemManager;
+    ItemInf *self = g_ItemManager;
+    if (self) delete self;
 }

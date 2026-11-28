@@ -128,6 +128,31 @@ often describe the same objects: `g_SecondaryClearManager` (0x4A8E94) is the
 laser manager and `SecondaryClearObjectView` is `LaserDataInf`; see
 [LASER](LASER.md).
 
+## Manager lifetimes share one template (2026-11-28)
+
+Laser, auxiliary owner, item, bullet and hint managers are all written the
+same way, and new ones can be reconstructed from `src/Laser.cpp`,
+`src/Item.cpp` or `src/Bullet.cpp`:
+
+- Create: `new T` whose constructor runs member constructors, then
+  `memset(this, 0, sizeof(*this))`, sometimes `flags |= 2`, and publishes the
+  global; then `Initialize(self)` and `delete self` on failure.
+- Initialize: optional document load with `AppendLog` on failure, then two
+  chain elements built inline (`flags &= ~1` constructor, callback, extra
+  callbacks cleared, context, `flags = (flags & ~2) | 1`) and registered with
+  the manager's update and draw priorities.
+- Destructor: both elements unregistered under the chain lock (the
+  `EnterCriticalSection`/`LeaveCriticalSection` pair around
+  `UnregisterChainElement`), resource release, global cleared.
+- Delete: `T *self = g_T; if (self) delete self;`, as `DeleteTitleMenu`.
+  `delete g_T;`, `if (g_T) delete g_T;` and a local without the test all
+  load EAX and copy it inside the branch.
+
+Link the real `ChainRegistration.cpp` and `ChainRemove.cpp` (and
+`AnimationDocument.cpp`, `LogBuffer.cpp` and the document load probe when a
+document is loaded) and give the probe generic calls to every shared helper,
+or LTCG specializes their arguments.
+
 ## item.cpp needs /EHs, not /EHsc (2026-11-28)
 
 The item manager destructor (0x423330) has an EH frame and takes `this` on the

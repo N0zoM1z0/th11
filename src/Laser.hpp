@@ -193,6 +193,7 @@ extern LaserInf *g_LaserManager;
 
 int __stdcall InitializeLaserManager(LaserInf *self);
 LaserInf *__cdecl CreateLaserManager();
+void __cdecl DeleteLaserManager();
 int __fastcall LaserManagerUpdateCallback(LaserInf *self);
 int __fastcall LaserManagerDrawCallback(LaserInf *self);
 // 0x424DF0, the laser spawn, under its older ECL name: kind 0 is a line

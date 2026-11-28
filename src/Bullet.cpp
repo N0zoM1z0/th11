@@ -116,5 +116,6 @@ BulletInf *__cdecl CreateBulletManager()
 // 0x408800
 void __cdecl DeleteBulletManager()
 {
-    delete g_BulletManager;
+    BulletInf *self = g_BulletManager;
+    if (self) delete self;
 }

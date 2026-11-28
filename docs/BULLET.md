@@ -16,10 +16,10 @@ draw priority 29), `ResetBulletManager` (0x408550), `BulletInf::~BulletInf`
 (0x4085F0) and `CreateBulletManager` (0x408710). All six matched on the first
 build with the laser/item template.
 
-Open: `DeleteBulletManager` (0x408800) has the same one-instruction gap as
-the item, ascii and laser delete functions: native saves ESI in the prologue
-and loads the global into it, VC9 here loads EAX and copies it inside the
-branch; guarded and local-variable forms give the same result. The update
+`DeleteBulletManager` (0x408800) is exact with the local-and-test delete form
+(KNOWLEDGE_BASE, "Manager lifetimes share one template").
+
+Open: the update
 callback 0x408EC0 overlaps a bogus inventory row at 0x408EDE; the draw
 callback 0x408EF0 draws six layers through 0x408E20 (EAX this, ECX layer).
 Unreferenced copies: the manager constructor 0x408390 and small getters

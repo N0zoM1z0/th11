@@ -290,3 +290,10 @@ LaserInf *__cdecl CreateLaserManager()
     }
     return self;
 }
+
+// 0x424BF0 (no direct caller in the target)
+void __cdecl DeleteLaserManager()
+{
+    LaserInf *self = g_LaserManager;
+    if (self) delete self;
+}

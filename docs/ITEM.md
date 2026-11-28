@@ -43,6 +43,6 @@ table). It is a frontier: `SpawnSecondaryPlayerDrop` and
 context even with generic probe calls; the existing
 `SecondaryControllerDropManager` is this item manager.
 
-Open: `DeleteItemManager` (0x423530) loads the global into EAX and copies it
-to ESI where native loads ESI directly (frontier). The update loop is
-0x423550 (2,478 bytes).
+`DeleteItemManager` (0x423530) is exact with the local-and-test delete form.
+
+Open: the update loop 0x423550 (2,478 bytes).

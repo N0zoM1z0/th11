@@ -886,3 +886,6 @@ CreateBulletManager,0x00408710,function
 InitializeHintManager,0x00420F90,function
 FreeHintLists,0x00421210,function
 HintInf::HintInf,0x00420E90,function
+DeleteBulletManager,0x00408800,function
+DeleteItemManager,0x00423530,function
+DeleteLaserManager,0x00424BF0,function
