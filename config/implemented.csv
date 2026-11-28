@@ -875,3 +875,4 @@ CreateItemManager
 ItemManagerUpdateCallback
 ItemManagerDrawCallback
 DrawItemManager
+ConvertItemsToDrops

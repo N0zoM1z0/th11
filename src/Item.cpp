@@ -3,6 +3,7 @@
 #include "GameInf.hpp"
 #include "AnimationImmediateDrawViews.hpp"
 #include "SecondaryActorRuntime.hpp"
+#include "SecondaryPlayerController.hpp"
 #include "MainRuntime.hpp"
 #include <new>
 #include <string.h>
@@ -119,6 +120,42 @@ int __stdcall DrawItemManager(ItemInf *self)
         reinterpret_cast<ImmediateVmView *>(vm)->DrawByMode(g_RenderBatch);
     }
     return 1;
+}
+
+// 0x4240F0, called from the update loop: every live item of kind 1, 4, 10 or
+// 11 among the first 150 becomes a kind-9 drop moving up (angle -pi/2, speed
+// 2.2) and leaves effect script 0x73.
+int __stdcall ConvertItemsToDrops(ItemInf *self)
+{
+    SecondaryControllerDropManager *drops = reinterpret_cast<SecondaryControllerDropManager *>(self);
+    ItemData *item = self->items;
+    for (int i = 0; i < 0x96; ++i, ++item)
+    {
+        if (!item->state) continue;
+        if (item->kind != 1 && item->kind != 4 && item->kind != 10 && item->kind != 11) continue;
+        item->state = 0;
+        if (item->kind == 1)
+        {
+            SpawnSecondaryPlayerDrop(drops, &item->position, 9, 0xffffffff, -1.5707964f, 2.2f);
+            g_SecondaryActorFiles->file->CreatePositionedVmId(&item->position, 0x73, 0x16);
+        }
+        else if (item->kind == 4)
+        {
+            SpawnSecondaryPlayerDrop(drops, &item->position, 9, 0xffffffff, -1.5707964f, 2.2f);
+            g_SecondaryActorFiles->file->CreatePositionedVmId(&item->position, 0x73, 0x16);
+        }
+        else if (item->kind == 10)
+        {
+            SpawnSecondaryPlayerDrop(drops, &item->position, 9, 0xffffffff, -1.5707964f, 2.2f);
+            g_SecondaryActorFiles->file->CreatePositionedVmId(&item->position, 0x73, 0x16);
+        }
+        else if (item->kind == 11)
+        {
+            SpawnSecondaryPlayerDrop(drops, &item->position, 9, 0xffffffff, -1.5707964f, 2.2f);
+            g_SecondaryActorFiles->file->CreatePositionedVmId(&item->position, 0x73, 0x16);
+        }
+    }
+    return 0;
 }
 
 // 0x4240D0

@@ -876,3 +876,4 @@ CreateItemManager,0x00423440,function
 ItemManagerUpdateCallback,0x00424090,function
 ItemManagerDrawCallback,0x004240D0,function
 DrawItemManager,0x00423F40,function
+ConvertItemsToDrops,0x004240F0,function

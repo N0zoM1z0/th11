@@ -14,7 +14,7 @@ struct ItemData
     unsigned char unknown440[0x450 - 0x440];
     StageTimerView timer;
     int state;
-    unsigned int unknown468;
+    int kind;
     int type;
     unsigned char unknown470[0x478 - 0x470];
 };
@@ -50,3 +50,4 @@ int __fastcall ItemManagerUpdateCallback(ItemInf *self);
 int __stdcall UpdateItemManager(ItemInf *self);
 int __fastcall ItemManagerDrawCallback(ItemInf *self);
 int __stdcall DrawItemManager(ItemInf *self);
+int __stdcall ConvertItemsToDrops(ItemInf *self);

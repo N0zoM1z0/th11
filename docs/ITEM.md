@@ -33,6 +33,16 @@ Context notes: `DrawByMode` needs `AnimationVmRendererOwner.cpp` compiled with
 with a generic renderer; otherwise it stays an anchor or LTCG drops its
 renderer argument.
 
+`ConvertItemsToDrops` (0x4240F0, EBX manager) turns the first 150 live items
+of kind (+0x468) 1, 4, 10 or 11 into kind-9 drops moving up (angle -pi/2,
+speed 2.2) and plays effect script 0x73 at each. Native keeps four separate
+result temporaries for `CreatePositionedVmId`, so the source is an if/else
+chain with four identical bodies, not a switch (a switch becomes a jump
+table). It is a frontier: `SpawnSecondaryPlayerDrop` and
+`CreatePositionedVmId` do not get their native private conventions in this
+context even with generic probe calls; the existing
+`SecondaryControllerDropManager` is this item manager.
+
 Open: `DeleteItemManager` (0x423530) loads the global into EAX and copies it
 to ESI where native loads ESI directly (frontier). The update loop is
 0x423550 (2,478 bytes).

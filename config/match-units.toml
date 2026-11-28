@@ -12493,11 +12493,11 @@ linkages = []
 artifact_kind = "linked-pe"
 source = "src/Item.cpp"
 inputs = []
-support_sources = ["probes/item-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageLifecycle.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmRendererOwner.cpp"]
+support_sources = ["probes/item-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageLifecycle.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmRendererOwner.cpp", "src/SecondaryPlayerDrop.cpp", "src/MeshEffects.cpp"]
 output_dir = "build/match-linked/ItemManager"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHs", "/GL"]
 support_profiles = { "src/AnimationVmRendererOwner.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL", "/DANIMATION_VM_RENDERER_OWNER_MATCH"] }
-entry = "ItemManagerProbe@16"
+entry = "ItemManagerProbe@40"
 functions = ["ItemData::ItemData"]
 symbol = "??0ItemData@@QAE@XZ"
 target_address = 0x00423220
@@ -12510,11 +12510,11 @@ linkages = [
 artifact_kind = "linked-pe"
 source = "src/Item.cpp"
 inputs = []
-support_sources = ["probes/item-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageLifecycle.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmRendererOwner.cpp"]
+support_sources = ["probes/item-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageLifecycle.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmRendererOwner.cpp", "src/SecondaryPlayerDrop.cpp", "src/MeshEffects.cpp"]
 output_dir = "build/match-linked/ItemManager"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHs", "/GL"]
 support_profiles = { "src/AnimationVmRendererOwner.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL", "/DANIMATION_VM_RENDERER_OWNER_MATCH"] }
-entry = "ItemManagerProbe@16"
+entry = "ItemManagerProbe@40"
 functions = ["ItemData::~ItemData"]
 symbol = "??1ItemData@@QAE@XZ"
 target_address = 0x00423240
@@ -12527,11 +12527,11 @@ linkages = [
 artifact_kind = "linked-pe"
 source = "src/Item.cpp"
 inputs = []
-support_sources = ["probes/item-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageLifecycle.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmRendererOwner.cpp"]
+support_sources = ["probes/item-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageLifecycle.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmRendererOwner.cpp", "src/SecondaryPlayerDrop.cpp", "src/MeshEffects.cpp"]
 output_dir = "build/match-linked/ItemManager"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHs", "/GL"]
 support_profiles = { "src/AnimationVmRendererOwner.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL", "/DANIMATION_VM_RENDERER_OWNER_MATCH"] }
-entry = "ItemManagerProbe@16"
+entry = "ItemManagerProbe@40"
 functions = ["InitializeItemManager"]
 symbol = "?InitializeItemManager@@YGHPAUItemInf@@@Z"
 target_address = 0x00423270
@@ -12549,11 +12549,11 @@ linkages = [
 artifact_kind = "linked-pe"
 source = "src/Item.cpp"
 inputs = []
-support_sources = ["probes/item-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageLifecycle.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmRendererOwner.cpp"]
+support_sources = ["probes/item-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageLifecycle.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmRendererOwner.cpp", "src/SecondaryPlayerDrop.cpp", "src/MeshEffects.cpp"]
 output_dir = "build/match-linked/ItemManager"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHs", "/GL"]
 support_profiles = { "src/AnimationVmRendererOwner.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL", "/DANIMATION_VM_RENDERER_OWNER_MATCH"] }
-entry = "ItemManagerProbe@16"
+entry = "ItemManagerProbe@40"
 functions = ["ItemInf::~ItemInf"]
 symbol = "??1ItemInf@@QAE@XZ"
 target_address = 0x00423330
@@ -12589,11 +12589,11 @@ linkages = [
 artifact_kind = "linked-pe"
 source = "src/Item.cpp"
 inputs = []
-support_sources = ["probes/item-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageLifecycle.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmRendererOwner.cpp"]
+support_sources = ["probes/item-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageLifecycle.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmRendererOwner.cpp", "src/SecondaryPlayerDrop.cpp", "src/MeshEffects.cpp"]
 output_dir = "build/match-linked/ItemManager"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHs", "/GL"]
 support_profiles = { "src/AnimationVmRendererOwner.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL", "/DANIMATION_VM_RENDERER_OWNER_MATCH"] }
-entry = "ItemManagerProbe@16"
+entry = "ItemManagerProbe@40"
 functions = ["CreateItemManager"]
 symbol = "?CreateItemManager@@YAPAUItemInf@@XZ"
 target_address = 0x00423440
@@ -12617,11 +12617,11 @@ frontier = true
 artifact_kind = "linked-pe"
 source = "src/Item.cpp"
 inputs = []
-support_sources = ["probes/item-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageLifecycle.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmRendererOwner.cpp"]
+support_sources = ["probes/item-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageLifecycle.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmRendererOwner.cpp", "src/SecondaryPlayerDrop.cpp", "src/MeshEffects.cpp"]
 output_dir = "build/match-linked/ItemManager"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHs", "/GL"]
 support_profiles = { "src/AnimationVmRendererOwner.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL", "/DANIMATION_VM_RENDERER_OWNER_MATCH"] }
-entry = "ItemManagerProbe@16"
+entry = "ItemManagerProbe@40"
 functions = ["DeleteItemManager"]
 symbol = "?DeleteItemManager@@YAXXZ"
 target_address = 0x00423530
@@ -12632,11 +12632,11 @@ linkages = []
 artifact_kind = "linked-pe"
 source = "src/Item.cpp"
 inputs = []
-support_sources = ["probes/item-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageLifecycle.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmRendererOwner.cpp"]
+support_sources = ["probes/item-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageLifecycle.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmRendererOwner.cpp", "src/SecondaryPlayerDrop.cpp", "src/MeshEffects.cpp"]
 output_dir = "build/match-linked/ItemManager"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHs", "/GL"]
 support_profiles = { "src/AnimationVmRendererOwner.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL", "/DANIMATION_VM_RENDERER_OWNER_MATCH"] }
-entry = "ItemManagerProbe@16"
+entry = "ItemManagerProbe@40"
 functions = ["ItemManagerUpdateCallback"]
 symbol = "?ItemManagerUpdateCallback@@YIHPAUItemInf@@@Z"
 target_address = 0x00424090
@@ -12651,11 +12651,11 @@ frontier = true # 334 vs 336: loads g_SecondaryActorFiles into EAX, native EDX
 artifact_kind = "linked-pe"
 source = "src/Item.cpp"
 inputs = []
-support_sources = ["probes/item-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageLifecycle.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmRendererOwner.cpp"]
+support_sources = ["probes/item-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageLifecycle.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmRendererOwner.cpp", "src/SecondaryPlayerDrop.cpp", "src/MeshEffects.cpp"]
 output_dir = "build/match-linked/ItemManager"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHs", "/GL"]
 support_profiles = { "src/AnimationVmRendererOwner.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL", "/DANIMATION_VM_RENDERER_OWNER_MATCH"] }
-entry = "ItemManagerProbe@16"
+entry = "ItemManagerProbe@40"
 functions = ["DrawItemManager"]
 symbol = "?DrawItemManager@@YGHPAUItemInf@@@Z"
 target_address = 0x00423F40
@@ -12666,11 +12666,11 @@ linkages = []
 artifact_kind = "linked-pe"
 source = "src/Item.cpp"
 inputs = []
-support_sources = ["probes/item-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageLifecycle.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmRendererOwner.cpp"]
+support_sources = ["probes/item-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageLifecycle.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmRendererOwner.cpp", "src/SecondaryPlayerDrop.cpp", "src/MeshEffects.cpp"]
 output_dir = "build/match-linked/ItemManager"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHs", "/GL"]
 support_profiles = { "src/AnimationVmRendererOwner.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL", "/DANIMATION_VM_RENDERER_OWNER_MATCH"] }
-entry = "ItemManagerProbe@16"
+entry = "ItemManagerProbe@40"
 functions = ["ItemManagerDrawCallback"]
 symbol = "?ItemManagerDrawCallback@@YIHPAUItemInf@@@Z"
 target_address = 0x004240D0
@@ -12679,3 +12679,19 @@ linkages = [
   { offset = 2, type = "DIR32", symbol = "?g_Game@@3PAUGameInf@@A", target = 0x004A8E88 },
   { offset = 25, type = "REL32", symbol = "?DrawItemManager@@YGHPAUItemInf@@@Z", target = 0x00423F40 },
 ]
+
+[units.convert-items-to-drops]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/Item.cpp"
+inputs = []
+support_sources = ["probes/item-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageLifecycle.cpp", "src/AnimationSpriteBinding.cpp", "src/AnimationVmRendererOwner.cpp", "src/SecondaryPlayerDrop.cpp", "src/MeshEffects.cpp"]
+output_dir = "build/match-linked/ItemManager"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHs", "/GL"]
+support_profiles = { "src/AnimationVmRendererOwner.cpp" = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL", "/DANIMATION_VM_RENDERER_OWNER_MATCH"] }
+entry = "ItemManagerProbe@40"
+functions = ["ConvertItemsToDrops"]
+symbol = "?ConvertItemsToDrops@@YGHPAUItemInf@@@Z"
+target_address = 0x004240F0
+size = 308
+linkages = []
