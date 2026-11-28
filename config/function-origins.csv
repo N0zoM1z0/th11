@@ -374,11 +374,11 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00420BA0,authored_game,SecondaryGameplay,authored,high,game-music-pause-2026-11-28-origin
 0x00420D80,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00420E50,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00420E90,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00420F90,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00420E90,authored_game,Hint,authored,high,hint-constructor-origin-2026-11-28
+0x00420F90,authored_game,Hint,authored,high,initialize-hint-manager-2026-11-28-origin
 0x00421070,authored_game,SecondaryGameplay,authored,high,game-scene-effect-pause-2026-11-28-origin
 0x004210A0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00421210,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00421210,authored_game,Hint,authored,high,free-hint-lists-2026-11-28-origin
 0x00421270,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00421300,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00421860,unknown,,review,unknown,ghidra-12.1.3-initial-inventory

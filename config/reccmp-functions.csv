@@ -883,3 +883,6 @@ InitializeBulletManager,0x00408450,function
 ResetBulletManager,0x00408550,function
 BulletInf::~BulletInf,0x004085F0,function
 CreateBulletManager,0x00408710,function
+InitializeHintManager,0x00420F90,function
+FreeHintLists,0x00421210,function
+HintInf::HintInf,0x00420E90,function

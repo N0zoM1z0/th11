@@ -882,3 +882,6 @@ InitializeBulletManager
 ResetBulletManager
 BulletInf::~BulletInf
 CreateBulletManager
+InitializeHintManager
+FreeHintLists
+HintInf::HintInf
