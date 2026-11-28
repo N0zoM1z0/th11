@@ -84,6 +84,50 @@ transfer. TH09 traced `c2.dll` in a debugger to explain ties; for TH11's
 LTCG, code generation runs in the linker-loaded `c2.dll`, which would need a
 separate investigation.
 
+## The target names its source files and classes (2026-11-28)
+
+**Source-file markers give the TU link order.** `.rdata` keeps 110 strings of
+the form `.\src\game\laser.cpp:115 LaserInf` (allocation/assert tags whose
+code use compiled away). No code references them, but each stays in its own
+TU's `.rdata` contribution, so their order is the link order: `game/` files
+alphabetically (ascii, background, bomb, bomb_ma, bomb_rc, bullet, card,
+eclview, effect, ending, enemy, fps, front, game, hint, item, laser, loading,
+mother, pause, player, replay, score, smollscore, spttest, title), then
+`pack/` (_ArcMngr, File, LzssUtil, ResFile), `core/` (main, screen, sound,
+sprtanim, sprtfunc, sprtlib, zunlib, zwave) and `script/` (sptcmd, sptlib).
+Files without tags (stage, ecl, ...) are absent from this list. The marker
+spans run 0x4938A0..0x497E48; the pooled `__real@` float constants start at
+0x497E48 and the CRT data follows near 0x498500.
+
+`.text` follows the same order. Attributing each function's direct `.rdata`
+operands to the marker spans gives a mostly monotone partition: ascii from
+0x401000, card around 0x40C4A0, eclview 0x40D600, enemy 0x40FF10..0x418460,
+fps 0x419EA0, game 0x420390, hint 0x421BD0, laser 0x424830, loading
+0x4294B0, mother 0x429650, pause 0x42BFE0, replay 0x436330, title around
+0x43AAD0, then pack 0x4415C0.., core main 0x445510, sound 0x449140,
+sprtlib 0x454360, zunlib 0x4571A0, zwave 0x45A450. Span edges are approximate:
+a TU's other string literals can precede its marker (`bullet.anm` at 0x493ABC
+lies between the bomb_rc and bullet markers and is used by bullet, laser and
+stage code), and pooled literals sit with the first TU that defines them.
+Single-function outliers usually reference another TU's data, so treat one
+vote as weak and a run as strong. This is TU evidence for grouping new source files, not an
+exact claim; the reconstruction's own file split predates it.
+Tools: `.analysis/claude-srcfile-map.py` (string list),
+`.analysis/claude-tu-partition.py [--functions]`; outputs in
+`.analysis/claude-tu-partition*.txt` and `claude-srcfile-strings.txt`.
+
+**RTTI is present for virtual classes.** `.analysis/claude-rtti.py --slots`
+lists every complete object locator with its vtable and slots
+(`.analysis/claude-rtti.txt`). Game classes: `AsciiInf` and `TitleInf`
+(both derive from `TaskInf`), `SptResourceInf`, `SptInf`, `EnemyInf : SptInf`,
+`EclResourceInf : SptResourceInf`, `LaserDataInf` with `LaserLineInf` and
+`LaserInfiniteInf`, `Pbg::IFile`, `Pbg::File`, `Pbg::MemFile`,
+`Pbg::ResFile`, `ThreadInf`, `D3DThreadInf`, `CSound` and
+`CStreamingSound`. Use these names for new source. Existing "Secondary*" views
+often describe the same objects: `g_SecondaryClearManager` (0x4A8E94) is the
+laser manager and `SecondaryClearObjectView` is `LaserDataInf`; see
+[LASER](LASER.md).
+
 ## Memory xor/and/xor stores mean bit fields (2026-11-28)
 
 The memory `xor/and/xor` store (and `shl 31; and 0x7fffffff; or` for the top

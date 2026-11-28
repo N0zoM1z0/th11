@@ -16,7 +16,7 @@ first, so that the framework is broadly in place (sources, types, contexts and
 callees). Then come back to the large owners. Do not start with the
 interpreters or menu pages listed further down.
 
-**Where the game stands** (`config/functions.csv`; 900 library rows excluded):
+**Where the game stood when the roadmap was set** (`config/functions.csv`; 900 library rows excluded; current totals in PROGRESS):
 
 | State | Functions | Bytes | Share of bytes |
 | --- | ---: | ---: | ---: |
@@ -70,12 +70,27 @@ and does not block batches 1-3.
 
 ## State at handoff (2026-11-28)
 
-The canonical ledger has **497 exact owners** (`config/matches.csv`; generated
-totals in [PROGRESS](PROGRESS.md)). The working tree is clean apart from this
-handoff; every source change is committed and its affected exact consumers
-passed cold replay, except for the two stale rows in the blocker below.
+Generated totals are in [PROGRESS](PROGRESS.md) (`config/matches.csv`). Every
+source change is committed and its affected exact consumers passed cold
+replay, except for the two stale rows in the blocker below.
 
-Work of 2026-11-28 (no new exact owners):
+Batch 1, laser.cpp (2026-11-28, later session):
+
+- **The target names its TUs and classes.** `.rdata` keeps
+  `.\src\game\<file>.cpp:<line> <Type>` tags in link order, and RTTI names the
+  virtual classes. `.text` follows the same alphabetical file order, which
+  gives a TU partition for grouping new source (KNOWLEDGE_BASE, "The target
+  names its source files and classes"; `.analysis/claude-tu-partition.py`,
+  `claude-rtti.py`). Name new classes after RTTI.
+- **Laser TU started.** `src/Laser.{hpp,cpp}` models `LaserDataInf` and its two
+  derived classes. All 20 base slots and both derived slot-4 overrides are
+  canonical exact normal-COFF units (`laser-*`, 22 functions). The manager
+  (`g_SecondaryClearManager`) and its constructors/spawn are mapped in
+  [LASER](LASER.md); they need small linked units for their LTCG registers.
+  Next in this TU: the manager functions 0x424830..0x424FB0, then the
+  derived slot bodies.
+
+Earlier work of 2026-11-28 (no new exact owners):
 
 - **Switch body order.** VC9 RTM lays switch case bodies out in lexical order.
   `ExecuteSecondaryActorInstruction` was written almost in opcode order while

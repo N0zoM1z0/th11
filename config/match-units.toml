@@ -11577,3 +11577,270 @@ support_profiles = { "src/AnimationExecution.cpp" = ["/TP", "/O2", "/Oy-", "/Ob2
 linkages = [
   { offset = 316, type = "DIR32", symbol = "__real@3f70000000000000", target = 0x00497F50 },
 ]
+
+# laser.cpp virtual slots named from target RTTI (LaserDataInf, LaserLineInf,
+# LaserInfiniteInf). Plain __thiscall normal-COFF units sharing one object;
+# the only references are the three vtables. docs/LASER.md.
+[units.laser-data-unknown00]
+artifact_kind = "coff"
+source = "src/Laser.cpp"
+inputs = ["src/Laser.hpp", "src/Camera.hpp"]
+object = "build/match/Laser.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["LaserDataInf::Unknown00"]
+symbol = "?Unknown00@LaserDataInf@@UAEXXZ"
+target_address = 0x004246E0
+size = 1
+relocations = []
+
+[units.laser-data-initialize]
+artifact_kind = "coff"
+source = "src/Laser.cpp"
+inputs = ["src/Laser.hpp", "src/Camera.hpp"]
+object = "build/match/Laser.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["LaserDataInf::Initialize"]
+symbol = "?Initialize@LaserDataInf@@UAEHPAX@Z"
+target_address = 0x004246F0
+size = 5
+relocations = []
+
+[units.laser-data-update]
+artifact_kind = "coff"
+source = "src/Laser.cpp"
+inputs = ["src/Laser.hpp", "src/Camera.hpp"]
+object = "build/match/Laser.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["LaserDataInf::Update"]
+symbol = "?Update@LaserDataInf@@UAEHXZ"
+target_address = 0x00424700
+size = 3
+relocations = []
+
+[units.laser-data-draw]
+artifact_kind = "coff"
+source = "src/Laser.cpp"
+inputs = ["src/Laser.hpp", "src/Camera.hpp"]
+object = "build/match/Laser.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["LaserDataInf::Draw"]
+symbol = "?Draw@LaserDataInf@@UAEHXZ"
+target_address = 0x00424710
+size = 3
+relocations = []
+
+[units.laser-data-unknown10]
+artifact_kind = "coff"
+source = "src/Laser.cpp"
+inputs = ["src/Laser.hpp", "src/Camera.hpp"]
+object = "build/match/Laser.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["LaserDataInf::Unknown10"]
+symbol = "?Unknown10@LaserDataInf@@UAEHXZ"
+target_address = 0x00424720
+size = 25
+relocations = []
+
+[units.laser-data-clearinradius]
+artifact_kind = "coff"
+source = "src/Laser.cpp"
+inputs = ["src/Laser.hpp", "src/Camera.hpp"]
+object = "build/match/Laser.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["LaserDataInf::ClearInRadius"]
+symbol = "?ClearInRadius@LaserDataInf@@UAEHPBUCameraVector@@MHH@Z"
+target_address = 0x00424740
+size = 5
+relocations = []
+
+[units.laser-data-unknown18]
+artifact_kind = "coff"
+source = "src/Laser.cpp"
+inputs = ["src/Laser.hpp", "src/Camera.hpp"]
+object = "build/match/Laser.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["LaserDataInf::Unknown18"]
+symbol = "?Unknown18@LaserDataInf@@UAEHHHHH@Z"
+target_address = 0x00424750
+size = 5
+relocations = []
+
+[units.laser-data-unknown20]
+artifact_kind = "coff"
+source = "src/Laser.cpp"
+inputs = ["src/Laser.hpp", "src/Camera.hpp"]
+object = "build/match/Laser.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["LaserDataInf::Unknown20"]
+symbol = "?Unknown20@LaserDataInf@@UAEHHHHH@Z"
+target_address = 0x00424760
+size = 5
+relocations = []
+
+[units.laser-data-clear]
+artifact_kind = "coff"
+source = "src/Laser.cpp"
+inputs = ["src/Laser.hpp", "src/Camera.hpp"]
+object = "build/match/Laser.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["LaserDataInf::Clear"]
+symbol = "?Clear@LaserDataInf@@UAEHHH@Z"
+target_address = 0x00424770
+size = 5
+relocations = []
+
+[units.laser-data-unknown24]
+artifact_kind = "coff"
+source = "src/Laser.cpp"
+inputs = ["src/Laser.hpp", "src/Camera.hpp"]
+object = "build/match/Laser.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["LaserDataInf::Unknown24"]
+symbol = "?Unknown24@LaserDataInf@@UAEHHH@Z"
+target_address = 0x00424780
+size = 5
+relocations = []
+
+[units.laser-data-unknown28]
+artifact_kind = "coff"
+source = "src/Laser.cpp"
+inputs = ["src/Laser.hpp", "src/Camera.hpp"]
+object = "build/match/Laser.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["LaserDataInf::Unknown28"]
+symbol = "?Unknown28@LaserDataInf@@UAEXXZ"
+target_address = 0x00424790
+size = 1
+relocations = []
+
+[units.laser-data-unknown2c]
+artifact_kind = "coff"
+source = "src/Laser.cpp"
+inputs = ["src/Laser.hpp", "src/Camera.hpp"]
+object = "build/match/Laser.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["LaserDataInf::Unknown2c"]
+symbol = "?Unknown2c@LaserDataInf@@UAEXXZ"
+target_address = 0x004247A0
+size = 1
+relocations = []
+
+[units.laser-data-unknown30]
+artifact_kind = "coff"
+source = "src/Laser.cpp"
+inputs = ["src/Laser.hpp", "src/Camera.hpp"]
+object = "build/match/Laser.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["LaserDataInf::Unknown30"]
+symbol = "?Unknown30@LaserDataInf@@UAEXXZ"
+target_address = 0x004247B0
+size = 1
+relocations = []
+
+[units.laser-data-unknown34]
+artifact_kind = "coff"
+source = "src/Laser.cpp"
+inputs = ["src/Laser.hpp", "src/Camera.hpp"]
+object = "build/match/Laser.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["LaserDataInf::Unknown34"]
+symbol = "?Unknown34@LaserDataInf@@UAEXXZ"
+target_address = 0x004247C0
+size = 1
+relocations = []
+
+[units.laser-data-unknown38]
+artifact_kind = "coff"
+source = "src/Laser.cpp"
+inputs = ["src/Laser.hpp", "src/Camera.hpp"]
+object = "build/match/Laser.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["LaserDataInf::Unknown38"]
+symbol = "?Unknown38@LaserDataInf@@UAEXXZ"
+target_address = 0x004247D0
+size = 1
+relocations = []
+
+[units.laser-data-unknown3c]
+artifact_kind = "coff"
+source = "src/Laser.cpp"
+inputs = ["src/Laser.hpp", "src/Camera.hpp"]
+object = "build/match/Laser.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["LaserDataInf::Unknown3c"]
+symbol = "?Unknown3c@LaserDataInf@@UAEXXZ"
+target_address = 0x004247E0
+size = 1
+relocations = []
+
+[units.laser-data-unknown40]
+artifact_kind = "coff"
+source = "src/Laser.cpp"
+inputs = ["src/Laser.hpp", "src/Camera.hpp"]
+object = "build/match/Laser.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["LaserDataInf::Unknown40"]
+symbol = "?Unknown40@LaserDataInf@@UAEXXZ"
+target_address = 0x004247F0
+size = 1
+relocations = []
+
+[units.laser-data-unknown44]
+artifact_kind = "coff"
+source = "src/Laser.cpp"
+inputs = ["src/Laser.hpp", "src/Camera.hpp"]
+object = "build/match/Laser.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["LaserDataInf::Unknown44"]
+symbol = "?Unknown44@LaserDataInf@@UAEXXZ"
+target_address = 0x00424800
+size = 1
+relocations = []
+
+[units.laser-data-unknown48]
+artifact_kind = "coff"
+source = "src/Laser.cpp"
+inputs = ["src/Laser.hpp", "src/Camera.hpp"]
+object = "build/match/Laser.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["LaserDataInf::Unknown48"]
+symbol = "?Unknown48@LaserDataInf@@UAEXXZ"
+target_address = 0x00424810
+size = 1
+relocations = []
+
+[units.laser-data-unknown4c]
+artifact_kind = "coff"
+source = "src/Laser.cpp"
+inputs = ["src/Laser.hpp", "src/Camera.hpp"]
+object = "build/match/Laser.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["LaserDataInf::Unknown4c"]
+symbol = "?Unknown4c@LaserDataInf@@UAEXXZ"
+target_address = 0x00424820
+size = 1
+relocations = []
+
+[units.laser-line-unknown10]
+artifact_kind = "coff"
+source = "src/Laser.cpp"
+inputs = ["src/Laser.hpp", "src/Camera.hpp"]
+object = "build/match/Laser.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["LaserLineInf::Unknown10"]
+symbol = "?Unknown10@LaserLineInf@@UAEHXZ"
+target_address = 0x00426220
+size = 3
+relocations = []
+
+[units.laser-infinite-unknown10]
+artifact_kind = "coff"
+source = "src/Laser.cpp"
+inputs = ["src/Laser.hpp", "src/Camera.hpp"]
+object = "build/match/Laser.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["LaserInfiniteInf::Unknown10"]
+symbol = "?Unknown10@LaserInfiniteInf@@UAEHXZ"
+target_address = 0x00427720
+size = 3
+relocations = []
