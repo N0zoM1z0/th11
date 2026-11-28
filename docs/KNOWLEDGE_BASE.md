@@ -128,6 +128,24 @@ often describe the same objects: `g_SecondaryClearManager` (0x4A8E94) is the
 laser manager and `SecondaryClearObjectView` is `LaserDataInf`; see
 [LASER](LASER.md).
 
+## The FSINCOS polar helpers are ZUN inline assembly (2026-11-28)
+
+0x424670 (`SecondaryDropPolarVector::SetPolar`) and 0x4197B0 (the ECL
+`SecondaryHostPolarVector` target) are byte-identical 30-byte bodies:
+`push ecx; mov [esp], ecx; mov eax, [esp]; fld angle; fsincos; fmul r;
+fstp [eax]; fmul r; fstp [eax+4]; pop ecx; ret 8`. The store and reload of
+ECX is what VC9 emits for `mov eax, this` inside an `__asm` block, and TH10's
+reconstruction has exactly that asm for the same helper. Natural C++ with the
+`sin`/`cos` intrinsics cannot produce it, and project rules exclude inline
+assembly, so treat these copies as permanently non-exact rather than tuning
+them. The byte pattern `51 89 0c 24 8b 04 24 d9 44 24 08 d9 fb` occurs ten times:
+0x40B9D0, 0x4197B0, 0x419BB0, 0x424670, 0x4288B0, 0x433CD0, 0x44EF80,
+0x4526A0, 0x459AA0 and 0x45D890. Same-named COMDATs would have been merged
+into one, so the helper must be a `static` function in a shared header, and
+each copy marks one TU that uses it. That makes the copies TU boundary
+evidence: 0x4288B0, for example, is the laser.cpp copy that the
+`LaserLineInf` slots call.
+
 ## `(x | x >> n) & 1` is a bitwise OR of one-bit members (2026-11-28)
 
 The laser update callback (0x424D70) tests two flags of the `GameInf` word as
