@@ -84,6 +84,19 @@ transfer. TH09 traced `c2.dll` in a debugger to explain ties; for TH11's
 LTCG, code generation runs in the linker-loaded `c2.dll`, which would need a
 separate investigation.
 
+## Compare switch body order before anything else (2026-11-27)
+
+VC9 RTM lays switch case bodies out in lexical order, so a source whose cases
+are sorted by number collapses whole-function alignment when the original was
+not. `ExecuteSecondaryActorInstruction` went from 1,184 to 3,350 of 4,003
+register-normalized instructions by reordering its 135 bodies alone.
+`.analysis/claude-case-order.py BUILD SYMBOL ADDR CODE_SIZE` decodes both jump
+tables (with or without a byte index table) and prints the body order;
+`.analysis/claude-case-cmp.sh` reports how many positions agree. Exception
+seen in `ExecuteAnimationVm`: a body that returns from inside the interpreter
+loop (`case -1/1/2`) is in lexical position in native but placed after all
+other cases by our build.
+
 ## Address-exposed game state changes /GL alias decisions (2026-11-27)
 
 Native 0x4A56E0..0x4A576F is one 0x90-byte global object: its constructor at
