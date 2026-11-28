@@ -9,6 +9,65 @@ LTCG owners and use natural C/C++ only: no inline assembly, padding, byte stubs
 or cropped extents. Use the repository shell, `scripts/repo-python` and direct
 Ghidra through `scripts/ghidra.py`.
 
+## Roadmap from 2026-11-28: breadth first, large owners later
+
+The operator changed the plan. Build out the independent, smaller functions
+first, so that the framework is broadly in place (sources, types, contexts and
+callees). Then come back to the large owners. Do not start with the
+interpreters or menu pages listed further down.
+
+**Where the game stands** (`config/functions.csv`; 900 library rows excluded):
+
+| State | Functions | Bytes | Share of bytes |
+| --- | ---: | ---: | ---: |
+| Canonical exact | 497 | 57,168 | 16% |
+| Source present, not exact | 327 | 192,572 | 55% |
+| No source | 451 | 99,679 | 29% |
+
+Exact work so far is almost all small: 447 of the 497 owners are under 256
+bytes. Only 60 of the 327 source-present functions have a frontier unit, so
+for the other 267 nobody knows how close they are. The PROGRESS chart's
+"69/130" counts exact functions among the 130 whose authored origin is
+confirmed. It is an origin-review figure, not reconstruction breadth.
+
+**Batch 1 — independent functions with no source.** Game code lies in
+0x401000..0x45FFFF; the 138 no-source rows at 0x460000 and above sit among the
+library exclusions (CRT names such as `entry`, `write_multi_char`). Classify
+those with `scripts/scan-library-code.py` or a Ghidra review instead of writing
+source. In the game range there are 313 no-source functions, 223 of them under
+256 bytes. The 0x420000 block is the thinnest: 151 non-exact against 21 exact
+(36 KB has no source). Work in groups of 20-30 neighbouring functions. Adjacent
+addresses usually share a TU, so a group can share one source file and one
+context. Take leaves and functions whose callees are already exact first.
+Prefer a plain normal-COFF unit (`artifact_kind = "coff"`, e.g.
+`ascii-manager-on-update`) or a small linked unit with few supports (e.g.
+`advance-stage-timer`). Use a wide context only when the native ABI needs LTCG
+specialization from real callers. Small new units cost little to replay and do
+not touch shared headers.
+
+**Batch 2 — near-exact sweep of existing sources.** Give the 267
+source-present functions without a unit a frontier unit in the smallest
+context that compiles them. Compare all of them once and rank by difference.
+153 of them are under 256 bytes; collect the ones that differ by a few bytes.
+Record the remaining gap in the function's doc rather than tuning it at
+length.
+
+**Batch 3 — framework gaps found along the way.** Missing callees that force
+data anchors, shared types still modeled as casts or views, and the
+`StageTimerView` constructor blocker below. Fix these in batches, because each
+shared-header change needs a wide replay (`AnimationVm.hpp`: 295 units in 160
+contexts).
+
+**Later — large owners.** `ExecuteSecondaryActorInstruction`,
+`ExecuteAnimationVm`, `RunSecondaryScript`, `RunSecondaryDialogue`, the HUD,
+pause and menu pages. Their remaining gaps depend on whole-function register
+allocation, x87 scheduling and callee ABIs, and they get easier as their
+callees gain real source. Their state and next steps are kept below for that
+phase.
+
+Origin review, which moves the 69/130 chart, is a separate classification lane
+and does not block batches 1-3.
+
 ## State at handoff (2026-11-28)
 
 The canonical ledger has **497 exact owners** (`config/matches.csv`; generated
@@ -59,7 +118,7 @@ input of these units, so their receipts never noticed. Restoring the
 constructor is the faithful fix, but nearly every unit includes the header;
 it needs a deliberate wide replay. Treat both rows as unverified until then.
 
-**Next for the largest owners: give their callees source.** In the wide
+**For the later large-owner phase: give their callees source.** In the wide
 gameplay context `ExecuteSecondaryActorInstruction` (16,556 B) calls about 45
 symbols that exist only as declarations and are bound to data anchors
 (`FindSecondaryHostObject`, `RecomposeSecondaryHostMotion` at 0x459670,
@@ -82,7 +141,7 @@ load. Never edit a source while a replay is running; batch changes instead.
 The failure `secondary-actor-instruction-adapter` in every replay is the known
 blocker above, not a regression.
 
-## Current focus: ExecuteAnimationVm (0x44B4B0, 12,056 B)
+## Deferred large owner: ExecuteAnimationVm (0x44B4B0, 12,056 B)
 
 2026-11-28 finding, not applied: the flag-setter opcodes are bit-field
 assignments in native. A bit-field member in `AnimationVm.hpp` raises
@@ -188,7 +247,7 @@ scripts/repo-python .analysis/compare-execute-animation-vm-code-only.py build/ma
 | `StepAnimationFloatPairTween` (673 B) | Non-exact; two mode-17 Y-component operand bytes remain | [ANIMATION_TWEEN](ANIMATION_TWEEN.md), [ANIMATION_TWEEN_DISPATCH](ANIMATION_TWEEN_DISPATCH.md) |
 | `BindAnimationSprite` (389 B) | Non-exact | [ANIMATION_EXECUTION](ANIMATION_EXECUTION.md) |
 
-## Other large owners (state at handoff)
+## Other large owners (deferred; state at handoff)
 
 | Owner | State | Notes |
 | --- | --- | --- |
@@ -213,8 +272,7 @@ KNOWLEDGE_BASE entry of 2026-11-27). Replay log of their 83 exact consumers:
 
 ## Continuation and other frontiers
 
-Keep the interpreter and real dependencies in one work stream. Compile and
-compare the complete affected owners and relocation fields; replay only the
+Follow the roadmap at the top. Compile and compare the complete affected owners and relocation fields; replay only the
 exact consumers of changed executable inputs. Use the commit prefix the
 operator specifies (AGENTS.md says `gpt-6.1-sol:`; this session's operator
 asked for `claude-opus-5.5:` with no trailer).
