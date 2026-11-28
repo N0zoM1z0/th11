@@ -15,11 +15,10 @@ struct AnimationDocumentView;
 // after allocation (0x424DF0), Update returning nonzero deletes the laser,
 // Draw renders its two embedded VMs, Clear/ClearInRadius are the clearing
 // entry points. The other slots keep their vtable offsets.
-// Laser timers clear their initialized bit on construction, like the other
-// embedded game timers (see SecondaryHud.hpp).
+// StageTimerView's constructor clears the initialized bit; this adds the
+// inline advance the laser update loop uses.
 struct LaserTimer : StageTimerView
 {
-    LaserTimer() { flags &= ~1u; }
     // Inline form of AdvanceStageTimer (0x459270).
     __forceinline int Tick()
     {

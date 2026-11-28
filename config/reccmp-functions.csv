@@ -868,3 +868,9 @@ StartSecondaryGameplayAudio,0x0042A150,function
 SecondaryUnaryMathA,0x00405FB0,function
 LaserLineInf::Unknown2c,0x00425BD0,function
 AsciiManagerObject::StorageSize,0x00401DD0,function
+ItemData::ItemData,0x00423220,function
+ItemData::~ItemData,0x00423240,function
+InitializeItemManager,0x00423270,function
+ItemInf::~ItemInf,0x00423330,function
+CreateItemManager,0x00423440,function
+ItemManagerUpdateCallback,0x00424090,function

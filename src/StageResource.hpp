@@ -15,6 +15,7 @@ struct StageTimerView
     float *scale;
     unsigned int flags;
 
+    StageTimerView() { flags &= ~1u; }
     void ResetFields()
     {
         current = 0;

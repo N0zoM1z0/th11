@@ -128,6 +128,34 @@ often describe the same objects: `g_SecondaryClearManager` (0x4A8E94) is the
 laser manager and `SecondaryClearObjectView` is `LaserDataInf`; see
 [LASER](LASER.md).
 
+## item.cpp needs /EHs, not /EHsc (2026-11-28)
+
+The item manager destructor (0x423330) has an EH frame and takes `this` on the
+stack. Its body only calls `EnterCriticalSection`/`LeaveCriticalSection`
+imports and `UnregisterChainElement`, then the item array (members with
+destructors) is destroyed. Under `/EHsc` extern "C" functions cannot throw and
+LTCG proves `UnregisterChainElement` nothrow, so the frame disappears and
+`this` moves to a register; under `/EHs` both the destructor and
+`CreateItemManager` match byte for byte. Laser and auxiliary-owner
+destructors call the same functions but have no destructible members, so
+they cannot tell the two models apart. Treat `/EHs` as the likely game
+profile and try it first when an EH frame or a stack `this` is missing; the
+existing `/EHsc` exact units have not been re-proved with it.
+
+## Where build and replay time goes (2026-11-28)
+
+Every Wine launch in this game is serialized by the shared Factory lock, and
+`winepath -w` is a full launch (about 1 s). The build used to run 7 per
+compile and about 41 per context; `scripts/winpath.py` now converts paths
+in-process, so a compile takes about 1 s instead of 6.5 s. Per-compile
+compiler hashing and the per-run manifest validation are gone too (identity
+is checked once per run and bound in receipts; `build-match-unit.py --check`
+still validates the manifest). Parallel Wine work cannot help while the
+Factory lock holds. The remaining cost is recompiling the same support
+sources in every context (2,636 compiles, 585 distinct) and the 30 contexts
+with 16-215 sources that each prove one or two small units; move those units
+to narrow contexts when touching them.
+
 ## 0x4021A0 is the compiler's vector constructor iterator (2026-11-28)
 
 0x4021A0 (33 bytes; ledger name `ConstructSecondaryPlayerElementArray`) is
@@ -140,10 +168,8 @@ compiler-generated, so its row should eventually move to an excluded
 compiler-generated origin rather than be matched from hand-written source.
 The timer-constructor restore is the real fix for 0x410440.
 
-Measuring that restore: 336 of the 546 exact units (165 contexts or objects)
-include `StageResource.hpp` transitively, so it is a multi-hour replay.
-`claude-replay-affected.py` matches only declared inputs and would miss most
-of them; compute the transitive include set instead.
+Restoring it touches 336 of the 546 exact units through transitive includes;
+`scripts/replay-exact-units.py --file src/StageResource.hpp` selects them.
 
 ## Plain-ABI leaves can still need /GL (2026-11-28)
 

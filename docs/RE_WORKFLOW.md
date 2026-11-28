@@ -27,11 +27,14 @@ For each coherent subsystem:
    Configure a canonical unit only when its complete zero-difference replay is
    reproducible.
 5. Cold-replay the changed unit. When you change a shared source that exact
-   units link (a callee body, a support TU or a probe), also replay those exact
-   units before committing; LTCG can change their private register ABI. Unit
-   manifests list consumers in `source`, `support_sources` and `inputs`.
-   Update ledgers/generated progress, check the diff, and make a concise
-   checkpoint commit with your agent prefix.
+   units link (a callee body, a support TU, a probe or a header), also replay
+   those exact units before committing; LTCG can change their private register
+   ABI. `scripts/replay-exact-units.py --file PATH` selects every exact unit
+   whose context includes PATH directly or through quoted includes (declared
+   `inputs` alone miss most header consumers); `--unit` and `--source` still
+   work, and `--keep-going` reports every failure instead of stopping. Update
+   ledgers/generated progress, check the diff, and make a concise checkpoint
+   commit with your agent prefix.
 
 Broad behavior tests, null/allocation-failure matrices, randomized/multiframe
 execution and caller regressions are not part of this loop. Use focused

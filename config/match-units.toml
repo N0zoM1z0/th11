@@ -727,6 +727,7 @@ linkages = [
 ]
 
 [units.reset-animation-vm]
+frontier = true # exact claim withdrawn 2026-11-28; 249 vs 303 bytes at HEAD
 artifact_kind = "linked-pe"
 source = "src/AnimationVm.cpp"
 inputs = ["src/AnimationVm.hpp", "src/RuntimeSurfaces.hpp", "src/MainRuntime.hpp", "src/RenderBatch.hpp"]
@@ -1205,7 +1206,6 @@ linkages = [
 ]
 
 [units.stage-embedded-vm-constructor]
-frontier = true # exact claim withdrawn 2026-11-28; needs the StageTimerView constructor
 artifact_kind = "linked-pe"
 source = "src/StageLifecycle.cpp"
 inputs = ["src/StageResource.hpp"]
@@ -3617,7 +3617,6 @@ linkages = [
 ]
 
 [units.secondary-actor-state-constructor]
-frontier = true # exact claim withdrawn 2026-11-28; needs the StageTimerView constructor
 artifact_kind = "linked-pe"
 source = "src/SecondaryActorLifetime.cpp"
 inputs = ["src/SecondaryActorState.hpp"]
@@ -12486,3 +12485,156 @@ symbol = "?IsSmaller@PauseSelectionComparisonView@@QBEHH@Z"
 target_address = 0x0042F350
 size = 14
 linkages = []
+
+# item.cpp manager lifetime (same template as laser.cpp) with the real chain
+# producers and the stage VM constructor/destructor source. /EHs, not /EHsc:
+# the destructor's EH frame needs extern "C" calls that may throw.
+[units.item-data-constructor]
+artifact_kind = "linked-pe"
+source = "src/Item.cpp"
+inputs = []
+support_sources = ["probes/item-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageLifecycle.cpp"]
+output_dir = "build/match-linked/ItemManager"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHs", "/GL"]
+entry = "ItemManagerProbe@8"
+functions = ["ItemData::ItemData"]
+symbol = "??0ItemData@@QAE@XZ"
+target_address = 0x00423220
+size = 19
+linkages = [
+  { offset = 4, type = "REL32", symbol = "??0StageEmbeddedVm@@QAE@XZ", target = 0x00402270  },
+]
+
+[units.item-data-destructor]
+artifact_kind = "linked-pe"
+source = "src/Item.cpp"
+inputs = []
+support_sources = ["probes/item-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageLifecycle.cpp"]
+output_dir = "build/match-linked/ItemManager"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHs", "/GL"]
+entry = "ItemManagerProbe@8"
+functions = ["ItemData::~ItemData"]
+symbol = "??1ItemData@@QAE@XZ"
+target_address = 0x00423240
+size = 34
+linkages = [
+  { offset = 15, type = "REL32", symbol = "_free", target = 0x0045FC3B  },
+]
+
+[units.initialize-item-manager]
+artifact_kind = "linked-pe"
+source = "src/Item.cpp"
+inputs = []
+support_sources = ["probes/item-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageLifecycle.cpp"]
+output_dir = "build/match-linked/ItemManager"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHs", "/GL"]
+entry = "ItemManagerProbe@8"
+functions = ["InitializeItemManager"]
+symbol = "?InitializeItemManager@@YGHPAUItemInf@@@Z"
+target_address = 0x00423270
+size = 189
+linkages = [
+  { offset = 11, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x0045FCE4  },
+  { offset = 71, type = "DIR32", symbol = "?ItemManagerUpdateCallback@@YIHPAUItemInf@@@Z", target = 0x00424090  },
+  { offset = 88, type = "REL32", symbol = "?AddToUpdateChain@@YGHPAUChainElement@@H@Z", target = 0x00456B70  },
+  { offset = 98, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x0045FCE4  },
+  { offset = 156, type = "DIR32", symbol = "?ItemManagerDrawCallback@@YIHPAUItemInf@@@Z", target = 0x004240D0  },
+  { offset = 173, type = "REL32", symbol = "?AddToDrawChain@@YGHPAUChainElement@@H@Z", target = 0x00456C10  },
+]
+
+[units.item-manager-destructor]
+artifact_kind = "linked-pe"
+source = "src/Item.cpp"
+inputs = []
+support_sources = ["probes/item-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageLifecycle.cpp"]
+output_dir = "build/match-linked/ItemManager"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHs", "/GL"]
+entry = "ItemManagerProbe@8"
+functions = ["ItemInf::~ItemInf"]
+symbol = "??1ItemInf@@QAE@XZ"
+target_address = 0x00423330
+size = 270
+linkages = [
+  { offset = 3, type = "DIR32", symbol = "__ehhandler$??1ItemInf@@QAE@XZ", target = 0x0048A54C, eh_static = true  },
+  { offset = 19, type = "DIR32", symbol = "___security_cookie", target = 0x004A2088  },
+  { offset = 53, type = "DIR32", symbol = "?g_ChainManager@@3PAUChainManagerView@@A", target = 0x004C3234  },
+  { offset = 59, type = "DIR32", symbol = "__imp__EnterCriticalSection@4", target = 0x0048B084  },
+  { offset = 69, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x590 },
+  { offset = 80, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x810 },
+  { offset = 88, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x930 },
+  { offset = 97, type = "REL32", symbol = "?UnregisterChainElement@@YGXPAUChainManagerView@@PAUChainElement@@@Z", target = 0x00457080  },
+  { offset = 103, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x590 },
+  { offset = 114, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x810 },
+  { offset = 120, type = "DIR32", symbol = "__imp__LeaveCriticalSection@4", target = 0x0048B088  },
+  { offset = 126, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x930 },
+  { offset = 135, type = "DIR32", symbol = "?g_ChainManager@@3PAUChainManagerView@@A", target = 0x004C3234  },
+  { offset = 145, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x590 },
+  { offset = 156, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x810 },
+  { offset = 164, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x930 },
+  { offset = 173, type = "REL32", symbol = "?UnregisterChainElement@@YGXPAUChainManagerView@@PAUChainElement@@@Z", target = 0x00457080  },
+  { offset = 179, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x590 },
+  { offset = 190, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x810 },
+  { offset = 196, type = "DIR32", symbol = "__imp__LeaveCriticalSection@4", target = 0x0048B088  },
+  { offset = 202, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x930 },
+  { offset = 207, type = "DIR32", symbol = "??1ItemData@@QAE@XZ", target = 0x00423240  },
+  { offset = 227, type = "DIR32", symbol = "?g_ItemManager@@3PAUItemInf@@A", target = 0x004A8E90  },
+  { offset = 244, type = "REL32", symbol = "??_M@YGXPAXIHP6EX0@Z@Z", target = 0x00460066  },
+]
+
+[units.create-item-manager]
+artifact_kind = "linked-pe"
+source = "src/Item.cpp"
+inputs = []
+support_sources = ["probes/item-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageLifecycle.cpp"]
+output_dir = "build/match-linked/ItemManager"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHs", "/GL"]
+entry = "ItemManagerProbe@8"
+functions = ["CreateItemManager"]
+symbol = "?CreateItemManager@@YAPAUItemInf@@XZ"
+target_address = 0x00423440
+size = 198
+linkages = [
+  { offset = 3, type = "DIR32", symbol = "__ehhandler$?CreateItemManager@@YAPAUItemInf@@XZ", target = 0x0048AA3B, eh_static = true  },
+  { offset = 17, type = "DIR32", symbol = "___security_cookie", target = 0x004A2088  },
+  { offset = 40, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x0045FCE4  },
+  { offset = 66, type = "DIR32", symbol = "??1ItemData@@QAE@XZ", target = 0x00423240  },
+  { offset = 71, type = "DIR32", symbol = "??0ItemData@@QAE@XZ", target = 0x00423220  },
+  { offset = 90, type = "REL32", symbol = "??_L@YGXPAXIHP6EX0@Z1@Z", target = 0x0045FF91  },
+  { offset = 103, type = "REL32", symbol = "_memset", target = 0x0046A720  },
+  { offset = 115, type = "DIR32", symbol = "?g_ItemManager@@3PAUItemInf@@A", target = 0x004A8E90  },
+  { offset = 133, type = "REL32", symbol = "?InitializeItemManager@@YGHPAUItemInf@@@Z", target = 0x00423270  },
+  { offset = 147, type = "REL32", symbol = "??1ItemInf@@QAE@XZ", target = 0x00423330  },
+  { offset = 153, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x0045FD49  },
+]
+
+[units.delete-item-manager]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/Item.cpp"
+inputs = []
+support_sources = ["probes/item-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageLifecycle.cpp"]
+output_dir = "build/match-linked/ItemManager"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHs", "/GL"]
+entry = "ItemManagerProbe@8"
+functions = ["DeleteItemManager"]
+symbol = "?DeleteItemManager@@YAXXZ"
+target_address = 0x00423530
+size = 28
+linkages = []
+
+[units.item-manager-update-callback]
+artifact_kind = "linked-pe"
+source = "src/Item.cpp"
+inputs = []
+support_sources = ["probes/item-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageLifecycle.cpp"]
+output_dir = "build/match-linked/ItemManager"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHs", "/GL"]
+entry = "ItemManagerProbe@8"
+functions = ["ItemManagerUpdateCallback"]
+symbol = "?ItemManagerUpdateCallback@@YIHPAUItemInf@@@Z"
+target_address = 0x00424090
+size = 50
+linkages = [
+  { offset = 2, type = "DIR32", symbol = "?g_Game@@3PAUGameInf@@A", target = 0x004A8E88 },
+  { offset = 44, type = "REL32", symbol = "?UpdateItemManager@@YGHPAUItemInf@@@Z", target = 0x00423550 },
+]

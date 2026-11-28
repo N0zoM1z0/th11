@@ -72,8 +72,8 @@ and does not block batches 1-3.
 
 Generated totals are in [PROGRESS](PROGRESS.md) (`config/matches.csv`). Every
 source change is committed and its affected exact consumers passed cold
-replay. Five earlier exact claims were withdrawn because they fail at HEAD
-(blocker below).
+replay. Four earlier exact claims stay withdrawn because they fail at HEAD (see
+below).
 
 Batch 1, laser.cpp, manager lifetimes and gameplay helpers (2026-11-28, later
 session; 54 new exact owners, 5 stale claims withdrawn):
@@ -139,6 +139,12 @@ session; 54 new exact owners, 5 stale claims withdrawn):
   `StageEmbeddedVm` destructor; the unreferenced atan2 copies 0x419750 and
   0x433C80 take EAX. Static header helpers recur once per TU (KNOWLEDGE_BASE,
   FSINCOS helpers), which marks TU boundaries.
+- **Faster builds.** `scripts/winpath.py` replaces `winepath` (one Wine
+  launch per path), and redundant per-compile and per-run checks are gone: a
+  compile takes about 1 s, a full replay about 50 minutes. Use
+  `scripts/replay-exact-units.py --file PATH` after touching a shared file.
+- **Item TU** (`src/Item.{hpp,cpp}`, [ITEM](ITEM.md)): six exact functions;
+  item.cpp needs `/EHs` (KNOWLEDGE_BASE).
 - **Inline assembly removed.** The exact `AdvanceStageTimer` used a naked asm
   body; `src/StageTimer.cpp` now reproduces it from natural C++.
 - **Tools** (all in `.analysis/`): `claude-dis.py` (target disassembly with
@@ -177,30 +183,17 @@ KNOWLEDGE_BASE):
    when unrelated code in the owner changes; do not spend builds swapping
    operands.
 
-**Blocker: the missing timer constructor (claims withdrawn 2026-11-28).**
-`9abb56f` removed `StageTimerView() { flags &= ~1u; }` from
-`StageResource.hpp`. Native code clears bit 0 of every embedded timer's flag
-word on construction, so ZUN's timer type has that constructor. Three exact
-claims fail at HEAD because of it and were withdrawn (their units are now
-frontiers): `stage-embedded-vm-constructor` (0x402270, links as a 33-byte
-memset body), `secondary-actor-state-constructor` (0x410440, a 14-byte
-vector-constructor call) and `secondary-actor-instruction-adapter` (13 bytes
-instead of 11). `StageResource.hpp` was not a declared input, so their
-receipts never went stale. Restoring the constructor is the fix, but nearly
-every unit includes the header: it needs one deliberate wide replay, ideally
-together with other shared-header changes (Batch 3). New code works around
-it locally with `struct LaserTimer : StageTimerView { LaserTimer() { flags &=
-~1u; } }`, as `SecondaryHud.hpp` does; drop those once the base type has its
-constructor. Other exact units whose objects embed timers may be affected
-too; a cold replay of the `StageLifecycle` context family is the first check.
-
-Two more claims were withdrawn after cold rebuilds of their contexts at HEAD
-(`.analysis/claude-rebuild-and-try.log`): `draw-fan-animation-vm` (0x452680,
-LTCG now specializes `DrawAnimationVertexFan` and drops the `push 0x21`) and
-`animation-distance-root` (0x4196E0, loses its 8-byte aligned frame). Both
-sources are unchanged; something else in their contexts moved. Stale
-receipts hide such regressions, so rebuild a context before trusting its
-old exact rows.
+**Timer constructor restored (2026-11-28).** `StageTimerView` has its
+`flags &= ~1u` constructor again (removed in `9abb56f`); the local
+`LaserTimer`/HUD workarounds are gone. A full cold replay after the tooling
+change passed 545 of 546 units in 50 minutes
+(`.analysis/claude-full-replay-20261128.log`); `stage-embedded-vm-constructor`
+and `secondary-actor-state-constructor` are exact again. Still withdrawn:
+`secondary-actor-instruction-adapter` (13 bytes instead of 11),
+`draw-fan-animation-vm`, `animation-distance-root` and `reset-animation-vm`
+(249 vs 303 bytes, missing the nine tween-duration zero stores; not caused by
+the timer constructor). Stale receipts hid all of these, so cold-rebuild a
+context before trusting its old exact rows.
 
 **For the later large-owner phase: give their callees source.** In the wide
 gameplay context `ExecuteSecondaryActorInstruction` (16,556 B) calls about 45

@@ -867,3 +867,9 @@ StartSecondaryGameplayAudio
 SecondaryUnaryMathA
 LaserLineInf::Unknown2c
 AsciiManagerObject::StorageSize
+ItemData::ItemData
+ItemData::~ItemData
+InitializeItemManager
+ItemInf::~ItemInf
+CreateItemManager
+ItemManagerUpdateCallback

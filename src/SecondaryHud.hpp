@@ -32,11 +32,6 @@ struct SecondaryHudView
 // 4489E0 and this caller; field names below are physical observations.
 struct SecondaryHudScreenEffect
 {
-    struct Timer : StageTimerView
-    {
-        Timer() { flags &= ~1u; }
-    };
-
     unsigned int flags;
     unsigned int unknown004;
     ChainElement *update, *draw;
@@ -44,7 +39,7 @@ struct SecondaryHudScreenEffect
     unsigned int unknown014, value018;
     int duration;
     unsigned int color0, color1, value028, unknown02c;
-    Timer time;
+    StageTimerView time;
     SecondaryHudScreenEffect()
     {
         memset(this, 0, sizeof(*this));
