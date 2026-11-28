@@ -2,15 +2,14 @@
             PrepareSecondaryDialogueStageClear();
             MarkSecondaryDialoguePlayerClear();
             SecondaryDialogueSessionView *session = g_SecondaryDialogueSession;
-            unsigned char *statistics = g_SecondaryGameplayStatistics;
+            SecondaryCharacterStatistics *records =
+                reinterpret_cast<SecondaryCharacterStatistics *>(g_SecondaryGameplayStatistics);
             if (session->mode == 0 && g_SecondaryActorDifficulty != 4)
             {
-                statistics[(static_cast<unsigned int>(g_MeshEffectSelection0) * 3u +
-                    static_cast<unsigned int>(g_MeshEffectSelection1)) * 0x68d4u + 0x5a9u +
-                    (g_StageVariant + static_cast<unsigned int>(g_SecondaryActorDifficulty) * 6u) * 8u] = 1;
-                statistics[(static_cast<unsigned int>(g_MeshEffectSelection0) * 3u +
-                    static_cast<unsigned int>(g_MeshEffectSelection1)) * 0x68d4u + 0x5a8u +
-                    (g_StageVariant + static_cast<unsigned int>(g_SecondaryActorDifficulty) * 6u) * 8u] = 1;
+                records[g_MeshEffectSelection0 * 3 + g_MeshEffectSelection1]
+                    .stages[g_SecondaryActorDifficulty * 6 + g_StageVariant].cleared = 1;
+                records[g_MeshEffectSelection0 * 3 + g_MeshEffectSelection1]
+                    .stages[g_SecondaryActorDifficulty * 6 + g_StageVariant].reached = 1;
             }
             if (g_StageResourceFlags & 0x10)
                 EnterSecondaryStageClearMenu();
@@ -55,11 +54,10 @@ secondary_dialogue_continue:
                     {
                         hud->flags |= 0x10;
                         HudInteger(hud, 0x4454) = 0;
-                        unsigned int index = ((static_cast<unsigned int>(g_MeshEffectSelection0) * 3u +
-                            static_cast<unsigned int>(g_MeshEffectSelection1)) * 0x1a35u +
-                            static_cast<unsigned int>(g_SecondaryActorDifficulty)) * 4u;
-                        int *record = reinterpret_cast<int *>(statistics + index + 0x598);
-                        if (*record < 99999) ++*record;
+                        if (records[g_MeshEffectSelection0 * 3 + g_MeshEffectSelection1]
+                                .clearCounts[g_SecondaryActorDifficulty] < 99999)
+                            ++records[g_MeshEffectSelection0 * 3 + g_MeshEffectSelection1]
+                                .clearCounts[g_SecondaryActorDifficulty];
                     }
                 }
                 else if (g_StageVariant == 7)
@@ -73,11 +71,12 @@ secondary_dialogue_continue:
                     else
                     {
                         EnterSecondaryStageClearMenu();
-                        unsigned int index = ((static_cast<unsigned int>(g_MeshEffectSelection0) * 3u +
-                            static_cast<unsigned int>(g_MeshEffectSelection1)) * 0x1a35u +
-                            static_cast<unsigned int>(g_SecondaryActorDifficulty)) * 4u;
-                        int *record = reinterpret_cast<int *>(g_SecondaryGameplayStatistics + index + 0x598);
-                        if (*record < 99999) ++*record;
+                        SecondaryCharacterStatistics *all =
+                            reinterpret_cast<SecondaryCharacterStatistics *>(g_SecondaryGameplayStatistics);
+                        if (all[g_MeshEffectSelection0 * 3 + g_MeshEffectSelection1]
+                                .clearCounts[g_SecondaryActorDifficulty] < 99999)
+                            ++all[g_MeshEffectSelection0 * 3 + g_MeshEffectSelection1]
+                                .clearCounts[g_SecondaryActorDifficulty];
                     }
                 }
                 else

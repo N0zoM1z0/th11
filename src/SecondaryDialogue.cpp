@@ -18,6 +18,24 @@ __forceinline unsigned int ScriptInput(unsigned int offset)
     return *reinterpret_cast<unsigned int *>(
         reinterpret_cast<unsigned char *>(&g_InputState) + offset);
 }
+// Per-character block of the gameplay statistics file (0x68D4 bytes): clear
+// counts by difficulty at +0x598 and stage records indexed difficulty*6+stage
+// at +0x5A8.
+struct SecondaryStageClearRecord
+{
+    unsigned char reached, cleared;
+    unsigned char unknown002[6];
+};
+struct SecondaryCharacterStatistics
+{
+    unsigned char unknown000[0x598];
+    int clearCounts[4];
+    SecondaryStageClearRecord stages[30];
+    unsigned char unknown698[0x68d4 - 0x698];
+};
+typedef char SecondaryCharacterStatisticsSize[(sizeof(SecondaryCharacterStatistics) == 0x68d4) ? 1 : -1];
+typedef char SecondaryCharacterStagesOffset[(offsetof(SecondaryCharacterStatistics, stages) == 0x5a8) ? 1 : -1];
+
 // Bit 0 of the dialogue flags is a one-bit field set directly by opcode 10.
 struct DialogueFlagBits
 {
@@ -61,6 +79,14 @@ __forceinline SecondaryGameplayHudView *Hud()
 { return reinterpret_cast<SecondaryGameplayHudView *>(g_SecondaryActorHud); }
 __forceinline int &HudInteger(void *hud, unsigned int offset)
 { return *reinterpret_cast<int *>(reinterpret_cast<unsigned char *>(hud) + offset); }
+}
+
+// 0x41F510: the stage-clear bonus base is the game-state value at +0x10 in
+// hundreds, rounded down to a multiple of ten.
+int __stdcall SecondaryDialogueClearValue(SecondaryHostSelectionState *state)
+{
+    const int hundreds = reinterpret_cast<const int *>(state)[4] / 100;
+    return hundreds - hundreds % 10;
 }
 
 int __stdcall RunSecondaryDialogue(SecondaryDialogueView *self)

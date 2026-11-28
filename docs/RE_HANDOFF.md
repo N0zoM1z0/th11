@@ -158,7 +158,7 @@ scripts/repo-python .analysis/compare-execute-animation-vm-code-only.py build/ma
 | `CullStageObject` (`403950`, 1,643 B) | Frontier, 1,646 B / 492 aligned | Natural bounds/corner/loop source; start-of-function vector copies and two corner add orders remain (STAGE_CULLING.md) |
 | `InitializeSecondaryReplay` (`4356E0`, 1,380 B) | Frontier, 1,370 B / 394 of 406 | Game-state field addresses now exposed in its context (KNOWLEDGE_BASE 2026-11-27); store scheduling remains |
 | `RunSecondaryScript` (`45B860`, 7,093 B) | Frontier, 7,085 B / 1,309 aligned, 1,759 of 1,834 register-normalized | Case shapes restored; VM register, a tail merge and callee ABIs remain (SECONDARY_SCRIPT.md) |
-| `RunSecondaryDialogue` (`41D380`, 6,980 B) | Frontier, 6,948 B / 1,256 aligned, 1,775 of 1,848 register-normalized | Native switches, sprite ternaries, flag bit field; stage-clear statistics block next (SECONDARY_DIALOGUE.md) |
+| `RunSecondaryDialogue` (`41D380`, 6,980 B) | Frontier, 7,008 B / 1,313 aligned, 1,805 of 1,848 register-normalized | Native switches, sprite ternaries, flag bit field, structured clear statistics, real 0x41F510 helper; register choices and one goto block layout remain (SECONDARY_DIALOGUE.md) |
 | `DrawStageLayer` (`404190`, 727 B) | Frontier, 722 B / 155 aligned | No volatile/register; stage-pointer register choice remains. Its four exact consumers pass (`.analysis/claude-stagelayer-replay.log`) |
 
 The four scene-VM publishers (0x4556E0, 0x455760, 0x4557E0, 0x455860) are

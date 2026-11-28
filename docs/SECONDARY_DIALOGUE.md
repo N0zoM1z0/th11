@@ -22,10 +22,15 @@ raised raw alignment from 946 to 1,256 and register-normalized alignment from
   native `xor`/`and`/`xor` on memory is the bit-field store, not a
   hand-written mask expression.
 
-Next: the stage-clear statistics block (`SecondaryDialogueClear.inc`) still
-uses byte arithmetic, `goto` and helper casts; native indexes a structured
-record table, increments capped counters in memory, and passes the
-game-state object (`0x4A56E0`) as `this` in EAX to its clear-value member.
+The stage-clear block now indexes `SecondaryCharacterStatistics` records
+(0x68D4 bytes per character: difficulty clear counts at +0x598, stage records
+`difficulty * 6 + stage` at +0x5A8) and writes each capped counter as one
+full array expression, which reproduces the native memory `cmp`/`inc`. The
+0x41F510 clear-value helper (`(value / 100) - (value / 100) % 10` of the
+game-state field at +0x10) now has source, so the interpreter passes the
+state in EAX as native does; the frontier also links the game-state address
+probe. Result: 1,313 aligned, 1,805 of 1,848 register-normalized. The helper
+itself still differs: native computes `% 10` with `idiv`.
 
 ## Complete boundary and physical entry
 
