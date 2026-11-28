@@ -131,9 +131,22 @@ laser is at +0x18 (`head.next`). Further fields: +0x450 tail, +0x454 count
 | 0x424FB0 | `MarkSecondaryHostEffects`: mark every live laser for clearing (+0x68 = 1); exact | no arguments |
 
 Object layout so far: +0 vptr, +4 previous, +8 next, +0xC state (1 is
-removed), 0x14-byte timers at +0x14 and +0x28, the clear byte +0x68 and
-+0x69, ID +0x6C, eighteen 0x34-byte pattern records from +0x70 and a timer at
-+0x424. Sizes: base 0x440, line 0xE8C, infinite 0xEB0.
+removed), 0x14-byte timers at +0x14 and +0x28, position +0x3C, velocity
++0x48, angle +0x54, speed +0x60, the clear byte +0x68 and the started byte
++0x69, ID +0x6C, eighteen 0x34-byte pattern records from +0x70 (a timer and
+eight words; word 5 is the duration), pattern flags +0x41C (bit 2 pattern 1,
+bit 4 pattern 3) and a timer at +0x424. Sizes: base 0x440, line 0xE8C,
+infinite 0xEB0.
+
+`LaserLineInf::Unknown2c` (slot 11, 0x425BD0) is pattern 1, an acceleration:
+speed += word 0 x time scale, velocity += words 2-4 x time scale, the angle
+follows `atan2(vy, vx)` unless both components are below `(double)0.0001f`,
+and bit 2 clears on expiry; the timer then advances out of line. It is a
+frontier (`laser-line-acceleration`, 237 vs 235 bytes): native has an 8-byte
+aligned frame and reloads the stored velocity before `fabs`; a named
+time-scale local adds a spill. Slot 13 (0x425AD0) is the matching pattern 3
+(angular change with a repeat count) and calls the FSINCOS helper copy at
+0x4288B0.
 
 The functions marked unreferenced are absent from `config/functions.csv`
 (0x424BD0 is listed); see KNOWLEDGE_BASE, "Unreferenced functions survive".

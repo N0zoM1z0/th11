@@ -443,7 +443,7 @@ address,origin,subsystem,disposition,confidence,evidence_id
 0x00425370,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00425850,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00425AD0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
-0x00425BD0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
+0x00425BD0,authored_game,Laser,authored,high,laser-rtti-origin-2026-11-28
 0x00425CC0,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00426160,unknown,,review,unknown,ghidra-12.1.3-initial-inventory
 0x00426220,authored_game,Laser,authored,high,laser-rtti-origin-2026-11-28

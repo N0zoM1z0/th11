@@ -866,3 +866,4 @@ PauseSecondaryGameplayBoss,0x0042BD90,function
 ResetSecondaryGameplayAudio,0x0042A240,function
 StartSecondaryGameplayAudio,0x0042A150,function
 SecondaryUnaryMathA,0x00405FB0,function
+LaserLineInf::Unknown2c,0x00425BD0,function

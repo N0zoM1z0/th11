@@ -443,7 +443,7 @@ address,span_end,state,confidence,evidence_id,notes
 0x00425370,0x0042581C,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
 0x00425850,0x00425ACE,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
 0x00425AD0,0x00425BC7,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
-0x00425BD0,0x00425CBA,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
+0x00425BD0,0x00425CBA,reviewed,high,laser-line-slot11-boundary-2026-11-28,"Complete 235-byte body with two RET exits, int3 padding to 0x425CC0, only reference the LaserLineInf vtable slot 11."
 0x00425CC0,0x00426156,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
 0x00426160,0x00426214,needs_review,low,ghidra-12.1.3-initial-inventory,"Auto-analysis bounding span only; reconcile sparse bodies, references, tables and adjacent bytes before acceptance."
 0x00426220,0x00426222,reviewed,high,laser-vtable-slots-boundary-2026-11-28,"Complete 3-byte body at 0x00426220, int3 padding to the next aligned entry, no call/jump or interior references; referenced only from the LaserDataInf/LaserLineInf/LaserInfiniteInf vtables. .analysis/claude-laser/extent-review.txt."

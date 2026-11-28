@@ -38,10 +38,17 @@ struct LaserTimer : StageTimerView
     }
 };
 
+// One of the eighteen per-command tween records: a timer and eight words
+// whose meaning depends on the command (for example the duration at [5]).
+union LaserPatternWord
+{
+    float f;
+    int i;
+};
 struct LaserPatternRecord
 {
     LaserTimer timer;
-    unsigned char unknown014[0x34 - 0x14];
+    LaserPatternWord words[8];
 };
 
 class LaserDataInf
@@ -82,13 +89,19 @@ public:
     LaserTimer timer;
     LaserTimer timer028;
     CameraVector position;
-    unsigned char unknown048[0x68 - 0x48];
+    CameraVector velocity;
+    float angle;
+    float unknown058, unknown05c;
+    float speed;
+    float unknown064;
     unsigned char clearing;
     unsigned char started;
     unsigned char unknown06a[0x6c - 0x6a];
     int id;
     LaserPatternRecord patterns[18];
-    unsigned char unknown418[0x424 - 0x418];
+    unsigned int unknown418;
+    unsigned int patternFlags;
+    unsigned int unknown420;
     LaserTimer timer424;
     unsigned char unknown438[0x440 - 0x438];
 };
@@ -118,6 +131,7 @@ class LaserLineInf : public LaserDataInf
 public:
     LaserLineInf();
     virtual int Unknown10();
+    virtual void Unknown2c();
 
     LaserLineParams params;
     StageEmbeddedVm vm;
@@ -196,6 +210,9 @@ typedef char LaserDataInfId[(offsetof(LaserDataInf, id) == 0x6c) ? 1 : -1];
 typedef char LaserDataInfTimer[(offsetof(LaserDataInf, timer) == 0x14) ? 1 : -1];
 typedef char LaserDataInfPosition[(offsetof(LaserDataInf, position) == 0x3c) ? 1 : -1];
 typedef char LaserDataInfPatterns[(offsetof(LaserDataInf, patterns) == 0x70) ? 1 : -1];
+typedef char LaserDataInfVelocity[(offsetof(LaserDataInf, velocity) == 0x48) ? 1 : -1];
+typedef char LaserDataInfSpeed[(offsetof(LaserDataInf, speed) == 0x60) ? 1 : -1];
+typedef char LaserDataInfPatternFlags[(offsetof(LaserDataInf, patternFlags) == 0x41c) ? 1 : -1];
 typedef char LaserDataInfTimer424[(offsetof(LaserDataInf, timer424) == 0x424) ? 1 : -1];
 typedef char LaserLineSize[(sizeof(LaserLineInf) == 0xe8c) ? 1 : -1];
 typedef char LaserLineVms[(offsetof(LaserLineInf, vm) == 0x624) ? 1 : -1];

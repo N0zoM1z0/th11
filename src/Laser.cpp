@@ -3,9 +3,11 @@
 #include "GameInf.hpp"
 #include "ErrorLog.hpp"
 #include "MainRuntime.hpp"
+#include <math.h>
 #include <new>
 #include <string.h>
 
+int __stdcall AdvanceStageTimer(StageTimerView *self);
 extern const char g_LaserAnimationName[];
 extern const char g_LaserAnimationError[];
 
@@ -95,6 +97,30 @@ void LaserDataInf::Unknown4c() {}
 // 0x424EA0, 0x424EE0
 LaserLineInf::LaserLineInf() {}
 LaserInfiniteInf::LaserInfiniteInf() {}
+
+// 0x425BD0, slot 11: pattern 1 accelerates the line laser. While its timer
+// runs, word 0 adds to the speed and words 2-4 to the velocity, both scaled by
+// the animation time scale, and the angle follows the velocity unless both
+// components are tiny. When it expires, pattern flag bit 2 is cleared.
+void LaserLineInf::Unknown2c()
+{
+    LaserPatternRecord &pattern = patterns[1];
+    if (pattern.timer.current >= pattern.words[5].i)
+    {
+        patternFlags &= ~4u;
+        AdvanceStageTimer(&pattern.timer);
+        return;
+    }
+    speed += pattern.words[0].f * g_AnimationTimeScale;
+    CameraVector step = { pattern.words[2].f * g_AnimationTimeScale, pattern.words[3].f * g_AnimationTimeScale,
+        pattern.words[4].f * g_AnimationTimeScale };
+    velocity.x += step.x;
+    velocity.y += step.y;
+    velocity.z += step.z;
+    if (fabs(velocity.x) > static_cast<double>(0.0001f) || fabs(velocity.y) > static_cast<double>(0.0001f))
+        angle = atan2(velocity.y, velocity.x);
+    AdvanceStageTimer(&pattern.timer);
+}
 
 // Both derived lasers replace slot 4 with an empty result (0x426220, 0x427720).
 int LaserLineInf::Unknown10() { return 0; }
