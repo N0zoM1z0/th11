@@ -52,7 +52,9 @@ function-pointer owners Ghidra missed in its initial inventory:
 - `0x4394F0..0x439594` (165 bytes), `TitleMenuThread`:
   `InitializeTitleMenuResources` runs before a load-progress wait on the
   singleton at `0x4A8E98`, whose `+0x474` counter must reach 180 unless
-  runtime flag `0x180` interrupts waiting. `Sleep(16)` is used between
+  runtime flag `0x180` interrupts waiting. (The singleton is front.cpp's `FrontInf`, the
+  in-game HUD; its chain function 0x428F30 advances the counter. `src/TitleMenuThread.cpp`
+  still calls it `TitleMenuLoadingView`.) `Sleep(16)` is used between
   progress reads. Renderer slot 1 is then destroyed, the menu update-chain
   flag is enabled, and the thread state is published. Failure builds
   flags from the runtime's `0x2000` state and exits early. The verified

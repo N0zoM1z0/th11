@@ -889,3 +889,13 @@ HintInf::HintInf,0x00420E90,function
 DeleteBulletManager,0x00408800,function
 DeleteItemManager,0x00423530,function
 DeleteLaserManager,0x00424BF0,function
+PauseContinueMenuView::PauseContinueMenuView,0x0042BBF0,function
+InitializePauseSession,0x0042BC60,function
+PauseContinueMenuView::~PauseContinueMenuView,0x0042BDC0,function
+CreatePauseSession,0x0042BEA0,function
+DeletePauseSession,0x0042BF10,function
+PauseSessionDrawCallback,0x0042C610,function
+PauseContinueMenuView::Update,0x0042BF30,function
+PauseSessionUpdateCallback,0x0042C600,function
+LoadFrontDocuments,0x00428920,function
+ReleaseFrontDocuments,0x00428980,function

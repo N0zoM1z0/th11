@@ -5,10 +5,16 @@
 // Observed continuation of the pause storage; this is not an original class claim.
 struct PauseContinueMenuView
 {
+    PauseContinueMenuView();
+    ~PauseContinueMenuView();
+    int Update();
+
     PauseMenuView pause;
     AnimationFileView *file;
 };
 typedef char PauseContinueFileOffset[(offsetof(PauseContinueMenuView, file) == 0x2dc) ? 1 : -1];
+
+extern PauseContinueMenuView *g_SecondaryPauseSession;
 
 void __stdcall UpdatePauseContinueMenu(PauseContinueMenuView *self);
 // Full game-over state20..26 owner, separate from continuation states12..19.

@@ -12938,3 +12938,211 @@ linkages = [
   { offset = 12, type = "REL32", symbol = "??1LaserInf@@QAE@XZ", target = 0x00424A70 },
   { offset = 18, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x0045FD49 },
 ]
+
+# In-game pause session lifetime and state dispatch.
+[units.pause-session-constructor]
+artifact_kind = "linked-pe"
+source = "src/PauseSession.cpp"
+inputs = []
+support_sources = ["probes/pause-session-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageTimer.cpp", "src/TitleMenuRecord.cpp"]
+output_dir = "build/match-linked/PauseSession"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHs", "/GL"]
+entry = "PauseSessionProbe@16"
+functions = ["PauseContinueMenuView::PauseContinueMenuView"]
+symbol = "??0PauseContinueMenuView@@QAE@XZ"
+target_address = 0x0042BBF0
+size = 104
+linkages = [
+  { offset = 85, type = "REL32", symbol = "_memset", target = 0x0046A720 },
+  { offset = 97, type = "DIR32", symbol = "?g_SecondaryPauseSession@@3PAUPauseContinueMenuView@@A", target = 0x004A8EB0 },
+]
+
+[units.initialize-pause-session]
+artifact_kind = "linked-pe"
+source = "src/PauseSession.cpp"
+inputs = []
+support_sources = ["probes/pause-session-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageTimer.cpp", "src/TitleMenuRecord.cpp"]
+output_dir = "build/match-linked/PauseSession"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHs", "/GL"]
+entry = "PauseSessionProbe@16"
+functions = ["InitializePauseSession"]
+symbol = "?InitializePauseSession@@YGHPAUPauseContinueMenuView@@@Z"
+target_address = 0x0042BC60
+size = 264
+linkages = [
+  { offset = 5, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x0045FCE4 },
+  { offset = 66, type = "DIR32", symbol = "?PauseSessionUpdateCallback@@YIHPAUPauseContinueMenuView@@@Z", target = 0x0042C600 },
+  { offset = 83, type = "REL32", symbol = "?AddToUpdateChain@@YGHPAUChainElement@@H@Z", target = 0x00456B70 },
+  { offset = 93, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x0045FCE4 },
+  { offset = 151, type = "DIR32", symbol = "?PauseSessionDrawCallback@@YIHPAUPauseContinueMenuView@@@Z", target = 0x0042C610 },
+  { offset = 168, type = "REL32", symbol = "?AddToDrawChain@@YGHPAUChainElement@@H@Z", target = 0x00456C10 },
+  { offset = 186, type = "DIR32", symbol = "?g_AnimationTimeScale@@3MA", target = 0x004A7948 },
+]
+
+[units.pause-session-destructor]
+artifact_kind = "linked-pe"
+source = "src/PauseSession.cpp"
+inputs = []
+support_sources = ["probes/pause-session-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageTimer.cpp", "src/TitleMenuRecord.cpp"]
+output_dir = "build/match-linked/PauseSession"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHs", "/GL"]
+entry = "PauseSessionProbe@16"
+functions = ["PauseContinueMenuView::~PauseContinueMenuView"]
+symbol = "??1PauseContinueMenuView@@QAE@XZ"
+target_address = 0x0042BDC0
+size = 216
+linkages = [
+  { offset = 4, type = "DIR32", symbol = "__imp__EnterCriticalSection@4", target = 0x0048B084 },
+  { offset = 17, type = "DIR32", symbol = "?g_ChainManager@@3PAUChainManagerView@@A", target = 0x004C3234 },
+  { offset = 27, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x590 },
+  { offset = 38, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x810 },
+  { offset = 46, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x930 },
+  { offset = 55, type = "REL32", symbol = "?UnregisterChainElement@@YGXPAUChainManagerView@@PAUChainElement@@@Z", target = 0x00457080 },
+  { offset = 61, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x590 },
+  { offset = 72, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x810 },
+  { offset = 78, type = "DIR32", symbol = "__imp__LeaveCriticalSection@4", target = 0x0048B088 },
+  { offset = 84, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x930 },
+  { offset = 93, type = "DIR32", symbol = "?g_ChainManager@@3PAUChainManagerView@@A", target = 0x004C3234 },
+  { offset = 103, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x590 },
+  { offset = 114, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x810 },
+  { offset = 122, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x930 },
+  { offset = 131, type = "REL32", symbol = "?UnregisterChainElement@@YGXPAUChainManagerView@@PAUChainElement@@@Z", target = 0x00457080 },
+  { offset = 137, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x590 },
+  { offset = 148, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x810 },
+  { offset = 154, type = "DIR32", symbol = "__imp__LeaveCriticalSection@4", target = 0x0048B088 },
+  { offset = 160, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x930 },
+  { offset = 184, type = "REL32", symbol = "??1TitleMenuRecordView@@QAE@XZ", target = 0x00435C50 },
+  { offset = 190, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x0045FD49 },
+  { offset = 210, type = "DIR32", symbol = "?g_SecondaryPauseSession@@3PAUPauseContinueMenuView@@A", target = 0x004A8EB0 },
+]
+
+[units.create-pause-session]
+artifact_kind = "linked-pe"
+source = "src/PauseSession.cpp"
+inputs = []
+support_sources = ["probes/pause-session-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageTimer.cpp", "src/TitleMenuRecord.cpp"]
+output_dir = "build/match-linked/PauseSession"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHs", "/GL"]
+entry = "PauseSessionProbe@16"
+functions = ["CreatePauseSession"]
+symbol = "?CreatePauseSession@@YAPAUPauseContinueMenuView@@XZ"
+target_address = 0x0042BEA0
+size = 70
+linkages = [
+  { offset = 7, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x0045FCE4 },
+  { offset = 22, type = "REL32", symbol = "??0PauseContinueMenuView@@QAE@XZ", target = 0x0042BBF0 },
+  { offset = 34, type = "REL32", symbol = "?InitializePauseSession@@YGHPAUPauseContinueMenuView@@@Z", target = 0x0042BC60 },
+  { offset = 49, type = "REL32", symbol = "??1PauseContinueMenuView@@QAE@XZ", target = 0x0042BDC0 },
+  { offset = 55, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x0045FD49 },
+]
+
+[units.delete-pause-session]
+artifact_kind = "linked-pe"
+source = "src/PauseSession.cpp"
+inputs = []
+support_sources = ["probes/pause-session-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageTimer.cpp", "src/TitleMenuRecord.cpp"]
+output_dir = "build/match-linked/PauseSession"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHs", "/GL"]
+entry = "PauseSessionProbe@16"
+functions = ["DeletePauseSession"]
+symbol = "?DeletePauseSession@@YAXXZ"
+target_address = 0x0042BF10
+size = 29
+linkages = [
+  { offset = 3, type = "DIR32", symbol = "?g_SecondaryPauseSession@@3PAUPauseContinueMenuView@@A", target = 0x004A8EB0 },
+  { offset = 14, type = "REL32", symbol = "??1PauseContinueMenuView@@QAE@XZ", target = 0x0042BDC0 },
+  { offset = 20, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x0045FD49 },
+]
+
+[units.update-pause-session]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/PauseSession.cpp"
+inputs = []
+support_sources = ["probes/pause-session-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageTimer.cpp", "src/TitleMenuRecord.cpp"]
+output_dir = "build/match-linked/PauseSession"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHs", "/GL"]
+entry = "PauseSessionProbe@16"
+functions = ["PauseContinueMenuView::Update"]
+symbol = "?Update@PauseContinueMenuView@@QAEHXZ"
+target_address = 0x0042BF30
+size = 130
+linkages = []
+
+[units.pause-session-update-callback]
+frontier = true
+artifact_kind = "linked-pe"
+source = "src/PauseSession.cpp"
+inputs = []
+support_sources = ["probes/pause-session-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageTimer.cpp", "src/TitleMenuRecord.cpp"]
+output_dir = "build/match-linked/PauseSession"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHs", "/GL"]
+entry = "PauseSessionProbe@16"
+functions = ["PauseSessionUpdateCallback"]
+symbol = "?PauseSessionUpdateCallback@@YIHPAUPauseContinueMenuView@@@Z"
+target_address = 0x0042C600
+size = 7
+linkages = []
+
+[units.pause-session-draw-callback]
+artifact_kind = "linked-pe"
+source = "src/PauseSession.cpp"
+inputs = []
+support_sources = ["probes/pause-session-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/StageTimer.cpp", "src/TitleMenuRecord.cpp"]
+output_dir = "build/match-linked/PauseSession"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHs", "/GL"]
+entry = "PauseSessionProbe@16"
+functions = ["PauseSessionDrawCallback"]
+symbol = "?PauseSessionDrawCallback@@YIHPAUPauseContinueMenuView@@@Z"
+target_address = 0x0042C610
+size = 7
+linkages = [
+  { offset = 2, type = "REL32", symbol = "?DrawPauseSession@@YGHPAUPauseContinueMenuView@@@Z", target = 0x0042C150 },
+]
+
+# front.cpp HUD document slots.
+[units.load-front-documents]
+artifact_kind = "linked-pe"
+source = "src/Front.cpp"
+inputs = []
+support_sources = ["probes/front-context.cpp", "src/AnimationDocument.cpp", "src/LogBuffer.cpp", "probes/animation-document-load-context.cpp", "src/AnimationDocumentDestructor.cpp", "src/MenuControllerSupport.cpp"]
+output_dir = "build/match-linked/Front"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHs", "/GL"]
+entry = "FrontProbe@8"
+functions = ["LoadFrontDocuments"]
+symbol = "?LoadFrontDocuments@@YAHXZ"
+target_address = 0x00428920
+size = 89
+linkages = [
+  { offset = 2, type = "DIR32", symbol = "??_C@_09DDFJDAFG@front?4anm?$AA@", target = 0x00494108 },
+  { offset = 12, type = "REL32", symbol = "?AcquireAnimationDocument@@YGPAUAnimationDocumentView@@HPBD@Z", target = 0x00454360 },
+  { offset = 21, type = "DIR32", symbol = "?g_TitleMenuAnimationError@@3QBDB", target = 0x00493874 },
+  { offset = 26, type = "DIR32", symbol = "?g_RuntimeLog@@3UErrorLogBufferView@@A", target = 0x004A5940 },
+  { offset = 31, type = "REL32", symbol = "?AppendLog@@YAPBDPAULogBufferView@@PBDZZ", target = 0x00458A10 },
+  { offset = 44, type = "DIR32", symbol = "?g_BulletAnimationName@@3QBDB", target = 0x00493ABC },
+  { offset = 54, type = "REL32", symbol = "?AcquireAnimationDocument@@YGPAUAnimationDocumentView@@HPBD@Z", target = 0x00454360 },
+  { offset = 63, type = "DIR32", symbol = "?g_BulletAnimationError@@3QBDB", target = 0x00493AC8 },
+  { offset = 68, type = "DIR32", symbol = "?g_RuntimeLog@@3UErrorLogBufferView@@A", target = 0x004A5940 },
+  { offset = 73, type = "REL32", symbol = "?AppendLog@@YAPBDPAULogBufferView@@PBDZZ", target = 0x00458A10 },
+]
+
+[units.release-front-documents]
+artifact_kind = "linked-pe"
+source = "src/Front.cpp"
+inputs = []
+support_sources = ["probes/front-context.cpp", "src/AnimationDocument.cpp", "src/LogBuffer.cpp", "probes/animation-document-load-context.cpp", "src/AnimationDocumentDestructor.cpp", "src/MenuControllerSupport.cpp"]
+output_dir = "build/match-linked/Front"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHs", "/GL"]
+entry = "FrontProbe@8"
+functions = ["ReleaseFrontDocuments"]
+symbol = "?ReleaseFrontDocuments@@YAHXZ"
+target_address = 0x00428980
+size = 91
+linkages = [
+  { offset = 3, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x004C3268 },
+  { offset = 21, type = "REL32", symbol = "?DestroyAnimationDocument@@YGXPAUAnimationDocumentView@@@Z", target = 0x004549E0 },
+  { offset = 29, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x0045FD49 },
+  { offset = 44, type = "DIR32", symbol = "?g_RenderBatch@@3PAURenderBatchView@@A", target = 0x004C3268 },
+  { offset = 65, type = "REL32", symbol = "?DestroyAnimationDocument@@YGXPAUAnimationDocumentView@@@Z", target = 0x004549E0 },
+  { offset = 73, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x0045FD49 },
+]

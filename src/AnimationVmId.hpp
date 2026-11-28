@@ -5,6 +5,7 @@ struct AnimationVmId
 {
     unsigned int value;
 
+    AnimationVmId() {}
     AnimationVmId(unsigned int id) : value(id) {}
 };
 

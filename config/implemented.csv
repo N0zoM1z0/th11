@@ -888,3 +888,13 @@ HintInf::HintInf
 DeleteBulletManager
 DeleteItemManager
 DeleteLaserManager
+PauseContinueMenuView::PauseContinueMenuView
+InitializePauseSession
+PauseContinueMenuView::~PauseContinueMenuView
+CreatePauseSession
+DeletePauseSession
+PauseSessionDrawCallback
+PauseContinueMenuView::Update
+PauseSessionUpdateCallback
+LoadFrontDocuments
+ReleaseFrontDocuments

@@ -130,9 +130,9 @@ laser manager and `SecondaryClearObjectView` is `LaserDataInf`; see
 
 ## Manager lifetimes share one template (2026-11-28)
 
-Laser, auxiliary owner, item, bullet and hint managers are all written the
-same way, and new ones can be reconstructed from `src/Laser.cpp`,
-`src/Item.cpp` or `src/Bullet.cpp`:
+Laser, auxiliary owner, item, bullet, hint and pause-session managers are all
+written the same way, and new ones can be reconstructed from `src/Laser.cpp`,
+`src/Item.cpp`, `src/Bullet.cpp`, `src/Hint.cpp` or `src/PauseSession.cpp`:
 
 - Create: `new T` whose constructor runs member constructors, then
   `memset(this, 0, sizeof(*this))`, sometimes `flags |= 2`, and publishes the
@@ -148,10 +148,40 @@ same way, and new ones can be reconstructed from `src/Laser.cpp`,
   `delete g_T;`, `if (g_T) delete g_T;` and a local without the test all
   load EAX and copy it inside the branch.
 
+- The constructor is sometimes out of line (hint 0x420E90, pause 0x42BBF0,
+  ESI this) and sometimes inlined into the create function (item, bullet).
+  Member constructors (timers clearing flag bit 0, selection initializers)
+  run before the memset and survive it in the code.
+- An unreferenced compiler scalar deleting destructor (destructor, delete,
+  return this) often follows the create function (0x401440, 0x42BEF0).
+
 Link the real `ChainRegistration.cpp` and `ChainRemove.cpp` (and
 `AnimationDocument.cpp`, `LogBuffer.cpp` and the document load probe when a
 document is loaded) and give the probe generic calls to every shared helper,
 or LTCG specializes their arguments.
+
+## Open: when a private parameter arrives in EAX (2026-11-28)
+
+LTCG usually passes a private `this`/manager parameter directly in the
+callee-saved register the callee keeps it in (EDI or ESI; the chain callbacks
+then save that register around the call). Some native functions instead
+receive it in EAX and copy it at entry: the pause-session update 0x42BF30
+(EAX, kept in EBX, so its callback is `mov eax, ecx; jmp`), the ascii
+initializer 0x401080 (EAX, kept in EDI) and the pause-session destructor
+0x42BDC0. Our builds reproduce EAX for the destructor but choose EDI for the
+pause update and the ascii initializer. Member versus free function, linking
+the real bodies of every callee, and probe variants did not change it for the
+pause update. The menu draw callback 0x439F20 got its EAX bridge only once the
+real title caller was linked (TITLE_MENU_LIFECYCLE), so the deciding input may
+be another caller or the registration site; this is the next thing to test.
+
+## AnimationVmId has an empty default constructor (2026-11-28)
+
+The pause-session constructor builds a `PauseMenuView` whose `root` and
+`backdrop` are `AnimationVmId` members, and the native constructor writes
+nothing there before its memset, so `AnimationVmId() {}` is empty. Adding it
+changed no generated code; about 300 exact units include the header, so their
+receipts had to be replayed (`--file src/AnimationVmId.hpp`).
 
 ## item.cpp needs /EHs, not /EHsc (2026-11-28)
 
@@ -838,7 +868,8 @@ and `gpt-6.1-sol-argument-profile-leaf-cold-replay.log`.
 The integer-destination and pending quad-helper receipts verify before and
 after this frontier-only setting change. Their contexts, including their own
 argument support profiles, remain unchanged. The complete earlier frontier
-family is preserved in `build/probe-ltcg/ExecutionBeforeArgumentProfile`.
+family was kept in `build/probe-ltcg/ExecutionBeforeArgumentProfile` until the
+2026-11-28 cleanup removed it; rebuild from history if needed.
 
 Relinking the zero-vector byte-copy primary object with the repaired argument
 support gives 11,984 bytes / 3,193 instructions / 413 fields and raises
@@ -1048,8 +1079,8 @@ as is the 124-byte / fourteen-field float-destination support replay. These
 support diagnostics do not replace primary-TU acceptance. Evidence:
 `.analysis/gpt-6.1-sol-execution-real-timers-cold{,-code,-fields}.log` and
 `gpt-6.1-sol-real-timers-{rewind,float-destination}-support.log`.
-The preceding family is preserved at
-`build/probe-ltcg/ExecutionBeforeRealTimers`; keep the constructed-result and
+The preceding family (`build/probe-ltcg/ExecutionBeforeRealTimers`) was removed
+in the 2026-11-28 cleanup; keep the constructed-result and
 RGB/source controls private while their whole-owner differences remain open.
 
 ## Dynamic renderer input and flag width do not close the wrapper (2026-11-26)

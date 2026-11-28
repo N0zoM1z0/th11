@@ -101,3 +101,18 @@ before relinking it. Not touched: every exact family,
 `build/probe-ltcg/Execution*` models, which also remain), the target, the
 toolchain, the Wine prefix and the Ghidra project. `build/` went from 687 to
 530 MiB.
+
+## Second cleanup on 2026-11-28 (handoff)
+
+Removed about 4.6 GB: eight copies of the compiler Wine prefix
+(`.tools/wineprefix-msvc900-slot0..7`) left by a parallel-build experiment
+that was reverted (the shared Factory lock serializes all Wine work anyway),
+the private interpreter models `build/probe-ltcg/Execution*` (about 10 MiB;
+their findings and logs remain in `.analysis/` and ANIMATION_EXECUTION.md, so
+the statement above that they remain is no longer true), two unconfigured
+`build/match-linked` directories (`AnimationVmRendererOwner`,
+`BindAnimationSpriteFresh`), and 33 private scratch objects, diffs and
+backups in `.analysis/claude-*`. Files that ledgers or docs reference were
+kept. Afterwards `.tools/` was 764 MiB, `build/` 539 MiB and `.analysis/`
+105 MiB. The game prefix `.tools/wineprefix-msvc900`, every configured build
+family, the target and the Ghidra project are untouched.

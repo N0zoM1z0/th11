@@ -9,7 +9,9 @@
 // also suppresses drawing.
 struct GameInf
 {
-    unsigned char unknown000[0x60];
+    unsigned char unknown000[0x14];
+    int time014;
+    unsigned char unknown018[0x60 - 0x18];
     unsigned int flag0 : 1;
     unsigned int freezeTime : 1;
     unsigned int flag2 : 1;
