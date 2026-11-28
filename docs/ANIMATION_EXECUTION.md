@@ -953,3 +953,46 @@ or clipped extents are used. The targeted incremental link reuses the other
 Build the bounded frontier with:
 
     scripts/repo-python scripts/build-match-unit.py --unit update-stage-real-interpreter-animation-oy
+
+## Flag opcodes are bit fields (2026-11-28, not applied)
+
+Every native setter of the VM flags at +0x404 (opcodes 66, 67, 72, 73, 74, 80,
+82, 85, 86, 87, 89 and the first half of 65) and of +0x408 (opcode 99) uses
+VC9's bit-field store: `shl; xor reg,[mem]; and; xor [mem],reg`, and for bit 31
+`shl 31; and 0x7fffffff; or`. The current masked `ReplaceBits` spelling gives
+the load/compute/store form instead. The second half of opcode 65 (bits 20-21)
+is the register form in native and should keep the masked spelling.
+
+Measured in `animation-execution-tween-context`:
+
+| Variant | Code bytes | Native-shape bodies | Normalized LCS |
+| --- | ---: | ---: | ---: |
+| HEAD masked setters | 11,680 | 53/102 | 2,890 |
+| Local bit-field struct, `reinterpret_cast` reference to `vm->flags` | 11,588 | 65/102 | 2,789 |
+| Whole-VM view struct with bit fields at +0x404/+0x408 | 11,588 | 65/102 | 2,789 |
+| `AnimationVmFlags::bits` union member in `AnimationVm.hpp`, +0x408 by view | 11,588 | 65/102 | 2,953 |
+| Same, +0x408 as an anonymous-union member | 11,588 | 65/102 | 2,812 |
+
+The case bodies are right in every variant. Whole-owner alignment depends on
+x87 `fld/fadd` operand order in the post-loop update section, which flips
+between variants even though that code is textually unchanged (see the x87
+scheduling note in KNOWLEDGE_BASE.md). Only the header member variant keeps
+native order there. The source is still the HEAD masked form, because the
+header member variant changes `AnimationVm.hpp`. That header is a transitive
+receipt input of 295 exact units in 160 contexts, so applying it needs that
+whole replay. The patch is in `.analysis/claude-animation-flag-bitfields-member.patch`.
+The `.cpp`/`.inc`-only variants need 24 units / 23 contexts.
+
+Native also writes `otherPosition` before `translation` in the
+`animation_child_front` tail (opcodes 90 and 92). With the header member
+variant, reordering the source to match shrinks the owner to 11,904 bytes but
+lowers alignment to 2,932, because the front and draw tails merge
+differently. In native, the 96, 97 and 91 tails jump into one shared
+translation-copy block; ours keeps separate copies.
+
+Tools: `.analysis/claude-case-bodies.py BUILD SYMBOL ADDR CODE_SIZE` compares
+each case body's size and mnemonic shape (`--show I,J` prints bodies side by
+side; indices are jump-table indices, i.e. opcode + 1);
+`.analysis/claude-region-lcs.py` gives per-body alignment for two builds;
+`.analysis/claude-mnem-lcs.py` gives the whole-owner operand-normalized
+alignment.

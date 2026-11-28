@@ -88,3 +88,16 @@ Rebuild only the context needed for the task. Missing intermediates or stale
 receipts require that context's cold build and affected exact comparisons;
 cleanup does not require a full cohort or broad runtime suite. Never edit a
 historical receipt to make a pruned or changed family appear current.
+
+## Cleanup on 2026-11-28
+
+Removed about 170 MiB: 23 unconfigured `build/probe-ltcg/Claude*` and
+`claude-nextid` experiment directories, three private copies of the
+`AnimationExecutionTweenContext` build and the source backups in `.analysis/`,
+and 731 `.obj` intermediates (100 MiB) of non-exact frontier families.
+Frontier `source.exe/.map/.pdb` files and receipts remain; rebuild a frontier
+before relinking it. Not touched: every exact family,
+`AnimationExecutionTweenContext` (its objects are reused by the private
+`build/probe-ltcg/Execution*` models, which also remain), the target, the
+toolchain, the Wine prefix and the Ghidra project. `build/` went from 687 to
+530 MiB.

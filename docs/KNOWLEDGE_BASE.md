@@ -84,6 +84,17 @@ transfer. TH09 traced `c2.dll` in a debugger to explain ties; for TH11's
 LTCG, code generation runs in the linker-loaded `c2.dll`, which would need a
 separate investigation.
 
+## Memory xor/and/xor stores mean bit fields (2026-11-28)
+
+The memory `xor/and/xor` store (and `shl 31; and 0x7fffffff; or` for the top
+bit) identifies a bit-field assignment. A masked `flags ^= (v ^ flags) & mask`
+gives a load/compute/store sequence instead. In `ExecuteAnimationVm`, bit-field
+setters fix 12 case bodies whichever way the bit field is declared. The
+whole-owner alignment still moves by about 160 instructions between
+declarations, because x87 operand order in untouched blocks flips. Compare per
+case body (`.analysis/claude-case-bodies.py`) as well as whole-owner numbers
+before deciding. Details in ANIMATION_EXECUTION.md.
+
 ## Compare switch body order before anything else (2026-11-27)
 
 VC9 RTM lays switch case bodies out in lexical order, so a source whose cases

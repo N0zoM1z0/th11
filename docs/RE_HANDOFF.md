@@ -1,4 +1,4 @@
-# TH11 reconstruction handoff — 2026-11-27
+# TH11 reconstruction handoff — 2026-11-28
 
 ## Start here
 
@@ -9,23 +9,42 @@ LTCG owners and use natural C/C++ only: no inline assembly, padding, byte stubs
 or cropped extents. Use the repository shell, `scripts/repo-python` and direct
 Ghidra through `scripts/ghidra.py`.
 
-## 2026-11-27 summary
+## State at handoff (2026-11-28)
 
-Five owners became canonical exact (497 total): the 462-byte debug-session
-destructor and four 118/123-byte scene-VM publishers. Three systematic
-findings drive the next work (details in KNOWLEDGE_BASE, 2026-11-27):
+The canonical ledger has **497 exact owners** (`config/matches.csv`; generated
+totals in [PROGRESS](PROGRESS.md)). The working tree is clean apart from this
+handoff; every source change is committed and its affected exact consumers
+passed cold replay, except for the two stale rows in the blocker below.
+
+Work of 2026-11-28 (no new exact owners):
+
+- **Switch body order.** VC9 RTM lays switch case bodies out in lexical order.
+  `ExecuteSecondaryActorInstruction` was written almost in opcode order while
+  native is not. Reordering its 135 bodies into one
+  `SecondaryActorInstructionCases.inc` raised it from 1,184 to 3,353 of 4,003
+  register-normalized instructions. The spawn cases share a block scope again,
+  which restores the native 0x310 frame. The menu controller's 15 bodies are
+  also in native order now (205 -> 214 aligned). All configured switch
+  frontiers with a build now match native body order except
+  `ExecuteAnimationVm`'s return block. Check this first on any switch owner:
+  `.analysis/claude-case-order.py` and `.analysis/claude-case-cmp.sh`.
+- **Per-body comparison.** `.analysis/claude-case-bodies.py` compares each case
+  body's size and mnemonic shape, which separates local codegen differences
+  from global register/layout noise in large interpreters.
+- **ExecuteAnimationVm flag setters are bit fields** (finding, not applied;
+  see below and ANIMATION_EXECUTION.md).
+
+Three systematic findings from 2026-11-27 still drive the work (details in
+KNOWLEDGE_BASE):
 
 1. Barriers, `volatile` and `register` in frontier sources usually stand in
-   for ZUN's value-object or field-access code (ID counter object, fog bytes
-   as fields, by-value vector operators, direct flag updates). Removing them
-   improved ExecuteStageScript, UpdateStage, CullStageObject, DrawStageLayer
-   and the HUD precleanup.
+   for ZUN's value-object or field-access code.
 2. Native 0x4A56E0..0x4A576F is one address-exposed game-state object. Link
    `probes/secondary-game-state-context.cpp` into frontiers whose owners mix
-   pointer stores with game-state reads (replay initialization: 327 -> 394 of
-   406 aligned; HUD precleanup: 62 -> 106).
-3. x87 commutative operand order is decided by the VC9 scheduler, not by the
-   source operand order; do not spend builds swapping operands.
+   pointer stores with game-state reads.
+3. x87 commutative operand order is decided by the VC9 scheduler and flips
+   when unrelated code in the owner changes; do not spend builds swapping
+   operands.
 
 **Blocker found 2026-11-27: two canonical exact units fail at HEAD.**
 `secondary-actor-state-constructor` (0x410440, 126 B) now links as a 14-byte
@@ -55,10 +74,21 @@ addresses partly come from `.analysis/claude-map-callees.py`.
 Replay helper for changed shared inputs:
 `scripts/repo-python .analysis/claude-replay-affected.py FILE...` replays every
 exact unit whose context contains one of the files and resumes from current
-receipts. Wide menu contexts take 10-25 minutes each under load; batch shared
-source changes.
+receipts. Receipts hash transitive includes, so a header change reaches far:
+`AnimationVm.hpp` alone affects 295 exact units in 160 contexts. A `.cpp`
+used by the wide gameplay context typically needs 18-24 units in about 20
+contexts (roughly 90 minutes). Wide contexts take 5-25 minutes each under
+load. Never edit a source while a replay is running; batch changes instead.
+The failure `secondary-actor-instruction-adapter` in every replay is the known
+blocker above, not a regression.
 
 ## Current focus: ExecuteAnimationVm (0x44B4B0, 12,056 B)
+
+2026-11-28 finding, not applied: the flag-setter opcodes are bit-field
+assignments in native. A bit-field member in `AnimationVm.hpp` raises
+alignment to 2,953 and native-shape case bodies from 53 to 65 of 102. Applying
+it needs a 160-context replay; see ANIMATION_EXECUTION.md, "Flag opcodes are
+bit fields".
 
 The current cold owner is 12,096 bytes: 11,680 code/alignment plus the complete
 416-byte opcode table, against native 11,640 + 416. It has 3,223 instructions
@@ -94,8 +124,7 @@ those older proofs do not cover the new conditional-return source epoch.
 The main graph retains 23 TUs, the argument TU's canonical `/Ob1` profile and
 both actual timer TUs. The 124-byte float-destination / fourteen-field and
 20-byte rewind / one-field support proofs remain recorded in
-`gpt-6.1-sol-real-timers-{float-destination,rewind}-support.log`. The canonical
-ledger has 492 exact owners. Only the quad helper's own context uses rotation
+`gpt-6.1-sol-real-timers-{float-destination,rewind}-support.log`. Only the quad helper's own context uses rotation
 `/fp:fast`; rotation and the enclosing interpreter remain non-exact.
 
 The compiler traces correct the child-copy hypothesis. Both source forms
@@ -135,11 +164,13 @@ case-2 and default intervals; use
 `.analysis/gpt-6.1-sol-private-owner-partitions.txt` as a diagnostic partition,
 not as semantic handler boundaries.
 
-Next: finish the existing replay and checkpoint the conditional reader, then
-investigate those moves, address calculations and shared tails before changing
-shared result types. Preserve the recovered rounding and full-width IDs.
+The conditional reader is committed (`9130dd3`, all 24 consumers passed).
+Next: decide on the flag bit-field member (it needs the 160-context replay),
+then investigate the moves, address calculations and shared tails (the 96/97/91
+translation tail, the case -1/1/2 return block that our build places after the
+loop). Preserve the recovered rounding and full-width IDs.
 
-The main cold family is already current for the frozen source. If a later
+The main cold family was rebuilt from HEAD at handoff. If a later
 source change needs a rebuild, inspect only that owner and use the code/table
 aware comparison:
 
@@ -157,7 +188,7 @@ scripts/repo-python .analysis/compare-execute-animation-vm-code-only.py build/ma
 | `StepAnimationFloatPairTween` (673 B) | Non-exact; two mode-17 Y-component operand bytes remain | [ANIMATION_TWEEN](ANIMATION_TWEEN.md), [ANIMATION_TWEEN_DISPATCH](ANIMATION_TWEEN_DISPATCH.md) |
 | `BindAnimationSprite` (389 B) | Non-exact | [ANIMATION_EXECUTION](ANIMATION_EXECUTION.md) |
 
-## Other large owners worked on 2026-11-27
+## Other large owners (state at handoff)
 
 | Owner | State | Notes |
 | --- | --- | --- |
@@ -170,8 +201,9 @@ scripts/repo-python .analysis/compare-execute-animation-vm-code-only.py build/ma
 | `CullStageObject` (`403950`, 1,643 B) | Frontier, 1,646 B / 492 aligned | Natural bounds/corner/loop source; start-of-function vector copies and two corner add orders remain (STAGE_CULLING.md) |
 | `InitializeSecondaryReplay` (`4356E0`, 1,380 B) | Frontier, 1,370 B / 394 of 406 | Game-state field addresses now exposed in its context (KNOWLEDGE_BASE 2026-11-27); store scheduling remains |
 | `ExecuteSecondaryActorInstruction` (`412E30`, 16,556 B) | Frontier, 16,172 B / 2,712 aligned, 3,353 of 4,003 register-normalized | Case bodies in native order, native 0x310 frame; entry register assignment and anchored callees remain (SECONDARY_HOST_DISPATCH.md) |
-| `RunSecondaryScript` (`45B860`, 7,093 B) | Frontier, 7,085 B / 1,309 aligned, 1,759 of 1,834 register-normalized | Case shapes restored; VM register, a tail merge and callee ABIs remain (SECONDARY_SCRIPT.md) |
+| `RunSecondaryScript` (`45B860`, 7,093 B) | Frontier, 7,085 B / 1,310 aligned, 1,768 of 1,834 register-normalized | Case shapes restored; VM register, a tail merge and callee ABIs remain (SECONDARY_SCRIPT.md) |
 | `RunSecondaryDialogue` (`41D380`, 6,980 B) | Frontier, 7,008 B / 1,313 aligned, 1,805 of 1,848 register-normalized | Native switches, sprite ternaries, flag bit field, structured clear statistics, real 0x41F510 helper; register choices and one goto block layout remain (SECONDARY_DIALOGUE.md) |
+| `UpdateMenuController` (`4399B0`, 1,224 B) | Frontier `menu-controller`, 1,196 B / 214 aligned, 218 of 300 register-normalized | Native case order; page owners linked but their LTCG register conventions differ from native (MENU_CONTROLLER.md) |
 | `DrawStageLayer` (`404190`, 727 B) | Frontier, 722 B / 155 aligned | No volatile/register; stage-pointer register choice remains. Its four exact consumers pass (`.analysis/claude-stagelayer-replay.log`) |
 
 The four scene-VM publishers (0x4556E0, 0x455760, 0x4557E0, 0x455860) are
@@ -183,7 +215,9 @@ KNOWLEDGE_BASE entry of 2026-11-27). Replay log of their 83 exact consumers:
 
 Keep the interpreter and real dependencies in one work stream. Compile and
 compare the complete affected owners and relocation fields; replay only the
-exact consumers of changed executable inputs. Use `gpt-6.1-sol: ...` commits.
+exact consumers of changed executable inputs. Use the commit prefix the
+operator specifies (AGENTS.md says `gpt-6.1-sol:`; this session's operator
+asked for `claude-opus-5.5:` with no trailer).
 Retain useful failed controls in prose/logs and keep private models separate.
 
 Other unfinished work is recorded in [STAGE_SCRIPT](STAGE_SCRIPT.md),
@@ -202,24 +236,18 @@ rebuild that context before using it. The retained stage comparison logs are
 
 ## Storage and current workspace
 
-The second 2026-11-26 cleanup removed 5,282 obsolete files (286.15 MiB),
-including old object archives, unconfigured experiment builds, broad compiler
-dumps and the old Factory query cache. Combined with the earlier compression
-pass, 347.71 MiB of file content was removed. `build/` was about 571 MiB and
-`.analysis/` 102 MiB after cleanup. Inventory:
-`.analysis/storage-prune-20261126.tsv`; retention details: [ARTIFACTS](ARTIFACTS.md).
-There is no `.build/` directory. Exact families, current model/control inputs,
-target, compiler, Wine prefix, Ghidra project and the active replay remain.
-Historical private output paths are not all available; the old object archives
-were deleted, so rebuild an old experiment if needed. Two nested exact caches
-were mistakenly removed, then cold-built and compared with zero differences:
-`scale-animation-color-channel` and `build-animation-vm-quad`. Their recovery
-logs are listed in ARTIFACTS; they are excluded from the removed-file totals.
+Cleanup on 2026-11-28 removed 170 MiB: the `Claude*` experiment directories
+under `build/probe-ltcg/` (none was configured), my private build copies and
+source backups in `.analysis/`, and 731 `.obj` intermediates of non-exact
+frontier families. Afterwards `build/` was 530 MiB and `.analysis/` 103 MiB.
+Frontier linked images (`source.exe/.map/.pdb`) remain, so the comparison
+tools still work, but rebuild a frontier before relinking it or verifying its
+receipt. Exact families were not touched. `AnimationExecutionTweenContext`
+keeps its objects because the private `build/probe-ltcg/Execution*` models
+reuse them. Those private models remain.
 
-The 11,552-byte UpdateStageRealInterpreterAnimationOy receipt was already stale
-after AnimationTween.cpp changed; its object intermediates are now pruned.
-Cold-build that frontier before using its metrics.
+The 2026-11-26 cleanup and retention rules are in [ARTIFACTS](ARTIFACTS.md)
+(inventory `.analysis/storage-prune-20261126.tsv`).
 Receipts can become stale when any hashed input changes, even when generated
 code does not. A stale receipt is not a lost proof; rebuild the affected unit
-and cold-replay only affected exact units. No full cold replay was run for this
-handoff cleanup.
+and cold-replay only affected exact units.

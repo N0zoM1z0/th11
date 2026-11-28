@@ -15,7 +15,7 @@ diagnostics below retain their recorded independent context.
 
 | Owner | Address | Full bytes | Current source / diagnostic differences |
 | --- | --- | ---: | --- |
-| RunSecondaryScript | 45B860 | 7,093 | 7,085 B, 1,309 aligned / 1,759 of 1,834 register-normalized (2026-11-27); not exact |
+| RunSecondaryScript | 45B860 | 7,093 | 7,085 B, 1,310 aligned / 1,768 of 1,834 register-normalized with the real math callees (2026-11-27); not exact |
 | EnterSecondaryScriptFrame | 45B610 | 584 | 572 /546 |
 | UpdateSecondaryScripts | 45D420 | 142 | 155 /142 |
 | ReadSecondaryIntArgument | 45D4B0 | 146 | 124 /125 |
