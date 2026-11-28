@@ -26,6 +26,18 @@ defaults is slots 0-4, 7, 6, 8, 5, 9, 10-19. Cold replay:
 game-state +0x10 with the maximum at +0x8C (`g_SecondaryPlayerValueMaximum`,
 0x4A576C). Replay: `.analysis/claude-laser/replay-2.log`.
 
+The manager lifetime is exact in one linked `/GL` context
+(`build/match-linked/LaserManager`, probe `probes/laser-manager-context.cpp`
+with the real chain, document, log and chain-removal sources):
+`LaserDataInf::LaserDataInf` (0x424830, ESI this), `InitializeLaserManager`
+(0x424970), `LaserInf::~LaserInf` (0x424A70, EBX this) and
+`CreateLaserManager` (0x424B60). 0x424A70 is the manager destructor: the game
+teardown at 0x420055 is an inlined `delete g_LaserManager`. `LaserDataInf` has
+no destructor, which is why its vtable has no deleting-destructor slot and the
+release loop calls `operator delete` directly. The chain helpers are the same
+as `SecondaryAuxiliaryOwner.cpp`'s, whose initializer at 0x40E0A0 has the same
+shape and is still non-exact. Replay: `.analysis/claude-laser/replay-3.log`.
+
 ## Slots
 
 | Slot | Offset | Name | Base | LaserLine | LaserInfinite | Evidence |
@@ -53,11 +65,17 @@ laser is at +0x18 (`head.next`). Further fields: +0x450 tail, +0x454 count
 
 | Address | Role | ABI |
 | --- | --- | --- |
-| 0x424830 | `LaserDataInf` constructor: vtable, timer flag clears, `memset(this, 0, 0x440)`, timer +0x14 init | LTCG ESI this |
-| 0x424970 | Manager initialize: animation document 6, update chain 19 (callback 0x424D70), draw chain 27 (0x424DD0), tail = head | stdcall manager |
-| 0x424A70 | Manager release: unregister both chain elements, delete every laser after slot 4 | LTCG EBX this |
-| 0x424B60 | Create manager: new 0x47C, construct head, `memset`, ID 0x10000, publish, initialize | cdecl |
-| 0x424BD0 | Release then `operator delete`; no direct code reference found | LTCG EBX this |
+| 0x424830 | `LaserDataInf::LaserDataInf`: vtable, timer flag clears, `memset(this, 0, 0x440)`, `timer.SetFrame(-1)`; exact | LTCG ESI this |
+| 0x4248B0 | Unreferenced: copies 0x1E4 bytes (0x79 dwords) from EDX to EAX | EAX/EDX |
+| 0x4248C0 | Unreferenced: append ECX to the manager (EAX) list tail, count++ | EAX manager, ECX laser |
+| 0x4248E0 | Unreferenced: count--, unlink EAX, move the tail back if it was the tail | ECX manager, EAX laser |
+| 0x424910, 0x424920 | Unreferenced: cursor at +0x478 begin (first laser) and next | no arguments |
+| 0x424940 | Unreferenced out-of-line `LaserInf` constructor (inlined in 0x424B60) | LTCG EDI this |
+| 0x424970 | `InitializeLaserManager`: animation document 6, update chain 19 (callback 0x424D70), draw chain 27 (0x424DD0), tail = head; exact | stdcall manager |
+| 0x424A70 | `LaserInf::~LaserInf`: unregister both chain elements, delete every laser after slot 4, clear the global; exact | LTCG EBX this |
+| 0x424B60 | `CreateLaserManager`: new 0x47C, inlined constructor, initialize, delete on failure; exact | cdecl |
+| 0x424BD0 | Unreferenced: destructor then `operator delete`, returns the pointer | LTCG EAX this |
+| 0x424BF0 | Unreferenced: `delete g_LaserManager` | no arguments |
 | 0x424C10 | Update loop: a set clear byte +0x68 deletes the laser one frame later; otherwise Update, then advance timer +0x14 | LTCG EDI manager |
 | 0x424D70 | Update callback: returns early on flags 1, 4 or 0x400 of `[0x4A8E88]+0x60`; under flag 2 runs with the time scale set to zero | ECX chain element |
 | 0x424DF0 | Spawn: kind 0 new `LaserLineInf` (0xE8C), kind 1 new `LaserInfiniteInf` (0xEB0), link at tail, Initialize(request) | LTCG EDI request, stack kind; this is `CreateSecondaryHostObject` |
@@ -70,8 +88,14 @@ removed), 0x14-byte timers at +0x14 and +0x28, the clear byte +0x68 and
 +0x69, ID +0x6C, eighteen 0x34-byte pattern records from +0x70 and a timer at
 +0x424. Sizes: base 0x440, line 0xE8C, infinite 0xEB0.
 
+The functions marked unreferenced are absent from `config/functions.csv`
+(0x424BD0 is listed); see KNOWLEDGE_BASE, "Unreferenced functions survive".
+
 ## Next
 
-The manager functions need small linked units for their private registers.
+The unreferenced helpers above need ledger rows before they can be claimed;
+the 0x4248C0/0x4248E0 bodies show how the spawn (0x424DF0) and update loop
+(0x424C10) inline their list operations. The update loop inlines the timer
+advance (`AdvanceStageTimer`'s body).
 The derived slot bodies (181-1,644 bytes) are the bulk of the TU. TH10's
 `EnemyLaser*` sources are a structural reference only.

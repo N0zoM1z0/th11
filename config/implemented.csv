@@ -846,3 +846,7 @@ LaserLineInf::Unknown10
 LaserInfiniteInf::Unknown10
 AddSecondaryPlayerValue
 MarkSecondaryHostEffects
+LaserDataInf::LaserDataInf
+InitializeLaserManager
+LaserInf::~LaserInf
+CreateLaserManager

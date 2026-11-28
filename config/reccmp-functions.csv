@@ -847,3 +847,7 @@ LaserLineInf::Unknown10,0x00426220,function
 LaserInfiniteInf::Unknown10,0x00427720,function
 AddSecondaryPlayerValue,0x00424640,function
 MarkSecondaryHostEffects,0x00424FB0,function
+LaserDataInf::LaserDataInf,0x00424830,function
+InitializeLaserManager,0x00424970,function
+LaserInf::~LaserInf,0x00424A70,function
+CreateLaserManager,0x00424B60,function

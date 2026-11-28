@@ -128,6 +128,23 @@ often describe the same objects: `g_SecondaryClearManager` (0x4A8E94) is the
 laser manager and `SecondaryClearObjectView` is `LaserDataInf`; see
 [LASER](LASER.md).
 
+## Unreferenced functions survive; the inventory misses them (2026-11-28)
+
+The target keeps functions that nothing references. In laser.cpp alone,
+0x4248B0, 0x4248C0, 0x4248E0, 0x424910, 0x424920, 0x424940, 0x424BD0 and
+0x424BF0 have no call, jump or pointer reference; several are out-of-line
+copies of helpers that are inlined at their real uses (0x424940 is the
+`LaserInf` constructor that `CreateLaserManager` inlines). This fits a link
+without `/OPT:REF` (the default once `/DEBUG` is given). The Ghidra inventory
+only found referenced code, so these bodies have no ledger row:
+`.analysis/claude-ledger-gaps.txt` lists 336 ledger gaps in 0x401000..0x460000
+that contain non-int3 bytes, about 40 KB (some are switch tables owned by the
+preceding function, e.g. ExecuteStageScript's). The 0x4013F0 gap is the ascii
+manager's create function. Adding rows means a reviewed boundary/origin row
+per function; do it when the function is reconstructed, not as a bulk
+inventory refresh. Inlined-everywhere helpers are evidence for which helpers
+ZUN wrote as separate functions.
+
 ## In-place member increments keep the loaded register (2026-11-28)
 
 The 83-byte `AdvanceStageTimer` (0x459270) was exact only through a naked
