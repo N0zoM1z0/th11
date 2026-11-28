@@ -29,20 +29,8 @@ if [[ ! -f "$compiler" ]]; then
   exit 1
 fi
 
-expected_sha256=$(python3 - "$repo_root" <<'PY'
-from pathlib import Path
-import sys
-import tomllib
-
-with (Path(sys.argv[1]) / "config" / "tools.lock.toml").open("rb") as stream:
-    print(tomllib.load(stream)["msvc90"]["components"]["compiler"]["sha256"])
-PY
-)
-actual_sha256=$(sha256sum "$compiler" | awk '{print $1}')
-if [[ "$actual_sha256" != "$expected_sha256" ]]; then
-  echo "pinned VC9 RTM compiler hash mismatch: $actual_sha256" >&2
-  exit 1
-fi
+# Compiler identity is checked once per build/replay run (verify-toolchain) and
+# bound in every receipt, so it is not rehashed for each compile.
 
 mkdir -p "$(dirname -- "$output_path")"
 pdb_path="${output_path%.*}.pdb"

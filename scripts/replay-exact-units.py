@@ -63,8 +63,11 @@ def main() -> int:
     missing = [f for f in args.file if not (ROOT / f).is_file()]
     if missing:
         parser.error(f'unknown file selector: {missing}')
-    contexts = {name: builder.unit_context(unit) for name, unit in units.items()}
-    selected = select_units(units, contexts, args.unit, args.source, args.file)
+    # Include closures are only needed for --file selection and for grouping.
+    candidates = units if args.file else {n: u for n, u in units.items()
+                                          if n in args.unit or (not u.get('frontier') and (not args.unit and not args.source or u['source'] in args.source))}
+    contexts = {name: builder.unit_context(unit) for name, unit in candidates.items()}
+    selected = select_units(candidates, contexts, args.unit, args.source, args.file)
     if not selected:
         print('no canonical exact units selected')
         return 0

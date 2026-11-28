@@ -334,10 +334,12 @@ class BuildGraphControls(unittest.TestCase):
         manifest = dict(schema_version=1, target_sha256=target['target']['sha256'], units=dict(a=unit, b=other))
         with patch.object(driver.tomllib, 'load', side_effect=[manifest, target]):
             with self.assertRaisesRegex(ValueError, 'share an output'):
-                driver.units()
+                driver.validate_units(driver.units())
         other['output_dir'] = 'build/test-linked-graph-b'
         with patch.object(driver.tomllib, 'load', side_effect=[manifest, target]):
-            self.assertEqual(len(driver.units()), 2)
+            configured = driver.units()
+            driver.validate_units(configured)
+            self.assertEqual(len(configured), 2)
 
 
 class ReplaySelectionTests(unittest.TestCase):

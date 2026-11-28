@@ -20,7 +20,11 @@ def units() -> dict:
         target = tomllib.load(stream)['target']
     if document.get('schema_version') != 1 or document.get('target_sha256') != target['sha256']:
         raise ValueError('unit manifest is not bound to the current target')
-    result = document.get('units', {})
+    return document.get('units', {})
+
+
+def validate_units(result: dict) -> None:
+    """Full manifest check (--check): unique outputs and complete field lists."""
     outputs = {}
     for name, unit in result.items():
         context = unit_context(unit)
@@ -46,7 +50,6 @@ def units() -> dict:
             if offset < 0 or offset + 4 > int(unit['size']) or fields & occupied:
                 raise ValueError(f'overlapping/out-of-range relocations: {name}')
             occupied |= fields
-    return result
 
 
 def unit_context(unit: dict) -> dict:
@@ -94,6 +97,7 @@ def main() -> int:
         if set(selected) - set(configured):
             raise ValueError('unknown unit selector')
         if args.check:
+            validate_units(configured)
             counts = {kind: sum(u['artifact_kind'] == kind for u in configured.values()) for kind in ('coff', 'linked-pe')}
             print(f'match graph OK: {counts["coff"]} VC9 normal-COFF, {counts["linked-pe"]} public linked-PE units')
             return 0
