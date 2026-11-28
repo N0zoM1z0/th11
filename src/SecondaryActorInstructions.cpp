@@ -16,12 +16,11 @@ int SecondaryActorStateView::ExecuteInstruction()
     SecondaryHostRecord *record;
     int secondIndex;
     short firstCount;
+    SecondaryHostSpawnArguments arguments;
+    int words;
     switch (static_cast<short>(opcode))
     {
-#include "SecondaryActorInstructionAnimation.inc"
-#include "SecondaryActorInstructionMotion.inc"
-#include "SecondaryActorInstructionControl.inc"
-#include "SecondaryActorInstructionRecords.inc"
+#include "SecondaryActorInstructionCases.inc"
     }
     return 0;
 }
