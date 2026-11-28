@@ -1,6 +1,6 @@
 # Stage interpolation and timers
 
-The StageTween family has nine complete function owners with natural C++ source in src/StageTween.cpp. AdvanceStageTimer additionally has an isolated private-ESI translation unit in src/StageTimerExact.cpp that reproduces its complete 83-byte native owner without changing the vector-tween LTCG context.
+The StageTween family has nine complete function owners with natural C++ source in src/StageTween.cpp. AdvanceStageTimer additionally has its own natural C++ translation unit, src/StageTimer.cpp, whose /GL build reproduces the complete 83-byte private-ESI native owner without changing the vector-tween LTCG context.
 Direct local Ghidra review attested the mapped text hash and reconciled full
 flows, returns, references and neighbors. These nine owners are contiguous,
 without embedded tables or external interior references.
@@ -346,13 +346,15 @@ No register shims, ASM or padding were added. The separate StageScript-primary
 context remains a distinct LTCG producer and must not be conflated with this
 exact StageTween-family proof.
 
-AdvanceStageTimer is exact in the isolated advance-stage-timer linked-PE
-unit. The body preserves the private ESI input, ECX save/restore, previous-frame
-copy, strict near-one scale comparisons, x87 tick branch and _ftol2_sse
-fractional conversion. Four reviewed relocations bind the original 0.99f,
-1.01f, 1.0 constants and CRT conversion routine. Keeping this proof in its own
-translation unit prevents its private register convention from perturbing
-StepStageVectorTween's LTCG caller allocation. Replay it with:
+AdvanceStageTimer is exact in the advance-stage-timer linked-PE unit from
+natural C++ (src/StageTimer.cpp, 2026-11-28). The earlier proof was a naked
+inline-assembly body and was replaced. The one source difference from the
+StageTween.cpp copy is that the near-one branch increments `self->current` in
+place and the function returns `self->current`; a separate `previous + 1`
+local gives `lea eax, [edx + 1]` instead of the native `inc edx ... mov eax,
+edx`. /GL assigns the ESI input from an ordinary C++ caller. Four reviewed
+relocations bind the 0.99f-as-double, 1.01f and 1.0 constants
+(`__real@` COMDATs) and __ftol2_sse. Replay it with:
 scripts/repo-python scripts/replay-exact-units.py --unit advance-stage-timer
 
 

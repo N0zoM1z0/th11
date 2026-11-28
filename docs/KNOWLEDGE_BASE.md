@@ -128,6 +128,17 @@ often describe the same objects: `g_SecondaryClearManager` (0x4A8E94) is the
 laser manager and `SecondaryClearObjectView` is `LaserDataInf`; see
 [LASER](LASER.md).
 
+## In-place member increments keep the loaded register (2026-11-28)
+
+The 83-byte `AdvanceStageTimer` (0x459270) was exact only through a naked
+inline-assembly body; it is now exact from natural C++ in
+`src/StageTimer.cpp`. The native `inc edx; ...; mov [esi+4], edx; mov eax,
+edx` comes from `self->current++` followed by `return self->current`, after
+`self->previous = self->current` loaded `current` into EDX. A separate
+`int current = previous + 1` local gives `lea eax, [edx + 1]` and stores EAX.
+/GL gave the ESI timer input to a plain C++ caller without any register
+hints. No other source in `src/` or `probes/` uses inline assembly.
+
 ## Memory xor/and/xor stores mean bit fields (2026-11-28)
 
 The memory `xor/and/xor` store (and `shl 31; and 0x7fffffff; or` for the top

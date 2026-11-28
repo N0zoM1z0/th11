@@ -9999,7 +9999,7 @@ linkages = [
 
 [units.advance-stage-timer]
 artifact_kind = "linked-pe"
-source = "src/StageTimerExact.cpp"
+source = "src/StageTimer.cpp"
 inputs = ["src/StageTween.hpp"]
 support_sources = []
 output_dir = "build/match-linked/AdvanceStageTimer"
@@ -10010,9 +10010,9 @@ symbol = "?AdvanceStageTimer@@YGHPAUStageTimerView@@@Z"
 target_address = 0x00459270
 size = 83
 linkages = [
-  { offset = 0x0D, type = "DIR32", symbol = "_g_StageTimerScaleLower", target = 0x00497F28 },
-  { offset = 0x1A, type = "DIR32", symbol = "_g_StageTimerScaleUpper", target = 0x00497F24 },
-  { offset = 0x2D, type = "DIR32", symbol = "_g_StageTimerOne", target = 0x00497E48 },
+  { offset = 0x0D, type = "DIR32", symbol = "__real@3fefae1480000000", target = 0x00497F28 },
+  { offset = 0x1A, type = "DIR32", symbol = "__real@3f8147ae", target = 0x00497F24 },
+  { offset = 0x2D, type = "DIR32", symbol = "__real@3ff0000000000000", target = 0x00497E48 },
   { offset = 0x4A, type = "REL32", symbol = "__ftol2_sse", target = 0x004864E0 },
 ]
 
