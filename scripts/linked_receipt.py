@@ -1,5 +1,6 @@
 """Bind complete VC9 linked artifacts to their cold compilation context."""
 from __future__ import annotations
+import functools
 import hashlib
 import json
 import os
@@ -19,6 +20,18 @@ def below(value: str, *, build: bool = False) -> Path:
     path = (ROOT / value).resolve()
     path.relative_to((ROOT / 'build').resolve() if build else ROOT)
     return path
+
+
+@functools.lru_cache(maxsize=None)
+def _quoted_includes(path: str, mtime_ns: int, size: int) -> tuple[str, ...]:
+    # Keyed by size and modification time, so an edited file is scanned again.
+    text = Path(path).read_text()
+    return tuple(re.findall(r'^\s*#\s*include\s*"([^"]+)"', text, re.MULTILINE))
+
+
+def quoted_includes(path: Path) -> tuple[str, ...]:
+    status = path.stat()
+    return _quoted_includes(str(path), status.st_mtime_ns, status.st_size)
 
 
 def contract(unit: dict) -> dict:
@@ -53,7 +66,7 @@ def contract(unit: dict) -> dict:
         path = below(pending.pop())
         if not path.is_file():
             raise ValueError(f'missing linked source input: {path}')
-        for name in re.findall(r'^\s*#\s*include\s*"([^"]+)"', path.read_text(), re.MULTILINE):
+        for name in quoted_includes(path):
             resolved = next((p.resolve() for p in [path.parent / name, *(d / name for d in include_dirs)] if p.is_file()), None)
             if resolved is None:
                 raise ValueError(f'unbound linked quoted include {name!r}')
@@ -79,7 +92,7 @@ def provenance(unit: dict) -> dict:
     with (ROOT / 'config/target.toml').open('rb') as stream:
         target = tomllib.load(stream)['target']['sha256']
     producers = ['scripts/ltcg_link.py', 'scripts/linked_receipt.py',
-                 'scripts/compile-probe.sh', 'scripts/run-headless-wine.sh']
+                 'scripts/compile-probe.sh', 'scripts/run-headless-wine.sh', 'scripts/winpath.py']
     return dict(schema_version=1, target_sha256=target, context=context,
                 source_sha256={p: digest(ROOT / p) for p in context['inputs']},
                 tools_lock_sha256=digest(ROOT / 'config/tools.lock.toml'), tools_sha256=observed,

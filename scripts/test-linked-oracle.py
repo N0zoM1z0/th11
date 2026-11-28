@@ -260,7 +260,7 @@ class ReceiptControls(unittest.TestCase):
         for d in ['src', 'tools', 'config', 'scripts', 'build/unit']:
             (self.root / d).mkdir(parents=True)
         for p in ['scripts/ltcg_link.py', 'scripts/linked_receipt.py', 'scripts/compile-probe.sh',
-                  'scripts/run-headless-wine.sh', 'src/unit.hpp', 'tools/compiler']:
+                  'scripts/run-headless-wine.sh', 'scripts/winpath.py', 'src/unit.hpp', 'tools/compiler']:
             (self.root / p).write_text(p)
         (self.root / 'src/unit.cpp').write_text('#include "unit.hpp"\nint unit() { return 1; }\n')
         (self.root / 'config/target.toml').write_text('[target]\nsha256="' + '0' * 64 + '"\n')
@@ -347,14 +347,24 @@ class ReplaySelectionTests(unittest.TestCase):
         spec.loader.exec_module(self.replay)
         self.units = {'a': {'source': 'src/A.cpp'}, 'b': {'source': 'src/B.cpp'},
                       'open': {'source': 'src/A.cpp', 'frontier': True}}
+        self.contexts = {'a': {'inputs': ['src/A.cpp', 'src/Shared.hpp']},
+                         'b': {'inputs': ['src/B.cpp']},
+                         'open': {'inputs': ['src/A.cpp', 'src/Shared.hpp']}}
+
+    def select(self, names, sources, files=()):
+        return self.replay.select_units(self.units, self.contexts, list(names), list(sources), list(files))
 
     def test_unscoped_and_source_replay_skip_frontier_units(self):
-        self.assertEqual(self.replay.select_units(self.units, [], []), ['a', 'b'])
-        self.assertEqual(self.replay.select_units(self.units, [], ['src/A.cpp']), ['a'])
+        self.assertEqual(self.select([], []), ['a', 'b'])
+        self.assertEqual(self.select([], ['src/A.cpp']), ['a'])
 
     def test_named_frontier_unit_is_selected(self):
-        self.assertEqual(self.replay.select_units(self.units, ['open'], []), ['open'])
-        self.assertEqual(self.replay.select_units(self.units, ['open'], ['src/B.cpp']), ['b', 'open'])
+        self.assertEqual(self.select(['open'], []), ['open'])
+        self.assertEqual(self.select(['open'], ['src/B.cpp']), ['b', 'open'])
+
+    def test_file_selects_exact_units_including_it(self):
+        self.assertEqual(self.select([], [], ['src/Shared.hpp']), ['a'])
+        self.assertEqual(self.select([], [], ['src/Other.hpp']), [])
 
 
 if __name__ == '__main__':

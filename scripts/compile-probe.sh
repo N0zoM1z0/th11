@@ -45,16 +45,25 @@ if [[ "$actual_sha256" != "$expected_sha256" ]]; then
 fi
 
 mkdir -p "$(dirname -- "$output_path")"
-wine_env=(env WINEARCH=win32 WINEPREFIX="$wine_prefix" WINEDEBUG=-all WINEDLLOVERRIDES=mscoree,mshtml=)
-source_win=$("${wine_env[@]}" winepath -w "$(realpath "$source_path")" | tr -d '\r')
-output_win=$("${wine_env[@]}" winepath -w "$(realpath -m "$output_path")" | tr -d '\r')
 pdb_path="${output_path%.*}.pdb"
-pdb_win=$("${wine_env[@]}" winepath -w "$(realpath -m "$pdb_path")" | tr -d '\r')
-vc_bin_win=$("${wine_env[@]}" winepath -w "$msvc_root/VC/bin" | tr -d '\r')
-vc_include=$("${wine_env[@]}" winepath -w "$msvc_root/VC/include" | tr -d '\r')
-sdk_include=$("${wine_env[@]}" winepath -w "$msvc_root/Microsoft SDKs/Windows/v6.0A/Include" | tr -d '\r')
-vc_lib=$("${wine_env[@]}" winepath -w "$msvc_root/VC/lib" | tr -d '\r')
-sdk_lib=$("${wine_env[@]}" winepath -w "$msvc_root/Microsoft SDKs/Windows/v6.0A/Lib" | tr -d '\r')
+# Pure drive-mapping conversion, identical to `winepath -w` (scripts/test-winpath.py)
+# without one Wine launch per path.
+mapfile -t win_paths < <(python3 "$repo_root/scripts/winpath.py" "$wine_prefix" \
+  "$(realpath "$source_path")" "$(realpath -m "$output_path")" "$(realpath -m "$pdb_path")" \
+  "$msvc_root/VC/bin" "$msvc_root/VC/include" "$msvc_root/Microsoft SDKs/Windows/v6.0A/Include" \
+  "$msvc_root/VC/lib" "$msvc_root/Microsoft SDKs/Windows/v6.0A/Lib")
+if (( ${#win_paths[@]} != 8 )); then
+  echo "path conversion failed" >&2
+  exit 1
+fi
+source_win=${win_paths[0]}
+output_win=${win_paths[1]}
+pdb_win=${win_paths[2]}
+vc_bin_win=${win_paths[3]}
+vc_include=${win_paths[4]}
+sdk_include=${win_paths[5]}
+vc_lib=${win_paths[6]}
+sdk_lib=${win_paths[7]}
 
 WINEPATH="$vc_bin_win${WINEPATH:+;$WINEPATH}" \
 INCLUDE="$vc_include;$sdk_include" \

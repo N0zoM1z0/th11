@@ -8,8 +8,12 @@ from pathlib import Path
 import re
 import subprocess
 import struct
+import sys
 import tempfile
 import tomllib
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import winpath  # noqa: E402
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -88,10 +92,9 @@ def tool_environment() -> tuple[Path, dict[str, str]]:
 
 
 def windows_path(path: Path, environment: dict[str, str]) -> str:
-    converted = run(["winepath", "-w", str(path.resolve())], environment=environment)
-    if converted.returncode != 0:
-        raise ValueError(f"winepath failed for {path}: {converted.stdout.strip()}")
-    return converted.stdout.strip().replace("\r", "")
+    # Same drive mapping as `winepath -w` (scripts/test-winpath.py), without a
+    # Wine launch per path.
+    return winpath.windows_path(path.resolve(), environment["WINEPREFIX"])
 
 
 def remove_files(paths: list[Path]) -> list[str]:
