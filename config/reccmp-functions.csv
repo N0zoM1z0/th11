@@ -865,3 +865,4 @@ PauseSecondaryGameplayItems,0x0040BE20,function
 PauseSecondaryGameplayBoss,0x0042BD90,function
 ResetSecondaryGameplayAudio,0x0042A240,function
 StartSecondaryGameplayAudio,0x0042A150,function
+SecondaryUnaryMathA,0x00405FB0,function

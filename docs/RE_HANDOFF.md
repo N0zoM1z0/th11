@@ -76,7 +76,7 @@ replay. Three earlier exact claims were withdrawn because they fail at HEAD
 (blocker below).
 
 Batch 1, laser.cpp, manager lifetimes and gameplay helpers (2026-11-28, later
-session; 46 new exact owners, 3 stale claims withdrawn):
+session; 47 new exact owners, 3 stale claims withdrawn):
 
 - **The target names its TUs and classes.** `.rdata` keeps
   `.\src\game\<file>.cpp:<line> <Type>` tags in link order, and RTTI names the
@@ -115,6 +115,16 @@ session; 46 new exact owners, 3 stale claims withdrawn):
   (`src/SecondaryGameplayAudio.cpp`, `src/SecondaryGameplaySceneEffect.cpp`;
   SECONDARY_GAMEPLAY.md). The same mapping trick works for any wide owner:
   list its native calls in order and line them up with the source.
+- **Identical bodies** (`.analysis/claude-dup-bodies.txt`, normalized
+  disassembly grouped across the ledger): `SecondaryUnaryMathA` (0x405FB0,
+  sine) is exact as the twin of the exact cosine wrapper. Open leads for
+  Batch 3: `ChangeSecondaryAnimationScript` (0x456770) has the body of the
+  exact `ChangeSecondaryDialogueSprite` once its id parameter is a
+  `const AnimationVmId &` (needs `SecondaryActorRuntime.hpp` and
+  `SecondaryActorUpdate.cpp`); 0x423240 is an out-of-line
+  `StageEmbeddedVm` destructor; the unreferenced atan2 copies 0x419750 and
+  0x433C80 take EAX. Static header helpers recur once per TU (KNOWLEDGE_BASE,
+  FSINCOS helpers), which marks TU boundaries.
 - **Inline assembly removed.** The exact `AdvanceStageTimer` used a naked asm
   body; `src/StageTimer.cpp` now reproduces it from natural C++.
 - **Tools** (all in `.analysis/`): `claude-dis.py` (target disassembly with
