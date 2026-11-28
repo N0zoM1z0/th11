@@ -230,3 +230,19 @@ fastcall compilation emits **10/11** bytes with ECX payload and EDX
 index. Several calling-convention/source variants were compared in
 `.analysis/try-master-slot040-20261112.py`; none is strictly exact, so
 the source remains uncredited in the exact ledger.
+
+## Callees of `UpdateSecondaryGameplay` (2026-11-28)
+
+Matching the native call order in 0x420390 to the source gives the addresses
+behind several declared-only helpers in `SecondaryGameplay.hpp`:
+`PauseSecondaryGameplayItems` 0x40BE20, `PauseSecondaryGameplaySceneEffect`
+0x421070 (sets bit 1 in both chain elements of the object at 0x4A8E8C),
+`ResetSecondaryGameplayAudio` 0x42A240, `StartSecondaryGameplayAudio`
+0x42A150 (called in both branches of the stage-variant test),
+`StartSecondaryGameplayExtraAudio` 0x420BA0 and
+`AdvanceSecondaryGameplayExtraAudio` 0x420B80. The last two are music
+pause and resume: sound commands 6 "Pause" and 7 "UnPause". Stage variant 6
+starts its music paused and resumes it at frame 300. Both are exact in
+`src/SecondaryGameplayAudio.cpp` (units `secondary-gameplay-music-pause` and
+`-resume`, with the real `SoundQueue.cpp` in the context). Their old names
+are kept so the declarations in the wide contexts stay unchanged.

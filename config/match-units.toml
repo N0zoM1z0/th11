@@ -1205,6 +1205,7 @@ linkages = [
 ]
 
 [units.stage-embedded-vm-constructor]
+frontier = true # exact claim withdrawn 2026-11-28; needs the StageTimerView constructor
 artifact_kind = "linked-pe"
 source = "src/StageLifecycle.cpp"
 inputs = ["src/StageResource.hpp"]
@@ -1720,7 +1721,7 @@ linkages = [
 artifact_kind = "linked-pe"
 source = "src/AsciiLifecycle.cpp"
 inputs = ["src/AsciiLifecycle.hpp", "src/Chain.hpp"]
-support_sources = ["probes/ascii-lifecycle-context.cpp", "src/StageLifecycle.cpp", "src/ChainRegistration.cpp", "src/AnimationVm.cpp", "src/AnimationDocument.cpp", "src/ErrorLog.cpp", "src/AnimationSpriteBinding.cpp"]
+support_sources = ["probes/ascii-lifecycle-context.cpp", "src/StageLifecycle.cpp", "src/ChainRegistration.cpp", "src/AnimationVm.cpp", "src/AnimationDocument.cpp", "src/AnimationSpriteBinding.cpp", "src/LogBuffer.cpp", "src/ChainRemove.cpp", "probes/animation-document-load-context.cpp"]
 output_dir = "build/match-linked/AsciiLifecycle"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "AsciiLifecycleProbe@16"
@@ -1734,7 +1735,7 @@ linkages = []
 artifact_kind = "linked-pe"
 source = "src/AsciiLifecycle.cpp"
 inputs = ["src/AsciiLifecycle.hpp"]
-support_sources = ["probes/ascii-lifecycle-context.cpp", "src/StageLifecycle.cpp", "src/ChainRegistration.cpp", "src/AnimationVm.cpp", "src/AnimationDocument.cpp", "src/ErrorLog.cpp", "src/AnimationSpriteBinding.cpp"]
+support_sources = ["probes/ascii-lifecycle-context.cpp", "src/StageLifecycle.cpp", "src/ChainRegistration.cpp", "src/AnimationVm.cpp", "src/AnimationDocument.cpp", "src/AnimationSpriteBinding.cpp", "src/LogBuffer.cpp", "src/ChainRemove.cpp", "probes/animation-document-load-context.cpp"]
 output_dir = "build/match-linked/AsciiLifecycle"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "AsciiLifecycleProbe@16"
@@ -1754,7 +1755,7 @@ linkages = [
 artifact_kind = "linked-pe"
 source = "src/AsciiLifecycle.cpp"
 inputs = ["src/AsciiLifecycle.hpp"]
-support_sources = ["probes/ascii-lifecycle-context.cpp", "src/StageLifecycle.cpp", "src/ChainRegistration.cpp", "src/AnimationVm.cpp", "src/AnimationDocument.cpp", "src/ErrorLog.cpp", "src/AnimationSpriteBinding.cpp"]
+support_sources = ["probes/ascii-lifecycle-context.cpp", "src/StageLifecycle.cpp", "src/ChainRegistration.cpp", "src/AnimationVm.cpp", "src/AnimationDocument.cpp", "src/AnimationSpriteBinding.cpp", "src/LogBuffer.cpp", "src/ChainRemove.cpp", "probes/animation-document-load-context.cpp"]
 output_dir = "build/match-linked/AsciiLifecycle"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "AsciiLifecycleProbe@16"
@@ -1770,7 +1771,7 @@ linkages = [
 artifact_kind = "linked-pe"
 source = "src/AsciiLifecycle.cpp"
 inputs = ["src/AsciiLifecycle.hpp"]
-support_sources = ["probes/ascii-lifecycle-context.cpp", "src/StageLifecycle.cpp", "src/ChainRegistration.cpp", "src/AnimationVm.cpp", "src/AnimationDocument.cpp", "src/ErrorLog.cpp", "src/AnimationSpriteBinding.cpp"]
+support_sources = ["probes/ascii-lifecycle-context.cpp", "src/StageLifecycle.cpp", "src/ChainRegistration.cpp", "src/AnimationVm.cpp", "src/AnimationDocument.cpp", "src/AnimationSpriteBinding.cpp", "src/LogBuffer.cpp", "src/ChainRemove.cpp", "probes/animation-document-load-context.cpp"]
 output_dir = "build/match-linked/AsciiLifecycle"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "AsciiLifecycleProbe@16"
@@ -3615,6 +3616,7 @@ linkages = [
 ]
 
 [units.secondary-actor-state-constructor]
+frontier = true # exact claim withdrawn 2026-11-28; needs the StageTimerView constructor
 artifact_kind = "linked-pe"
 source = "src/SecondaryActorLifetime.cpp"
 inputs = ["src/SecondaryActorState.hpp"]
@@ -4854,6 +4856,7 @@ linkages = [
 ]
 
 [units.secondary-actor-instruction-adapter]
+frontier = true # exact claim withdrawn 2026-11-28; needs the StageTimerView constructor
 artifact_kind = "linked-pe"
 source = "src/SecondaryActorInstructions.cpp"
 inputs = ["src/SecondaryActorState.hpp"]
@@ -11557,30 +11560,6 @@ linkages = [
   { offset = 116, type = "DIR32", local = true, target = 0x0044B3BB },
   { offset = 120, type = "DIR32", local = true, target = 0x0044B3C2 },
 ]
-
-# Leaf used by animation VM sprite-selection opcodes and UI animation bindings.
-[units.bind-animation-sprite]
-frontier = true
-artifact_kind = "linked-pe"
-source = "src/AnimationSpriteBinding.cpp"
-inputs = ["src/AnimationSpriteBinding.hpp"]
-support_sources = ["src/AnimationExecution.cpp", "src/AnimationUnaryTangent.cpp", "probes/animation-execution-isolated-context.cpp", "src/AnimationExecutionPolarPoint.cpp"]
-normal_support_sources = ["src/AnimationUnaryTangent.cpp", "probes/animation-execution-isolated-context.cpp", "src/AnimationExecutionPolarPoint.cpp"]
-output_dir = "build/match-linked/BindAnimationSpriteFresh"
-profile = ["/TP", "/O2", "/Oy", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
-entry = "AnimationExecutionProbe@4"
-functions = ["BindAnimationSprite"]
-symbol = "?BindAnimationSprite@@YGHPAUAnimationDocumentView@@HPAUAnimationVmView@@@Z"
-target_address = 0x0044AB40
-size = 389
-support_profiles = { "src/AnimationExecution.cpp" = ["/TP", "/O2", "/Oy-", "/Ob2", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"] }
-linkages = [
-  { offset = 316, type = "DIR32", symbol = "__real@3f70000000000000", target = 0x00497F50 },
-]
-
-# laser.cpp virtual slots named from target RTTI (LaserDataInf, LaserLineInf,
-# LaserInfiniteInf). Plain __thiscall normal-COFF units sharing one object;
-# the only references are the three vtables. docs/LASER.md.
 [units.laser-data-unknown00]
 artifact_kind = "coff"
 source = "src/Laser.cpp"
@@ -11883,8 +11862,8 @@ relocations = [
 [units.initialize-laser-manager]
 artifact_kind = "linked-pe"
 source = "src/Laser.cpp"
-inputs = ["src/Laser.hpp", "src/StageResource.hpp", "src/ChainRegistration.hpp", "src/Chain.hpp", "src/AnimationDocument.hpp", "src/LogBuffer.hpp", "src/ErrorLog.hpp", "src/MainRuntime.hpp"]
-support_sources = ["probes/laser-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/AnimationDocument.cpp", "src/LogBuffer.cpp", "probes/animation-document-load-context.cpp"]
+inputs = ["src/Laser.hpp", "src/GameInf.hpp", "src/StageResource.hpp", "src/ChainRegistration.hpp", "src/Chain.hpp", "src/AnimationDocument.hpp", "src/LogBuffer.hpp", "src/ErrorLog.hpp", "src/MainRuntime.hpp"]
+support_sources = ["probes/laser-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/AnimationDocument.cpp", "src/LogBuffer.cpp", "probes/animation-document-load-context.cpp", "src/StageLifecycle.cpp"]
 output_dir = "build/match-linked/LaserManager"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "LaserManagerProbe@12"
@@ -11909,8 +11888,8 @@ linkages = [
 [units.laser-manager-destructor]
 artifact_kind = "linked-pe"
 source = "src/Laser.cpp"
-inputs = ["src/Laser.hpp", "src/StageResource.hpp", "src/ChainRegistration.hpp", "src/Chain.hpp", "src/AnimationDocument.hpp", "src/LogBuffer.hpp", "src/ErrorLog.hpp", "src/MainRuntime.hpp"]
-support_sources = ["probes/laser-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/AnimationDocument.cpp", "src/LogBuffer.cpp", "probes/animation-document-load-context.cpp"]
+inputs = ["src/Laser.hpp", "src/GameInf.hpp", "src/StageResource.hpp", "src/ChainRegistration.hpp", "src/Chain.hpp", "src/AnimationDocument.hpp", "src/LogBuffer.hpp", "src/ErrorLog.hpp", "src/MainRuntime.hpp"]
+support_sources = ["probes/laser-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/AnimationDocument.cpp", "src/LogBuffer.cpp", "probes/animation-document-load-context.cpp", "src/StageLifecycle.cpp"]
 output_dir = "build/match-linked/LaserManager"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "LaserManagerProbe@12"
@@ -11945,8 +11924,8 @@ linkages = [
 [units.create-laser-manager]
 artifact_kind = "linked-pe"
 source = "src/Laser.cpp"
-inputs = ["src/Laser.hpp", "src/StageResource.hpp", "src/ChainRegistration.hpp", "src/Chain.hpp", "src/AnimationDocument.hpp", "src/LogBuffer.hpp", "src/ErrorLog.hpp", "src/MainRuntime.hpp"]
-support_sources = ["probes/laser-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/AnimationDocument.cpp", "src/LogBuffer.cpp", "probes/animation-document-load-context.cpp"]
+inputs = ["src/Laser.hpp", "src/GameInf.hpp", "src/StageResource.hpp", "src/ChainRegistration.hpp", "src/Chain.hpp", "src/AnimationDocument.hpp", "src/LogBuffer.hpp", "src/ErrorLog.hpp", "src/MainRuntime.hpp"]
+support_sources = ["probes/laser-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/AnimationDocument.cpp", "src/LogBuffer.cpp", "probes/animation-document-load-context.cpp", "src/StageLifecycle.cpp"]
 output_dir = "build/match-linked/LaserManager"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "LaserManagerProbe@12"
@@ -11967,8 +11946,8 @@ linkages = [
 [units.laser-data-constructor]
 artifact_kind = "linked-pe"
 source = "src/Laser.cpp"
-inputs = ["src/Laser.hpp", "src/StageResource.hpp", "src/ChainRegistration.hpp", "src/Chain.hpp", "src/AnimationDocument.hpp", "src/LogBuffer.hpp", "src/ErrorLog.hpp", "src/MainRuntime.hpp"]
-support_sources = ["probes/laser-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/AnimationDocument.cpp", "src/LogBuffer.cpp", "probes/animation-document-load-context.cpp"]
+inputs = ["src/Laser.hpp", "src/GameInf.hpp", "src/StageResource.hpp", "src/ChainRegistration.hpp", "src/Chain.hpp", "src/AnimationDocument.hpp", "src/LogBuffer.hpp", "src/ErrorLog.hpp", "src/MainRuntime.hpp"]
+support_sources = ["probes/laser-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/AnimationDocument.cpp", "src/LogBuffer.cpp", "probes/animation-document-load-context.cpp", "src/StageLifecycle.cpp"]
 output_dir = "build/match-linked/LaserManager"
 profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
 entry = "LaserManagerProbe@12"
@@ -11980,4 +11959,289 @@ linkages = [
   { offset = 7, type = "DIR32", symbol = "??_7LaserDataInf@@6B@", target = 0x00494A0C },
   { offset = 57, type = "REL32", symbol = "_memset", target = 0x0046A720 },
   { offset = 96, type = "DIR32", symbol = "?g_AnimationTimeScale@@3MA", target = 0x004A7948 },
+]
+
+# Auxiliary owner lifetime (bullet.anm user next to eclview.cpp) in one /GL
+# context with the real chain, document, log and chain-removal producers.
+[units.initialize-secondary-auxiliary-owner]
+artifact_kind = "linked-pe"
+source = "src/SecondaryAuxiliaryOwner.cpp"
+inputs = ["src/SecondaryAuxiliaryOwner.hpp", "src/ChainRegistration.hpp", "src/Chain.hpp", "src/AnimationDocument.hpp", "src/LogBuffer.hpp", "src/ErrorLog.hpp", "src/MainRuntime.hpp"]
+support_sources = ["probes/secondary-auxiliary-owner-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/AnimationDocument.cpp", "src/LogBuffer.cpp", "probes/animation-document-load-context.cpp"]
+output_dir = "build/match-linked/SecondaryAuxiliaryOwner"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryAuxiliaryOwnerProbe@12"
+functions = ["InitializeSecondaryAuxiliaryOwner"]
+symbol = "?InitializeSecondaryAuxiliaryOwner@@YGHPAUSecondaryAuxiliaryOwnerView@@@Z"
+target_address = 0x0040E0A0
+size = 238
+linkages = [
+  { offset = 8, type = "DIR32", symbol = "?g_SecondaryAuxiliaryAnimationName@@3QBDB", target = 0x00493ABC },
+  { offset = 18, type = "REL32", symbol = "?AcquireAnimationDocument@@YGPAUAnimationDocumentView@@HPBD@Z", target = 0x00454360 },
+  { offset = 32, type = "DIR32", symbol = "?g_SecondaryAuxiliaryAnimationError@@3QBDB", target = 0x00493CDC },
+  { offset = 37, type = "DIR32", symbol = "?g_RuntimeLog@@3UErrorLogBufferView@@A", target = 0x004A5940 },
+  { offset = 42, type = "REL32", symbol = "?AppendLog@@YAPBDPAULogBufferView@@PBDZZ", target = 0x00458A10 },
+  { offset = 62, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x0045FCE4 },
+  { offset = 120, type = "DIR32", symbol = "?SecondaryAuxiliaryUpdateCallback@@YIHPAUSecondaryAuxiliaryOwnerView@@@Z", target = 0x0040E300 },
+  { offset = 137, type = "REL32", symbol = "?AddToUpdateChain@@YGHPAUChainElement@@H@Z", target = 0x00456B70 },
+  { offset = 147, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x0045FCE4 },
+  { offset = 205, type = "DIR32", symbol = "?SecondaryAuxiliaryDrawCallback@@YIHPAUSecondaryAuxiliaryOwnerView@@@Z", target = 0x0040E310 },
+  { offset = 222, type = "REL32", symbol = "?AddToDrawChain@@YGHPAUChainElement@@H@Z", target = 0x00456C10 },
+]
+
+[units.destroy-secondary-auxiliary-owner]
+artifact_kind = "linked-pe"
+source = "src/SecondaryAuxiliaryOwner.cpp"
+inputs = ["src/SecondaryAuxiliaryOwner.hpp", "src/ChainRegistration.hpp", "src/Chain.hpp", "src/AnimationDocument.hpp", "src/LogBuffer.hpp", "src/ErrorLog.hpp", "src/MainRuntime.hpp"]
+support_sources = ["probes/secondary-auxiliary-owner-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/AnimationDocument.cpp", "src/LogBuffer.cpp", "probes/animation-document-load-context.cpp"]
+output_dir = "build/match-linked/SecondaryAuxiliaryOwner"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryAuxiliaryOwnerProbe@12"
+functions = ["DestroySecondaryAuxiliaryOwner"]
+symbol = "?DestroySecondaryAuxiliaryOwner@@YIXPAUSecondaryAuxiliaryOwnerView@@@Z"
+target_address = 0x0040E190
+size = 176
+linkages = [
+  { offset = 4, type = "DIR32", symbol = "__imp__LeaveCriticalSection@4", target = 0x0048B088 },
+  { offset = 17, type = "DIR32", symbol = "?g_ChainManager@@3PAUChainManagerView@@A", target = 0x004C3234 },
+  { offset = 27, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x590 },
+  { offset = 38, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x810 },
+  { offset = 44, type = "DIR32", symbol = "__imp__EnterCriticalSection@4", target = 0x0048B084 },
+  { offset = 50, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x930 },
+  { offset = 59, type = "REL32", symbol = "?UnregisterChainElement@@YGXPAUChainManagerView@@PAUChainElement@@@Z", target = 0x00457080 },
+  { offset = 65, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x590 },
+  { offset = 76, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x810 },
+  { offset = 84, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x930 },
+  { offset = 93, type = "DIR32", symbol = "?g_ChainManager@@3PAUChainManagerView@@A", target = 0x004C3234 },
+  { offset = 108, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x590 },
+  { offset = 115, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x810 },
+  { offset = 121, type = "DIR32", symbol = "__imp__EnterCriticalSection@4", target = 0x0048B084 },
+  { offset = 127, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x930 },
+  { offset = 136, type = "REL32", symbol = "?UnregisterChainElement@@YGXPAUChainManagerView@@PAUChainElement@@@Z", target = 0x00457080 },
+  { offset = 142, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x590 },
+  { offset = 149, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x810 },
+  { offset = 157, type = "DIR32", symbol = "?g_MainRuntime@@3UMainRuntimeView@@A", target = 0x004C3280, addend = 0x930 },
+  { offset = 166, type = "DIR32", symbol = "?g_SecondaryAuxiliaryOwner@@3PAUSecondaryAuxiliaryOwnerView@@A", target = 0x004A8D74 },
+]
+
+[units.create-secondary-auxiliary-owner]
+artifact_kind = "linked-pe"
+source = "src/SecondaryAuxiliaryOwner.cpp"
+inputs = ["src/SecondaryAuxiliaryOwner.hpp", "src/ChainRegistration.hpp", "src/Chain.hpp", "src/AnimationDocument.hpp", "src/LogBuffer.hpp", "src/ErrorLog.hpp", "src/MainRuntime.hpp"]
+support_sources = ["probes/secondary-auxiliary-owner-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/AnimationDocument.cpp", "src/LogBuffer.cpp", "probes/animation-document-load-context.cpp"]
+output_dir = "build/match-linked/SecondaryAuxiliaryOwner"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryAuxiliaryOwnerProbe@12"
+functions = ["CreateSecondaryAuxiliaryOwner"]
+symbol = "?CreateSecondaryAuxiliaryOwner@@YAPAUSecondaryAuxiliaryOwnerView@@XZ"
+target_address = 0x0040E240
+size = 95
+linkages = [
+  { offset = 4, type = "REL32", symbol = "??2@YAPAXI@Z", target = 0x0045FCE4 },
+  { offset = 47, type = "DIR32", symbol = "?g_SecondaryAuxiliaryOwner@@3PAUSecondaryAuxiliaryOwnerView@@A", target = 0x004A8D74 },
+  { offset = 59, type = "REL32", symbol = "?InitializeSecondaryAuxiliaryOwner@@YGHPAUSecondaryAuxiliaryOwnerView@@@Z", target = 0x0040E0A0 },
+  { offset = 74, type = "REL32", symbol = "?DestroySecondaryAuxiliaryOwner@@YIXPAUSecondaryAuxiliaryOwnerView@@@Z", target = 0x0040E190 },
+  { offset = 80, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x0045FD49 },
+]
+
+[units.laser-manager-update]
+artifact_kind = "linked-pe"
+source = "src/Laser.cpp"
+inputs = ["src/Laser.hpp", "src/GameInf.hpp", "src/StageResource.hpp", "src/ChainRegistration.hpp", "src/Chain.hpp", "src/AnimationDocument.hpp", "src/LogBuffer.hpp", "src/ErrorLog.hpp", "src/MainRuntime.hpp"]
+support_sources = ["probes/laser-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/AnimationDocument.cpp", "src/LogBuffer.cpp", "probes/animation-document-load-context.cpp", "src/StageLifecycle.cpp"]
+output_dir = "build/match-linked/LaserManager"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "LaserManagerProbe@12"
+functions = ["LaserInf::Update"]
+symbol = "?Update@LaserInf@@QAEHXZ"
+target_address = 0x00424C10
+size = 296
+linkages = [
+  { offset = 93, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x0045FD49 },
+  { offset = 167, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x0045FD49 },
+  { offset = 204, type = "DIR32", symbol = "__real@3fefae1480000000", target = 0x00497F28 },
+  { offset = 217, type = "DIR32", symbol = "__real@3f8147ae", target = 0x00497F24 },
+  { offset = 236, type = "DIR32", symbol = "__real@3ff0000000000000", target = 0x00497E48 },
+  { offset = 265, type = "REL32", symbol = "__ftol2_sse", target = 0x004864E0 },
+]
+
+[units.laser-manager-draw]
+artifact_kind = "linked-pe"
+source = "src/Laser.cpp"
+inputs = ["src/Laser.hpp", "src/GameInf.hpp", "src/StageResource.hpp", "src/ChainRegistration.hpp", "src/Chain.hpp", "src/AnimationDocument.hpp", "src/LogBuffer.hpp", "src/ErrorLog.hpp", "src/MainRuntime.hpp"]
+support_sources = ["probes/laser-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/AnimationDocument.cpp", "src/LogBuffer.cpp", "probes/animation-document-load-context.cpp", "src/StageLifecycle.cpp"]
+output_dir = "build/match-linked/LaserManager"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "LaserManagerProbe@12"
+functions = ["LaserInf::Draw"]
+symbol = "?Draw@LaserInf@@QAEHXZ"
+target_address = 0x00424D40
+size = 45
+linkages = []
+
+[units.laser-manager-update-callback]
+artifact_kind = "linked-pe"
+source = "src/Laser.cpp"
+inputs = ["src/Laser.hpp", "src/GameInf.hpp", "src/StageResource.hpp", "src/ChainRegistration.hpp", "src/Chain.hpp", "src/AnimationDocument.hpp", "src/LogBuffer.hpp", "src/ErrorLog.hpp", "src/MainRuntime.hpp"]
+support_sources = ["probes/laser-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/AnimationDocument.cpp", "src/LogBuffer.cpp", "probes/animation-document-load-context.cpp", "src/StageLifecycle.cpp"]
+output_dir = "build/match-linked/LaserManager"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "LaserManagerProbe@12"
+functions = ["LaserManagerUpdateCallback"]
+symbol = "?LaserManagerUpdateCallback@@YIHPAVLaserInf@@@Z"
+target_address = 0x00424D70
+size = 92
+linkages = [
+  { offset = 3, type = "DIR32", symbol = "?g_Game@@3PAUGameInf@@A", target = 0x004A8E88 },
+  { offset = 50, type = "DIR32", symbol = "?g_AnimationTimeScale@@3MA", target = 0x004A7948 },
+  { offset = 62, type = "DIR32", symbol = "?g_AnimationTimeScale@@3MA", target = 0x004A7948 },
+  { offset = 67, type = "REL32", symbol = "?Update@LaserInf@@QAEHXZ", target = 0x00424C10 },
+  { offset = 77, type = "DIR32", symbol = "?g_AnimationTimeScale@@3MA", target = 0x004A7948 },
+  { offset = 85, type = "REL32", symbol = "?Update@LaserInf@@QAEHXZ", target = 0x00424C10 },
+]
+
+[units.laser-manager-draw-callback]
+artifact_kind = "linked-pe"
+source = "src/Laser.cpp"
+inputs = ["src/Laser.hpp", "src/GameInf.hpp", "src/StageResource.hpp", "src/ChainRegistration.hpp", "src/Chain.hpp", "src/AnimationDocument.hpp", "src/LogBuffer.hpp", "src/ErrorLog.hpp", "src/MainRuntime.hpp"]
+support_sources = ["probes/laser-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/AnimationDocument.cpp", "src/LogBuffer.cpp", "probes/animation-document-load-context.cpp", "src/StageLifecycle.cpp"]
+output_dir = "build/match-linked/LaserManager"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "LaserManagerProbe@12"
+functions = ["LaserManagerDrawCallback"]
+symbol = "?LaserManagerDrawCallback@@YIHPAVLaserInf@@@Z"
+target_address = 0x00424DD0
+size = 25
+linkages = [
+  { offset = 4, type = "DIR32", symbol = "?g_Game@@3PAUGameInf@@A", target = 0x004A8E88 },
+  { offset = 21, type = "REL32", symbol = "?Draw@LaserInf@@QAEHXZ", target = 0x00424D40 },
+]
+
+[units.laser-line-constructor]
+artifact_kind = "linked-pe"
+source = "src/Laser.cpp"
+inputs = ["src/Laser.hpp", "src/GameInf.hpp", "src/StageResource.hpp", "src/ChainRegistration.hpp", "src/Chain.hpp", "src/AnimationDocument.hpp", "src/LogBuffer.hpp", "src/ErrorLog.hpp", "src/MainRuntime.hpp"]
+support_sources = ["probes/laser-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/AnimationDocument.cpp", "src/LogBuffer.cpp", "probes/animation-document-load-context.cpp", "src/StageLifecycle.cpp"]
+output_dir = "build/match-linked/LaserManager"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "LaserManagerProbe@12"
+functions = ["LaserLineInf::LaserLineInf"]
+symbol = "??0LaserLineInf@@QAE@XZ"
+target_address = 0x00424EA0
+size = 62
+linkages = [
+  { offset = 4, type = "REL32", symbol = "??0LaserDataInf@@QAE@XZ", target = 0x00424830 },
+  { offset = 24, type = "DIR32", symbol = "??_7LaserLineInf@@6B@", target = 0x00494A64 },
+  { offset = 29, type = "REL32", symbol = "_memset", target = 0x0046A720 },
+  { offset = 43, type = "REL32", symbol = "??0StageEmbeddedVm@@QAE@XZ", target = 0x00402270 },
+  { offset = 54, type = "REL32", symbol = "??0StageEmbeddedVm@@QAE@XZ", target = 0x00402270 },
+]
+
+[units.laser-infinite-constructor]
+artifact_kind = "linked-pe"
+source = "src/Laser.cpp"
+inputs = ["src/Laser.hpp", "src/GameInf.hpp", "src/StageResource.hpp", "src/ChainRegistration.hpp", "src/Chain.hpp", "src/AnimationDocument.hpp", "src/LogBuffer.hpp", "src/ErrorLog.hpp", "src/MainRuntime.hpp"]
+support_sources = ["probes/laser-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/AnimationDocument.cpp", "src/LogBuffer.cpp", "probes/animation-document-load-context.cpp", "src/StageLifecycle.cpp"]
+output_dir = "build/match-linked/LaserManager"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "LaserManagerProbe@12"
+functions = ["LaserInfiniteInf::LaserInfiniteInf"]
+symbol = "??0LaserInfiniteInf@@QAE@XZ"
+target_address = 0x00424EE0
+size = 73
+linkages = [
+  { offset = 5, type = "REL32", symbol = "??0LaserDataInf@@QAE@XZ", target = 0x00424830 },
+  { offset = 25, type = "DIR32", symbol = "??_7LaserInfiniteInf@@6B@", target = 0x00494ABC },
+  { offset = 30, type = "REL32", symbol = "_memset", target = 0x0046A720 },
+  { offset = 36, type = "DIR32", symbol = "__real@41000000", target = 0x00497FDC },
+  { offset = 53, type = "REL32", symbol = "??0StageEmbeddedVm@@QAE@XZ", target = 0x00402270 },
+  { offset = 64, type = "REL32", symbol = "??0StageEmbeddedVm@@QAE@XZ", target = 0x00402270 },
+]
+
+[units.create-laser]
+frontier = true # native passes the request in EDI; this context keeps it on the stack
+artifact_kind = "linked-pe"
+source = "src/Laser.cpp"
+inputs = ["src/Laser.hpp", "src/GameInf.hpp", "src/StageResource.hpp", "src/ChainRegistration.hpp", "src/Chain.hpp", "src/AnimationDocument.hpp", "src/LogBuffer.hpp", "src/ErrorLog.hpp", "src/MainRuntime.hpp"]
+support_sources = ["probes/laser-manager-context.cpp", "src/ChainRegistration.cpp", "src/ChainRemove.cpp", "src/AnimationDocument.cpp", "src/LogBuffer.cpp", "probes/animation-document-load-context.cpp", "src/StageLifecycle.cpp"]
+output_dir = "build/match-linked/LaserManager"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "LaserManagerProbe@12"
+functions = ["CreateSecondaryHostObject"]
+symbol = "?CreateSecondaryHostObject@@YGHPBXH@Z"
+target_address = 0x00424DF0
+size = 171
+linkages = []
+
+# Canonical-profile context for the sprite binder body (0x44AB40), owned by
+# the AnimationVmView member; the stdcall wrapper becomes a jump thunk.
+[units.bind-animation-sprite-member]
+artifact_kind = "linked-pe"
+source = "src/AnimationSpriteBinding.cpp"
+inputs = ["src/AnimationSpriteBinding.hpp"]
+support_sources = ["src/AnimationExecution.cpp", "src/AnimationUnaryTangent.cpp", "probes/animation-execution-isolated-context.cpp", "src/AnimationExecutionPolarPoint.cpp"]
+normal_support_sources = ["src/AnimationUnaryTangent.cpp", "probes/animation-execution-isolated-context.cpp", "src/AnimationExecutionPolarPoint.cpp"]
+output_dir = "build/match-linked/BindAnimationSpriteMember"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "AnimationExecutionProbe@4"
+functions = ["BindAnimationSprite"]
+symbol = "?BindAnimationSprite@AnimationVmView@@QAIHPAUAnimationDocumentView@@H@Z"
+target_address = 0x0044AB40
+size = 389
+linkages = [
+  { offset = 316, type = "DIR32", symbol = "__real@3f70000000000000", target = 0x00497F50 },
+]
+
+[units.reset-secondary-host-effect-snapshot]
+artifact_kind = "linked-pe"
+source = "src/SecondaryHostMiscLeaves.cpp"
+inputs = ["src/SecondaryHud.hpp", "src/ChainRegistration.hpp"]
+support_sources = ["src/ScreenEffectInitialization.cpp", "src/SecondaryGameplay.cpp", "src/SecondaryActorInstructions.cpp", "src/SecondaryEclDebug.cpp", "src/SecondaryScript.cpp", "src/SecondaryHostArguments.cpp", "src/SecondaryActorCreation.cpp", "src/SecondaryActorLifetime.cpp", "src/SecondaryActorAnimation.cpp", "src/SecondaryActorUpdate.cpp", "src/StageLifecycle.cpp", "src/StageTween.cpp", "src/FrameRuntime.cpp", "src/SecondaryGameplayCallbacks.cpp", "src/SecondaryGameplaySupport.cpp", "src/SecondaryActorMotion.cpp", "src/SecondaryDialogueAnimation.cpp", "src/StageMesh.cpp", "src/AnimationSpriteBinding.cpp", "src/FormattedTextureText.cpp", "src/SecondaryDamageSupport.cpp", "src/SecondaryPlayerMovement.cpp", "src/MeshEffects.cpp", "src/AnimationVmFactory.cpp", "src/SecondaryActorCounters.cpp", "src/OutlinedTextureText.cpp", "src/TextTextureDispatch.cpp", "src/TextDrawing.cpp", "src/TextProcessing.cpp", "src/SecondaryDialogue.cpp", "src/SecondaryHudCallbacks.cpp", "probes/screen-effect-initialization-context.cpp", "src/SecondaryHud.cpp", "src/AnimationExecutionArguments.cpp", "src/AnimationExecutionSupport.cpp", "src/AnimationTween.cpp", "src/SecondaryEmitterAnimation.cpp", "src/Random.cpp", "src/AngleMath.cpp", "src/AnimationFan.cpp", "src/AnimationProjectedQuad.cpp", "src/AnimationImmediateDraw.cpp", "src/AnimationVmDraw.cpp", "src/AnimationQuad.cpp", "src/RenderBatch.cpp", "src/SecondaryProjectileCallbacks.cpp", "src/AnimationExecution.cpp", "src/ChainRegistration.cpp", "src/SecondaryActor.cpp", "src/SecondaryActorEffectFinish.cpp", "src/SecondaryActorEffectReset.cpp", "src/SecondaryActorEffects.cpp", "src/SecondaryActorPositionQuantization.cpp", "src/SecondaryActorThreads.cpp", "src/SecondaryActorTransition.cpp", "src/SecondaryAnimationScriptSwitch.cpp", "src/SecondaryAuxiliaryOwner.cpp", "src/SecondaryClearing.cpp", "src/SecondaryCollision.cpp", "src/SecondaryCounter.cpp", "src/SecondaryDamage.cpp", "src/SecondaryDamageSound.cpp", "src/SecondaryDeathEffect.cpp", "src/SecondaryDebugOverlay.cpp", "src/SecondaryDebugScriptEntry.cpp", "src/SecondaryDebugScriptLoad.cpp", "src/SecondaryDebugThread.cpp", "src/SecondaryDialogueStateQuery.cpp", "src/SecondaryDrawFrontAnimation.cpp", "src/SecondaryDrawPositioned.cpp", "src/SecondaryDrawPublisher.cpp", "src/SecondaryDropPolar.cpp", "src/SecondaryEffectPolar.cpp", "src/SecondaryEmitterCallbacks.cpp", "src/SecondaryEmitterMotion.cpp", "src/SecondaryEmitterPositioned.cpp", "src/SecondaryEmitterReset.cpp", "src/SecondaryGameplayStatisticsWriter.cpp", "src/SecondaryHostLookup.cpp", "src/SecondaryHudDraw.cpp", "src/SecondaryHudDrawSupport.cpp", "src/SecondaryIntegerPair.cpp", "src/SecondaryIntegerPlayerPosition.cpp", "src/SecondaryMasterAccessors.cpp", "src/SecondaryMasterCallbacks.cpp", "src/SecondaryMasterDestruction.cpp", "src/SecondaryMasterInitialization.cpp", "src/SecondaryMasterLifecycle.cpp", "src/SecondaryMasterPauseChains.cpp", "src/SecondaryMasterPrecleanup.cpp", "src/SecondaryMasterSlot040.cpp", "src/SecondaryMasterUpdate.cpp", "src/SecondaryMotionMath.cpp", "src/SecondaryPairAccess.cpp", "src/SecondaryPairTween.cpp", "src/SecondaryPattern.cpp", "src/SecondaryPatternDispatch.cpp", "src/SecondaryPauseEntry.cpp", "src/SecondaryPlayerAnimationReset.cpp", "src/SecondaryPlayerCallbacks.cpp", "src/SecondaryPlayerController.cpp", "src/SecondaryPlayerControllerHelpers.cpp", "src/SecondaryPlayerDeath.cpp", "src/SecondaryPlayerDrop.cpp", "src/SecondaryPlayerElementIterator.cpp", "src/SecondaryPlayerEmitterPairConstructors.cpp", "src/SecondaryPlayerFactory.cpp", "src/SecondaryPlayerInitialization.cpp", "src/SecondaryPlayerRectangle.cpp", "src/SecondaryPlayerSpecialActivation.cpp", "src/SecondaryPlayerStorageLifecycle.cpp", "src/SecondaryPlayerWrapItems.cpp", "src/SecondaryProgram.cpp", "src/SecondaryProgramBrowser.cpp", "src/SecondaryProgramBrowserCallbacks.cpp", "src/SecondaryProgramBrowserDestruction.cpp", "src/SecondaryProgramBrowserDraw.cpp", "src/SecondaryProgramBrowserRegistration.cpp", "src/SecondaryProgramBrowserStorage.cpp", "src/SecondaryProgramBrowserThread.cpp", "src/SecondaryProgramExtension.cpp", "src/SecondaryProgramManagerFactory.cpp", "src/SecondaryProgramSelection.cpp", "src/SecondaryProjectile.cpp", "src/SecondaryProjectileMath.cpp", "src/SecondaryReplayInitialization.cpp", "src/SecondaryReplayLoad.cpp", "src/SecondaryReplayStageLifecycle.cpp", "src/SecondarySpecialDamage.cpp", "src/SecondarySpecialEffectLifecycle.cpp", "src/SecondarySpecialEffectSupport.cpp", "src/SecondaryStateAccessors.cpp"]
+output_dir = "build/match-linked/SecondaryWideCopySecondaryHostVector"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryHudOwnersProbe@12"
+functions = ["ResetSecondaryHostEffectSnapshot"]
+symbol = "?ResetSecondaryHostEffectSnapshot@@YIPAUSecondaryHostEffectSnapshot@@PAU1@@Z"
+target_address = 0x00410880
+size = 28
+linkages = [
+  { offset = 9, type = "REL32", symbol = "_memset", target = 0x0046A720  },
+  { offset = 15, type = "DIR32", symbol = "?g_SecondaryHostEffectDefaultAngle@@3MB", target = 0x00497FDC  },
+]
+
+# game.cpp music pause/resume helpers with the real sound queue producer.
+[units.secondary-gameplay-music-pause]
+artifact_kind = "linked-pe"
+source = "src/SecondaryGameplayAudio.cpp"
+inputs = ["src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/MusicStream.hpp", "src/SoundDevice.hpp"]
+support_sources = ["probes/secondary-gameplay-audio-context.cpp", "src/SoundQueue.cpp", "src/MusicStream.cpp"]
+output_dir = "build/match-linked/SecondaryGameplayAudio"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryGameplayAudioProbe@20"
+functions = ["StartSecondaryGameplayExtraAudio"]
+symbol = "?StartSecondaryGameplayExtraAudio@@YAXXZ"
+target_address = 0x00420BA0
+size = 22
+linkages = [
+  { offset = 6, type = "DIR32", symbol = "??_C@_05PEDNBBBD@Pause?$AA@", target = 0x00494260 },
+  { offset = 11, type = "DIR32", symbol = "?g_SoundManagerQueue@@3USoundManagerQueueView@@A", target = 0x004C3E80 },
+  { offset = 16, type = "REL32", symbol = "?EnqueueSoundCommand@@YGXPAUSoundManagerQueueView@@HHPBD@Z", target = 0x0044A9C0 },
+]
+
+[units.secondary-gameplay-music-resume]
+artifact_kind = "linked-pe"
+source = "src/SecondaryGameplayAudio.cpp"
+inputs = ["src/SoundQueue.hpp", "src/SoundBuffer.hpp", "src/MusicStream.hpp", "src/SoundDevice.hpp"]
+support_sources = ["probes/secondary-gameplay-audio-context.cpp", "src/SoundQueue.cpp", "src/MusicStream.cpp"]
+output_dir = "build/match-linked/SecondaryGameplayAudio"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "SecondaryGameplayAudioProbe@20"
+functions = ["AdvanceSecondaryGameplayExtraAudio"]
+symbol = "?AdvanceSecondaryGameplayExtraAudio@@YAXXZ"
+target_address = 0x00420B80
+size = 22
+linkages = [
+  { offset = 6, type = "DIR32", symbol = "??_C@_07OGJCKFMD@UnPause?$AA@", target = 0x00494268 },
+  { offset = 11, type = "DIR32", symbol = "?g_SoundManagerQueue@@3USoundManagerQueueView@@A", target = 0x004C3E80 },
+  { offset = 16, type = "REL32", symbol = "?EnqueueSoundCommand@@YGXPAUSoundManagerQueueView@@HHPBD@Z", target = 0x0044A9C0 },
 ]

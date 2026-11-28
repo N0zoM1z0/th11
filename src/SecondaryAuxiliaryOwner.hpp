@@ -15,11 +15,7 @@ struct SecondaryAuxiliaryOwnerView
     AnimationDocumentView *document;
     unsigned int unknown014, unknown018, unknown01c, unknown020;
 
-    SecondaryAuxiliaryOwnerView()
-    {
-        unsigned int *words = reinterpret_cast<unsigned int *>(this);
-        for (int i = 0; i < 9; ++i) words[i] = 0;
-    }
+    SecondaryAuxiliaryOwnerView();
 };
 typedef char AuxiliaryOwnerSize[(sizeof(SecondaryAuxiliaryOwnerView) == 0x24) ? 1 : -1];
 typedef char AuxiliaryDocumentOffset[(offsetof(SecondaryAuxiliaryOwnerView, document) == 0x10) ? 1 : -1];

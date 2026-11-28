@@ -128,6 +128,15 @@ often describe the same objects: `g_SecondaryClearManager` (0x4A8E94) is the
 laser manager and `SecondaryClearObjectView` is `LaserDataInf`; see
 [LASER](LASER.md).
 
+## `(x | x >> n) & 1` is a bitwise OR of one-bit members (2026-11-28)
+
+The laser update callback (0x424D70) tests two flags of the `GameInf` word as
+`mov ecx, eax; shr ecx, 2; or ecx, eax; test cl, 1`. VC9 emits this for
+`a | c` where `a` and `c` are one-bit bit-field members at bits 0 and 2. The
+same members with `||`, or masks with either operator, fold into
+`test al, 5`. When a native test shifts and ORs the same word, model the word
+as bit fields and combine those members with `|`.
+
 ## Unreferenced functions survive; the inventory misses them (2026-11-28)
 
 The target keeps functions that nothing references. In laser.cpp alone,

@@ -1,6 +1,7 @@
 #pragma once
 #include "StageResource.hpp"
 #include <stddef.h>
+#include <string.h>
 
 struct AnimationDocumentView;
 
@@ -19,6 +20,22 @@ struct AnimationDocumentView;
 struct LaserTimer : StageTimerView
 {
     LaserTimer() { flags &= ~1u; }
+    // Inline form of AdvanceStageTimer (0x459270).
+    __forceinline int Tick()
+    {
+        previous = current;
+        if (*scale > static_cast<double>(0.99f) && *scale < 1.01f)
+        {
+            current++;
+            fraction = static_cast<float>(fraction + 1.0);
+        }
+        else
+        {
+            fraction = *scale + fraction;
+            current = static_cast<int>(fraction);
+        }
+        return current;
+    }
 };
 
 struct LaserPatternRecord
@@ -67,7 +84,8 @@ public:
     CameraVector position;
     unsigned char unknown048[0x68 - 0x48];
     unsigned char clearing;
-    unsigned char unknown069[0x6c - 0x69];
+    unsigned char started;
+    unsigned char unknown06a[0x6c - 0x6a];
     int id;
     LaserPatternRecord patterns[18];
     unsigned char unknown418[0x424 - 0x418];
@@ -75,16 +93,47 @@ public:
     unsigned char unknown438[0x440 - 0x438];
 };
 
+// Per-kind parameter blocks; each is cleared by its own constructor before
+// the embedded VMs are constructed.
+struct LaserLineParams
+{
+    unsigned char unknown000[0x1e4];
+    LaserLineParams() { memset(this, 0, sizeof(*this)); }
+};
+
+struct LaserInfiniteParams
+{
+    unsigned char unknown000[0x2c];
+    float value02c;
+    unsigned char unknown030[0x204 - 0x30];
+    LaserInfiniteParams()
+    {
+        memset(this, 0, sizeof(*this));
+        value02c = 8.0f;
+    }
+};
+
 class LaserLineInf : public LaserDataInf
 {
 public:
+    LaserLineInf();
     virtual int Unknown10();
+
+    LaserLineParams params;
+    StageEmbeddedVm vm;
+    StageEmbeddedVm vm2;
 };
 
 class LaserInfiniteInf : public LaserDataInf
 {
 public:
+    LaserInfiniteInf();
     virtual int Unknown10();
+
+    LaserInfiniteParams params;
+    unsigned int unknown644;
+    StageEmbeddedVm vm;
+    StageEmbeddedVm vm2;
 };
 
 // The manager ("laser.cpp:115 LaserInf"). Its embedded LaserDataInf is the
@@ -94,6 +143,24 @@ class LaserInf
 public:
     LaserInf();
     ~LaserInf();
+    int Update();
+    int Draw();
+    // Out of line at 0x4248C0 (unreferenced); inlined in the spawn.
+    void Append(LaserDataInf *laser)
+    {
+        LaserDataInf *last = tail;
+        laser->previous = last;
+        last->next = laser;
+        count++;
+        tail = laser;
+    }
+    // Out of line at 0x4248E0 (unreferenced); inlined where lasers are removed.
+    void Remove(LaserDataInf *laser)
+    {
+        count--;
+        laser->Unlink();
+        if (tail == laser) tail = laser->previous;
+    }
 
     unsigned char unknown000[0x08];
     ChainElement *updateElement;
@@ -115,6 +182,9 @@ int __stdcall InitializeLaserManager(LaserInf *self);
 LaserInf *__cdecl CreateLaserManager();
 int __fastcall LaserManagerUpdateCallback(LaserInf *self);
 int __fastcall LaserManagerDrawCallback(LaserInf *self);
+// 0x424DF0, the laser spawn, under its older ECL name: kind 0 is a line
+// laser, kind 1 an infinite laser. Returns the new laser's ID.
+int __stdcall CreateSecondaryHostObject(const void *packet, int kind);
 // Called by ECL opcode 0x16D under this older name.
 int __stdcall MarkSecondaryHostEffects();
 
@@ -127,6 +197,10 @@ typedef char LaserDataInfTimer[(offsetof(LaserDataInf, timer) == 0x14) ? 1 : -1]
 typedef char LaserDataInfPosition[(offsetof(LaserDataInf, position) == 0x3c) ? 1 : -1];
 typedef char LaserDataInfPatterns[(offsetof(LaserDataInf, patterns) == 0x70) ? 1 : -1];
 typedef char LaserDataInfTimer424[(offsetof(LaserDataInf, timer424) == 0x424) ? 1 : -1];
+typedef char LaserLineSize[(sizeof(LaserLineInf) == 0xe8c) ? 1 : -1];
+typedef char LaserLineVms[(offsetof(LaserLineInf, vm) == 0x624) ? 1 : -1];
+typedef char LaserInfiniteSize[(sizeof(LaserInfiniteInf) == 0xeb0) ? 1 : -1];
+typedef char LaserInfiniteVms[(offsetof(LaserInfiniteInf, vm) == 0x648) ? 1 : -1];
 typedef char LaserInfSize[(sizeof(LaserInf) == 0x47c) ? 1 : -1];
 typedef char LaserInfHead[(offsetof(LaserInf, head) == 0x10) ? 1 : -1];
 typedef char LaserInfTail[(offsetof(LaserInf, tail) == 0x450) ? 1 : -1];

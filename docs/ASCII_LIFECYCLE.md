@@ -101,6 +101,31 @@ that layout directly. Treating70..8C as separate current/base rectangles
 incorrectly swaps7C and84. Layout assertions and the native store review,
 not merely a compiled byte count, establish this source correction.
 
+## 2026-11-28: log call, create function and context
+
+- The initializer's failure branch called `AppendErrorLog` (0x458AF0); native
+  calls `AppendLog` (0x458A10) with `&g_RuntimeLog.buffer` in ECX, as the
+  laser, title and auxiliary initializers do. The source now calls
+  `AppendLog`.
+- The create function 0x4013F0 (69 bytes, not in the Ghidra inventory) is now
+  `CreateAsciiManager`: `new`, initialize, `delete` on failure. 0x401440
+  (destructor, delete, return the pointer) and 0x401460
+  (`delete g_AsciiManager`) are its unreferenced siblings, the same set as the
+  laser manager's.
+- The context now links `LogBuffer.cpp`, `ChainRemove.cpp` and the document
+  load probe, and drops `ErrorLog.cpp` and the `dllexport` probe that
+  forwarded its own stack arguments to `AppendErrorLog`. The probe creates the
+  manager through `CreateAsciiManager` and deletes it.
+
+With these, `AcquireAnimationDocument` gets the native ECX index, the log
+call is byte-identical and the destructor's unregister calls pass
+ECX/EDX. The initializer now receives `self` in EDI where native receives it
+in EAX and copies it to EDI, which shifts the later register choices
+(115 of 124 instructions aligned). `CreateAsciiManager` has the native shape
+but keeps the result in EDI instead of ESI. The destructor (97 of 117) still loads `this` into EBX
+instead of EDI. The four exact units in the context passed cold replay
+(`.analysis/claude-ascii-replay.log`).
+
 ## Reproduction
 
 The canonical lifecycle family uses `src/AsciiLifecycle.cpp` as primary and

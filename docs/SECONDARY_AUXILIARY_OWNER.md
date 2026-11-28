@@ -7,6 +7,33 @@ class/TU attribution remains indeterminate. Maintained source lives in
 `SecondaryAuxiliaryOwner.cpp/.hpp`, including its chain-node construction,
 renderer document, conditional locks, and genuine failure branches.
 
+All three owners are canonical exact (2026-11-28) in one linked `/GL`
+context, `build/match-linked/SecondaryAuxiliaryOwner`: units
+`initialize-secondary-auxiliary-owner`, `destroy-secondary-auxiliary-owner`
+and `create-secondary-auxiliary-owner`. The context links the real
+`ChainRegistration.cpp`, `ChainRemove.cpp`, `AnimationDocument.cpp` and
+`LogBuffer.cpp`; the probe `probes/secondary-auxiliary-owner-context.cpp`
+(rewritten on 2026-11-28; no other unit used it) creates the owner, calls the
+chain helpers and the document loader with generic arguments and destroys the
+owner.
+
+Two changes closed the gaps recorded below:
+
+- The destructor's swapped `MOV ECX,ESI` / `MOV EDX,EDI` was seen in a
+  context without `ChainRemove.cpp`, where `UnregisterChainElement` is an
+  anchor with the plain stack convention. The current context links its real
+  source, and the destructor matches without any source change (no control
+  build without it was made).
+- The constructor is `memset(this, 0, sizeof(*this))`, `flags |= 2` and the
+  singleton publication, all inside the constructor that `new` runs only on a
+  successful allocation. The earlier word loop and the flag/publication after
+  `new` gave 97-98 bytes. The constructor is defined in the .cpp so that the
+  header carries only its declaration.
+
+The 0x424970 laser manager initializer has the same shape (see [LASER](LASER.md)).
+
+Historical state before these changes:
+
 | Original owner | Native size | Current scoped VC9 diagnostic | State |
 | --- | ---: | ---: | --- |
 | `0x40E0A0` resource/chain setup | 238 | 217–234 bytes, all six native calls | Source-present, nonexact |

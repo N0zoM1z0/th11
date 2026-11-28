@@ -3,6 +3,7 @@
 #include "MainRuntime.hpp"
 #include "ErrorLog.hpp"
 #include <new>
+#include <string.h>
 
 extern const char g_SecondaryAuxiliaryAnimationName[];
 extern const char g_SecondaryAuxiliaryAnimationError[];
@@ -86,14 +87,16 @@ void __fastcall DestroySecondaryAuxiliaryOwner(SecondaryAuxiliaryOwnerView *self
 
 // 0x40E240..0x40E29E, 95 bytes. Allocation failure follows the native
 // null-record path; initialization failure tears down the real large owner.
+inline SecondaryAuxiliaryOwnerView::SecondaryAuxiliaryOwnerView()
+{
+    memset(this, 0, sizeof(*this));
+    flags |= 2u;
+    g_SecondaryAuxiliaryOwner = this;
+}
+
 SecondaryAuxiliaryOwnerView *__cdecl CreateSecondaryAuxiliaryOwner()
 {
     SecondaryAuxiliaryOwnerView *self = new SecondaryAuxiliaryOwnerView;
-    if (self)
-    {
-        self->flags |= 2u;
-        g_SecondaryAuxiliaryOwner = self;
-    }
     if (InitializeSecondaryAuxiliaryOwner(self))
     {
         if (self)

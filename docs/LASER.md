@@ -36,7 +36,52 @@ teardown at 0x420055 is an inlined `delete g_LaserManager`. `LaserDataInf` has
 no destructor, which is why its vtable has no deleting-destructor slot and the
 release loop calls `operator delete` directly. The chain helpers are the same
 as `SecondaryAuxiliaryOwner.cpp`'s, whose initializer at 0x40E0A0 has the same
-shape and is still non-exact. Replay: `.analysis/claude-laser/replay-3.log`.
+shape and is now exact as well. Replay: `.analysis/claude-laser/replay-3.log`.
+
+The per-frame code is exact in the same context: `LaserInf::Update`
+(0x424C10, EDI this), `LaserInf::Draw` (0x424D40, EAX this) and the two chain
+callbacks `LaserManagerUpdateCallback` (0x424D70) and
+`LaserManagerDrawCallback` (0x424DD0). The last three had no ledger row. Two
+source shapes mattered:
+
+- In the update loop the three removal paths (clear byte reaches 2, state 1,
+  Update slot nonzero) share one `delete laser` after an if/else chain. Three
+  separate `...; delete laser; continue;` blocks give the right size but a
+  different tail merge for the state-1 path.
+- The update callback tests `GameInf` flag bits 0 and 2 with a bitwise `|`
+  of two one-bit members (`flag0 | flag2`), which VC9 emits as
+  `(word | word >> 2) & 1`; `||` on the same members, or masks, give
+  `test al, 5`. `src/GameInf.hpp` models the word as bit fields.
+
+The timer advance in the update loop is `LaserTimer::Tick`, the inline form
+of `AdvanceStageTimer`. Replay: `.analysis/claude-laser/replay-4.log`.
+
+Both derived constructors are exact (0x424EA0, 0x424EE0; EAX this). Their
+layout: a parameter block whose own constructor clears it (line 0x1E4 bytes;
+infinite 0x204 bytes with 8.0f at +0x2C), for the infinite laser an
+uninitialized word at +0x644, then two separate `StageEmbeddedVm` members (an
+array would call the vector constructor iterator). The context links
+`StageLifecycle.cpp` so that the VM constructor body is visible: as an
+anchor it may throw, and `/EHsc` then adds unwind frames to both constructors
+and to the spawn.
+
+The ECL request for an infinite laser is the same parameter block:
+`ResetSecondaryHostEffectSnapshot` (0x410880, exact, in the enemy.cpp range)
+is `LaserInfiniteParams`'s constructor emitted out of line, and the
+interpreter calls it before `CreateSecondaryHostObject(&packet, 1)`. So the
+parameter types are header-defined with inline constructors, inlined in
+laser.cpp and called out of line from enemy.cpp.
+
+The spawn `CreateSecondaryHostObject` (0x424DF0) is a frontier
+(`create-laser`): the body agrees apart from the request argument, which
+native receives in EDI (`ret 4`) and this context keeps on the stack
+(`ret 8`), and the register choice for the new laser that follows from it.
+Probes with two or eight call sites passing a local request and constant
+kinds, like the native ECL callers, did not change LTCG's choice. The real
+callers are the ECL interpreter and slot 16 of `LaserLineInf` (0x425850).
+`Append` copies the tail into a local first; reading `tail` twice reloads it
+after the `laser->previous` store, as the out-of-line 0x4248C0 does not.
+Replay: `.analysis/claude-laser/replay-5.log`.
 
 ## Slots
 
@@ -76,11 +121,13 @@ laser is at +0x18 (`head.next`). Further fields: +0x450 tail, +0x454 count
 | 0x424B60 | `CreateLaserManager`: new 0x47C, inlined constructor, initialize, delete on failure; exact | cdecl |
 | 0x424BD0 | Unreferenced: destructor then `operator delete`, returns the pointer | LTCG EAX this |
 | 0x424BF0 | Unreferenced: `delete g_LaserManager` | no arguments |
-| 0x424C10 | Update loop: a set clear byte +0x68 deletes the laser one frame later; otherwise Update, then advance timer +0x14 | LTCG EDI manager |
-| 0x424D70 | Update callback: returns early on flags 1, 4 or 0x400 of `[0x4A8E88]+0x60`; under flag 2 runs with the time scale set to zero | ECX chain element |
-| 0x424DF0 | Spawn: kind 0 new `LaserLineInf` (0xE8C), kind 1 new `LaserInfiniteInf` (0xEB0), link at tail, Initialize(request) | LTCG EDI request, stack kind; this is `CreateSecondaryHostObject` |
-| 0x424EA0 | `LaserLineInf` constructor: base, vtable, `memset` +0x440 (0x1E4), VMs +0x624/+0xA58 | LTCG EAX this |
-| 0x424EE0 | `LaserInfiniteInf` constructor: base, vtable, `memset` +0x440 (0x204), float +0x46C, VMs +0x648/+0xA7C | LTCG EAX this |
+| 0x424C10 | `LaserInf::Update`: a set clear byte +0x68 deletes the laser one frame later; otherwise Update, then advance timer +0x14; exact | LTCG EDI manager |
+| 0x424D40 | `LaserInf::Draw`: Draw slot of every laser not in state 1; exact | LTCG EAX manager |
+| 0x424D70 | `LaserManagerUpdateCallback`: returns early on `GameInf` flag bits 0, 2 or 10; under bit 1 runs with the time scale set to zero; exact | ECX manager |
+| 0x424DD0 | `LaserManagerDrawCallback`: skips under bit 2, else tail-jumps to the draw loop; exact | ECX manager |
+| 0x424DF0 | `CreateSecondaryHostObject` spawn: kind 0 new `LaserLineInf` (0xE8C), kind 1 new `LaserInfiniteInf` (0xEB0), link at tail, Initialize(request); frontier | LTCG EDI request, stack kind |
+| 0x424EA0 | `LaserLineInf` constructor: base, vtable, `memset` +0x440 (0x1E4), VMs +0x624/+0xA58; exact | LTCG EAX this |
+| 0x424EE0 | `LaserInfiniteInf` constructor: base, vtable, `memset` +0x440 (0x204), float +0x46C, VMs +0x648/+0xA7C; exact | LTCG EAX this |
 | 0x424FB0 | `MarkSecondaryHostEffects`: mark every live laser for clearing (+0x68 = 1); exact | no arguments |
 
 Object layout so far: +0 vptr, +4 previous, +8 next, +0xC state (1 is
@@ -93,9 +140,15 @@ The functions marked unreferenced are absent from `config/functions.csv`
 
 ## Next
 
-The unreferenced helpers above need ledger rows before they can be claimed;
-the 0x4248C0/0x4248E0 bodies show how the spawn (0x424DF0) and update loop
-(0x424C10) inline their list operations. The update loop inlines the timer
-advance (`AdvanceStageTimer`'s body).
+`LaserLineInf::Initialize` (0x4250B0) starts with `params = *request`, a
+0x79-dword copy of the 0x1E4-byte `LaserLineParams`; 0x4248B0 is that copy
+assignment out of line. It then sets state 2, resets and binds both VMs with
+the bullet sprite table at 0x4A3EC0 (0xD0 bytes per entry, indexed by the
+params' type at +0x464 and color at +0x466) and runs `ExecuteAnimationVm`
+once on each, so it depends on the animation VM frontier.
+
+The unreferenced helpers above need ledger rows before they can be claimed.
+`LaserInf::Remove` is 0x4248E0's inline form; the spawn (0x424DF0) inlines
+the 0x4248C0 append. 0x425070 (unlisted) sums slot 9 over all lasers.
 The derived slot bodies (181-1,644 bytes) are the bulk of the TU. TH10's
 `EnemyLaser*` sources are a structural reference only.

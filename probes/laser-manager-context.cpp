@@ -14,6 +14,12 @@ extern "C" int __stdcall LaserManagerProbe(ChainElement *external, int priority,
     if (slot >= 0 && slot < 32)
         result += AcquireAnimationDocument(slot, "") != 0;
     result += MarkSecondaryHostEffects();
+    // The ECL callers pass a local request block and a constant kind.
+    unsigned int request[0x80];
+    request[0] = slot;
+    result += CreateSecondaryHostObject(request, 0);
+    request[1] = priority;
+    result += CreateSecondaryHostObject(request, 1);
     delete g_LaserManager;
     return result;
 }

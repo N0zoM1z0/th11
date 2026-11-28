@@ -72,9 +72,11 @@ and does not block batches 1-3.
 
 Generated totals are in [PROGRESS](PROGRESS.md) (`config/matches.csv`). Every
 source change is committed and its affected exact consumers passed cold
-replay, except for the two stale rows in the blocker below.
+replay. Three earlier exact claims were withdrawn because they fail at HEAD
+(blocker below).
 
-Batch 1, laser.cpp (2026-11-28, later session):
+Batch 1, laser.cpp and manager lifetimes (2026-11-28, later session; 39 new
+exact owners, 3 stale claims withdrawn):
 
 - **The target names its TUs and classes.** `.rdata` keeps
   `.\src\game\<file>.cpp:<line> <Type>` tags in link order, and RTTI names the
@@ -82,13 +84,38 @@ Batch 1, laser.cpp (2026-11-28, later session):
   gives a TU partition for grouping new source (KNOWLEDGE_BASE, "The target
   names its source files and classes"; `.analysis/claude-tu-partition.py`,
   `claude-rtti.py`). Name new classes after RTTI.
-- **Laser TU started.** `src/Laser.{hpp,cpp}` models `LaserDataInf` and its two
-  derived classes. All 20 base slots and both derived slot-4 overrides are
-  canonical exact normal-COFF units (`laser-*`, 22 functions). The manager
-  (`g_SecondaryClearManager`) and its constructors/spawn are mapped in
-  [LASER](LASER.md); they need small linked units for their LTCG registers.
-  Next in this TU: the manager functions 0x424830..0x424FB0, then the
-  derived slot bodies.
+- **The inventory misses unreferenced functions.** The link kept unreferenced
+  code; 336 ledger gaps with code bytes (about 40 KB) are listed in
+  `.analysis/claude-ledger-gaps.txt`. Add rows with
+  `.analysis/claude-add-ledger-rows.py` when reconstructing a function.
+- **Laser TU** (`src/Laser.{hpp,cpp}`, [LASER](LASER.md)): all 20
+  `LaserDataInf` default slots, both derived slot-4 overrides, the three
+  constructors, the manager's create/initialize/destructor, update and draw
+  loops, both chain callbacks and the clear marker are exact. The spawn
+  `CreateSecondaryHostObject` is a frontier: native passes the request in
+  EDI and no probe made LTCG do so. Next: the derived slot bodies
+  (0x4250B0..0x428600) and the unreferenced list helpers.
+- **Same pattern elsewhere.** `SecondaryAuxiliaryOwner` (0x40E0A0/0x40E190/
+  0x40E240) is exact after moving its flag and publication into a memset
+  constructor and linking `ChainRemove.cpp`. The ascii initializer called the
+  wrong log function (`AppendErrorLog` instead of `AppendLog`); with that fixed
+  and `CreateAsciiManager` (0x4013F0) written, it is now 115/124 aligned, held
+  back by LTCG's choice of EDI instead of EAX for `self`.
+- **Sweep of existing images** (`.analysis/claude-sweep-20261128.txt`,
+  `tool-dirsweep.py` over every build dir): stale images give false leads
+  (`MusicStreamingThread` dropped from 177 to 167 bytes after a cold rebuild),
+  so rebuild before trusting a hit. `BindAnimationSprite` and
+  `ResetSecondaryHostEffectSnapshot` (0x410880, the `LaserInfiniteParams`
+  constructor) became exact this way. `CreateStageResource` (0x4029C0) waits
+  for the timer-constructor fix (its context is stale); the other hits live in
+  support TUs and need their own context.
+- **Inline assembly removed.** The exact `AdvanceStageTimer` used a naked asm
+  body; `src/StageTimer.cpp` now reproduces it from natural C++.
+- **Tools** (all in `.analysis/`): `claude-dis.py` (target disassembly with
+  ledger names), `claude-xrefs.py`, `claude-extent-review.py` (padding,
+  external and interior references), `claude-add-coff-exact.py` (registers
+  COFF or linked exact units from a JSON spec after a strict compare),
+  `claude-draft-linkages.py`.
 
 Earlier work of 2026-11-28 (no new exact owners):
 
@@ -120,18 +147,22 @@ KNOWLEDGE_BASE):
    when unrelated code in the owner changes; do not spend builds swapping
    operands.
 
-**Blocker found 2026-11-27: two canonical exact units fail at HEAD.**
-`secondary-actor-state-constructor` (0x410440, 126 B) now links as a 14-byte
-call to the vector-constructor iterator, and `secondary-actor-instruction-adapter`
-links at 13 B instead of 11. Both reproduce with the committed
-`SecondaryScript.cpp`, so they predate this session. Cause of the first:
+**Blocker: the missing timer constructor (claims withdrawn 2026-11-28).**
 `9abb56f` removed `StageTimerView() { flags &= ~1u; }` from
-`StageResource.hpp`. The native constructor clears bit 0 of every timer
-flag word (frame, both vector tweens, six pair tweens, two timers), so ZUN's
-timer type does have that constructor. `StageResource.hpp` is not a declared
-input of these units, so their receipts never noticed. Restoring the
-constructor is the faithful fix, but nearly every unit includes the header;
-it needs a deliberate wide replay. Treat both rows as unverified until then.
+`StageResource.hpp`. Native code clears bit 0 of every embedded timer's flag
+word on construction, so ZUN's timer type has that constructor. Three exact
+claims fail at HEAD because of it and were withdrawn (their units are now
+frontiers): `stage-embedded-vm-constructor` (0x402270, links as a 33-byte
+memset body), `secondary-actor-state-constructor` (0x410440, a 14-byte
+vector-constructor call) and `secondary-actor-instruction-adapter` (13 bytes
+instead of 11). `StageResource.hpp` was not a declared input, so their
+receipts never went stale. Restoring the constructor is the fix, but nearly
+every unit includes the header: it needs one deliberate wide replay, ideally
+together with other shared-header changes (Batch 3). New code works around
+it locally with `struct LaserTimer : StageTimerView { LaserTimer() { flags &=
+~1u; } }`, as `SecondaryHud.hpp` does; drop those once the base type has its
+constructor. Other exact units whose objects embed timers may be affected
+too; a cold replay of the `StageLifecycle` context family is the first check.
 
 **For the later large-owner phase: give their callees source.** In the wide
 gameplay context `ExecuteSecondaryActorInstruction` (16,556 B) calls about 45
@@ -260,7 +291,7 @@ scripts/repo-python .analysis/compare-execute-animation-vm-code-only.py build/ma
 | `AnimationFloatDestination` (`44B380`, 124 B) | Canonical exact, all fourteen fields | `animation-float-destination` |
 | `AnimationIntegerDestination` (`44B400`, 104 B) | Canonical exact, all eleven fields | `animation-integer-destination` |
 | `StepAnimationFloatPairTween` (673 B) | Non-exact; two mode-17 Y-component operand bytes remain | [ANIMATION_TWEEN](ANIMATION_TWEEN.md), [ANIMATION_TWEEN_DISPATCH](ANIMATION_TWEEN_DISPATCH.md) |
-| `BindAnimationSprite` (389 B) | Non-exact | [ANIMATION_EXECUTION](ANIMATION_EXECUTION.md) |
+| `BindAnimationSprite` (`44AB40`, 389 B) | Canonical exact as the `AnimationVmView` member body (`bind-animation-sprite-member`, standard profile); the stdcall wrapper is a non-native jump thunk | [ANIMATION_EXECUTION](ANIMATION_EXECUTION.md) |
 
 ## Other large owners (deferred; state at handoff)
 

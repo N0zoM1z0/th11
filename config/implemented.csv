@@ -850,3 +850,12 @@ LaserDataInf::LaserDataInf
 InitializeLaserManager
 LaserInf::~LaserInf
 CreateLaserManager
+LaserInf::Update
+LaserInf::Draw
+LaserManagerUpdateCallback
+LaserManagerDrawCallback
+LaserLineInf::LaserLineInf
+LaserInfiniteInf::LaserInfiniteInf
+CreateSecondaryHostObject
+StartSecondaryGameplayExtraAudio
+AdvanceSecondaryGameplayExtraAudio

@@ -325,8 +325,15 @@ exact, while original TU/authorship attribution remains indeterminate.
 `AnimationIntegerDestination` remains internal to the interpreter TU and has
 the canonical 104-byte exact proof described above. Its EAX encoded-pointer /
 EDX VM / EAX result convention is selected by LTCG. Original TU ownership
-remains indeterminate. `BindAnimationSprite` remains non-exact (see
-ASCII_LIFECYCLE.md and MENU_JOYSTICK.md).
+remains indeterminate. `BindAnimationSprite` (0x44AB40) is exact since
+2026-11-28 (`bind-animation-sprite-member`): the owner is the
+`AnimationVmView::BindAnimationSprite` member body, built with the standard
+`/O2 /Ob1 /GL` profile beside `AnimationExecution.cpp`. The older frontier
+declared the stdcall wrapper as its symbol, which LTCG reduces to a 5-byte
+jump thunk, and used a `/Ob2` support profile; it was removed. Native has no
+wrapper: making it an inline forwarder in `AnimationSpriteBinding.hpp`
+would let callers call the body directly, but that header reaches many
+contexts.
 
 `UpdateStageRealInterpreterAnimationOy` is stale: its receipt records an older
 `src/AnimationTween.cpp` hash (`b527a00b...`) than the current source. Do not

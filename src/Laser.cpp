@@ -1,5 +1,6 @@
 #include "Laser.hpp"
 #include "ChainRegistration.hpp"
+#include "GameInf.hpp"
 #include "ErrorLog.hpp"
 #include "MainRuntime.hpp"
 #include <new>
@@ -91,6 +92,10 @@ void LaserDataInf::Unknown44() {}
 void LaserDataInf::Unknown48() {}
 void LaserDataInf::Unknown4c() {}
 
+// 0x424EA0, 0x424EE0
+LaserLineInf::LaserLineInf() {}
+LaserInfiniteInf::LaserInfiniteInf() {}
+
 // Both derived lasers replace slot 4 with an empty result (0x426220, 0x427720).
 int LaserLineInf::Unknown10() { return 0; }
 int LaserInfiniteInf::Unknown10() { return 0; }
@@ -147,6 +152,105 @@ LaserInf::~LaserInf()
         delete laser;
     }
     g_LaserManager = 0;
+}
+
+// 0x424C10. A laser marked for clearing survives one more frame.
+int LaserInf::Update()
+{
+    LaserDataInf *next;
+    for (LaserDataInf *laser = head.next; laser; laser = next)
+    {
+        next = laser->next;
+        if (laser->clearing)
+        {
+            laser->clearing++;
+            if (laser->clearing >= 2)
+            {
+                laser->Unknown10();
+                Remove(laser);
+                delete laser;
+                continue;
+            }
+        }
+        if (laser->state == 1)
+        {
+            laser->Unknown10();
+            Remove(laser);
+        }
+        else if (laser->Update())
+        {
+            laser->Unknown10();
+            Remove(laser);
+        }
+        else
+        {
+            laser->timer.Tick();
+            laser->started = 1;
+            continue;
+        }
+        delete laser;
+    }
+    return 1;
+}
+
+// 0x424D40
+int LaserInf::Draw()
+{
+    LaserDataInf *next;
+    for (LaserDataInf *laser = head.next; laser; laser = next)
+    {
+        next = laser->next;
+        if (laser->state != 1) laser->Draw();
+    }
+    return 1;
+}
+
+// 0x424D70: no update while game flag bits 0, 2 or 10 are set; bit 1 updates
+// with the animation time scale held at zero.
+int __fastcall LaserManagerUpdateCallback(LaserInf *self)
+{
+    if (g_Game->flag0 | g_Game->flag2) return 1;
+    if (g_Game->flag10) return 1;
+    if (g_Game->freezeTime)
+    {
+        float scale = g_AnimationTimeScale;
+        g_AnimationTimeScale = 0.0f;
+        int result = self->Update();
+        g_AnimationTimeScale = scale;
+        return result;
+    }
+    return self->Update();
+}
+
+// 0x424DD0
+int __fastcall LaserManagerDrawCallback(LaserInf *self)
+{
+    if (g_Game->flag2) return 1;
+    return self->Draw();
+}
+
+int __stdcall CreateSecondaryHostObject(const void *packet, int kind)
+{
+    LaserInf *manager = g_LaserManager;
+    if (manager->count >= 0x100) return 0;
+    manager->nextId++;
+    if (manager->nextId < 0x10000) manager->nextId = 0x10000;
+    LaserDataInf *laser;
+    switch (kind)
+    {
+    case 0:
+        laser = new LaserLineInf;
+        break;
+    case 1:
+        laser = new LaserInfiniteInf;
+        break;
+    default:
+        return manager->nextId;
+    }
+    laser->id = manager->nextId;
+    manager->Append(laser);
+    laser->Initialize(const_cast<void *>(packet));
+    return manager->nextId;
 }
 
 // 0x424B60

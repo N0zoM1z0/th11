@@ -80,7 +80,7 @@ int __stdcall InitializeAsciiManager(AsciiManagerObject *self)
     self->animation = AcquireAnimationDocument(2, g_AsciiAnimationFilename);
     if (!self->animation)
     {
-        AppendErrorLog(&g_RuntimeLog, g_AsciiAnimationLoadError);
+        AppendLog(&g_RuntimeLog.buffer, g_AsciiAnimationLoadError);
         return -1;
     }
     AsciiChainElement *element = MakeAsciiChain(
@@ -114,6 +114,19 @@ AsciiManagerObject::~AsciiManagerObject()
     ReleaseAsciiDocument(2);
     ReleaseAsciiDocument(0);
     g_AsciiManager = 0;
+}
+
+// 0x4013F0 (absent from the Ghidra inventory): allocate, initialize, delete
+// on failure. It is InitializeAsciiManager's only caller.
+AsciiManagerObject *__cdecl CreateAsciiManager()
+{
+    AsciiManagerObject *self = new AsciiManagerObject;
+    if (InitializeAsciiManager(self))
+    {
+        delete self;
+        return 0;
+    }
+    return self;
 }
 
 unsigned int AsciiManagerObject::StorageSize()
