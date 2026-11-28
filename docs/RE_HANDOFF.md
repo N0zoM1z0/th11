@@ -40,6 +40,18 @@ input of these units, so their receipts never noticed. Restoring the
 constructor is the faithful fix, but nearly every unit includes the header;
 it needs a deliberate wide replay. Treat both rows as unverified until then.
 
+**Next for the largest owners: give their callees source.** In the wide
+gameplay context `ExecuteSecondaryActorInstruction` (16,556 B) calls about 45
+symbols that exist only as declarations and are bound to data anchors
+(`FindSecondaryHostObject`, `RecomposeSecondaryHostMotion` at 0x459670,
+`SecondaryHostRandomAngle`, `CreateSecondaryHostObject`, the `ResetSecondaryHost*`
+timers, ...). LTCG can only call an anchor with the plain stack convention,
+while native uses each callee's private register interface, so the caller's
+code differs far from the calls. This is the same effect that `0x41F510`
+showed for the dialogue interpreter. List them with
+`scripts/repo-python .analysis/claude-anchor-callees.py BUILD SYMBOL`; native
+addresses partly come from `.analysis/claude-map-callees.py`.
+
 Replay helper for changed shared inputs:
 `scripts/repo-python .analysis/claude-replay-affected.py FILE...` replays every
 exact unit whose context contains one of the files and resumes from current
