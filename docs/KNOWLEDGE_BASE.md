@@ -128,6 +128,15 @@ often describe the same objects: `g_SecondaryClearManager` (0x4A8E94) is the
 laser manager and `SecondaryClearObjectView` is `LaserDataInf`; see
 [LASER](LASER.md).
 
+## Plain-ABI leaves can still need /GL (2026-11-28)
+
+`PauseSelectionComparisonView::IsDifferent`/`IsSmaller` (0x42F340/0x42F350,
+14 bytes, ordinary `__thiscall`) load `value` into EDX in the target. A
+normal-COFF build of the same source reuses ECX (12 of 14 bytes); a tiny `/GL`
+context whose probe calls both gives EDX and zero differences. So when a
+plain-ABI leaf misses as normal COFF only by register choice, retry it in a
+small linked context before changing its source.
+
 ## The FSINCOS polar helpers are ZUN inline assembly (2026-11-28)
 
 0x424670 (`SecondaryDropPolarVector::SetPolar`) and 0x4197B0 (the ECL

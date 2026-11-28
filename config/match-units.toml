@@ -12456,3 +12456,33 @@ linkages = [
   { offset = 104, type = "REL32", symbol = "??1StageResourceView@@QAE@XZ", target = 0x00402740  },
   { offset = 110, type = "REL32", symbol = "??3@YAXPAX@Z", target = 0x0045FD49  },
 ]
+
+# 0x42F340/0x42F350 comparison members (unreferenced islands beside the
+# game-over menu table) in a /GL context.
+[units.pause-selection-is-different]
+artifact_kind = "linked-pe"
+source = "src/PauseSelectionComparisons.cpp"
+inputs = []
+support_sources = ["probes/pause-selection-comparisons-context.cpp"]
+output_dir = "build/match-linked/PauseSelectionComparisons"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "PauseSelectionComparisonsProbe@8"
+functions = ["PauseSelectionComparisonView::IsDifferent"]
+symbol = "?IsDifferent@PauseSelectionComparisonView@@QBEHH@Z"
+target_address = 0x0042F340
+size = 14
+linkages = []
+
+[units.pause-selection-is-smaller]
+artifact_kind = "linked-pe"
+source = "src/PauseSelectionComparisons.cpp"
+inputs = []
+support_sources = ["probes/pause-selection-comparisons-context.cpp"]
+output_dir = "build/match-linked/PauseSelectionComparisons"
+profile = ["/TP", "/O2", "/Ob1", "/Gy", "/MT", "/Isrc", "/EHsc", "/GL"]
+entry = "PauseSelectionComparisonsProbe@8"
+functions = ["PauseSelectionComparisonView::IsSmaller"]
+symbol = "?IsSmaller@PauseSelectionComparisonView@@QBEHH@Z"
+target_address = 0x0042F350
+size = 14
+linkages = []

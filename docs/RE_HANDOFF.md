@@ -76,7 +76,7 @@ replay. Five earlier exact claims were withdrawn because they fail at HEAD
 (blocker below).
 
 Batch 1, laser.cpp, manager lifetimes and gameplay helpers (2026-11-28, later
-session; 52 new exact owners, 5 stale claims withdrawn):
+session; 54 new exact owners, 5 stale claims withdrawn):
 
 - **The target names its TUs and classes.** `.rdata` keeps
   `.\src\game\<file>.cpp:<line> <Type>` tags in link order, and RTTI names the
@@ -116,8 +116,13 @@ session; 52 new exact owners, 5 stale claims withdrawn):
   (it drafts the fields and runs the strict compare) and rebuild stale
   contexts first (`.analysis/claude-rebuild-and-try.py DIR...`). Exact this
   way: the RTTI virtual slots `AsciiManagerObject::StorageSize` (0x401DD0),
-  the music scalar deleting destructors (0x45A4D0, 0x45AD90) and
-  `DeleteThreadInfVirtual` (0x4593E0).
+  the music scalar deleting destructors (0x45A4D0, 0x45AD90),
+  `DeleteThreadInfVirtual` (0x4593E0) and the two pause selection
+  comparisons (0x42F340/0x42F350, which need `/GL` even though their ABI is
+  plain). A normal-COFF sweep of the small context-less files
+  (`.analysis/claude-coff-sweep/results.txt`) found nothing else: those
+  functions use LTCG private conventions and need linked contexts with real
+  callers.
 - **Gameplay helpers.** Matching `UpdateSecondaryGameplay`'s native call
   order to its declared-only callees gave seven small exact functions:
   music pause/resume/reset/start and three chain pauses
