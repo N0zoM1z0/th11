@@ -31,3 +31,16 @@ void LaserDataInf::Unknown4c() {}
 // Both derived lasers replace slot 4 with an empty result (0x426220, 0x427720).
 int LaserLineInf::Unknown10() { return 0; }
 int LaserInfiniteInf::Unknown10() { return 0; }
+
+// 0x424FB0: flag every live laser for clearing; the manager update deletes it
+// one frame later.
+int __stdcall MarkSecondaryHostEffects()
+{
+    for (LaserDataInf *laser = g_LaserManager->head.next; laser; )
+    {
+        LaserDataInf *next = laser->next;
+        if (laser->state != 1 && !laser->clearing) laser->clearing = 1;
+        laser = next;
+    }
+    return 0;
+}

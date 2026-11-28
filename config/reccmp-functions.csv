@@ -845,3 +845,5 @@ LaserDataInf::Unknown48,0x00424810,function
 LaserDataInf::Unknown4c,0x00424820,function
 LaserLineInf::Unknown10,0x00426220,function
 LaserInfiniteInf::Unknown10,0x00427720,function
+AddSecondaryPlayerValue,0x00424640,function
+MarkSecondaryHostEffects,0x00424FB0,function

@@ -39,10 +39,13 @@ public:
     LaserDataInf *previous;
     LaserDataInf *next;
     int state;
-    // 0x14-byte timers at +0x14, +0x28, eighteen 0x34-byte pattern records
-    // from +0x70 (timer first) and +0x424; the clear byte at +0x68 and the ID
-    // at +0x6C are written by the manager.
-    unsigned char unknown010[0x440 - 0x10];
+    // 0x14-byte timers at +0x14 and +0x28, eighteen 0x34-byte pattern records
+    // from +0x70 (timer first) and a timer at +0x424.
+    unsigned char unknown010[0x68 - 0x10];
+    unsigned char clearing;
+    unsigned char unknown069[0x6c - 0x69];
+    int id;
+    unsigned char unknown070[0x440 - 0x70];
 };
 
 class LaserLineInf : public LaserDataInf
@@ -57,6 +60,37 @@ public:
     virtual int Unknown10();
 };
 
+// The manager ("laser.cpp:115 LaserInf"). Its embedded LaserDataInf is the
+// list head, so the first laser is head.next (+0x18).
+class LaserInf
+{
+public:
+    unsigned char unknown000[0x08];
+    void *updateElement;
+    void *drawElement;
+    LaserDataInf head;
+    LaserDataInf *tail;
+    int count;
+    int nextId;
+    CameraVector clearPosition;
+    unsigned char unknown468[0x474 - 0x468];
+    void *document;
+    unsigned char unknown478[0x47c - 0x478];
+};
+
+// Same address as g_SecondaryClearManager (0x4A8E94), an older partial view.
+extern LaserInf *g_LaserManager;
+
+// Called by ECL opcode 0x16D under this older name.
+int __stdcall MarkSecondaryHostEffects();
+
 typedef char LaserDataInfSize[(sizeof(LaserDataInf) == 0x440) ? 1 : -1];
 typedef char LaserDataInfNext[(offsetof(LaserDataInf, next) == 8) ? 1 : -1];
 typedef char LaserDataInfState[(offsetof(LaserDataInf, state) == 0xc) ? 1 : -1];
+typedef char LaserDataInfClearing[(offsetof(LaserDataInf, clearing) == 0x68) ? 1 : -1];
+typedef char LaserDataInfId[(offsetof(LaserDataInf, id) == 0x6c) ? 1 : -1];
+typedef char LaserInfSize[(sizeof(LaserInf) == 0x47c) ? 1 : -1];
+typedef char LaserInfHead[(offsetof(LaserInf, head) == 0x10) ? 1 : -1];
+typedef char LaserInfTail[(offsetof(LaserInf, tail) == 0x450) ? 1 : -1];
+typedef char LaserInfClearPosition[(offsetof(LaserInf, clearPosition) == 0x45c) ? 1 : -1];
+typedef char LaserInfDocument[(offsetof(LaserInf, document) == 0x474) ? 1 : -1];

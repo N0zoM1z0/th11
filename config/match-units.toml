@@ -11844,3 +11844,36 @@ symbol = "?Unknown10@LaserInfiniteInf@@UAEHXZ"
 target_address = 0x00427720
 size = 3
 relocations = []
+
+# item.cpp value add with maximum clamp; plain stdcall normal-COFF unit. docs/LASER.md lists the neighbours.
+[units.add-secondary-player-value]
+artifact_kind = "coff"
+source = "src/SecondaryPlayerValue.cpp"
+inputs = []
+object = "build/match/SecondaryPlayerValue.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["AddSecondaryPlayerValue"]
+symbol = "?AddSecondaryPlayerValue@@YGXH@Z"
+target_address = 0x00424640
+size = 33
+relocations = [
+  { offset = 1, type = "DIR32", symbol = "?g_SecondaryPlayerValue@@3HA", target = 0x004A56F0 },
+  { offset = 11, type = "DIR32", symbol = "?g_SecondaryPlayerValueMaximum@@3HA", target = 0x004A576C },
+  { offset = 18, type = "DIR32", symbol = "?g_SecondaryPlayerValue@@3HA", target = 0x004A56F0 },
+  { offset = 26, type = "DIR32", symbol = "?g_SecondaryPlayerValue@@3HA", target = 0x004A56F0 },
+]
+
+# laser.cpp: mark every live laser for clearing (ECL opcode 0x16D).
+[units.laser-mark-for-clear]
+artifact_kind = "coff"
+source = "src/Laser.cpp"
+inputs = ["src/Laser.hpp", "src/Camera.hpp"]
+object = "build/match/Laser.obj"
+profile = ["/TP", "/O2", "/Gy", "/MT", "/Isrc"]
+functions = ["MarkSecondaryHostEffects"]
+symbol = "?MarkSecondaryHostEffects@@YGHXZ"
+target_address = 0x00424FB0
+size = 43
+relocations = [
+  { offset = 1, type = "DIR32", symbol = "?g_LaserManager@@3PAVLaserInf@@A", target = 0x004A8E94 },
+]

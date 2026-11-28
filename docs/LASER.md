@@ -18,6 +18,14 @@ vtables (`.analysis/claude-laser/extent-review.txt`). Code order of the
 defaults is slots 0-4, 7, 6, 8, 5, 9, 10-19. Cold replay:
 `.analysis/claude-laser/replay.log`.
 
+`MarkSecondaryHostEffects` (0x424FB0, ECL opcode 0x16D) is also exact
+(`laser-mark-for-clear`), through the new `LaserInf` model and
+`g_LaserManager`, which shares 0x4A8E94 with the older
+`g_SecondaryClearManager` view. Its neighbour in item.cpp,
+`AddSecondaryPlayerValue` (0x424640, `src/SecondaryPlayerValue.cpp`), adds to
+game-state +0x10 with the maximum at +0x8C (`g_SecondaryPlayerValueMaximum`,
+0x4A576C). Replay: `.analysis/claude-laser/replay-2.log`.
+
 ## Slots
 
 | Slot | Offset | Name | Base | LaserLine | LaserInfinite | Evidence |
@@ -55,7 +63,7 @@ laser is at +0x18 (`head.next`). Further fields: +0x450 tail, +0x454 count
 | 0x424DF0 | Spawn: kind 0 new `LaserLineInf` (0xE8C), kind 1 new `LaserInfiniteInf` (0xEB0), link at tail, Initialize(request) | LTCG EDI request, stack kind; this is `CreateSecondaryHostObject` |
 | 0x424EA0 | `LaserLineInf` constructor: base, vtable, `memset` +0x440 (0x1E4), VMs +0x624/+0xA58 | LTCG EAX this |
 | 0x424EE0 | `LaserInfiniteInf` constructor: base, vtable, `memset` +0x440 (0x204), float +0x46C, VMs +0x648/+0xA7C | LTCG EAX this |
-| 0x424FB0 | Mark every live laser for clearing (+0x68 = 1) | no arguments |
+| 0x424FB0 | `MarkSecondaryHostEffects`: mark every live laser for clearing (+0x68 = 1); exact | no arguments |
 
 Object layout so far: +0 vptr, +4 previous, +8 next, +0xC state (1 is
 removed), 0x14-byte timers at +0x14 and +0x28, the clear byte +0x68 and
