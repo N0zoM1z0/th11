@@ -449,3 +449,13 @@ music stream tracing callers without inventing a formatter implementation.
 Both are independently **1/1 byte exact** under pinned VC9 normal COFF,
 with zero relocation fields and complete current object receipts. Their
 canonical units are `input-noop-entry` and `trace-music-stream`.
+
+## FirstMusicBuffer block order (2026-11-28)
+
+`FirstMusicBuffer` (0x45AA00, 19 bytes) builds to the native size in the
+`SoundQueue` context, but the nested ternary puts the shared `return 0`
+block last; native falls through to it right after the null test
+(`test; jne; xor eax, eax; ret`) and reaches it again from the unsigned
+count test (`jbe`). An early `if (!self->buffers) return 0;` is the likely
+source shape. `SoundQueue.cpp` is linked by many contexts, so try it together
+with other shared-source changes.

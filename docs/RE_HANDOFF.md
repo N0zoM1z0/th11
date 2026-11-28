@@ -72,11 +72,11 @@ and does not block batches 1-3.
 
 Generated totals are in [PROGRESS](PROGRESS.md) (`config/matches.csv`). Every
 source change is committed and its affected exact consumers passed cold
-replay. Three earlier exact claims were withdrawn because they fail at HEAD
+replay. Five earlier exact claims were withdrawn because they fail at HEAD
 (blocker below).
 
 Batch 1, laser.cpp, manager lifetimes and gameplay helpers (2026-11-28, later
-session; 47 new exact owners, 3 stale claims withdrawn):
+session; 52 new exact owners, 5 stale claims withdrawn):
 
 - **The target names its TUs and classes.** `.rdata` keeps
   `.\src\game\<file>.cpp:<line> <Type>` tags in link order, and RTTI names the
@@ -106,9 +106,18 @@ session; 47 new exact owners, 3 stale claims withdrawn):
   (`MusicStreamingThread` dropped from 177 to 167 bytes after a cold rebuild),
   so rebuild before trusting a hit. `BindAnimationSprite` and
   `ResetSecondaryHostEffectSnapshot` (0x410880, the `LaserInfiniteParams`
-  constructor) became exact this way. `CreateStageResource` (0x4029C0) waits
-  for the timer-constructor fix (its context is stale); the other hits live in
-  support TUs and need their own context.
+  constructor) became exact this way, and so did `CreateStageResource`
+  (0x4029C0) once its `StageLifecycle` context was rebuilt. The other hits
+  live in support TUs and need their own context.
+- **Batch 2 lane that works.** For a source-present function without a unit,
+  look for a symbol of the native size in a context whose primary source is
+  the function's file (`.analysis/claude-batch2-candidates.txt`), clone that
+  context with `.analysis/claude-try-unit.py FROM_UNIT NEW_UNIT SYMBOL ADDR`
+  (it drafts the fields and runs the strict compare) and rebuild stale
+  contexts first (`.analysis/claude-rebuild-and-try.py DIR...`). Exact this
+  way: the RTTI virtual slots `AsciiManagerObject::StorageSize` (0x401DD0),
+  the music scalar deleting destructors (0x45A4D0, 0x45AD90) and
+  `DeleteThreadInfVirtual` (0x4593E0).
 - **Gameplay helpers.** Matching `UpdateSecondaryGameplay`'s native call
   order to its declared-only callees gave seven small exact functions:
   music pause/resume/reset/start and three chain pauses
@@ -179,6 +188,14 @@ it locally with `struct LaserTimer : StageTimerView { LaserTimer() { flags &=
 ~1u; } }`, as `SecondaryHud.hpp` does; drop those once the base type has its
 constructor. Other exact units whose objects embed timers may be affected
 too; a cold replay of the `StageLifecycle` context family is the first check.
+
+Two more claims were withdrawn after cold rebuilds of their contexts at HEAD
+(`.analysis/claude-rebuild-and-try.log`): `draw-fan-animation-vm` (0x452680,
+LTCG now specializes `DrawAnimationVertexFan` and drops the `push 0x21`) and
+`animation-distance-root` (0x4196E0, loses its 8-byte aligned frame). Both
+sources are unchanged; something else in their contexts moved. Stale
+receipts hide such regressions, so rebuild a context before trusting its
+old exact rows.
 
 **For the later large-owner phase: give their callees source.** In the wide
 gameplay context `ExecuteSecondaryActorInstruction` (16,556 B) calls about 45

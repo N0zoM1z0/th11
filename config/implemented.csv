@@ -866,3 +866,4 @@ ResetSecondaryGameplayAudio
 StartSecondaryGameplayAudio
 SecondaryUnaryMathA
 LaserLineInf::Unknown2c
+AsciiManagerObject::StorageSize
