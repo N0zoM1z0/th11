@@ -184,21 +184,21 @@ int __stdcall UpdateMenuController(MenuControllerView *self)
     case 1:
     Page01:
         PauseDraw(self); UpdateMenuPage01(self); break;
+    case 3: UpdateConfigurationAudioMenu(&self->page); break;
+    case 4: UpdateMenuPage04(self); break;
     case 2: RuntimeMode() = (g_MainRuntime.flags & 0x2000) ? 2 : 3;
         // Fall through to the shared audio-reset operation.
     case 9:
     case 12: ResetSecondaryGameplayAudio(); break;
-    case 3: UpdateConfigurationAudioMenu(&self->page); break;
-    case 4: UpdateMenuPage04(self); break;
     case 5: UpdateMenuPage05(self); break;
     case 6: UpdateMenuPage06(self); break;
     case 7: UpdateMenuPage07(self); break;
     case 8: UpdateMenuPage08(self); break;
-    case 10: UpdateMenuPage0A(self); break;
     case 11:
     Page0B:
         UpdateMenuPage0B(self); break;
     case 13: UpdateMenuPage0D(self); break;
+    case 10: UpdateMenuPage0A(self); break;
     case 14:
     Page0E:
         UpdateMenuPage0E(self); break;

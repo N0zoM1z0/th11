@@ -1,6 +1,11 @@
 // Complete host instruction switch body, in the native case-body order
 // (VC9 lays case bodies out lexically). Guarded spawn entries fall into
 // their unguarded entries.
+// The spawn entries are adjacent in the native layout and share one lexical
+// scope and packet, whose stack slot is reused by later opcode families.
+{
+SecondaryHostSpawnArguments arguments;
+int words;
 case 0x109:
     if (g_SecondaryMaster->Slot(0)) break;
 case 0x100:
@@ -103,6 +108,7 @@ case 0x105:
     arguments.mirrored = 1;
     SpawnActor(instruction, &arguments);
     break;
+}
 }
 case 0x102:
     Selection(self).file = Integer(self, 0);

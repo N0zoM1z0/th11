@@ -224,3 +224,27 @@ ABI and x87/vararg stack placement is non-exact; no acceptance credit.
 Local probes: `.analysis/probe-menu-replay-records-draw-20261112.py` and its
 log; public dynamic producer `probes/menu-replay-records-draw-context.cpp`.
 No full-cohort replay was run.
+
+## Native case order and page sources in the link (2026-11-28)
+
+The jump table puts the page bodies in the order 0, 14, 1, 11, 3, 4, 2/9/12,
+5, 6, 7, 8, 13, 10, 15. The source now lists cases 3 and 4 before 2/9/12, and
+13 before 10, so all 15 bodies are in native order. The frontier
+`menu-controller` also links the real page owners that already have source
+(pages 01, 04, 05, 06, 07, 08, 0A and 0D). Together these moved the controller
+from 205 to 214 aligned instructions (209 to 218 register-normalized, of 300).
+
+The page owners still get different LTCG private conventions from native.
+Native passes the menu in EAX to 01/08/0A/0D, in EBX to 04 and in ECX to 0F.
+Our build passes 01, 04 and 0A on the stack and 08/0D in EDI/EBX, because the
+callee bodies are themselves non-exact. The EBX save, and the `-2` constant
+native keeps in EBX, follow from the page-04 EBX convention. Two attempts
+that did not help: the wide joystick context (176/300, worse), and exposing
+the menu fields of the 0x4A56E0 game-state object (no change).
+
+Remaining gap at the top: native loads the input word with `movzx` before
+the idle increment and places the demo-load block after the switch dispatch.
+On that path the compiler knows `g_MenuEntryMode` is 1, so the block jumps
+past the reload and its `idle = 0` store is not tail-merged with the
+input-reset store. Writing the demo test as an independent `if` produced
+identical code.

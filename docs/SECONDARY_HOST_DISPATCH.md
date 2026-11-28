@@ -614,16 +614,18 @@ from numeric: 0x109, 0x100, 0x10a, 0x101, 0x10f, 0x10e, 0x10b, 0x104, 0x10c,
 files listed the cases almost by number. They are now one
 `SecondaryActorInstructionCases.inc` in native order, written by
 `.analysis/claude-case-reorder.py`, which keeps every fall-through run
-together. The spawn packet and word count, previously in a block shared by
-the spawn cases, are function-scope locals: native interleaves other
-families between the spawn cases, so that block cannot exist in the
-original layout.
+together. The spawn cases (0x109, 0x100, 0x10a, 0x101, 0x10f, 0x10e, 0x10b,
+0x104, 0x10c, 0x105) are adjacent in native order, so they still share one
+block scope holding the spawn packet and word count. With that scope the frame
+is native 0x310 bytes; as function-scope locals the packet took a separate
+0x50-byte slot (0x360).
 
 In `execute-secondary-actor-instruction-frontier` (wide gameplay context,
-push and game-state probes, the interpreter as primary TU) this alone moved
-the owner from 1,332 to 2,710 aligned instructions and from 1,184 to 3,350 of
-4,003 register-normalized. All 135 bodies are now in native order
-(`.analysis/claude-case-order.py` compares them). Remaining: the frame
-layout (native keeps the spawn packet high in a 0x310 frame), argument-read
-scheduling, and about 45 callees that exist only as declarations
+push and game-state probes, the interpreter as primary TU) this moved the
+owner from 1,332 to 2,712 aligned instructions and from 1,184 to 3,353 of
+4,003 register-normalized (16,172 bytes against 15,780). All 135 bodies are now in native order
+(`.analysis/claude-case-order.py` compares them). Remaining: register
+assignment at entry (native keeps the instruction in EDI and spills self, the
+instruction and the zero-extended opcode to 0x1C/0x20/0x18; ours keeps the
+opcode in DI), argument-read scheduling, and about 45 callees that exist only as declarations
 (`.analysis/claude-anchor-callees.py`).
